@@ -1,0 +1,11 @@
+*
+!build
+!webpack/ssr/client.js
+!webpack/ssr/server.js
+!webpack/utils
+!Dockerfile
+!packages/ssr/package.json
+!config
+!.babelrc
+!src/app/routesMap.js
+!.well-known

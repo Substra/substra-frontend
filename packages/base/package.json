@@ -1,0 +1,51 @@
+{
+    "name": "base-package",
+    "productName": "SubstraFront Website",
+    "author": "Guillaume Cisco <guillaumecisco@gmail.com>",
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "SubstraFront website",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SubstraFoundation/SubstraFront"
+    },
+    "engines": {
+        "node": ">=8.4.0",
+        "npm": ">=5.3.0"
+    },
+    "pre-commit": [
+        "precommit-msg",
+        "test",
+        "eslint"
+    ],
+    "dependencies": {
+        "react-json-tree": "0.11.0"
+    },
+    "devDependencies": {
+        "atob": "2.1.1",
+        "autoprefixer": "8.6.4",
+        "babel-loader": "7.1.4",
+        "chalk": "2.4.1",
+        "concurrently": "3.6.0",
+        "css-loader": "0.28.11",
+        "cssnano": "3.10.0",
+        "extract-text-webpack-plugin": "3.0.2",
+        "file-loader": "1.1.11",
+        "form-data": "2.3.2",
+        "gzip-size": "4.1.0",
+        "normalize.css": "8.0.0",
+        "pre-commit": "1.2.2",
+        "precss": "3.1.2",
+        "react-hot-loader": "4.3.3",
+        "require-universal-module": "1.5.0",
+        "rimraf": "2.6.2",
+        "sass-loader": "7.0.3",
+        "sass-variable-loader": "0.1.2",
+        "shelljs": "0.8.2",
+        "url-loader": "1.0.1",
+        "webpack-dev-server": "2.11.1",
+        "webpack-merge": "4.1.2",
+        "webpack-sources": "1.0.1",
+        "why-did-you-update": "0.1.1"
+    }
+}

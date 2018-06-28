@@ -1,0 +1,12 @@
+.error { color: #ba0000; }
+
+span.error {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+dl { display: inline-block;vertical-align: top; }
+dd, dt { display: inline-block; }
+dt { width: 45%;padding-right: 5%; }
+dd { width: 50%; }

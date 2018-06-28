@@ -1,0 +1,100 @@
+{
+    "private": true,
+    "name": "substrafront",
+    "productName": "Guillaume Cisco Website",
+    "author": "Guillaume Cisco <substrafront@gmail.com>",
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "Guillaume Cisco's website",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SubstraFoundation/substrafront"
+    },
+    "engines": {
+        "node": ">=8.4.0",
+        "npm": ">=5.3.0"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "start": "cd packages/ssr && npm run start",
+        "start:prod": "cd packages/ssr && npm run start:prod",
+        "build:main": "cd packages/ssr && npm run build:main",
+        "build:client": "cd packages/ssr && npm run build:client",
+        "build:node": "cd packages/ssr && npm run build:node",
+        "serve": "cd packages/ssr && npm run serve",
+
+        "static": "cd packages/static && npm run static",
+        "static-debug": "cd packages/static && npm run static-debug",
+
+        "test": "cd packages/test && npm run test",
+        "cover": "cd packages/test && npm run cover",
+
+        "eslint": "cd packages/eslint && npm run eslint",
+
+        "dev": "cd packages/electron && npm run dev",
+        "start-main-dev": "cd packages/electron && npm run start-main-dev",
+        "start:electron": "cd packages/electron && npm run start:electron",
+        "build:electron": "cd packages/electron && npm run build:electron",
+        "package": "cd packages/electron && npm run package",
+        "package-all": "cd packages/electron && npm run package-all",
+        "package-linux": "cd packages/electron && npm run package-linux",
+        "package-win": "cd packages/electron && npm run package-win",
+        "build-electron": "build --publish never",
+
+        "deploy": "tools/deploy.js",
+        "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
+    },
+    "resolutions": {
+        "webpack-sources": "1.0.1"
+    },
+    "pre-commit": [
+        "precommit-msg",
+        "test",
+        "eslint"
+    ],
+    "browserslist": "electron 1.6",
+    "main": "./build/electron/index.js",
+    "build": {
+        "appId": "org.substrafront.website",
+        "productName": "Guillaume Cisco's website",
+        "directories": {
+            "buildResources": "resources",
+            "output": "release"
+        },
+        "files": [
+            "build/electron/**/*"
+        ],
+        "linux": {
+            "target": [
+                "deb",
+                "AppImage"
+            ]
+        },
+        "mac": {
+            "target": "dmg"
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "nsis": {
+            "artifactName": "${productName}_${version}_win.${ext}"
+        },
+        "dmg": {
+            "artifactName": "${productName}_${version}_mac.${ext}",
+            "contents": [
+                {
+                    "x": 130,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        }
+    }
+}
