@@ -1,11 +1,11 @@
 {
     "private": true,
     "name": "substrafront",
-    "productName": "Guillaume Cisco Website",
-    "author": "Guillaume Cisco <substrafront@gmail.com>",
+    "productName": "Substra Front",
+    "author": "Guillaume Cisco <guillaume.cisco@owkin.com>",
     "version": "0.0.1",
     "license": "MIT",
-    "description": "Guillaume Cisco's website",
+    "description": "Substra Front",
     "repository": {
         "type": "git",
         "url": "https://github.com/SubstraFoundation/substrafront"
@@ -58,7 +58,7 @@
     "main": "./build/electron/index.js",
     "build": {
         "appId": "org.substrafront.website",
-        "productName": "Guillaume Cisco's website",
+        "productName": "Substra Front",
         "directories": {
             "buildResources": "resources",
             "output": "release"

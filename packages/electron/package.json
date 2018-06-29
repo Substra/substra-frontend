@@ -64,7 +64,7 @@
         "build-renderer": "cd ../../ && cross-env IS_ELECTRON=1 NODE_ENV=production babel-node ./node_modules/webpack/bin/webpack --progress --config webpack/electron/renderer.prod.js --colors && cd -",
         "package": "cd ../../ && npm run build:electron && build --publish never && cd -",
         "package-all": "cd ../../ && npm run build:electron && build -mwl && cd -",
-        "package-linux": "cd ../../ && npm run build:electron && build --linux && cd -",
+        "package-linux": "cd ../../ && DEBUG_PROD=true npm run build:electron && build --linux && cd -",
         "package-win": "cd ../../ && npm run build:electron && build --win --x64 && cd -",
         "build-electron": "cd ../../ && build --publish never && cd -"
     }

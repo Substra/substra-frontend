@@ -2,7 +2,7 @@ import React from 'react';
 import {NOT_FOUND} from "redux-first-router";
 
 /* Declare routes */
-import Component from './component';
+import Component from '../common/routes';
 import NotFoundRoutes from './notFound/routes';
 
 
