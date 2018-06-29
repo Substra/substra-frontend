@@ -1,13 +1,12 @@
-import {actionTypes} from '../actions';
-
 const initialState = {
     init: false,
     loading: false,
     error: null,
     results: [],
+    selected: [],
 };
 
-export default (state = initialState, {type, payload}) => {
+export default actionTypes => (state = initialState, {type, payload}) => {
     switch (type) {
         case actionTypes.list.REQUEST:
             return {
@@ -31,6 +30,11 @@ export default (state = initialState, {type, payload}) => {
                 init: true,
                 error: payload,
                 loading: false,
+            };
+        case actionTypes.list.SELECTED:
+            return {
+                ...state,
+                selected: payload,
             };
         default:
             return state;

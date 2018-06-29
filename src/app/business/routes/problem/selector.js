@@ -2,8 +2,8 @@ import {orderBy} from 'lodash';
 
 import createDeepEqualSelector from '../../../utils/selector';
 
-const results = state => state.problem.list.results;
-const order = state => state.problem.order;
+const results = (state, model) => state[model].list.results;
+const order = (state, model) => state[model].order;
 
 export const getColumns = createDeepEqualSelector([results],
     results => results && results.length ? Object.keys(results[0]).filter(o => o !== 'docType') : [],

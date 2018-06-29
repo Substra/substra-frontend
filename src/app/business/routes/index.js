@@ -2,11 +2,7 @@ import React from 'react';
 import {NOT_FOUND} from "redux-first-router";
 
 /* Declare routes */
-import ProblemRoutes from './problem/routes';
-import DatasetRoutes from './dataset/routes';
-import AlgorithmRoutes from './algorithm/routes';
-import ModelRoutes from './model/routes';
-import DocRoutes from './doc/routes';
+import Component from './component';
 import NotFoundRoutes from './notFound/routes';
 
 
@@ -14,15 +10,15 @@ export default (page) => {
     switch (page) {
         case 'HOME':
         case 'PROBLEM':
-            return <ProblemRoutes />;
+            return <Component model="problem"/>;
         case 'DATASET':
-            return <DatasetRoutes />;
+            return <Component model="dataset"/>;
         case 'ALGORITHM':
-            return <AlgorithmRoutes />;
+            return <Component model="algorithm"/>;
         case 'MODEL':
-            return <ModelRoutes />;
+            return <Component model="model"/>;
         case 'DOC':
-            return <DocRoutes />;
+            return <Component model="doc"/>;
         case NOT_FOUND:
         default:
             return <NotFoundRoutes/>;

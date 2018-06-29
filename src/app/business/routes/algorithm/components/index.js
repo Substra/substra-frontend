@@ -1,44 +1,37 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {css} from 'react-emotion';
 
-import {bindActionCreators} from 'redux';
+import List from '../../../common/components/list';
+import Detail from '../../../common/components/detail';
+import actions from "../actions";
 
-import actions from '../actions';
-import List from './list';
+const middle = css`
+    display: inline-block;
+    vertical-align: top;
+`;
 
 const list = css`
-    width: 60%;
+    ${middle};
+    width: 80%;
+    overflow-x: auto;
+`;
+
+const detail = css`
+    ${middle};
+    width: 18%;
+    margin-left: 2%;
     overflow-x: auto;
 `;
 
 
 class Algorithm extends Component {
-    constructor(props) {
-        super(props);
-
-        if (!props.init && typeof window !== 'undefined') {
-            props.fetchList();
-        }
-    }
-
     render() {
-        const {loading, results} = this.props;
-
         return (<div>
-            <List results={results} loading={loading} className={list}/>
+            <List className={list} model="algorithm" actions={actions}/>
+            <Detail className={detail} model="algorithm"/>
         </div>)
     }
 }
 
-const mapStateToProps = state => ({
-    init: state.algorithm.list.init,
-    loading: state.algorithm.list.loading,
-    results: state.algorithm.list.results,
-});
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchList: actions.list.request
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Algorithm);
+export default Algorithm;

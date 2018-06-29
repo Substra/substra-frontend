@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import styled, {css} from 'react-emotion';
+import {css} from 'react-emotion';
 
-import List from './list';
-import Detail from './detail';
+import List from '../../../common/components/list';
+import Detail from '../../../common/components/detail';
+import actions from '../actions';
 
 const middle = css`
     display: inline-block;
@@ -26,8 +27,8 @@ const detail = css`
 class Problem extends Component {
     render() {
         return (<div>
-            <List className={list}/>
-            <Detail className={detail}>detail</Detail>
+            <List className={list} model="problem" actions={actions}/>
+            <Detail className={detail} model="problem" />
         </div>)
     }
 }

@@ -29,8 +29,8 @@
         "webpack-flush-chunks": "1.2.3"
     },
     "devDependencies": {
-        "add-asset-webpack-plugin": "^0.1.0",
-        "autodll-webpack-plugin": "0.4.2",
+        "add-asset-webpack-plugin": "0.1.0",
+        "autodll-webpack-plugin": "0.3.9",
         "babel-cli": "6.26.0",
         "babel-core": "6.26.3",
         "babel-jest": "23.2.0",
@@ -51,8 +51,6 @@
         "config": "1.30.0",
         "cookie-parser": "1.4.3",
         "cross-env": "5.2.0",
-        "express": "4.16.3",
-        "express-force-ssl": "^0.3.2",
         "extract-css-chunks-webpack-plugin": "2.0.19",
         "fetch-everywhere": "1.0.5",
         "glob": "7.1.2",

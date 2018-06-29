@@ -18,9 +18,9 @@ class Detail extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    selected: state.problem.list.selected,
-    results: state.problem.list.results
+const mapStateToProps = (state, {model}) => ({
+    selected: state[model].list.selected,
+    results: state[model].list.results
 });
 
 export default connect(mapStateToProps)(Detail);

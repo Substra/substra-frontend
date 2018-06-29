@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import actions from '../actions';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,12 +10,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import {coolBlue} from "../../../../../../assets/css/variables";
-import PulseLoader from "../../../common/components/presentation/loaders/PulseLoader";
+import {coolBlue} from "../../../../../assets/css/variables/index";
+import PulseLoader from "./presentation/loaders/PulseLoader";
 
 import Row from './table/row';
 
-import {getColumns, getOrderedResults} from '../selector';
+import {getColumns, getOrderedResults} from '../../routes/problem/selector';
 
 
 class List extends Component {
@@ -30,49 +28,26 @@ class List extends Component {
         }
     }
 
+    isSelected = (key) => this.props.selected.includes(key);
+
     onSelectAllClick = (event, checked) => {
         const {results, setSelected} = this.props;
 
         setSelected(checked ? results.map(o => o.key) : []);
     };
 
-    isSelected = (key) => this.props.selected.includes(key);
-
-    handleClick = (key) => {
-        const {selected} = this.props;
-        const checked = selected.includes(key);
-
-        let newSelected = [];
-
-        // remove it
-        if (checked) {
-            newSelected = selected.filter(o => o !== key);
-        }
-        // add it
-        else {
-            newSelected = [...selected, key];
-        }
-
-        this.props.setSelected(newSelected);
-    };
-
     setSelected = key => {
-        const {selected} = this.props;
+        const {selected, setSelected} = this.props;
 
-        const newSelected = selected.includes(key) ? selected.filter(o => o !== key) : [...selected, key];
-
-        this.props.setSelected(newSelected);
+        setSelected(selected.includes(key) ? selected.filter(o => o !== key) : [...selected, key]);
     };
 
-    createSortHandler = (property) => e => {
-        const by = property;
-        let direction = 'desc';
+    createSortHandler = (by) => e => {
+        const {order, setOrder} = this.props;
 
-        if (this.props.order.by === property && this.props.order.direction === 'desc') {
-            direction = 'asc';
-        }
+        const direction = order.by === by && order.direction === 'desc' ? 'asc' : 'desc';
 
-        this.props.setOrder({direction, by});
+        setOrder({direction, by});
     };
 
     render() {
@@ -123,16 +98,16 @@ class List extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    init: state.problem.list.init,
-    loading: state.problem.list.loading,
-    results: getOrderedResults(state),
-    selected: state.problem.list.selected,
-    order: state.problem.order,
-    columns: getColumns(state),
+const mapStateToProps = (state, {model}) => ({
+    init: state[model].list.init,
+    loading: state[model].list.loading,
+    results: getOrderedResults(state, model),
+    selected: state[model].list.selected,
+    order: state[model].order,
+    columns: getColumns(state, model),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     fetchList: actions.list.request,
     setSelected: actions.list.selected,
     setOrder: actions.order.set
