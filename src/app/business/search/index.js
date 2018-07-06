@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled, {css} from 'react-emotion';
 
 const Wrapper = styled('div')`
@@ -12,15 +12,10 @@ const input = css`
     padding: 15px;
 `;
 
-class Search extends Component {
-
-    render () {
-        return (
-            <Wrapper>
-                <input type="text" placeholder="search" className={input}/>
-            </Wrapper>
-        );
-    }
-}
+const Search = () => (
+    <Wrapper>
+        <input type="text" placeholder="search" className={input} />
+    </Wrapper>
+);
 
 export default Search;

@@ -161,10 +161,10 @@ export default ({clientStats, outputPath}) => (ctx) => {
 
     let path = ctx.originalUrl;
     // check if path is in our whitelist, else give 404 route
-    if (!paths.includes(url.pathname) &&
-        !ctx.originalUrl.endsWith('.ico') &&
-        ctx.originalUrl !== 'service-worker.js' &&
-        !(process.env.NODE_ENV === 'development' && ctx.originalUrl.endsWith('.js.map'))) {
+    if (!paths.includes(url.pathname)
+        && !ctx.originalUrl.endsWith('.ico')
+        && ctx.originalUrl !== 'service-worker.js'
+        && !(process.env.NODE_ENV === 'development' && ctx.originalUrl.endsWith('.js.map'))) {
         path = '/404';
     }
 

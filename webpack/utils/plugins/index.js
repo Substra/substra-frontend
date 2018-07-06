@@ -45,8 +45,7 @@ export default env => [
                 filename: 'service-worker.js',
                 minify: false,
                 dynamicUrlToDependencies: {
-                    ...Object.keys(routes).reduce((p, c) =>
-                        ({
+                    ...Object.keys(routes).reduce((p, c) => ({
                             ...p,
                             [routes[c].path]: [
                                 ...glob.sync(path.resolve(__dirname, '../../../src/app/**/*.{js,png}')),

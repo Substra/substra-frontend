@@ -10,9 +10,9 @@ export default {
         const {location} = getState();
 
         // for handling electron
-        if (!Object.keys(routes).includes(action.type) &&
-            (endsWith(location.pathname, path.join(__dirname, '../electron/app.html')) ||
-                endsWith(location.prev.pathname, path.join(__dirname, '../electron/app.html')))) {
+        if (!Object.keys(routes).includes(action.type)
+            && (endsWith(location.pathname, path.join(__dirname, '../electron/app.html'))
+                || endsWith(location.prev.pathname, path.join(__dirname, '../electron/app.html')))) {
             dispatch(redirect({type: 'HOME'}));
         }
     },

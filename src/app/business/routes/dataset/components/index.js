@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Dataset extends Component {
-    render () {
-        return (<div>
-            Datasets
-        </div>)
-    }
-}
+const Dataset = () => (
+    <div>
+        Datasets
+    </div>
+);
 
 export default Dataset;

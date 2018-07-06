@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Model extends Component {
-    render () {
-        return (<div>
-            Models
-        </div>)
-    }
-}
+const Model = () => (
+    <div>
+        Models
+    </div>
+);
 
 export default Model;

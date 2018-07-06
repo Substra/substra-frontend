@@ -3,6 +3,7 @@ class AddAssetPlugin {
         this.filePath = filePath;
         this.source = source;
     }
+
     apply(compiler) {
         compiler.plugin('emit', async (compilation, cb) => {
             const source = typeof this.source === 'string' ? this.source : await this.source(compilation);

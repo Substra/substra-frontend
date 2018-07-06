@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import Link from 'redux-first-router-link';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 import {NOT_FOUND} from 'redux-first-router';
 
-import routesMap from '../../routesMap';
+import Link from 'redux-first-router-link';
+
 import Logo from '../common/svg/logo';
 import {lightgrey, slate, coolBlue} from '../../../../assets/css/variables';
+import routesMap from "../../routesMap";
 
-const routes = Object.keys(routesMap).filter(o => ![NOT_FOUND, 'HOME'].includes(o));
 
 const wrapper = css`
     background-color: ${lightgrey};
@@ -43,12 +44,12 @@ const logo = css`
 `;
 
 const base = css`
-        text-decoration: none;
-    `;
+    text-decoration: none;
+`;
 
 class Top extends Component {
-    link = route => {
-        const {type} = this.props.location;
+    link = (route) => {
+        const {location: {type}} = this.props;
 
         const active = type === route || (route === 'PROBLEM' && type === 'HOME');
 
@@ -60,24 +61,37 @@ class Top extends Component {
     };
 
     render() {
+        const {location: {routesMap}} = this.props;
+
+        // TODO pu int selector
+        const routes = Object.keys(routesMap).filter(o => ![NOT_FOUND, 'HOME'].includes(o));
+
         return (
             <div className={wrapper}>
-                <Link to="/">
-                    <Logo width={350} height={50} className={logo}/>
+                <Link to={{type: 'HOME'}}>
+                    <Logo width={350} height={50} className={logo} />
                 </Link>
                 <Ul>
-                    {routes.map(o =>
+                    {routes.map(o => (
                         <Li key={o}>
-                            <Link to={routesMap[o].path} className={this.link(o)}>
+                            <Link to={{type: o}} className={this.link(o)}>
                                 {o.toLowerCase()}
                             </Link>
-                        </Li>
+                        </Li>),
                     )}
                 </Ul>
             </div>
         );
     }
 }
+
+Top.defaultProps = {
+    location: {},
+};
+
+Top.propTypes = {
+    location: PropTypes.shape({}),
+};
 
 const mapStateToProps = ({location}, ownProps) => ({location, ...ownProps});
 

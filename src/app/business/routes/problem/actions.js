@@ -1,16 +1,16 @@
 import {createAction} from 'redux-actions';
-import createRequestActionTypes from '../../../../app/actions/createRequestActionTypes';
+import createRequestActionTypes from '../../../actions/createRequestActionTypes';
 
 const prefix = 'SUBSTRA__PROBLEM';
 
 export const actionTypes = {
     list: {
         ...createRequestActionTypes(`${prefix}_LIST`),
-        SELECTED: `${prefix}_LIST_SELECTED`
+        SELECTED: `${prefix}_LIST_SELECTED`,
     },
 
     order: {
-        SET: `${prefix}_ORDER`
+        SET: `${prefix}_ORDER`,
     },
 };
 
@@ -23,6 +23,6 @@ export default {
     },
 
     order: {
-        set: createAction(actionTypes.order.SET)
-    }
+        set: createAction(actionTypes.order.SET),
+    },
 };

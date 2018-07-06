@@ -1,6 +1,6 @@
 const initialState = {
     by: '',
-    direction: 'asc'
+    direction: 'asc',
 };
 
 export default actionTypes => (state = initialState, {type, payload}) => {
@@ -8,7 +8,7 @@ export default actionTypes => (state = initialState, {type, payload}) => {
         case actionTypes.order.SET:
             return {
                 ...state,
-                ...payload
+                ...payload,
             };
         default:
             return state;

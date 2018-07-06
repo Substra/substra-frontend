@@ -25,7 +25,6 @@ export default new AutoDllPlugin({
             'react-dom',
             'react-emotion',
             'emotion',
-            'react-redux',
             'react-tap-event-plugin',
         ],
         reduxVendors: [

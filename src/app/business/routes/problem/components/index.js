@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {css} from 'react-emotion';
 
 import List from '../../../common/components/list';
@@ -24,14 +24,12 @@ const detail = css`
 `;
 
 
-class Problem extends Component {
-    render() {
-        return (<div>
-            <List className={list} model="problem" actions={actions}/>
-            <Detail className={detail} model="problem" />
-        </div>)
-    }
-}
+const Problem = () => (
+    <div>
+        <List className={list} model="problem" actions={actions} />
+        <Detail className={detail} model="problem" />
+    </div>
+);
 
 
 export default Problem;

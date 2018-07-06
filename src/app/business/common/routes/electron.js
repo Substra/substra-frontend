@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {injectReducer} from 'redux-reducers-injector';
 import {injectSaga} from 'redux-sagas-injector';
+import {PulseLoader} from 'react-spinners';
 
-import PulseLoader from '../components/presentation/loaders/PulseLoader';
 import {coolBlue} from '../../../../../assets/css/variables/index';
 
-//import classic, no need to lazy load on desktop
+// import classic, no need to lazy load on desktop
 class Route extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +29,7 @@ class Route extends Component {
 
     render() {
         const {Component} = this.state;
-        return Component ? <Component/> : <PulseLoader size={6} color={coolBlue} />;
+        return Component ? <Component /> : <PulseLoader size={6} color={coolBlue} />;
     }
 }
 

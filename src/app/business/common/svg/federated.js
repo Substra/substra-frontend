@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Federated = ({className, width, height}) =>
-    (<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} className={className} viewBox="0 0 527 543">
+const Federated = ({className, width, height}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} className={className} viewBox="0 0 527 543">
         <g fill="none" fillRule="evenodd">
             <path
                 stroke="#D9E4ED"
@@ -511,7 +511,8 @@ const Federated = ({className, width, height}) =>
                 <path stroke="#D9E4ED" d="M72.737 10.2L52.316 38.458M5.684 47.93l34.053-2.394" />
             </g>
         </g>
-    </svg>);
+    </svg>
+);
 
 
 Federated.defaultProps = {

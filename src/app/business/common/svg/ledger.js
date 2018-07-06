@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Ledger = ({className}) =>
-    (<svg xmlns="http://www.w3.org/2000/svg" width="312" height="324" viewBox="0 0 312 324" className={className}>
+const Ledger = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="312" height="324" viewBox="0 0 312 324" className={className}>
         <g fill="none" fillRule="evenodd">
             <path
                 stroke="#1DBCC0"
@@ -28,7 +28,8 @@ const Ledger = ({className}) =>
                 <ellipse cx="278.227" cy="290.004" rx="31.387" ry="31.348" />
             </g>
         </g>
-    </svg>);
+    </svg>
+);
 
 Ledger.defaultProps = {
     className: '',

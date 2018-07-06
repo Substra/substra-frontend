@@ -18,8 +18,7 @@ const res = p => path.resolve(__dirname, p);
 // within Webpack and can properly make connections to client modules:
 const externals = fs
     .readdirSync(res('../../node_modules'))
-    .filter(x =>
-        !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x))
+    .filter(x => !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x))
     .reduce((ext, mod) => ({
         ...ext,
         [mod]: `commonjs ${mod}`,
@@ -28,9 +27,9 @@ const externals = fs
 export default {
     name: 'server',
     target: 'node',
-    devtool: DEBUG ?
-        'source-map' :
-        (DEVELOPMENT ? 'cheap-module-source-map' : '#hidden-source-map'),
+    devtool: DEBUG
+        ? 'source-map'
+        : (DEVELOPMENT ? 'cheap-module-source-map' : '#hidden-source-map'),
     entry: [
         'babel-polyfill',
         'fetch-everywhere',

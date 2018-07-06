@@ -65,7 +65,8 @@ class ServiceWorker extends React.Component {
     }
 
     render() {
-        return typeof window !== 'undefined' && window.navigator && typeof this.state.status !== 'undefined' ? (this.state.status ? <Green /> : <Red />) : null;
+        const {status} = this.state;
+        return typeof window !== 'undefined' && window.navigator && typeof status !== 'undefined' ? (status ? <Green /> : <Red />) : null;
     }
 }
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {css} from 'react-emotion';
 
 import List from '../../../common/components/list';
 import Detail from '../../../common/components/detail';
-import actions from "../actions";
+import actions from '../actions';
 
 const middle = css`
     display: inline-block;
@@ -24,14 +24,12 @@ const detail = css`
 `;
 
 
-class Algorithm extends Component {
-    render() {
-        return (<div>
-            <List className={list} model="algorithm" actions={actions}/>
-            <Detail className={detail} model="algorithm"/>
-        </div>)
-    }
-}
+const Algorithm = () => (
+    <div>
+        <List className={list} model="algorithm" actions={actions} />
+        <Detail className={detail} model="algorithm" />
+    </div>
+);
 
 
 export default Algorithm;

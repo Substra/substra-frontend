@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Logo = ({className, width, height}) =>
-    (<svg
+const Logo = ({className, width, height}) => (
+    <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
@@ -32,7 +32,8 @@ const Logo = ({className, width, height}) =>
                 d="M269.328 50.628c-.535-.697-.4-1.757.29-2.297.692-.54 1.742-.404 2.277.293l9.777 12.748c.535.697.4 1.757-.29 2.297-.692.54-1.742.404-2.277-.293l-9.777-12.748z"
             />
         </g>
-    </svg>);
+    </svg>
+);
 
 Logo.defaultProps = {
     className: '',
@@ -43,7 +44,7 @@ Logo.defaultProps = {
 Logo.propTypes = {
     className: PropTypes.string,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
 };
 
 export default Logo;

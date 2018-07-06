@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Doc extends Component {
-    render () {
-        return (<div>
-            Docs
-        </div>)
-    }
-}
+const Doc = () => (
+    <div>
+        Docs
+    </div>
+);
 
 export default Doc;

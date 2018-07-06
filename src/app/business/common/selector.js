@@ -1,6 +1,6 @@
 import {orderBy} from 'lodash';
 
-import createDeepEqualSelector from '../../../utils/selector';
+import createDeepEqualSelector from '../../utils/selector';
 
 const results = (state, model) => state[model].list.results;
 const order = (state, model) => state[model].order;
@@ -15,5 +15,5 @@ export const getOrderedResults = createDeepEqualSelector([results, order],
 
 export default {
     getColumns,
-    getOrderedResults
+    getOrderedResults,
 };

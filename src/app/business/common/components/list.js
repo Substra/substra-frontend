@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
@@ -10,12 +11,13 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import {coolBlue} from "../../../../../assets/css/variables/index";
-import PulseLoader from "./presentation/loaders/PulseLoader";
+import {PulseLoader} from 'react-spinners';
+
+import {coolBlue} from '../../../../../assets/css/variables/index';
 
 import Row from './table/row';
 
-import {getColumns, getOrderedResults} from '../../routes/problem/selector';
+import {getColumns, getOrderedResults} from '../selector';
 
 
 class List extends Component {
@@ -28,21 +30,25 @@ class List extends Component {
         }
     }
 
-    isSelected = (key) => this.props.selected.includes(key);
-
     onSelectAllClick = (event, checked) => {
         const {results, setSelected} = this.props;
 
         setSelected(checked ? results.map(o => o.key) : []);
     };
 
-    setSelected = key => {
+    setSelected = (key) => {
         const {selected, setSelected} = this.props;
 
         setSelected(selected.includes(key) ? selected.filter(o => o !== key) : [...selected, key]);
     };
 
-    createSortHandler = (by) => e => {
+    isSelected = (key) => {
+        const {selected} = this.props;
+
+        return selected.includes(key);
+    };
+
+    createSortHandler = by => (e) => {
         const {order, setOrder} = this.props;
 
         const direction = order.by === by && order.direction === 'desc' ? 'asc' : 'desc';
@@ -51,50 +57,65 @@ class List extends Component {
     };
 
     render() {
-        const {results, selected, init, loading, className, columns, order} = this.props;
+        const {
+results, selected, init, loading, className, columns, order,
+} = this.props;
+
         const rowCount = results.length,
             numSelected = selected.length;
 
-        return <div className={className}>
-            {loading && <PulseLoader size={6} color={coolBlue}/>}
-            {init && !loading && !results.length && <p>There is no items</p>}
-            {init && !loading && results.length &&
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell padding="checkbox">
-                                <Checkbox
-                                    indeterminate={numSelected > 0 && numSelected < rowCount}
-                                    checked={numSelected === rowCount}
-                                    onChange={this.onSelectAllClick}
-                                />
-                            </TableCell>
-                            {columns.map(x =>
-                                <TableCell key={`head-${x}`}
-                                           numeric={true}
-                                           sortDirection={order.by === x ? order.direction : false}>
-                                    <TableSortLabel
-                                        active={order.by === x}
-                                        direction={order.direction}
-                                        onClick={this.createSortHandler(x)}>
-                                        {x}
-                                    </TableSortLabel>
+        return (
+            <div className={className}>
+                {loading && <PulseLoader size={6} color={coolBlue} />}
+                {init && !loading && !results.length && (
+                    <p>
+                        There is no items
+                    </p>
+                )}
+                {init && !loading && results.length
+                && (
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                    <Checkbox
+                                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                                        checked={numSelected === rowCount}
+                                        onChange={this.onSelectAllClick}
+                                    />
                                 </TableCell>
-                            )}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {results.map(o =>
-                            <Row
-                                key={o.key}
-                                isSelected={this.isSelected(o.key)}
-                                item={o}
-                                columns={columns}
-                                setSelected={this.setSelected}/>
-                        )}
-                    </TableBody>
-                </Table>}
-        </div>
+                                {columns.map(x => (
+                                    <TableCell
+                                        key={`head-${x}`}
+                                        numeric
+                                        sortDirection={order.by === x ? order.direction : false}
+                                    >
+                                        <TableSortLabel
+                                            active={order.by === x}
+                                            direction={order.direction}
+                                            onClick={this.createSortHandler(x)}
+                                        >
+                                            {x}
+                                        </TableSortLabel>
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {results.map(o => (
+                                <Row
+                                    key={o.key}
+                                    isSelected={this.isSelected(o.key)}
+                                    item={o}
+                                    columns={columns}
+                                    setSelected={this.setSelected}
+                                />
+                            ))}
+                        </TableBody>
+                    </Table>
+                )}
+            </div>
+        );
     }
 }
 
@@ -110,7 +131,36 @@ const mapStateToProps = (state, {model}) => ({
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     fetchList: actions.list.request,
     setSelected: actions.list.selected,
-    setOrder: actions.order.set
+    setOrder: actions.order.set,
 }, dispatch);
+
+const noop = () => {
+};
+
+List.defaultProps = {
+    init: false,
+    loading: false,
+    results: [],
+    selected: [],
+    order: {by: '', direction: 'asc'},
+    columns: [],
+    className: '',
+    fetchList: noop,
+    setSelected: noop,
+    setOrder: noop,
+};
+
+List.propTypes = {
+    init: PropTypes.bool,
+    loading: PropTypes.bool,
+    results: PropTypes.arrayOf(PropTypes.shape({})),
+    selected: PropTypes.arrayOf(PropTypes.string),
+    order: PropTypes.shape({}),
+    columns: PropTypes.arrayOf(PropTypes.string),
+    className: PropTypes.string,
+    fetchList: PropTypes.func,
+    setSelected: PropTypes.func,
+    setOrder: PropTypes.func,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

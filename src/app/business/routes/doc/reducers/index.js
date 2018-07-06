@@ -1,5 +1,6 @@
-import list from './list';
+import list from '../../../common/reducers/list';
+import {actionTypes} from '../actions';
 
 export default {
-    list,
+    list: list(actionTypes),
 };

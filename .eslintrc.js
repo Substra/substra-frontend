@@ -7,6 +7,7 @@ module.exports = {
         "react/jsx-indent-props": [2, 4],
         "react/jsx-filename-extension": [0],
         "react/jsx-closing-tag-location": [0],
+        "react/sort-comp": [0],
         "react/no-unescaped-entities": [0],
         "react/no-danger": [0],
         "import/no-extraneous-dependencies": [0],

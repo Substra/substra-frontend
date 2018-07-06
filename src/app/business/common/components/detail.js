@@ -1,26 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-class Detail extends Component {
-    render() {
-
-        const {selected, results, className} = this.props;
-
-        return (<div className={className}>
-            <ul>
-                {selected.map(o =>
-                    <li key={`detail-${o}`}>
-                        {o}
-                    </li>
-                )}
-            </ul>
-        </div>)
-    }
-}
+const Detail = ({selected, className}) => (
+    <div className={className}>
+        <ul>
+            {selected.map(o => (
+                <li key={`detail-${o}`}>
+                    {o}
+                </li>
+            ))}
+        </ul>
+    </div>
+);
 
 const mapStateToProps = (state, {model}) => ({
     selected: state[model].list.selected,
-    results: state[model].list.results
+    results: state[model].list.results,
 });
+
+Detail.defaultProps = {
+    selected: [],
+    className: '',
+};
+
+Detail.propTypes = {
+    selected: PropTypes.arrayOf(PropTypes.string),
+    className: PropTypes.string,
+};
 
 export default connect(mapStateToProps)(Detail);

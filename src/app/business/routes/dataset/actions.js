@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import createRequestActionTypes from '../../../../app/actions/createRequestActionTypes';
+import createRequestActionTypes from '../../../actions/createRequestActionTypes';
 
 const prefix = 'SUBSTRA';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Twitter = ({className}) =>
-    (<svg
+const Twitter = ({className}) => (
+    <svg
         xmlns="http://www.w3.org/2000/svg"
         width="36"
         height="30"
@@ -22,7 +22,8 @@ const Twitter = ({className}) =>
                 mask="url(#b)"
             />
         </g>
-    </svg>);
+    </svg>
+);
 
 Twitter.defaultProps = {
     className: '',

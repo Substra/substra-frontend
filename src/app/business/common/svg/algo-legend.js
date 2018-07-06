@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ArrowLegend = ({className}) =>
-    (<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" className={className}>
+const ArrowLegend = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" className={className}>
         <g fill="none" fillRule="evenodd" transform="rotate(160 24.333 26.77)">
             <ellipse cx="15.347" cy="10.851" stroke="#4C9BBA" rx="10.891" ry="10.705" />
             <path stroke="#4C9BBA" d="M19.307 12.797l23.07 12.992" />
@@ -19,7 +19,8 @@ const ArrowLegend = ({className}) =>
                 <ellipse cx="4.806" cy="5.071" fill="#D9E4ED" fillRule="nonzero" rx="1.584" ry="1.557" />
             </g>
         </g>
-    </svg>);
+    </svg>
+);
 
 ArrowLegend.defaultProps = {
     className: '',

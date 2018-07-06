@@ -11,12 +11,7 @@ export const getHeaders = jwt => ({
 
 export const handleResponse = (response) => {
     if (!response.ok) {
-        return response.text().then(result =>
-            Promise.reject({
-                body: new Error(result),
-                status: response.status, // read status
-            }),
-        );
+        return response.text().then(result => Promise.reject(new Error(result)));
     }
 
     return response.json();
@@ -25,6 +20,8 @@ export const handleResponse = (response) => {
 export const fetchList = (url, jwt) => {
     const headers = getHeaders(jwt);
 
+    let status;
+
     return fetch(url, {
         headers,
         // Allows API to set http-only cookies with AJAX calls
@@ -32,8 +29,11 @@ export const fetchList = (url, jwt) => {
         // credentials: 'include',
         mode: 'cors',
     })
-        .then(response => handleResponse(response))
-        .then(json => ({list: json}), error => ({error}));
+        .then((response) => {
+            status = response.status;
+            return handleResponse(response);
+        })
+        .then(json => ({list: json}), error => ({error, status}));
 };
 
 export const fetchByUrl = (urlToFetch, jwt) => fetchList(urlToFetch, jwt);
@@ -44,17 +44,17 @@ export const fetchEntitiesFactory = path => (get_parameters, jwt) => {
 };
 
 export const fetchEntitiesByPathFactory = (path, view) => (get_parameters, jwt, id) => {
-    const url = `${API_URL}/${path}/${id ? `${id}/` : ''}${view}/${!isEmpty(get_parameters) ?
-        `?${queryString.stringify(get_parameters)}` :
-        ''}`;
+    const url = `${API_URL}/${path}/${id ? `${id}/` : ''}${view}/${!isEmpty(get_parameters)
+        ? `?${queryString.stringify(get_parameters)}`
+        : ''}`;
     return fetchList(url, jwt);
 };
 
 export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
     const headers = getHeaders(jwt);
-    const url = `${API_URL}/${path}/${id}/${!isEmpty(get_parameters) ?
-        `?${queryString.stringify(get_parameters)}` :
-        ''}`;
+    const url = `${API_URL}/${path}/${id}/${!isEmpty(get_parameters)
+        ? `?${queryString.stringify(get_parameters)}`
+        : ''}`;
 
     return fetch(url, {
         headers,
@@ -71,6 +71,8 @@ export const deleteEntityFactory = path => (id, jwt) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/${id}/`;
 
+    let status;
+
     return fetch(url, {
         method: 'DELETE',
         headers,
@@ -80,17 +82,13 @@ export const deleteEntityFactory = path => (id, jwt) => {
         mode: 'cors',
     })
         .then((response) => {
-            if (response.status !== 204) {
-                return response.text().then(result =>
-                    Promise.reject({
-                        body: new Error(result),
-                        status: response.status, // read status
-                    }),
-                );
+            status = response.status;
+            if (status !== 204) {
+                return response.text().then(result => Promise.reject(new Error(result)));
             }
 
             return response;
-        }).then(() => true, error => ({error}));
+        }).then(() => true, error => ({error, status}));
 };
 
 export const updateEntityFactory = path => (id, jwt, payload) => {
@@ -136,6 +134,8 @@ export const createEntityFactory = path => (jwt, payload) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/`;
 
+    let status;
+
     return fetch(url, {
         method: 'POST',
         headers,
@@ -146,20 +146,14 @@ export const createEntityFactory = path => (jwt, payload) => {
         body: JSON.stringify(payload),
     })
         .then((response) => {
-            if (response.status !== 201) {
-                return response.text().then(result =>
-                    Promise.reject({
-                        body: new Error(result),
-                        status: response.status, // read status
-                    }),
-                );
+            status = response.status;
+            if (status !== 201) {
+                return response.text().then(result => Promise.reject(new Error(result)));
             }
 
             return response.json();
         })
-        .then(json => ({item: json}), error => ({
-            error,
-        }));
+        .then(json => ({item: json}), error => ({error, status}));
 };
 
 export const createFormEntityFactory = path => (jwt, payload) => {
@@ -171,6 +165,8 @@ export const createFormEntityFactory = path => (jwt, payload) => {
 
     const url = `${API_URL}/${path}/`;
 
+    let status;
+
     return fetch(url, {
         method: 'POST',
         headers,
@@ -181,18 +177,12 @@ export const createFormEntityFactory = path => (jwt, payload) => {
         body: payload,
     })
         .then((response) => {
-            if (response.status !== 201) {
-                return response.text().then(result =>
-                    Promise.reject({
-                        body: new Error(result),
-                        status: response.status, // read status
-                    }),
-                );
+            status = response.status;
+            if (status !== 201) {
+                return response.text().then(result => Promise.reject(new Error(result)));
             }
 
             return response.json();
         })
-        .then(json => ({item: json}), error => ({
-            error,
-        }));
+        .then(json => ({item: json}), error => ({error, status}));
 };
