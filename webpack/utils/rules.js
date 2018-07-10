@@ -33,43 +33,24 @@ export default env => [
     {
         test: /\.html$/,
         use: 'html-loader',
-        exclude: /index\.html$/,
     },
-    ...(env === 'electron' ? [
-        {
-            test: /\.s?css$/,
-            use: [
-                {
-                    loader: 'style-loader',
-                },
-                {
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true,
-                        importLoaders: true,
-                    },
-                },
-                {
-                    loader: 'sass-loader',
-                },
-            ],
-        },
-    ] : [{
+    {
         test: /\.s?css$/,
         exclude: /node_modules/,
-        use: ExtractCssChunks.extract({
-            use: [
-                {
-                    loader: 'css-loader',
-                    options: {
-                        importLoaders: true,
-                        sourceMap: true,
-                    },
+        use: [
+            {
+                loader: ExtractCssChunks.loader,
+            },
+            {
+                loader: 'css-loader',
+                options: {
+                    importLoaders: true,
+                    sourceMap: true,
                 },
-                {
-                    loader: 'sass-loader',
-                },
-            ],
-        }),
-    }]),
+            },
+            {
+                loader: 'sass-loader',
+            },
+        ],
+    },
 ];

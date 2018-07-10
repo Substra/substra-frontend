@@ -2,6 +2,7 @@
 !build
 !webpack/ssr/client.js
 !webpack/ssr/server.js
+!webpack/ssr/vendors.js
 !webpack/utils
 !Dockerfile
 !packages/ssr/package.json

@@ -5,7 +5,7 @@ import glob from 'glob';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import StatsPlugin from 'stats-webpack-plugin';
-import BabelMinifyPlugin from 'babel-minify-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import HappyPack from 'happypack';
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
@@ -25,18 +25,12 @@ const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV)),
 
 export default env => [
     ...(env === 'client' ? [
-        // https://webpack.js.org/plugins/commons-chunk-plugin/#manifest-file
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
-            filename: '[name].js',
-            minChunks: Infinity,
-        }),
         pwaManifest,
         new RavenPlugin(config.apps.frontend.raven_url, path.resolve(__dirname, '../../../assets/js/raven.min.js')),
-        dll,
         ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
-            new BabelMinifyPlugin({}, {
-                comments: false,
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
             }),
             new webpack.optimize.AggressiveMergingPlugin(),
             new StatsPlugin('stats.json'),
@@ -58,7 +52,7 @@ export default env => [
                 staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
             }),
         ] : [
-            new webpack.NoEmitOnErrorsPlugin(),
+            dll,
             new BrowserSyncPlugin(
                 // BrowserSync options
                 {
@@ -85,7 +79,6 @@ export default env => [
         }),
     ]),
     new WriteFilePlugin(),
-    ...(DEVELOPMENT ? [new webpack.NamedModulesPlugin()] : [new webpack.HashedModuleIdsPlugin()]),
     definePlugin(),
     new LodashModuleReplacementPlugin({
         shorthands: true,
@@ -101,9 +94,9 @@ export default env => [
                     ['universal-import', {
                         disableWarnings: true,
                     }],
+                    'lodash',
                     'transform-runtime',
                     'emotion',
-                    'lodash',
                     ...(PRODUCTION && env === 'client' ? [
                         'transform-class-properties',
                         'transform-es2015-classes',
@@ -114,7 +107,10 @@ export default env => [
                     ...(DEVELOPMENT ? ['react-hot-loader/babel'] : []),
                 ],
                 presets: [
-                    'es2015',
+                    // do not transpill es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
+                    ['env', {
+                        modules: false,
+                    }],
                     'react',
                     'stage-0',
                 ],
@@ -122,7 +118,6 @@ export default env => [
         }],
         threads: 4,
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractCssChunks({
         filename: '[name].css',
         allChunks: false,
@@ -130,4 +125,5 @@ export default env => [
     ...(DEBUG ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
     })] : []),
+    ...(DEVELOPMENT ? [new webpack.NamedModulesPlugin()] : [new webpack.HashedModuleIdsPlugin()]),
 ];

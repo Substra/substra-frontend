@@ -4,7 +4,7 @@
 
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
-import BabelMinifyPlugin from 'babel-minify-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import baseConfig from './base';
 
@@ -21,7 +21,7 @@ export default merge.smart(baseConfig, {
         filename: '../../build/electron/index.js',
     },
     module: {
-        rules: rules('electron'),
+        rules: rules(),
     },
     plugins: [
         new HappyPack({
@@ -43,7 +43,7 @@ export default merge.smart(baseConfig, {
                         'react-hot-loader/babel',
                     ],
                     presets: [
-                        'es2015',
+                        'env',
                         'react',
                         'stage-0',
                     ],
@@ -51,7 +51,10 @@ export default merge.smart(baseConfig, {
             }],
             threads: 4,
         }),
-        new BabelMinifyPlugin(),
+        new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+        }),
         new BundleAnalyzerPlugin({
             analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
             openAnalyzer: process.env.OPEN_ANALYZER === 'true',

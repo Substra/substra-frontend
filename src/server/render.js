@@ -140,8 +140,19 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     stream.pipe(mainStream, {end: false});
     stream.on('end', () => {
-        const {js, cssHash} = flushChunks(clientStats, {chunkNames, outputPath});
-        const dll = flushDll(clientStats);
+        const {js, cssHash} = flushChunks(clientStats,
+            {
+                chunkNames,
+                outputPath,
+                // use splitchunks in production
+                ...(process.env.NODE_ENV === 'production' ? {before: ['bootstrap', ...Object.keys(vendors), 'modules']} : {}),
+            });
+
+        // dll only in development
+        let dll = '';
+        if (process.env.NODE_ENV === 'development') {
+            dll = flushDll(clientStats);
+        }
 
         console.log('CHUNK NAMES', chunkNames);
 

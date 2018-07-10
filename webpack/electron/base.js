@@ -6,6 +6,7 @@ import path from 'path';
 import webpack from 'webpack';
 
 export default {
+    mode: process.env.NODE_ENV,
     module: {
         rules: [{
             test: /\.jsx?$/,

@@ -46,9 +46,6 @@
         "deploy": "tools/deploy.js",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
     },
-    "resolutions": {
-        "webpack-sources": "1.0.1"
-    },
     "pre-commit": [
         "precommit-msg",
         "test",

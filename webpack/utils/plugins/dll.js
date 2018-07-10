@@ -1,7 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
-import BabelMinifyPlugin from 'babel-minify-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
+
+import vendors from '../../ssr/vendors';
 
 const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV));
 
@@ -10,8 +12,9 @@ export default new AutoDllPlugin({
     context: path.join(__dirname, '../../..'),
     filename: `[name]${DEVELOPMENT ? '' : '_[hash]'}.dll.js`,
     plugins: !DEVELOPMENT ? [
-        new BabelMinifyPlugin({}, {
-            comments: false,
+        new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
             sourceMap: true,
         }),
         new webpack.DefinePlugin({
@@ -19,27 +22,5 @@ export default new AutoDllPlugin({
         }),
     ] : [],
     debug: true,
-    entry: {
-        reactVendors: [
-            'react',
-            'react-dom',
-            'react-emotion',
-            'emotion',
-            'react-tap-event-plugin',
-        ],
-        reduxVendors: [
-            'redux',
-            'redux-actions',
-            'redux-first-router',
-            'redux-reducers-injector',
-            'redux-saga',
-            'redux-sagas-injector',
-        ],
-        commonVendors: [
-            'fastclick',
-            'history',
-            'react-helmet',
-            'recompose',
-        ],
-    },
+    entry: vendors,
 });

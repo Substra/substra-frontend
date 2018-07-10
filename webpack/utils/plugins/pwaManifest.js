@@ -7,7 +7,7 @@ export default new PWAManifestPlugin({
     {
         name: 'Substra Foundation',
         short_name: 'Substra',
-        start_url: '/static/',
+        start_url: '/',
         display: 'standalone',
         background_color: '#000',
         theme_color: '#000',

@@ -25,6 +25,7 @@ const externals = fs
     }));
 
 export default {
+    mode: process.env.NODE_ENV,
     name: 'server',
     target: 'node',
     devtool: DEBUG
