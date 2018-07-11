@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {capitalize} from 'lodash';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -58,15 +59,17 @@ class List extends Component {
 
     render() {
         const {
-results, selected, init, loading, className, columns, order,
-} = this.props;
+            results, selected, init, loading, className, columns, order,
+        } = this.props;
 
         const rowCount = results.length,
             numSelected = selected.length;
 
+        console.log(columns);
+
         return (
             <div className={className}>
-                {loading && <PulseLoader size={6} color={coolBlue} />}
+                {loading && <PulseLoader size={6} color={coolBlue}/>}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items
@@ -87,7 +90,6 @@ results, selected, init, loading, className, columns, order,
                                 {columns.map(x => (
                                     <TableCell
                                         key={`head-${x}`}
-                                        numeric
                                         sortDirection={order.by === x ? order.direction : false}
                                     >
                                         <TableSortLabel
@@ -95,7 +97,7 @@ results, selected, init, loading, className, columns, order,
                                             direction={order.direction}
                                             onClick={this.createSortHandler(x)}
                                         >
-                                            {x}
+                                            {capitalize(x)}
                                         </TableSortLabel>
                                     </TableCell>
                                 ))}

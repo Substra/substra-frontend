@@ -12,13 +12,13 @@ const middle = css`
 
 const list = css`
     ${middle};
-    width: 80%;
+    width: 40%;
     overflow-x: auto;
 `;
 
 const detail = css`
     ${middle};
-    width: 18%;
+    width: 58%;
     margin-left: 2%;
     overflow-x: auto;
 `;
