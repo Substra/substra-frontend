@@ -24,12 +24,12 @@ const detail = css`
 `;
 
 
-const Problem = () => (
+const Challenge = () => (
     <div>
-        <List className={list} model="problem" actions={actions} />
-        <Detail className={detail} model="problem" />
+        <List className={list} model="challenge" actions={actions} />
+        <Detail className={detail} model="challenge" />
     </div>
 );
 
 
-export default Problem;
+export default Challenge;

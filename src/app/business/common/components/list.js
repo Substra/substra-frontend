@@ -65,8 +65,6 @@ class List extends Component {
         const rowCount = results.length,
             numSelected = selected.length;
 
-        console.log(columns);
-
         return (
             <div className={className}>
                 {loading && <PulseLoader size={6} color={coolBlue}/>}
@@ -75,7 +73,7 @@ class List extends Component {
                         There is no items
                     </p>
                 )}
-                {init && !loading && results.length
+                {init && !loading && !!results.length
                 && (
                     <Table>
                         <TableHead>

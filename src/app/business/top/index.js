@@ -51,7 +51,7 @@ class Top extends Component {
     link = (route) => {
         const {location: {type}} = this.props;
 
-        const active = type === route || (route === 'PROBLEM' && type === 'HOME');
+        const active = type === route || (route === 'CHALLENGE' && type === 'HOME');
 
         return css`
             ${base};

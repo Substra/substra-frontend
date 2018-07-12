@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
 import createRequestActionTypes from '../../../actions/createRequestActionTypes';
 
-const prefix = 'SUBSTRA__PROBLEM';
+const prefix = 'SUBSTRA__CHALLENGE';
 
 export const actionTypes = {
     list: {

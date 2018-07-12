@@ -2,7 +2,7 @@ import {NOT_FOUND} from 'redux-first-router';
 
 export default {
     HOME: {path: '/'},
-    PROBLEM: {path: '/problem'},
+    CHALLENGE: {path: '/challenge'},
     DATASET: {path: '/dataset'},
     ALGORITHM: {path: '/algorithm'},
     MODEL: {path: '/model'},
