@@ -107,7 +107,7 @@ export default env => [
                     ...(DEVELOPMENT ? ['react-hot-loader/babel'] : []),
                 ],
                 presets: [
-                    // do not transpill es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
+                    // do not transpil es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
                     ['env', {
                         modules: false,
                     }],

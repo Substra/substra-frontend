@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
-import {NOT_FOUND} from 'redux-first-router';
-
 import Link from 'redux-first-router-link';
+
+import {getRoutes} from './selector';
+
 
 import Logo from '../common/svg/logo';
 import {lightgrey, slate, coolBlue} from '../../../../assets/css/variables';
-import routesMap from "../../routesMap";
 
 
 const wrapper = css`
@@ -61,15 +61,12 @@ class Top extends Component {
     };
 
     render() {
-        const {location: {routesMap}} = this.props;
-
-        // TODO pu int selector
-        const routes = Object.keys(routesMap).filter(o => ![NOT_FOUND, 'HOME'].includes(o));
+        const {routes} = this.props;
 
         return (
             <div className={wrapper}>
                 <Link to={{type: 'HOME'}}>
-                    <Logo width={350} height={50} className={logo} />
+                    <Logo width={350} height={50} className={logo}/>
                 </Link>
                 <Ul>
                     {routes.map(o => (
@@ -86,13 +83,19 @@ class Top extends Component {
 }
 
 Top.defaultProps = {
+    routes: [],
     location: {},
 };
 
 Top.propTypes = {
+    routes: PropTypes.arrayOf(PropTypes.string),
     location: PropTypes.shape({}),
 };
 
-const mapStateToProps = ({location}, ownProps) => ({location, ...ownProps});
+const mapStateToProps = (state, ownProps) => ({
+    routes: getRoutes(state),
+    location: state.location,
+    ...ownProps,
+});
 
 export default connect(mapStateToProps)(Top);

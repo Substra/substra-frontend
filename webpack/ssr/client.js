@@ -23,7 +23,6 @@ export default {
     devtool: DEBUG ? 'source-map' : (DEVELOPMENT ? 'cheap-module-source-map' : '#hidden-source-map'),
     entry: {
         main: [
-            //'babel-polyfill',
             'fetch-everywhere',
             path.resolve(__dirname, '../../src/client/index.js'),
         ],
