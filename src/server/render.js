@@ -15,6 +15,7 @@ import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
 import routesMap from '../app/routesMap';
+import vendors from '../../webpack/ssr/vendors';
 
 import App from '../app';
 import configureStore from './configureStore';

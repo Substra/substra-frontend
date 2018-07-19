@@ -67,7 +67,7 @@ class List extends Component {
 
         return (
             <div className={className}>
-                {loading && <PulseLoader size={6} color={coolBlue}/>}
+                {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items

@@ -4,6 +4,7 @@ import chai, {expect} from 'chai';
 import {describe, it} from 'mocha';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import mockFs from 'mock-fs';
 import {
     fetchEntitiesFactory,
     fetchEntityFactory,
@@ -17,7 +18,6 @@ import {
 } from '../fetchEntities';
 
 // const FormData = require('form-data');
-const fs = require('fs');
 
 chai.use(sinonChai);
 
@@ -30,8 +30,8 @@ describe('fetchEntitiesFactory', () => {
         fetchEntitiesFactory('foo')({});
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -41,9 +41,9 @@ describe('fetchEntitiesFactory', () => {
         fetchEntitiesFactory('foo')({}, 'token');
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -53,9 +53,9 @@ describe('fetchEntitiesFactory', () => {
         fetchEntitiesFactory('foo')({page: 1}, 'token');
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -68,7 +68,7 @@ describe('fetchEntitiesFactory', () => {
         }));
 
         fetchEntitiesFactory('foo')({}).then((result) => {
-            expect(result.error.body.message).to.be.equal('Run you fools !');
+            expect(result.error.message).to.be.equal('Run you fools !');
 
             done();
         }).catch(done);
@@ -94,8 +94,8 @@ describe('fetchEntityFactory', () => {
         fetchEntityFactory('foo')({}, 'entityId');
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -105,9 +105,9 @@ describe('fetchEntityFactory', () => {
         fetchEntityFactory('foo')({}, 'entityId', 'token');
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -120,7 +120,7 @@ describe('fetchEntityFactory', () => {
         }));
 
         fetchEntityFactory('foo')('entityId').then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -145,8 +145,8 @@ describe('fetchEntitiesByPathFactory', () => {
         fetchEntitiesByPathFactory('foo', 'view')({}, undefined, 1);
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/', {
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -156,9 +156,9 @@ describe('fetchEntitiesByPathFactory', () => {
         fetchEntitiesByPathFactory('foo', 'view')({}, 'token', 1);
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -168,9 +168,9 @@ describe('fetchEntitiesByPathFactory', () => {
         fetchEntitiesByPathFactory('foo', 'view')({page: 1}, 'token', 1);
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/?page=1', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -183,7 +183,7 @@ describe('fetchEntitiesByPathFactory', () => {
         }));
 
         fetchEntitiesByPathFactory('foo', 'view')({}).then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
 
             done();
         }).catch(done);
@@ -209,8 +209,8 @@ describe('fetchByUrl', () => {
         fetchByUrl('http://api/toto/');
         expect(fetch).to.have.been.calledWith('http://api/toto/', {
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -220,9 +220,9 @@ describe('fetchByUrl', () => {
         fetchByUrl('http://api/toto/', 'token');
         expect(fetch).to.have.been.calledWith('http://api/toto/', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -232,9 +232,9 @@ describe('fetchByUrl', () => {
         fetchByUrl('http://api/toto/?page=1', 'token');
         expect(fetch).to.have.been.calledWith('http://api/toto/?page=1', {
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -247,7 +247,7 @@ describe('fetchByUrl', () => {
         }));
 
         fetchByUrl('http://api/toto/').then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
 
             done();
         }).catch(done);
@@ -273,8 +273,8 @@ describe('deleteEntityFactory', () => {
         deleteEntityFactory('foo')('entityId');
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -285,9 +285,9 @@ describe('deleteEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             method: 'DELETE',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
         });
@@ -300,7 +300,7 @@ describe('deleteEntityFactory', () => {
         }));
 
         deleteEntityFactory('foo')('entityId').then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -324,8 +324,8 @@ describe('updateEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             method: 'PATCH',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify(undefined),
@@ -337,9 +337,9 @@ describe('updateEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             method: 'PATCH',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify(undefined),
@@ -351,9 +351,9 @@ describe('updateEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             method: 'PATCH',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify({name: 'foo'}),
@@ -367,7 +367,7 @@ describe('updateEntityFactory', () => {
         }));
 
         updateEntityFactory('foo')('entityId').then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -394,8 +394,8 @@ describe('createEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
+                Accept: 'application/json;version=0.0',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify(undefined),
@@ -407,9 +407,9 @@ describe('createEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify(undefined),
@@ -421,9 +421,9 @@ describe('createEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json;version=0.0',
                 Authorization: 'JWT token',
-                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;',
             },
             mode: 'cors',
             body: JSON.stringify({name: 'foo'}),
@@ -437,7 +437,7 @@ describe('createEntityFactory', () => {
         }));
 
         createEntityFactory('foo')().then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -507,7 +507,7 @@ describe('createFormEntityFactory', () => {
         }));
 
         createFormEntityFactory('foo')().then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -518,7 +518,9 @@ describe('createFormEntityFactory', () => {
             json: () => 'data',
         }));
 
-        const file = fs.createReadStream('foo.log');
+        const file = mockFs.file({
+            content: 'file content here',
+        });
         createFormEntityFactory('foo')('token', {name: 'foo', file: [file], tutu: undefined}).then((result) => {
             expect(result).to.deep.equal({
                 item: 'data',
@@ -578,7 +580,7 @@ describe('updateFormEntityFactory', () => {
         }));
 
         updateFormEntityFactory('foo')().then((result) => {
-            expect(result.error.body.message).to.deep.equal('Run you fools !');
+            expect(result.error.message).to.deep.equal('Run you fools !');
             done();
         }).catch(done);
     });
@@ -589,7 +591,9 @@ describe('updateFormEntityFactory', () => {
             json: () => 'data',
         }));
 
-        const file = fs.createReadStream('foo.log');
+        const file = mockFs.file({
+            content: 'file content here',
+        });
         updateFormEntityFactory('foo')('entityId', 'token', {
             name: 'foo',
             file: [file],

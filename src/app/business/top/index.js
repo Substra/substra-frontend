@@ -66,7 +66,7 @@ class Top extends Component {
         return (
             <div className={wrapper}>
                 <Link to={{type: 'HOME'}}>
-                    <Logo width={350} height={50} className={logo}/>
+                    <Logo width={350} height={50} className={logo} />
                 </Link>
                 <Ul>
                     {routes.map(o => (
