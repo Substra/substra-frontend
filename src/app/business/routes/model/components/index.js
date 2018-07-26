@@ -1,7 +1,7 @@
 import React from 'react';
 import {css} from 'react-emotion';
 
-import List from '../../../common/components/list';
+import List from './list';
 import Detail from '../../../common/components/detail';
 import actions from '../actions';
 
@@ -12,13 +12,13 @@ const middle = css`
 
 const list = css`
     ${middle};
-    width: 40%;
+    width: 80%;
     overflow-x: auto;
 `;
 
 const detail = css`
     ${middle};
-    width: 58%;
+    width: 18%;
     margin-left: 2%;
     overflow-x: auto;
 `;

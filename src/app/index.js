@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from 'react-emotion';
-
-
 import ServiceWorker from './business/common/components/serviceWorker';
 import Top from './business/top';
-import Search from './business/search';
 
 import Route from './business/routes';
+import Search from './business/search';
 
 const Container = styled('div')`
     height: 100%;
@@ -16,10 +14,10 @@ const Container = styled('div')`
 
 const Routes = ({page}) => (
     <Container>
-        <ServiceWorker />
-        <Top />
-        <Search />
-        <Route page={page} />
+        <ServiceWorker/>
+        <Top/>
+        <Search/>
+        <Route page={page}/>
     </Container>);
 
 Routes.propTypes = {

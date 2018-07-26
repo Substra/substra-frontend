@@ -1,4 +1,5 @@
 import {actionTypes} from './actions';
+import search from './business/search/reducers';
 
 const initialState = {
     error: '',
@@ -18,4 +19,5 @@ export const general = (state = initialState, {type, payload}) => {
 
 export default {
     general,
+    search,
 };

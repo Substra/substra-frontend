@@ -1,21 +1,29 @@
 import React from 'react';
-import styled, {css} from 'react-emotion';
+import universal from 'react-universal-component';
+import {injectReducer} from 'redux-reducers-injector';
+import {injectSaga} from 'redux-sagas-injector';
 
-const Wrapper = styled('div')`
-    margin: 15px auto;
-    width: 90%;
-`;
+import {PulseLoader} from 'react-spinners';
+import {coolBlue} from '../../../../assets/css/variables/index';
 
-const input = css`
-    box-sizing : border-box;
-    width: 100%;
-    padding: 15px;
-`;
 
-const Search = () => (
-    <Wrapper>
-        <input type="text" placeholder="search" className={input} />
-    </Wrapper>
-);
+const UniversalSearch = universal(import('../search/components/index'), {
+    loading: <PulseLoader size={6} color={coolBlue}/>,
+    onLoad: (module) => {
+        // need all models reducers
 
-export default Search;
+        injectSaga('challenge', module.challengeSagas);
+        injectReducer('challenge', module.challengeReducer);
+
+        injectSaga('dataset', module.datasetSagas);
+        injectReducer('dataset', module.datasetReducer);
+
+        injectSaga('algo', module.algoSagas);
+        injectReducer('algo', module.algoReducer);
+
+        injectSaga('model', module.modelSagas);
+        injectReducer('model', module.modelReducer);
+    },
+});
+
+export default UniversalSearch;

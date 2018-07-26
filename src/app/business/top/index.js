@@ -61,17 +61,17 @@ class Top extends Component {
     };
 
     render() {
-        const {routes} = this.props;
+        const {routes, location} = this.props;
 
         return (
             <div className={wrapper}>
-                <Link to={{type: 'HOME'}}>
+                <Link to={{type: 'HOME', meta: {query: location.query}}}>
                     <Logo width={350} height={50} className={logo} />
                 </Link>
                 <Ul>
                     {routes.map(o => (
                         <Li key={o}>
-                            <Link to={{type: o}} className={this.link(o)}>
+                            <Link to={{type: o, meta: {query: location.query}}} className={this.link(o)}>
                                 {o.toLowerCase()}
                             </Link>
                         </Li>),
