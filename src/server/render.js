@@ -14,6 +14,11 @@ import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
+import {JssProvider, SheetsRegistry} from 'react-jss';
+import {create} from 'jss';
+import preset from 'jss-preset-default';
+import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
+
 import routesMap from '../app/routesMap';
 import vendors from '../../webpack/ssr/vendors';
 
@@ -21,6 +26,8 @@ import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
 import raven from './raven';
+
+import theme from '../common/theme/index';
 
 const cache = redis.createClient({
     host: config.redis.host,
@@ -59,10 +66,21 @@ const createCacheStream = (key) => {
     });
 };
 
+// Create a sheetsRegistry instance.
+const sheetsRegistry = new SheetsRegistry();
+
+// Configure JSS
+const jss = create(preset());
+jss.options.createGenerateClassName = createGenerateClassName;
+
 const createApp = (App, store, chunkNames) => (
     <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
         <Provider store={store}>
-            <App />
+            <JssProvider registry={sheetsRegistry} jss={jss}>
+                <MuiThemeProvider theme={theme}>
+                    <App />
+                </MuiThemeProvider>
+            </JssProvider>
         </Provider>
     </ReportChunks>
 );
@@ -72,7 +90,7 @@ const flushDll = clientStats => clientStats.assets.reduce((p, c) => [
     ...(c.name.endsWith('dll.js') ? [`<script type="text/javascript" src="/${c.name}" defer></script>`] : []),
 ], []).join('\n');
 
-const earlyChunk = (styles, stateJson) => `
+const earlyChunk = (styles, materialUiCss, stateJson) => `
     <!doctype html>
       <html lang="en">
         <head>
@@ -88,6 +106,7 @@ const earlyChunk = (styles, stateJson) => `
           <link rel="manifest" href="/manifest.json">
           <link rel="icon" sizes="192x192" href="launcher-icon-high-res.png">
           ${styles}
+          <style id="jss-server-side">${materialUiCss}</style>
         </head>
       <body>
           <noscript>
@@ -116,9 +135,10 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     const stateJson = JSON.stringify(store.getState());
 
     const {css} = flushChunks(clientStats, {outputPath});
+    const materialUiCss = sheetsRegistry.toString();
 
     // flush the head with css & js resource tags first so the download starts immediately
-    const early = earlyChunk(css, stateJson);
+    const early = earlyChunk(css, materialUiCss, stateJson);
     const chunkNames = [];
     const app = createApp(App, store, chunkNames);
 
