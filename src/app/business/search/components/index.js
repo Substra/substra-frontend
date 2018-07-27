@@ -14,7 +14,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import SearchInput from './searchInput';
 
-import {getFilters, getSuggestions, getParentSuggestions, getIsInParentMode} from '../selector';
+import {
+    getFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
+} from '../selector';
 
 import actions from '../actions';
 import challengesActions from '../../routes/challenge/actions';
@@ -52,10 +54,23 @@ const clear = css`
     cursor: pointer;
     z-index: 1;
     position: relative;
+    // fix bad material-ui ssr with streaming
+    width: 1em;
+    height: 1em;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
-const SearchInputWrapper = ({innerRef, ...rest}) => <div className={searchInput} ref={innerRef} {...rest} />;
+const SearchInputWrapper = ({innerRef, ...rest}) => (
+    <div
+        className={searchInput}
+        ref={innerRef}
+        {...rest}
+    />
+);
+
+SearchInputWrapper.propTypes = {
+    innerRef: PropTypes.func.isRequired,
+};
 
 class Search extends Component {
     state = {
@@ -205,7 +220,7 @@ class Search extends Component {
                     {this.searchInput}
                 </Downshift>
 
-                <ClearIcon className={clear} onClick={this.clear}/>
+                <ClearIcon className={clear} onClick={this.clear} />
             </Wrapper>
         );
     }
@@ -214,7 +229,9 @@ class Search extends Component {
 Search.propTypes = {
     location: PropTypes.shape({}).isRequired,
     suggestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    parentSuggestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     setFilters: PropTypes.func.isRequired,
+    setItem: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({

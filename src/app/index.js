@@ -14,10 +14,10 @@ const Container = styled('div')`
 
 const Routes = ({page}) => (
     <Container>
-        <ServiceWorker/>
-        <Top/>
-        <Search/>
-        <Route page={page}/>
+        <ServiceWorker />
+        <Top />
+        <Search />
+        <Route page={page} />
     </Container>);
 
 Routes.propTypes = {

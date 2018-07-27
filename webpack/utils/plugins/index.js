@@ -52,7 +52,7 @@ export default env => [
                 staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
             }),
         ] : [
-            //dll,
+            dll,
             new BrowserSyncPlugin(
                 // BrowserSync options
                 {

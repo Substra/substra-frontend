@@ -7,16 +7,14 @@ import {Transform, PassThrough} from 'stream';
 import redis from 'redis';
 import {Provider} from 'react-redux';
 import {renderToNodeStream} from 'react-dom/server';
-// import {renderToStaticMarkup} from 'react-dom/server';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {renderStylesToNodeStream} from 'emotion-server';
-// import {renderStylesToString} from 'emotion-server';
+import {renderStylesToString} from 'emotion-server';
 import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
 import {JssProvider, SheetsRegistry} from 'react-jss';
-import {create} from 'jss';
-import preset from 'jss-preset-default';
 import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
 
 import routesMap from '../app/routesMap';
@@ -69,15 +67,17 @@ const createCacheStream = (key) => {
 // Create a sheetsRegistry instance.
 const sheetsRegistry = new SheetsRegistry();
 
-// Configure JSS
-const jss = create(preset());
-jss.options.createGenerateClassName = createGenerateClassName;
+// Create a sheetsManager instance.
+const sheetsManager = new Map();
+
+// Create a new class name generator.
+const generateClassName = createGenerateClassName();
 
 const createApp = (App, store, chunkNames) => (
     <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
         <Provider store={store}>
-            <JssProvider registry={sheetsRegistry} jss={jss}>
-                <MuiThemeProvider theme={theme}>
+            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+                <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
                     <App />
                 </MuiThemeProvider>
             </JssProvider>
@@ -135,12 +135,20 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     const stateJson = JSON.stringify(store.getState());
 
     const {css} = flushChunks(clientStats, {outputPath});
+
+    const chunkNames = [];
+    const app = createApp(App, store, chunkNames);
+    const stream = renderToNodeStream(app).pipe(renderStylesToNodeStream());
+
+    // needed for jss and server side rendering, material-ui still does not work with stream...
+    // follow this issue for disabling below blocking line https://github.com/mui-org/material-ui/issues/8503
+    renderStylesToString(renderToStaticMarkup(app));
+
     const materialUiCss = sheetsRegistry.toString();
 
     // flush the head with css & js resource tags first so the download starts immediately
     const early = earlyChunk(css, materialUiCss, stateJson);
-    const chunkNames = [];
-    const app = createApp(App, store, chunkNames);
+
 
     // DO not use redis cache on dev
     let mainStream;
@@ -154,10 +162,6 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     mainStream.write(early);
 
-    const stream = renderToNodeStream(app).pipe(renderStylesToNodeStream());
-
-    // test for generating html
-    // const html = renderStylesToString(renderToStaticMarkup(app));
 
     stream.pipe(mainStream, {end: false});
     stream.on('end', () => {
