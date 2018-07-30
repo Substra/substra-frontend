@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-
-import {withStyles} from '@material-ui/core/styles';
+import {css} from 'react-emotion';
 
 import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import theme from '../../../../../common/theme';
 
 
 // Supports determination of isControlled().
@@ -44,173 +44,137 @@ export function isAdornedStart(obj) {
     return obj.startAdornment;
 }
 
-// TODO, replace with emotion style
-export const styles = (theme) => {
-    const light = theme.palette.type === 'light';
-    const placeholder = {
-        color: 'currentColor',
-        opacity: light ? 0.42 : 0.5,
-        transition: theme.transitions.create('opacity', {
+const light = theme.palette.type === 'light';
+const placeholder = `
+        color: 'currentColor';
+        opacity: ${light ? 0.42 : 0.5};
+        transition: ${theme.transitions.create('opacity', {
             duration: theme.transitions.duration.shorter,
-        }),
-    };
-    const placeholderHidden = {
-        opacity: 0,
-    };
-    const placeholderVisible = {
-        opacity: light ? 0.42 : 0.5,
-    };
-    const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
+        })};
+    `;
+const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
-    return {
-        /* Styles applied to the root element. */
-        root: {
-            // Mimics the default input display property used by browsers for an input.
-            display: 'block',
-            position: 'relative',
-            fontFamily: theme.typography.fontFamily,
-            color: light ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white,
-            fontSize: theme.typography.pxToRem(16),
-            lineHeight: '1.1875em', // Reset (19px), match the native input line-height
-            '&$disabled': {
-                color: theme.palette.text.disabled,
-            },
+
+const styles = {
+    /* Styles applied to the root element. */
+    root: disabled => css`
+        // Mimics the default input display property used by browsers for an input.
+        display: block;
+        position: relative;
+        cursor: text;
+        font-family: ${theme.typography.fontFamily};
+        color: ${light ? 'rgba(0, 0, 0, 0.87)' : theme.palette.common.white};
+        font-size: ${theme.typography.pxToRem(16)};
+        line-height: 1.1875em; // Reset (19px), match the native input line-height
+        ${disabled ? `
+            color: ${theme.palette.text.disabled};
+        ` : ''}
+    `,
+    /* Styles applied to the root element if `disabledUnderline={false}`. */
+    underline: (disabled, focused, error) => css`
+        &:after {
+            border-bottom: 2px solid ${theme.palette.primary[light ? 'dark' : 'light']};
+            left: 0;
+            bottom: 0;
+            // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
+            content: "";
+            position: absolute;
+            right: 0;
+            transform: scaleX(0);
+            transition:${theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shorter,
+                easing: theme.transitions.easing.easeOut,
+            })};
+            pointer-events: none; // Transparent to the hover style.
+            ${focused ? 'transform: scaleX(1);' : ''}
+            ${error ? `
+                border-bottom-color: ${theme.palette.error.main};
+                transform: scaleX(1);
+            ` : ''}  // error is always underlined in red
+        }
+        &:before {
+            border-bottom: 1px solid ${bottomLineColor};
+            left: 0;
+            bottom: 0;
+            // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
+            content: "\\00a0";
+            position: absolute;
+            right: 0;
+            transition: ${theme.transitions.create('border-bottom-color', {
+                duration: theme.transitions.duration.shorter,
+            })};
+            pointer-events: none; // Transparent to the hover style.
+            ${disabled ? `border-bottom: 1px dotted ${bottomLineColor};` : ''}
+        }
+        &:hover:before {
+            ${(!disabled || !focused || !error) ? `border-bottom: 2px solid ${theme.palette.text.primary};` : ''}
+        }
+    `,
+    /* Styles applied to the root element if `fullWidth={true}`. */
+    fullWidth: css`
+        width: 100%;
+    `,
+    /* Styles applied to the `input` Wrapper element. */
+    inputWrapper: css`
+        width: 200px;
+        display: inline-block;
+    `,
+    /* Styles applied to the `input` element. */
+    input: disabled => css`
+        font: inherit;
+        color: currentColor;
+        padding: ${8 - 2}px 0 ${8 - 1}px;
+        border: 0;
+        box-sizing: content-box;
+        vertical-align: middle;
+        background: none;
+        margin: 0; // Reset for Safari
+        // Remove grey highlight
+        -webkit-tap-highlight-color: transparent;
+        display: block;
+        // Make the flex item shrink with Firefox
+        min-width: 0;
+        flex-grow: 1;
+        &::-webkit-input-placeholder {${placeholder}};
+        &::-moz-placeholder {${placeholder}}; // Firefox 19+
+        &:-ms-input-placeholder {${placeholder}}; // IE 11
+        &::-ms-input-placeholder {${placeholder}}; // Edge
+        &:focus {
+            outline: 0;
+        }
+        // Reset Firefox invalid required input style
+        &:invalid {
+            box-shadow: none;
+        }
+        &::-webkit-search-decoration {
+            // Remove the padding when type=search.
+            -webkit-appearance: none;
         },
-        /* Styles applied to the root element if the component is a descendant of `FormControl`. */
-        formControl: {
-            'label + &': {
-                marginTop: 16,
-            },
-        },
-        /* Styles applied to the root element if the component is focused. */
-        focused: {},
-        /* Styles applied to the root element if `disabled={true}`. */
-        disabled: {},
-        /* Styles applied to the root element if `disabledUnderline={false}`. */
-        underline: {
-            '&:after': {
-                borderBottom: `2px solid ${theme.palette.primary[light ? 'dark' : 'light']}`,
-                left: 0,
-                bottom: 0,
-                // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
-                content: '""',
-                position: 'absolute',
-                right: 0,
-                transform: 'scaleX(0)',
-                transition: theme.transitions.create('transform', {
-                    duration: theme.transitions.duration.shorter,
-                    easing: theme.transitions.easing.easeOut,
-                }),
-                pointerEvents: 'none', // Transparent to the hover style.
-            },
-            '&$focused:after': {
-                transform: 'scaleX(1)',
-            },
-            '&$error:after': {
-                borderBottomColor: theme.palette.error.main,
-                transform: 'scaleX(1)', // error is always underlined in red
-            },
-            '&:before': {
-                borderBottom: `1px solid ${bottomLineColor}`,
-                left: 0,
-                bottom: 0,
-                // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
-                content: '"\\00a0"',
-                position: 'absolute',
-                right: 0,
-                transition: theme.transitions.create('border-bottom-color', {
-                    duration: theme.transitions.duration.shorter,
-                }),
-                pointerEvents: 'none', // Transparent to the hover style.
-            },
-            '&:hover:not($disabled):not($focused):not($error):before': {
-                borderBottom: `2px solid ${theme.palette.text.primary}`,
-            },
-            '&$disabled:before': {
-                borderBottom: `1px dotted ${bottomLineColor}`,
-            },
-        },
-        /* Styles applied to the root element if `error={true}`. */
-        error: {},
-        /* Styles applied to the root element if `fullWidth={true}`. */
-        fullWidth: {
-            width: '100%',
-        },
-        /* Styles applied to the `input` Wrapper element. */
-        inputWrapper: {
-            width: 200,
-            display: 'inline-block',
-        },
-        /* Styles applied to the `input` element. */
-        input: {
-            font: 'inherit',
-            color: 'currentColor',
-            padding: `${8 - 2}px 0 ${8 - 1}px`,
-            border: 0,
-            boxSizing: 'content-box',
-            verticalAlign: 'middle',
-            background: 'none',
-            margin: 0, // Reset for Safari
-            // Remove grey highlight
-            WebkitTapHighlightColor: 'transparent',
-            display: 'block',
-            // Make the flex item shrink with Firefox
-            minWidth: 0,
-            flexGrow: 1,
-            '&::-webkit-input-placeholder': placeholder,
-            '&::-moz-placeholder': placeholder, // Firefox 19+
-            '&:-ms-input-placeholder': placeholder, // IE 11
-            '&::-ms-input-placeholder': placeholder, // Edge
-            '&:focus': {
-                outline: 0,
-            },
-            // Reset Firefox invalid required input style
-            '&:invalid': {
-                boxShadow: 'none',
-            },
-            '&::-webkit-search-decoration': {
-                // Remove the padding when type=search.
-                '-webkit-appearance': 'none',
-            },
-            // Show and hide the placeholder logic
-            'label[data-shrink=false] + $formControl &': {
-                '&::-webkit-input-placeholder': placeholderHidden,
-                '&::-moz-placeholder': placeholderHidden, // Firefox 19+
-                '&:-ms-input-placeholder': placeholderHidden, // IE 11
-                '&::-ms-input-placeholder': placeholderHidden, // Edge
-                '&:focus::-webkit-input-placeholder': placeholderVisible,
-                '&:focus::-moz-placeholder': placeholderVisible, // Firefox 19+
-                '&:focus:-ms-input-placeholder': placeholderVisible, // IE 11
-                '&:focus::-ms-input-placeholder': placeholderVisible, // Edge
-            },
-            '&$disabled': {
-                opacity: 1, // Reset iOS opacity
-            },
-        },
-        /* Styles applied to the `input` element if `margin="dense"`. */
-        inputMarginDense: {
-            paddingTop: 4 - 1,
-        },
-        /* Styles applied to the `input` element if `type` is not "text"`. */
-        inputType: {
-            // type="date" or type="time", etc. have specific styles we need to reset.
-            height: '1.1875em', // Reset (19px), match the native input line-height
-        },
-        /* Styles applied to the `input` element if `type="search"`. */
-        inputTypeSearch: {
-            // Improve type search style.
-            '-moz-appearance': 'textfield',
-            '-webkit-appearance': 'textfield',
-        },
-        paper: {
-            maxWidth: 200,
-        },
-        popper: {
-            zIndex: 1,
-        },
-    };
+        
+        ${disabled ? 'opacity: 1;' : ''} // Reset iOS opacity
+    `,
+    /* Styles applied to the `input` element if `margin="dense"`. */
+    inputMarginDense: css`
+        padding-top: ${4 - 1}px;
+    `,
+    /* Styles applied to the `input` element if `type` is not "text"`. */
+    inputType: css`
+        // type="date" or type="time", etc. have specific styles we need to reset.
+        height: 1.1875em; // Reset (19px), match the native input line-height
+    `,
+    /* Styles applied to the `input` element if `type="search"`. */
+    inputTypeSearch: css`
+        // Improve type search style.
+        -moz-appearance: textfield;
+        -webkit-appearance: textfield;
+    `,
+    paper: css`
+        //max-width: 200px;
+    `,
+    popper: css`
+        z-index: 1;
+    `,
 };
-
 function formControlState(props, context) {
     let disabled = props.disabled;
     let error = props.error;
@@ -424,23 +388,23 @@ class Input extends React.Component {
     applyReactStyle = data => data;
 
     modifiers = {
-        applyStyle: {fn: this.applyReactStyle}, // force postioning
+        applyStyle: {fn: this.applyReactStyle}, // force positioning
     };
 
     render() {
         const {
             autoComplete,
             autoFocus,
+            className: classNameProp, // eslint-disable-line no-unused-vars
             classes,
-            className: classNameProp,
             defaultValue,
             disableUnderline,
             endAdornment,
             fullWidth,
             id,
             inputComponent,
-            inputProps: {className: inputPropsClassName, ...inputPropsProp} = {},
-            inputWrapperProps: {className: inputWrapperPropsClassName, ...inputWrapperPropsProp} = {},
+            inputProps: {className: inputPropsClassName, ...inputPropsProp} = {}, // eslint-disable-line no-unused-vars
+            inputWrapperProps: {className: inputWrapperPropsClassName, ...inputWrapperPropsProp} = {}, // eslint-disable-line no-unused-vars
             name,
             onKeyDown,
             onKeyUp,
@@ -465,34 +429,24 @@ class Input extends React.Component {
             disabled, error, margin, required,
         } = formControlState(this.props, this.context);
 
-        const className = classNames(
-            classes.root,
-            {
-                [classes.disabled]: disabled,
-                [classes.error]: error,
-                [classes.fullWidth]: fullWidth,
-                [classes.focused]: this.state.focused,
-                [classes.formControl]: muiFormControl,
-                [classes.underline]: !disableUnderline,
-            },
-            classNameProp,
-        );
+        const className = css`
+            ${styles.root(disabled)};
+            ${fullWidth ? styles.fullWidth : ''};
+            ${muiFormControl ? styles.formControl : ''};
+            ${!disableUnderline ? styles.underline(disabled, this.state.focused, error) : ''};            
+        `;
+        const inputClassName = css`
+            ${styles.input(disabled)};
+            ${type !== 'text' ? styles.inputType : ''};
+            ${type === 'search' ? styles.inputTypeSearch : ''};
+            ${margin === 'dense' ? styles.inputMarginDense : ''};
+            ${classes.input}
+        `;
 
-        const inputClassName = classNames(
-            classes.input,
-            {
-                [classes.disabled]: disabled,
-                [classes.inputType]: type !== 'text',
-                [classes.inputTypeSearch]: type === 'search',
-                [classes.inputMarginDense]: margin === 'dense',
-            },
-            inputPropsClassName,
-        );
-
-        const inputwrapperClassName = classNames(
-            classes.inputWrapper,
-            inputWrapperPropsClassName,
-        );
+        const inputwrapperClassName = css`
+            ${styles.inputWrapper};
+            ${classes.inputWrapper}
+        `;
 
         const inputWrapperProps = {
             ...inputWrapperPropsProp,
@@ -543,13 +497,13 @@ class Input extends React.Component {
                     />
                     <Popper
                         open={isOpen}
-                        className={classes.popper}
+                        className={styles.popper}
                         anchorEl={this.inputRef}
                         container={this.inputWrapperRef}
                         placement="bottom-start"
                         modifiers={this.modifiers}
                     >
-                        <Paper square className={classes.paper}>
+                        <Paper square className={styles.paper}>
                             {suggestions(inputValue).map((suggestion, index) => {
                                 const isHighlighted = highlightedIndex === index;
                                 const itemProps = getItemProps({item: suggestion.label});
@@ -586,7 +540,8 @@ Input.propTypes = {
      */
     autoComplete: PropTypes.string,
     /**
-     * If `true`, the input will be focused during the first mount.
+     * If `
+        true`, the input will be focused during the first mount.
      */
     autoFocus: PropTypes.bool,
     /**
@@ -604,28 +559,34 @@ Input.propTypes = {
     // eslint-disable-next-line react/require-default-props
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
-     * If `true`, the input will be disabled.
+     * If `
+        true`, the input will be disabled.
      */
     disabled: PropTypes.bool,
     /**
-     * If `true`, the input will not have an underline.
+     * If `
+        true`, the input will not have an underline.
      */
     disableUnderline: PropTypes.bool,
     /**
-     * End `InputAdornment` for this component.
+     * End `
+        InputAdornment` for this component.
      */
     endAdornment: PropTypes.node,
     /**
-     * If `true`, the input will indicate an error. This is normally obtained via context from
+     * If `
+        true`, the input will indicate an error. This is normally obtained via context from
      * FormControl.
      */
     error: PropTypes.bool,
     /**
-     * If `true`, the input will take up the full width of its container.
+     * If `
+        true`, the input will take up the full width of its container.
      */
     fullWidth: PropTypes.bool,
     /**
-     * The id of the `input` element.
+     * The id of the `
+        input` element.
      */
     id: PropTypes.string,
     /**
@@ -634,13 +595,15 @@ Input.propTypes = {
      */
     inputComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.shape({})]),
     /**
-     * Attributes applied to the `input` element.
+     * Attributes applied to the `
+        input` element.
      */
     inputProps: PropTypes.shape({
         ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     }),
     /**
-     * Attributes applied to the wrapper of the `input` element.
+     * Attributes applied to the wrapper of the `
+        input` element.
      */
     inputWrapperProps: PropTypes.shape({
         ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
@@ -654,12 +617,14 @@ Input.propTypes = {
      */
     inputWrapperRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     /**
-     * If `dense`, will adjust vertical spacing. This is normally obtained via context from
+     * If `
+        dense`, will adjust vertical spacing. This is normally obtained via context from
      * FormControl.
      */
     margin: PropTypes.oneOf(['dense', 'none']),
     /**
-     * Name attribute of the `input` element.
+     * Name attribute of the `
+        input` element.
      */
     name: PropTypes.string,
     /**
@@ -670,7 +635,8 @@ Input.propTypes = {
      * Callback fired when the value is changed.
      *
      * @param {object} event The event source of the callback.
-     * You can pull out the new value by accessing `event.target.value`.
+     * You can pull out the new value by accessing `
+        event.target.value`.
      */
     onChange: PropTypes.func,
     /**
@@ -703,11 +669,13 @@ Input.propTypes = {
      */
     readOnly: PropTypes.bool,
     /**
-     * If `true`, the input will be required.
+     * If `
+        true`, the input will be required.
      */
     required: PropTypes.bool,
     /**
-     * Start `InputAdornment` for this component.
+     * Start `
+        InputAdornment` for this component.
      */
     startAdornment: PropTypes.node,
     /**
@@ -793,4 +761,4 @@ Input.childContextTypes = {
     muiFormControl: PropTypes.shape({}),
 };
 
-export default withStyles(styles, {name: 'MuiInput'})(Input);
+export default Input;

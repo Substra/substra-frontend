@@ -19,10 +19,6 @@ import {
 } from '../selector';
 
 import actions from '../actions';
-import challengesActions from '../../routes/challenge/actions';
-import datasetsActions from '../../routes/dataset/actions';
-import algosActions from '../../routes/algorithm/actions';
-import modelsActions from '../../routes/model/actions';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers';
@@ -46,7 +42,7 @@ const middle = css`
 
 const searchInput = css`
     ${middle};
-    width: 95%;
+    width: 95%;    
 `;
 
 const clear = css`
@@ -57,6 +53,8 @@ const clear = css`
     // fix bad material-ui ssr with streaming
     width: 1em;
     height: 1em;
+    font-size: 24px;
+    fill: currentColor;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
@@ -243,23 +241,13 @@ const mapStateToProps = (state, ownProps) => ({
     suggestions: getSuggestions(state),
     parentSuggestions: getParentSuggestions(state),
     isInParentMode: getIsInParentMode(state),
-    challenge: state.challenge,
-    dataset: state.dataset,
-    algo: state.algo,
-    model: state.model,
     filters: getFilters(state),
     ...ownProps,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setFilters: actions.filters.set,
-
     setItem: actions.item.set,
-    // TODO use persistent not filtered list
-    fetchChallenge: challengesActions.list.request,
-    fetchDataset: datasetsActions.list.request,
-    fetchAlgo: algosActions.list.request,
-    fetchModel: modelsActions.list.request,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

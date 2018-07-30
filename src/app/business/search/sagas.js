@@ -29,19 +29,18 @@ function* setItem({payload}) {
     } = state;
 
     // fetch related data if not already done
-    // TODO use persistent not filtered list
     // TODO maybe use a generic fetchList(item)
-    if (payload === 'challenge' && !challenge.list.init && !challenge.list.loading) {
-        yield put(challengeActions.list.request());
+    if (payload === 'challenge' && !challenge.persistent.init && !challenge.persistent.loading) {
+        yield put(challengeActions.persistent.request());
     }
-    else if (payload === 'dataset' && !dataset.list.init && !dataset.list.loading) {
-        yield put(datasetActions.list.request());
+    else if (payload === 'dataset' && !dataset.persistent.init && !dataset.persistent.loading) {
+        yield put(datasetActions.persistent.request());
     }
-    else if (payload === 'algo' && !algo.list.init && !algo.list.loading) {
-        yield put(algoActions.list.request());
+    else if (payload === 'algo' && !algo.persistent.init && !algo.persistent.loading) {
+        yield put(algoActions.persistent.request());
     }
-    else if (payload === 'model' && !model.list.init && !model.list.loading) {
-        yield put(modelActions.list.request());
+    else if (payload === 'model' && !model.persistent.init && !model.persistent.loading) {
+        yield put(modelActions.persistent.request());
     }
 }
 

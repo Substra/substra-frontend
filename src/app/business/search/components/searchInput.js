@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import styled from 'react-emotion';
+import styled, {css} from 'react-emotion';
 import PropTypes from 'prop-types';
-
-
-import {withStyles} from '@material-ui/core/styles';
 
 import Chip from '@material-ui/core/Chip';
 
@@ -20,15 +17,15 @@ const ChildChip = styled(Chip)`
 
 
 const styles = {
-    inputWrapper: {
-        width: 80,
-        display: 'inline-block',
-        flexGrow: 0,
-    },
-    input: {
-        minWidth: 450,
-        height: 28,
-    },
+    inputWrapper: css`
+        width: 80px;
+        display: inline-block;
+        flex-grow: 0;
+    `,
+    input: css`
+        min-width: 450px;
+        height: 28px;
+    `,
 };
 
 class SearchInput extends Component {
@@ -48,7 +45,7 @@ class SearchInput extends Component {
 
     inputProps = () => {
         const {
-            selectedItem, classes, isOpen, inputValue, highlightedIndex,
+            selectedItem, isOpen, inputValue, highlightedIndex,
             getInputProps, handleInputChange, handleKeyDown, handleDelete,
             getItemProps,
         } = this.props;
@@ -70,10 +67,7 @@ class SearchInput extends Component {
             onChange: handleInputChange,
             onKeyDown: handleKeyDown,
             placeholder: selectedItem.length ? '' : 'Add item filters. Ex: "challenge: challenge1", "dataset: dataset2"',
-            classes: {
-                input: classes.input,
-                inputWrapper: classes.inputWrapper,
-            },
+            classes: styles,
             isOpen,
             getItemProps,
             inputValue,
@@ -115,7 +109,6 @@ SearchInput.defaultProps = {
     isOpen: false,
     inputValue: '',
     highlightedIndex: 0,
-    classes: {},
 };
 
 SearchInput.propTypes = {
@@ -130,7 +123,6 @@ SearchInput.propTypes = {
     isOpen: PropTypes.bool,
     inputValue: PropTypes.string,
     highlightedIndex: PropTypes.number,
-    classes: PropTypes.shape({}),
 };
 
-export default withStyles(styles)(SearchInput);
+export default SearchInput;
