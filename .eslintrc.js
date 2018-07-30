@@ -3,6 +3,7 @@ module.exports = {
     "parser": "babel-eslint",
     "rules": {
         "indent": [0],
+        "react/destructuring-assignment": [0],
         "react/jsx-indent": [2, 4],
         "react/jsx-indent-props": [2, 4],
         "react/jsx-filename-extension": [0],

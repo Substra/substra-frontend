@@ -7,9 +7,9 @@ import {Transform, PassThrough} from 'stream';
 import redis from 'redis';
 import {Provider} from 'react-redux';
 import {renderToNodeStream} from 'react-dom/server';
-import {renderToStaticMarkup} from 'react-dom/server';
+// import {renderToStaticMarkup} from 'react-dom/server';
 import {renderStylesToNodeStream} from 'emotion-server';
-import {renderStylesToString} from 'emotion-server';
+// import {renderStylesToString} from 'emotion-server';
 import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
@@ -142,7 +142,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     // needed for jss and server side rendering, material-ui still does not work with stream...
     // follow this issue for disabling below blocking line https://github.com/mui-org/material-ui/issues/8503
-    renderStylesToString(renderToStaticMarkup(app));
+    // renderToStaticMarkup(app);
 
     const materialUiCss = sheetsRegistry.toString();
 

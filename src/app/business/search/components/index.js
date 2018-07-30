@@ -102,18 +102,20 @@ class Search extends Component {
     }
 
     handleKeyDown = (event) => {
-        const {setFilters} = this.props;
+        const {setFilters, setItem} = this.props;
         const {inputValue, selectedItem} = this.state;
 
         if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
             const newSelectedItems = selectedItem.slice(0, selectedItem.length - 1);
 
+            // TODO this triggers too much rendering, try to gather in one
             this.setState({
                 selectedItem: newSelectedItems,
                 isParent: true,
             });
 
             setFilters(newSelectedItems);
+            setItem('');
         }
     };
 
@@ -178,9 +180,10 @@ class Search extends Component {
     };
 
     clear = () => {
-        const {setFilters} = this.props;
+        const {setFilters, setItem} = this.props;
 
         setFilters([]);
+        setItem('');
 
         this.setState(state => ({
             ...state,

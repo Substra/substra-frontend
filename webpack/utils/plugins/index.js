@@ -74,6 +74,8 @@ export default env => [
             ),
         ]),
     ] : [
+        // The LimitChunkCountPlugin with maxChunks: 1 insures only one file is generated for your server bundle so it can be run synchronously.
+        // https://github.com/faceyspacey/webpack-flush-chunks
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),

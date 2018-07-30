@@ -1,5 +1,5 @@
 import {
-takeLatest, select, all, put,
+    takeLatest, select, all, put,
 } from 'redux-saga/effects';
 import {push} from 'redux-first-router';
 import url from 'url';
@@ -25,8 +25,8 @@ function* setItem({payload}) {
     const state = yield select();
 
     const {
-challenge, dataset, algo, model,
-} = state;
+        challenge, dataset, algo, model,
+    } = state;
 
     // fetch related data if not already done
     // TODO use persistent not filtered list

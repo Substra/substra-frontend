@@ -30,8 +30,8 @@ export const getParentSuggestions = createDeepEqualSelector([getFilters],
     filters => Object.keys(filters).map(o => ({label: o})),
 );
 
-export const getIsInParentMode = createDeepEqualSelector([getParentSuggestions, item],
-    (suggestions, item) => suggestions.map(o => o.label).includes(item),
+export const getIsInParentMode = createDeepEqualSelector([getFilters, item],
+    (filters, item) => Object.keys(filters).includes(item),
 );
 
 export const getSuggestions = createDeepEqualSelector([getFilters, item, getParentSuggestions, getIsInParentMode],

@@ -4,8 +4,6 @@ import React from 'react';
 import {hydrate, render} from 'react-dom';
 import FastClick from 'fastclick';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import {MuiThemeProvider} from '@material-ui/core/styles';
-import theme from '../common/theme/index';
 
 import App from './App';
 
@@ -27,14 +25,8 @@ const root = document.getElementById('root');
 
 // render for electron and static, hydrate for SSR
 if (process.env.IS_ELECTRON !== 'false' || process.env.IS_STATIC === 'true') {
-    render(<App/>, root);
+    render(<App />, root);
 }
 else {
-    // hydrate(
-    //     <MuiThemeProvider theme={theme}>
-    //         <App/>
-    //     </MuiThemeProvider>, root);
-
-    hydrate(
-        <App/>, root);
+    hydrate(<App />, root);
 }

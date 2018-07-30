@@ -1,19 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {css} from 'react-emotion';
-import Popper from '@material-ui/core/Popper';
 
 import {withStyles} from '@material-ui/core/styles';
 
+import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
-// TODO put in styles
-const paper = css`
-    max-width: 200px;
-`;
 
 // Supports determination of isControlled().
 // Controlled input accepts its current value as a prop.
@@ -50,6 +44,7 @@ export function isAdornedStart(obj) {
     return obj.startAdornment;
 }
 
+// TODO, replace with emotion style
 export const styles = (theme) => {
     const light = theme.palette.type === 'light';
     const placeholder = {
@@ -137,10 +132,6 @@ export const styles = (theme) => {
         },
         /* Styles applied to the root element if `error={true}`. */
         error: {},
-        /* Styles applied to the root element if `multiline={true}`. */
-        multiline: {
-            padding: `${8 - 2}px 0 ${8 - 1}px`,
-        },
         /* Styles applied to the root element if `fullWidth={true}`. */
         fullWidth: {
             width: '100%',
@@ -200,11 +191,6 @@ export const styles = (theme) => {
         inputMarginDense: {
             paddingTop: 4 - 1,
         },
-        /* Styles applied to the `input` element if `multiline={true}`. */
-        inputMultiline: {
-            resize: 'none',
-            padding: 0,
-        },
         /* Styles applied to the `input` element if `type` is not "text"`. */
         inputType: {
             // type="date" or type="time", etc. have specific styles we need to reset.
@@ -215,6 +201,9 @@ export const styles = (theme) => {
             // Improve type search style.
             '-moz-appearance': 'textfield',
             '-webkit-appearance': 'textfield',
+        },
+        paper: {
+            maxWidth: 200,
         },
         popper: {
             zIndex: 1,
@@ -445,30 +434,18 @@ class Input extends React.Component {
             classes,
             className: classNameProp,
             defaultValue,
-            disabled: disabledProp,
             disableUnderline,
             endAdornment,
-            error: errorProp,
             fullWidth,
             id,
             inputComponent,
             inputProps: {className: inputPropsClassName, ...inputPropsProp} = {},
             inputWrapperProps: {className: inputWrapperPropsClassName, ...inputWrapperPropsProp} = {},
-            inputRef,
-            margin: marginProp,
-            multiline,
             name,
-            onBlur,
-            onChange,
-            onEmpty,
-            onFilled,
-            onFocus,
             onKeyDown,
             onKeyUp,
             placeholder,
             readOnly,
-            rows,
-            rowsMax,
             startAdornment,
             type,
             value,
@@ -477,6 +454,9 @@ class Input extends React.Component {
             inputValue,
             highlightedIndex,
             suggestions,
+            inputRef, // eslint-disable-line no-unused-vars
+            inputWrapperRef, // eslint-disable-line no-unused-vars
+            error: errorProp, // eslint-disable-line no-unused-vars
             ...other
         } = this.props;
 
@@ -493,7 +473,6 @@ class Input extends React.Component {
                 [classes.fullWidth]: fullWidth,
                 [classes.focused]: this.state.focused,
                 [classes.formControl]: muiFormControl,
-                [classes.multiline]: multiline,
                 [classes.underline]: !disableUnderline,
             },
             classNameProp,
@@ -505,7 +484,6 @@ class Input extends React.Component {
                 [classes.disabled]: disabled,
                 [classes.inputType]: type !== 'text',
                 [classes.inputTypeSearch]: type === 'search',
-                [classes.inputMultiline]: multiline,
                 [classes.inputMarginDense]: margin === 'dense',
             },
             inputPropsClassName,
@@ -559,7 +537,6 @@ class Input extends React.Component {
                         placeholder={placeholder}
                         readOnly={readOnly}
                         required={required}
-                        rows={rows}
                         type={type}
                         value={value}
                         {...inputProps}
@@ -572,7 +549,7 @@ class Input extends React.Component {
                         placement="bottom-start"
                         modifiers={this.modifiers}
                     >
-                        <Paper square className={paper}>
+                        <Paper square className={classes.paper}>
                             {suggestions(inputValue).map((suggestion, index) => {
                                 const isHighlighted = highlightedIndex === index;
                                 const itemProps = getItemProps({item: suggestion.label});
@@ -597,6 +574,9 @@ class Input extends React.Component {
     }
 }
 
+const noop = () => {
+};
+
 Input.propTypes = {
     /**
      * This property helps users to fill forms faster, especially on mobile devices.
@@ -613,7 +593,7 @@ Input.propTypes = {
      * Override or extend the styles applied to the component.
      * See [CSS API](#css-api) below for more details.
      */
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({}).isRequired,
     /**
      * The CSS class name of the wrapper element.
      */
@@ -621,6 +601,7 @@ Input.propTypes = {
     /**
      * The default input value, useful when not controlling the component.
      */
+    // eslint-disable-next-line react/require-default-props
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
      * If `true`, the input will be disabled.
@@ -651,24 +632,32 @@ Input.propTypes = {
      * The component used for the native input.
      * Either a string to use a DOM element or a component.
      */
-    inputComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+    inputComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.shape({})]),
     /**
      * Attributes applied to the `input` element.
      */
-    inputProps: PropTypes.object,
+    inputProps: PropTypes.shape({
+        ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
+    }),
+    /**
+     * Attributes applied to the wrapper of the `input` element.
+     */
+    inputWrapperProps: PropTypes.shape({
+        ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
+    }),
     /**
      * Use that property to pass a ref callback to the native input component.
      */
-    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
+    /**
+     * Use that property to pass a ref callback to wrapper of the native input component.
+     */
+    inputWrapperRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     /**
      * If `dense`, will adjust vertical spacing. This is normally obtained via context from
      * FormControl.
      */
     margin: PropTypes.oneOf(['dense', 'none']),
-    /**
-     * If `true`, a textarea element will be rendered.
-     */
-    multiline: PropTypes.bool,
     /**
      * Name attribute of the `input` element.
      */
@@ -718,14 +707,6 @@ Input.propTypes = {
      */
     required: PropTypes.bool,
     /**
-     * Number of rows to display when multiline option is set to true.
-     */
-    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    /**
-     * Maximum number of rows to display when multiline option is set to true.
-     */
-    rowsMax: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    /**
      * Start `InputAdornment` for this component.
      */
     startAdornment: PropTypes.node,
@@ -736,11 +717,32 @@ Input.propTypes = {
     /**
      * The input value, required for a controlled component.
      */
+    // eslint-disable-next-line react/require-default-props
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
         PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     ]),
+    /**
+     * Display the dropdown list
+     */
+    isOpen: PropTypes.bool,
+    /**
+     * Get item props for the dropdown list menu itens
+     */
+    getItemProps: PropTypes.func,
+    /**
+     * The input value given from the user for filtering on suggestions
+     */
+    inputValue: PropTypes.string,
+    /**
+     * The index to know which to highlight
+     */
+    highlightedIndex: PropTypes.number,
+    /**
+     * Function for getting suggestions
+     */
+    suggestions: PropTypes.func,
 };
 
 Input.muiName = 'Input';
@@ -748,16 +750,47 @@ Input.muiName = 'Input';
 Input.defaultProps = {
     disableUnderline: false,
     fullWidth: false,
-    multiline: false,
     type: 'text',
+
+    autoComplete: '',
+    autoFocus: false,
+    className: '',
+    disabled: false,
+    endAdornment: '',
+    error: false,
+    id: '',
+    inputComponent: '',
+    inputProps: {},
+    inputWrapperProps: {},
+    inputRef: noop,
+    inputWrapperRef: noop,
+    margin: 'none',
+    name: '',
+    onBlur: noop,
+    onChange: noop,
+    onEmpty: noop,
+    onFilled: noop,
+    onFocus: noop,
+    onKeyDown: noop,
+    onKeyUp: noop,
+    placeholder: '',
+    readOnly: false,
+    required: false,
+    startAdornment: '',
+
+    isOpen: false,
+    getItemProps: noop,
+    inputValue: '',
+    highlightedIndex: 0,
+    suggestions: noop,
 };
 
 Input.contextTypes = {
-    muiFormControl: PropTypes.object,
+    muiFormControl: PropTypes.shape({}),
 };
 
 Input.childContextTypes = {
-    muiFormControl: PropTypes.object,
+    muiFormControl: PropTypes.shape({}),
 };
 
 export default withStyles(styles, {name: 'MuiInput'})(Input);

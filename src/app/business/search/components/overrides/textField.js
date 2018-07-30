@@ -1,7 +1,6 @@
 // @inheritedComponent FormControl
 
 import React from 'react';
-import warning from 'warning';
 import PropTypes from 'prop-types';
 
 import FormControl from '@material-ui/core/FormControl';
@@ -12,7 +11,6 @@ function TextField(props) {
     const {
         autoComplete,
         autoFocus,
-        children,
         className,
         defaultValue,
         disabled,
@@ -23,25 +21,16 @@ function TextField(props) {
         inputProps,
         InputProps,
         inputRef,
-        multiline,
         name,
         onBlur,
         onChange,
         onFocus,
         placeholder,
         required,
-        rows,
-        rowsMax,
-        select,
         type,
         value,
         ...other
     } = props;
-
-    warning(
-        !select || Boolean(children),
-        'Material-UI: `children` must be passed when using the `TextField` component with `select`.',
-    );
 
     const helperTextId = helperText && id ? `${id}-helper-text` : undefined;
     const InputElement = (
@@ -51,10 +40,7 @@ function TextField(props) {
             defaultValue={defaultValue}
             disabled={disabled}
             fullWidth={fullWidth}
-            multiline={multiline}
             name={name}
-            rows={rows}
-            rowsMax={rowsMax}
             type={type}
             value={value}
             id={id}
@@ -97,14 +83,11 @@ TextField.propTypes = {
     /**
      * @ignore
      */
-    children: PropTypes.node,
-    /**
-     * @ignore
-     */
     className: PropTypes.string,
     /**
      * The default value of the `Input` element.
      */
+    // eslint-disable-next-line react/require-default-props
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
      * If `true`, the input will be disabled.
@@ -114,10 +97,6 @@ TextField.propTypes = {
      * If `true`, the label will be displayed in an error state.
      */
     error: PropTypes.bool,
-    /**
-     * Properties applied to the [`FormHelperText`](/api/form-helper-text) element.
-     */
-    FormHelperTextProps: PropTypes.object,
     /**
      * If `true`, the input will take up the full width of its container.
      */
@@ -132,21 +111,17 @@ TextField.propTypes = {
      */
     id: PropTypes.string,
     /**
-     * Properties applied to the [`InputLabel`](/api/input-label) element.
-     */
-    InputLabelProps: PropTypes.object,
-    /**
      * Properties applied to the `Input` element.
      */
-    InputProps: PropTypes.object,
+    InputProps: PropTypes.shape({}),
     /**
      * Attributes applied to the native `input` element.
      */
-    inputProps: PropTypes.object,
+    inputProps: PropTypes.shape({}),
     /**
      * Use that property to pass a ref callback to the native input component.
      */
-    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     /**
      * The label content.
      */
@@ -155,10 +130,6 @@ TextField.propTypes = {
      * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
      */
     margin: PropTypes.oneOf(['none', 'dense', 'normal']),
-    /**
-     * If `true`, a textarea element will be rendered instead of an input.
-     */
-    multiline: PropTypes.bool,
     /**
      * Name attribute of the `input` element.
      */
@@ -187,29 +158,13 @@ TextField.propTypes = {
      */
     required: PropTypes.bool,
     /**
-     * Number of rows to display when multiline option is set to true.
-     */
-    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    /**
-     * Maximum number of rows to display when multiline option is set to true.
-     */
-    rowsMax: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    /**
-     * Render a `Select` element while passing the `Input` element to `Select` as `input` parameter.
-     * If this option is set you must pass the options of the select as children.
-     */
-    select: PropTypes.bool,
-    /**
-     * Properties applied to the [`Select`](/api/select) element.
-     */
-    SelectProps: PropTypes.object,
-    /**
      * Type attribute of the `Input` element. It should be a valid HTML5 input type.
      */
     type: PropTypes.string,
     /**
      * The value of the `Input` element, required for a controlled component.
      */
+    // eslint-disable-next-line react/require-default-props
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
@@ -217,9 +172,29 @@ TextField.propTypes = {
     ]),
 };
 
+const noop = () => {};
+
 TextField.defaultProps = {
     required: false,
-    select: false,
+    autoComplete: '',
+    autoFocus: false,
+    className: '',
+    disabled: false,
+    error: false,
+    fullWidth: false,
+    helperText: '',
+    id: '',
+    InputProps: {},
+    inputProps: {},
+    inputRef: {},
+    label: '',
+    margin: 'none',
+    name: '',
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
+    placeholder: '',
+    type: 'text',
 };
 
 export default TextField;
