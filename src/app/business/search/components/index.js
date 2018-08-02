@@ -77,6 +77,12 @@ class Search extends Component {
         isParent: true,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.input = React.createRef();
+    }
+
     componentDidMount() {
         // init suggestions
         const {location} = this.props;
@@ -157,17 +163,21 @@ class Search extends Component {
     };
 
     handleDelete = item => () => {
-        const {setFilters} = this.props;
+        const {setFilters, setItem} = this.props;
         const {selectedItem} = this.state;
 
-        const newSelectedItems = selectedItem.filter(o => o.uuid !== item.uuid);
+        const newSelectedItems = selectedItem.filter(o => !(o.child === '' || o.uuid === item.uuid));
 
         setFilters(newSelectedItems);
+        setItem('');
 
         this.setState(state => ({
             ...state,
             selectedItem: newSelectedItems,
+            isParent: true,
         }));
+
+        this.clickInput();
     };
 
     handleOuterClick = (e) => {
@@ -188,6 +198,16 @@ class Search extends Component {
             selectedItem: [],
             isParent: true,
         }));
+
+        this.clickInput();
+    };
+
+    clickInput = () => {
+        setTimeout(() => {
+            // should appear after blur of input (need to call setTimeout as downshift does)
+            // stay on focus
+            this.input.current.focus();
+        }, 0);
     };
 
     searchInput = (props) => {
@@ -201,6 +221,8 @@ class Search extends Component {
                     handleInputChange={this.handleInputChange}
                     handleDelete={this.handleDelete}
                     suggestions={suggestions}
+                    clickInput={this.clickInput}
+                    input={this.input}
                     {...props}
                 />
             </SearchInputWrapper>

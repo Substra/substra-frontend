@@ -29,18 +29,12 @@ const styles = {
 };
 
 class SearchInput extends Component {
-    constructor(props) {
-        super(props);
-
-        this.input = React.createRef();
-    }
-
     handleClick = () => {
-        const {openMenu} = this.props;
+        const {openMenu, clickInput} = this.props;
+
         openMenu();
 
-        // focus input
-        this.input.current.focus();
+        clickInput();
     };
 
     inputProps = () => {
@@ -79,16 +73,18 @@ class SearchInput extends Component {
     getSuggestions = (inputValue) => {
         const {suggestions} = this.props;
 
-        return suggestions.filter(suggestion => (!inputValue || suggestion.label.toLowerCase().includes(inputValue.toLowerCase())));
+        return suggestions.filter(suggestion => (!inputValue || suggestion.label.toLowerCase().includes(inputValue.replace(/ /g, '').toLowerCase())));
     };
 
     render() {
+        const {input} = this.props;
+
         return (
             <div onClick={this.handleClick}>
                 <TextField
                     fullWidth
                     InputProps={this.inputProps()}
-                    inputRef={this.input}
+                    inputRef={input}
                 />
             </div>);
     }
@@ -98,6 +94,8 @@ const noop = () => {
 };
 
 SearchInput.defaultProps = {
+    input: null,
+    clickInput: noop,
     openMenu: noop,
     suggestions: [],
     selectedItem: [],
@@ -112,6 +110,8 @@ SearchInput.defaultProps = {
 };
 
 SearchInput.propTypes = {
+    input: PropTypes.shape({}),
+    clickInput: PropTypes.func,
     openMenu: PropTypes.func,
     suggestions: PropTypes.arrayOf(PropTypes.shape({})),
     selectedItem: PropTypes.arrayOf(PropTypes.shape({})),

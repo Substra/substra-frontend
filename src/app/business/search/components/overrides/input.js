@@ -421,6 +421,8 @@ class Input extends React.Component {
             inputRef, // eslint-disable-line no-unused-vars
             inputWrapperRef, // eslint-disable-line no-unused-vars
             error: errorProp, // eslint-disable-line no-unused-vars
+            onEmpty, // eslint-disable-line no-unused-vars
+            onFilled, // eslint-disable-line no-unused-vars
             ...other
         } = this.props;
 
@@ -511,7 +513,7 @@ class Input extends React.Component {
                                 return (
                                     <MenuItem
                                         {...itemProps}
-                                        key={suggestion.label}
+                                        key={suggestion.uuid || suggestion.label}
                                         selected={isHighlighted}
                                         component="div"
                                     >
@@ -720,7 +722,7 @@ Input.defaultProps = {
     fullWidth: false,
     type: 'text',
 
-    autoComplete: '',
+    autoComplete: 'off',
     autoFocus: false,
     className: '',
     disabled: false,

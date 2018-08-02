@@ -45,16 +45,16 @@ export const getSuggestions = createDeepEqualSelector([getFilters, item, getPare
         if (isInParentMode) {
             return filters[item].reduce((p, c) => [
                     ...p,
-                    ...(c.name ? [{label: `name:${c.name}`}] : []),
-                    ...(c.key ? [{label: getKey(c.key)}] : []),
-                    ...(c.hash ? [{label: c.hash}] : []),
+                    ...(c.name ? [{label: `name:${c.name}`, uuid: `${c.key}_name`}] : []),
+                    ...(c.key ? [{label: getKey(c.key), uuid: c.key}] : []),
+                    ...(c.hash ? [{label: c.hash, uuid: `${c.key}_hash`}] : []),
 
                     // add metrics name if exists for challenge
-                    ...(c.metrics && c.metrics.name ? [{label: `metrics:${c.metrics.name}`}] : []),
-                    ...(c.owner ? [{label: `owner:${c.owner}`}] : []),
+                    ...(c.metrics && c.metrics.name ? [{label: `metrics:${c.metrics.name}`, uuid: `${c.key}_metrics`}] : []),
+                    ...(c.owner ? [{label: `owner:${c.owner}`, uuid: `${c.key}_owner`}] : []),
 
                     // add type for dataset
-                    ...(c.type ? [{label: `type:${c.type}`}] : []),
+                    ...(c.type ? [{label: `type:${c.type}`, uuid: `${c.key}_type`}] : []),
                 ],
                 []);
         }
