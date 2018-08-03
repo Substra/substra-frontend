@@ -4,7 +4,7 @@ import keycode from 'keycode';
 import Downshift from 'downshift';
 import uuidv4 from 'uuid/v4';
 import {bindActionCreators} from 'redux';
-import {isArray} from 'lodash';
+import decodeUriComponent from 'decode-uri-component';
 
 import {connect} from 'react-redux';
 
@@ -15,7 +15,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import SearchInput from './searchInput';
 
 import {
-    getFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
+    getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
 } from '../selector';
 
 import actions from '../actions';
@@ -85,24 +85,49 @@ class Search extends Component {
 
     componentDidMount() {
         // init suggestions
-        const {location} = this.props;
+        const {location, setFilters} = this.props;
+
+        let selectedItem = [];
+        // fill search from state.location
+        if (location.query && location.query.search) {
+            // get groups separated by _OR_
+            const groups = location.query.search.split('_OR_');
+            const logic = {
+                parent: '_OR_',
+                child: '',
+                uuid: uuidv4(),
+                isLogic: true,
+            };
+
+            selectedItem = groups.reduce((p, group) => {
+                // create related chips
+                const chips = group.split(',').map((o) => {
+                    const el = decodeUriComponent(o).split(':');
+
+                    return {
+                        parent: el[0],
+                        child: el.splice(1).join(':'),
+                        uuid: uuidv4(),
+                        isLogic: false,
+                    };
+                });
+
+                return [
+                    ...p,
+                    ...chips,
+                    logic, // will add an extra logic el on the last iteration
+                ];
+            }, []).slice(0, -1); // remove last added `_OR`
+        }
 
         this.setState(state => ({
             ...state,
             // fill search from state.location
-            selectedItem: location.query ? Object.keys(location.query).reduce((p, c) => ([
-                ...p,
-                ...(isArray(location.query[c]) ? location.query[c].map(o => ({
-                    parent: c,
-                    child: o,
-                    uuid: uuidv4(),
-                })) : [{
-                    parent: c,
-                    child: location.query[c],
-                    uuid: uuidv4(),
-                }]),
-            ]), []) : [],
+            selectedItem,
         }));
+
+        // init redux store
+        setFilters(selectedItem);
     }
 
     handleKeyDown = (event) => {
@@ -135,38 +160,53 @@ class Search extends Component {
         const {isParent, selectedItem} = this.state;
 
         let newSelectedItem;
-        if (!selectedItem.includes(item)) {
-            if (!isParent) { // remove precedent parent and add child
-                const prev = selectedItem.pop();
-                newSelectedItem = [...selectedItem, {...prev, child: item}];
 
-                setFilters(newSelectedItem);
-            }
-            // if is parent, simply add
-            else {
-                newSelectedItem = [...selectedItem, {parent: item, child: '', uuid: uuidv4()}];
-            }
+        if (!isParent) { // remove precedent parent and add child
+            const prev = selectedItem.pop();
+            newSelectedItem = [...selectedItem, {...prev, child: item.label}];
+
+            setFilters(newSelectedItem);
+        }
+        // if is parent, simply add
+        else {
+            newSelectedItem = [
+                ...selectedItem, {
+                    parent: item.label,
+                    child: '',
+                    uuid: uuidv4(),
+                    isLogic: item.isLogic,
+                }];
         }
 
-        // calculate if in parentMode
-        const isInParentMode = parentSuggestions.map(o => o.label).includes(item);
+        // calculate if previously in parent menu
+        const selectedParent = parentSuggestions.map(o => o.label).includes(item.label);
 
         // setItem in redux, and launch related sagas for fetching list if needed
-        setItem(isInParentMode ? item : '');
+        setItem(selectedParent || item.isLogic ? item.label : '');
 
         this.setState(state => ({
             ...state,
-            isParent: !isInParentMode,
+            isParent: item.isLogic || !selectedParent,
             inputValue: '',
             selectedItem: newSelectedItem,
         }));
     };
 
     handleDelete = item => () => {
+        // TODO remove one _OR_ if item inside two _OR_
+
         const {setFilters, setItem} = this.props;
         const {selectedItem} = this.state;
 
-        const newSelectedItems = selectedItem.filter(o => !(o.child === '' || o.uuid === item.uuid));
+        // remove empty parent, the item we want to delete
+        let newSelectedItems = selectedItem.filter((o, i) => !((o.child === '' && !o.isLogic) // remove parent without child
+                || o.uuid === item.uuid), // remove item clicked
+        );
+
+        // remove first item if isLogic
+        if (newSelectedItems.length && newSelectedItems[0].isLogic) {
+            newSelectedItems = newSelectedItems.slice(1);
+        }
 
         setFilters(newSelectedItems);
         setItem('');
@@ -229,6 +269,8 @@ class Search extends Component {
         );
     };
 
+    itemToString = item => item === null ? '' : item.label;
+
     render() {
         const {inputValue, selectedItem} = this.state;
 
@@ -239,6 +281,7 @@ class Search extends Component {
                     onChange={this.handleChange}
                     onOuterClick={this.handleOuterClick}
                     selectedItem={selectedItem}
+                    itemToString={this.itemToString}
                 >
                     {this.searchInput}
                 </Downshift>
@@ -263,7 +306,7 @@ const mapStateToProps = (state, ownProps) => ({
     suggestions: getSuggestions(state),
     parentSuggestions: getParentSuggestions(state),
     isInParentMode: getIsInParentMode(state),
-    filters: getFilters(state),
+    filters: getSearchFilters(state),
     ...ownProps,
 });
 

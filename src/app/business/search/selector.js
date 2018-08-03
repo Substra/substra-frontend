@@ -2,6 +2,7 @@ import createDeepEqualSelector from '../../utils/selector';
 
 const location = state => state.location;
 const item = state => state.search.item;
+const filters = state => state.search.filters;
 
 const challengeResults = state => state.challenge.persistent.results;
 const datasetResults = state => state.dataset.persistent.results;
@@ -12,7 +13,7 @@ export const endModelsHashes = createDeepEqualSelector([modelResults],
     modelResults => modelResults.map(o => ({hash: `hash:${o.endModel.hash}`})),
 );
 
-export const getFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, endModelsHashes],
+export const getSearchFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, endModelsHashes],
     (location, challenge, dataset, algo, endModelsHashes) => ({
         challenge,
         dataset,
@@ -26,12 +27,14 @@ export const getFilters = createDeepEqualSelector([location, challengeResults, d
     }),
 );
 
-export const getParentSuggestions = createDeepEqualSelector([getFilters],
-    filters => Object.keys(filters).map(o => ({label: o})),
-);
+export const getParentSuggestions = createDeepEqualSelector([filters, item, getSearchFilters],
+    (filters, item, searchFilters) => [
+            ...(Object.keys(filters).length && item !== '_OR_' ? [{label: '_OR_', isLogic: true}] : []),
+            ...Object.keys(searchFilters).map(o => ({label: o})),
+        ]);
 
-export const getIsInParentMode = createDeepEqualSelector([getFilters, item],
-    (filters, item) => Object.keys(filters).includes(item),
+export const getIsInParentMode = createDeepEqualSelector([getSearchFilters, item],
+    (searchFilters, item) => Object.keys(searchFilters).includes(item),
 );
 
 const getKey = (key) => {
@@ -40,17 +43,20 @@ const getKey = (key) => {
     return `key:${arr[1]}`;
 };
 
-export const getSuggestions = createDeepEqualSelector([getFilters, item, getParentSuggestions, getIsInParentMode],
-    (filters, item, parentSuggestions, isInParentMode) => {
+export const getSuggestions = createDeepEqualSelector([getSearchFilters, item, getParentSuggestions, getIsInParentMode],
+    (searchFilters, item, parentSuggestions, isInParentMode) => {
         if (isInParentMode) {
-            return filters[item].reduce((p, c) => [
+            return searchFilters[item].reduce((p, c) => [
                     ...p,
                     ...(c.name ? [{label: `name:${c.name}`, uuid: `${c.key}_name`}] : []),
                     ...(c.key ? [{label: getKey(c.key), uuid: c.key}] : []),
                     ...(c.hash ? [{label: c.hash, uuid: `${c.key}_hash`}] : []),
 
                     // add metrics name if exists for challenge
-                    ...(c.metrics && c.metrics.name ? [{label: `metrics:${c.metrics.name}`, uuid: `${c.key}_metrics`}] : []),
+                    ...(c.metrics && c.metrics.name ? [{
+                        label: `metrics:${c.metrics.name}`,
+                        uuid: `${c.key}_metrics`,
+                    }] : []),
                     ...(c.owner ? [{label: `owner:${c.owner}`, uuid: `${c.key}_owner`}] : []),
 
                     // add type for dataset
@@ -67,6 +73,6 @@ export const getSuggestions = createDeepEqualSelector([getFilters, item, getPare
 export default {
     getSuggestions,
     getParentSuggestions,
-    getFilters,
+    getSearchFilters,
     getIsInParentMode,
 };

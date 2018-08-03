@@ -11,14 +11,11 @@ export default (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 filters: payload.reduce((p, c) => (
-                    {
+                    [
                         ...p,
-                        [c.parent]: [
-                            ...p[c.parent] || {}, // add precedent parent or init
-                            ...(p[c.parent] ? (p[c.parent].includes(c.child) ? [] : [c.child]) : [c.child]), // add child if not present
-                        ],
-                    }
-                ), {}),
+                        ...(c.isLogic ? [c.parent] : [`${c.parent}:${c.child}`]),
+                    ]
+                ), []),
             };
         case actionTypes.item.SET:
             return {

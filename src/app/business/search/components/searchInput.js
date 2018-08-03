@@ -7,8 +7,9 @@ import Chip from '@material-ui/core/Chip';
 // modified textField for our needs
 import TextField from './overrides/textField';
 
-const ParentChip = styled('span')`
+const parentChip = isLogic => css`
     margin: 0 3px;
+    ${isLogic ? 'color: #1935a7;font-weight: bold' : 'inherit'};
 `;
 
 const ChildChip = styled(Chip)`
@@ -54,9 +55,9 @@ class SearchInput extends Component {
                 />
                 )
                 : (
-                    <ParentChip key={o.uuid}>
-                        {`${o.parent}:`}
-                    </ParentChip>
+                    <span key={o.uuid} className={parentChip(o.isLogic)}>
+                        {`${o.parent}${o.isLogic ? '' : ':'}`}
+                    </span>
                 )),
             onChange: handleInputChange,
             onKeyDown: handleKeyDown,

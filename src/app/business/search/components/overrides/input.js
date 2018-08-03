@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {css} from 'react-emotion';
+import styled, {css} from 'react-emotion';
 
 import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
@@ -8,6 +8,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import theme from '../../../../../common/theme';
 
+const Logic = styled('span')`
+    color: #1935a7;
+    margin: 0 auto;
+    font-weight: bold;
+`;
 
 // Supports determination of isControlled().
 // Controlled input accepts its current value as a prop.
@@ -49,8 +54,8 @@ const placeholder = `
         color: 'currentColor';
         opacity: ${light ? 0.42 : 0.5};
         transition: ${theme.transitions.create('opacity', {
-            duration: theme.transitions.duration.shorter,
-        })};
+    duration: theme.transitions.duration.shorter,
+})};
     `;
 const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
@@ -82,9 +87,9 @@ const styles = {
             right: 0;
             transform: scaleX(0);
             transition:${theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shorter,
-                easing: theme.transitions.easing.easeOut,
-            })};
+        duration: theme.transitions.duration.shorter,
+        easing: theme.transitions.easing.easeOut,
+    })};
             pointer-events: none; // Transparent to the hover style.
             ${focused ? 'transform: scaleX(1);' : ''}
             ${error ? `
@@ -101,8 +106,8 @@ const styles = {
             position: absolute;
             right: 0;
             transition: ${theme.transitions.create('border-bottom-color', {
-                duration: theme.transitions.duration.shorter,
-            })};
+        duration: theme.transitions.duration.shorter,
+    })};
             pointer-events: none; // Transparent to the hover style.
             ${disabled ? `border-bottom: 1px dotted ${bottomLineColor};` : ''}
         }
@@ -175,6 +180,7 @@ const styles = {
         z-index: 1;
     `,
 };
+
 function formControlState(props, context) {
     let disabled = props.disabled;
     let error = props.error;
@@ -391,6 +397,11 @@ class Input extends React.Component {
         applyStyle: {fn: this.applyReactStyle}, // force positioning
     };
 
+    menuItem = isLogic => isLogic ? css`
+            border-bottom: 1px solid #dcdcdc;
+            padding: 4px 0;
+        ` : '';
+
     render() {
         const {
             autoComplete,
@@ -508,7 +519,7 @@ class Input extends React.Component {
                         <Paper square className={styles.paper}>
                             {suggestions(inputValue).map((suggestion, index) => {
                                 const isHighlighted = highlightedIndex === index;
-                                const itemProps = getItemProps({item: suggestion.label});
+                                const itemProps = getItemProps({item: suggestion});
 
                                 return (
                                     <MenuItem
@@ -516,8 +527,16 @@ class Input extends React.Component {
                                         key={suggestion.uuid || suggestion.label}
                                         selected={isHighlighted}
                                         component="div"
+                                        className={this.menuItem(suggestion.isLogic)}
                                     >
-                                        {suggestion.label}
+                                        {suggestion.isLogic
+                                            ? (
+                                                <Logic>
+                                                    {suggestion.label}
+                                                </Logic>
+)
+                                            : suggestion.label
+                                        }
                                     </MenuItem>
                                 );
                             })}
@@ -543,7 +562,7 @@ Input.propTypes = {
     autoComplete: PropTypes.string,
     /**
      * If `
-        true`, the input will be focused during the first mount.
+     true`, the input will be focused during the first mount.
      */
     autoFocus: PropTypes.bool,
     /**
@@ -562,33 +581,33 @@ Input.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
      * If `
-        true`, the input will be disabled.
+     true`, the input will be disabled.
      */
     disabled: PropTypes.bool,
     /**
      * If `
-        true`, the input will not have an underline.
+     true`, the input will not have an underline.
      */
     disableUnderline: PropTypes.bool,
     /**
      * End `
-        InputAdornment` for this component.
+     InputAdornment` for this component.
      */
     endAdornment: PropTypes.node,
     /**
      * If `
-        true`, the input will indicate an error. This is normally obtained via context from
+     true`, the input will indicate an error. This is normally obtained via context from
      * FormControl.
      */
     error: PropTypes.bool,
     /**
      * If `
-        true`, the input will take up the full width of its container.
+     true`, the input will take up the full width of its container.
      */
     fullWidth: PropTypes.bool,
     /**
      * The id of the `
-        input` element.
+     input` element.
      */
     id: PropTypes.string,
     /**
@@ -598,14 +617,14 @@ Input.propTypes = {
     inputComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.shape({})]),
     /**
      * Attributes applied to the `
-        input` element.
+     input` element.
      */
     inputProps: PropTypes.shape({
         ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     }),
     /**
      * Attributes applied to the wrapper of the `
-        input` element.
+     input` element.
      */
     inputWrapperProps: PropTypes.shape({
         ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
@@ -620,13 +639,13 @@ Input.propTypes = {
     inputWrapperRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]),
     /**
      * If `
-        dense`, will adjust vertical spacing. This is normally obtained via context from
+     dense`, will adjust vertical spacing. This is normally obtained via context from
      * FormControl.
      */
     margin: PropTypes.oneOf(['dense', 'none']),
     /**
      * Name attribute of the `
-        input` element.
+     input` element.
      */
     name: PropTypes.string,
     /**
@@ -638,7 +657,7 @@ Input.propTypes = {
      *
      * @param {object} event The event source of the callback.
      * You can pull out the new value by accessing `
-        event.target.value`.
+     event.target.value`.
      */
     onChange: PropTypes.func,
     /**
@@ -672,12 +691,12 @@ Input.propTypes = {
     readOnly: PropTypes.bool,
     /**
      * If `
-        true`, the input will be required.
+     true`, the input will be required.
      */
     required: PropTypes.bool,
     /**
      * Start `
-        InputAdornment` for this component.
+     InputAdornment` for this component.
      */
     startAdornment: PropTypes.node,
     /**
