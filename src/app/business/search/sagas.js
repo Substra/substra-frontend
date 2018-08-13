@@ -13,22 +13,24 @@ import modelActions from '../routes/model/actions';
 
 function* setFilters() {
     const state = yield select();
-
+    const l = state.search.filters.length;
     const search = state.search.filters.map((o, i) => {
         let filter = encodeURIComponent(o);
         // check if precedent is not Logic and add `,`
         if (i > 0 && !(state.search.filters[i - 1] === '_OR_' || o === '_OR_')) {
             filter = `,${filter}`;
         }
+        else if (i === l - 1 && o === '_OR_') { // remove last _OR_ if present
+            filter = '';
+        }
 
         return filter;
     }).join('');
 
-
     const newUrl = url.format({
         pathname: state.location.pathname,
         query: {
-            search,
+            ...(search ? {search} : {}),
         },
     });
     yield push(newUrl);

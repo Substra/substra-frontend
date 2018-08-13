@@ -114,10 +114,10 @@ class Search extends Component {
 
                 return [
                     ...p,
-                    ...chips,
+                    ...(group ? chips : []),
                     logic, // will add an extra logic el on the last iteration
                 ];
-            }, []).slice(0, -1); // remove last added `_OR`
+            }, []).slice(0, -1); // remove last added `_OR_`
         }
 
         this.setState(state => ({
@@ -193,23 +193,28 @@ class Search extends Component {
     };
 
     handleDelete = item => () => {
-        // TODO remove one _OR_ if item inside two _OR_
-
         const {setFilters, setItem} = this.props;
         const {selectedItem} = this.state;
 
         // remove empty parent, the item we want to delete
-        let newSelectedItems = selectedItem.filter((o, i) => !((o.child === '' && !o.isLogic) // remove parent without child
-                || o.uuid === item.uuid), // remove item clicked
+        let newSelectedItems = selectedItem.filter(o => !((o.child === '' && !o.isLogic) // remove parent without child
+                    || o.uuid === item.uuid), // remove item clicked
+
         );
 
-        // remove first item if isLogic
-        if (newSelectedItems.length && newSelectedItems[0].isLogic) {
-            newSelectedItems = newSelectedItems.slice(1);
-        }
+        // remove _OR_ item if not a chip before (i.e nothing or another _OR_)
+        newSelectedItems = newSelectedItems.filter((o, i) => !(o.isLogic && i === 0 // remove first item if isLogic
+                    || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
 
+        );
+
+        // TODO this triggers too much rendering, try to gather in one
         setFilters(newSelectedItems);
-        setItem('');
+
+        // need to setItem correctly after deleting
+        const l = newSelectedItems.length,
+            last = l ? newSelectedItems[l - 1] : undefined;
+        setItem(last && last.isLogic ? '_OR_' : '');
 
         this.setState(state => ({
             ...state,
@@ -230,6 +235,7 @@ class Search extends Component {
     clear = () => {
         const {setFilters, setItem} = this.props;
 
+        // TODO this triggers too much rendering, try to gather in one
         setFilters([]);
         setItem('');
 
