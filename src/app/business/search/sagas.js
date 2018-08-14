@@ -12,6 +12,7 @@ import algoActions from '../routes/algorithm/actions';
 import modelActions from '../routes/model/actions';
 
 function* setFilters() {
+
     const state = yield select();
     const l = state.search.filters.length;
     const search = state.search.filters.map((o, i) => {
@@ -34,6 +35,21 @@ function* setFilters() {
         },
     });
     yield push(newUrl);
+
+    const type = state.location.type.toLowerCase();
+
+    if (type === 'challenge') {
+        yield put(challengeActions.list.request());
+    }
+    else if (type === 'dataset') {
+        yield put(datasetActions.list.request());
+    }
+    else if (type === 'algorithm') {
+        yield put(algoActions.list.request());
+    }
+    else if (type === 'model') {
+        yield put(modelActions.list.request());
+    }
 }
 
 function* setItem({payload}) {

@@ -33,7 +33,7 @@ export const fetchList = (url, jwt) => {
             status = response.status;
             return handleResponse(response);
         })
-        .then(json => ({list: json}), error => ({error, status}));
+        .then(json => ({list: json, status}), error => ({error, status}));
 };
 
 export const fetchByUrl = (urlToFetch, jwt) => fetchList(urlToFetch, jwt);
@@ -153,7 +153,7 @@ export const createEntityFactory = path => (jwt, payload) => {
 
             return response.json();
         })
-        .then(json => ({item: json}), error => ({error, status}));
+        .then(json => ({item: json, status}), error => ({error, status}));
 };
 
 export const createFormEntityFactory = path => (jwt, payload) => {
@@ -184,5 +184,5 @@ export const createFormEntityFactory = path => (jwt, payload) => {
 
             return response.json();
         })
-        .then(json => ({item: json}), error => ({error, status}));
+        .then(json => ({item: json, status}), error => ({error, status}));
 };
