@@ -12,7 +12,6 @@ import algoActions from '../routes/algorithm/actions';
 import modelActions from '../routes/model/actions';
 
 function* setFilters() {
-
     const state = yield select();
     const l = state.search.filters.length;
     const search = state.search.filters.map((o, i) => {

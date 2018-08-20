@@ -6,6 +6,8 @@ import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import {match, parse} from './utils/autosuggest-highlight';
+
 import theme from '../../../../../common/theme';
 
 const Logic = styled('span')`
@@ -58,7 +60,6 @@ const placeholder = `
 })};
     `;
 const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
-
 
 const styles = {
     /* Styles applied to the root element. */
@@ -178,6 +179,9 @@ const styles = {
     `,
     popper: css`
         z-index: 1;
+    `,
+    highligthed: css`
+        font-weight: bold;
     `,
 };
 
@@ -521,6 +525,8 @@ class Input extends React.Component {
                                 const isHighlighted = highlightedIndex === index;
                                 const itemProps = getItemProps({item: suggestion});
 
+                                const highlighted = parse(suggestion.label, match(suggestion.label, inputValue, {insideWords: true}));
+
                                 return (
                                     <MenuItem
                                         {...itemProps}
@@ -535,7 +541,13 @@ class Input extends React.Component {
                                                     {suggestion.label}
                                                 </Logic>
 )
-                                            : suggestion.label
+
+                                            : highlighted.map((o, i) => o.highlight
+                                                ? (
+                                                    <span key={i} className={styles.highligthed}>
+                                                        {o.text}
+                                                    </span>)
+                                                : o.text)
                                         }
                                     </MenuItem>
                                 );

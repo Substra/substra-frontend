@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {List} from '../../../common/components/list';
+import {L as List} from '../../../common/components/list';
 
 
 // use custom selector

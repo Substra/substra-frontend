@@ -10,6 +10,7 @@ module.exports = {
         "react/jsx-closing-tag-location": [0],
         "react/no-unescaped-entities": [0],
         "react/no-danger": [0],
+        "react/no-array-index-key": [0],
         "react/sort-comp": [0],
         "import/no-extraneous-dependencies": [0],
         "import/no-dynamic-require": [0],

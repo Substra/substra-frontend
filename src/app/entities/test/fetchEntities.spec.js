@@ -83,6 +83,7 @@ describe('fetchEntitiesFactory', () => {
         fetchEntitiesFactory('foo')({}).then((result) => {
             expect(result).to.deep.equal({
                 list: ['data'],
+                status: undefined,
             });
             done();
         }).catch(done);
@@ -198,6 +199,7 @@ describe('fetchEntitiesByPathFactory', () => {
         fetchEntitiesByPathFactory('foo', 'view')({}).then((result) => {
             expect(result).to.deep.equal({
                 list: ['data'],
+                status: undefined,
             });
             done();
         }).catch(done);
@@ -262,6 +264,7 @@ describe('fetchByUrl', () => {
         fetchByUrl('http://api/toto/').then((result) => {
             expect(result).to.deep.equal({
                 list: ['data'],
+                status: undefined,
             });
             done();
         }).catch(done);
@@ -451,6 +454,7 @@ describe('createEntityFactory', () => {
         createEntityFactory('foo')().then((result) => {
             expect(result).to.deep.equal({
                 item: 'data',
+                status: 201,
             });
             done();
         }).catch(done);
@@ -524,6 +528,7 @@ describe('createFormEntityFactory', () => {
         createFormEntityFactory('foo')('token', {name: 'foo', file: [file], tutu: undefined}).then((result) => {
             expect(result).to.deep.equal({
                 item: 'data',
+                status: 201,
             });
             done();
         }).catch(done);

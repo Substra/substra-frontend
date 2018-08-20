@@ -29,7 +29,7 @@ const tableWrapper = css`
     thead {display: none;}
 `;
 
-export class List extends Component {
+export class L extends Component {
     constructor(props) {
         super(props);
 
@@ -75,7 +75,7 @@ export class List extends Component {
 
         return (
             <div className={className}>
-                {loading && <PulseLoader size={6} color={coolBlue}/>}
+                {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items
@@ -83,7 +83,7 @@ export class List extends Component {
                 )}
                 {init && !loading && !!results.length
                 && (
-                    results.map((o, i) =>
+                    results.map((o, i) => (
                         <div className={i !== 0 ? tableWrapper : ''} key={i}>
                             <Table>
                                 <TableHead>
@@ -123,7 +123,7 @@ export class List extends Component {
                                     ))}
                                 </TableBody>
                             </Table>
-                        </div>)
+                        </div>))
                 )}
             </div>
         );
@@ -148,7 +148,7 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 const noop = () => {
 };
 
-List.defaultProps = {
+L.defaultProps = {
     init: false,
     loading: false,
     results: [],
@@ -161,7 +161,7 @@ List.defaultProps = {
     setOrder: noop,
 };
 
-List.propTypes = {
+L.propTypes = {
     init: PropTypes.bool,
     loading: PropTypes.bool,
     results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
@@ -174,4 +174,4 @@ List.propTypes = {
     setOrder: PropTypes.func,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(L);

@@ -1,4 +1,6 @@
-import {takeLatest, all, select, call} from 'redux-saga/effects';
+import {
+takeLatest, all, select, call,
+} from 'redux-saga/effects';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi} from '../api';
