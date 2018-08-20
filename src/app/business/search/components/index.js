@@ -90,10 +90,10 @@ class Search extends Component {
         let selectedItem = [];
         // fill search from state.location
         if (location.query && location.query.search) {
-            // get groups separated by _OR_
-            const groups = location.query.search.split('_OR_');
+            // get groups separated by -OR-
+            const groups = location.query.search.split('-OR-');
             const logic = {
-                parent: '_OR_',
+                parent: '-OR-',
                 child: '',
                 uuid: uuidv4(),
                 isLogic: true,
@@ -117,7 +117,7 @@ class Search extends Component {
                     ...(group ? chips : []),
                     logic, // will add an extra logic el on the last iteration
                 ];
-            }, []).slice(0, -1); // remove last added `_OR_`
+            }, []).slice(0, -1); // remove last added `-OR-`
         }
 
         this.setState(state => ({
@@ -202,7 +202,7 @@ class Search extends Component {
 
         );
 
-        // remove _OR_ item if not a chip before (i.e nothing or another _OR_)
+        // remove -OR- item if not a chip before (i.e nothing or another -OR-)
         newSelectedItems = newSelectedItems.filter((o, i) => !(o.isLogic && i === 0 // remove first item if isLogic
                     || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
 
@@ -214,7 +214,7 @@ class Search extends Component {
         // need to setItem correctly after deleting
         const l = newSelectedItems.length,
             last = l ? newSelectedItems[l - 1] : undefined;
-        setItem(last && last.isLogic ? '_OR_' : '');
+        setItem(last && last.isLogic ? '-OR-' : '');
 
         this.setState(state => ({
             ...state,

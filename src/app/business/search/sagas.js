@@ -18,10 +18,10 @@ function* setFilters() {
     const search = state.search.filters.map((o, i) => {
         let filter = encodeURIComponent(o);
         // check if precedent is not Logic and add `,`
-        if (i > 0 && !(state.search.filters[i - 1] === '_OR_' || o === '_OR_')) {
+        if (i > 0 && !(state.search.filters[i - 1] === '-OR-' || o === '-OR-')) {
             filter = `,${filter}`;
         }
-        else if (i === l - 1 && o === '_OR_') { // remove last _OR_ if present
+        else if (i === l - 1 && o === '-OR-') { // remove last -OR- if present
             filter = '';
         }
 

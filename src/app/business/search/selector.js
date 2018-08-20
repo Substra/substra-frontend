@@ -29,7 +29,7 @@ export const getSearchFilters = createDeepEqualSelector([location, challengeResu
 
 export const getParentSuggestions = createDeepEqualSelector([filters, item, getSearchFilters],
     (filters, item, searchFilters) => [
-            ...(Object.keys(filters).length && item !== '_OR_' ? [{label: '_OR_', isLogic: true}] : []),
+            ...(Object.keys(filters).length && item !== '-OR-' ? [{label: '-OR-', isLogic: true}] : []),
             ...Object.keys(searchFilters).map(o => ({label: o})),
         ]);
 
