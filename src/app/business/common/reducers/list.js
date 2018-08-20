@@ -3,7 +3,7 @@ const initialState = {
     loading: false,
     error: null,
     results: [],
-    selected: [],
+    selected: '',
 };
 
 export default actionTypes => (state = initialState, {type, payload}) => {
