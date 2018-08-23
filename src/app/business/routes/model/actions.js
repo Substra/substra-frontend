@@ -9,6 +9,11 @@ export const actionTypes = {
         SELECTED: `${prefix}_LIST_SELECTED`,
     },
 
+    item: {
+        ...createRequestActionTypes(`${prefix}_ITEM`),
+        description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
+    },
+
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
 
     order: {
@@ -22,6 +27,17 @@ export default {
         success: createAction(actionTypes.list.SUCCESS),
         failure: createAction(actionTypes.list.FAILURE),
         selected: createAction(actionTypes.list.SELECTED),
+    },
+
+    item: {
+        request: createAction(actionTypes.item.REQUEST),
+        success: createAction(actionTypes.item.SUCCESS),
+        failure: createAction(actionTypes.item.FAILURE),
+        description: {
+            request: createAction(actionTypes.item.description.REQUEST),
+            success: createAction(actionTypes.item.description.SUCCESS),
+            failure: createAction(actionTypes.item.description.FAILURE),
+        },
     },
 
     persistent: {

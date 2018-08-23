@@ -7,7 +7,7 @@ import {PulseLoader} from 'react-spinners';
 import {coolBlue} from '../../../../assets/css/variables/index';
 
 
-const UniversalSearch = universal(import('../search/components/index'), {
+const UniversalSearch = universal(import('./components/index'), {
     loading: <PulseLoader size={6} color={coolBlue} />,
     onLoad: (module) => {
         // need all models reducers

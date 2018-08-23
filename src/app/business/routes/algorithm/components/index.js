@@ -27,7 +27,7 @@ const detail = css`
 const Algorithm = () => (
     <div>
         <List className={list} model="algorithm" actions={actions} />
-        <Detail className={detail} model="algorithm" />
+        <Detail className={detail} model="algorithm" actions={actions} />
     </div>
 );
 

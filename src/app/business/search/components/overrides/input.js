@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import {match, parse} from './utils/autosuggest-highlight';
 
-import theme from '../../../../../common/theme';
+import theme from '../../../../../common/theme/index';
 
 const Logic = styled('span')`
     color: #1935a7;

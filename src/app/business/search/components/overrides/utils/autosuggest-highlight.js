@@ -1,4 +1,4 @@
-const removeDiacritics = require('diacritic').clean;
+import {clean as removeDiacritics} from 'diacritic';
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
 const specialCharsRegex = /[.*+?^${}()|[\]\\]/g;

@@ -11,72 +11,74 @@ import datasetActions from '../routes/dataset/actions';
 import algoActions from '../routes/algorithm/actions';
 import modelActions from '../routes/model/actions';
 
-function* setFilters() {
-    const state = yield select();
-    const l = state.search.filters.length;
-    const search = state.search.filters.map((o, i) => {
-        let filter = encodeURIComponent(o);
-        // check if precedent is not Logic and add `,`
-        if (i > 0 && !(state.search.filters[i - 1] === '-OR-' || o === '-OR-')) {
-            filter = `,${filter}`;
-        }
-        else if (i === l - 1 && o === '-OR-') { // remove last -OR- if present
-            filter = '';
-        }
-
-        return filter;
-    }).join('');
-
-    const newUrl = url.format({
-        pathname: state.location.pathname,
-        query: {
-            ...(search ? {search} : {}),
-        },
-    });
-    yield push(newUrl);
-
-    const type = state.location.type.toLowerCase();
-
-    if (type === 'challenge') {
-        yield put(challengeActions.list.request());
-    }
-    else if (type === 'dataset') {
-        yield put(datasetActions.list.request());
-    }
-    else if (type === 'algorithm') {
-        yield put(algoActions.list.request());
-    }
-    else if (type === 'model') {
-        yield put(modelActions.list.request());
-    }
-}
-
-function* setItem({payload}) {
+function* setFilters(request) {
     const state = yield select();
 
     const {
-        challenge, dataset, algo, model,
+        challenge, dataset, algo, model, location,
     } = state;
 
-    // fetch related data if not already done
-    // TODO maybe use a generic fetchList(item)
-    if (payload === 'challenge' && !challenge.persistent.init && !challenge.persistent.loading) {
-        yield put(challengeActions.persistent.request());
+    const {filters, item, toUpdate} = state.search;
+
+    const l = filters.length;
+
+    if (toUpdate) {
+        const search = filters.map((o, i) => {
+            let filter = encodeURIComponent(o);
+            // check if precedent is not Logic and add `,`
+            if (i > 0 && !(filters[i - 1] === '-OR-' || o === '-OR-')) {
+                filter = `,${filter}`;
+            }
+            else if (i === l - 1 && o === '-OR-') { // remove last -OR- if present
+                filter = '';
+            }
+
+            return filter;
+        }).join('');
+
+        const newUrl = url.format({
+            pathname: location.pathname,
+            query: {
+                ...(search ? {search} : {}),
+            },
+        });
+        yield push(newUrl);
+
+        // fetch list
+        const type = location.type.toLowerCase();
+
+        if (['home', 'challenge'].includes(type)) {
+            yield put(challengeActions.list.request());
+        }
+        else if (type === 'dataset') {
+            yield put(datasetActions.list.request());
+        }
+        else if (type === 'algorithm') {
+            yield put(algoActions.list.request());
+        }
+        else if (type === 'model') {
+            yield put(modelActions.list.request());
+        }
     }
-    else if (payload === 'dataset' && !dataset.persistent.init && !dataset.persistent.loading) {
-        yield put(datasetActions.persistent.request());
-    }
-    else if (payload === 'algo' && !algo.persistent.init && !algo.persistent.loading) {
-        yield put(algoActions.persistent.request());
-    }
-    else if (payload === 'model' && !model.persistent.init && !model.persistent.loading) {
-        yield put(modelActions.persistent.request());
+    else {
+        // fetch related data if not already done
+        if (item === 'challenge' && !challenge.persistent.init && !challenge.persistent.loading) {
+            yield put(challengeActions.persistent.request());
+        }
+        else if (item === 'dataset' && !dataset.persistent.init && !dataset.persistent.loading) {
+            yield put(datasetActions.persistent.request());
+        }
+        else if (item === 'algo' && !algo.persistent.init && !algo.persistent.loading) {
+            yield put(algoActions.persistent.request());
+        }
+        else if (item === 'model' && !model.persistent.init && !model.persistent.loading) {
+            yield put(modelActions.persistent.request());
+        }
     }
 }
 
 export default function* () {
     yield all([
-        takeLatest(actionTypes.filters.SET, setFilters),
-        takeLatest(actionTypes.item.SET, setItem),
+        takeLatest(actionTypes.state.SET, setFilters),
     ]);
 }

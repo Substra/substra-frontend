@@ -12,6 +12,7 @@ const Container = styled('div')`
     height: 100%;
 `;
 
+
 const Routes = ({page}) => (
     <Container>
         <ServiceWorker />

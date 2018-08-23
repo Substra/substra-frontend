@@ -24,6 +24,7 @@ module.exports = {
         "no-shadow": [0],
         "global-require": [0],
         "no-console": [0, {"allow": ["warn", "error"]}],
+        "no-lonely-if": [0],
         "no-restricted-syntax": [0],
         "no-underscore-dangle": [0],
         "import/no-webpack-loader-syntax": [0],

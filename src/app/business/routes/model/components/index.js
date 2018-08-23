@@ -27,7 +27,7 @@ const detail = css`
 const Model = () => (
     <div>
         <List className={list} model="model" actions={actions} />
-        <Detail className={detail} model="model" />
+        <Detail className={detail} model="model" actions={actions} />
     </div>
 );
 

@@ -21,14 +21,14 @@ import {
 import actions from '../actions';
 
 // export needed reducers and sagas
-export challengeReducer from '../../routes/challenge/reducers';
-export challengeSagas from '../../routes/challenge/sagas';
-export datasetReducer from '../../routes/dataset/reducers';
-export datasetSagas from '../../routes/dataset/sagas';
-export algoReducer from '../../routes/algorithm/reducers';
-export algoSagas from '../../routes/algorithm/sagas';
-export modelReducer from '../../routes/model/reducers';
-export modelSagas from '../../routes/model/sagas';
+export challengeReducer from '../../routes/challenge/reducers/index';
+export challengeSagas from '../../routes/challenge/sagas/index';
+export datasetReducer from '../../routes/dataset/reducers/index';
+export datasetSagas from '../../routes/dataset/sagas/index';
+export algoReducer from '../../routes/algorithm/reducers/index';
+export algoSagas from '../../routes/algorithm/sagas/index';
+export modelReducer from '../../routes/model/reducers/index';
+export modelSagas from '../../routes/model/sagas/index';
 
 const Wrapper = styled('div')`
     margin: 15px auto;
@@ -71,12 +71,6 @@ SearchInputWrapper.propTypes = {
 };
 
 class Search extends Component {
-    state = {
-        inputValue: '',
-        selectedItem: [],
-        isParent: true,
-    };
-
     constructor(props) {
         super(props);
 
@@ -85,19 +79,14 @@ class Search extends Component {
 
     componentDidMount() {
         // init suggestions
-        const {location, setFilters} = this.props;
+        const {location, setState} = this.props;
 
         let selectedItem = [];
         // fill search from state.location
         if (location.query && location.query.search) {
             // get groups separated by -OR-
             const groups = location.query.search.split('-OR-');
-            const logic = {
-                parent: '-OR-',
-                child: '',
-                uuid: uuidv4(),
-                isLogic: true,
-            };
+
 
             selectedItem = groups.reduce((p, group) => {
                 // create related chips
@@ -112,6 +101,14 @@ class Search extends Component {
                     };
                 });
 
+                // do not hoist it, uuid need to be different
+                const logic = {
+                    parent: '-OR-',
+                    child: '',
+                    uuid: uuidv4(),
+                    isLogic: true,
+                };
+
                 return [
                     ...p,
                     ...(group ? chips : []),
@@ -120,52 +117,54 @@ class Search extends Component {
             }, []).slice(0, -1); // remove last added `-OR-`
         }
 
-        this.setState(state => ({
-            ...state,
-            // fill search from state.location
+        setState({
             selectedItem,
-        }));
-
-        // init redux store
-        setFilters(selectedItem);
+            toUpdate: false,
+        });
     }
 
     handleKeyDown = (event) => {
-        const {setFilters, setItem} = this.props;
-        const {inputValue, selectedItem} = this.state;
+        const {setState, inputValue, selectedItem} = this.props;
 
         if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
-            const newSelectedItems = selectedItem.slice(0, selectedItem.length - 1);
+            const l = selectedItem.length;
 
-            // TODO this triggers too much rendering, try to gather in one
-            this.setState({
-                selectedItem: newSelectedItems,
-                isParent: true,
-            });
+            if (l) {
+                const newSelectedItems = selectedItem.slice(0, l - 1);
+                const last = selectedItem[l - 1];
 
-            setFilters(newSelectedItems);
-            setItem('');
+                setState({
+                    selectedItem: newSelectedItems,
+                    isParent: true,
+                    item: '',
+                    toUpdate: !(last.isLogic || !last.child),
+                });
+            }
         }
     };
 
     handleInputChange = (event) => {
-        this.setState({inputValue: event.target.value});
+        const {setState} = this.props;
+
+        setState({
+            inputValue: event.target.value,
+            toUpdate: false,
+        });
     };
 
     handleChange = (item) => {
         const {
-            parentSuggestions,
-            setItem, setFilters,
+            parentSuggestions, isParent, selectedItem,
+            setState,
         } = this.props;
-        const {isParent, selectedItem} = this.state;
 
-        let newSelectedItem;
+        let newSelectedItem,
+            toUpdate = false;
 
         if (!isParent) { // remove precedent parent and add child
             const prev = selectedItem.pop();
             newSelectedItem = [...selectedItem, {...prev, child: item.label}];
-
-            setFilters(newSelectedItem);
+            toUpdate = true;
         }
         // if is parent, simply add
         else {
@@ -178,72 +177,69 @@ class Search extends Component {
                 }];
         }
 
-        // calculate if previously in parent menu
+        // calculate if previous in parent menu
         const selectedParent = parentSuggestions.map(o => o.label).includes(item.label);
 
-        // setItem in redux, and launch related sagas for fetching list if needed
-        setItem(selectedParent || item.isLogic ? item.label : '');
-
-        this.setState(state => ({
-            ...state,
+        // set item in redux, and launch related sagas for fetching list if needed
+        setState({
             isParent: item.isLogic || !selectedParent,
             inputValue: '',
             selectedItem: newSelectedItem,
-        }));
+            item: selectedParent || item.isLogic ? item.label : '',
+            toUpdate,
+        });
     };
 
     handleDelete = item => () => {
-        const {setFilters, setItem} = this.props;
-        const {selectedItem} = this.state;
+        const {setState, selectedItem} = this.props;
 
         // remove empty parent, the item we want to delete
-        let newSelectedItems = selectedItem.filter(o => !((o.child === '' && !o.isLogic) // remove parent without child
-                    || o.uuid === item.uuid), // remove item clicked
+        let newSelectedItems = selectedItem.filter(o => !(
+                (o.child === '' && !o.isLogic) // remove parent without child
+                || o.uuid === item.uuid), // remove item clicked
 
         );
 
         // remove -OR- item if not a chip before (i.e nothing or another -OR-)
-        newSelectedItems = newSelectedItems.filter((o, i) => !(o.isLogic && i === 0 // remove first item if isLogic
-                    || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
+        newSelectedItems = newSelectedItems.filter((o, i) => !(
+                o.isLogic && i === 0 // remove first item if isLogic
+                || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
 
         );
-
-        // TODO this triggers too much rendering, try to gather in one
-        setFilters(newSelectedItems);
 
         // need to setItem correctly after deleting
         const l = newSelectedItems.length,
             last = l ? newSelectedItems[l - 1] : undefined;
-        setItem(last && last.isLogic ? '-OR-' : '');
 
-        this.setState(state => ({
-            ...state,
+        setState({
             selectedItem: newSelectedItems,
             isParent: true,
-        }));
+            item: last && last.isLogic ? '-OR-' : '',
+            toUpdate: true,
+        });
 
         this.clickInput();
     };
 
-    handleOuterClick = (e) => {
-        this.setState(state => ({
-            ...state,
-            inputValue: '',
-        }));
+    handleOuterClick = () => {
+        const {setState, inputValue} = this.props;
+
+        if (inputValue) {
+            setState({
+                inputValue: '',
+            });
+        }
     };
 
     clear = () => {
-        const {setFilters, setItem} = this.props;
+        const {setState} = this.props;
 
-        // TODO this triggers too much rendering, try to gather in one
-        setFilters([]);
-        setItem('');
-
-        this.setState(state => ({
-            ...state,
+        setState({
             selectedItem: [],
             isParent: true,
-        }));
+            item: '',
+            toUpdate: true,
+        });
 
         this.clickInput();
     };
@@ -278,7 +274,7 @@ class Search extends Component {
     itemToString = item => item === null ? '' : item.label;
 
     render() {
-        const {inputValue, selectedItem} = this.state;
+        const {inputValue, selectedItem} = this.props;
 
         return (
             <Wrapper>
@@ -302,11 +298,16 @@ Search.propTypes = {
     location: PropTypes.shape({}).isRequired,
     suggestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     parentSuggestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    setFilters: PropTypes.func.isRequired,
-    setItem: PropTypes.func.isRequired,
+    setState: PropTypes.func.isRequired,
+    inputValue: PropTypes.string.isRequired,
+    selectedItem: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isParent: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
+    inputValue: state.search.inputValue,
+    selectedItem: state.search.selectedItem,
+    isParent: state.search.isParent,
     location: state.location,
     item: state.search.item,
     suggestions: getSuggestions(state),
@@ -317,8 +318,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setFilters: actions.filters.set,
-    setItem: actions.item.set,
+    setState: actions.state.set,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -11,6 +11,7 @@ import Logo from '../common/svg/logo';
 import {lightgrey, slate, coolBlue} from '../../../../assets/css/variables';
 
 import Algo from '../common/svg/algo';
+import Dataset from '../common/svg/data-set';
 import Folder from '../common/svg/folder';
 import Book from '../common/svg/book';
 import Model from '../common/svg/model';
@@ -62,7 +63,7 @@ const picto = css`
 
 const pictos = {
     challenge: Folder,
-    dataset: Folder,
+    dataset: Dataset,
     algorithm: Algo,
     model: Model,
     doc: Book,

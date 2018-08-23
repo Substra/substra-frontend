@@ -29,7 +29,24 @@ export const fetchPersistentSaga = (actions, fetchPersistentApi) => function* fe
     return list;
 };
 
+export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
+    const {id, get_parameters, jwt} = payload;
+
+    const {error, status, item} = yield call(fetchItemApi, get_parameters, id, jwt);
+
+    if (error) {
+        console.error(error, status);
+        yield put(actions.item.failure(error));
+    }
+    else {
+        yield put(actions.item.success(item));
+    }
+
+    return item;
+};
+
 export default {
     fetchListSaga,
     fetchPersistentSaga,
+    fetchItemSaga,
 };

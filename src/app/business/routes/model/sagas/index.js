@@ -4,7 +4,7 @@ takeLatest, all, select, call,
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi} from '../api';
-import {fetchListSaga, fetchPersistentSaga} from '../../../common/sagas';
+import {fetchListSaga, fetchPersistentSaga} from '../../../common/sagas/index';
 
 function* fetchList(request) {
     const state = yield select();

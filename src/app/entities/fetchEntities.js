@@ -56,6 +56,8 @@ export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
         ? `?${queryString.stringify(get_parameters)}`
         : ''}`;
 
+    let status;
+
     return fetch(url, {
         headers,
         // Allows API to set http-only cookies with AJAX calls
@@ -63,8 +65,11 @@ export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
         // credentials: 'include',
         mode: 'cors',
     })
-        .then(response => handleResponse(response))
-        .then(json => ({item: json}), error => ({error}));
+        .then((response) => {
+            status = response.status;
+            return handleResponse(response);
+        })
+        .then(json => ({item: json, status}), error => ({error, status}));
 };
 
 export const deleteEntityFactory = path => (id, jwt) => {

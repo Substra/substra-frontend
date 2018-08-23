@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'react-emotion';
 
-import List from './list';
+import List from '../../../common/components/list';
 import Detail from '../../../common/components/detail';
 import actions from '../actions';
 
@@ -30,7 +30,7 @@ const Content = styled('div')`
 const Challenge = () => (
     <Content>
         <List className={list} model="challenge" actions={actions} />
-        <Detail className={detail} model="challenge" />
+        <Detail className={detail} model="challenge" actions={actions} />
     </Content>
 );
 

@@ -37,19 +37,13 @@ export const getIsInParentMode = createDeepEqualSelector([getSearchFilters, item
     (searchFilters, item) => Object.keys(searchFilters).includes(item),
 );
 
-const getKey = (key) => {
-    const arr = key.split('_');
-
-    return `key:${arr[1]}`;
-};
-
 export const getSuggestions = createDeepEqualSelector([getSearchFilters, item, getParentSuggestions, getIsInParentMode],
     (searchFilters, item, parentSuggestions, isInParentMode) => {
         if (isInParentMode) {
             return searchFilters[item].reduce((p, c) => [
                     ...p,
                     ...(c.name ? [{label: `name:${c.name}`, uuid: `${c.key}_name`}] : []),
-                    ...(c.key ? [{label: getKey(c.key), uuid: c.key}] : []),
+                    ...(c.key ? [{label: `key:${c.key}`, uuid: `${c.key}_key`}] : []),
                     ...(c.hash ? [{label: c.hash, uuid: `${c.key}_hash`}] : []),
 
                     // add metrics name if exists for challenge
