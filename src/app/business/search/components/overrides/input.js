@@ -178,7 +178,7 @@ const styles = {
         //max-width: 200px;
     `,
     popper: css`
-        z-index: 1;
+        z-index: 2;
     `,
     highligthed: css`
         font-weight: bold;

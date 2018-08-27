@@ -34,7 +34,6 @@ export modelSagas from '../../routes/model/sagas/index';
 const Wrapper = styled('div')`
     margin: 15px auto;
     width: 90%;
-    overflow: hidden;
 `;
 
 const middle = css`
@@ -44,7 +43,7 @@ const middle = css`
 
 const searchInput = css`
     ${middle};
-    width: 95%;    
+    width: 95%;
 `;
 
 const clear = css`
@@ -303,7 +302,7 @@ class Search extends Component {
                         onChange={this.handleIsComplex}
                     />
                     <span>
-Is Complex?
+                        Is Complex?
                     </span>
                 </div>
             </Wrapper>

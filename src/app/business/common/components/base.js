@@ -126,7 +126,7 @@ Base.defaultProps = {
 Base.propTypes = {
     selected: PropTypes.string,
     actions: PropTypes.shape({}).isRequired,
-    model: PropTypes.shape({}).isRequired,
+    model: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, {model, actions}) => ({

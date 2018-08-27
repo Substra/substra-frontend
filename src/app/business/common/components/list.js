@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux';
 import styled, {css} from 'react-emotion';
 import uuidv4 from 'uuid/v4';
 import {PulseLoader} from 'react-spinners';
-import {last} from 'lodash';
 
 import searchActions from '../../search/actions';
 
@@ -118,11 +117,12 @@ export class L extends Component {
 
         const newSelectedItem = [
             ...selectedItem,
-            ...(selectedItem.length && !last(selectedItem).isLogic ? [{
-                parent: '-OR-',
-                isLogic: true,
-                uuid: uuidv4(),
-            }] : []),
+            // This is the -OR- case
+            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
+            //     parent: '-OR-',
+            //     isLogic: true,
+            //     uuid: uuidv4(),
+            // }] : []),
             {
                 parent: model,
                 child: `name:${o.name}`,
