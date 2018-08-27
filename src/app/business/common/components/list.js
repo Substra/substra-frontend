@@ -173,7 +173,7 @@ export class L extends Component {
                 && (
                     results.map((o, i) => (
                         <Group key={i}>
-                            {o.map(o => (
+                            {!!o.length && o.map(o => (
                                 <Item key={o.key} onClick={this.setSelected(o.key)} className={this.item(o.key)}>
                                     <Actions>
                                         <FilterUp onClick={this.filterUp(o)} />
@@ -200,6 +200,11 @@ export class L extends Component {
                                     </Content>
                                 </Item>
                             ))}
+                            {!o.length && (
+                            <span>
+No items for this filter group
+                            </span>
+)}
                         </Group>
                     ))
                 )}

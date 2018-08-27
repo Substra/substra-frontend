@@ -8,6 +8,8 @@ const initialState = {
     filters: {},
     item: null,
     toUpdate: false,
+
+    isComplex: false,
 };
 
 export default (state = initialState, {type, payload}) => {
@@ -26,6 +28,11 @@ export default (state = initialState, {type, payload}) => {
                 ...state,
                 ...payload,
                 filters,
+            };
+        case actionTypes.isComplex.SET:
+            return {
+                ...state,
+                isComplex: payload,
             };
         default:
             return state;

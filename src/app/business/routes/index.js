@@ -6,15 +6,15 @@ import Component from '../common/routes/index';
 import NotFoundRoutes from './notFound/routes/index';
 
 
-const Route = ({page, addFilter}) => {
+const Route = ({page}) => {
     switch (page) {
         case 'HOME':
         case 'CHALLENGE':
-            return <Component model="challenge" addFilter={addFilter} />;
+            return <Component model="challenge" />;
         case 'DATASET':
             return <Component model="dataset" />;
         case 'ALGORITHM':
-            return <Component model="algorithm" />;
+            return <Component model="algo" />;
         case 'MODEL':
             return <Component model="model" />;
         case 'DOC':

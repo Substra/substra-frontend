@@ -8,7 +8,7 @@ import {actionTypes} from './actions';
 
 import challengeActions from '../routes/challenge/actions';
 import datasetActions from '../routes/dataset/actions';
-import algoActions from '../routes/algorithm/actions';
+import algoActions from '../routes/algo/actions';
 import modelActions from '../routes/model/actions';
 
 function* setFilters(request) {

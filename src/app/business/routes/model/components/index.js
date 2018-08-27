@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from 'react-emotion';
+import styled, {css} from 'react-emotion';
 
 import List from './list';
 import Detail from '../../../common/components/detail';
@@ -12,23 +12,26 @@ const middle = css`
 
 const list = css`
     ${middle};
-    width: 80%;
+    width: 40%;
     overflow-x: auto;
+    border-right: 1px solid #ccc;
 `;
 
 const detail = css`
     ${middle};
-    width: 18%;
-    margin-left: 2%;
+    width: 59%;
     overflow-x: auto;
 `;
 
+const Content = styled('div')`
+    margin: 0 20px;
+`;
 
 const Model = () => (
-    <div>
+    <Content>
         <List className={list} model="model" actions={actions} />
         <Detail className={detail} model="model" actions={actions} />
-    </div>
+    </Content>
 );
 
 

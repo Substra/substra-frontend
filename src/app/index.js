@@ -10,6 +10,8 @@ import Search from './business/search';
 
 const Container = styled('div')`
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 

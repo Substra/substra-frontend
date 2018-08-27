@@ -18,7 +18,6 @@ import Model from '../common/svg/model';
 
 const wrapper = css`
     background-color: ${lightgrey};
-    margin: 0 auto;
     padding: 15px 0;
 `;
 
@@ -105,8 +104,7 @@ class Top extends Component {
                                         <Picto className={picto} color={color} />
                                         {menu}
                                     </Link>
-                                </Li>
-);
+                                </Li>);
                         },
                     )}
                 </Ul>

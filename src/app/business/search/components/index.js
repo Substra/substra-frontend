@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 
 import ClearIcon from '@material-ui/icons/Clear';
+import Switch from '@material-ui/core/Switch';
 
 import SearchInput from './searchInput';
 
@@ -25,14 +26,15 @@ export challengeReducer from '../../routes/challenge/reducers/index';
 export challengeSagas from '../../routes/challenge/sagas/index';
 export datasetReducer from '../../routes/dataset/reducers/index';
 export datasetSagas from '../../routes/dataset/sagas/index';
-export algoReducer from '../../routes/algorithm/reducers/index';
-export algoSagas from '../../routes/algorithm/sagas/index';
+export algoReducer from '../../routes/algo/reducers/index';
+export algoSagas from '../../routes/algo/sagas/index';
 export modelReducer from '../../routes/model/reducers/index';
 export modelSagas from '../../routes/model/sagas/index';
 
 const Wrapper = styled('div')`
     margin: 15px auto;
     width: 90%;
+    overflow: hidden;
 `;
 
 const middle = css`
@@ -195,15 +197,15 @@ class Search extends Component {
 
         // remove empty parent, the item we want to delete
         let newSelectedItems = selectedItem.filter(o => !(
-                (o.child === '' && !o.isLogic) // remove parent without child
-                || o.uuid === item.uuid), // remove item clicked
+            (o.child === '' && !o.isLogic) // remove parent without child
+            || o.uuid === item.uuid), // remove item clicked
 
         );
 
         // remove -OR- item if not a chip before (i.e nothing or another -OR-)
         newSelectedItems = newSelectedItems.filter((o, i) => !(
-                o.isLogic && i === 0 // remove first item if isLogic
-                || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
+            o.isLogic && i === 0 // remove first item if isLogic
+            || o.isLogic && i > 0 && newSelectedItems[i - 1].isLogic), // remove isLogic if precedent isLogic
 
         );
 
@@ -273,8 +275,14 @@ class Search extends Component {
 
     itemToString = item => item === null ? '' : item.label;
 
+    handleIsComplex = (e) => {
+        const {setIsComplex} = this.props;
+
+        setIsComplex(e.target.checked);
+    };
+
     render() {
-        const {inputValue, selectedItem} = this.props;
+        const {inputValue, selectedItem, isComplex} = this.props;
 
         return (
             <Wrapper>
@@ -289,6 +297,15 @@ class Search extends Component {
                 </Downshift>
 
                 <ClearIcon className={clear} onClick={this.clear} />
+                <div>
+                    <Switch
+                        checked={isComplex}
+                        onChange={this.handleIsComplex}
+                    />
+                    <span>
+Is Complex?
+                    </span>
+                </div>
             </Wrapper>
         );
     }
@@ -302,12 +319,19 @@ Search.propTypes = {
     inputValue: PropTypes.string.isRequired,
     selectedItem: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isParent: PropTypes.bool.isRequired,
+    isComplex: PropTypes.bool,
+    setIsComplex: PropTypes.func.isRequired,
+};
+
+Search.defaultProps = {
+    isComplex: true,
 };
 
 const mapStateToProps = (state, ownProps) => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
+    isComplex: state.search.isComplex,
     location: state.location,
     item: state.search.item,
     suggestions: getSuggestions(state),
@@ -319,6 +343,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
+    setIsComplex: actions.isComplex.set,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

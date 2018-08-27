@@ -3,6 +3,6 @@ import Base from '../../../common/components/base';
 
 import actions from '../actions';
 
-const Dataset = () => <Base actions={actions} model="dataset" />;
+const Algo = () => <Base actions={actions} model="algo" />;
 
-export default Dataset;
+export default Algo;

@@ -1,12 +1,10 @@
 import {
-    takeLatest, takeEvery, all, select, call, put,
+takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
-
-import {flatten} from 'lodash';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
-import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
+import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas';
 
 function* fetchList(request) {
     const state = yield select();
@@ -19,12 +17,11 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const state = yield select();
 
-    if (!state.model.item.results.find(o => o.pkhash === payload)) {
-        const model = flatten(state.model.list.results).find(o => o.key === payload);
-
-        yield put(actions.item.request({id: model.endModel.hash, get_parameters: {}}));
+    if (!state.algo.item.results.find(o => o.pkhash === payload)) {
+        yield put(actions.item.request({id: payload, get_parameters: {}}));
     }
 }
+
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
