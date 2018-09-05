@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Clipboard = ({
-                       className, width, height, color,
+                       className, width, height, color, ...props
                    }) => (
                        <svg
                            xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +10,7 @@ const Clipboard = ({
                            height={height}
                            viewBox="0 0 24 24"
                            className={className}
+                           {...props}
                        >
                            <g fill={color} fillRule="evenodd">
                                <circle cx="12" cy="5" r="2" />

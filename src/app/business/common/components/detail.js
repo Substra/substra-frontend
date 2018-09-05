@@ -110,7 +110,7 @@ class Detail extends Component {
         if (this.props.item !== prevProps.item) {
             this.props.fetchDescription({
                 id: this.props.item.key,
-                url: this.props.item.descriptionStorageAddress,
+                url: this.props.item.description,
             });
         }
     }

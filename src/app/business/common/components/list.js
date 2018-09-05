@@ -6,6 +6,8 @@ import styled, {css} from 'react-emotion';
 import uuidv4 from 'uuid/v4';
 import {PulseLoader} from 'react-spinners';
 
+import Popover from '@material-ui/core/Popover';
+
 import searchActions from '../../search/actions';
 
 import {coolBlue} from '../../../../../assets/css/variables/index';
@@ -71,7 +73,30 @@ const Actions = styled('div')`
     }
 `;
 
+const PopList = styled('div')`
+    padding: 15px;
+    list-style: none;
+    margin: 0;
+    li { 
+        cursor: pointer;
+        
+        span, svg {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        span { margin-left: 5px; }
+    }   
+`;
+
 export class L extends Component {
+    state = {
+        popover: {
+            open: false,
+            anchorEl: null,
+        },
+    };
+
     componentDidMount(prevProps, prevState, snapshot) {
         const {loading, fetchList} = this.props;
 
@@ -137,6 +162,8 @@ export class L extends Component {
             item: o.name,
             toUpdate: true,
         });
+
+        this.popoverHandleClose();
     };
 
     more = o => (e) => {
@@ -144,6 +171,22 @@ export class L extends Component {
         e.stopPropagation();
 
         // display menu
+        this.setState({
+            popover: {
+                open: true,
+                anchorEl: e.currentTarget,
+            },
+        });
+        e.persist();
+    };
+
+    popoverHandleClose = () => {
+        this.setState(state => ({
+            popover: {
+                open: false,
+                anchorEl: null,
+            },
+        }));
     };
 
     render() {
@@ -176,8 +219,26 @@ export class L extends Component {
                             {!!o.length && o.map(o => (
                                 <Item key={o.key} onClick={this.setSelected(o.key)} className={this.item(o.key)}>
                                     <Actions>
-                                        <FilterUp onClick={this.filterUp(o)} />
-                                        <More height={16} onClick={this.more(o)} />
+                                        <More height={16} onClick={this.more(o)}/>
+                                        <Popover
+                                            open={this.state.popover.open}
+                                            anchorEl={this.state.popover.anchorEl}
+                                            onClose={this.popoverHandleClose}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'left',
+                                            }}
+                                        >
+                                            <PopList>
+                                                <li onClick={this.filterUp(o)}>
+                                                    <FilterUp /><span>Add as a filter</span>
+                                                </li>
+                                            </PopList>
+                                        </Popover>
                                     </Actions>
                                     <h4 className={this.title(o.key)}>
                                         {o.name}
@@ -192,8 +253,7 @@ export class L extends Component {
                                             {o.metrics && (
                                             <span>
                                                 {`Metric: ${o.metrics.name}`}
-                                            </span>
-)
+                                            </span>)
                                             }
                                             {/* <span>{o.shortDescription}</span> */}
                                         </Desc>
@@ -202,9 +262,8 @@ export class L extends Component {
                             ))}
                             {!o.length && (
                             <span>
-No items for this filter group
-                            </span>
-)}
+                                No items for this filter group
+                            </span>)}
                         </Group>
                     ))
                 )}
