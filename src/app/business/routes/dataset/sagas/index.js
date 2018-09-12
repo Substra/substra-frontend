@@ -1,13 +1,16 @@
-/* globals window document Blob fetch */
+/* globals fetch */
 
 import {
 takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
 
+import {saveAs} from 'file-saver';
+
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
 import {fetchRaw} from '../../../../entities/fetchEntities';
+
 
 function* fetchList(request) {
     const state = yield select();
@@ -36,14 +39,14 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
     }
 }
 
-function* fetchItemFileSaga({payload: {url, filename}}) {
+function* fetchItemFileSaga({payload: {url}}) {
 
     let status;
+    let filename;
 
     yield fetch(url, {
         headers: {
-            Accept: 'text/html;version=0.0',
-            'Content-Type': 'application/json;',
+            Accept: 'application/json;version=0.0',
         },
         mode: 'cors',
     }).then((response) => {
@@ -52,20 +55,11 @@ function* fetchItemFileSaga({payload: {url, filename}}) {
             return response.text().then(result => Promise.reject(new Error(result)));
         }
 
-        return response.text();
-    }).then((res) => {
-        const mime_type = 'text/plain';
-        const blob = new Blob([res], {type: mime_type});
+        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/'/g, '');
 
-        const dlink = document.createElement('a');
-        dlink.download = filename;
-        dlink.href = window.URL.createObjectURL(blob);
-        dlink.onclick = () => {
-            // revokeObjectURL needs a delay to work properly
-            setTimeout(() => window.URL.revokeObjectURL(this.href), 1500);
-        };
-        dlink.click();
-        dlink.remove();
+        return response.blob();
+    }).then((res) => {
+        saveAs(res, filename);
     }, error => ({error, status}));
 }
 

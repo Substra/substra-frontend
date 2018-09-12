@@ -6,6 +6,7 @@ import actions from '../actions';
 const download = {
     filename: 'opener.py',
     address: ['openerStorageAddress'],
+    text: 'Download opener',
 };
 
 const Dataset = () => <Base actions={actions} model="dataset" download={download}/>;

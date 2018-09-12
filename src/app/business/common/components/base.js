@@ -222,7 +222,7 @@ class Base extends Component {
 
 
     render() {
-        const {selected, actions, model} = this.props;
+        const {selected, actions, model, download} = this.props;
 
         return (
             <div ref={this.contentRef} onMouseMove={this.move} onMouseUp={this.mouseUp} className={this.content()}>
@@ -233,6 +233,7 @@ class Base extends Component {
                     filterUp={this.filterUp}
                     downloadFile={this.downloadFile}
                     addNotification={this.addNotification}
+                    download={download}
                 />
                 {selected && (
                     <Fragment>

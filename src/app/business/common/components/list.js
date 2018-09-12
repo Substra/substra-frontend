@@ -197,7 +197,7 @@ export class L extends Component {
 
     render() {
         const {
-            results, init, loading, order, model, className,
+            results, init, loading, order, model, className, download,
         } = this.props;
 
         return (
@@ -280,7 +280,7 @@ export class L extends Component {
                         </li>
                         <li onClick={this.downloadFile}>
                             <span>
-                                Download the metrics
+                                {download.text}
                             </span>
                         </li>
                     </PopList>
@@ -325,7 +325,7 @@ L.propTypes = {
     addNotification: PropTypes.func,
 };
 
-const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}) => ({
+const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification, download}) => ({
     init: state[model].list.init,
     loading: state[model].list.loading,
     results: getOrderedResults(state, model),
@@ -334,6 +334,7 @@ const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}
     filterUp,
     downloadFile,
     addNotification,
+    download,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
