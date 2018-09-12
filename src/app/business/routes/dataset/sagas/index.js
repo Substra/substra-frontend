@@ -1,3 +1,5 @@
+/* globals window document Blob fetch */
+
 import {
 takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
@@ -5,7 +7,7 @@ takeLatest, takeEvery, all, select, call, put,
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
-import {fetchRaw} from "../../../../entities/fetchEntities";
+import {fetchRaw} from '../../../../entities/fetchEntities';
 
 function* fetchList(request) {
     const state = yield select();
@@ -34,6 +36,39 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
     }
 }
 
+function* fetchItemFileSaga({payload: {url, filename}}) {
+
+    let status;
+
+    yield fetch(url, {
+        headers: {
+            Accept: 'text/html;version=0.0',
+            'Content-Type': 'application/json;',
+        },
+        mode: 'cors',
+    }).then((response) => {
+        status = response.status;
+        if (!response.ok) {
+            return response.text().then(result => Promise.reject(new Error(result)));
+        }
+
+        return response.text();
+    }).then((res) => {
+        const mime_type = 'text/plain';
+        const blob = new Blob([res], {type: mime_type});
+
+        const dlink = document.createElement('a');
+        dlink.download = filename;
+        dlink.href = window.URL.createObjectURL(blob);
+        dlink.onclick = () => {
+            // revokeObjectURL needs a delay to work properly
+            setTimeout(() => window.URL.revokeObjectURL(this.href), 1500);
+        };
+        dlink.click();
+        dlink.remove();
+    }, error => ({error, status}));
+}
+
 /* istanbul ignore next */
 const sagas = function* sagas() {
     yield all([
@@ -44,6 +79,8 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
 
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+
+        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
     ]);
 };
 

@@ -80,6 +80,10 @@ const PopList = styled('div')`
         border-bottom: 1px solid #eeeeee;
         font-size: 13px;
         
+        &:hover {
+            background-color: #f0f0ef;
+        }
+        
         span, svg {
             display: inline-block;
             vertical-align: middle;
