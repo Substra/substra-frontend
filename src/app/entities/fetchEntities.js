@@ -50,6 +50,30 @@ export const fetchEntitiesByPathFactory = (path, view) => (get_parameters, jwt, 
     return fetchList(url, jwt);
 };
 
+
+export const fetchRaw = (url, jwt) => {
+    const headers = getHeaders(jwt);
+
+    let status;
+
+    return fetch(url, {
+        headers,
+        // Allows API to set http-only cookies with AJAX calls
+        // @see http://www.redotheweb.com/2015/11/09/api-security.html
+        // credentials: 'include',
+        mode: 'cors',
+    })
+        .then((response) => {
+            status = response.status;
+            if (!response.ok) {
+                return response.text().then(result => Promise.reject(new Error(result)));
+            }
+
+            return response.text(); // /!\ Note the text, not json
+        })
+        .then(res => ({res, status}), error => ({error, status}));
+};
+
 export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/${id}/${!isEmpty(get_parameters)

@@ -4,20 +4,27 @@
 
 This project use yarn and the experimental yarn workspaces for package.json splitting and convenience.
 
-Please install the last version of yarn and run 
+Please install the last version of yarn and run:<br/>
 `yarn config set workspaces-experimental true`
 
-Then run:
+Then run:<br/>
 `yarn install`
 
+You also need a redis server on your machine.<br/>
+On linux, simple run:<br/>
+`sudo apt install redis`
 
-For testing and developping on the projet with true hot module replacement, run
+And make sure the redis server is running by executing:<br/>
+`redis-cli`
+
+
+For testing and developing on the projet with true hot module replacement, run
 `yarn start`
 
-For testing with prod config:
+For testing with prod config:<br/>
 `yarn start:prod`
 
-For testing in electron, run:
+For testing in electron, run:<br/>
 `yarn dev`
 
 For packaging for electron:
@@ -28,7 +35,7 @@ yarn package-all
 ```
 
 For building the production website and deploy it, run:
-Before deploying, create a file deploy.js in the tools folder with your param
+Before deploying, create a file deploy.js in the tools folder with your param:
 ```
 yarn build:main
 yarn deploy
@@ -175,4 +182,4 @@ TODO: create a cronjob for renewing certificate and `docker restart container_na
 
 Maybe better use webroot plugin
 
-Tip: For getting container name : `docker ps --format '{{.Names}}' | grep ecs-guillaumecisco`
+Tip: For getting container name : `docker ps --format '{{.Names}}' | grep ecs-substra`

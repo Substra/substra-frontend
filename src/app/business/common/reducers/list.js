@@ -34,7 +34,7 @@ export default actionTypes => (state = initialState, {type, payload}) => {
         case actionTypes.list.SELECTED:
             return {
                 ...state,
-                selected: payload,
+                selected: payload.key,
             };
         default:
             return state;

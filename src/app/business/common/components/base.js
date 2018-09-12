@@ -2,11 +2,23 @@
 
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {css} from 'react-emotion';
+import styled, {css} from 'react-emotion';
+import {capitalize} from 'lodash';
 import {connect} from 'react-redux';
+import uuidv4 from 'uuid/v4';
+import {bindActionCreators} from 'redux';
+
+import {Snackbar, SnackbarContent} from '@material-ui/core';
 
 import List from './list';
 import Detail from './detail';
+
+import searchActions from '../../search/actions';
+import {getItem} from '../selector';
+
+import Check from '../svg/check';
+import {tealish} from '../../../../../assets/css/variables';
+
 
 const middle = css`
     display: inline-block;
@@ -15,6 +27,7 @@ const middle = css`
 
 const margin = 20;
 const barSize = 1;
+const lightGrey = '#fafafa';
 
 const verticalBar = css`
     ${middle};
@@ -23,6 +36,36 @@ const verticalBar = css`
     cursor: col-resize;
 `;
 
+const snackbarContent = css`
+    color: ${tealish};
+    background-color: ${lightGrey};
+    
+    @media (min-width: 960px) {
+        min-width: 200px;
+    }    
+`;
+
+const ClipboardContent = styled('div')`
+    ${middle};
+    margin-left: 15px;
+    input {
+        display: block;
+        padding: 3px 0;
+        border: 1px solid #9b9b9b;
+        color: #9b9b9b;
+        background-color: transparent;
+        outline: none;
+        width: 100%;
+    }
+    
+    p {
+        color: #4b6073;
+        font-size: 13px;
+        margin: 4px 0 0;
+    }
+`;
+
+
 class Base extends Component {
     state = {
         width: {
@@ -30,6 +73,34 @@ class Base extends Component {
             detail: {value: 59, unit: '%'},
         },
         hold: false,
+        clipboard: {
+            open: false,
+            inputValue: '',
+        },
+    };
+
+    addNotification = (inputValue) => {
+        this.setState(state => ({
+            ...state,
+            clipboard: {
+                open: true,
+                inputValue,
+            },
+        }));
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState(state => ({
+            ...state,
+            clipboard: {
+                ...state.clipboard,
+                open: false,
+            },
+        }));
     };
 
     constructor(props) {
@@ -55,6 +126,7 @@ class Base extends Component {
                 newWidth = this.contentRef.current.offsetWidth;
 
             this.setState(state => ({
+                ...state,
                 width: {
                     list: {value: state.width.list.value * newWidth / oldWidth, unit: 'px'},
                     detail: {value: state.width.detail.value * newWidth / oldWidth, unit: 'px'},
@@ -65,18 +137,66 @@ class Base extends Component {
 
     move = (e) => {
         if (this.state.hold) {
-            this.setState({
+            this.setState(state => ({
+                ...state,
                 width: {
                     list: {value: e.screenX - margin, unit: 'px'},
                     detail: {value: e.currentTarget.offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
                 },
-            });
+            }));
         }
     };
 
-    mouseDown = () => this.setState({hold: true});
+    mouseDown = () => this.setState(state => ({
+        ...state,
+        hold: true,
+    }));
 
-    mouseUp = () => this.setState({hold: false});
+    mouseUp = () => {
+        if (this.state.hold) {
+            this.setState(state => ({
+                ...state,
+                hold: false,
+            }));
+        }
+    };
+
+    filterUp = (o) => {
+        const {setSearchState, selectedItem, model} = this.props;
+
+        const newSelectedItem = [
+            ...selectedItem,
+            // This is the -OR- case
+            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
+            //     parent: '-OR-',
+            //     isLogic: true,
+            //     uuid: uuidv4(),
+            // }] : []),
+            {
+                parent: model,
+                child: `name:${o}`,
+                isLogic: false,
+                uuid: uuidv4(),
+            }];
+
+        setSearchState({
+            isParent: true,
+            inputValue: '',
+            selectedItem: newSelectedItem,
+            item: o.name,
+            toUpdate: true,
+        });
+    };
+
+    downloadFile = () => {
+        // we need to act as a proxy as we need to pass the version for downloading th efile
+
+        const {fetchFile, item, download: {address, filename}} = this.props;
+
+        const url = address.reduce((p, c) => p[c], item);
+
+        fetchFile({url, filename});
+    };
 
     list = () => css`
         ${middle};
@@ -100,39 +220,104 @@ class Base extends Component {
         ` : ''}
     `;
 
+
     render() {
         const {selected, actions, model} = this.props;
 
         return (
-            <div ref={this.contentRef} onMouseMove={this.move} className={this.content()}>
-                <List className={this.list()} model={model} actions={actions} />
+            <div ref={this.contentRef} onMouseMove={this.move} onMouseUp={this.mouseUp} className={this.content()}>
+                <List
+                    className={this.list()}
+                    model={model}
+                    actions={actions}
+                    filterUp={this.filterUp}
+                    downloadFile={this.downloadFile}
+                    addNotification={this.addNotification}
+                />
                 {selected && (
                     <Fragment>
                         <div
                             onMouseDown={this.mouseDown}
-                            onMouseUp={this.mouseUp}
                             className={verticalBar}
                         />
-                        <Detail className={this.detail()} model={model} actions={actions} />
-                    </Fragment>)}
+                        <Detail
+                            className={this.detail()}
+                            model={model}
+                            actions={actions}
+                            filterUp={this.filterUp}
+                            downloadFile={this.downloadFile}
+                            addNotification={this.addNotification}
+                        />
+                    </Fragment>)
+                }
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    open={this.state.clipboard.open}
+                    onClose={this.handleClose}
+                    autoHideDuration={2000}
+                >
+                    <SnackbarContent
+                        className={snackbarContent}
+                        message={(
+                            <div>
+                                <Check color={tealish} className={css`${middle}`}/>
+                                <ClipboardContent>
+                                    <input disabled value={this.state.clipboard.inputValue}/>
+                                    <p>
+                                        {`${capitalize(model)}'s key successfully copied to clipboard!`}
+                                    </p>
+                                </ClipboardContent>
+                            </div>)
+                        }
+                    />
+                </Snackbar>
             </div>);
     }
 }
 
+const noop = () => {
+};
+
 Base.defaultProps = {
     selected: null,
+    selectedItem: [],
+    item: null,
+    setSearchState: noop,
+    fetchFile: noop,
 };
 
 Base.propTypes = {
     selected: PropTypes.string,
     actions: PropTypes.shape({}).isRequired,
     model: PropTypes.string.isRequired,
+    item: PropTypes.shape({
+        key: PropTypes.string,
+        descriptionStorageAddress: PropTypes.string,
+        description: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.shape({}),
+        ]),
+    }),
+    selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
+    setSearchState: PropTypes.func,
+    fetchFile: PropTypes.func,
 };
 
-const mapStateToProps = (state, {model, actions}) => ({
+const mapStateToProps = (state, {model, actions, download}) => ({
     selected: state[model].list.selected,
+    selectedItem: state.search.selectedItem,
     model,
     actions,
+    download,
+    item: getItem(state, model),
 });
 
-export default connect(mapStateToProps)(Base);
+const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
+    setSearchState: searchActions.state.set,
+    fetchFile: actions.item.file.request,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Base);

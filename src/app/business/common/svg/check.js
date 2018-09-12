@@ -2,28 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Check = ({
-                  className, width, height, color, backgroundColor,
+                  className, width, height, color, ...props
               }) => (
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width={width}
-                      height={width}
-                      viewBox="0 0 20 20"
+                      height={height}
+                      viewBox="0 0 24 24"
                       className={className}
+                      {...props}
                   >
-                      <g stroke={color} strokeWidth="2.3" fill={backgroundColor}>
-                          <circle cx="10" cy="10" r="8.5" strokeWidth="1" />
-                          <path d="M5.2,10 8.5,13.4 14.8,7.2" />
+                      <g fill={color} fillRule="evenodd">
+                          <path d="M20 11.076a1 1 0 1 1 2 0v.93a11 11 0 1 1-6.523-10.053 1 1 0 1 1-.814 1.827A9 9 0 1 0 20 12.006v-.93zm-9 1.516L21.293 2.3a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-3-3A1 1 0 0 1 8.707 10.3L11 12.592z"/>
                       </g>
                   </svg>
 );
 
 Check.defaultProps = {
     className: '',
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     color: '#28a745',
-    backgroundColor: '#fff',
 };
 
 Check.propTypes = {
@@ -31,7 +30,6 @@ Check.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
     color: PropTypes.string,
-    backgroundColor: PropTypes.string,
 };
 
 export default Check;

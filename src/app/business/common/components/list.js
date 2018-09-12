@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import styled, {css} from 'react-emotion';
-import uuidv4 from 'uuid/v4';
 import {PulseLoader} from 'react-spinners';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 import Popover from '@material-ui/core/Popover';
 
-import searchActions from '../../search/actions';
 
 import {coolBlue} from '../../../../../assets/css/variables/index';
 
-import FilterUp from '../svg/filter-up';
 import More from '../svg/more-vertical';
 import {getOrderedResults} from '../selector';
 import Permission from '../svg/permission';
@@ -74,11 +72,13 @@ const Actions = styled('div')`
 `;
 
 const PopList = styled('div')`
-    padding: 15px;
     list-style: none;
     margin: 0;
     li { 
         cursor: pointer;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eeeeee;
+        font-size: 13px;
         
         span, svg {
             display: inline-block;
@@ -94,6 +94,7 @@ export class L extends Component {
         popover: {
             open: false,
             anchorEl: null,
+            item: null,
         },
     };
 
@@ -105,10 +106,10 @@ export class L extends Component {
         }
     }
 
-    setSelected = key => () => {
+    setSelected = item => () => {
         const {setSelected} = this.props;
 
-        setSelected(key);
+        setSelected(item);
     };
 
     isSelected = (key) => {
@@ -134,34 +135,33 @@ export class L extends Component {
     };
 
 
-    filterUp = o => (e) => {
+    filterUp = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const {setSearchState, selectedItem, model} = this.props;
+        this.props.filterUp(this.state.popover.item.name);
 
-        const newSelectedItem = [
-            ...selectedItem,
-            // This is the -OR- case
-            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
-            //     parent: '-OR-',
-            //     isLogic: true,
-            //     uuid: uuidv4(),
-            // }] : []),
-            {
-                parent: model,
-                child: `name:${o.name}`,
-                isLogic: false,
-                uuid: uuidv4(),
-            }];
+        this.popoverHandleClose();
+    };
 
-        setSearchState({
-            isParent: true,
-            inputValue: '',
-            selectedItem: newSelectedItem,
-            item: o.name,
-            toUpdate: true,
-        });
+    downloadFile = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const {downloadFile} = this.props;
+
+        downloadFile();
+
+        this.popoverHandleClose();
+    };
+
+    addNotification = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const {addNotification} = this.props;
+
+        addNotification(this.state.popover.item.key);
 
         this.popoverHandleClose();
     };
@@ -175,6 +175,7 @@ export class L extends Component {
             popover: {
                 open: true,
                 anchorEl: e.currentTarget,
+                item: o,
             },
         });
         e.persist();
@@ -185,6 +186,7 @@ export class L extends Component {
             popover: {
                 open: false,
                 anchorEl: null,
+                item: null,
             },
         }));
     };
@@ -206,39 +208,19 @@ export class L extends Component {
                         </span>
                     </Sort>
                 </Top>
-                {loading && <PulseLoader size={6} color={coolBlue} />}
+                {loading && <PulseLoader size={6} color={coolBlue}/>}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items
                     </p>
                 )}
                 {init && !loading && !!results.length
-                && (
-                    results.map((o, i) => (
+                && (results.map((o, i) => (
                         <Group key={i}>
                             {!!o.length && o.map(o => (
-                                <Item key={o.key} onClick={this.setSelected(o.key)} className={this.item(o.key)}>
+                                <Item key={o.key} onClick={this.setSelected(o)} className={this.item(o.key)}>
                                     <Actions>
                                         <More height={16} onClick={this.more(o)}/>
-                                        <Popover
-                                            open={this.state.popover.open}
-                                            anchorEl={this.state.popover.anchorEl}
-                                            onClose={this.popoverHandleClose}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'left',
-                                            }}
-                                        >
-                                            <PopList>
-                                                <li onClick={this.filterUp(o)}>
-                                                    <FilterUp /><span>Add as a filter</span>
-                                                </li>
-                                            </PopList>
-                                        </Popover>
                                     </Actions>
                                     <h4 className={this.title(o.key)}>
                                         {o.name}
@@ -246,12 +228,12 @@ export class L extends Component {
                                     <Content>
                                         {o.permissions === 'all' && (
                                             <Fragment>
-                                                <Permission width={8} height={8} />
+                                                <Permission width={8} height={8}/>
                                             </Fragment>)
                                         }
                                         <Desc>
                                             {o.metrics && (
-                                            <span>
+                                                <span>
                                                 {`Metric: ${o.metrics.name}`}
                                             </span>)
                                             }
@@ -261,32 +243,48 @@ export class L extends Component {
                                 </Item>
                             ))}
                             {!o.length && (
-                            <span>
-                                No items for this filter group
-                            </span>)}
-                        </Group>
-                    ))
+                                <span>
+                            No items for this filter group
+                        </span>)}
+                        </Group>))
                 )}
+                <Popover
+                    open={this.state.popover.open}
+                    anchorEl={this.state.popover.anchorEl}
+                    onClose={this.popoverHandleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    <PopList>
+                        <li onClick={this.filterUp}>
+                            <span>
+                                Add as a filter
+                            </span>
+                        </li>
+                        <li>
+                            <CopyToClipboard text={this.state.popover.item ? this.state.popover.item.key : ''}>
+                                <span onClick={this.addNotification}>
+                                    {`Copy ${model}'s key to clipboard`}
+                                </span>
+                            </CopyToClipboard>
+                        </li>
+                        <li onClick={this.downloadFile}>
+                            <span>
+                                Download the metrics
+                            </span>
+                        </li>
+                    </PopList>
+                </Popover>
             </div>
         );
     }
 }
-
-const mapStateToProps = (state, {model}) => ({
-    selectedItem: state.search.selectedItem,
-    init: state[model].list.init,
-    loading: state[model].list.loading,
-    results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
-    order: state[model].order,
-});
-
-const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    fetchList: actions.list.request,
-    setSelected: actions.list.selected,
-    setOrder: actions.order.set,
-    setSearchState: searchActions.state.set,
-}, dispatch);
 
 const noop = () => {
 };
@@ -298,12 +296,13 @@ L.defaultProps = {
     selected: '',
     order: {by: '', direction: 'asc'},
     className: '',
-    selectedItem: [],
     model: '',
     setSelected: noop,
     setOrder: noop,
-    setSearchState: noop,
     fetchList: noop,
+    filterUp: noop,
+    downloadFile: noop,
+    addNotification: noop,
 };
 
 L.propTypes = {
@@ -313,12 +312,30 @@ L.propTypes = {
     selected: PropTypes.string,
     order: PropTypes.shape({}),
     className: PropTypes.string,
-    selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     model: PropTypes.string,
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,
-    setSearchState: PropTypes.func,
     fetchList: PropTypes.func,
+    filterUp: PropTypes.func,
+    downloadFile: PropTypes.func,
+    addNotification: PropTypes.func,
 };
+
+const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}) => ({
+    init: state[model].list.init,
+    loading: state[model].list.loading,
+    results: getOrderedResults(state, model),
+    selected: state[model].list.selected,
+    order: state[model].order,
+    filterUp,
+    downloadFile,
+    addNotification,
+});
+
+const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
+    fetchList: actions.list.request,
+    setSelected: actions.list.selected,
+    setOrder: actions.order.set,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(L);

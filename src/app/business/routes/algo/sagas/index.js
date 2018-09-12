@@ -5,6 +5,7 @@ takeLatest, takeEvery, all, select, call, put,
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas';
+import {fetchRaw} from "../../../../entities/fetchEntities";
 
 function* fetchList(request) {
     const state = yield select();
@@ -17,8 +18,19 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const state = yield select();
 
-    if (!state.algo.item.results.find(o => o.pkhash === payload)) {
-        yield put(actions.item.request({id: payload, get_parameters: {}}));
+    if (!state.algo.item.results.find(o => o.pkhash === payload.key)) {
+        yield put(actions.item.request({id: payload.key, get_parameters: {}}));
+    }
+
+    // load description every time, should we cache it?
+    yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
+}
+
+function* fetchItemDescriptionSaga({payload: {id, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
+
+    if (res && status === 200) {
+        yield put(actions.item.description.success({id, desc: res}));
     }
 }
 
@@ -31,6 +43,8 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
+
+        takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
     ]);
 };
 

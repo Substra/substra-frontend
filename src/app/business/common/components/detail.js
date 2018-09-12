@@ -6,15 +6,15 @@ import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import {Snackbar, SnackbarContent} from '@material-ui/core';
-import {tealish} from '../../../../../assets/css/variables';
 
 import {getItem} from '../selector';
 
 import Search from '../svg/search';
 import Permission from '../svg/permission';
-import Check from '../svg/check';
 import Clipboard from '../svg/clipboard';
+import CopySimple from '../svg/copy-simple';
+import DownloadSimple from '../svg/download-simple';
+import FilterUp from '../svg/filter-up';
 
 
 const middle = css`
@@ -79,61 +79,44 @@ const Right = styled('div')`
     float: right;
 `;
 
-const SnackbarMessage = styled('div')`
-    svg, p {
-        ${middle};
-    }
-    
-    p { margin-left: 15px; }
+const icon = css`
+    cursor: pointer;
+    padding-right: 13px;
 `;
 
-const lightGrey = '#fafafa';
-
-const snackbarContent = css`
-    color: ${tealish};
-    background-color: ${lightGrey};
-    
-    @media (min-width: 960px) {
-        min-width: 200px;
-    }    
-`;
 
 class Detail extends Component {
-    state = {
-        open: false,
+
+
+    // TODO, manage other entities
+    downloadFile = (e) => {
+        // we need to act as a proxy as we need to pass the version for downloading th efile
+
+        const {downloadFile} = this.props;
+
+        downloadFile();
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // load description from outside EVERY TIME (no cache, no memory consumption, but high requests)
-        // TODO : when do we put this in cache?
+    addNotification = key => (e) => {
+        const {addNotification} = this.props;
 
-        if (this.props.item !== prevProps.item) {
-            this.props.fetchDescription({
-                id: this.props.item.key,
-                url: this.props.item.description,
-            });
-        }
-    }
-
-    addNotification = () => {
-        this.setState({open: true});
+        addNotification(key);
     };
 
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+    filterUp = o => (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-        this.setState({open: false});
+        this.props.filterUp(o);
     };
 
     render() {
-        const {item, className} = this.props;
+        const {item, className, model} = this.props;
 
         return (
             <Content className={className}>
                 <Top>
-                    <Search width={14} height={14} className={search} />
+                    <Search width={14} height={14} className={search}/>
                     <H5>
                         {item ? item.name : ''}
                     </H5>
@@ -141,7 +124,7 @@ class Detail extends Component {
                 {item && (
                     <Item>
                         <Section>
-                            <Clipboard className={clipboard} width={15} />
+                            <Clipboard className={clipboard} width={15}/>
                             <div className={idText}>
                                 <span className={id}>
                                     {'ID: '}
@@ -149,38 +132,24 @@ class Detail extends Component {
                                 {item.key}
                             </div>
                             <Right>
+                                <DownloadSimple
+                                    width={22}
+                                    height={22}
+                                    onClick={this.downloadFile}
+                                    className={icon}
+                                />
                                 <CopyToClipboard text={item.key}>
-                                    <span onClick={this.addNotification}>
-                                        Copy
+                                    <span onClick={this.addNotification(item.key)}>
+                                        <CopySimple width={22} height={22} className={icon}/>
                                     </span>
                                 </CopyToClipboard>
-                                <Snackbar
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    }}
-                                    open={this.state.open}
-                                    onClose={this.handleClose}
-                                    autoHideDuration={2000000}
-                                >
-                                    <SnackbarContent
-                                        className={snackbarContent}
-                                        message={(
-                                            <SnackbarMessage>
-                                                <Check color={tealish} backgroundColor={lightGrey} />
-                                                <p>
-                                                    Copied to clipboard!
-                                                </p>
-                                            </SnackbarMessage>)
-                                        }
-                                    />
-                                </Snackbar>
+                                <FilterUp onClick={this.filterUp(item.name)} className={icon}/>
                             </Right>
                         </Section>
                         <Section>
                             {item.permissions === 'all' && (
                                 <Fragment>
-                                    <Permission width={13} height={13} className={permission} />
+                                    <Permission width={13} height={13} className={permission}/>
                                     <span>
                                         {': Open to all'}
                                     </span>
@@ -189,7 +158,7 @@ class Detail extends Component {
                         </Section>
                         {item.desc && (
                             <Section>
-                                <ReactMarkdown source={item.desc} />
+                                <ReactMarkdown source={item.desc}/>
                             </Section>
                         )}
                     </Item>)}
@@ -204,24 +173,35 @@ const noop = () => {
 Detail.defaultProps = {
     item: null,
     className: '',
-    fetchDescription: noop,
+    filterUp: noop,
+    downloadFile: noop,
+    addNotification: noop,
 };
 
 Detail.propTypes = {
     item: PropTypes.shape({
         key: PropTypes.string,
         descriptionStorageAddress: PropTypes.string,
+        description: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.shape({}),
+        ]),
     }),
     className: PropTypes.string,
-    fetchDescription: PropTypes.func,
+    model: PropTypes.string.isRequired,
+    downloadFile: PropTypes.func,
+    filterUp: PropTypes.func,
+    addNotification: PropTypes.func,
 };
 
-const mapStateToProps = (state, {model}) => ({
+const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}) => ({
     item: getItem(state, model),
+    filterUp,
+    downloadFile,
+    addNotification,
 });
 
-const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    fetchDescription: actions.item.description.request,
-}, dispatch);
+const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({}, dispatch);
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['item', 'className'])(Detail));

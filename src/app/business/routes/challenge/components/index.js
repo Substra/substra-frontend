@@ -3,6 +3,11 @@ import Base from '../../../common/components/base';
 
 import actions from '../actions';
 
-const Challenge = () => <Base actions={actions} model="challenge" />;
+const download = {
+    filename: 'metrics.py',
+    address: ['metrics', 'storageAddress'],
+};
+
+const Challenge = () => <Base actions={actions} model="challenge" download={download}/>;
 
 export default Challenge;
