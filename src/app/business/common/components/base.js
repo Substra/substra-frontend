@@ -3,7 +3,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled, {css} from 'react-emotion';
-import {capitalize} from 'lodash';
+import {capitalize, flatten} from 'lodash';
 import {connect} from 'react-redux';
 import uuidv4 from 'uuid/v4';
 import {bindActionCreators} from 'redux';
@@ -188,12 +188,14 @@ class Base extends Component {
         });
     };
 
-    downloadFile = () => {
+    downloadFile = (o) => {
         // we need to act as a proxy as we need to pass the version for downloading th efile
 
-        const {fetchFile, item, download: {address, filename}} = this.props;
+        const {fetchFile, item, results, download: {address, filename}} = this.props;
 
-        const url = address.reduce((p, c) => p[c], item);
+        const object = item || flatten(results).find(x => x.key === o);
+
+        const url = object ? address.reduce((p, c) => p[c], object) : '';
 
         fetchFile({url, filename});
     };
@@ -288,6 +290,8 @@ Base.defaultProps = {
     item: null,
     setSearchState: noop,
     fetchFile: noop,
+    download: {},
+    results: [],
 };
 
 Base.propTypes = {
@@ -302,6 +306,11 @@ Base.propTypes = {
             PropTypes.shape({}),
         ]),
     }),
+    download: PropTypes.shape({
+        address: PropTypes.arrayOf(PropTypes.string),
+        filename: PropTypes.string,
+    }),
+    results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     setSearchState: PropTypes.func,
     fetchFile: PropTypes.func,
@@ -309,6 +318,7 @@ Base.propTypes = {
 
 const mapStateToProps = (state, {model, actions, download}) => ({
     selected: state[model].list.selected,
+    results: state[model].list.results,
     selectedItem: state.search.selectedItem,
     model,
     actions,

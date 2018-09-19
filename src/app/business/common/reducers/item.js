@@ -1,6 +1,7 @@
 const initialState = {
     init: false,
     loading: false,
+    descLoading: false,
     error: null,
     results: [],
 };
@@ -30,7 +31,11 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 error: payload,
                 loading: false,
             };
-
+        case actionTypes.item.description.REQUEST:
+            return {
+                ...state,
+                descLoading: true,
+            };
         case actionTypes.item.description.SUCCESS:
             return {
                 ...state,
@@ -39,8 +44,12 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                     ...p,
                     ...(c.pkhash === payload.id ? [{...c, desc: payload.desc}] : [c]),
                 ], []),
-                error: false,
-                loading: false,
+                descLoading: false,
+            };
+        case actionTypes.item.description.FAILURE:
+            return {
+                ...state,
+                descLoading: false,
             };
         default:
             return state;

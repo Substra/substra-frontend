@@ -20,15 +20,25 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
-function* fetchDetail({payload}) {
+function* fetchItem({payload}) {
+    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
+        payload: {
+            id: payload.key,
+            get_parameters: {},
+        },
+    });
+
+    if (item) {
+        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
+    }
+}
+
+function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.dataset.item.results.find(o => o.pkhash === payload.key)) {
-        yield put(actions.item.request({id: payload.key, get_parameters: {}}));
+    if (!state.dataset.item.results.find(o => o.pkhash === request.payload.key)) {
+        yield fetchItem(request);
     }
-
-    // load description every time, should we cache it?
-    yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
 }
 
 function* fetchItemDescriptionSaga({payload: {id, url}}) {
@@ -55,7 +65,7 @@ function* fetchItemFileSaga({payload: {url}}) {
             return response.text().then(result => Promise.reject(new Error(result)));
         }
 
-        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/'/g, '');
+        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
 
         return response.blob();
     }).then((res) => {
@@ -70,7 +80,7 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
-        takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
+        takeEvery(actionTypes.item.REQUEST, fetchItem),
 
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
 

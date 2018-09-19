@@ -6,6 +6,7 @@ import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {PulseLoader} from 'react-spinners';
 
 import {getItem} from '../selector';
 
@@ -15,6 +16,8 @@ import Clipboard from '../svg/clipboard';
 import CopySimple from '../svg/copy-simple';
 import DownloadSimple from '../svg/download-simple';
 import FilterUp from '../svg/filter-up';
+
+import {coolBlue} from '../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -111,7 +114,7 @@ class Detail extends Component {
     };
 
     render() {
-        const {item, className, model} = this.props;
+        const {item, className, model, descLoading} = this.props;
 
         return (
             <Content className={className}>
@@ -156,7 +159,8 @@ class Detail extends Component {
                                 </Fragment>)
                             }
                         </Section>
-                        {item.desc && (
+                        {descLoading && <PulseLoader size={6} color={coolBlue}/>}
+                        {!descLoading && item.desc && (
                             <Section>
                                 <ReactMarkdown source={item.desc}/>
                             </Section>
@@ -196,6 +200,7 @@ Detail.propTypes = {
 
 const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}) => ({
     item: getItem(state, model),
+    descLoading: state[model].item.descLoading,
     filterUp,
     downloadFile,
     addNotification,
@@ -204,4 +209,4 @@ const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification}
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({}, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['item', 'className'])(Detail));
+export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));

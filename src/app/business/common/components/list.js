@@ -148,13 +148,13 @@ export class L extends Component {
         this.popoverHandleClose();
     };
 
-    downloadFile = (e) => {
+    downloadFile = o => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         const {downloadFile} = this.props;
 
-        downloadFile();
+        downloadFile(o);
 
         this.popoverHandleClose();
     };
@@ -278,7 +278,7 @@ export class L extends Component {
                                 </span>
                             </CopyToClipboard>
                         </li>
-                        <li onClick={this.downloadFile}>
+                        <li onClick={this.downloadFile(this.state.popover.item ? this.state.popover.item.key : '')}>
                             <span>
                                 {download.text}
                             </span>
@@ -301,6 +301,7 @@ L.defaultProps = {
     order: {by: '', direction: 'asc'},
     className: '',
     model: '',
+    download: {},
     setSelected: noop,
     setOrder: noop,
     fetchList: noop,
@@ -317,6 +318,10 @@ L.propTypes = {
     order: PropTypes.shape({}),
     className: PropTypes.string,
     model: PropTypes.string,
+    download: PropTypes.shape({
+        address: PropTypes.arrayOf(PropTypes.string),
+        filename: PropTypes.string,
+    }),
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,
     fetchList: PropTypes.func,
