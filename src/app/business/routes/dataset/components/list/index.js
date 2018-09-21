@@ -2,14 +2,14 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {isArray} from 'lodash';
 
-import {L} from '../../../common/components/list';
-import {getOrderedResults} from '../../model/selector';
-import {getItem} from '../../../common/selector';
+import {L} from '../../../../common/components/list/index';
+import {getOrderedResults} from '../../../model/selector';
+import {getItem} from '../../../../common/selector';
 
 import Popover from './popover';
 
 // update addNotification, more
-class List extends L {
+class Index extends L {
     addNotification = (key, text) => (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -76,4 +76,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

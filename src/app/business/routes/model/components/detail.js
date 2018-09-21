@@ -1,19 +1,10 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
-import ReactMarkdown from 'react-markdown';
-import {PulseLoader} from 'react-spinners';
 
 import Search from '../../../common/svg/search';
-import Permission from '../../../common/svg/permission';
-import Clipboard from '../../../common/svg/clipboard';
-import CopySimple from '../../../common/svg/copy-simple';
-import DownloadSimple from '../../../common/svg/download-simple';
-import FilterUp from '../../../common/svg/filter-up';
-
-import {coolBlue} from '../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -23,10 +14,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Section = styled('div')`
-    margin: 8px 0;
 `;
 
 const Top = styled('div')`
@@ -46,42 +33,6 @@ const H5 = styled('h5')`
 
 const search = css`
     ${middle};
-`;
-
-const Item = styled('div')`
-    font-size: 12px;
-    padding: 9px 33px;
-`;
-
-const permission = css`
-    ${middle};
-    padding-right: 10px;
-    
-    & + span {
-        ${middle};        
-    }
-`;
-
-const clipboard = css`
-    ${middle};
-    padding-right: 6px;
-`;
-
-const idText = css`
-    ${middle};
-`;
-
-const id = css`
-    font-weight: bold;
-`;
-
-const Right = styled('div')`
-    float: right;
-`;
-
-const icon = css`
-    cursor: pointer;
-    padding-right: 13px;
 `;
 
 
@@ -107,7 +58,7 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, descLoading,
+            className,
         } = this.props;
 
         return (
@@ -115,49 +66,10 @@ class Detail extends Component {
                 <Top>
                     <Search width={14} height={14} className={search}/>
                     <H5>
-                        {item ? item.name : ''}
+                        overview
                     </H5>
                 </Top>
-                {item && (
-                    <Item>
-                        <Section>
-                            <Clipboard className={clipboard} width={15}/>
-                            <div className={idText}>
-                                <span className={id}>
-                                    {'ID: '}
-                                </span>
-                                {item.key}
-                            </div>
-                            <Right>
-                                <DownloadSimple
-                                    width={22}
-                                    height={22}
-                                    onClick={this.downloadFile}
-                                    className={icon}
-                                />
-                                <span onClick={this.addNotification(item.key)}>
-                                    <CopySimple width={22} height={22} className={icon}/>
-                                </span>
-                                <FilterUp onClick={this.filterUp(item.name)} className={icon}/>
-                            </Right>
-                        </Section>
-                        <Section>
-                            {item.permissions === 'all' && (
-                                <Fragment>
-                                    <Permission width={13} height={13} className={permission}/>
-                                    <span>
-                                        {': Open to all'}
-                                    </span>
-                                </Fragment>)
-                            }
-                        </Section>
-                        {descLoading && <PulseLoader size={6} color={coolBlue}/>}
-                        {!descLoading && item.desc && (
-                            <Section>
-                                <ReactMarkdown source={item.desc}/>
-                            </Section>
-                        )}
-                    </Item>)}
+                <h1>display graph</h1>
             </Content>
         );
     }
@@ -167,7 +79,6 @@ const noop = () => {
 };
 
 Detail.defaultProps = {
-    item: null,
     className: '',
     filterUp: noop,
     downloadFile: noop,
@@ -175,16 +86,7 @@ Detail.defaultProps = {
 };
 
 Detail.propTypes = {
-    item: PropTypes.shape({
-        key: PropTypes.string,
-        descriptionStorageAddress: PropTypes.string,
-        description: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.shape({}),
-        ]),
-    }),
     className: PropTypes.string,
-    model: PropTypes.string.isRequired,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
@@ -193,12 +95,10 @@ Detail.propTypes = {
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification,
 }) => ({
-    item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
     filterUp,
     downloadFile,
     addNotification,
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['className'])(Detail));

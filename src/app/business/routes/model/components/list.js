@@ -12,7 +12,7 @@ import {L} from '../../../common/components/list';
 
 const Title = ({o}) =>
     <h4>
-        {o && o.algo ? o.algo.hash : ''}
+        test
     </h4>;
 
 const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification, download}) => ({

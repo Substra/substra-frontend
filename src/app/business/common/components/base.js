@@ -28,7 +28,7 @@ const margin = 20;
 const barSize = 1;
 const lightGrey = '#fafafa';
 
-const verticalBar = css`
+export const verticalBar = css`
     ${middle};
     width: ${barSize}px;
     background-color: #ccc;
@@ -64,8 +64,11 @@ const ClipboardContent = styled('div')`
     }
 `;
 
+const noop = () => {
+};
 
-const Base = (List = L, Detail = D) => {
+// Base is an High Order Component plus a Wrapper on its List, Detail Components
+export const Base = (List = L, Detail = D) => (Comp) => {
     class B extends Component {
         state = {
             width: {
@@ -78,19 +81,6 @@ const Base = (List = L, Detail = D) => {
                 inputValue: '',
                 text: '',
             },
-        };
-
-        addNotification = (inputValue, text) => {
-            copy(inputValue);
-
-            this.setState(state => ({
-                ...state,
-                clipboard: {
-                    open: true,
-                    inputValue,
-                    text,
-                },
-            }));
         };
 
         handleClose = (event, reason) => {
@@ -172,6 +162,19 @@ const Base = (List = L, Detail = D) => {
             }
         };
 
+        addNotification = (inputValue, text) => {
+            copy(inputValue);
+
+            this.setState(state => ({
+                ...state,
+                clipboard: {
+                    open: true,
+                    inputValue,
+                    text,
+                },
+            }));
+        };
+
         filterUp = (o) => {
             const {setSearchState, selectedItem, model} = this.props;
 
@@ -194,7 +197,7 @@ const Base = (List = L, Detail = D) => {
                 isParent: true,
                 inputValue: '',
                 selectedItem: newSelectedItem,
-                item: o.name,
+                item: o,
                 toUpdate: true,
             });
         };
@@ -215,27 +218,26 @@ const Base = (List = L, Detail = D) => {
         };
 
         list = () => css`
-        ${middle};
-        width: ${this.props.selected ? `${this.state.width.list.value}${this.state.width.list.unit}` : '100%'};
-        overflow-x: auto;
-    `;
+                ${middle};
+                width: ${this.props.selected ? `${this.state.width.list.value}${this.state.width.list.unit}` : '100%'};
+                overflow-x: auto;
+            `;
 
         detail = () => css`
-        ${middle};
-        width: ${this.props.selected ? `${this.state.width.detail.value}${this.state.width.detail.unit}` : '100%'};
-        overflow-x: auto;
-    `;
+                ${middle};
+                width: ${this.props.selected ? `${this.state.width.detail.value}${this.state.width.detail.unit}` : '100%'};
+                overflow-x: auto;
+            `;
 
         content = () => css`
-        margin: 0 ${margin}px;
-        display: flex;
-        flex: 1;
-        ${this.state.hold ? `
-            cursor: col-resize;
-            user-select: none;
-        ` : ''}
-    `;
-
+                margin: 0 ${margin}px;
+                display: flex;
+                flex: 1;
+                ${this.state.hold ? `
+                    cursor: col-resize;
+                    user-select: none;
+                ` : ''}
+            `;
 
         render() {
             const {
@@ -244,8 +246,19 @@ const Base = (List = L, Detail = D) => {
 
             const {clipboard: {open, inputValue, text}} = this.state;
 
+            // is overrided to Low Component?
+            if (Comp) {
+                const newProps = {
+                    ...this.state,
+                    ...this,
+                };
+
+                return <Comp {...this.props} {...newProps}/>;
+            }
+
             return (
-                <div ref={this.contentRef} onMouseMove={this.move} onMouseUp={this.mouseUp} className={this.content()}>
+                <div ref={this.contentRef} onMouseMove={this.move} onMouseUp={this.mouseUp}
+                     className={this.content()}>
                     <List
                         className={this.list()}
                         model={model}
@@ -299,10 +312,6 @@ const Base = (List = L, Detail = D) => {
         }
     }
 
-    const noop = () => {
-    };
-
-
     B.defaultProps = {
         selected: null,
         selectedItem: [],
@@ -335,6 +344,11 @@ const Base = (List = L, Detail = D) => {
         fetchFile: PropTypes.func,
     };
 
+    return B;
+};
+
+// Basic redux mapping
+const ReduxBase = (B = Base()()) => { // no override on List/Detail, neither principal Component
     const mapStateToProps = (state, {model, actions, download}) => ({
         selected: state[model].list.selected,
         results: state[model].list.results,
@@ -350,8 +364,7 @@ const Base = (List = L, Detail = D) => {
         fetchFile: actions.item.file.request,
     }, dispatch);
 
-
     return connect(mapStateToProps, mapDispatchToProps)(B);
 };
 
-export default Base;
+export default ReduxBase;

@@ -1,12 +1,12 @@
 import React from 'react';
-import Base from '../../../common/components/base';
+import ReduxBase, {Base} from '../../../common/components/base';
 
 import actions from '../actions';
 
 import List from './list';
 import Detail from './detail';
 
-const DatasetBase = Base(List, Detail);
+const DatasetBase = ReduxBase(Base(List, Detail)());
 
 const download = {
     filename: 'opener.py',

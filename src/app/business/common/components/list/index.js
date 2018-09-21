@@ -140,8 +140,6 @@ export class L extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        console.log('addNotification original');
-
         const {addNotification} = this.props;
 
         addNotification(this.state.popover.item.key, text);
