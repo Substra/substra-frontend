@@ -4,16 +4,15 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import styled, {css} from 'react-emotion';
 import {PulseLoader} from 'react-spinners';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-import Popover from '@material-ui/core/Popover';
+import Popover from './popover';
+import Title from './title';
 
+import {coolBlue} from '../../../../../../assets/css/variables/index';
 
-import {coolBlue} from '../../../../../assets/css/variables/index';
-
-import More from '../svg/more-vertical';
-import {getOrderedResults} from '../selector';
-import Permission from '../svg/permission';
+import More from '../../svg/more-vertical';
+import {getItem, getOrderedResults} from '../../selector';
+import Permission from '../../svg/permission';
 
 
 const Top = styled('div')`
@@ -71,28 +70,6 @@ const Actions = styled('div')`
     }
 `;
 
-const PopList = styled('div')`
-    list-style: none;
-    margin: 0;
-    li { 
-        cursor: pointer;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eeeeee;
-        font-size: 13px;
-        
-        &:hover {
-            background-color: #f0f0ef;
-        }
-        
-        span, svg {
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        span { margin-left: 5px; }
-    }   
-`;
-
 export class L extends Component {
     state = {
         popover: {
@@ -126,10 +103,6 @@ export class L extends Component {
         border-left: 3px solid ${this.isSelected(key) ? '#edc20f' : 'transparent'};
     `;
 
-    title = key => css`
-        color: ${this.isSelected(key) ? '#edc20f' : 'inherit'};
-    `;
-
     createSortHandler = by => (e) => {
         const {order, setOrder} = this.props;
 
@@ -143,29 +116,35 @@ export class L extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.filterUp(this.state.popover.item.name);
+        const {filterUp} = this.props;
+        const {popover: {item: {name}}} = this.state;
+
+        filterUp(name);
 
         this.popoverHandleClose();
     };
 
-    downloadFile = o => (e) => {
+    downloadFile = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         const {downloadFile} = this.props;
+        const {popover: {item: {key}}} = this.state;
 
-        downloadFile(o);
+        downloadFile(key);
 
         this.popoverHandleClose();
     };
 
-    addNotification = (e) => {
+    addNotification = text => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
+        console.log('addNotification original');
+
         const {addNotification} = this.props;
 
-        addNotification(this.state.popover.item.key);
+        addNotification(this.state.popover.item.key, text);
 
         this.popoverHandleClose();
     };
@@ -198,7 +177,10 @@ export class L extends Component {
     render() {
         const {
             results, init, loading, order, model, className, download,
+            Title, Popover,
         } = this.props;
+
+        const {open, anchorEl} = this.state.popover;
 
         return (
             <div className={className}>
@@ -226,9 +208,7 @@ export class L extends Component {
                                     <Actions>
                                         <More height={16} onClick={this.more(o)}/>
                                     </Actions>
-                                    <h4 className={this.title(o.key)}>
-                                        {o.name}
-                                    </h4>
+                                    <Title o={o}/>
                                     <Content>
                                         {o.permissions === 'all' && (
                                             <Fragment>
@@ -238,8 +218,8 @@ export class L extends Component {
                                         <Desc>
                                             {o.metrics && (
                                                 <span>
-                                                {`Metric: ${o.metrics.name}`}
-                                            </span>)
+                                            {`Metric: ${o.metrics.name}`}
+                                        </span>)
                                             }
                                             {/* <span>{o.shortDescription}</span> */}
                                         </Desc>
@@ -248,43 +228,21 @@ export class L extends Component {
                             ))}
                             {!o.length && (
                                 <span>
-                            No items for this filter group
-                        </span>)}
+                                    No items for this filter group
+                                </span>)}
                         </Group>))
                 )}
                 <Popover
-                    open={this.state.popover.open}
-                    anchorEl={this.state.popover.anchorEl}
-                    onClose={this.popoverHandleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    <PopList>
-                        <li onClick={this.filterUp}>
-                            <span>
-                                Add as a filter
-                            </span>
-                        </li>
-                        <li>
-                            <CopyToClipboard text={this.state.popover.item ? this.state.popover.item.key : ''}>
-                                <span onClick={this.addNotification}>
-                                    {`Copy ${model}'s key to clipboard`}
-                                </span>
-                            </CopyToClipboard>
-                        </li>
-                        <li onClick={this.downloadFile(this.state.popover.item ? this.state.popover.item.key : '')}>
-                            <span>
-                                {download.text}
-                            </span>
-                        </li>
-                    </PopList>
-                </Popover>
+                    {...this.props}
+                    open={open}
+                    anchorEl={anchorEl}
+                    model={model}
+                    download={download}
+                    filterUp={this.filterUp}
+                    downloadFile={this.downloadFile}
+                    addNotification={this.addNotification}
+                    popoverHandleClose={this.popoverHandleClose}
+                />
             </div>
         );
     }
@@ -308,6 +266,8 @@ L.defaultProps = {
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
+    Title,
+    Popover,
 };
 
 L.propTypes = {
@@ -328,14 +288,19 @@ L.propTypes = {
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
     addNotification: PropTypes.func,
+    Title: PropTypes.func,
+    Popover: PropTypes.func,
 };
 
-const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification, download}) => ({
+const mapStateToProps = (state, {
+    model, filterUp, downloadFile, addNotification, download,
+}) => ({
     init: state[model].list.init,
     loading: state[model].list.loading,
     results: getOrderedResults(state, model),
     selected: state[model].list.selected,
     order: state[model].order,
+    item: getItem(state, model),
     filterUp,
     downloadFile,
     addNotification,
@@ -347,5 +312,6 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     setSelected: actions.list.selected,
     setOrder: actions.order.set,
 }, dispatch);
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(L);

@@ -1,14 +1,12 @@
 /* globals fetch */
 
-import {
-takeLatest, takeEvery, all, select, call, put,
-} from 'redux-saga/effects';
+import {all, call, put, select, takeEvery, takeLatest,} from 'redux-saga/effects';
 
 import {saveAs} from 'file-saver';
 
 import actions, {actionTypes} from '../actions';
-import {fetchListApi, fetchItemApi} from '../api';
-import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
+import {fetchItemApi, fetchListApi} from '../api';
+import {fetchItemSaga, fetchListSaga, fetchPersistentSaga} from '../../../common/sagas/index';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 
 
@@ -21,23 +19,25 @@ function* fetchList(request) {
 }
 
 function* fetchItem({payload}) {
-    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
+    return yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
         },
     });
-
-    if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
-    }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.dataset.item.results.find(o => o.pkhash === request.payload.key)) {
-        yield fetchItem(request);
+    let item = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+
+    if (!item) {
+        item = yield fetchItem(request);
+    }
+
+    if (item && !item.description.content) {
+        yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
     }
 }
 
@@ -50,7 +50,6 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
 }
 
 function* fetchItemFileSaga({payload: {url}}) {
-
     let status;
     let filename;
 
@@ -72,6 +71,7 @@ function* fetchItemFileSaga({payload: {url}}) {
         saveAs(res, filename);
     }, error => ({error, status}));
 }
+
 
 /* istanbul ignore next */
 const sagas = function* sagas() {

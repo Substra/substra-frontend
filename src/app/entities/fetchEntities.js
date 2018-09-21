@@ -43,13 +43,12 @@ export const fetchEntitiesFactory = path => (get_parameters, jwt) => {
     return fetchList(url, jwt);
 };
 
-export const fetchEntitiesByPathFactory = (path, view) => (get_parameters, jwt, id) => {
+export const fetchEntitiesByPathFactory = (path, view) => (get_parameters, id, jwt) => {
     const url = `${API_URL}/${path}/${id ? `${id}/` : ''}${view}/${!isEmpty(get_parameters)
         ? `?${queryString.stringify(get_parameters)}`
         : ''}`;
     return fetchList(url, jwt);
 };
-
 
 export const fetchRaw = (url, jwt) => {
     const headers = getHeaders(jwt);

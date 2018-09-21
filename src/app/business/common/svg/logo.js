@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Logo = ({className, width, height}) => (
+const Logo = ({className, width, height, props}) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
         className={className}
         viewBox="0 0 340 64"
+        {...props}
     >
         <g fill="none" fillRule="evenodd">
             <path

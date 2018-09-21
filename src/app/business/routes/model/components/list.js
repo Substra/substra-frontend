@@ -1,20 +1,32 @@
+import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {L as List} from '../../../common/components/list';
-
-
 // use custom selector
-import {getColumns, getOrderedResults} from '../selector';
+import {getItem} from '../../../common/selector';
+import {getOrderedResults} from '../selector';
 
 
-const mapStateToProps = (state, {model}) => ({
+import {L} from '../../../common/components/list';
+
+
+const Title = ({o}) =>
+    <h4>
+        {o && o.algo ? o.algo.hash : ''}
+    </h4>;
+
+const mapStateToProps = (state, {model, filterUp, downloadFile, addNotification, download}) => ({
     init: state[model].list.init,
     loading: state[model].list.loading,
     results: getOrderedResults(state, model),
     selected: state[model].list.selected,
     order: state[model].order,
-    columns: getColumns(state, model),
+    item: getItem(state, model),
+    filterUp,
+    downloadFile,
+    addNotification,
+    download,
+    Title,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
@@ -24,4 +36,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(L);

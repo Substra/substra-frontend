@@ -1,38 +1,19 @@
 import React from 'react';
-import styled, {css} from 'react-emotion';
+import Base from '../../../common/components/base';
 
-import List from './list';
-import Detail from '../../../common/components/detail';
 import actions from '../actions';
 
-const middle = css`
-    display: inline-block;
-    vertical-align: top;
-`;
+import List from './list';
+import Detail from './detail';
 
-const list = css`
-    ${middle};
-    width: 40%;
-    overflow-x: auto;
-    border-right: 1px solid #ccc;
-`;
+const ModelBase = Base(List, Detail);
 
-const detail = css`
-    ${middle};
-    width: 59%;
-    overflow-x: auto;
-`;
+const download = {
+    filename: 'model',
+    address: ['endModel', 'storageAddress'],
+    text: 'Download endModel',
+};
 
-const Content = styled('div')`
-    margin: 0 20px;
-`;
-
-const Model = () => (
-    <Content>
-        <List className={list} model="model" actions={actions} />
-        <Detail className={detail} model="model" actions={actions} />
-    </Content>
-);
-
+const Model = () => <ModelBase actions={actions} model="model" download={download} />;
 
 export default Model;

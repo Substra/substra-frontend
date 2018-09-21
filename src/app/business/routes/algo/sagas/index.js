@@ -48,7 +48,6 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
 }
 
 function* fetchItemFileSaga({payload: {url}}) {
-
     let status;
     let filename;
 

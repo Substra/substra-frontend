@@ -5,6 +5,7 @@
         "@material-ui/core": "1.5.1",
         "@material-ui/icons": "2.0.3",
         "babel-runtime": "6.26.0",
+        "copy-to-clipboard": "^3.0.8",
         "decode-uri-component": "^0.2.0",
         "diacritic": "^0.0.2",
         "downshift": "2.0.20",

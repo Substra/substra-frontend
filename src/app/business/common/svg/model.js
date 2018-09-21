@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Model = ({
-                  className, width, height, color,
+                  className, width, height, color, ...props
               }) => (
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +10,7 @@ const Model = ({
                       height={height}
                       viewBox="0 0 24 22"
                       className={className}
+                      {...props}
                   >
                       <g fill="none" fillRule="evenodd" stroke={color} transform="translate(1 1)">
                           <circle cx="11" cy="1.5" r="1.5" fill={color} />

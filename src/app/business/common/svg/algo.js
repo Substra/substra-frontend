@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Algo = ({
-                  className, width, height, color,
+                  className, width, height, color, ...props
               }) => (
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +10,7 @@ const Algo = ({
                       height={height}
                       viewBox="0 0 50 25"
                       className={className}
+                      {...props}
                   >
                       <g fill="none" fillRule="evenodd">
                           <path

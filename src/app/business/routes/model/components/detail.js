@@ -6,16 +6,14 @@ import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
 
-import {getItem} from '../selector';
+import Search from '../../../common/svg/search';
+import Permission from '../../../common/svg/permission';
+import Clipboard from '../../../common/svg/clipboard';
+import CopySimple from '../../../common/svg/copy-simple';
+import DownloadSimple from '../../../common/svg/download-simple';
+import FilterUp from '../../../common/svg/filter-up';
 
-import Search from '../svg/search';
-import Permission from '../svg/permission';
-import Clipboard from '../svg/clipboard';
-import CopySimple from '../svg/copy-simple';
-import DownloadSimple from '../svg/download-simple';
-import FilterUp from '../svg/filter-up';
-
-import {coolBlue} from '../../../../../assets/css/variables';
+import {coolBlue} from '../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -171,7 +169,6 @@ const noop = () => {
 Detail.defaultProps = {
     item: null,
     className: '',
-    descLoading: false,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -186,8 +183,8 @@ Detail.propTypes = {
             PropTypes.shape({}),
         ]),
     }),
-    descLoading: PropTypes.bool,
     className: PropTypes.string,
+    model: PropTypes.string.isRequired,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,

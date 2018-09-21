@@ -5,17 +5,20 @@ import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
+import {capitalize, isArray} from 'lodash';
 
-import {getItem} from '../selector';
+import Popover from '@material-ui/core/Popover';
 
-import Search from '../svg/search';
-import Permission from '../svg/permission';
-import Clipboard from '../svg/clipboard';
-import CopySimple from '../svg/copy-simple';
-import DownloadSimple from '../svg/download-simple';
-import FilterUp from '../svg/filter-up';
+import {getItem} from '../../../common/selector';
 
-import {coolBlue} from '../../../../../assets/css/variables';
+import Search from '../../../common/svg/search';
+import Permission from '../../../common/svg/permission';
+import Clipboard from '../../../common/svg/clipboard';
+import CopyDrop from '../../../common/svg/copy-drop';
+import DownloadSimple from '../../../common/svg/download-simple';
+import FilterUp from '../../../common/svg/filter-up';
+
+import {coolBlue} from '../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -86,18 +89,57 @@ const icon = css`
     padding-right: 13px;
 `;
 
+// TODO load from external file
+const Action = styled('span')`
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #f0f0ef;
+    }
+`;
+
+const PopList = styled('div')`
+    list-style: none;
+    margin: 0;
+`;
+
+const PopItem = styled('li')`
+    border-bottom: 1px solid #eeeeee;
+    font-size: 13px;   
+`;
+
+const popSubItem = css`
+    span {
+        padding: 5px 15px;
+    }
+`;
 
 class Detail extends Component {
+    state = {
+        popover: {
+            open: false,
+            anchorEl: null,
+            item: null,
+        },
+    };
+
     downloadFile = (e) => {
+        // we need to act as a proxy as we need to pass the version for downloading th efile
+
         const {downloadFile} = this.props;
 
         downloadFile();
     };
 
-    addNotification = key => (e) => {
-        const {addNotification} = this.props;
+    addNotification = (key, text) => (e) => {
+        const {addNotification, item} = this.props;
 
-        addNotification(key);
+        const inputValue = isArray(item[key]) ? item[key].join(',') : item[key];
+        addNotification(inputValue, text);
+
+        this.popoverHandleClose();
     };
 
     filterUp = o => (e) => {
@@ -107,9 +149,36 @@ class Detail extends Component {
         this.props.filterUp(o);
     };
 
+    copyMore = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const {item} = this.props;
+
+        // display menu
+        this.setState({
+            popover: {
+                open: true,
+                anchorEl: e.currentTarget,
+                item,
+            },
+        });
+        e.persist();
+    };
+
+    popoverHandleClose = () => {
+        this.setState(state => ({
+            popover: {
+                open: false,
+                anchorEl: null,
+                item: null,
+            },
+        }));
+    };
+
     render() {
         const {
-            item, className, descLoading,
+            item, className, model, descLoading,
         } = this.props;
 
         return (
@@ -137,8 +206,8 @@ class Detail extends Component {
                                     onClick={this.downloadFile}
                                     className={icon}
                                 />
-                                <span onClick={this.addNotification(item.key)}>
-                                    <CopySimple width={22} height={22} className={icon}/>
+                                <span onClick={this.copyMore}>
+                                    <CopyDrop width={22} height={22} className={icon}/>
                                 </span>
                                 <FilterUp onClick={this.filterUp(item.name)} className={icon}/>
                             </Right>
@@ -154,12 +223,40 @@ class Detail extends Component {
                             }
                         </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue}/>}
-                        {!descLoading && item.desc && (
+                        {!descLoading && item.description && (
                             <Section>
-                                <ReactMarkdown source={item.desc}/>
+                                <ReactMarkdown source={item.description.content}/>
                             </Section>
                         )}
                     </Item>)}
+                <Popover
+                    open={this.state.popover.open}
+                    anchorEl={this.state.popover.anchorEl}
+                    onClose={this.popoverHandleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    <PopList>
+                        <PopItem className={popSubItem}>
+                            <Action
+                                onClick={this.addNotification('key', `${capitalize(model)}'s key successfully copied to clipboard!`)}
+                            >
+                                {`Copy ${model}'s key to clipboard`}
+                            </Action>
+                            <Action
+                                onClick={this.addNotification('trainDataKeys', 'Datas\'s key successfully copied to clipboard!')}
+                            >
+                                Copy all datas' key to clipboard
+                            </Action>
+                        </PopItem>
+                    </PopList>
+                </Popover>
             </Content>
         );
     }
@@ -171,7 +268,6 @@ const noop = () => {
 Detail.defaultProps = {
     item: null,
     className: '',
-    descLoading: false,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -186,8 +282,8 @@ Detail.propTypes = {
             PropTypes.shape({}),
         ]),
     }),
-    descLoading: PropTypes.bool,
     className: PropTypes.string,
+    model: PropTypes.string.isRequired,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,

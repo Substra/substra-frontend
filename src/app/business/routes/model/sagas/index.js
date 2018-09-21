@@ -20,9 +20,7 @@ function* fetchDetail({payload}) {
     const state = yield select();
 
     if (!state.model.item.results.find(o => o.pkhash === payload)) {
-        const model = flatten(state.model.list.results).find(o => o.key === payload);
-
-        yield put(actions.item.request({id: model.endModel.hash, get_parameters: {}}));
+        yield put(actions.item.request({id: payload.endModel.hash, get_parameters: {}}));
     }
 }
 
@@ -30,7 +28,7 @@ function* fetchDetail({payload}) {
 const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchList),
-        takeLatest(actionTypes.list.SELECTED, fetchDetail),
+        // takeLatest(actionTypes.list.SELECTED, fetchDetail),
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
