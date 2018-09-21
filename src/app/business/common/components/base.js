@@ -140,14 +140,21 @@ const Base = (List = L, Detail = D) => {
         };
 
         move = (e) => {
+
             if (this.state.hold) {
-                this.setState(state => ({
-                    ...state,
-                    width: {
-                        list: {value: e.screenX - margin, unit: 'px'},
-                        detail: {value: e.currentTarget.offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
-                    },
-                }));
+                e.persist();
+
+                const offsetWidth = e.currentTarget.offsetWidth;
+
+                this.setState(state => {
+                    return {
+                        ...state,
+                        width: {
+                            list: {value: e.screenX - margin, unit: 'px'},
+                            detail: {value: offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
+                        },
+                    }
+                });
             }
         };
 
@@ -277,9 +284,9 @@ const Base = (List = L, Detail = D) => {
                             className={snackbarContent}
                             message={(
                                 <div>
-                                    <Check color={tealish} className={css`${middle}`} />
+                                    <Check color={tealish} className={css`${middle}`}/>
                                     <ClipboardContent>
-                                        <input disabled value={inputValue} />
+                                        <input disabled value={inputValue}/>
                                         <p>
                                             {text}
                                         </p>
