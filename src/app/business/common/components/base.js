@@ -67,7 +67,7 @@ const ClipboardContent = styled('div')`
 const noop = () => {
 };
 
-// Base is an High Order Component plus a Wrapper on its List, Detail Components
+// Base is an High Order Component plus a Wrapper on its List, Detail Components (we could have put List and Detail as props too)
 export const Base = (List = L, Detail = D) => (Comp) => {
     class B extends Component {
         state = {
