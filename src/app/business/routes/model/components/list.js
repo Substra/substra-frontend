@@ -7,7 +7,7 @@ import {getItem} from '../../../common/selector';
 import {getOrderedResults} from '../selector';
 
 
-import {L} from '../../../common/components/list';
+import {List} from '../../../common/components/list';
 
 
 const Title = ({o}) =>
@@ -36,4 +36,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(L);
+export default connect(mapStateToProps, mapDispatchToProps)(List);

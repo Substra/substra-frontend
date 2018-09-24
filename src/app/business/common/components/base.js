@@ -10,32 +10,33 @@ import {bindActionCreators} from 'redux';
 import copy from 'copy-to-clipboard';
 
 import {Snackbar, SnackbarContent} from '@material-ui/core';
+
 import searchActions from '../../search/actions';
 import {getItem} from '../selector';
 
+import List from './list';
+import Detail from './detail';
 import Check from '../svg/check';
 import {tealish} from '../../../../../assets/css/variables';
 
-import L from './list';
-import D from './detail';
-
-const middle = css`
+export const middle = css`
     display: inline-block;
     vertical-align: top;
 `;
 
 const margin = 20;
 const barSize = 1;
-const lightGrey = '#fafafa';
 
-const verticalBar = css`
+export const verticalBar = css`
     ${middle};
     width: ${barSize}px;
     background-color: #ccc;
     cursor: col-resize;
 `;
 
-const snackbarContent = css`
+const lightGrey = '#fafafa';
+
+export const snackbarContent = css`
     color: ${tealish};
     background-color: ${lightGrey};
     
@@ -44,7 +45,7 @@ const snackbarContent = css`
     }    
 `;
 
-const ClipboardContent = styled('div')`
+export const ClipboardContent = styled('div')`
     ${middle};
     margin-left: 15px;
     input {
@@ -64,169 +65,170 @@ const ClipboardContent = styled('div')`
     }
 `;
 
+export const anchorOrigin = {
+    vertical: 'bottom',
+    horizontal: 'left',
+};
 
-const Base = (List = L, Detail = D) => {
-    class B extends Component {
-        state = {
-            width: {
-                list: {value: 40, unit: '%'},
-                detail: {value: 59, unit: '%'},
-            },
-            hold: false,
+export class Base extends Component {
+    state = {
+        width: {
+            list: {value: 40, unit: '%'},
+            detail: {value: 59, unit: '%'},
+        },
+        hold: false,
+        clipboard: {
+            open: false,
+            inputValue: '',
+            text: '',
+        },
+    };
+
+    constructor(props) {
+        super(props);
+        this.contentRef = React.createRef();
+    }
+
+    componentWillMount() {
+        this.updateDimensions();
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState(state => ({
+            ...state,
             clipboard: {
+                ...state.clipboard,
                 open: false,
-                inputValue: '',
-                text: '',
             },
-        };
+        }));
+    };
 
-        addNotification = (inputValue, text) => {
-            copy(inputValue);
-
-            this.setState(state => ({
-                ...state,
-                clipboard: {
-                    open: true,
-                    inputValue,
-                    text,
-                },
-            }));
-        };
-
-        handleClose = (event, reason) => {
-            if (reason === 'clickaway') {
-                return;
-            }
+    updateDimensions = () => {
+        if (this.contentRef.current) {
+            const oldWidth = this.state.width.list.value + this.state.width.detail.value,
+                newWidth = this.contentRef.current.offsetWidth;
 
             this.setState(state => ({
                 ...state,
-                clipboard: {
-                    ...state.clipboard,
-                    open: false,
+                width: {
+                    list: {value: state.width.list.value * newWidth / oldWidth, unit: 'px'},
+                    detail: {value: state.width.detail.value * newWidth / oldWidth, unit: 'px'},
                 },
             }));
-        };
-
-        constructor(props) {
-            super(props);
-            this.contentRef = React.createRef();
         }
+    };
 
-        componentWillMount() {
-            this.updateDimensions();
-        }
+    move = (e) => {
+        if (this.state.hold) {
+            e.persist();
 
-        componentDidMount() {
-            window.addEventListener('resize', this.updateDimensions);
-        }
+            const offsetWidth = e.currentTarget.offsetWidth;
 
-        componentWillUnmount() {
-            window.removeEventListener('resize', this.updateDimensions);
-        }
-
-        updateDimensions = () => {
-            if (this.contentRef.current) {
-                const oldWidth = this.state.width.list.value + this.state.width.detail.value,
-                    newWidth = this.contentRef.current.offsetWidth;
-
-                this.setState(state => ({
+            this.setState(state => ({
                     ...state,
                     width: {
-                        list: {value: state.width.list.value * newWidth / oldWidth, unit: 'px'},
-                        detail: {value: state.width.detail.value * newWidth / oldWidth, unit: 'px'},
+                        list: {value: e.screenX - margin, unit: 'px'},
+                        detail: {value: offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
                     },
-                }));
-            }
-        };
+                }
+            ));
+        }
+    };
 
-        move = (e) => {
+    mouseDown = () => this.setState(state => ({
+        ...state,
+        hold: true,
+    }));
 
-            if (this.state.hold) {
-                e.persist();
+    mouseUp = () => {
+        if (this.state.hold) {
+            this.setState(state => ({
+                ...state,
+                hold: false,
+            }));
+        }
+    };
 
-                const offsetWidth = e.currentTarget.offsetWidth;
+    addNotification = (inputValue, text) => {
+        copy(inputValue);
 
-                this.setState(state => {
-                    return {
-                        ...state,
-                        width: {
-                            list: {value: e.screenX - margin, unit: 'px'},
-                            detail: {value: offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
-                        },
-                    }
-                });
-            }
-        };
-
-        mouseDown = () => this.setState(state => ({
+        this.setState(state => ({
             ...state,
-            hold: true,
+            clipboard: {
+                open: true,
+                inputValue,
+                text,
+            },
         }));
+    };
 
-        mouseUp = () => {
-            if (this.state.hold) {
-                this.setState(state => ({
-                    ...state,
-                    hold: false,
-                }));
-            }
-        };
+    filterUp = (o) => {
+        const {setSearchState, selectedItem, model} = this.props;
 
-        filterUp = (o) => {
-            const {setSearchState, selectedItem, model} = this.props;
+        const newSelectedItem = [
+            ...selectedItem,
+            // This is the -OR- case
+            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
+            //     parent: '-OR-',
+            //     isLogic: true,
+            //     uuid: uuidv4(),
+            // }] : []),
+            {
+                parent: model,
+                child: `name:${o}`,
+                isLogic: false,
+                uuid: uuidv4(),
+            }];
 
-            const newSelectedItem = [
-                ...selectedItem,
-                // This is the -OR- case
-                // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
-                //     parent: '-OR-',
-                //     isLogic: true,
-                //     uuid: uuidv4(),
-                // }] : []),
-                {
-                    parent: model,
-                    child: `name:${o}`,
-                    isLogic: false,
-                    uuid: uuidv4(),
-                }];
+        setSearchState({
+            isParent: true,
+            inputValue: '',
+            selectedItem: newSelectedItem,
+            item: o,
+            toUpdate: true,
+        });
+    };
 
-            setSearchState({
-                isParent: true,
-                inputValue: '',
-                selectedItem: newSelectedItem,
-                item: o.name,
-                toUpdate: true,
-            });
-        };
+    downloadFile = (o) => {
+        // we need to act as a proxy as we need to pass the version for downloading th efile
 
-        downloadFile = (o) => {
-            // we need to act as a proxy as we need to pass the version for downloading th efile
+        const {
+            fetchFile, item, results, download: {address, filename},
+        } = this.props;
 
-            const {
-                fetchFile, item, results, download: {address, filename},
-            } = this.props;
+        // item can be empty if we download from list with no expand on item
+        const object = item && !isEmpty(item) ? item : flatten(results).find(x => x.key === o);
 
-            // item can be empty if we download from list with no expand on item
-            const object = item && !isEmpty(item) ? item : flatten(results).find(x => x.key === o);
+        const url = object ? address.reduce((p, c) => p[c], object) : '';
 
-            const url = object ? address.reduce((p, c) => p[c], object) : '';
+        fetchFile({url, filename});
+    };
 
-            fetchFile({url, filename});
-        };
-
-        list = () => css`
+    list = () => css`
         ${middle};
         width: ${this.props.selected ? `${this.state.width.list.value}${this.state.width.list.unit}` : '100%'};
         overflow-x: auto;
     `;
 
-        detail = () => css`
+    detail = () => css`
         ${middle};
         width: ${this.props.selected ? `${this.state.width.detail.value}${this.state.width.detail.unit}` : '100%'};
         overflow-x: auto;
     `;
 
-        content = () => css`
+    layout = () => css`
         margin: 0 ${margin}px;
         display: flex;
         flex: 1;
@@ -236,105 +238,111 @@ const Base = (List = L, Detail = D) => {
         ` : ''}
     `;
 
+    render() {
+        const {
+            selected, actions, model, download,
+            List, Detail,
+        } = this.props;
 
-        render() {
-            const {
-                selected, actions, model, download,
-            } = this.props;
+        const {clipboard: {open, text, inputValue}} = this.state;
 
-            const {clipboard: {open, inputValue, text}} = this.state;
-
-            return (
-                <div ref={this.contentRef} onMouseMove={this.move} onMouseUp={this.mouseUp} className={this.content()}>
-                    <List
-                        className={this.list()}
+        return (<div
+            ref={this.contentRef}
+            onMouseMove={this.move}
+            onMouseUp={this.mouseUp}
+            className={this.layout()}
+        >
+            <List
+                className={this.list()}
+                model={model}
+                actions={actions}
+                filterUp={this.filterUp}
+                downloadFile={this.downloadFile}
+                addNotification={this.addNotification}
+                download={download}
+            />
+            {selected && (
+                <Fragment>
+                    <div
+                        onMouseDown={this.mouseDown}
+                        className={verticalBar}
+                    />
+                    <Detail
+                        className={this.detail()}
                         model={model}
                         actions={actions}
                         filterUp={this.filterUp}
                         downloadFile={this.downloadFile}
                         addNotification={this.addNotification}
-                        download={download}
                     />
-                    {selected && (
-                        <Fragment>
-                            <div
-                                onMouseDown={this.mouseDown}
-                                className={verticalBar}
-                            />
-                            <Detail
-                                className={this.detail()}
-                                model={model}
-                                actions={actions}
-                                filterUp={this.filterUp}
-                                downloadFile={this.downloadFile}
-                                addNotification={this.addNotification}
-                            />
-                        </Fragment>)
+                </Fragment>)
+            }
+            <Snackbar
+                anchorOrigin={anchorOrigin}
+                open={open}
+                onClose={this.handleClose}
+                autoHideDuration={2000}
+            >
+                <SnackbarContent
+                    className={snackbarContent}
+                    message={(
+                        <div>
+                            <Check color={tealish} className={middle}/>
+                            <ClipboardContent>
+                                <input disabled value={inputValue}/>
+                                <p>
+                                    {text}
+                                </p>
+                            </ClipboardContent>
+                        </div>)
                     }
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={this.handleClose}
-                        autoHideDuration={2000}
-                    >
-                        <SnackbarContent
-                            className={snackbarContent}
-                            message={(
-                                <div>
-                                    <Check color={tealish} className={css`${middle}`}/>
-                                    <ClipboardContent>
-                                        <input disabled value={inputValue}/>
-                                        <p>
-                                            {text}
-                                        </p>
-                                    </ClipboardContent>
-                                </div>)
-                            }
-                        />
-                    </Snackbar>
-                </div>);
-        }
+                />
+            </Snackbar>
+        </div>);
     }
+}
 
-    const noop = () => {
-    };
+const noop = () => {
+};
 
+Base.defaultProps = {
+    selected: null,
+    selectedItem: [],
+    item: null,
+    setSearchState: noop,
+    fetchFile: noop,
+    download: {},
+    results: [],
+    List,
+    Detail,
+};
 
-    B.defaultProps = {
-        selected: null,
-        selectedItem: [],
-        item: null,
-        setSearchState: noop,
-        fetchFile: noop,
-        download: {},
-        results: [],
-    };
+Base.propTypes = {
+    selected: PropTypes.string,
+    actions: PropTypes.shape({}).isRequired,
+    model: PropTypes.string.isRequired,
+    item: PropTypes.shape({
+        key: PropTypes.string,
+        descriptionStorageAddress: PropTypes.string,
+        description: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.shape({}),
+        ]),
+    }),
+    download: PropTypes.shape({
+        address: PropTypes.arrayOf(PropTypes.string),
+        filename: PropTypes.string,
+    }),
+    results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
+    selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
+    setSearchState: PropTypes.func,
+    fetchFile: PropTypes.func,
+    List: PropTypes.func,
+    Detail: PropTypes.func,
+};
 
-    B.propTypes = {
-        selected: PropTypes.string,
-        actions: PropTypes.shape({}).isRequired,
-        model: PropTypes.string.isRequired,
-        item: PropTypes.shape({
-            key: PropTypes.string,
-            descriptionStorageAddress: PropTypes.string,
-            description: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.shape({}),
-            ]),
-        }),
-        download: PropTypes.shape({
-            address: PropTypes.arrayOf(PropTypes.string),
-            filename: PropTypes.string,
-        }),
-        results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
-        selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
-        setSearchState: PropTypes.func,
-        fetchFile: PropTypes.func,
-    };
-
+// Basic customisable redux mapping
+const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
     const mapStateToProps = (state, {model, actions, download}) => ({
         selected: state[model].list.selected,
         results: state[model].list.results,
@@ -350,8 +358,7 @@ const Base = (List = L, Detail = D) => {
         fetchFile: actions.item.file.request,
     }, dispatch);
 
-
     return connect(mapStateToProps, mapDispatchToProps)(B);
 };
 
-export default Base;
+export default ReduxBase;

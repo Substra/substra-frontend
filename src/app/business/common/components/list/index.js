@@ -70,7 +70,7 @@ const Actions = styled('div')`
     }
 `;
 
-export class L extends Component {
+export class List extends Component {
     state = {
         popover: {
             open: false,
@@ -139,8 +139,6 @@ export class L extends Component {
     addNotification = text => (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        console.log('addNotification original');
 
         const {addNotification} = this.props;
 
@@ -218,10 +216,9 @@ export class L extends Component {
                                         <Desc>
                                             {o.metrics && (
                                                 <span>
-                                            {`Metric: ${o.metrics.name}`}
-                                        </span>)
+                                                {`Metric: ${o.metrics.name}`}
+                                                </span>)
                                             }
-                                            {/* <span>{o.shortDescription}</span> */}
                                         </Desc>
                                     </Content>
                                 </Item>
@@ -251,7 +248,7 @@ export class L extends Component {
 const noop = () => {
 };
 
-L.defaultProps = {
+List.defaultProps = {
     init: false,
     loading: false,
     results: [],
@@ -270,7 +267,7 @@ L.defaultProps = {
     Popover,
 };
 
-L.propTypes = {
+List.propTypes = {
     init: PropTypes.bool,
     loading: PropTypes.bool,
     results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
@@ -314,4 +311,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(L);
+export default connect(mapStateToProps, mapDispatchToProps)(List);

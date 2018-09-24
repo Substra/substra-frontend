@@ -5,8 +5,8 @@ import {css} from 'react-emotion';
 import {PulseLoader} from 'react-spinners';
 import Popover from '@material-ui/core/Popover/Popover';
 
-import {coolBlue} from '../../../../../../assets/css/variables';
-import {Action, PopItem, PopList} from '../../../common/components/list/popover';
+import {coolBlue} from '../../../../../../../assets/css/variables/index';
+import {Action, PopItem, PopList} from '../../../../common/components/list/popover';
 
 const popSubItem = css`
     span {

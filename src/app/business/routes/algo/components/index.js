@@ -1,9 +1,9 @@
 import React from 'react';
-import Base from '../../../common/components/base';
+import ReduxBase from '../../../common/components/base';
 
 import actions from '../actions';
 
-const AlgoBase = Base();
+const AlgoBase = ReduxBase();
 
 const download = {
     filename: 'algo.tar.gz',
