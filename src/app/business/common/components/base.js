@@ -246,22 +246,23 @@ export class Base extends Component {
 
         const {clipboard: {open, text, inputValue}} = this.state;
 
-        return (<div
-            ref={this.contentRef}
-            onMouseMove={this.move}
-            onMouseUp={this.mouseUp}
-            className={this.layout()}
-        >
-            <List
-                className={this.list()}
-                model={model}
-                actions={actions}
-                filterUp={this.filterUp}
-                downloadFile={this.downloadFile}
-                addNotification={this.addNotification}
-                download={download}
-            />
-            {selected && (
+        return (
+            <div
+                ref={this.contentRef}
+                onMouseMove={this.move}
+                onMouseUp={this.mouseUp}
+                className={this.layout()}
+            >
+                <List
+                    className={this.list()}
+                    model={model}
+                    actions={actions}
+                    filterUp={this.filterUp}
+                    downloadFile={this.downloadFile}
+                    addNotification={this.addNotification}
+                    download={download}
+                />
+                {selected && (
                 <Fragment>
                     <div
                         onMouseDown={this.mouseDown}
@@ -277,28 +278,29 @@ export class Base extends Component {
                     />
                 </Fragment>)
             }
-            <Snackbar
-                anchorOrigin={anchorOrigin}
-                open={open}
-                onClose={this.handleClose}
-                autoHideDuration={2000}
-            >
-                <SnackbarContent
-                    className={snackbarContent}
-                    message={(
-                        <div>
-                            <Check color={tealish} className={middle}/>
-                            <ClipboardContent>
-                                <input disabled value={inputValue}/>
-                                <p>
-                                    {text}
-                                </p>
-                            </ClipboardContent>
-                        </div>)
+                <Snackbar
+                    anchorOrigin={anchorOrigin}
+                    open={open}
+                    onClose={this.handleClose}
+                    autoHideDuration={2000}
+                >
+                    <SnackbarContent
+                        className={snackbarContent}
+                        message={(
+                            <div>
+                                <Check color={tealish} className={middle} />
+                                <ClipboardContent>
+                                    <input disabled value={inputValue} />
+                                    <p>
+                                        {text}
+                                    </p>
+                                </ClipboardContent>
+                            </div>)
                     }
-                />
-            </Snackbar>
-        </div>);
+                    />
+                </Snackbar>
+            </div>
+);
     }
 }
 

@@ -14,13 +14,14 @@ const download = {
     text: 'Download opener',
 };
 
-const Dataset = () =>
+const Dataset = () => (
     <DatasetBase
         actions={actions}
         model="dataset"
         download={download}
         List={List}
         Detail={Detail}
-    />;
+    />
+);
 
 export default Dataset;

@@ -25,7 +25,7 @@ class Index extends List {
         this.popoverHandleClose();
     };
 
-    more = (o) => (e) => {
+    more = o => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -50,7 +50,9 @@ class Index extends List {
     };
 }
 
-const mapStateToProps = (state, {model, filterUp, downloadFile, download, addNotification, more}) => ({
+const mapStateToProps = (state, {
+model, filterUp, downloadFile, download, addNotification, more,
+}) => ({
     init: state[model].list.init,
     loading: state[model].list.loading,
     itemLoading: state[model].item.loading,

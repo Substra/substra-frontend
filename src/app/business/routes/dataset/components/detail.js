@@ -184,7 +184,7 @@ class Detail extends Component {
         return (
             <Content className={className}>
                 <Top>
-                    <Search width={14} height={14} className={search}/>
+                    <Search width={14} height={14} className={search} />
                     <H5>
                         {item ? item.name : ''}
                     </H5>
@@ -192,7 +192,7 @@ class Detail extends Component {
                 {item && (
                     <Item>
                         <Section>
-                            <Clipboard className={clipboard} width={15}/>
+                            <Clipboard className={clipboard} width={15} />
                             <div className={idText}>
                                 <span className={id}>
                                     {'ID: '}
@@ -207,25 +207,25 @@ class Detail extends Component {
                                     className={icon}
                                 />
                                 <span onClick={this.copyMore}>
-                                    <CopyDrop width={22} height={22} className={icon}/>
+                                    <CopyDrop width={22} height={22} className={icon} />
                                 </span>
-                                <FilterUp onClick={this.filterUp(item.name)} className={icon}/>
+                                <FilterUp onClick={this.filterUp(item.name)} className={icon} />
                             </Right>
                         </Section>
                         <Section>
                             {item.permissions === 'all' && (
                                 <Fragment>
-                                    <Permission width={13} height={13} className={permission}/>
+                                    <Permission width={13} height={13} className={permission} />
                                     <span>
                                         {': Open to all'}
                                     </span>
                                 </Fragment>)
                             }
                         </Section>
-                        {descLoading && <PulseLoader size={6} color={coolBlue}/>}
+                        {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.description && (
                             <Section>
-                                <ReactMarkdown source={item.description.content}/>
+                                <ReactMarkdown source={item.description.content} />
                             </Section>
                         )}
                     </Item>)}

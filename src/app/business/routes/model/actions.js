@@ -18,7 +18,11 @@ export const actionTypes = {
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
 
     order: {
-        SET: `${prefix}_ORDER`,
+        SET: `${prefix}_ORDER_SET`,
+    },
+
+    chart: {
+        SAVE: `${prefix}_CHART_SAVE`,
     },
 };
 
@@ -54,5 +58,9 @@ export default {
 
     order: {
         set: createAction(actionTypes.order.SET),
+    },
+
+    chart: {
+        save: createAction(actionTypes.chart.SAVE),
     },
 };

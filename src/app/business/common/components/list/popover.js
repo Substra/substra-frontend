@@ -34,7 +34,9 @@ const transformOrigin = {
     horizontal: 'left',
 };
 
-export default ({open, anchorEl, model, download, filterUp, downloadFile, addNotification, popoverHandleClose}) =>
+export default ({
+open, anchorEl, model, download, filterUp, downloadFile, addNotification, popoverHandleClose,
+}) => (
     <Popover
         open={open}
         anchorEl={anchorEl}
@@ -59,4 +61,5 @@ export default ({open, anchorEl, model, download, filterUp, downloadFile, addNot
                 </Action>
             </PopItem>
         </PopList>
-    </Popover>;
+    </Popover>
+);

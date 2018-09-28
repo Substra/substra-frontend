@@ -1,15 +1,45 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {css} from 'react-emotion';
 
 import {Snackbar, SnackbarContent} from '@material-ui/core';
 
-import {Base, verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent} from '../../../common/components/base';
+import uuidv4 from 'uuid/v4';
+import {
+    Base, verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent,
+} from '../../../common/components/base';
 
 import Check from '../../../common/svg/check';
 import {tealish} from '../../../../../../assets/css/variables';
 
 
-export default class ModelLayout extends Base {
+export default class ModelBase extends Base {
+    filterUp = (o) => {
+        const {setSearchState, selectedItem, model} = this.props;
+
+        const newSelectedItem = [
+            ...selectedItem,
+            // This is the -OR- case
+            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
+            //     parent: '-OR-',
+            //     isLogic: true,
+            //     uuid: uuidv4(),
+            // }] : []),
+            {
+                parent: model,
+                child: `hash:${o}`,
+                isLogic: false,
+                uuid: uuidv4(),
+            }];
+
+        setSearchState({
+            isParent: true,
+            inputValue: '',
+            selectedItem: newSelectedItem,
+            item: o,
+            toUpdate: true,
+        });
+    };
+
     list = () => {
         const {width: {list: {value, unit}}} = this.state;
         return css`
@@ -28,30 +58,64 @@ export default class ModelLayout extends Base {
         `;
     };
 
+    chartOver = (key) => {
+        this.setState(state => ({
+            ...state,
+            hoverItem: key,
+        }));
+    };
+
+    chartOut = () => {
+        this.setState(state => ({
+            ...state,
+            hoverItem: null,
+        }));
+    };
+
+
+    hover = (item) => {
+        const {chart} = this.props;
+
+        chart.series.forEach((serie) => {
+            const point = serie.data.find(x => x.key === item.key);
+            if (point) {
+                point.setState('hover');
+            }
+        });
+    };
+
+    out = (item) => {
+        const {chart} = this.props;
+        chart.series.forEach(x => x.data.forEach(x => x.setState('')));
+    };
+
     render() {
         const {
             model, actions, download,
             List, Detail,
         } = this.props;
 
-        const {clipboard: {open, text, inputValue}} = this.state;
+        const {clipboard: {open, text, inputValue}, hoverItem} = this.state;
 
-        return (<div
-            ref={this.contentRef}
-            onMouseMove={this.move}
-            onMouseUp={this.mouseUp}
-            className={this.layout()}
+        return (
+            <div
+                ref={this.contentRef}
+                onMouseMove={this.move}
+                onMouseUp={this.mouseUp}
+                className={this.layout()}
             >
-            <List
-                className={this.list()}
-                model={model}
-                actions={actions}
-                filterUp={this.filterUp}
-                downloadFile={this.downloadFile}
-                addNotification={this.addNotification}
-                download={download}
-            />
-            <Fragment>
+                <List
+                    className={this.list()}
+                    model={model}
+                    actions={actions}
+                    filterUp={this.filterUp}
+                    downloadFile={this.downloadFile}
+                    addNotification={this.addNotification}
+                    hover={this.hover}
+                    out={this.out}
+                    download={download}
+                    hoverItem={hoverItem}
+                />
                 <div
                     onMouseDown={this.mouseDown}
                     className={verticalBar}
@@ -63,29 +127,31 @@ export default class ModelLayout extends Base {
                     filterUp={this.filterUp}
                     downloadFile={this.downloadFile}
                     addNotification={this.addNotification}
+                    over={this.chartOver}
+                    out={this.chartOut}
                 />
-            </Fragment>
-            <Snackbar
-                anchorOrigin={anchorOrigin}
-                open={open}
-                onClose={this.handleClose}
-                autoHideDuration={2000}
-            >
-                <SnackbarContent
-                    className={snackbarContent}
-                    message={(
-                        <div>
-                            <Check color={tealish} className={middle}/>
-                            <ClipboardContent>
-                                <input disabled value={inputValue}/>
-                                <p>
-                                    {text}
-                                </p>
-                            </ClipboardContent>
-                        </div>)
-                    }
-                />
-            </Snackbar>
-        </div>);
+                <Snackbar
+                    anchorOrigin={anchorOrigin}
+                    open={open}
+                    onClose={this.handleClose}
+                    autoHideDuration={2000}
+                >
+                    <SnackbarContent
+                        className={snackbarContent}
+                        message={(
+                            <div>
+                                <Check color={tealish} className={middle} />
+                                <ClipboardContent>
+                                    <input disabled value={inputValue} />
+                                    <p>
+                                        {text}
+                                    </p>
+                                </ClipboardContent>
+                            </div>)
+                        }
+                    />
+                </Snackbar>
+            </div>
+        );
     }
 }

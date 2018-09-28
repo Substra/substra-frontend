@@ -5,7 +5,7 @@ const initialState = {
     selectedItem: [],
     isParent: true,
 
-    filters: {},
+    filters: [],
     item: null,
     toUpdate: false,
 

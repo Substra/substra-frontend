@@ -24,9 +24,10 @@ const transformOrigin = {
     horizontal: 'left',
 };
 
-export default ({open, anchorEl, model, download, itemLoading, filterUp, downloadFile, addNotification, popoverHandleClose}) => {
-
-    return <Popover
+export default ({
+open, anchorEl, model, download, itemLoading, filterUp, downloadFile, addNotification, popoverHandleClose,
+}) => (
+    <Popover
         open={open}
         anchorEl={anchorEl}
         onClose={popoverHandleClose}
@@ -45,7 +46,7 @@ export default ({open, anchorEl, model, download, itemLoading, filterUp, downloa
                 >
                     {`Copy ${model}'s key to clipboard`}
                 </Action>
-                {itemLoading && <PulseLoader size={6} color={coolBlue}/>}
+                {itemLoading && <PulseLoader size={6} color={coolBlue} />}
                 {!itemLoading
                 && (
                     <Action
@@ -62,5 +63,5 @@ export default ({open, anchorEl, model, download, itemLoading, filterUp, downloa
                 </Action>
             </PopItem>
         </PopList>
-    </Popover>;
-};
+    </Popover>
+);

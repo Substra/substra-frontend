@@ -6,7 +6,7 @@ import createDeepEqualSelector from '../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
-const flattenUniq = xs => Array.from(xs.reduce(
+export const flattenUniq = xs => Array.from(xs.reduce(
     (s, x) => addAll(s, isArray(x) ? flattenUniq(x) : [x]),
     new Set(),
 ));
@@ -31,10 +31,10 @@ export const getOrderedResults = createDeepEqualSelector([results, order, isComp
 );
 
 export const getItem = createDeepEqualSelector([itemResults, results, selected],
-    (itemResults, results, selected) => itemResults.length ? {
+    (itemResults, results, selected) => ({
         ...uniqBy(flatten(results), 'key').find(o => o.key === selected),
         ...itemResults.find(o => o.pkhash === selected),
-    } : null,
+    }),
 );
 
 export default {

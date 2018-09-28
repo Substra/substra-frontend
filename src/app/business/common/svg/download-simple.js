@@ -12,7 +12,6 @@ const DownloadSimple = ({
                            {...props}
                            viewBox="0 0 24 24"
                        >
-                           <defs />
                            <g fill="none" fillRule="evenodd">
 
                                <path

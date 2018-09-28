@@ -40,11 +40,12 @@ export const getIsInParentMode = createDeepEqualSelector([getSearchFilters, item
 export const getSuggestions = createDeepEqualSelector([getSearchFilters, item, getParentSuggestions, getIsInParentMode],
     (searchFilters, item, parentSuggestions, isInParentMode) => {
         if (isInParentMode) {
+            console.log(searchFilters[item]);
             return searchFilters[item].reduce((p, c) => [
                     ...p,
                     ...(c.name ? [{label: `name:${c.name}`, uuid: `${c.key}_name`}] : []),
                     ...(c.key ? [{label: `key:${c.key}`, uuid: `${c.key}_key`}] : []),
-                    ...(c.hash ? [{label: c.hash, uuid: `${c.key}_hash`}] : []),
+                    ...(c.hash ? [{label: c.hash, uuid: `${c.hash}_hash`}] : []),
 
                     // add metrics name if exists for challenge
                     ...(c.metrics && c.metrics.name ? [{

@@ -7,6 +7,7 @@ import {PulseLoader} from 'react-spinners';
 
 import Popover from './popover';
 import Title from './title';
+import Description from './desc';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 
@@ -41,7 +42,6 @@ const Group = styled('div')`
 `;
 
 const Item = styled('div')`
-    padding: 10px;
     border-top: 1px solid #ccc;
     font-size: 12px;
     cursor: pointer;
@@ -50,12 +50,6 @@ const Item = styled('div')`
 
 const Content = styled('div')`
     margin-top: 5px;
-`;
-
-const Desc = styled('div')`
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 10px;
 `;
 
 const Actions = styled('div')`
@@ -77,6 +71,7 @@ export class List extends Component {
             anchorEl: null,
             item: null,
         },
+        hoverItem: null,
     };
 
     componentDidMount(prevProps, prevState, snapshot) {
@@ -93,15 +88,61 @@ export class List extends Component {
         setSelected(item);
     };
 
+    hover = item => (e) => {
+        e.stopPropagation();
+
+        const {hover} = this.props;
+
+        if (!this.isSelected(item.key)) {
+            this.setState(state => ({
+                ...state,
+                hoverItem: item.key,
+            }));
+
+            if (hover) {
+                hover(item);
+            }
+        }
+    };
+
+    out = (e) => {
+        const {out} = this.props;
+
+        e.stopPropagation();
+
+        this.setState(state => ({
+            ...state,
+            hoverItem: null,
+        }));
+
+        if (out) {
+            out();
+        }
+    };
+
     isSelected = (key) => {
         const {selected} = this.props;
 
         return selected === key;
     };
 
-    item = key => css`
-        border-left: 3px solid ${this.isSelected(key) ? '#edc20f' : 'transparent'};
+    borderHover = css`
+            border-image-source: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAMCAYAAABFohwTAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gkbDiM0iNMMGAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAIUlEQVQI12N4e4j//9tD/P8ZoICJAQ1QQ4ARxoDZRBNbAElRCE0HEPWfAAAAAElFTkSuQmCC");
+            border-image-slice: 0 0 0 4;
+            border-image-repeat: repeat;
     `;
+
+    itemWrapper = (key) => {
+        // this.state.hoverItem works with current Ract List
+        // this.props.hoverItem work from Base hovering (dynamic from Chart)
+        const hover = this.state.hoverItem === key || this.props.hoverItem === key;
+
+        return css`
+            padding: 10px;
+            border-left: 4px solid ${this.isSelected(key) || hover ? '#edc20f' : 'transparent'};
+            ${!this.isSelected(key) && hover ? this.borderHover : ''}
+        `;
+    };
 
     createSortHandler = by => (e) => {
         const {order, setOrder} = this.props;
@@ -175,7 +216,7 @@ export class List extends Component {
     render() {
         const {
             results, init, loading, order, model, className, download,
-            Title, Popover,
+            Title, Popover, Description,
         } = this.props;
 
         const {open, anchorEl} = this.state.popover;
@@ -192,7 +233,7 @@ export class List extends Component {
                         </span>
                     </Sort>
                 </Top>
-                {loading && <PulseLoader size={6} color={coolBlue}/>}
+                {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items
@@ -200,34 +241,35 @@ export class List extends Component {
                 )}
                 {init && !loading && !!results.length
                 && (results.map((o, i) => (
-                        <Group key={i}>
-                            {!!o.length && o.map(o => (
-                                <Item key={o.key} onClick={this.setSelected(o)} className={this.item(o.key)}>
+                    <Group key={i}>
+                        {!!o.length && o.map(o => (
+                            <Item
+                                key={o.key}
+                                onClick={this.setSelected(o)}
+                                onMouseEnter={this.hover(o)}
+                                onMouseLeave={this.out}
+                            >
+                                <div className={this.itemWrapper(o.key)}>
                                     <Actions>
-                                        <More height={16} onClick={this.more(o)}/>
+                                        <More height={16} onClick={this.more(o)} />
                                     </Actions>
-                                    <Title o={o}/>
+                                    <Title o={o} />
                                     <Content>
                                         {o.permissions === 'all' && (
-                                            <Fragment>
-                                                <Permission width={8} height={8}/>
-                                            </Fragment>)
-                                        }
-                                        <Desc>
-                                            {o.metrics && (
-                                                <span>
-                                                {`Metric: ${o.metrics.name}`}
-                                                </span>)
+                                        <Fragment>
+                                            <Permission width={8} height={8} />
+                                        </Fragment>)
                                             }
-                                        </Desc>
+                                        <Description o={o} />
                                     </Content>
-                                </Item>
+                                </div>
+                            </Item>
                             ))}
-                            {!o.length && (
-                                <span>
+                        {!o.length && (
+                        <span>
                                     No items for this filter group
-                                </span>)}
-                        </Group>))
+                        </span>)}
+                    </Group>))
                 )}
                 <Popover
                     {...this.props}
@@ -265,6 +307,7 @@ List.defaultProps = {
     addNotification: noop,
     Title,
     Popover,
+    Description,
 };
 
 List.propTypes = {
@@ -287,6 +330,7 @@ List.propTypes = {
     addNotification: PropTypes.func,
     Title: PropTypes.func,
     Popover: PropTypes.func,
+    Description: PropTypes.func,
 };
 
 const mapStateToProps = (state, {

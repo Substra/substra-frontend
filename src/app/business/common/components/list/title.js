@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Title = ({o}) =>
+const Title = ({o}) => (
     <h4>
         {o.name}
-    </h4>;
+    </h4>
+);
 
 export default Title;

@@ -1,6 +1,8 @@
 /* globals fetch */
 
-import {all, call, put, select, takeEvery, takeLatest,} from 'redux-saga/effects';
+import {
+all, call, put, select, takeEvery, takeLatest,
+} from 'redux-saga/effects';
 
 import {saveAs} from 'file-saver';
 
