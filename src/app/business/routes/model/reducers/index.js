@@ -1,5 +1,4 @@
-//import list from '../../../common/reducers/list';
-import list from './list'; // for testing with fixtures
+import list from '../../../common/reducers/list';
 import item from '../../../common/reducers/item';
 import persistent from '../../../common/reducers/persistent';
 import order from '../../../common/reducers/order';

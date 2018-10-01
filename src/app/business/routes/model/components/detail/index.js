@@ -46,7 +46,7 @@ const search = css`
 
 
 const NoChallenges = styled('div')`
-    margin: 49% auto 0;
+    margin: 40% auto 0;
     text-align: center;
 `;
 
