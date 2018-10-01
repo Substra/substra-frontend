@@ -9,6 +9,7 @@ import List from './list';
 import Detail from './detail';
 import {getItem} from '../../../common/selector';
 import searchActions from '../../../search/actions';
+import {getChallengeFilters} from '../selector';
 
 // Custom with added Chart
 const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
@@ -20,6 +21,7 @@ const ReduxBase = (B = Base) => { // no override on List/Detail, neither princip
         actions,
         download,
         item: getItem(state, model),
+        challengeFilters: getChallengeFilters(state),
         chart: state[model].chart,
     });
 

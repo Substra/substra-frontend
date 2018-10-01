@@ -74,22 +74,24 @@ export default class ModelBase extends Base {
 
 
     hover = (item) => {
-        const {chart} = this.props;
+        const {chart, challengeFilters} = this.props;
 
-        if (chart && chart.series) {
+        if (challengeFilters.length && chart && chart.series) {
             chart.series.forEach((serie) => {
-                const point = serie.data.find(x => x.key === item.key);
-                if (point) {
-                    point.setState('hover');
+                if (serie.data) {
+                    const point = serie.data.find(x => x.key === item.key);
+                    if (point) {
+                        point.setState('hover');
+                    }
                 }
             });
         }
     };
 
     out = (item) => {
-        const {chart} = this.props;
+        const {challengeFilters, chart} = this.props;
 
-        if (chart && chart.series) {
+        if (challengeFilters.length && chart && chart.series) {
             chart.series.forEach(x => x.data.forEach(x => x.setState('')));
         }
     };

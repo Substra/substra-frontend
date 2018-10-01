@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
@@ -23,6 +23,7 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
+    position: relative;
 `;
 
 const Top = styled('div')`
@@ -44,9 +45,11 @@ const search = css`
     ${middle};
 `;
 
-
 const NoChallenges = styled('div')`
-    margin: 40% auto 0;
+    position: absolute;
+     top: 40%;
+    left: 0;
+    right: 0;
     text-align: center;
 `;
 
@@ -80,31 +83,31 @@ class Detail extends Component {
         return (
             <Content className={className}>
                 <Top>
-                    <Search width={14} height={14} className={search} />
+                    <Search width={14} height={14} className={search}/>
                     <H5>
                         overview
                     </H5>
                 </Top>
                 {!loading && (
-                <div>
-                    {!challengeFilters.length && (
-                    <NoChallenges>
-                        <Alert />
-                        <h3>
-                                Overview unavailable
-                        </h3>
-                        <p>
-                                Add at least a challenge filter to see comparable performances!
-                        </p>
-                    </NoChallenges>
-                    )}
-                    {!!challengeFilters.length && (
-                    <div>
-                        <Chart config={config} over={over} out={out} actions={actions} />
-                        {!isEmpty(item) && <MyJSONPretty json={item} theme={atomOneLight}/>}
-                    </div>)
-                    }
-                </div>)
+                    <Fragment>
+                        {!challengeFilters.length && (
+                            <NoChallenges>
+                                <Alert/>
+                                <h3>
+                                    Overview unavailable
+                                </h3>
+                                <p>
+                                    Add at least a challenge filter to see comparable performances!
+                                </p>
+                            </NoChallenges>
+                        )}
+                        {!!challengeFilters.length && (
+                            <div>
+                                <Chart config={config} over={over} out={out} actions={actions}/>
+                                {!isEmpty(item) && <MyJSONPretty json={item} theme={atomOneLight}/>}
+                            </div>)
+                        }
+                    </Fragment>)
                 }
             </Content>
         );
