@@ -76,17 +76,22 @@ export default class ModelBase extends Base {
     hover = (item) => {
         const {chart} = this.props;
 
-        chart.series.forEach((serie) => {
-            const point = serie.data.find(x => x.key === item.key);
-            if (point) {
-                point.setState('hover');
-            }
-        });
+        if (chart && chart.series) {
+            chart.series.forEach((serie) => {
+                const point = serie.data.find(x => x.key === item.key);
+                if (point) {
+                    point.setState('hover');
+                }
+            });
+        }
     };
 
     out = (item) => {
         const {chart} = this.props;
-        chart.series.forEach(x => x.data.forEach(x => x.setState('')));
+
+        if (chart && chart.series) {
+            chart.series.forEach(x => x.data.forEach(x => x.setState('')));
+        }
     };
 
     render() {
@@ -140,9 +145,9 @@ export default class ModelBase extends Base {
                         className={snackbarContent}
                         message={(
                             <div>
-                                <Check color={tealish} className={middle} />
+                                <Check color={tealish} className={middle}/>
                                 <ClipboardContent>
-                                    <input disabled value={inputValue} />
+                                    <input disabled value={inputValue}/>
                                     <p>
                                         {text}
                                     </p>

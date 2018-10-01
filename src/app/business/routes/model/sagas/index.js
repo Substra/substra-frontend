@@ -99,7 +99,7 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 
     // TODO remove, only for dev purposes
-    //yield put(actions.list.success(extraResults));
+    yield put(actions.list.success(extraResults));
 }
 
 // function* fetchDetail({payload}) {
