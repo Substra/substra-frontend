@@ -28,7 +28,7 @@ export const getOrderedResults = createDeepEqualSelector([results, order, isComp
 export const getChallengeFilters = createDeepEqualSelector([filters],
     filters => filters.filter((x) => {
         const arr = x.split(':');
-        return arr[0] === 'challenge';
+        return arr.length > 2 & arr[0] === 'challenge';
     }),
 );
 

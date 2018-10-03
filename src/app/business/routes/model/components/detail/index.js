@@ -7,6 +7,7 @@ import {isEmpty} from 'lodash';
 
 import MyJSONPretty from './MyJSONPretty';
 import {atomOneLight} from './MyJSONPretty/themes';
+import {slate, tealish} from '../../../../../../../assets/css/variables';
 
 import Chart from './chart';
 
@@ -15,6 +16,19 @@ import Alert from '../../../../common/svg/alert';
 
 import {getChallengeFilters, getOrderedResults, getConfig} from '../../selector';
 import {getItem} from '../../../../common/selector';
+
+const owkin = {
+    ...atomOneLight,
+    keyQuotes: slate,
+    valueQuotes: 'rgb(140, 153, 165)',
+    key: slate,
+    value: {
+        ...atomOneLight.value,
+        string: 'rgb(140, 153, 165)',
+        number: tealish,
+    },
+};
+
 
 const middle = css`
     display: inline-block;
@@ -104,7 +118,7 @@ class Detail extends Component {
                         {!!challengeFilters.length && (
                             <div>
                                 <Chart config={config} over={over} out={out} actions={actions}/>
-                                {!isEmpty(item) && <MyJSONPretty json={item} theme={atomOneLight}/>}
+                                {!isEmpty(item) && <MyJSONPretty json={item} theme={owkin}/>}
                             </div>)
                         }
                     </Fragment>)
@@ -146,4 +160,4 @@ const mapStateToProps = (state, {
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['className', 'item', 'challengeFilters', 'config'])(Detail));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['className', 'item', 'challengeFilters', 'config', 'loading'])(Detail));

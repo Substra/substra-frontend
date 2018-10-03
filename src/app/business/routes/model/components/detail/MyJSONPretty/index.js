@@ -1,7 +1,5 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {css} from 'react-emotion';
-import {isArray} from 'lodash';
 
 import {def} from './themes';
 
@@ -9,60 +7,60 @@ const RecursiveKeyValue = ({parent, value, theme, padding, deep}) => {
     // easy types
     if (value === null) {
         return (
-            <span className={css`color: ${theme.value.null}`}>
+            <span style={{color: theme.value.null}}>
                 null
             </span>);
     }
     if (typeof value === 'string') {
         return (
-            <span className={css`color: ${theme.valueQuotes}`}>
+            <span style={{color: theme.valueQuotes}}>
                 "
-                <span className={css`color: ${theme.value.string}`}>
+                <span style={{color: theme.value.string}}>
                     {value}
                 </span>
                 "
-                </span>);
+            </span>);
     }
     if (typeof value === 'number') {
         return (
-            <span className={css`color: ${theme.value.number}`}>
-                    {value}
-                </span>);
+            <span style={{color: theme.value.number}}>
+                {value}
+            </span>);
     }
     if (typeof value === 'boolean') {
         return (
-            <span className={css`color: ${theme.value.boolean}`}>
-                    {value ? 'true' : 'false'}
-                </span>);
+            <span style={{color: theme.value.boolean}}>
+                {value ? 'true' : 'false'}
+            </span>);
     }
 
     // complex nested
     deep += 1;
 
-    //array
-    if (isArray(value)) {
+    // array
+    if (Array.isArray(value)) {
         return (
             <Fragment>
-                <span className={css`color: ${theme.bracket}`}>
+                <span style={{color: theme.bracket}}>
                     {'\u005B'}
                 </span>
                 <div>
                     {value.map((o, i) => {
                         return <div
-                            className={css`color: ${theme.valueQuotes}`}
+                            style={{color: theme.valueQuotes}}
                             key={`${parent}-${o}-${i}`}
                         >
                             {Array(deep * padding + 1).join('\u00A0')}
                             <RecursiveKeyValue parent={parent} value={o} theme={theme} padding={padding} deep={deep}/>
                             {i === value.length - 1 ? '' : (
-                                <span className={css`color: ${theme.comma}`}>
+                                <span style={{color: theme.comma}}>
                                 ,
                                 </span>
                             )}
                         </div>})
                     }
                 </div>
-                <span className={css`color: ${theme.bracket}`}>
+                <span style={{color: theme.bracket}}>
                         {Array((deep - 1) * padding + 1).join('\u00A0')}
                         {'\u005D'}
                 </span>
@@ -76,7 +74,7 @@ const RecursiveKeyValue = ({parent, value, theme, padding, deep}) => {
 
         return (
             <Fragment>
-                <span className={css`color: ${theme.brace}`}>
+                <span style={{color: theme.brace}}>
                     {'\u007B'}
                 </span>
                 <div>
@@ -85,13 +83,13 @@ const RecursiveKeyValue = ({parent, value, theme, padding, deep}) => {
                             <span>
                                 {Array(deep * padding + 1).join('\u00A0')}
                             </span>
-                            <span className={css`color: ${theme.keyQuotes}`}>
+                            <span style={{color: theme.keyQuotes}}>
                                     "
-                                    <span className={css`color: ${theme.key}`}>
+                                    <span style={{color: theme.key}}>
                                         {o}
                                     </span>
                                     "
-                                    <span className={css`color: ${theme.colon}`}>
+                                    <span style={{color: theme.colon}}>
                                         :
                                     </span>
                                 {'\u00A0'}
@@ -100,14 +98,14 @@ const RecursiveKeyValue = ({parent, value, theme, padding, deep}) => {
                             {i === l - 1
                                 ? ''
                                 : (
-                                    <span className={css`color: ${theme.comma}`}>
+                                    <span style={{color: theme.comma}}>
                                     ,
                                     </span>)
                             }
                         </div>})
                     }
                 </div>
-                <span className={css`color: ${theme.brace}`}>
+                <span style={{color: theme.brace}}>
                     {Array((deep - 1) * padding + 1).join('\u00A0')}
                     {'\u007D'}
                 </span>
@@ -128,7 +126,7 @@ RecursiveKeyValue.defaultProps = {
 const JSONPretty = ({json, theme, padding}) => {
     // recursive Component
     return (
-        <pre className={css`overflow: auto;background-color: ${theme.background}`}>
+        <pre style={{overflow: 'auto', backgroundColor: theme.background}}>
             <RecursiveKeyValue value={json} theme={theme} padding={padding} parent="root"/>
         </pre>
     );
