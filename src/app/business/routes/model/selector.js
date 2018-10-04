@@ -127,10 +127,12 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 owner.series = [...owner.series, [ownerItem]];
                 owner.results = [
                     ...owner.results,
-                    {
-                        owner: c.trainData.worker,
-                        rank: owner.results.length ? stepDirection.plus(last(owner.results).rank).toNumber() : startDirection.toNumber(),
-                    },
+                    ...(owner.results.find(x => x.owner === c.trainData.worker) ? [] : [
+                        {
+                            owner: c.trainData.worker,
+                            rank: owner.results.length ? stepDirection.plus(last(owner.results).rank).toNumber() : startDirection.toNumber(),
+                        },
+                    ]),
                 ];
             }
 
@@ -265,6 +267,7 @@ export const getConfig = createDeepEqualSelector([getData, selected],
                     },
                     name: `owner-${i}`,
                     color: i < colors.length ? colors[i] : colors[0],
+                    zIndex: o.find(x => x.key === selected) ? 1 : 0,
                 })) : []),
                 ...(data.perf ? data.perf.map((o, i) => ({
                     data: o.map((x, j) => ({
@@ -281,6 +284,7 @@ export const getConfig = createDeepEqualSelector([getData, selected],
                     },
                     name: `perf-${i}`,
                     color: i < colors.length ? colors[i] : colors[0],
+                    zIndex: o.find(x => x.key === selected) ? 1: 0,
                 })) : []),
             ],
         }),
