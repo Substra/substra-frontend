@@ -10,6 +10,11 @@ import App from './App';
 // load DevTools
 import './DevTools';
 
+// Remove the server-side injected CSS.
+const jssStyles = document.getElementById('jss-server-side');
+if (jssStyles && jssStyles.parentNode) {
+    jssStyles.parentNode.removeChild(jssStyles);
+}
 
 FastClick.attach(document.body);
 // Needed for onTouchTap

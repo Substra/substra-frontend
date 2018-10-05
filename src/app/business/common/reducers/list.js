@@ -3,7 +3,7 @@ const initialState = {
     loading: false,
     error: null,
     results: [],
-    selected: [],
+    selected: '',
 };
 
 export default actionTypes => (state = initialState, {type, payload}) => {
@@ -34,7 +34,7 @@ export default actionTypes => (state = initialState, {type, payload}) => {
         case actionTypes.list.SELECTED:
             return {
                 ...state,
-                selected: payload,
+                selected: payload.key,
             };
         default:
             return state;

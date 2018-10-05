@@ -2,7 +2,7 @@ import {takeLatest, all} from 'redux-saga/effects';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi} from '../api';
-import {fetchListSaga} from '../../../common/sagas';
+import {fetchListSaga} from '../../../common/sagas/index';
 
 /* istanbul ignore next */
 const sagas = function* sagas() {

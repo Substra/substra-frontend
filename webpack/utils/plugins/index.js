@@ -52,7 +52,7 @@ export default env => [
                 staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
             }),
         ] : [
-            dll,
+            // dll,
             new BrowserSyncPlugin(
                 // BrowserSync options
                 {
@@ -74,6 +74,8 @@ export default env => [
             ),
         ]),
     ] : [
+        // The LimitChunkCountPlugin with maxChunks: 1 insures only one file is generated for your server bundle so it can be run synchronously.
+        // https://github.com/faceyspacey/webpack-flush-chunks
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
@@ -107,7 +109,7 @@ export default env => [
                     ...(DEVELOPMENT ? ['react-hot-loader/babel'] : []),
                 ],
                 presets: [
-                    // do not transpill es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
+                    // do not transpil es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
                     ['env', {
                         modules: false,
                     }],

@@ -16,9 +16,9 @@ class Route extends Component {
         if (nextProps.model !== prevState.model) {
             const {model} = nextProps;
 
-            const Module = require(`../../routes/${model}/components/index`).default,
-                sagas = require(`../../routes/${model}/sagas`).default,
-                reducer = require(`../../routes/${model}/reducers`).default;
+            const Module = require('./src/app/business/routes').default,
+                sagas = require('./src/app/business/routes').default,
+                reducer = require('./src/app/business/routes').default;
 
             injectSaga(model, sagas);
             injectReducer(model, reducer);

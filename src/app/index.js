@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from 'react-emotion';
-
-
 import ServiceWorker from './business/common/components/serviceWorker';
 import Top from './business/top';
-import Search from './business/search';
 
 import Route from './business/routes';
+import Search from './business/search';
 
 const Container = styled('div')`
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
+
 
 const Routes = ({page}) => (
     <Container>

@@ -2,18 +2,22 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
-import {NOT_FOUND} from 'redux-first-router';
-
 import Link from 'redux-first-router-link';
+
+import {getRoutes} from './selector';
+
 
 import Logo from '../common/svg/logo';
 import {lightgrey, slate, coolBlue} from '../../../../assets/css/variables';
-import routesMap from "../../routesMap";
 
+import Algo from '../common/svg/algo';
+import Dataset from '../common/svg/data-set';
+import Folder from '../common/svg/folder';
+import Book from '../common/svg/book';
+import Model from '../common/svg/model';
 
 const wrapper = css`
     background-color: ${lightgrey};
-    margin: 0 auto;
     padding: 15px 0;
 `;
 
@@ -24,7 +28,7 @@ const middle = css`
 
 const Ul = styled('ul')`
     margin: 0;
-    padding: 20px 0;
+    padding: 0;
     width: 70%;
     list-style: none;
     ${middle};
@@ -32,52 +36,76 @@ const Ul = styled('ul')`
 
 const Li = styled('li')`
     display: inline-block;
-    padding: 0 3%;
+    width: 20%;
     text-transform: capitalize;
     color: ${slate};
-    font-size: 24px;
+    font-size: 16px;
+`;
+
+const logoWrapper = css`
+    ${middle};
+    width: 30%;
 `;
 
 const logo = css`
-    ${middle};
-    width: 30%;
+    width: 100%;
 `;
 
 const base = css`
     text-decoration: none;
 `;
 
+const picto = css`
+    display: block;
+    margin: 0 auto 15px;
+`;
+
+const pictos = {
+    challenge: Folder,
+    dataset: Dataset,
+    algorithm: Algo,
+    model: Model,
+    doc: Book,
+};
+
 class Top extends Component {
-    link = (route) => {
+    isActive = (route) => {
         const {location: {type}} = this.props;
 
-        const active = type === route || (route === 'PROBLEM' && type === 'HOME');
+        return type === route || (route === 'CHALLENGE' && type === 'HOME');
+    };
 
-        return css`
+    link = active => css`
             ${base};
             color: ${active ? coolBlue : slate};
             font-weight: ${active ? 'bold' : 'normal'};
+            text-align: center;
+            display: block;
         `;
-    };
 
     render() {
-        const {location: {routesMap}} = this.props;
-
-        // TODO pu int selector
-        const routes = Object.keys(routesMap).filter(o => ![NOT_FOUND, 'HOME'].includes(o));
-
+        const {routes, location} = this.props;
         return (
             <div className={wrapper}>
-                <Link to={{type: 'HOME'}}>
+                <Link to={{type: 'HOME', meta: {query: location.query}}} className={logoWrapper}>
                     <Logo width={350} height={50} className={logo} />
                 </Link>
                 <Ul>
-                    {routes.map(o => (
-                        <Li key={o}>
-                            <Link to={{type: o}} className={this.link(o)}>
-                                {o.toLowerCase()}
-                            </Link>
-                        </Li>),
+                    {routes.map((o) => {
+                            const active = this.isActive(o);
+                            const color = active ? coolBlue : slate;
+
+                            const menu = o.toLowerCase();
+                            const Picto = pictos[menu];
+
+                            return (
+                                <Li key={o}>
+                                    <Link to={{type: o, meta: {query: location.query}}} className={this.link(active)}>
+                                        <Picto className={picto} color={color} />
+                                        {menu}
+                                    </Link>
+                                </Li>);
+                        },
                     )}
                 </Ul>
             </div>
@@ -86,13 +114,19 @@ class Top extends Component {
 }
 
 Top.defaultProps = {
+    routes: [],
     location: {},
 };
 
 Top.propTypes = {
+    routes: PropTypes.arrayOf(PropTypes.string),
     location: PropTypes.shape({}),
 };
 
-const mapStateToProps = ({location}, ownProps) => ({location, ...ownProps});
+const mapStateToProps = (state, ownProps) => ({
+    routes: getRoutes(state),
+    location: state.location,
+    ...ownProps,
+});
 
 export default connect(mapStateToProps)(Top);
