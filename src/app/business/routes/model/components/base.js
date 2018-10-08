@@ -92,7 +92,9 @@ export default class ModelBase extends Base {
         const {challengeFilters, chart} = this.props;
 
         if (challengeFilters.length && chart && chart.series) {
-            chart.series.forEach(x => x.data.forEach(x => x.setState('')));
+            chart.series.forEach(serie => {
+                serie.data.forEach(x => x.setState());
+            });
         }
     };
 

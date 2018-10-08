@@ -15,11 +15,11 @@ class Chart extends Component {
         const oppositeSerieName = originalSerieName === 'owner' ? 'perf' : 'owner';
         const oppositeSerie = chart.series.find(x => x.name === `${oppositeSerieName}-${originalSerieindex}`);
 
-        const index = originalSerie.data.findIndex(x => x.y === context.target.y);
+        const index = originalSerie.data.findIndex(o => o.y === context.target.y && o.x === context.target.x);
         const originalPoint = originalSerie.data[index];
         const oppositePoint = oppositeSerie.data[index];
 
-        return {originalPoint, oppositePoint};
+        return {originalPoint, oppositePoint, originalSerie, oppositeSerie};
     };
 
     afterRender = (chart) => {
@@ -46,6 +46,7 @@ class Chart extends Component {
 
                                 originalPoint.setState('hover');
                                 oppositePoint.setState('hover');
+
                                 chart.tooltip.refresh(originalPoint);
 
                                 over(originalPoint.key);
@@ -54,8 +55,8 @@ class Chart extends Component {
                                 const chart = context.target.series.chart;
 
                                 const {originalPoint, oppositePoint} = this.getOppositePoint(context);
-                                originalPoint.setState('');
-                                oppositePoint.setState('');
+                                originalPoint.setState();
+                                oppositePoint.setState();
                                 chart.tooltip.refresh(oppositePoint);
 
                                 out(originalPoint.key);
