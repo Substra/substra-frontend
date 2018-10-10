@@ -20,7 +20,7 @@ export default {
     devtool: DEBUG ? 'source-map' : (DEVELOPMENT ? 'cheap-module-source-map' : '#hidden-source-map'),
     entry: {
         vendor: [
-            'babel-polyfill',
+            '@babel/polyfill',
             'fetch-everywhere',
         ],
         main: [

@@ -1,5 +1,7 @@
 import config from 'config';
 import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
+
 import rules from '../utils/rules';
 import resolve from '../utils/resolve';
 import plugins from '../utils/plugins';
@@ -98,6 +100,10 @@ export default {
             runtimeChunk: {
                 name: 'bootstrap',
             },
+            minimizer: [new TerserPlugin({
+                cache: true,
+                parallel: true,
+            })],
         },
     } : {}),
 };

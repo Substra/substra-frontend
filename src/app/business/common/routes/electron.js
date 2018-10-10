@@ -16,9 +16,9 @@ class Route extends Component {
         if (nextProps.model !== prevState.model) {
             const {model} = nextProps;
 
-            const Module = require('./src/app/business/routes').default,
-                sagas = require('./src/app/business/routes').default,
-                reducer = require('./src/app/business/routes').default;
+            const Module = require(`../../routes/${model}/preload/index`).default,
+                sagas = require(`../../routes/${model}/sagas/index`).default,
+                reducer = require(`../../routes/${model}/reducers/index`).default;
 
             injectSaga(model, sagas);
             injectReducer(model, reducer);
@@ -29,7 +29,7 @@ class Route extends Component {
 
     render() {
         const {Component} = this.state;
-        return Component ? <Component /> : <PulseLoader size={6} color={coolBlue} />;
+        return Component ? <Component/> : <PulseLoader size={6} color={coolBlue}/>;
     }
 }
 

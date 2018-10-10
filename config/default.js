@@ -9,10 +9,9 @@ const redis_port = process.env.REDIS_PORT || 6379;
 
 module.exports = {
     appName: 'Substra Front',
-    apiUrl: '',
     apps: {
         frontend: {
-            api_url: apiUrl,
+            apiUrl,
             api_port: apiPort,
             secure_api_port: secureApiPort,
             baseName: {

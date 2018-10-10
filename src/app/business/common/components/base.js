@@ -9,7 +9,8 @@ import uuidv4 from 'uuid/v4';
 import {bindActionCreators} from 'redux';
 import copy from 'copy-to-clipboard';
 
-import {Snackbar, SnackbarContent} from '@material-ui/core';
+import {Snackbar} from '@material-ui/core';
+import SnackbarContent from './SnackbarContent';
 
 import searchActions from '../../search/actions';
 import {getItem} from '../selector';
@@ -282,7 +283,7 @@ export class Base extends Component {
                     anchorOrigin={anchorOrigin}
                     open={open}
                     onClose={this.handleClose}
-                    autoHideDuration={2000}
+                    autoHideDuration={200000}
                 >
                     <SnackbarContent
                         className={snackbarContent}

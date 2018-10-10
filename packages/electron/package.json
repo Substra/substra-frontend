@@ -5,9 +5,10 @@
         "html-webpack-plugin": "3.2.0"
     },
     "devDependencies": {
+        "@babel/register": "^7.0.0",
         "devtron": "1.4.0",
-        "electron": "2.0.4",
-        "electron-builder": "20.19.2",
+        "electron": "3.0.3",
+        "electron-builder": "20.28.4",
         "electron-debug": "2.0.0",
         "electron-devtools-installer": "2.2.4"
     },
@@ -56,7 +57,7 @@
     },
     "scripts": {
         "dev": "cross-env IS_ELECTRON=1 START_HOT=1 npm run start-renderer-dev",
-        "start-main-dev": "cd ../../ && cross-env IS_ELECTRON=1 HOT=1 NODE_ENV=development electron -r babel-register --require babel-polyfill ./src/electron/main",
+        "start-main-dev": "cd ../../ && cross-env IS_ELECTRON=1 HOT=1 NODE_ENV=development electron -r @babel/register --require @babel/polyfill ./src/electron/main",
         "start-renderer-dev": "cd ../../ && cross-env IS_ELECTRON=1 NODE_ENV=development babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --config ./webpack/electron/renderer.dev.js",
         "start:electron": "cd ../../ && cross-env IS_ELECTRON=1 NODE_ENV=production electron ./build/electron/index.js",
         "build:electron": "concurrently \"npm run build-main\" \"npm run build-renderer\"",

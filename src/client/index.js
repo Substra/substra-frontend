@@ -3,7 +3,6 @@
 import React from 'react';
 import {hydrate, render} from 'react-dom';
 import FastClick from 'fastclick';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import App from './App';
 
@@ -17,9 +16,6 @@ if (jssStyles && jssStyles.parentNode) {
 }
 
 FastClick.attach(document.body);
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
 
 const root = document.getElementById('root');
 

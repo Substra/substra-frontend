@@ -2,8 +2,8 @@ import React from 'react';
 import {NOT_FOUND} from 'redux-first-router';
 
 /* Declare routes */
-import Component from '../common/routes/index';
-import NotFoundRoutes from './notFound/routes/index';
+import Component from '../common/routes';
+import NotFoundRoutes from './notFound/routes';
 
 
 const Route = ({page}) => {
