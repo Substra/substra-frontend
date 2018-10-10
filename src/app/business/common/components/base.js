@@ -283,7 +283,7 @@ export class Base extends Component {
                     anchorOrigin={anchorOrigin}
                     open={open}
                     onClose={this.handleClose}
-                    autoHideDuration={200000}
+                    autoHideDuration={2000}
                 >
                     <SnackbarContent
                         className={snackbarContent}

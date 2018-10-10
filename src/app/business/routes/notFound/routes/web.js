@@ -8,6 +8,7 @@ import {coolBlue} from '../../../../../../assets/css/variables';
 // https://github.com/faceyspacey/babel-plugin-universal-import#caveat
 const Universal = universal(import('../../notFound/components'), {
     loading: <PulseLoader size={6} color={coolBlue} />,
+    ignoreBabelRename: true,
 });
 
 export default Universal;
