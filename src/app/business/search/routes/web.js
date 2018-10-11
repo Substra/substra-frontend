@@ -4,10 +4,10 @@ import {injectReducer} from 'redux-reducers-injector';
 import {injectSaga} from 'redux-sagas-injector';
 
 import {PulseLoader} from 'react-spinners';
-import {coolBlue} from '../../../../assets/css/variables/index';
+import {coolBlue} from '../../../../../assets/css/variables/index';
 
 
-const UniversalSearch = universal(import('./components/index'), {
+const UniversalSearch = universal(import('../../search/components/index'), {
     loading: <PulseLoader size={6} color={coolBlue} />,
     onLoad: (module) => {
         // need all models reducers
@@ -24,6 +24,7 @@ const UniversalSearch = universal(import('./components/index'), {
         injectSaga('model', module.modelSagas);
         injectReducer('model', module.modelReducer);
     },
+    ignoreBabelRename: true,
 });
 
 export default UniversalSearch;

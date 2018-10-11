@@ -6,7 +6,7 @@ import ServiceWorker from './business/common/components/serviceWorker';
 import Top from './business/top';
 
 import Route from './business/routes';
-import Search from './business/search';
+import Search from './business/search/routes';
 
 const Container = styled('div')`
     height: 100%;

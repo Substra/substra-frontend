@@ -10,7 +10,7 @@ import config from 'config';
 import baseConfig from './base';
 import rules from '../utils/rules';
 import definePlugin from '../utils/plugins/definePlugin';
-import dll from '../utils/plugins/dll';
+//import dll from '../utils/plugins/dll';
 
 
 const port = process.env.PORT || 1212;
@@ -92,7 +92,7 @@ export default merge.smart(baseConfig, {
             title: `${config.appName} dev`,
             inject: true,
         }),
-        dll,
+        //dll,
         new ExtractCssChunks({
             filename: '[name].css',
             allChunks: false,
