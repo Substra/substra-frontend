@@ -5,6 +5,7 @@ import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
+import {capitalize} from 'lodash';
 
 import {getItem} from '../selector';
 
@@ -94,10 +95,10 @@ class Detail extends Component {
         downloadFile();
     };
 
-    addNotification = key => (e) => {
+    addNotification = (key, text) => (e) => {
         const {addNotification} = this.props;
 
-        addNotification(key);
+        addNotification(key, text);
     };
 
     filterUp = o => (e) => {
@@ -109,7 +110,7 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, descLoading,
+            item, className, descLoading, model,
         } = this.props;
 
         return (
@@ -137,7 +138,7 @@ class Detail extends Component {
                                     onClick={this.downloadFile}
                                     className={icon}
                                 />
-                                <span onClick={this.addNotification(item.key)}>
+                                <span onClick={this.addNotification(item.key, `${capitalize(model)}'s key successfully copied to clipboard!`)}>
                                     <CopySimple width={22} height={22} className={icon} />
                                 </span>
                                 <FilterUp onClick={this.filterUp(item.name)} className={icon} />

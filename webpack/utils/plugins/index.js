@@ -5,12 +5,13 @@ import glob from 'glob';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import StatsPlugin from 'stats-webpack-plugin';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import HappyPack from 'happypack';
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import WriteFilePlugin from 'write-file-webpack-plugin';
+
+
 import RavenPlugin from './tools/ravenPlugin';
 
 import definePlugin from './definePlugin';
@@ -28,10 +29,6 @@ export default env => [
         pwaManifest,
         new RavenPlugin(config.apps.frontend.raven_url, path.resolve(__dirname, '../../../assets/js/raven.min.js')),
         ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-            }),
             new webpack.optimize.AggressiveMergingPlugin(),
             new StatsPlugin('stats.json'),
             new SWPrecacheWebpackPlugin({
@@ -40,19 +37,19 @@ export default env => [
                 minify: false,
                 dynamicUrlToDependencies: {
                     ...Object.keys(routes).reduce((p, c) => ({
-                            ...p,
-                            [routes[c].path]: [
-                                ...glob.sync(path.resolve(__dirname, '../../../src/app/**/*.{js,png}')),
-                                ...glob.sync(path.resolve(__dirname, '../../../src/client/**/*.{js,png}')),
-                                ...glob.sync(path.resolve(__dirname, '../../../src/common/**/*.{js,png}')),
-                            ],
-                        }), {}),
+                        ...p,
+                        [routes[c].path]: [
+                            ...glob.sync(path.resolve(__dirname, '../../../src/app/**/*.{js,png}')),
+                            ...glob.sync(path.resolve(__dirname, '../../../src/client/**/*.{js,png}')),
+                            ...glob.sync(path.resolve(__dirname, '../../../src/common/**/*.{js,png}')),
+                        ],
+                    }), {}),
                 },
                 navigateFallback: '/404', // needed for working offline and avoiding blink on not found pages
                 staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
             }),
         ] : [
-            // dll,
+            //dll,
             new BrowserSyncPlugin(
                 // BrowserSync options
                 {
@@ -97,24 +94,42 @@ export default env => [
                         disableWarnings: true,
                     }],
                     'lodash',
-                    'transform-runtime',
+                    '@babel/plugin-transform-runtime',
                     'emotion',
+                    // Stage 0
+                    '@babel/plugin-proposal-function-bind',
+
+                    // Stage 1
+                    '@babel/plugin-proposal-export-default-from',
+                    '@babel/plugin-proposal-logical-assignment-operators',
+                    ['@babel/plugin-proposal-optional-chaining', {loose: false}],
+                    ['@babel/plugin-proposal-pipeline-operator', {proposal: 'minimal'}],
+                    ['@babel/plugin-proposal-nullish-coalescing-operator', {loose: false}],
+                    '@babel/plugin-proposal-do-expressions',
+
+                    // Stage 2
+                    ['@babel/plugin-proposal-decorators', {legacy: true}],
+                    '@babel/plugin-proposal-function-sent',
+                    '@babel/plugin-proposal-export-namespace-from',
+                    '@babel/plugin-proposal-numeric-separator',
+                    '@babel/plugin-proposal-throw-expressions',
+
+                    // Stage 3
+                    '@babel/plugin-syntax-dynamic-import',
+                    '@babel/plugin-syntax-import-meta',
+                    ['@babel/plugin-proposal-class-properties', {loose: true}],
+                    '@babel/plugin-proposal-json-strings',
                     ...(PRODUCTION && env === 'client' ? [
-                        'transform-class-properties',
-                        'transform-es2015-classes',
-                        'transform-react-constant-elements',
-                        'transform-react-inline-elements',
+                        '@babel/plugin-transform-react-constant-elements',
+                        '@babel/plugin-transform-react-inline-elements',
                         'transform-react-remove-prop-types',
                     ] : []),
                     ...(DEVELOPMENT ? ['react-hot-loader/babel'] : []),
                 ],
                 presets: [
                     // do not transpil es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
-                    ['env', {
-                        modules: false,
-                    }],
-                    'react',
-                    'stage-0',
+                    ['@babel/preset-env', {modules: false}],
+                    '@babel/preset-react',
                 ],
             },
         }],

@@ -5,7 +5,7 @@
 import path from 'path';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import merge from 'webpack-merge';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import HappyPack from 'happypack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -41,16 +41,36 @@ export default merge.smart(baseConfig, {
                             disableWarnings: true,
                         }],
                         'emotion',
-                        'transform-runtime',
+                        '@babel/plugin-transform-runtime',
                         'lodash',
-                        'date-fns',
-                        'transform-class-properties',
-                        'transform-es2015-classes',
+
+                        // Stage 0
+                        '@babel/plugin-proposal-function-bind',
+
+                        // Stage 1
+                        '@babel/plugin-proposal-export-default-from',
+                        '@babel/plugin-proposal-logical-assignment-operators',
+                        ['@babel/plugin-proposal-optional-chaining', {loose: false}],
+                        ['@babel/plugin-proposal-pipeline-operator', {proposal: 'minimal'}],
+                        ['@babel/plugin-proposal-nullish-coalescing-operator', {loose: false}],
+                        '@babel/plugin-proposal-do-expressions',
+
+                        // Stage 2
+                        ['@babel/plugin-proposal-decorators', {legacy: true}],
+                        '@babel/plugin-proposal-function-sent',
+                        '@babel/plugin-proposal-export-namespace-from',
+                        '@babel/plugin-proposal-numeric-separator',
+                        '@babel/plugin-proposal-throw-expressions',
+
+                        // Stage 3
+                        '@babel/plugin-syntax-dynamic-import',
+                        '@babel/plugin-syntax-import-meta',
+                        ['@babel/plugin-proposal-class-properties', {loose: true}],
+                        '@babel/plugin-proposal-json-strings',
                     ],
                     presets: [
-                        'env',
-                        'react',
-                        'stage-0',
+                        ['@babel/preset-env', {modules: false}],
+                        '@babel/preset-react',
                     ],
                 },
             }],
@@ -62,14 +82,16 @@ export default merge.smart(baseConfig, {
             title: `${config.appName}`,
             inject: true,
         }),
-        new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-        }),
         new ExtractCssChunks('style.css'),
         new BundleAnalyzerPlugin({
             analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
             openAnalyzer: process.env.OPEN_ANALYZER === 'true',
         }),
     ],
+    optimization: {
+        minimizer: [new TerserPlugin({
+            cache: true,
+            parallel: true,
+        })],
+    },
 });

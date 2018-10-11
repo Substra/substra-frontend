@@ -142,7 +142,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     // needed for jss and server side rendering, material-ui still does not work with stream...
     // follow this issue for disabling below blocking line https://github.com/mui-org/material-ui/issues/8503
-    // renderToStaticMarkup(app);
+    //renderToStaticMarkup(app);
 
     const materialUiCss = sheetsRegistry.toString();
 

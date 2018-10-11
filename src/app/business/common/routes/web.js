@@ -17,6 +17,7 @@ const Universal = ({model}) => {
             injectSaga(model, module.sagas);
             injectReducer(model, module.reducer);
         },
+        ignoreBabelRename: true,
     });
 
     return <U model={model} />;

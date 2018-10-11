@@ -4,7 +4,7 @@
 
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import baseConfig from './base';
 
@@ -35,25 +35,41 @@ export default merge.smart(baseConfig, {
                             disableWarnings: true,
                         }],
                         'emotion',
-                        'transform-runtime',
+                        '@babel/plugin-transform-runtime',
                         'lodash',
-                        'date-fns',
-                        'transform-class-properties',
-                        'transform-es2015-classes',
                         'react-hot-loader/babel',
+
+                        // Stage 0
+                        '@babel/plugin-proposal-function-bind',
+
+                        // Stage 1
+                        '@babel/plugin-proposal-export-default-from',
+                        '@babel/plugin-proposal-logical-assignment-operators',
+                        ['@babel/plugin-proposal-optional-chaining', {loose: false}],
+                        ['@babel/plugin-proposal-pipeline-operator', {proposal: 'minimal'}],
+                        ['@babel/plugin-proposal-nullish-coalescing-operator', {loose: false}],
+                        '@babel/plugin-proposal-do-expressions',
+
+                        // Stage 2
+                        ['@babel/plugin-proposal-decorators', {legacy: true}],
+                        '@babel/plugin-proposal-function-sent',
+                        '@babel/plugin-proposal-export-namespace-from',
+                        '@babel/plugin-proposal-numeric-separator',
+                        '@babel/plugin-proposal-throw-expressions',
+
+                        // Stage 3
+                        '@babel/plugin-syntax-dynamic-import',
+                        '@babel/plugin-syntax-import-meta',
+                        ['@babel/plugin-proposal-class-properties', {loose: true}],
+                        '@babel/plugin-proposal-json-strings',
                     ],
                     presets: [
-                        'env',
-                        'react',
-                        'stage-0',
+                        ['@babel/preset-env', {modules: false}],
+                        '@babel/preset-react',
                     ],
                 },
             }],
             threads: 4,
-        }),
-        new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
         }),
         new BundleAnalyzerPlugin({
             analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
@@ -61,12 +77,18 @@ export default merge.smart(baseConfig, {
         }),
         definePlugin(),
     ],
+    optimization: {
+        minimizer: [new TerserPlugin({
+            cache: true,
+            parallel: true,
+        })],
+    },
 
     /**
-   * Disables webpack processing of __dirname and __filename.
-   * If you run the bundle in node.js it falls back to these values of node.js.
-   * https://github.com/webpack/webpack/issues/2010
-   */
+     * Disables webpack processing of __dirname and __filename.
+     * If you run the bundle in node.js it falls back to these values of node.js.
+     * https://github.com/webpack/webpack/issues/2010
+     */
     node: {
         __dirname: false,
         __filename: false,

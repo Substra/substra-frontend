@@ -32,7 +32,6 @@ export default {
         ? 'source-map'
         : (DEVELOPMENT ? 'cheap-module-source-map' : '#hidden-source-map'),
     entry: [
-        'babel-polyfill',
         'fetch-everywhere',
         res('../../src/server/render.js'),
     ],
