@@ -90,10 +90,12 @@ class Detail extends Component {
 
     render() {
         const {
-            className, challengeFilters, config, loading, item,
+            className, challengeFilters, config, loading, item, model,
             over, out,
             actions,
         } = this.props;
+
+        console.log('render');
 
         return (
             <Content className={className}>
@@ -118,7 +120,7 @@ class Detail extends Component {
                         )}
                         {!!challengeFilters.length && (
                             <div>
-                                <Chart config={config} over={over} out={out} actions={actions}/>
+                                <Chart config={config} over={over} out={out} actions={actions} model={model}/>
                                 {!isEmpty(item) && <JSONPretty json={item} theme={owkin}/>}
                             </div>)
                         }
@@ -151,6 +153,7 @@ const mapStateToProps = (state, {
 }) => ({
     loading: state[model].list.loading,
     item: getItem(state, model),
+    model,
     filterUp,
     downloadFile,
     addNotification,
