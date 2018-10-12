@@ -5,8 +5,8 @@ import styled, {css} from 'react-emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import {isEmpty} from 'lodash';
 
-import MyJSONPretty from './MyJSONPretty';
-import {atomOneLight} from './MyJSONPretty/themes';
+import JSONPretty from 'react-json-prettify';
+import {atomOneLight} from 'react-json-prettify/dist/themes';
 import {slate, tealish} from '../../../../../../../assets/css/variables';
 
 import Chart from './chart';
@@ -67,6 +67,7 @@ const NoChallenges = styled('div')`
     text-align: center;
 `;
 
+
 class Detail extends Component {
     downloadFile = (e) => {
         const {downloadFile} = this.props;
@@ -118,7 +119,7 @@ class Detail extends Component {
                         {!!challengeFilters.length && (
                             <div>
                                 <Chart config={config} over={over} out={out} actions={actions}/>
-                                {!isEmpty(item) && <MyJSONPretty json={item} theme={owkin}/>}
+                                {!isEmpty(item) && <JSONPretty json={item} theme={owkin}/>}
                             </div>)
                         }
                     </Fragment>)

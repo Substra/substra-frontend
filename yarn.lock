@@ -11012,6 +11012,14 @@ react-is@^16.5.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
   integrity sha512-hSl7E6l25GTjNEZATqZIuWOgSnpXb3kD0DVCujmg46K5zLxsbiKaaT6VO9slkSBDPZfYs30lwfJwbOFOnoEnKQ==
 
+react-json-prettify@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-json-prettify/-/react-json-prettify-0.1.2.tgz#0d8ad0f567aff39d272d0e33fc7299d5b3309ec3"
+  integrity sha512-nLDlFzG7WnFsC8qIyViSry8OQIvg9Rnr+/iYuqosGLQFBnawCvg9KOCv8V8bHCHkdQk6PCO+ZDsuBcp7DxQMRA==
+  dependencies:
+    prop-types "^15.6.2"
+    react "^16.5.2"
+
 react-json-tree@0.11.0, react-json-tree@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.11.0.tgz#f5b17e83329a9c76ae38be5c04fda3a7fd684a35"
@@ -11142,7 +11150,7 @@ react-universal-component@3.0.3:
     hoist-non-react-statics "^2.2.1"
     prop-types "^15.5.10"
 
-react@16.5.2:
+react@16.5.2, react@^16.5.2:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.5.2.tgz#19f6b444ed139baa45609eee6dc3d318b3895d42"
   integrity sha512-FDCSVd3DjVTmbEAjUNX6FgfAmQ+ypJfHUsqUJOYNCBUp1h8lqmtC+0mXJ+JjsWx4KAVTkk1vKd1hLQPvEviSuw==

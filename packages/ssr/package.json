@@ -92,6 +92,7 @@
         "koa-webpack-dev-middleware": "2.0.2",
         "lodash-webpack-plugin": "0.11.5",
         "query-string": "6.2.0",
+        "react-json-prettify": "^0.1.2",
         "redis": "2.8.0",
         "stats-webpack-plugin": "0.7.0",
         "sw-precache-webpack-plugin": "0.11.5",
