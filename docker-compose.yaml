@@ -1,0 +1,31 @@
+
+version: '2'
+
+networks:
+  default:
+    external:
+      name: net_substra
+
+services:
+
+  # Data API and authentication/authorization
+  substrafront:
+    build:
+      context: ./
+    container_name: substrafront
+    hostname: substrafront
+    depends_on:
+      - redis
+    ports:
+      - "3000:8000"
+    # command: ./node_modules/.bin/babel-node ./build/ssr/index.js
+    environment:
+      - REDIS_HOST=redis
+
+  # Distributed in-memory cache
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:4.0.11-alpine
+    ports:
+      - "6379:6379"
