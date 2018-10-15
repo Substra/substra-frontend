@@ -7,7 +7,7 @@ import {getItem} from '../../../../common/selector';
 import {getOrderedResults} from '../../selector';
 
 
-import {List} from '../../../../common/components/list';
+import {List} from '../../../../common/components/list/index';
 import {desc} from '../../../../common/components/list/desc';
 
 // update filterUp for using key

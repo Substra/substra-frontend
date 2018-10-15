@@ -2,7 +2,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {isArray} from 'lodash';
 
-import {List} from '../../../../common/components/list';
+import {List} from '../../../../common/components/list/index';
 import {getOrderedResults} from '../../../model/selector';
 import {getItem} from '../../../../common/selector';
 
