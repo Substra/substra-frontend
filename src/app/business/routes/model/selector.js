@@ -1,5 +1,5 @@
 import {
-flatten, orderBy, uniqBy, last,
+    flatten, orderBy, uniqBy, last,
 } from 'lodash';
 import {Decimal} from 'decimal.js';
 
@@ -148,146 +148,157 @@ export const getData = createDeepEqualSelector([getOrderedResults],
 );
 
 const colors = [
-    '#357589',
-    '#93d5d9',
-    '#2fd9c1',
-    '#82d965',
-    '#d9d965',
-    '#d99e61',
-    '#d95855',
-    '#d971bb',
+    '#5B72B7',
+    '#1DBCC0',
+    '#ED5937',
+    '#BA6AAB',
+    '#8ca0ea',
+    '#67eff3',
+    '#fff452',
+    '#ff8b63',
+    '#ee9add',
+    '#284787',
+    '#008b90',
+    '#b69200',
+    '#b4240b',
+    '#883c7c',
 ];
 
-const hover = '#edc20f';
+export const hover = '#edc20f';
 
 export const getConfig = createDeepEqualSelector([getData, selected],
     (data, selected) => ({
-            legend: {
-                enabled: false,
-            },
-            credits: {
-                enabled: false,
-            },
-            title: '',
-            xAxis: [
-                {
-                    lineWidth: 0,
-                    labels: {
-                        enabled: false,
-                    },
-                    tickWidth: 0,
-                    min: 0,
-                    max: data.owner && data.owner.series ? Math.max(...data.owner.series.map(o => o.length)) : 1,
+        legend: {
+            enabled: false,
+        },
+        credits: {
+            enabled: false,
+        },
+        title: '',
+        xAxis: [
+            {
+                lineWidth: 0,
+                labels: {
+                    enabled: false,
                 },
-                {
-                    lineWidth: 0,
+                tickWidth: 0,
+                min: 0,
+                max: data.owner && data.owner.series ? Math.max(...data.owner.series.map(o => o.length)) : 1,
+            },
+            {
+                lineWidth: 0,
+            },
+        ],
+        yAxis: [
+            {
+                title: {
+                    text: 'Data center',
+                    align: 'low',
+                    margin: 20,
                 },
-            ],
-            yAxis: [
-                {
-                    title: {
-                        text: 'Data center',
-                        align: 'low',
-                        margin: 20,
+                lineColor: '#4b6073',
+                lineWidth: 2,
+                gridLineWidth: 0,
+                labels: {
+                    formatter: (point) => {
+                        const owner = data.owner.results.find(x => x.rank === point.value);
+                        return owner ? owner.owner.slice(0, 4) : (point.value <= 1 && point.value >= 0 ? point.value : '');
                     },
-                    lineColor: '#4b6073',
-                    lineWidth: 2,
-                    gridLineWidth: 0,
-                    labels: {
-                        formatter: (point) => {
-                            const owner = data.owner.results.find(x => x.rank === point.value);
-                            return owner ? owner.owner.slice(0, 4) : (point.value <= 1 && point.value >= 0 ? point.value : '');
-                        },
-                    },
-                    max: 1.1,
-                    tickInterval: step,
-                    plotLines: [{
-                        color: '#4b6073',
-                        width: 2,
-                        value: 0,
-                    }],
-                    arrowOnEnd: true,
+                },
+                max: 1.1,
+                tickInterval: step,
+                plotLines: [{
+                    color: '#4b6073',
+                    width: 2,
+                    value: 0,
+                }],
+                arrowOnEnd: true,
 
-                },
-                {
-                    title: {
-                        text: 'Performance: AUC',
-                        align: 'middle',
-                        margin: -15,
-                    },
-                },
-            ],
-            tooltip: {
-                formatter() {
-                    return this.key;
+            },
+            {
+                title: {
+                    text: 'Performance: AUC',
+                    align: 'middle',
+                    margin: -15,
                 },
             },
-            plotOptions: {
-                series: {
-                    pointStart: 0,
-                    animation: false,
-                    marker: {
-                        states: {
-                            hover: {
-                                fillColor: 'white',
-                                lineColor: hover,
-                                lineWidth: 2,
-                                radiusPlus: 0,
-                            },
-                        },
-                        radius: 5,
-                    },
+        ],
+        tooltip: {
+            formatter() {
+                return this.key;
+            },
+        },
+        plotOptions: {
+            series: {
+                pointStart: 0,
+                animation: false,
+                stickyTracking: false,
+                marker: {
                     states: {
                         hover: {
-                            halo: {
-                                size: 0,
-                            },
+                            fillColor: 'white',
+                            lineColor: hover,
+                            lineWidth: 2,
+                            radiusPlus: 0,
                         },
-                        normal: {
-                            animation: {
-                                duration: 0,
-                            },
+                    },
+                    radius: 5,
+                },
+                states: {
+                    hover: {
+                        enabled: false, // handle it manually
+                        halo: {
+                            size: 0,
+                        },
+                        lineWidthPlus: 0,
+                    },
+                    normal: {
+                        animation: {
+                            duration: 0,
                         },
                     },
                 },
             },
-            series: [
-                ...(data.owner && data.owner.series ? data.owner.series.map((o, i) => ({
-                    data: o.map((x, j) => ({
-                        x: j,
-                        y: data.owner.results.find(y => y.owner === x.owner).rank,
-                        name: x.name,
-                        key: x.key,
-                        color: selected === x.key ? hover : (i < colors.length ? colors[i] : colors[0]),
-                    })),
-                    yAxis: 0,
-                    xAxis: 0,
-                    marker: {
-                        symbol: 'round',
-                    },
-                    name: `owner-${i}`,
-                    color: i < colors.length ? colors[i] : colors[0],
-                    zIndex: o.find(x => x.key === selected) ? data.owner.series.length + 1 : i,
-                })) : []),
-                ...(data.perf ? data.perf.map((o, i) => ({
-                    data: o.map((x, j) => ({
-                        x: j,
-                        y: x.perf,
-                        name: x.name,
-                        key: x.key,
-                        color: selected === x.key ? hover : (i < colors.length ? colors[i] : colors[0]),
-                    })),
-                    yAxis: 0,
-                    xAxis: 0,
-                    marker: {
-                        symbol: 'round',
-                    },
-                    name: `perf-${i}`,
-                    color: i < colors.length ? colors[i] : colors[0],
-                    zIndex: o.find(x => x.key === selected) ? data.perf.length + 1 : i,
-                })) : []),
-            ],
-        }),
+        },
+        series: [
+            ...(data.owner && data.owner.series ? data.owner.series.map((o, i) => ({
+                data: o.map((x, j) => ({
+                    x: j,
+                    y: data.owner.results.find(y => y.owner === x.owner).rank,
+                    name: x.name,
+                    key: x.key,
+                    color: selected === x.key ? hover : (i < colors.length ? colors[i] : colors[0]),
+                    noTooltip: false,
+                })),
+                yAxis: 0,
+                xAxis: 0,
+                marker: {
+                    symbol: 'round',
+                },
+                name: `owner-${i}`,
+                color: i < colors.length ? colors[i] : colors[0],
+                zIndex: o.find(x => x.key === selected) ? data.owner.series.length + 1 : i,
+            })) : []),
+            ...(data.perf ? data.perf.map((o, i) => ({
+                data: o.map((x, j) => ({
+                    x: j,
+                    y: x.perf,
+                    name: x.name,
+                    key: x.key,
+                    color: selected === x.key ? hover : (i < colors.length ? colors[i] : colors[0]),
+                    noTooltip: false,
+                })),
+                yAxis: 0,
+                xAxis: 0,
+                marker: {
+                    symbol: 'round',
+                },
+                name: `perf-${i}`,
+                color: i < colors.length ? colors[i] : colors[0],
+                zIndex: o.find(x => x.key === selected) ? data.perf.length + 1 : i,
+            })) : []),
+        ],
+    }),
 );
 
 export default {

@@ -23,6 +23,9 @@ export const actionTypes = {
 
     chart: {
         SAVE: `${prefix}_CHART_SAVE`,
+        hoverKey: {
+            SET: `${prefix}_CHART_HOVERKEY_SET`,
+        },
     },
 };
 
@@ -62,5 +65,8 @@ export default {
 
     chart: {
         save: createAction(actionTypes.chart.SAVE),
+        hoverKey: {
+            set: createAction(actionTypes.chart.hoverKey.SET),
+        },
     },
 };

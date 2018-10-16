@@ -3,83 +3,77 @@ import {bindActionCreators} from 'redux';
 import {onlyUpdateForKeys} from 'recompose';
 import connect from 'react-redux/es/connect/connect';
 import ReactHighcharts from './highcharts';
-import {getData} from '../../selector';
+import {getConfig, getData, hover} from '../../selector';
+
+// helper
+export const getOppositePoint = (context) => {
+    const chart = context.target.series.chart;
+
+    const originalSerie = context.target.series;
+    const originalSerieName = originalSerie.name.split('-')[0];
+    const originalSerieindex = +originalSerie.name.split('-')[1];
+
+    const oppositeSerieName = originalSerieName === 'owner' ? 'perf' : 'owner';
+    const oppositeSerie = chart.series.find(x => x.name === `${oppositeSerieName}-${originalSerieindex}`);
+
+    const index = originalSerie.data.findIndex(o => o.y === context.target.y && o.x === context.target.x);
+    const originalPoint = originalSerie.data[index];
+    const oppositePoint = oppositeSerie.data[index];
+
+    return {originalPoint, oppositePoint, originalSerie, oppositeSerie};
+};
 
 class Chart extends Component {
-
-    over = false;
-
-    getOppositePoint = (context) => {
-        const chart = context.target.series.chart;
-
-        const originalSerie = context.target.series;
-        const originalSerieName = originalSerie.name.split('-')[0];
-        const originalSerieindex = +originalSerie.name.split('-')[1];
-
-        const oppositeSerieName = originalSerieName === 'owner' ? 'perf' : 'owner';
-        const oppositeSerie = chart.series.find(x => x.name === `${oppositeSerieName}-${originalSerieindex}`);
-
-        const index = originalSerie.data.findIndex(o => o.y === context.target.y && o.x === context.target.x);
-        const originalPoint = originalSerie.data[index];
-        const oppositePoint = oppositeSerie.data[index];
-
-        return {originalPoint, oppositePoint, originalSerie, oppositeSerie};
-    };
-
     afterRender = (chart) => {
         const {saveChart} = this.props;
-
         saveChart(chart);
     };
 
     mouseOver = (context) => {
-        const {over, data} = this.props;
+        const {setChartKeyHover, data, selected} = this.props;
+        const {originalPoint, oppositePoint, originalSerie, oppositeSerie} = getOppositePoint(context);
 
-        const chart = context.target.series.chart;
+        const hoverZindex = data.perf.length + 1;
 
-        const {originalPoint, oppositePoint, originalSerie, oppositeSerie} = this.getOppositePoint(context);
+        originalSerie.group.attr({zIndex: hoverZindex});
+        originalSerie.markerGroup.attr({zIndex: hoverZindex});
+        oppositeSerie.group.attr({zIndex: hoverZindex});
+        oppositeSerie.markerGroup.attr({zIndex: hoverZindex});
 
-        if (!this.over) {
-
-            console.log('update over from ', this.oldIndex, ' to ', data.perf.length + 1);
-            if (originalSerie.userOptions.zIndex !== data.perf.length + 1) {
-                originalPoint.setState('hover');
-                oppositePoint.setState('hover');
-
-                setTimeout(() => {
-                    this.over = true;
-                    this.oldIndex = originalSerie.userOptions.zIndex;
-                    // TODO optimize
-                    chart.series.map(o => o.update({zIndex: +o.name.split('-')[1]}));
-                    // update zIndex
-                    originalSerie.update({zIndex: data.perf.length + 1});
-                    oppositeSerie.update({zIndex: data.perf.length + 1});
-
-                    //chart.series.redraw();
-                }, 0);
-            }
+        if (selected !== originalPoint.key) {
+            oppositePoint.update({
+                marker: {fillColor: '#fff', lineColor: hover, lineWidth: 2},
+            });
+            originalPoint.update({
+                marker: {fillColor: '#fff', lineColor: hover, lineWidth: 2},
+            });
         }
 
-        // TODO debug flash
-        over(originalPoint.key);
+        setChartKeyHover(originalPoint.key);
     };
 
     mouseOut = (context) => {
-        const {out} = this.props;
+        const {setChartKeyHover, selected} = this.props;
+        const {originalPoint, oppositePoint, originalSerie, oppositeSerie} = getOppositePoint(context);
 
-        const chart = context.target.series.chart;
+        const originaleZindex = +originalSerie.name.split('-')[1],
+            oppositeZindex = +oppositeSerie.name.split('-')[1];
 
-        const {originalPoint, oppositePoint, originalSerie} = this.getOppositePoint(context);
-        originalPoint.setState();
-        oppositePoint.setState();
+        originalSerie.group.attr({zIndex: originaleZindex});
+        originalSerie.markerGroup.attr({zIndex: originaleZindex});
+        oppositeSerie.group.attr({zIndex: oppositeZindex});
+        oppositeSerie.markerGroup.attr({zIndex: oppositeZindex});
 
-        if (this.over && originalSerie.userOptions.zIndex !== this.oldIndex) {
-            console.log('update out to ', this.oldIndex);
-            this.over = false;
-            chart.series.map(o => o.update({zIndex: +o.name.split('-')[1]}));
+        if (selected !== originalPoint.key) {
+            oppositePoint.update({
+                marker: {fillColor: oppositeSerie.userOptions.color, lineWidth: 0},
+            });
+            originalPoint.update({
+                marker: {fillColor: originalSerie.userOptions.color, lineWidth: 0},
+            });
         }
 
-        out(originalPoint.key);
+        setChartKeyHover();
     };
 
     config = () => {
@@ -92,8 +86,8 @@ class Chart extends Component {
                     ...config.plotOptions.series,
                     point: {
                         events: {
-                            mouseOver: context => this.mouseOver(context),
-                            mouseOut: context => this.mouseOut(context),
+                            mouseOver: this.mouseOver,
+                            mouseOut: this.mouseOut,
                         },
                     },
                 },
@@ -108,11 +102,14 @@ class Chart extends Component {
 
 const mapStateToProps = (state, {model}) => ({
     data: getData(state, model),
+    config: getConfig(state, model),
+    selected: state[model].list.selected,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     saveChart: actions.chart.save,
+    setChartKeyHover: actions.chart.hoverKey.set,
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['data'])(Chart));
+export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['data', 'config'])(Chart));

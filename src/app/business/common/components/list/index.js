@@ -105,7 +105,7 @@ export class List extends Component {
         }
     };
 
-    out = (e) => {
+    out = item => (e) => {
         const {out} = this.props;
 
         e.stopPropagation();
@@ -116,7 +116,7 @@ export class List extends Component {
         }));
 
         if (out) {
-            out();
+            out(item);
         }
     };
 
@@ -135,7 +135,7 @@ export class List extends Component {
     itemWrapper = (key) => {
         // this.state.hoverItem works with current Ract List
         // this.props.hoverItem work from Base hovering (dynamic from Chart)
-        const hover = this.state.hoverItem === key || this.props.hoverItem === key;
+        const hover = this.state.hoverItem === key;
 
         return css`
             padding: 10px;
@@ -247,7 +247,7 @@ export class List extends Component {
                                 key={o.key}
                                 onClick={this.setSelected(o)}
                                 onMouseEnter={this.hover(o)}
-                                onMouseLeave={this.out}
+                                onMouseLeave={this.out(o)}
                             >
                                 <div className={this.itemWrapper(o.key)}>
                                     <Actions>
@@ -290,12 +290,14 @@ export class List extends Component {
 const noop = () => {
 };
 
+const order = {by: '', direction: 'asc'};
+
 List.defaultProps = {
     init: false,
     loading: false,
     results: [],
     selected: '',
-    order: {by: '', direction: 'asc'},
+    order,
     className: '',
     model: '',
     download: {},
