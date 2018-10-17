@@ -9,7 +9,7 @@ import List from './list';
 import Detail from './detail';
 import {getItem} from '../../../common/selector';
 import searchActions from '../../../search/actions';
-import {getChallengeFilters} from '../selector';
+import {getChallengeFilters, getData} from '../selector';
 
 // Custom with added Chart
 const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
@@ -22,7 +22,8 @@ const ReduxBase = (B = Base) => { // no override on List/Detail, neither princip
         download,
         item: getItem(state, model),
         challengeFilters: getChallengeFilters(state),
-        chart: state[model].chart,
+        chart: state[model].chart.chart,
+        data: getData(state, model),
     });
 
     const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({

@@ -14,7 +14,7 @@ import Chart from './chart';
 import Search from '../../../../common/svg/search';
 import Alert from '../../../../common/svg/alert';
 
-import {getChallengeFilters, getOrderedResults, getConfig} from '../../selector';
+import {getChallengeFilters, getOrderedResults} from '../../selector';
 import {getItem} from '../../../../common/selector';
 
 const owkin = {
@@ -90,8 +90,7 @@ class Detail extends Component {
 
     render() {
         const {
-            className, challengeFilters, config, loading, item,
-            over, out,
+            className, challengeFilters, loading, item, model,
             actions,
         } = this.props;
 
@@ -118,7 +117,7 @@ class Detail extends Component {
                         )}
                         {!!challengeFilters.length && (
                             <div>
-                                <Chart config={config} over={over} out={out} actions={actions}/>
+                                <Chart actions={actions} model={model} />
                                 {!isEmpty(item) && <JSONPretty json={item} theme={owkin}/>}
                             </div>)
                         }
@@ -151,14 +150,14 @@ const mapStateToProps = (state, {
 }) => ({
     loading: state[model].list.loading,
     item: getItem(state, model),
+    model,
     filterUp,
     downloadFile,
     addNotification,
     challengeFilters: getChallengeFilters(state),
     results: getOrderedResults(state, model),
-    config: getConfig(state, model),
     ...props,
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['className', 'item', 'challengeFilters', 'config', 'loading'])(Detail));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['className', 'item', 'challengeFilters', 'loading'])(Detail));

@@ -10,6 +10,7 @@ import {
 
 import Check from '../../../common/svg/check';
 import {tealish} from '../../../../../../assets/css/variables';
+import {hover} from '../selector';
 
 
 export default class ModelBase extends Base {
@@ -58,30 +59,20 @@ export default class ModelBase extends Base {
         `;
     };
 
-    chartOver = (key) => {
-        this.setState(state => ({
-            ...state,
-            hoverItem: key,
-        }));
-    };
-
-    chartOut = () => {
-        this.setState(state => ({
-            ...state,
-            hoverItem: null,
-        }));
-    };
-
 
     hover = (item) => {
-        const {chart, challengeFilters} = this.props;
+        const {chart, challengeFilters, data} = this.props;
 
         if (challengeFilters.length && chart && chart.series) {
             chart.series.forEach((serie) => {
                 if (serie.data) {
                     const point = serie.data.find(x => x.key === item.key);
                     if (point) {
-                        point.setState('hover');
+                        point.series.group.attr({zIndex: data.perf.length + 1});
+                        point.series.markerGroup.attr({zIndex: data.perf.length + 1});
+                        point.update({
+                            marker: {fillColor: '#fff', lineColor: hover, lineWidth: 2},
+                        });
                     }
                 }
             });
@@ -89,11 +80,20 @@ export default class ModelBase extends Base {
     };
 
     out = (item) => {
-        const {challengeFilters, chart} = this.props;
+        const {challengeFilters, chart, selected} = this.props;
 
         if (challengeFilters.length && chart && chart.series) {
-            chart.series.forEach(serie => {
-                serie.data.forEach(x => x.setState());
+            chart.series.forEach((serie) => {
+                if (serie.data) {
+                    const point = serie.data.find(x => x.key !== selected && x.key === item.key);
+                    if (point) {
+                        point.series.group.attr({zIndex: +point.series.name.split('-')[1]});
+                        point.series.markerGroup.attr({zIndex: +point.series.name.split('-')[1]});
+                        point.update({
+                            marker: {fillColor: point.series.userOptions.color, lineWidth: 0},
+                        });
+                    }
+                }
             });
         }
     };
@@ -104,7 +104,7 @@ export default class ModelBase extends Base {
             List, Detail,
         } = this.props;
 
-        const {clipboard: {open, text, inputValue}, hoverItem} = this.state;
+        const {clipboard: {open, text, inputValue}} = this.state;
 
         return (
             <div
@@ -123,7 +123,6 @@ export default class ModelBase extends Base {
                     hover={this.hover}
                     out={this.out}
                     download={download}
-                    hoverItem={hoverItem}
                 />
                 <div
                     onMouseDown={this.mouseDown}
@@ -136,8 +135,6 @@ export default class ModelBase extends Base {
                     filterUp={this.filterUp}
                     downloadFile={this.downloadFile}
                     addNotification={this.addNotification}
-                    over={this.chartOver}
-                    out={this.chartOut}
                 />
                 <Snackbar
                     anchorOrigin={anchorOrigin}

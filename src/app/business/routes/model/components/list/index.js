@@ -1,13 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {css} from 'react-emotion';
 
 // use custom selector
 import {getItem} from '../../../../common/selector';
 import {getOrderedResults} from '../../selector';
 
 
-import {List} from '../../../../common/components/list';
+import {List} from '../../../../common/components/list/index';
 import {desc} from '../../../../common/components/list/desc';
 
 // update filterUp for using key
@@ -22,6 +23,18 @@ class Index extends List {
         filterUp(key);
 
         this.popoverHandleClose();
+    };
+
+    itemWrapper = (key) => {
+        // this.state.hoverItem works with current Ract List
+        // this.props.hoverItem work from Base hovering (dynamic from Chart)
+        const hover = this.state.hoverItem === key || this.props.hoverKey === key;
+
+        return css`
+            padding: 10px;
+            border-left: 4px solid ${this.isSelected(key) || hover ? '#edc20f' : 'transparent'};
+            ${!this.isSelected(key) && hover ? this.borderHover : ''}
+        `;
     };
 }
 
@@ -51,6 +64,7 @@ const mapStateToProps = (state, {
     selected: state[model].list.selected,
     order: state[model].order,
     item: getItem(state, model),
+    hoverKey: state[model].chart.hoverKey,
     filterUp,
     downloadFile,
     addNotification,
