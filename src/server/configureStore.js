@@ -12,10 +12,10 @@ const doesRedirect = ({kind, pathname, search}, res) => {
 };
 
 export default async (ctx) => {
-    const {store, thunk} = configureStore({}, {
-        initialEntries: [ctx.originalUrl],
+    const {store, thunk} = configureStore({}, [ctx.originalUrl], {
         basename: PRODUCTION_BASE_NAME,
     });
+
 
     // if not using onBeforeChange + jwTokens, you can also async authenticate
     // here against your db (i.e. using req.cookies.sessionId)

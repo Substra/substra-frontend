@@ -11,13 +11,14 @@ import rootReducer from '../../app/reducer';
 import DevTools from '../DevTools';
 import routes from '../../app/routesMap';
 
-const configureStore = (initialState, initialEntries) => {
+const configureStore = (initialState, initialEntries, opts) => {
     const {
         reducer, middleware, enhancer, thunk, initialDispatch,
     } = connectRoutes(routes, {
         initialDispatch: false,
         ...options,
-        ...initialEntries,
+        initialEntries,
+        ...opts,
     }); // yes, 5 redux aspects
 
     const enhancers = [

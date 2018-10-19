@@ -1,10 +1,11 @@
-FROM mhart/alpine-node:8
+FROM mhart/alpine-node:10
 
 WORKDIR /usr/src/app
 
-COPY . .
 COPY packages/ssr/package.json package.json
 RUN npm install && npm cache clean --force
+
+COPY . .
 
 ARG raven_url=127.0.0.1
 ARG redis_host=127.0.0.1

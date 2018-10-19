@@ -100,6 +100,7 @@ export default {
             runtimeChunk: {
                 name: 'bootstrap',
             },
+            // minimize: false,
             minimizer: [new TerserPlugin({
                 cache: true,
                 parallel: true,

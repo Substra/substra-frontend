@@ -17,6 +17,8 @@ import flushChunks from 'webpack-flush-chunks';
 import {JssProvider, SheetsRegistry} from 'react-jss';
 import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
 
+import {promisify} from 'util';
+
 import routesMap from '../app/routesMap';
 import vendors from '../../webpack/ssr/vendors';
 
@@ -27,10 +29,14 @@ import raven from './raven';
 
 import theme from '../common/theme/index';
 
+
 const cache = redis.createClient({
     host: config.redis.host,
     port: config.redis.port,
 });
+
+const exists = promisify(cache.exists).bind(cache);
+const get = promisify(cache.get).bind(cache);
 
 cache.on('connect', () => {
     console.log('CACHE CONNECTED');
@@ -53,6 +59,8 @@ const createCacheStream = (key) => {
         flush(cb) {
             // We concatenate all the buffered chunks of HTML to get the full HTML
             // then cache it at "key"
+
+            // TODO support caching with _sw-precache
 
             // only cache paths
             if (paths.includes(key) && !(key.endsWith('.js.map') || key.endsWith('.ico')) || key === 'service-worker.js') {
@@ -78,7 +86,7 @@ const createApp = (App, store, chunkNames) => (
         <Provider store={store}>
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
                 <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-                    <App />
+                    <App/>
                 </MuiThemeProvider>
             </JssProvider>
         </Provider>
@@ -142,7 +150,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     // needed for jss and server side rendering, material-ui still does not work with stream...
     // follow this issue for disabling below blocking line https://github.com/mui-org/material-ui/issues/8503
-    //renderToStaticMarkup(app);
+    // renderToStaticMarkup(app);
 
     const materialUiCss = sheetsRegistry.toString();
 
@@ -162,8 +170,8 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     mainStream.write(early);
 
-
     stream.pipe(mainStream, {end: false});
+
     stream.on('end', () => {
         const {js, cssHash} = flushChunks(clientStats,
             {
@@ -186,7 +194,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     });
 };
 
-export default ({clientStats, outputPath}) => (ctx) => {
+export default ({clientStats, outputPath}) => async (ctx) => {
     ctx.status = 200;
     ctx.type = 'text/html';
     ctx.body = new PassThrough();
@@ -210,20 +218,25 @@ export default ({clientStats, outputPath}) => (ctx) => {
     if (process.env.NODE_ENV === 'development') {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
+    // TODO
+    // using redis cache breaks, store is reinitialized
+    // find a way to have redis cache with correct store in each closure
     else {
-        cache.exists(path, async (err, reply) => {
-            if (reply === 1) {
-                console.log('CACHE KEY EXISTS: ', path);
-                // handle status 404
-                if (path === '/404') {
-                    ctx.status = 404;
-                }
+        const reply = await exists(path);
 
-                cache.get(path, (err, reply) => ctx.body.end(reply));
+        if (reply === 1) {
+            console.log('CACHE KEY EXISTS: ', path);
+            // handle status 404
+            if (path === '/404') {
+                ctx.status = 404;
             }
-            else {
-                await renderStreamed(ctx, path, clientStats, outputPath);
-            }
-        });
+
+            const reply = await get(path);
+            ctx.body.end(reply);
+        }
+        else {
+            console.log('CACHE KEY DOES NOT EXIST: ', path);
+            renderStreamed(ctx, path, clientStats, outputPath);
+        }
     }
 };

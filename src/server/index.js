@@ -112,25 +112,26 @@ else {
     app.use(mount(publicPath, serve(outputPath)));
     app.use(serverRender({clientStats, outputPath}));
 
+    // uncomment this code for local encryption (debug)
     // self signed
-    // const key = fs.readFileSync('./encryption/ca.key');
-    // const cert = fs.readFileSync( './encryption/ca.crt' );
-    // const ca = fs.readFileSync( './encryption/ia.crt' );
-    // const options = {
-    //     key,
-    //     cert,
-    //     ca,
-    // };
-
-    // let's encrypted generated files
-    const key = fs.readFileSync(path.resolve(config.encryption.privkey));
-    const cert = fs.readFileSync(path.resolve(config.encryption.fullchain));
-
+    const key = fs.readFileSync('./encryption/ca.key');
+    const cert = fs.readFileSync('./encryption/ca.crt');
+    const ca = fs.readFileSync('./encryption/ia.crt');
     const options = {
         key,
         cert,
-        allowHTTP1: true,
+        ca,
     };
+
+    // // let's encrypted generated files
+    // const key = fs.readFileSync(path.resolve(config.encryption.privkey));
+    // const cert = fs.readFileSync(path.resolve(config.encryption.fullchain));
+    //
+    // const options = {
+    //     key,
+    //     cert,
+    //     allowHTTP1: true,
+    // };
 
     http.createServer((req, res) => {
         res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
