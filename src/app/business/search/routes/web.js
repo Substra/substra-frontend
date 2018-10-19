@@ -8,21 +8,22 @@ import {coolBlue} from '../../../../../assets/css/variables/index';
 
 
 const UniversalSearch = universal(import('../../search/components/index'), {
-    loading: <PulseLoader size={6} color={coolBlue} />,
-    onLoad: (module) => {
+    loading: <PulseLoader size={6} color={coolBlue}/>,
+    onLoad: (module, info, props, context) => {
         // need all models reducers
+        // do not forget to pass the context.store, or simultaneous calls in the server part will fail
 
         injectSaga('challenge', module.challengeSagas);
-        injectReducer('challenge', module.challengeReducer);
+        injectReducer('challenge', module.challengeReducer, false, context.store);
 
         injectSaga('dataset', module.datasetSagas);
-        injectReducer('dataset', module.datasetReducer);
+        injectReducer('dataset', module.datasetReducer, false, context.store);
 
         injectSaga('algo', module.algoSagas);
-        injectReducer('algo', module.algoReducer);
+        injectReducer('algo', module.algoReducer, false, context.store);
 
         injectSaga('model', module.modelSagas);
-        injectReducer('model', module.modelReducer);
+        injectReducer('model', module.modelReducer, false, context.store);
     },
     ignoreBabelRename: true,
 });

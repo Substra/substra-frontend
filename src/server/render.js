@@ -146,6 +146,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     const chunkNames = [];
     const app = createApp(App, store, chunkNames);
+
     const stream = renderToNodeStream(app).pipe(renderStylesToNodeStream());
 
     // needed for jss and server side rendering, material-ui still does not work with stream...
@@ -195,9 +196,10 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 };
 
 export default ({clientStats, outputPath}) => async (ctx) => {
+
+    ctx.body = new PassThrough(); // this is a stream
     ctx.status = 200;
     ctx.type = 'text/html';
-    ctx.body = new PassThrough();
 
     console.log('REQUESTED ORIGINAL PATH:', ctx.originalUrl);
 
@@ -218,25 +220,26 @@ export default ({clientStats, outputPath}) => async (ctx) => {
     if (process.env.NODE_ENV === 'development') {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
-    // TODO
-    // using redis cache breaks, store is reinitialized
-    // find a way to have redis cache with correct store in each closure
+
     else {
         const reply = await exists(path);
 
         if (reply === 1) {
-            console.log('CACHE KEY EXISTS: ', path);
-            // handle status 404
-            if (path === '/404') {
-                ctx.status = 404;
-            }
-
             const reply = await get(path);
-            ctx.body.end(reply);
+
+            if (reply) {
+                console.log('CACHE KEY EXISTS: ', path);
+                // handle status 404
+                if (path === '/404') {
+                    ctx.status = 404;
+                }
+                ctx.body.end(reply);
+            }
         }
+
         else {
             console.log('CACHE KEY DOES NOT EXIST: ', path);
-            renderStreamed(ctx, path, clientStats, outputPath);
+            await renderStreamed(ctx, path, clientStats, outputPath);
         }
     }
 };

@@ -13,9 +13,9 @@ import {coolBlue} from '../../../../../assets/css/variables/index';
 const Universal = ({model}) => {
     const U = universal(import(`../../routes/${model}/preload/index`), {
         loading: <PulseLoader size={6} color={coolBlue} />,
-        onLoad: (module) => {
-            injectSaga(model, module.sagas);
-            injectReducer(model, module.reducer);
+        onLoad: (module, info, props, context) => {
+            injectSaga(model, module.sagas, false, context.store);
+            injectReducer(model, module.reducer, false, context.store);
         },
         ignoreBabelRename: true,
     });

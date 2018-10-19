@@ -114,14 +114,14 @@ else {
 
     // uncomment this code for local encryption (debug)
     // self signed
-    const key = fs.readFileSync('./encryption/ca.key');
-    const cert = fs.readFileSync('./encryption/ca.crt');
-    const ca = fs.readFileSync('./encryption/ia.crt');
-    const options = {
-        key,
-        cert,
-        ca,
-    };
+    // const key = fs.readFileSync('./encryption/ca.key');
+    // const cert = fs.readFileSync('./encryption/ca.crt');
+    // const ca = fs.readFileSync('./encryption/ia.crt');
+    // const options = {
+    //     key,
+    //     cert,
+    //     ca,
+    // };
 
     // // let's encrypted generated files
     // const key = fs.readFileSync(path.resolve(config.encryption.privkey));
@@ -133,11 +133,14 @@ else {
     //     allowHTTP1: true,
     // };
 
-    http.createServer((req, res) => {
-        res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
-        res.end();
-    }).listen(config.apps.frontend.api_port);
+    // http.createServer((req, res) => {
+    //     res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
+    //     res.end();
+    // }).listen(config.apps.frontend.api_port);
+    //
+    // http2.createSecureServer(options, app.callback()).listen(config.apps.frontend.secure_api_port, () => console.log(`Listening @ https://localhost:${config.apps.frontend.secure_api_port}/`),
+    // );
 
-    http2.createSecureServer(options, app.callback()).listen(config.apps.frontend.secure_api_port, () => console.log(`Listening @ https://localhost:${config.apps.frontend.secure_api_port}/`),
+    http.createServer(app.callback()).listen(config.apps.frontend.api_port, () => console.log(`Listening @ http://localhost:${config.apps.frontend.api_port}/`),
     );
 }
