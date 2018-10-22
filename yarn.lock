@@ -11499,40 +11499,27 @@ redux-mock-store@1.5.3:
   dependencies:
     lodash.isplainobject "^4.0.6"
 
-redux-reducers-injector@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/redux-reducers-injector/-/redux-reducers-injector-0.2.1.tgz#7f92ca6c844cb813f0f19a4562f2007072bdcab2"
-  integrity sha512-G4XnSqRZtdtXhQEMZf3XViKveQnn+tfDfsCn2+fPmlo6+X1hEST427WycVQwsS+xecAl6xnTiqS9uvit+UY1hA==
+redux-reducers-injector@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/redux-reducers-injector/-/redux-reducers-injector-0.2.2.tgz#91ce31a93d0dc59613d8fb57a77002ecc06738e8"
+  integrity sha512-Pqmu+O64rH6yaYPLYMymggOtTd3NX1TK6sz2dX2bum5+K/L6pRXjoaBON/quJuZY68phHzvP2lW63MmU1VgKbw==
   dependencies:
     lodash "^4.17.11"
     redux "^4.0.1"
 
-redux-reducers-injector@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/redux-reducers-injector/-/redux-reducers-injector-0.1.3.tgz#df7461b6139c93160579bde202941af42fbb887e"
-  integrity sha512-KJyNp6bm1yMTINt/FVUhV3Q0KkwQx3qx9s9R8SgMMXRf98471ueMpobgQhgS295l0RCuZQ5VAGbETlPkgu1umw==
-  dependencies:
-    lodash "^4.17.11"
-    redux "^4.0.0"
-
-redux-saga@0.16.2:
+redux-saga@0.16.2, redux-saga@^0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
 
-redux-saga@^0.16.0:
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.1.tgz#aa43d2ac029dab57f7f522b143f7db179a9e1324"
-  integrity sha512-nTDU0VWTpfKuw0oulxbf0lRH/HZ/LlXAZRUdjTXgU2X7se9e6/MpXKmFbw156zUf7OtLO0cZtue31ZNfvmVQgA==
-
-redux-sagas-injector@0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/redux-sagas-injector/-/redux-sagas-injector-0.2.5.tgz#d4c44c1edfcb8d9a69c1c5a4f7a7039fa75de3d5"
-  integrity sha512-rO4Zo6D87tu6wvgUZrSRic7hr1Sby/NCm0ELauprUD9weYKVWc/XqaBjGyqa24E8D8HWXm7p9izSxTWt5HA/oA==
+redux-sagas-injector@0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/redux-sagas-injector/-/redux-sagas-injector-0.2.7.tgz#3381cc639dc261c57df90186e49cf47ba2f75c21"
+  integrity sha512-q6IdDirzKaeCoC8MZpRcQcLgliOranKyIXcF0Seysl2P0Wqp5It3bef1Bj+44Pe0k/2ryoUZ48Vf1brh6SiGXw==
   dependencies:
-    redux "^4.0.0"
-    redux-reducers-injector "^0.1.3"
-    redux-saga "^0.16.0"
+    redux "4.0.1"
+    redux-reducers-injector "0.2.2"
+    redux-saga "^0.16.2"
 
 redux-slider-monitor@2.0.0-1:
   version "2.0.0-1"
@@ -11549,14 +11536,6 @@ redux@4.0.1, redux@^4.0.1:
   integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==
   dependencies:
     loose-envify "^1.4.0"
-    symbol-observable "^1.2.0"
-
-redux@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.0.tgz#aa698a92b729315d22b34a0553d7e6533555cc03"
-  integrity sha512-NnnHF0h0WVE/hXyrB6OlX67LYRuaf/rJcbWvnHHEPCF/Xa/AZpwhs/20WyqzQae5x4SD2F9nPObgBh2rxAgLiA==
-  dependencies:
-    loose-envify "^1.1.0"
     symbol-observable "^1.2.0"
 
 referrer-policy@1.1.0:

@@ -5,6 +5,9 @@ const theme = createMuiTheme({
     palette: {
         primary: indigo, // Purple and green play nicely together.
     },
+    typography: {
+        useNextVariants: true,
+    },
 });
 
 export default theme;
