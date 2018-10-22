@@ -1093,10 +1093,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.1.tgz#f3a81587ad8d0ef33cdad6f3b4310774fcc1053e"
   integrity sha512-dEv1n+IFtlvLQ8/FsTOtBCC1aNT4B5abE8ODF5wk2tpWnjvgGNRMvHCeJGbVHjFfer4h8MH2w9c2/6eoJHclMg==
 
-"@material-ui/core@3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.2.2.tgz#5c622eeda8851a37a46d27583f0d6624e8ec4732"
-  integrity sha512-wDTJyR76+OBdlltiPs3lc1gD6zR+dSA6nITtgkBeLf1NvWfNotMWdvldIDnF3bu24ySAX9imfzDfkBu4Edtqww==
+"@material-ui/core@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.3.0.tgz#f30838db346faa54f3a23dd795ebaf043144e331"
+  integrity sha512-h340FXiJyAEQ1+xnOBaqLib9f6M82DEn0CicMVRekwTtPhFR9dDYdJT30WDPczS2piNiQ9kuFfFcAE9UTbwcXQ==
   dependencies:
     "@babel/runtime" "7.1.2"
     "@types/jss" "^9.5.6"
@@ -4379,10 +4379,10 @@ double-ended-queue@^2.1.0-0:
   resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
   integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
 
-downshift@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.1.tgz#91e14d45d6ee3e239023cdfcc06248c7f5a1b2b2"
-  integrity sha512-teJ4ACfySJPC1+nOg6XqSMtCwjQkdXLfM2FlObr5FQAIR2r9TTFFDbXUTvzRA7mSJVf3FQZ/cx9i67Ox0iEy1Q==
+downshift@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.2.tgz#3a8238b7595796ae2f63a47bf7e2b619fa972dc1"
+  integrity sha512-OdeGRCfUTNL/eR8dLPmV6c9ytS6md1uwX2z0WGcOJaaArpV4DIdIwkmmvKH/U4NrZgXNV6J6iQAOZ/rayfQnGA==
   dependencies:
     "@babel/runtime" "^7.1.2"
     compute-scroll-into-view "^1.0.9"
@@ -11484,10 +11484,10 @@ redux-first-router-link@1.4.2:
     prop-types "15.5.10"
     rudy-match-path "^0.3.0"
 
-redux-first-router@2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/redux-first-router/-/redux-first-router-2.0.7.tgz#0e565d9f66804d11c5e584e2a5d2dbd9d0de4c9c"
-  integrity sha512-sTKlt7O+gMQlrA9uRKI6HOWdS/bCIyYxfONs5L4TIFxsBMeX4hoPrk0QvTgd1Mkslx40cZKpcoRI+CU0V8XWkg==
+redux-first-router@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/redux-first-router/-/redux-first-router-2.1.0.tgz#43ddb30d9bf073ffb5aa1806b7a345fdb84c8edd"
+  integrity sha512-WLGCDWutpbyQX7ocgA8Cx5KHFTDUobEAuVT2ug9RA0AwXelEFVLtkfbVp7eWcc25xpWJVvncLzfZpfLXiKno2w==
   dependencies:
     rudy-history "^1.0.0"
     rudy-match-path "^0.3.0"
@@ -14088,10 +14088,10 @@ webpack-sources@^1.0.1, webpack-sources@^1.1.0:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@4.21.0:
-  version "4.21.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.21.0.tgz#bd03605c0f48c0d4aaaef78ead2769485e5afd92"
-  integrity sha512-CGBeop4AYR0dcmk9Afl33qQULwTHQCXQPAIBTHMJoy9DpY8FPUDna/NUlAGTr5o5y9QC901Ww3wCY4wNo1X9Lw==
+webpack@4.22.0:
+  version "4.22.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.22.0.tgz#b168111e2e7b05f5169ac484e79e62093ec39e0d"
+  integrity sha512-2+3EYFqyhPl12buLQ42QPHEEh8BHn3P9ipRvGRHhdfKJ1u9svhZ3QjhIoEdL5SeIhL5gfOZVbBnartYEabkEsg==
   dependencies:
     "@webassemblyjs/ast" "1.7.8"
     "@webassemblyjs/helper-module-context" "1.7.8"
