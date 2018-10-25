@@ -2,7 +2,7 @@
     "name": "ssr-package",
     "version": "0.0.1",
     "dependencies": {
-        "@material-ui/core": "3.3.0",
+        "@material-ui/core": "3.2.2",
         "@material-ui/icons": "3.0.1",
         "babel-runtime": "6.26.0",
         "copy-to-clipboard": "3.0.8",
