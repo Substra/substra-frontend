@@ -24,8 +24,6 @@ export const getColumns = createDeepEqualSelector([results],
 
 export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
     (results, order, isComplex) => {
-        console.log(results, order);
-
         const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [order.by], [order.direction]) : o) : [];
 
         return isComplex ? res : [uniqBy(flatten(res), 'key')];
