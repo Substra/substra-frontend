@@ -86,7 +86,7 @@ const createApp = (App, store, chunkNames) => (
         <Provider store={store}>
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
                 <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-                    <App/>
+                    <App />
                 </MuiThemeProvider>
             </JssProvider>
         </Provider>
@@ -196,7 +196,6 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 };
 
 export default ({clientStats, outputPath}) => async (ctx) => {
-
     ctx.body = new PassThrough(); // this is a stream
     ctx.status = 200;
     ctx.type = 'text/html';

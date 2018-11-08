@@ -7,6 +7,7 @@ import http2 from 'http2';
 import webpack from 'webpack';
 
 import Koa from 'koa';
+import auth from 'koa-basic-auth';
 import serve from 'koa-static';
 import mount from 'koa-mount';
 import cookie from 'koa-cookie';
@@ -35,7 +36,6 @@ const app = new Koa();
 app.use(helmet());
 app.use(cookie());
 app.use(compress());
-
 
 // let's encrypt config
 const resolve = p => path.resolve(__dirname, p);
@@ -111,6 +111,9 @@ else {
 
     app.use(mount(publicPath, serve(outputPath)));
     app.use(serverRender({clientStats, outputPath}));
+
+    // require basic auth
+    app.use(auth(config.auth));
 
     // uncomment this code for local encryption (debug)
     // self signed
