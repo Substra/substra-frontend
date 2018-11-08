@@ -1,11 +1,15 @@
-/* globals API_URL fetch  */
+/* globals API_URL fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD */
 
 import queryString from 'query-string';
 import {isEmpty} from 'lodash';
+import btoa from 'btoa';
+
+const basic = btoa(`${SUBSTRABAC_USER}:${SUBSTRABAC_PASSWORD}`);
 
 export const getHeaders = jwt => ({
     Accept: 'application/json;version=0.0',
     'Content-Type': 'application/json;',
+    ...(process.env.NODE_ENV === 'production' ? {Authorization: `Basic ${basic}`} : {}),
     ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
 });
 

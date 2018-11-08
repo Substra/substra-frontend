@@ -1,3 +1,5 @@
+const {SUBSTRABAC_USER, SUBSTRABAC_PASSWORD} = require('./credentials');
+
 const apiPort = process.env.NODE_PORT || 3000;
 const apiUrl = 'http://owkin.substrabac:8000'; // should be https
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
@@ -28,6 +30,10 @@ module.exports = {
     encryption: {
         privkey: encryption_privkey,
         fullchain: encryption_fullchain,
+    },
+    credentials: {
+        SUBSTRABAC_USER,
+        SUBSTRABAC_PASSWORD,
     },
     redis: {
         host: redis_host,

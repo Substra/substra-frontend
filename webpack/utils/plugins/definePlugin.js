@@ -12,4 +12,6 @@ export default () => new webpack.DefinePlugin({
     META_KEYWORDS: JSON.stringify(config.apps.frontend.meta.keywords),
     PRODUCTION_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.production),
     DEBUG_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.debug),
+    SUBSTRABAC_USER: JSON.stringify(config.credentials.SUBSTRABAC_USER),
+    SUBSTRABAC_PASSWORD: JSON.stringify(config.credentials.SUBSTRABAC_PASSWORD),
 });
