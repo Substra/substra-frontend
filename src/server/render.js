@@ -111,7 +111,7 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
           <meta name="description" content="${META_DESCRIPTION}"/>
           <meta name="keywords" content="${META_KEYWORDS}" />
           <meta name="theme-color" content="#000">
-          <link rel="manifest" href="/manifest.json">
+          <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
           <link rel="icon" sizes="192x192" href="launcher-icon-high-res.png">
           ${styles}
           <style id="jss-server-side">${materialUiCss}</style>
