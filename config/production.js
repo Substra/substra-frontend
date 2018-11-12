@@ -1,8 +1,8 @@
 const encryption_privkey = '/etc/letsencrypt/live/substrafront.com/privkey.pem';
 const encryption_fullchain = '/etc/letsencrypt/live/substrafront.com/fullchain.pem';
 
-const name = process.env.SUBSTRA_FRONT_USERNAME || 'owkestra';
-const pass = process.env.SUBSTRA_FRONT_PWD || 'pwd';
+const name = process.env.FRONT_AUTH_USER;
+const pass = process.env.FRONT_AUTH_PASSWORD;
 
 module.exports = {
     encryption: {

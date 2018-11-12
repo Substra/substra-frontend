@@ -112,8 +112,10 @@ else {
     app.use(mount(publicPath, serve(outputPath)));
     app.use(serverRender({clientStats, outputPath}));
 
-    // require basic auth
-    app.use(auth(config.auth));
+    // look if require basic auth
+    if (typeof config.auth.name !== 'undefined' && typeof config.auth.pass !== 'undefined') {
+        app.use(auth(config.auth));
+    }
 
     // uncomment this code for local encryption (debug)
     // self signed
