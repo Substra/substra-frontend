@@ -1,2 +1,2 @@
-export const SUBSTRABAC_USER = process.env.FRONT_AUTH_USERNAME;
-export const SUBSTRABAC_PASSWORD = process.env.FRONT_AUTH_PASSWORD;
+export const SUBSTRABAC_USER = process.env.BACK_AUTH_USERNAME;
+export const SUBSTRABAC_PASSWORD = process.env.BACK_AUTH_PASSWORD;
