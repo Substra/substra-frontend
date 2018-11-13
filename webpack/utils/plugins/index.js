@@ -29,7 +29,7 @@ export default env => [
         pwaManifest,
         new RavenPlugin(config.apps.frontend.raven_url, path.resolve(__dirname, '../../../assets/js/raven.min.js')),
         ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
-            new webpack.optimize.AggressiveMergingPlugin(),
+            //new webpack.optimize.AggressiveMergingPlugin(),
             new StatsPlugin('stats.json'),
             new SWPrecacheWebpackPlugin({
                 cacheId: config.appName,
