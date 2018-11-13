@@ -109,13 +109,13 @@ else {
     const clientStats = require('../../build/ssr/client/stats.json'); // eslint-disable-line import/no-unresolved
     const serverRender = require('../../build/ssr/server/main.js').default; // eslint-disable-line import/no-unresolved
 
-    app.use(mount(publicPath, serve(outputPath)));
-    app.use(serverRender({clientStats, outputPath}));
-
     // look if require basic auth
     if (typeof config.auth.name !== 'undefined' && typeof config.auth.pass !== 'undefined') {
         app.use(auth(config.auth));
     }
+
+    app.use(mount(publicPath, serve(outputPath)));
+    app.use(serverRender({clientStats, outputPath}));
 
     // uncomment this code for local encryption (debug)
     // self signed
