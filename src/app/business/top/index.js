@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 import Link from 'redux-first-router-link';
+import {omit} from 'lodash';
 
 import {getRoutes} from './selector';
 
@@ -100,7 +101,7 @@ class Top extends Component {
 
                             return (
                                 <Li key={o}>
-                                    <Link to={{type: o, meta: {query: location.query}}} className={this.link(active)}>
+                                    <Link to={{type: o, meta: {query: omit(location.query, ['_sw-precache'])}}} className={this.link(active)}>
                                         <Picto className={picto} color={color} />
                                         {menu}
                                     </Link>

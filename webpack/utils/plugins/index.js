@@ -47,7 +47,9 @@ export default env => [
                 },
                 navigateFallback: '/404', // needed for working offline and avoiding blink on not found pages
                 mergeStaticsConfig: true,
-                staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/, /\?search=/],
+                // allow to deactivate service worker caching on search parameter, make search bar initializes correctly with right REDUX_STATE from server
+                navigateFallbackWhitelist: [/\?search=/],
+                staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
                 ignoreUrlParametersMatching: [/^utm_|^search/],
                 // https://github.com/GoogleChromeLabs/sw-precache#handlefetch-boolean
                 // handleFetch: true, // pass to false for debugging
