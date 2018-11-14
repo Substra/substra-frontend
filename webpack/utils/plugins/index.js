@@ -46,8 +46,11 @@ export default env => [
                     }), {}),
                 },
                 navigateFallback: '/404', // needed for working offline and avoiding blink on not found pages
-                staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
+                mergeStaticsConfig: true,
+                staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/, /\?search=/],
                 ignoreUrlParametersMatching: [/^utm_|^search/],
+                // https://github.com/GoogleChromeLabs/sw-precache#handlefetch-boolean
+                // handleFetch: true, // pass to false for debugging
             }),
         ] : [
             //dll,
