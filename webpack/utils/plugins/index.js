@@ -47,6 +47,7 @@ export default env => [
                 },
                 navigateFallback: '/404', // needed for working offline and avoiding blink on not found pages
                 staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/, /index\.html$/, /404\.html$/],
+                ignoreUrlParametersMatching: [/^utm_|^search/],
             }),
         ] : [
             //dll,
