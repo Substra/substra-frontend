@@ -1,16 +1,15 @@
-/* global fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD */
+/* global fetch */
 
 import {
     takeLatest, takeEvery, all, select, call,
 } from 'redux-saga/effects';
 
-
-import btoa from 'btoa';
 import {saveAs} from 'file-saver';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
+import {basic} from '../../../../entities/fetchEntities';
 
 function* fetchList(request) {
     const state = yield select();
@@ -32,11 +31,9 @@ function* fetchItemFileSaga({payload: {url}}) {
     let status;
     let filename;
 
-    const basic = btoa(`${SUBSTRABAC_USER}:${SUBSTRABAC_PASSWORD}`);
-
     yield fetch(url, {
         headers: {
-            ...(process.env.NODE_ENV === 'production' ? {Authorization: `Basic ${basic}`} : {}),
+            ...(process.env.NODE_ENV === 'production' ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',

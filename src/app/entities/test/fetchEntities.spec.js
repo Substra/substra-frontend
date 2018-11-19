@@ -5,6 +5,7 @@ import {describe, it} from 'mocha';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import mockFs from 'mock-fs';
+
 import {
     fetchEntitiesFactory,
     fetchEntityFactory,
@@ -22,8 +23,11 @@ import {
 chai.use(sinonChai);
 
 global.API_URL = 'http://api';
+global.SUBSTRABAC_USER = 'foo';
+global.SUBSTRABAC_PASSWORD = 'bar';
 global.fetch = sinon.stub();
 global.fetch.returns(Promise.resolve());
+
 
 describe('fetchEntitiesFactory', () => {
     it('should call fetch with correct parameters when called without jwt', () => {
@@ -129,12 +133,14 @@ describe('fetchEntityFactory', () => {
     it('should handle successfull response', (done) => {
         global.fetch.returns(Promise.resolve({
             ok: true,
+            status: 200,
             json: () => 'data',
         }));
 
         fetchEntityFactory('foo')('entityId').then((result) => {
             expect(result).to.deep.equal({
                 item: 'data',
+                status: 200,
             });
             done();
         }).catch(done);
@@ -143,7 +149,7 @@ describe('fetchEntityFactory', () => {
 
 describe('fetchEntitiesByPathFactory', () => {
     it('should call fetch with correct parameters when called without jwt', () => {
-        fetchEntitiesByPathFactory('foo', 'view')({}, undefined, 1);
+        fetchEntitiesByPathFactory('foo', 'view')({}, 1);
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/', {
             headers: {
                 Accept: 'application/json;version=0.0',
@@ -154,7 +160,7 @@ describe('fetchEntitiesByPathFactory', () => {
     });
 
     it('should call fetch with correct parameters when called with jwt', () => {
-        fetchEntitiesByPathFactory('foo', 'view')({}, 'token', 1);
+        fetchEntitiesByPathFactory('foo', 'view')({}, 1, 'token');
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/', {
             headers: {
                 Accept: 'application/json;version=0.0',
@@ -166,7 +172,7 @@ describe('fetchEntitiesByPathFactory', () => {
     });
 
     it('should call fetch with correct parameters when called with parameters and jwt', () => {
-        fetchEntitiesByPathFactory('foo', 'view')({page: 1}, 'token', 1);
+        fetchEntitiesByPathFactory('foo', 'view')({page: 1}, 1, 'token');
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/?page=1', {
             headers: {
                 Accept: 'application/json;version=0.0',
