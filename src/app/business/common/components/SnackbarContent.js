@@ -44,7 +44,9 @@ export const styles = (theme) => {
 };
 
 function SnackbarContent(props) {
-    const {classes, className, message, ...other} = props;
+    const {
+classes, className, message, ...other
+} = props;
 
     return (
         <Paper

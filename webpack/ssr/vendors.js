@@ -13,7 +13,7 @@
 export default {
     vendor: ['fetch-everywhere'],
     react: ['react', 'react-dom', 'react-helmet', 'recompose'],
-    //redux: ['redux', 'redux-actions', 'redux-reducers-injector', 'redux-saga', 'redux-sagas-injector', 'redux-first-router', 'redux-first-router-link'],
-    //emotion: ['emotion', 'create-emotion', 'create-emotion-styled'],
+    // redux: ['redux', 'redux-actions', 'redux-reducers-injector', 'redux-saga', 'redux-sagas-injector', 'redux-first-router', 'redux-first-router-link'],
+    // emotion: ['emotion', 'create-emotion', 'create-emotion-styled'],
     common: ['fastclick', 'history', 'lodash'],
 };

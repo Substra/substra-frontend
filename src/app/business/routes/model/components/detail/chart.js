@@ -20,7 +20,9 @@ export const getOppositePoint = (context) => {
     const originalPoint = originalSerie.data[index];
     const oppositePoint = oppositeSerie.data[index];
 
-    return {originalPoint, oppositePoint, originalSerie, oppositeSerie};
+    return {
+originalPoint, oppositePoint, originalSerie, oppositeSerie,
+};
 };
 
 class Chart extends Component {
@@ -31,7 +33,9 @@ class Chart extends Component {
 
     mouseOver = (context) => {
         const {setChartKeyHover, data, selected} = this.props;
-        const {originalPoint, oppositePoint, originalSerie, oppositeSerie} = getOppositePoint(context);
+        const {
+originalPoint, oppositePoint, originalSerie, oppositeSerie,
+} = getOppositePoint(context);
 
         const hoverZindex = data.perf.length + 1;
 
@@ -54,7 +58,9 @@ class Chart extends Component {
 
     mouseOut = (context) => {
         const {setChartKeyHover, selected} = this.props;
-        const {originalPoint, oppositePoint, originalSerie, oppositeSerie} = getOppositePoint(context);
+        const {
+originalPoint, oppositePoint, originalSerie, oppositeSerie,
+} = getOppositePoint(context);
 
         const originaleZindex = +originalSerie.name.split('-')[1],
             oppositeZindex = +oppositeSerie.name.split('-')[1];
@@ -96,7 +102,7 @@ class Chart extends Component {
     };
 
     render() {
-        return <ReactHighcharts config={this.config()} callback={this.afterRender}/>;
+        return <ReactHighcharts config={this.config()} callback={this.afterRender} />;
     }
 }
 

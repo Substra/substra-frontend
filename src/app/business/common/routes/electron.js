@@ -29,7 +29,7 @@ class Route extends Component {
 
     render() {
         const {Component} = this.state;
-        return Component ? <Component/> : <PulseLoader size={6} color={coolBlue}/>;
+        return Component ? <Component /> : <PulseLoader size={6} color={coolBlue} />;
     }
 }
 

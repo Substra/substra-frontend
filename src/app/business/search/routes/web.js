@@ -8,7 +8,7 @@ import {coolBlue} from '../../../../../assets/css/variables/index';
 
 
 const UniversalSearch = universal(import('../../search/components/index'), {
-    loading: <PulseLoader size={6} color={coolBlue}/>,
+    loading: <PulseLoader size={6} color={coolBlue} />,
     onLoad: (module, info, props, context) => {
         // need all models reducers
         // do not forget to pass the context.store, or simultaneous calls in the server part will fail

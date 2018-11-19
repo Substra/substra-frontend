@@ -9,7 +9,6 @@ import Search, {
 } from '../components';
 
 class C extends Component {
-
     constructor(props) {
         super(props);
         injectSaga('challenge', challengeSagas);

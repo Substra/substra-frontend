@@ -11526,15 +11526,23 @@ redux-reducers-injector@0.2.2:
     lodash "^4.17.11"
     redux "^4.0.1"
 
+redux-reducers-injector@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/redux-reducers-injector/-/redux-reducers-injector-0.2.3.tgz#4b21eee63d7478ddaf30d428ae91484c9542c57a"
+  integrity sha512-5+Om4Ow8131nRKTA6F/0X/dRkcQpcWwRr2I9TkSYdl5TStIokpM9wwt06pv0/ykmKEmTWPtkZeJE9oije5VSig==
+  dependencies:
+    lodash "^4.17.11"
+    redux "^4.0.1"
+
 redux-saga@0.16.2, redux-saga@^0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
 
-redux-sagas-injector@0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/redux-sagas-injector/-/redux-sagas-injector-0.2.7.tgz#3381cc639dc261c57df90186e49cf47ba2f75c21"
-  integrity sha512-q6IdDirzKaeCoC8MZpRcQcLgliOranKyIXcF0Seysl2P0Wqp5It3bef1Bj+44Pe0k/2ryoUZ48Vf1brh6SiGXw==
+redux-sagas-injector@0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/redux-sagas-injector/-/redux-sagas-injector-0.2.8.tgz#c9c29ed6c1a4a2e216fc384333d05a6e24c1def8"
+  integrity sha512-u8Jk83e6IB2KA/mrKkQbtbnqHBBwY3WKOL+nlMBD2qBNsV5btf2dEDr3Ga0Xd4c8+em7nHOc8UypBAO1Olctsw==
   dependencies:
     redux "4.0.1"
     redux-reducers-injector "0.2.2"

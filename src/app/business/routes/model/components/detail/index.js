@@ -97,7 +97,7 @@ class Detail extends Component {
         return (
             <Content className={className}>
                 <Top>
-                    <Search width={14} height={14} className={search}/>
+                    <Search width={14} height={14} className={search} />
                     <H5>
                         overview
                     </H5>
@@ -106,7 +106,7 @@ class Detail extends Component {
                     <Fragment>
                         {!challengeFilters.length && (
                             <NoChallenges>
-                                <Alert/>
+                                <Alert />
                                 <h3>
                                     Overview unavailable
                                 </h3>
@@ -118,7 +118,7 @@ class Detail extends Component {
                         {!!challengeFilters.length && (
                             <div>
                                 <Chart actions={actions} model={model} />
-                                {!isEmpty(item) && <JSONPretty json={item} theme={owkin}/>}
+                                {!isEmpty(item) && <JSONPretty json={item} theme={owkin} />}
                             </div>)
                         }
                     </Fragment>)

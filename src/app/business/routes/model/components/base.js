@@ -146,9 +146,9 @@ export default class ModelBase extends Base {
                         className={snackbarContent}
                         message={(
                             <div>
-                                <Check color={tealish} className={middle}/>
+                                <Check color={tealish} className={middle} />
                                 <ClipboardContent>
-                                    <input disabled value={inputValue}/>
+                                    <input disabled value={inputValue} />
                                     <p>
                                         {text}
                                     </p>

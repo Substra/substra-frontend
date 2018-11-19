@@ -35,9 +35,9 @@
         "redux-actions": "2.6.1",
         "redux-first-router": "2.1.0",
         "redux-first-router-link": "1.4.2",
-        "redux-reducers-injector": "0.2.2",
+        "redux-reducers-injector": "0.2.3",
         "redux-saga": "0.16.2",
-        "redux-sagas-injector": "0.2.7",
+        "redux-sagas-injector": "0.2.8",
         "reselect": "4.0.0",
         "uuid": "3.3.2"
     },
