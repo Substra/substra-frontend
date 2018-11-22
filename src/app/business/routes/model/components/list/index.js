@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {css} from 'react-emotion';
@@ -44,6 +45,10 @@ const Description = ({o}) => (
     </div>
 );
 
+Description.propTypes = {
+    o: PropTypes.shape().isRequired,
+};
+
 const Title = ({o}) => (
     <div>
         <h4>
@@ -54,6 +59,10 @@ const Title = ({o}) => (
         </span>
     </div>
 );
+
+Title.propTypes = {
+    o: PropTypes.shape().isRequired,
+};
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification, download,

@@ -66,7 +66,10 @@ SnackbarContent.propTypes = {
      * Override or extend the styles applied to the component.
      * See [CSS API](#css-api) below for more details.
      */
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+        root: PropTypes.string,
+        message: PropTypes.string,
+    }).isRequired,
     /**
      * @ignore
      */
@@ -75,6 +78,11 @@ SnackbarContent.propTypes = {
      * The message to display.
      */
     message: PropTypes.node,
+};
+
+SnackbarContent.defaultProps = {
+    className: '',
+    message: null,
 };
 
 export default withStyles(styles, {name: 'MuiSnackbarContent'})(SnackbarContent);

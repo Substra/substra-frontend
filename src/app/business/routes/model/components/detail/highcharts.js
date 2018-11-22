@@ -1,7 +1,7 @@
 import ReactHighcharts from 'react-highcharts';
 
 if (ReactHighcharts.Highcharts.Axis) {
-    ReactHighcharts.Highcharts.wrap(ReactHighcharts.Highcharts.Axis.prototype, 'getPlotLinePath', function (proceed, lineWidth) {
+    ReactHighcharts.Highcharts.wrap(ReactHighcharts.Highcharts.Axis.prototype, 'getPlotLinePath', (proceed, lineWidth) => {
         const linePath = proceed.call(this, lineWidth);
 
         if (this.options.arrowOnEnd) {
@@ -22,7 +22,7 @@ if (ReactHighcharts.Highcharts.Axis) {
         return linePath;
     });
 
-    ReactHighcharts.Highcharts.wrap(ReactHighcharts.Highcharts.Axis.prototype, 'getLinePath', function (p, lineWidth) {
+    ReactHighcharts.Highcharts.wrap(ReactHighcharts.Highcharts.Axis.prototype, 'getLinePath', (p, lineWidth) => {
         const linePath = p.call(this, lineWidth);
 
         if (this.options.arrowOnEnd) {

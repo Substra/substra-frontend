@@ -287,6 +287,7 @@ Detail.propTypes = {
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
+    descLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, {

@@ -15,7 +15,6 @@ import WriteFilePlugin from 'write-file-webpack-plugin';
 import RavenPlugin from './tools/ravenPlugin';
 
 import definePlugin from './definePlugin';
-import dll from './dll';
 import pwaManifest from './pwaManifest';
 
 import routes from '../../../src/app/routesMap';

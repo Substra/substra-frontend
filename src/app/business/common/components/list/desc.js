@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {css} from 'react-emotion';
 
 export const desc = css`
@@ -18,5 +19,13 @@ const Description = ({o}) => (
         }
     </div>
 );
+
+Description.propTypes = {
+    o: PropTypes.shape(),
+};
+
+Description.defaultProps = {
+    o: {},
+};
 
 export default Description;

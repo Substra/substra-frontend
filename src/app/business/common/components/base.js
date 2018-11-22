@@ -15,7 +15,7 @@ import SnackbarContent from './SnackbarContent';
 import searchActions from '../../search/actions';
 import {getItem} from '../selector';
 
-import List from './list';
+import ListContainer from './list';
 import Detail from './detail';
 import Check from '../svg/check';
 import {tealish} from '../../../../../assets/css/variables';
@@ -316,7 +316,7 @@ Base.defaultProps = {
     fetchFile: noop,
     download: {},
     results: [],
-    List,
+    List: ListContainer,
     Detail,
 };
 
