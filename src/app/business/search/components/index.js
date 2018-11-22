@@ -11,8 +11,8 @@ import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 
 import ClearIcon from '@material-ui/icons/Clear';
-import Switch from '@material-ui/core/Switch';
 
+import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
 
 import {
@@ -274,12 +274,6 @@ class Search extends Component {
 
     itemToString = item => item === null ? '' : item.label;
 
-    handleIsComplex = (e) => {
-        const {setIsComplex} = this.props;
-
-        setIsComplex(e.target.checked);
-    };
-
     render() {
         const {inputValue, selectedItem, isComplex} = this.props;
 
@@ -296,15 +290,7 @@ class Search extends Component {
                 </Downshift>
 
                 <ClearIcon className={clear} onClick={this.clear} />
-                <div>
-                    <Switch
-                        checked={isComplex}
-                        onChange={this.handleIsComplex}
-                    />
-                    <span>
-                        Is Complex?
-                    </span>
-                </div>
+                <ComplexSearchToggle />
             </Wrapper>
         );
     }
@@ -323,7 +309,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-    isComplex: true,
+    isComplex: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({
