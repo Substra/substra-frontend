@@ -17,8 +17,6 @@ const Route = ({page}) => {
             return <Component model="algo" />;
         case 'MODEL':
             return <Component model="model" />;
-        case 'DOC':
-            return <Component model="doc" />;
         case NOT_FOUND:
         default:
             return <NotFoundRoutes />;

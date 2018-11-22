@@ -66,8 +66,14 @@ const pictos = {
     dataset: Dataset,
     algorithm: Algo,
     model: Model,
-    doc: Book,
 };
+
+const DocLink = ({className}) => (
+    <a href="https://gitlab.com/owkin/substradoc" className={className}>
+        <Book className={picto} color={slate} />
+        Docs
+    </a>
+);
 
 class Top extends Component {
     isActive = (route) => {
@@ -108,6 +114,9 @@ class Top extends Component {
                                 </Li>);
                         },
                     )}
+                    <Li>
+                        <DocLink className={this.link(false)} />
+                    </Li>
                 </Ul>
             </div>
         );
