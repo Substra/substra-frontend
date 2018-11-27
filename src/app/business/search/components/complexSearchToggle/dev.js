@@ -27,8 +27,12 @@ class ComplexSearchToggle extends React.Component {
     }
 }
 
+ComplexSearchToggle.defaultProps = {
+    isComplex: false,
+};
+
 ComplexSearchToggle.propTypes = {
-    isComplex: PropTypes.bool.isRequired,
+    isComplex: PropTypes.bool,
     setIsComplex: PropTypes.func.isRequired,
 };
 

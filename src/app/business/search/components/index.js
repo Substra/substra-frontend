@@ -275,7 +275,7 @@ class Search extends Component {
     itemToString = item => item === null ? '' : item.label;
 
     render() {
-        const {inputValue, selectedItem, isComplex} = this.props;
+        const {inputValue, selectedItem} = this.props;
 
         return (
             <Wrapper>
@@ -304,19 +304,12 @@ Search.propTypes = {
     inputValue: PropTypes.string.isRequired,
     selectedItem: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isParent: PropTypes.bool.isRequired,
-    isComplex: PropTypes.bool,
-    setIsComplex: PropTypes.func.isRequired,
-};
-
-Search.defaultProps = {
-    isComplex: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
-    isComplex: state.search.isComplex,
     location: state.location,
     item: state.search.item,
     suggestions: getSuggestions(state),
@@ -328,7 +321,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
-    setIsComplex: actions.isComplex.set,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
