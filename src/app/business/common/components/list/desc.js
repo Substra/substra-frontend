@@ -10,13 +10,11 @@ export const desc = css`
 
 const Description = ({o}) => (
     <div className={desc}>
-        {o.metrics
-        && (
-        <span>
-            {`Metric: ${o.metrics.name}`}
-        </span>
-)
-        }
+        {o && o.metrics && (
+            <span>
+                {`Metric: ${o.metrics.name}`}
+            </span>
+        )}
     </div>
 );
 
@@ -25,7 +23,7 @@ Description.propTypes = {
 };
 
 Description.defaultProps = {
-    o: {},
+    o: null,
 };
 
 export default Description;

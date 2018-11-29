@@ -59,7 +59,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 const nextItemIndex = o.findIndex(x => x.endModel && c.startModel ? x.endModel.hash === c.startModel.hash : false);
                 const prevItemIndex = o.findIndex(x => x.startModel && c.endModel ? x.startModel.hash === c.endModel.hash : false);
 
-                let res;
+                let res = o;
                 if (~nextItemIndex) {
                     // put c after the nextItem
                     res = [...o.slice(0, nextItemIndex + 1), perfItem, ...o.slice(nextItemIndex + 1, o.length)];
@@ -69,7 +69,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                     res = [...o.slice(0, prevItemIndex), perfItem, ...o.slice(prevItemIndex, o.length)];
                 }
 
-                return res || o;
+                return res;
             });
 
             // if c has not been added in perf via next or prev, add it
@@ -97,7 +97,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 const nextItemIndex = o.findIndex(x => x.endModel && c.startModel ? x.endModel.hash === c.startModel.hash : false);
                 const prevItemIndex = o.findIndex(x => x.startModel && c.endModel ? x.startModel.hash === c.endModel.hash : false);
 
-                let res;
+                let res = o;
                 if (~nextItemIndex) {
                     // put c after the nextItem
                     res = [...o.slice(0, nextItemIndex + 1), ownerItem, ...o.slice(nextItemIndex + 1, o.length)];
@@ -121,7 +121,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                     }
                 }
 
-                return res || o;
+                return res;
             });
 
             // if c has not been added in perf via next or prev, add it

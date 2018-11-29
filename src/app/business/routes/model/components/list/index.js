@@ -41,12 +41,18 @@ class Index extends List {
 
 const Description = ({o}) => (
     <div className={desc}>
-        {o.testData.perf}
+        {o && o.testData && o.testData.perf}
     </div>
 );
 
 Description.propTypes = {
-    o: PropTypes.shape().isRequired,
+    o: PropTypes.shape({
+        testData: PropTypes.shape(),
+    }),
+};
+
+Description.defaultProps = {
+    o: null,
 };
 
 const Title = ({o}) => (
@@ -61,7 +67,11 @@ const Title = ({o}) => (
 );
 
 Title.propTypes = {
-    o: PropTypes.shape().isRequired,
+    o: PropTypes.shape(),
+};
+
+Title.defaultProps = {
+    o: null,
 };
 
 const mapStateToProps = (state, {

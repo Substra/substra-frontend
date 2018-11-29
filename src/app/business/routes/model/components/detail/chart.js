@@ -107,17 +107,22 @@ originalPoint, oppositePoint, originalSerie, oppositeSerie,
     }
 }
 
+const noop = () => {};
+
 Chart.propTypes = {
-    saveChart: PropTypes.func.isRequired,
-    setChartKeyHover: PropTypes.func.isRequired,
+    saveChart: PropTypes.func,
+    setChartKeyHover: PropTypes.func,
     data: PropTypes.shape(),
     selected: PropTypes.string,
-    config: PropTypes.shape().isRequired,
+    config: PropTypes.shape(),
 };
 
 Chart.defaultProps = {
-    data: {},
+    data: null,
+    config: {plotOptions: null},
     selected: null,
+    saveChart: noop,
+    setChartKeyHover: noop,
 };
 
 

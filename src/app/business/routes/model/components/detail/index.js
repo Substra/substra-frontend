@@ -137,8 +137,9 @@ Detail.defaultProps = {
     downloadFile: noop,
     addNotification: noop,
     challengeFilters: [],
-    item: {},
-    actions: {},
+    item: null,
+    actions: null,
+    loading: false,
 };
 
 Detail.propTypes = {
@@ -147,7 +148,7 @@ Detail.propTypes = {
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
     challengeFilters: PropTypes.arrayOf(PropTypes.string),
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.bool,
     item: PropTypes.shape(),
     model: PropTypes.string.isRequired,
     actions: PropTypes.shape(),

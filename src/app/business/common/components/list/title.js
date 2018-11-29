@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 
 const Title = ({o}) => (
     <h4>
-        {o.name}
+        {o && o.name}
     </h4>
 );
 
 Title.propTypes = {
     o: PropTypes.shape({
         name: PropTypes.string,
-    }).isRequired,
+    }),
+};
+
+Title.defaultProps = {
+    o: null,
 };
 
 export default Title;

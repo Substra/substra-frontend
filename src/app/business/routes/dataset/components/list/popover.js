@@ -66,8 +66,6 @@ open, anchorEl, model, download, itemLoading, filterUp, downloadFile, addNotific
     </Popover>
 );
 
-ActionsPopover.propTypes = {
-    ...Popover.propTypes,
-};
+ActionsPopover.propTypes = Popover.propTypes;
 
 export default ActionsPopover;
