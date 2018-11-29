@@ -69,7 +69,7 @@ const pictos = {
 };
 
 const DocLink = ({className}) => (
-    <a href="https://gitlab.com/owkin/substradoc" className={className}>
+    <a href="https://gitlab.com/owkin/substradoc" className={className} target="_blank" rel="noopener noreferrer">
         <Book className={picto} color={slate} />
         Docs
     </a>
