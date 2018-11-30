@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {reloadSaga} from 'redux-sagas-injector';
-import {reloadReducer} from 'redux-reducers-injector';
+import {reloadSaga, reloadReducer} from 'redux-sagas-injector';
 
 import Component from '../components/index';
 
