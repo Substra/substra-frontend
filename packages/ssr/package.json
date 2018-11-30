@@ -37,7 +37,7 @@
         "redux-first-router-link": "1.4.2",
         "redux-reducers-injector": "0.2.3",
         "redux-saga": "0.16.2",
-        "redux-sagas-injector": "0.2.8",
+        "redux-sagas-injector": "0.2.9",
         "reselect": "4.0.0",
         "uuid": "3.3.2"
     },

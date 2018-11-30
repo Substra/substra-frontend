@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import universal from 'react-universal-component';
-import {injectReducer} from 'redux-reducers-injector';
-import {injectSaga} from 'redux-sagas-injector';
+import {injectSaga, injectReducer} from 'redux-sagas-injector';
 
 import {PulseLoader} from 'react-spinners';
 

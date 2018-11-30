@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {injectReducer} from 'redux-reducers-injector';
-import {injectSaga} from 'redux-sagas-injector';
+import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import {PulseLoader} from 'react-spinners';
 
 import {coolBlue} from '../../../../../assets/css/variables/index';
