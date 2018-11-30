@@ -25,7 +25,7 @@ export const middle = css`
     vertical-align: top;
 `;
 
-const margin = 20;
+export const margin = 20;
 const barSize = 15;
 
 export const verticalBar = css`
