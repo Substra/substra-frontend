@@ -11,8 +11,8 @@ import {connect} from 'react-redux';
 import styled, {css} from 'react-emotion';
 
 import ClearIcon from '@material-ui/icons/Clear';
-import Switch from '@material-ui/core/Switch';
 
+import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
 
 import {
@@ -274,14 +274,8 @@ class Search extends Component {
 
     itemToString = item => item === null ? '' : item.label;
 
-    handleIsComplex = (e) => {
-        const {setIsComplex} = this.props;
-
-        setIsComplex(e.target.checked);
-    };
-
     render() {
-        const {inputValue, selectedItem, isComplex} = this.props;
+        const {inputValue, selectedItem} = this.props;
 
         return (
             <Wrapper>
@@ -296,15 +290,7 @@ class Search extends Component {
                 </Downshift>
 
                 <ClearIcon className={clear} onClick={this.clear} />
-                <div>
-                    <Switch
-                        checked={isComplex}
-                        onChange={this.handleIsComplex}
-                    />
-                    <span>
-                        Is Complex?
-                    </span>
-                </div>
+                <ComplexSearchToggle />
             </Wrapper>
         );
     }
@@ -318,19 +304,12 @@ Search.propTypes = {
     inputValue: PropTypes.string.isRequired,
     selectedItem: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isParent: PropTypes.bool.isRequired,
-    isComplex: PropTypes.bool,
-    setIsComplex: PropTypes.func.isRequired,
-};
-
-Search.defaultProps = {
-    isComplex: true,
 };
 
 const mapStateToProps = (state, ownProps) => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
-    isComplex: state.search.isComplex,
     location: state.location,
     item: state.search.item,
     suggestions: getSuggestions(state),
@@ -342,7 +321,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
-    setIsComplex: actions.isComplex.set,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
