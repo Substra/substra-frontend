@@ -5,13 +5,12 @@ import {Snackbar, SnackbarContent} from '@material-ui/core';
 
 import uuidv4 from 'uuid/v4';
 import {
-    Base, verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent,
+    Base, verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent, margin,
 } from '../../../common/components/base';
 
 import Check from '../../../common/svg/check';
 import {tealish} from '../../../../../../assets/css/variables';
 import {hover} from '../selector';
-
 
 export default class ModelBase extends Base {
     filterUp = (o) => {
@@ -58,6 +57,17 @@ export default class ModelBase extends Base {
             overflow-x: auto;
         `;
     };
+
+    // not overriding this method makes hot reloader failing
+    layout = () => css`
+        margin: 0 ${margin}px;
+        display: flex;
+        flex: 1;
+        ${this.state.hold ? `
+            cursor: col-resize;
+            user-select: none;
+        ` : ''}
+    `;
 
 
     hover = (item) => {
