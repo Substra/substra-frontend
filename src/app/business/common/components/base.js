@@ -26,13 +26,26 @@ export const middle = css`
 `;
 
 export const margin = 20;
-const barSize = 1;
+const barSize = 15;
 
 export const verticalBar = css`
     ${middle};
     width: ${barSize}px;
-    background-color: #ccc;
+    margin-right: -${(barSize - 1) / 2}px;
+    margin-left: -${(barSize - 1) / 2}px;
+    z-index: 1;
     cursor: col-resize;
+    background-color: transparent;
+    
+    position: relative;
+    :before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: ${(barSize - 1) / 2}px;
+        border-left: 1px solid #ccc;    
+    }
 `;
 
 const lightGrey = '#fafafa';
