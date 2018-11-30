@@ -75,6 +75,14 @@ const DocLink = ({className}) => (
     </a>
 );
 
+DocLink.propTypes = {
+    className: PropTypes.string,
+};
+
+DocLink.defaultProps = {
+    className: null,
+};
+
 class Top extends Component {
     isActive = (route) => {
         const {location: {type}} = this.props;
