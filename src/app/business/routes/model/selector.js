@@ -59,16 +59,17 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 const nextItemIndex = o.findIndex(x => x.endModel && c.startModel ? x.endModel.hash === c.startModel.hash : false);
                 const prevItemIndex = o.findIndex(x => x.startModel && c.endModel ? x.startModel.hash === c.endModel.hash : false);
 
+                let res = o;
                 if (~nextItemIndex) {
                     // put c after the nextItem
-                    o = [...o.slice(0, nextItemIndex + 1), perfItem, ...o.slice(nextItemIndex + 1, o.length)];
+                    res = [...o.slice(0, nextItemIndex + 1), perfItem, ...o.slice(nextItemIndex + 1, o.length)];
                 }
                 else if (~prevItemIndex) {
                     // put c before the prevItem
-                    o = [...o.slice(0, prevItemIndex), perfItem, ...o.slice(prevItemIndex, o.length)];
+                    res = [...o.slice(0, prevItemIndex), perfItem, ...o.slice(prevItemIndex, o.length)];
                 }
 
-                return o;
+                return res;
             });
 
             // if c has not been added in perf via next or prev, add it
@@ -96,9 +97,10 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 const nextItemIndex = o.findIndex(x => x.endModel && c.startModel ? x.endModel.hash === c.startModel.hash : false);
                 const prevItemIndex = o.findIndex(x => x.startModel && c.endModel ? x.startModel.hash === c.endModel.hash : false);
 
+                let res = o;
                 if (~nextItemIndex) {
                     // put c after the nextItem
-                    o = [...o.slice(0, nextItemIndex + 1), ownerItem, ...o.slice(nextItemIndex + 1, o.length)];
+                    res = [...o.slice(0, nextItemIndex + 1), ownerItem, ...o.slice(nextItemIndex + 1, o.length)];
                     // add owner in results if not present
                     if (!owner.results.map(o => o.owner).includes(c.trainData.worker)) {
                         owner.results = [...owner.results, {
@@ -109,7 +111,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                 }
                 else if (~prevItemIndex) {
                     // put c before the prevItem
-                    o = [...o.slice(0, prevItemIndex), ownerItem, ...o.slice(prevItemIndex, o.length)];
+                    res = [...o.slice(0, prevItemIndex), ownerItem, ...o.slice(prevItemIndex, o.length)];
                     // add owner in results if not present
                     if (!owner.results.map(o => o.owner).includes(c.trainData.worker)) {
                         owner.results = [...owner.results, {
@@ -119,7 +121,7 @@ export const getData = createDeepEqualSelector([getOrderedResults],
                     }
                 }
 
-                return o;
+                return res;
             });
 
             // if c has not been added in perf via next or prev, add it

@@ -271,6 +271,7 @@ Detail.defaultProps = {
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
+    descLoading: false,
 };
 
 Detail.propTypes = {
@@ -287,6 +288,7 @@ Detail.propTypes = {
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
+    descLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state, {

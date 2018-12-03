@@ -215,7 +215,7 @@ export class List extends Component {
 
     render() {
         const {
-            results, init, loading, order, model, className, download,
+            results, init, loading, model, className, download,
             Title, Popover, Description,
         } = this.props;
 

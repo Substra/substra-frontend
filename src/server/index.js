@@ -1,9 +1,8 @@
-import fs from 'fs';
 import path from 'path';
 import config from 'config';
 
 import http from 'http';
-import http2 from 'http2';
+// import http2 from 'http2';
 import webpack from 'webpack';
 
 import Koa from 'koa';

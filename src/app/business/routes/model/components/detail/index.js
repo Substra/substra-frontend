@@ -136,6 +136,10 @@ Detail.defaultProps = {
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
+    challengeFilters: [],
+    item: null,
+    actions: null,
+    loading: false,
 };
 
 Detail.propTypes = {
@@ -143,6 +147,11 @@ Detail.propTypes = {
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
+    challengeFilters: PropTypes.arrayOf(PropTypes.string),
+    loading: PropTypes.bool,
+    item: PropTypes.shape(),
+    model: PropTypes.string.isRequired,
+    actions: PropTypes.shape(),
 };
 
 const mapStateToProps = (state, {

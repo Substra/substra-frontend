@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {onlyUpdateForKeys} from 'recompose';
 import connect from 'react-redux/es/connect/connect';
@@ -105,6 +106,25 @@ originalPoint, oppositePoint, originalSerie, oppositeSerie,
         return <ReactHighcharts config={this.config()} callback={this.afterRender} />;
     }
 }
+
+const noop = () => {};
+
+Chart.propTypes = {
+    saveChart: PropTypes.func,
+    setChartKeyHover: PropTypes.func,
+    data: PropTypes.shape(),
+    selected: PropTypes.string,
+    config: PropTypes.shape(),
+};
+
+Chart.defaultProps = {
+    data: null,
+    config: {plotOptions: null},
+    selected: null,
+    saveChart: noop,
+    setChartKeyHover: noop,
+};
+
 
 const mapStateToProps = (state, {model}) => ({
     data: getData(state, model),

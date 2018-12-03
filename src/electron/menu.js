@@ -1,5 +1,5 @@
 import {
-app, Menu, shell, BrowserWindow,
+app, Menu, shell,
 } from 'electron';
 
 export default class MenuBuilder {

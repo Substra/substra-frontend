@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {css} from 'react-emotion';
 
 export const desc = css`
@@ -9,14 +10,20 @@ export const desc = css`
 
 const Description = ({o}) => (
     <div className={desc}>
-        {o.metrics
-        && (
-        <span>
-            {`Metric: ${o.metrics.name}`}
-        </span>
-)
-        }
+        {o && o.metrics && (
+            <span>
+                {`Metric: ${o.metrics.name}`}
+            </span>
+        )}
     </div>
 );
+
+Description.propTypes = {
+    o: PropTypes.shape(),
+};
+
+Description.defaultProps = {
+    o: null,
+};
 
 export default Description;

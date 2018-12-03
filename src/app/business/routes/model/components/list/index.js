@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {css} from 'react-emotion';
@@ -40,9 +41,19 @@ class Index extends List {
 
 const Description = ({o}) => (
     <div className={desc}>
-        {o.testData.perf}
+        {o && o.testData && o.testData.perf}
     </div>
 );
+
+Description.propTypes = {
+    o: PropTypes.shape({
+        testData: PropTypes.shape(),
+    }),
+};
+
+Description.defaultProps = {
+    o: null,
+};
 
 const Title = ({o}) => (
     <div>
@@ -54,6 +65,14 @@ const Title = ({o}) => (
         </span>
     </div>
 );
+
+Title.propTypes = {
+    o: PropTypes.shape(),
+};
+
+Title.defaultProps = {
+    o: null,
+};
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification, download,
