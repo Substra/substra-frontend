@@ -73,7 +73,7 @@ ActionsPopover.propTypes = {
     popoverHandleClose: PropTypes.func.isRequired,
     addNotification: PropTypes.func.isRequired,
     downloadFile: PropTypes.func.isRequired,
-    model: PropTypes.shape().isRequired,
+    model: PropTypes.string.isRequired,
     download: PropTypes.shape().isRequired,
 };
 
