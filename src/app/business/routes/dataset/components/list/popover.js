@@ -5,6 +5,7 @@ import {css} from 'react-emotion';
 import {PulseLoader} from 'react-spinners';
 import Popover from '@material-ui/core/Popover/Popover';
 
+import PropTypes from 'prop-types';
 import {coolBlue} from '../../../../../../../assets/css/variables/index';
 import {Action, PopItem, PopList} from '../../../../common/components/list/popover';
 
@@ -66,6 +67,14 @@ open, anchorEl, model, download, itemLoading, filterUp, downloadFile, addNotific
     </Popover>
 );
 
-ActionsPopover.propTypes = Popover.propTypes;
+ActionsPopover.propTypes = {
+    ...Popover.propTypes,
+    filterUp: PropTypes.func.isRequired,
+    popoverHandleClose: PropTypes.func.isRequired,
+    addNotification: PropTypes.func.isRequired,
+    downloadFile: PropTypes.func.isRequired,
+    model: PropTypes.shape().isRequired,
+    download: PropTypes.shape().isRequired,
+};
 
 export default ActionsPopover;

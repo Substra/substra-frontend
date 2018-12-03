@@ -1,6 +1,7 @@
 import React from 'react';
 import {capitalize} from 'lodash';
 import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 
 import Popover from '@material-ui/core/Popover/Popover';
 
@@ -64,6 +65,14 @@ open, anchorEl, model, download, filterUp, downloadFile, addNotification, popove
     </Popover>
 );
 
-ActionsPopover.propTypes = Popover.propTypes;
+ActionsPopover.propTypes = {
+    ...Popover.propTypes,
+    filterUp: PropTypes.func.isRequired,
+    popoverHandleClose: PropTypes.func.isRequired,
+    addNotification: PropTypes.func.isRequired,
+    downloadFile: PropTypes.func.isRequired,
+    model: PropTypes.shape().isRequired,
+    download: PropTypes.shape().isRequired,
+};
 
 export default ActionsPopover;

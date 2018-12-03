@@ -80,7 +80,7 @@ DocLink.propTypes = {
 };
 
 DocLink.defaultProps = {
-    className: null,
+    className: '',
 };
 
 class Top extends Component {
