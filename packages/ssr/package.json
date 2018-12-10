@@ -33,7 +33,7 @@
         "react-universal-component": "3.0.3",
         "recompose": "0.30.0",
         "redux": "4.0.1",
-        "redux-actions": "2.6.1",
+        "redux-actions": "2.6.4",
         "redux-first-router": "2.1.1",
         "redux-first-router-link": "2.0.1",
         "redux-reducers-injector": "0.2.3",
