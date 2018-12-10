@@ -10,7 +10,7 @@ const algoResults = state => state.algo.persistent.results;
 const modelResults = state => state.model.persistent.results;
 
 export const endModelsHashes = createDeepEqualSelector([modelResults],
-    modelResults => modelResults.length ? modelResults[0].map(o => ({hash: `hash:${o.endModel.hash}`})) : modelResults,
+    modelResults => modelResults.length ? modelResults[0].filter(o => o.endModel).map(o => ({hash: `hash:${o.endModel.hash}`})) : modelResults,
 );
 
 export const getSearchFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, endModelsHashes],
