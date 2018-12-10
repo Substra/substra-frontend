@@ -35,7 +35,7 @@
         "normalize.css": "8.0.1",
         "pre-commit": "1.2.2",
         "precss": "4.0.0",
-        "react-hot-loader": "4.3.11",
+        "react-hot-loader": "4.3.12",
         "require-universal-module": "1.5.0",
         "rimraf": "2.6.2",
         "sass-loader": "7.1.0",
