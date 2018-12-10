@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 import {omit} from 'lodash';
 
@@ -32,6 +33,7 @@ const Ul = styled('ul')`
     padding: 0;
     width: 70%;
     list-style: none;
+    display: inline-block;
     ${middle};
 `;
 

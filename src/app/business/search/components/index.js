@@ -8,7 +8,8 @@ import decodeUriComponent from 'decode-uri-component';
 
 import {connect} from 'react-redux';
 
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 
 import ClearIcon from '@material-ui/icons/Clear';
 

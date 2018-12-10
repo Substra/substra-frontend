@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 import PropTypes from 'prop-types';
 
 import Chip from '@material-ui/core/Chip';

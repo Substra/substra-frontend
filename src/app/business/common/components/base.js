@@ -2,7 +2,8 @@
 
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 import {flatten, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import uuidv4 from 'uuid/v4';
