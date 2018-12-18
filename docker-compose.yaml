@@ -20,7 +20,6 @@ services:
     # command: ./node_modules/.bin/babel-node ./build/ssr/index.js
     environment:
       - REDIS_HOST=redis
-      - RAVEN_URL=https://a86e1f13f5a347b1bf33ddb25ea9fee5@sentry.io/1321130
       - FRONT_AUTH_USER=${FRONT_AUTH_USER}
       - FRONT_AUTH_PASSWORD=${FRONT_AUTH_PASSWORD}
       - BACK_AUTH_USER=${BACK_AUTH_USER}
