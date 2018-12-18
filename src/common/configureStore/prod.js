@@ -1,6 +1,8 @@
+/* global window */
 import {connectRoutes} from 'redux-first-router';
 import {applyMiddleware, compose} from 'redux';
 import {createInjectSagasStore, sagaMiddleware} from 'redux-sagas-injector';
+import createRavenMiddleware from 'raven-for-redux';
 
 import options from './options';
 import rootReducer from '../../app/reducer';
@@ -17,9 +19,18 @@ const configureStore = (initialState, initialEntries, opts) => {
         ...opts,
     }); // yes, 5 redux aspects
 
+    const middlewares = [
+        sagaMiddleware,
+        middleware,
+    ];
+
+    if (typeof window !== 'undefined' && window.Raven) {
+        middlewares.push(createRavenMiddleware(window.Raven));
+    }
+
     const enhancers = [
         // create the saga middleware
-        applyMiddleware(sagaMiddleware, middleware),
+        applyMiddleware(...middlewares),
     ];
 
     const reducers = {...rootReducer, location: reducer};

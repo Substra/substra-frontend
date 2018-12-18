@@ -25,7 +25,6 @@ import vendors from '../../webpack/ssr/vendors';
 import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
-import raven from './raven';
 
 import theme from '../common/theme/index';
 
@@ -121,6 +120,7 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
               <div>Please enable javascript in your browser for displaying this website.</div>
           </noscript>
           <script>window.REDUX_STATE = ${stateJson}</script>
+          <script src="/raven.min.js" type="text/javascript" defer></script>
           <div id="root">`,
     lateChunk = (cssHash, js, dll) => `</div>
           ${process.env.NODE_ENV === 'development' ? '<div id="devTools"></div>' : ''}
@@ -128,7 +128,6 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
           ${dll}
           ${js}
           ${serviceWorker}
-          <script src="/raven.min.js" type="text/javascript" defer></script>
         </body>
     </html>
   `;
@@ -190,7 +189,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
         console.log('CHUNK NAMES', chunkNames);
 
-        const late = lateChunk(cssHash, js, dll, raven);
+        const late = lateChunk(cssHash, js, dll);
         mainStream.end(late);
     });
 };
