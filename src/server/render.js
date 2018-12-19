@@ -120,7 +120,7 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
               <div>Please enable javascript in your browser for displaying this website.</div>
           </noscript>
           <script>window.REDUX_STATE = ${stateJson}</script>
-          <script src="/raven.min.js" type="text/javascript" defer></script>
+          ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
     lateChunk = (cssHash, js, dll) => `</div>
           ${process.env.NODE_ENV === 'development' ? '<div id="devTools"></div>' : ''}
