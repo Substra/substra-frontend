@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 import {omit} from 'lodash';
 
@@ -32,7 +33,6 @@ const Ul = styled('ul')`
     padding: 0;
     width: 70%;
     list-style: none;
-    ${middle};
 `;
 
 const Li = styled('li')`
@@ -105,7 +105,7 @@ class Top extends Component {
                 <Link to={{type: 'HOME', meta: {query: location.query}}} className={logoWrapper}>
                     <Logo width={350} height={50} className={logo} />
                 </Link>
-                <Ul>
+                <Ul className={middle}>
                     {routes.map((o) => {
                             const active = this.isActive(o);
                             const color = active ? coolBlue : slate;

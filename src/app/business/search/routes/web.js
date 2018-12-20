@@ -12,17 +12,17 @@ const UniversalSearch = universal(import('../../search/components/index'), {
         // need all models reducers
         // do not forget to pass the context.store, or simultaneous calls in the server part will fail
 
-        injectSaga('challenge', module.challengeSagas, false, context.store);
-        injectReducer('challenge', module.challengeReducer, false, context.store);
+        injectSaga('challenge', module.challengeSagas);
+        injectReducer('challenge', module.challengeReducer);
 
-        injectSaga('dataset', module.datasetSagas, false, context.store);
-        injectReducer('dataset', module.datasetReducer, false, context.store);
+        injectSaga('dataset', module.datasetSagas);
+        injectReducer('dataset', module.datasetReducer);
 
-        injectSaga('algo', module.algoSagas, false, context.store);
-        injectReducer('algo', module.algoReducer, false, context.store);
+        injectSaga('algo', module.algoSagas);
+        injectReducer('algo', module.algoReducer);
 
-        injectSaga('model', module.modelSagas, false, context.store);
-        injectReducer('model', module.modelReducer, false, context.store);
+        injectSaga('model', module.modelSagas);
+        injectReducer('model', module.modelReducer);
     },
     ignoreBabelRename: true,
 });

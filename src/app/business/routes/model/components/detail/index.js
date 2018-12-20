@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
+import {css} from 'emotion';
 import {onlyUpdateForKeys} from 'recompose';
 import {isEmpty} from 'lodash';
 
@@ -47,7 +48,6 @@ const Top = styled('div')`
 `;
 
 const H5 = styled('h5')`
-    ${middle};
     font-size: 13px;
     margin: 0;
     display: inline-block;
@@ -98,7 +98,7 @@ class Detail extends Component {
             <Content className={className}>
                 <Top>
                     <Search width={14} height={14} className={search} />
-                    <H5>
+                    <H5 className={middle}>
                         overview
                     </H5>
                 </Top>

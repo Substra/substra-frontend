@@ -25,15 +25,11 @@
         "build:client": "cd packages/ssr && npm run build:client",
         "build:node": "cd packages/ssr && npm run build:node",
         "serve": "cd packages/ssr && npm run serve",
-
         "static": "cd packages/static && npm run static",
         "static-debug": "cd packages/static && npm run static-debug",
-
         "test": "cd packages/test && npm run test",
         "cover": "cd packages/test && npm run cover",
-
         "eslint": "cd packages/eslint && npm run eslint",
-
         "dev": "cd packages/electron && npm run dev",
         "start-main-dev": "cd packages/electron && npm run start-main-dev",
         "start:electron": "cd packages/electron && npm run start:electron",
@@ -43,7 +39,6 @@
         "package-linux": "cd packages/electron && npm run package-linux",
         "package-win": "cd packages/electron && npm run package-win",
         "build-electron": "build --publish never",
-
         "deploy": "tools/deploy.js",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
     },

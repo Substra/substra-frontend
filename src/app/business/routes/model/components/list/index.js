@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {css} from 'react-emotion';
+import {css} from 'emotion';
 
 // use custom selector
 import {getItem} from '../../../../common/selector';

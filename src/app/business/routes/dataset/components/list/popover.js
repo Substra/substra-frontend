@@ -1,6 +1,6 @@
 import React from 'react';
 import {capitalize} from 'lodash';
-import {css} from 'react-emotion';
+import {css} from 'emotion';
 
 import {PulseLoader} from 'react-spinners';
 import Popover from '@material-ui/core/Popover/Popover';

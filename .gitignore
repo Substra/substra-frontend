@@ -16,7 +16,6 @@ docs/js/*
 docs/downloads
 docs/vendor/bundle
 examples/shared/*.js
-headband/src/frontend/js/api/test/the-files-to-test.generated.js
 *.log*
 chrome-user-data
 *.sublime-project
