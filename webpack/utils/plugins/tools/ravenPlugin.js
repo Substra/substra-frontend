@@ -2,9 +2,9 @@ import fs from 'fs';
 import Source from 'raven-js/dist/raven';
 
 class RavenPlugin {
-    constructor(ravenUrl, source) {
+    constructor(ravenUrl, source = Source) {
         this.ravenUrl = ravenUrl;
-        this.source = source || Source;
+        this.source = source;
     }
 
     apply(compiler) {
