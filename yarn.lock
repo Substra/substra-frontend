@@ -1093,7 +1093,7 @@
   resolved "https://registry.yarnpkg.com/@csstools/sass-import-resolve/-/sass-import-resolve-1.0.0.tgz#32c3cdb2f7af3cd8f0dca357b592e7271f3831b5"
   integrity sha512-pH4KCsbtBLLe7eqUrw8brcuFO8IZlN36JjdKlOublibVdAIPHCzEnpBWOVUXK5sCf+DpBi8ZtuWtjF0srybdeA==
 
-"@emotion/babel-preset-css-prop@^10.0.5":
+"@emotion/babel-preset-css-prop@10.0.5":
   version "10.0.5"
   resolved "https://registry.yarnpkg.com/@emotion/babel-preset-css-prop/-/babel-preset-css-prop-10.0.5.tgz#955485c6f621247ee35dc1e6bd8fef0ba1d3286f"
   integrity sha512-Mf1651pWaqraE2jJdX1/+ArCBLhubxNoNrs0mfYOriIRxwnmjoKQLIEYTMNl/K7ZkIu2PNwvLKGv74fo3wYovA==
