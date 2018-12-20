@@ -628,7 +628,21 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     lodash "^4.17.10"
 
-"@babel/plugin-transform-classes@7.2.0", "@babel/plugin-transform-classes@^7.2.0":
+"@babel/plugin-transform-classes@7.2.2":
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-classes/-/plugin-transform-classes-7.2.2.tgz#6c90542f210ee975aa2aa8c8b5af7fa73a126953"
+  integrity sha512-gEZvgTy1VtcDOaQty1l10T3jQmJKlNVxLDCs+3rCVPr6nMkODLELxViq5X9l+rfxbie3XrfrMCYYY6eX3aOcOQ==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.0.0"
+    "@babel/helper-define-map" "^7.1.0"
+    "@babel/helper-function-name" "^7.1.0"
+    "@babel/helper-optimise-call-expression" "^7.0.0"
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/helper-replace-supers" "^7.1.0"
+    "@babel/helper-split-export-declaration" "^7.0.0"
+    globals "^11.1.0"
+
+"@babel/plugin-transform-classes@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-classes/-/plugin-transform-classes-7.2.0.tgz#374f8876075d7d21fea55aeb5c53561259163f96"
   integrity sha512-aPCEkrhJYebDXcGTAP+cdUENkH7zqOlgbKwLbghjjHpJRJBWM/FSlCjMoPGA8oUdiMfOrk3+8EFPLLb5r7zj2w==
@@ -5490,10 +5504,10 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-loader@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-2.0.0.tgz#39749c82f020b9e85901dcff98e8004e6401cfde"
-  integrity sha512-YCsBfd1ZGCyonOKLxPiKPdu+8ld9HAaMEvJewzz+b2eTF7uL5Zm/HdBF6FjCrpCMRq25Mi0U1gl4pwn2TlH7hQ==
+file-loader@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-3.0.0.tgz#56c5ce34bd94ac7a2a5afd49161483777983786a"
+  integrity sha512-H3/PSIIvTGgqHv6PDCkIIZWKOf9kz0NOCPF4KlQz7CSZj8mLPYakl3EV92CAcVCo41xhWhqoqhC3fdY7zTw9LQ==
   dependencies:
     loader-utils "^1.0.2"
     schema-utils "^1.0.0"
@@ -11431,10 +11445,10 @@ redux-devtools@3.4.2:
     prop-types "^15.5.7"
     redux-devtools-instrument "^1.9.0"
 
-redux-first-router-link@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/redux-first-router-link/-/redux-first-router-link-2.0.1.tgz#4aba3c6b135293eedcc15e2fa38574be1e9ef140"
-  integrity sha512-B3+KxISV8FUqDa6A+C4ozoEe8n1OYO1m+GR3+roBo87HUl/05E6suFHEyBrA0iC9etGCPwNncluofxP1Zab/Dw==
+redux-first-router-link@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/redux-first-router-link/-/redux-first-router-link-2.0.2.tgz#520b085fb9cf484f3a2d15ba6358830a8e135988"
+  integrity sha512-egQgmXa6vZ60euzBHEkmdZvroCm9EVBtAvtfIqHEaX6wLGs0UeS3C/COj/lPWq2dZgz6ZAQcsl3k/29Qi6Zagw==
   dependencies:
     path-to-regexp "^1.7.0"
     prop-types "^15.5.10"
