@@ -27,7 +27,7 @@ const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV)),
 export default env => [
     ...(env === 'client' ? [
         pwaManifest,
-        new RavenPlugin(config.apps.frontend.raven_url, path.resolve(__dirname, '../../../node_modules/raven-js/dist/raven.js')),
+        new RavenPlugin(config.apps.frontend.raven_url),
         ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
             new StatsPlugin('stats.json'),
             new SWPrecacheWebpackPlugin({
