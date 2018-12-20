@@ -23,6 +23,8 @@
         "keycode": "2.2.0",
         "lodash": "4.17.11",
         "prop-types": "15.6.2",
+        "raven-for-redux": "^1.4.0",
+        "raven-js": "3.27.0",
         "react": "16.7.0",
         "react-dom": "16.7.0",
         "react-helmet": "5.2.0",
