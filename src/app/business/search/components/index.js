@@ -21,6 +21,7 @@ import {
 } from '../selector';
 
 import actions from '../actions';
+import withRedux from '../../common/components/withRedux';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers/index';
@@ -290,8 +291,8 @@ class Search extends Component {
                     {this.searchInput}
                 </Downshift>
 
-                <ClearIcon className={clear} onClick={this.clear} />
-                <ComplexSearchToggle />
+                <ClearIcon className={clear} onClick={this.clear}/>
+                <ComplexSearchToggle/>
             </Wrapper>
         );
     }
@@ -323,4 +324,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+
+export default withRedux(connect(mapStateToProps, mapDispatchToProps)(Search));

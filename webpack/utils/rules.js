@@ -3,7 +3,7 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 export default env => [
     {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!(redux-devtools|redux-first-router-link|redux-devtools-dock-monitor)\/).*/,
         use: 'happypack/loader?id=babel',
     },
     {

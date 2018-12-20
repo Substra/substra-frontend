@@ -11,7 +11,6 @@ import copy from 'copy-to-clipboard';
 import {Snackbar} from '@material-ui/core';
 import SnackbarContent from '../SnackbarContent';
 
-
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';

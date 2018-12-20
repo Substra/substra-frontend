@@ -1,11 +1,11 @@
 import React from 'react';
 
 // Exported from redux-devtools
-import {createDevTools} from 'redux-devtools';
+import {createDevTools} from 'redux-devtools/src/';
 
 // Monitors are separate packages, and you can make a custom one
 import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor/src';
 import SliderMonitor from 'redux-slider-monitor';
 import FilterMonitor from 'redux-devtools-filter-actions';
 
@@ -19,7 +19,7 @@ const DevTools = createDevTools(
         toggleVisibilityKey="ctrl-h"
         changePositionKey="ctrl-q"
         changeMonitorKey="ctrl-m"
-        defaultIsVisible={false}
+        defaultIsVisible
     >
         <FilterMonitor blacklist={['EFFECT_TRIGGERED', 'EFFECT_RESOLVED']}>
             <LogMonitor theme="tomorrow" />

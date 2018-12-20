@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {getItem} from '../../selector';
 import searchActions from '../../../search/actions';
 import BaseWithAnalytics from './analytics';
+import withRedux from '../withRedux';
 
 const ReduxBase = (B = BaseWithAnalytics) => { // no override on List/Detail, neither principal Component
     const mapStateToProps = (state, {model, actions, download}) => ({
@@ -22,7 +23,7 @@ const ReduxBase = (B = BaseWithAnalytics) => { // no override on List/Detail, ne
         fetchFile: actions.item.file.request,
     }, dispatch);
 
-    return connect(mapStateToProps, mapDispatchToProps)(B);
+    return withRedux(connect(mapStateToProps, mapDispatchToProps)(B));
 };
 
 export default ReduxBase;
