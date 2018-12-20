@@ -13,8 +13,8 @@ const Universal = ({model}) => {
     const U = universal(import(`../../routes/${model}/preload/index`), {
         loading: <PulseLoader size={6} color={coolBlue} />,
         onLoad: (module, info, props, context) => {
-            injectSaga(model, module.sagas, false, context.store);
-            injectReducer(model, module.reducer, false, context.store);
+            injectSaga(model, module.sagas);
+            injectReducer(model, module.reducer);
         },
         ignoreBabelRename: true,
     });
