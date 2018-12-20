@@ -20,6 +20,8 @@ import Detail from './detail';
 import Check from '../svg/check';
 import {tealish} from '../../../../../assets/css/variables';
 
+const MIN_COL_WIDTH = 50;
+
 export const middle = css`
     display: inline-block;
     vertical-align: top;
@@ -149,12 +151,15 @@ export class Base extends Component {
             e.persist();
 
             const offsetWidth = e.currentTarget.offsetWidth;
+            // prevent list and detail panels from being less than MIN_COL_WIDTH px
+            const listWidth = Math.min(Math.max(MIN_COL_WIDTH, e.clientX - margin), offsetWidth - MIN_COL_WIDTH);
+            const detailWidth = offsetWidth - listWidth - barSize;
 
             this.setState(state => ({
                     ...state,
                     width: {
-                        list: {value: e.screenX - margin, unit: 'px'},
-                        detail: {value: offsetWidth - (e.screenX - margin) - barSize, unit: 'px'},
+                        list: {value: listWidth, unit: 'px'},
+                        detail: {value: detailWidth, unit: 'px'},
                     },
                 }
             ));
