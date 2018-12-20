@@ -61,7 +61,6 @@ export const snackbarContent = css`
 `;
 
 export const ClipboardContent = styled('div')`
-    ${middle};
     margin-left: 15px;
     input {
         display: block;
@@ -304,7 +303,7 @@ export class Base extends Component {
                         message={(
                             <div>
                                 <Check color={tealish} className={middle} />
-                                <ClipboardContent>
+                                <ClipboardContent className={middle}>
                                     <input disabled value={inputValue} />
                                     <p>
                                         {text}

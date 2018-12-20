@@ -42,7 +42,6 @@ const Top = styled('div')`
 `;
 
 const H5 = styled('h5')`
-    ${middle};
     font-size: 13px;
     margin: 0;
     display: inline-block;
@@ -186,7 +185,7 @@ class Detail extends Component {
             <Content className={className}>
                 <Top>
                     <Search width={14} height={14} className={search} />
-                    <H5>
+                    <H5 className={middle}>
                         {item ? item.name : ''}
                     </H5>
                 </Top>

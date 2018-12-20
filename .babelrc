@@ -1,7 +1,8 @@
 {
     "presets": [
         "@babel/preset-env",
-        "@babel/preset-react"
+        "@babel/preset-react",
+        "@emotion/babel-preset-css-prop"
     ],
     "plugins": [
         "@babel/plugin-transform-react-constant-elements",
@@ -31,12 +32,5 @@
         "@babel/plugin-syntax-import-meta",
         ["@babel/plugin-proposal-class-properties", { "loose": true }],
         "@babel/plugin-proposal-json-strings"
-    ],
-    "env": {
-        "test": {
-            "plugins": [
-                ["emotion", { "inline": true }]
-            ]
-        }
-    }
+    ]
 }

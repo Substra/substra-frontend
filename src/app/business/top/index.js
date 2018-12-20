@@ -33,8 +33,6 @@ const Ul = styled('ul')`
     padding: 0;
     width: 70%;
     list-style: none;
-    display: inline-block;
-    ${middle};
 `;
 
 const Li = styled('li')`
@@ -107,7 +105,7 @@ class Top extends Component {
                 <Link to={{type: 'HOME', meta: {query: location.query}}} className={logoWrapper}>
                     <Logo width={350} height={50} className={logo} />
                 </Link>
-                <Ul>
+                <Ul className={middle}>
                     {routes.map((o) => {
                             const active = this.isActive(o);
                             const color = active ? coolBlue : slate;

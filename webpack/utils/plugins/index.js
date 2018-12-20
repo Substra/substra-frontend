@@ -100,7 +100,6 @@ export default env => [
                     }],
                     'lodash',
                     '@babel/plugin-transform-runtime',
-                    'emotion',
                     // Stage 0
                     '@babel/plugin-proposal-function-bind',
 
@@ -135,6 +134,7 @@ export default env => [
                     // do not transpil es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
                     ['@babel/preset-env', {modules: false}],
                     '@babel/preset-react',
+                    '@emotion/babel-preset-css-prop',
                 ],
             },
         }],
