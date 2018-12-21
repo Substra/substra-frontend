@@ -4,13 +4,13 @@ import {css} from 'emotion';
 import {Snackbar, SnackbarContent} from '@material-ui/core';
 
 import uuidv4 from 'uuid/v4';
-import {
-    Base, verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent, margin,
-} from '../../../common/components/base';
+import Base, {
+    verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent, margin,
+} from '../../../../common/components/base';
 
-import Check from '../../../common/svg/check';
-import {tealish} from '../../../../../../assets/css/variables';
-import {hover} from '../selector';
+import Check from '../../../../common/svg/check';
+import {tealish} from '../../../../../../../assets/css/variables';
+import {hover} from '../../selector';
 
 export default class ModelBase extends Base {
     filterUp = (o) => {

@@ -1,23 +1,20 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
-import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
 import {capitalize} from 'lodash';
 
-import {getItem} from '../selector';
 
-import Search from '../svg/search';
-import Permission from '../svg/permission';
-import Clipboard from '../svg/clipboard';
-import CopySimple from '../svg/copy-simple';
-import DownloadSimple from '../svg/download-simple';
-import FilterUp from '../svg/filter-up';
+import Search from '../../svg/search';
+import Permission from '../../svg/permission';
+import Clipboard from '../../svg/clipboard';
+import CopySimple from '../../svg/copy-simple';
+import DownloadSimple from '../../svg/download-simple';
+import FilterUp from '../../svg/filter-up';
 
-import {coolBlue} from '../../../../../assets/css/variables';
+import {coolBlue} from '../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -196,15 +193,4 @@ Detail.propTypes = {
     model: PropTypes.string,
 };
 
-const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification,
-}) => ({
-    item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
-    filterUp,
-    downloadFile,
-    addNotification,
-});
-
-
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));
+export default Detail;

@@ -1,19 +1,16 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {PulseLoader} from 'react-spinners';
 
-import Popover from './popover';
-import Title from './title';
-import Description from './desc';
+import Popover from './components/popover';
+import Title from './components/title';
+import Description from './components/desc';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 
 import More from '../../svg/more-vertical';
-import {getItem, getOrderedResults} from '../../selector';
 import Permission from '../../svg/permission';
 
 
@@ -65,7 +62,7 @@ const Actions = styled('div')`
     }
 `;
 
-export class List extends Component {
+class List extends Component {
     state = {
         popover: {
             open: false,
@@ -336,26 +333,4 @@ List.propTypes = {
     Description: PropTypes.func,
 };
 
-const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification, download,
-}) => ({
-    init: state[model].list.init,
-    loading: state[model].list.loading,
-    results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
-    order: state[model].order,
-    item: getItem(state, model),
-    filterUp,
-    downloadFile,
-    addNotification,
-    download,
-});
-
-const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    fetchList: actions.list.request,
-    setSelected: actions.list.selected,
-    setOrder: actions.order.set,
-}, dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default List;

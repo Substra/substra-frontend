@@ -1,25 +1,24 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
-import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
 import {capitalize, isArray} from 'lodash';
 
 import Popover from '@material-ui/core/Popover';
 
-import {getItem} from '../../../common/selector';
 
-import Search from '../../../common/svg/search';
-import Permission from '../../../common/svg/permission';
-import Clipboard from '../../../common/svg/clipboard';
-import CopyDrop from '../../../common/svg/copy-drop';
-import DownloadSimple from '../../../common/svg/download-simple';
-import FilterUp from '../../../common/svg/filter-up';
+import Detail from '../../../../common/components/detail';
 
-import {coolBlue} from '../../../../../../assets/css/variables';
+import Search from '../../../../common/svg/search';
+import Permission from '../../../../common/svg/permission';
+import Clipboard from '../../../../common/svg/clipboard';
+import CopyDrop from '../../../../common/svg/copy-drop';
+import DownloadSimple from '../../../../common/svg/download-simple';
+import FilterUp from '../../../../common/svg/filter-up';
+
+import {coolBlue} from '../../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -116,21 +115,13 @@ const popSubItem = css`
     }
 `;
 
-class Detail extends Component {
+class DatasetDetail extends Detail {
     state = {
         popover: {
             open: false,
             anchorEl: null,
             item: null,
         },
-    };
-
-    downloadFile = (e) => {
-        // we need to act as a proxy as we need to pass the version for downloading th efile
-
-        const {downloadFile} = this.props;
-
-        downloadFile();
     };
 
     addNotification = (key, text) => (e) => {
@@ -140,13 +131,6 @@ class Detail extends Component {
         addNotification(inputValue, text);
 
         this.popoverHandleClose();
-    };
-
-    filterUp = o => (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        this.props.filterUp(o);
     };
 
     copyMore = (e) => {
@@ -265,7 +249,7 @@ class Detail extends Component {
 const noop = () => {
 };
 
-Detail.defaultProps = {
+DatasetDetail.defaultProps = {
     item: null,
     className: '',
     filterUp: noop,
@@ -274,7 +258,7 @@ Detail.defaultProps = {
     descLoading: false,
 };
 
-Detail.propTypes = {
+DatasetDetail.propTypes = {
     item: PropTypes.shape({
         key: PropTypes.string,
         descriptionStorageAddress: PropTypes.string,
@@ -291,15 +275,4 @@ Detail.propTypes = {
     descLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification,
-}) => ({
-    item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
-    filterUp,
-    downloadFile,
-    addNotification,
-});
-
-
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));
+export default DatasetDetail;

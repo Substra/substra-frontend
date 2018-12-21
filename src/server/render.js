@@ -59,8 +59,6 @@ const createCacheStream = (key) => {
             // We concatenate all the buffered chunks of HTML to get the full HTML
             // then cache it at "key"
 
-            // TODO support caching with _sw-precache
-
             // only cache paths
             if (paths.includes(key) && !(key.endsWith('.js.map') || key.endsWith('.ico')) || key === 'service-worker.js') {
                 console.log('CACHING: ', key);
