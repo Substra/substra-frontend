@@ -14,7 +14,7 @@ const Universal = ({model}) => {
         loading: <PulseLoader size={6} color={coolBlue} />,
         onLoad: (module, info, props, context) => {
             injectSaga(model, module.sagas);
-            injectReducer(model, module.reducer);
+            injectReducer(model, module.reducer, false, context.store);
         },
         ignoreBabelRename: true,
     });
