@@ -19,7 +19,7 @@ const DevTools = createDevTools(
         toggleVisibilityKey="ctrl-h"
         changePositionKey="ctrl-q"
         changeMonitorKey="ctrl-m"
-        defaultIsVisible
+        defaultIsVisible={false}
     >
         <FilterMonitor blacklist={['EFFECT_TRIGGERED', 'EFFECT_RESOLVED']}>
             <LogMonitor theme="tomorrow" />

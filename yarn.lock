@@ -11264,10 +11264,10 @@ redux-devtools-themes@^1.0.0:
   dependencies:
     base16 "^1.0.0"
 
-redux-devtools@3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/redux-devtools/-/redux-devtools-3.4.2.tgz#000a8987a61569be446a497a8da7dbd2848c6bf5"
-  integrity sha512-XBTdnhyR+BoMT65BTMlSEpfy2mNyah2TABjgux0mMrQp8SoISL7rSQJsXUKvckuyq4A1PRFRxnRuY/9YRiM6Tw==
+redux-devtools@3.5.0-beta:
+  version "3.5.0-beta"
+  resolved "https://registry.yarnpkg.com/redux-devtools/-/redux-devtools-3.5.0-beta.tgz#d5a940e5735d36f7f32641786e9d43b004c6f926"
+  integrity sha512-E+WQU1/JPaVIe6GTN7jE+fOb3sQ6UnuElUdU+4f2sqvhFtAPoBidbTiE4HftWVcNUMHuRtZM1Ja1t17kJwFJCg==
   dependencies:
     lodash "^4.2.0"
     prop-types "^15.5.7"
