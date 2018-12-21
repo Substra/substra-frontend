@@ -1,8 +1,8 @@
 import fs from 'fs';
-import Source from 'raven-js/dist/raven';
+import path from 'path';
 
 class RavenPlugin {
-    constructor(ravenUrl, source = Source) {
+    constructor(ravenUrl, source = path.resolve(__dirname, '../../../../node_modules/raven-js/dist/raven.js')) {
         this.ravenUrl = ravenUrl;
         this.source = source;
     }
