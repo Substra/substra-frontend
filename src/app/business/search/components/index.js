@@ -291,8 +291,8 @@ class Search extends Component {
                     {this.searchInput}
                 </Downshift>
 
-                <ClearIcon className={clear} onClick={this.clear}/>
-                <ComplexSearchToggle/>
+                <ClearIcon className={clear} onClick={this.clear} />
+                <ComplexSearchToggle />
             </Wrapper>
         );
     }

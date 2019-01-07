@@ -20,10 +20,9 @@ class Universal extends Component {
         const {model} = this.props;
 
         const U = universal(import(`../../routes/${model}/preload/index`), {
-            loading: <PulseLoader size={6} color={coolBlue}/>,
+            loading: <PulseLoader size={6} color={coolBlue} />,
             ignoreBabelRename: true,
             onLoad: (module, info, {reduxcontext}) => {
-
                 if (reduxcontext && reduxcontext.store) {
                     injectSaga(model, module.sagas, false, reduxcontext.store);
                     injectReducer(model, module.reducer, false, reduxcontext.store);
@@ -33,12 +32,14 @@ class Universal extends Component {
 
         if (this.firstRender) {
             this.firstRender = false;
-            return (<ReactReduxContext.Consumer>
-                {(reduxContext) => <U model={model} reduxcontext={reduxContext}/>}
-            </ReactReduxContext.Consumer>);
+            return (
+                <ReactReduxContext.Consumer>
+                    {reduxContext => <U model={model} reduxcontext={reduxContext} />}
+                </ReactReduxContext.Consumer>
+);
         }
 
-        return <U model={model}/>;
+        return <U model={model} />;
     }
 }
 

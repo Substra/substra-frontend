@@ -14,9 +14,8 @@ class Universal extends Component {
 
     render() {
         const U = universal(import('../../search/components/index'), {
-            loading: <PulseLoader size={6} color={coolBlue}/>,
+            loading: <PulseLoader size={6} color={coolBlue} />,
             onLoad: (module, info, {reduxcontext, ...props}) => {
-
                 // need all models reducers
                 // do not forget to pass the reduxcontext.store AND the withRedux wrapper to your imported redux component, or concurrent calls in the server part will fail
 
@@ -38,12 +37,14 @@ class Universal extends Component {
         });
         if (this.firstRender) {
             this.firstRender = false;
-            return (<ReactReduxContext.Consumer>
-                {(reduxContext) => <U reduxcontext={reduxContext}/>}
-            </ReactReduxContext.Consumer>);
+            return (
+                <ReactReduxContext.Consumer>
+                    {reduxContext => <U reduxcontext={reduxContext} />}
+                </ReactReduxContext.Consumer>
+);
         }
 
-        return <U/>;
+        return <U />;
     }
 }
 

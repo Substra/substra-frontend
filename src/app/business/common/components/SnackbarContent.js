@@ -13,7 +13,7 @@ export const styles = (theme) => {
         /* Styles applied to the root element. */
         root: {
             color: theme.palette.getContrastText(backgroundColor),
-            backgroundColor: theme.palette.background.default,
+            backgroundColor,
             display: 'flex',
             alignItems: 'center',
             flexWrap: 'wrap',

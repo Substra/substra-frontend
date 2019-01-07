@@ -81,7 +81,7 @@ const createApp = (App, store, chunkNames) => (
         <Provider store={store}>
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
                 <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-                    <App/>
+                    <App />
                 </MuiThemeProvider>
             </JssProvider>
         </Provider>
@@ -152,7 +152,8 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     let mainStream;
     if (process.env.NODE_ENV === 'development') {
         mainStream = ctx.body;
-    } else {
+    }
+ else {
         mainStream = createCacheStream(path);
         mainStream.pipe(ctx.body);
     }
@@ -207,7 +208,8 @@ export default ({clientStats, outputPath}) => async (ctx) => {
     // DO not use redis cache on dev
     if (process.env.NODE_ENV === 'development') {
         renderStreamed(ctx, path, clientStats, outputPath);
-    } else {
+    }
+ else {
         const reply = await exists(path);
 
         if (reply === 1) {
@@ -221,7 +223,8 @@ export default ({clientStats, outputPath}) => async (ctx) => {
                 }
                 ctx.body.end(reply);
             }
-        } else {
+        }
+ else {
             console.log('CACHE KEY DOES NOT EXIST: ', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
         }
