@@ -12,8 +12,7 @@ const Universal = () => {
         onLoad: (module, info, {reduxcontext, ...props}) => {
 
             // need all models reducers
-            // do not forget to pass the context.store, or concurrent calls in the server part will fail
-
+            // do not forget to pass the reduxcontext.store AND the withRedux wrapper to your imported redux component, or concurrent calls in the server part will fail
             injectSaga('challenge', module.challengeSagas, false, reduxcontext.store);
             injectReducer('challenge', module.challengeReducer, false, reduxcontext.store);
 

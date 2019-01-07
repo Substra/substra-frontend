@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import BaseWithAnalytics from './analytics';
+import withRedux from '../../../../common/components/withRedux';
 import {getItem} from '../../../../common/selector';
 import {getChallengeFilters, getData} from '../../selector';
 import searchActions from '../../../../search/actions';
@@ -27,7 +28,7 @@ const ReduxBase = (B = BaseWithAnalytics) => { // no override on List/Detail, ne
         fetchFile: actions.item.file.request,
     }, dispatch);
 
-    return connect(mapStateToProps, mapDispatchToProps)(B);
+    return withRedux(connect(mapStateToProps, mapDispatchToProps)(B));
 };
 
 export default ReduxBase;
