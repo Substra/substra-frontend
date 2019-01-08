@@ -120,6 +120,6 @@ export default withAnalytics;
 
 export const initializeAnalytics = () => {
     ReactGA.initialize(GOOGLE_ANALYTICS_TRACKER_ID, {
-        debug: process.env.NODE_ENV === 'development',
+        // debug: process.env.NODE_ENV === 'development',
     });
 };

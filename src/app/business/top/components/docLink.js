@@ -12,15 +12,10 @@ const picto = css`
 `;
 
 class DocLink extends React.Component {
-    constructor(props) {
-        super(props);
-        this.logDoc = this.logDoc.bind(this);
-    }
-
-    logDoc() {
+    logDoc = () => {
         const {logDoc} = this.props;
         logDoc();
-    }
+    };
 
     render() {
         const {className} = this.props;
