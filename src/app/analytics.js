@@ -108,9 +108,8 @@ const withAnalytics = (WrappedComponent, funcNames) => {
         return <WrappedComponent {...props} {...componentLogFuncs} />;
     };
 
-    const mapStateToProps = (state, ownProps) => ({
+    const mapStateToProps = state => ({
         state,
-        ...ownProps,
     });
 
     return connect(mapStateToProps)(WithAnalyticsWrapper);

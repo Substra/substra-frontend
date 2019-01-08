@@ -126,10 +126,9 @@ Top.propTypes = {
     location: PropTypes.shape({}),
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     routes: getRoutes(state),
     location: state.location,
-    ...ownProps,
 });
 
 export default connect(mapStateToProps)(Top);

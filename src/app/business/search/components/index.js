@@ -307,7 +307,7 @@ Search.propTypes = {
     isParent: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
@@ -317,7 +317,6 @@ const mapStateToProps = (state, ownProps) => ({
     parentSuggestions: getParentSuggestions(state),
     isInParentMode: getIsInParentMode(state),
     filters: getSearchFilters(state),
-    ...ownProps,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
