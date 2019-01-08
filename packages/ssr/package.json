@@ -27,6 +27,7 @@
         "raven-js": "3.27.0",
         "react": "16.7.0",
         "react-dom": "16.7.0",
+        "react-ga": "^2.5.6",
         "react-helmet": "5.2.0",
         "react-highcharts": "16.0.2",
         "react-jss": "8.6.1",

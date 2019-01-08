@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {onlyUpdateForKeys} from 'recompose';
 
 import {getItem} from '../../selector';
-import Detail from './index';
+import DetailWithAnalytics from './analytics';
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification,
@@ -15,4 +15,4 @@ const mapStateToProps = (state, {
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(DetailWithAnalytics));

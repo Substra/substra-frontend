@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 
 import {getOrderedResults} from '../../../model/selector';
 import {getItem} from '../../../../common/selector';
-import Popover from './popover';
+import Popover from './components/popover';
 
-import List from './index';
+import ListWithAnalytics from './analytics';
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, download, addNotification, more,
@@ -35,4 +35,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(ListWithAnalytics);

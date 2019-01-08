@@ -177,6 +177,7 @@ class Base extends Component {
     };
 
     addNotification = (inputValue, text) => {
+        const {logCopyFromList} = this.props;
         copy(inputValue);
 
         this.setState(state => ({
@@ -187,10 +188,13 @@ class Base extends Component {
                 text,
             },
         }));
+        logCopyFromList(inputValue);
     };
 
     filterUp = (o) => {
-        const {setSearchState, selectedItem, model} = this.props;
+        const {
+            setSearchState, selectedItem, model, logFilterFromList,
+        } = this.props;
 
         const newSelectedItem = [
             ...selectedItem,
@@ -214,13 +218,14 @@ class Base extends Component {
             item: o,
             toUpdate: true,
         });
+        logFilterFromList(selectedItem.key);
     };
 
     downloadFile = (o) => {
         // we need to act as a proxy as we need to pass the version for downloading th efile
 
         const {
-            fetchFile, item, results, download: {address, filename},
+            fetchFile, item, results, download: {address, filename}, logDownloadFromList,
         } = this.props;
 
         // item can be empty if we download from list with no expand on item
@@ -229,6 +234,7 @@ class Base extends Component {
         const url = object ? address.reduce((p, c) => p[c], object) : '';
 
         fetchFile({url, filename});
+        logDownloadFromList(o);
     };
 
     list = () => css`
@@ -332,6 +338,9 @@ Base.defaultProps = {
     results: [],
     List,
     Detail,
+    logFilterFromList: noop,
+    logDownloadFromList: noop,
+    logCopyFromList: noop,
 };
 
 Base.propTypes = {
@@ -356,6 +365,9 @@ Base.propTypes = {
     fetchFile: PropTypes.func,
     List: PropTypes.func,
     Detail: PropTypes.func,
+    logFilterFromList: PropTypes.func,
+    logDownloadFromList: PropTypes.func,
+    logCopyFromList: PropTypes.func,
 };
 
 export default Base;

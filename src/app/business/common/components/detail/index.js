@@ -87,22 +87,26 @@ const icon = css`
 
 class Detail extends Component {
     downloadFile = (e) => {
-        const {downloadFile} = this.props;
+        const {downloadFile, item, logDownloadFromDetail} = this.props;
 
         downloadFile();
+        logDownloadFromDetail(item.key);
     };
 
     addNotification = (key, text) => (e) => {
-        const {addNotification} = this.props;
+        const {addNotification, item, logCopyFromDetail} = this.props;
 
         addNotification(key, text);
+        logCopyFromDetail(item.key);
     };
 
     filterUp = o => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.filterUp(o);
+        const {item, filterUp, logFilterFromDetail} = this.props;
+        filterUp(o);
+        logFilterFromDetail(item.key);
     };
 
     render() {
@@ -174,6 +178,9 @@ Detail.defaultProps = {
     downloadFile: noop,
     addNotification: noop,
     model: '',
+    logFilterFromDetail: noop,
+    logDownloadFromDetail: noop,
+    logCopyFromDetail: noop,
 };
 
 Detail.propTypes = {
@@ -191,6 +198,9 @@ Detail.propTypes = {
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
     model: PropTypes.string,
+    logFilterFromDetail: PropTypes.func,
+    logDownloadFromDetail: PropTypes.func,
+    logCopyFromDetail: PropTypes.func,
 };
 
 export default Detail;

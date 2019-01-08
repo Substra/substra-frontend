@@ -2,12 +2,11 @@ import React from 'react';
 
 import actions from '../actions';
 
-import Base from './base';
 import List from './list';
 import Detail from './detail';
 import ReduxBase from './base/redux';
 
-const ReduxModelBase = ReduxBase(Base);
+const ReduxModelBase = ReduxBase();
 
 const download = {
     filename: 'model',

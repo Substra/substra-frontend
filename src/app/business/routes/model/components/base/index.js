@@ -14,7 +14,9 @@ import {hover} from '../../selector';
 
 export default class ModelBase extends Base {
     filterUp = (o) => {
-        const {setSearchState, selectedItem, model} = this.props;
+        const {
+            setSearchState, selectedItem, model, logFilterFromList,
+        } = this.props;
 
         const newSelectedItem = [
             ...selectedItem,
@@ -38,6 +40,7 @@ export default class ModelBase extends Base {
             item: o,
             toUpdate: true,
         });
+        logFilterFromList(selectedItem.key);
     };
 
     list = () => {
