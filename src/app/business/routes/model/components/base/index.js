@@ -166,7 +166,8 @@ export default class ModelBase extends Base {
                                         {text}
                                     </p>
                                 </ClipboardContent>
-                            </div>)
+                            </div>
+)
                         }
                     />
                 </Snackbar>

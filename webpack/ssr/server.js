@@ -47,4 +47,7 @@ export default {
     },
     resolve: resolve(),
     plugins: plugins('server'),
+    // optimization: {
+    //     minimize: false,
+    // },
 };

@@ -7,9 +7,7 @@ import {Transform, PassThrough} from 'stream';
 import redis from 'redis';
 import {Provider} from 'react-redux';
 import {renderToNodeStream} from 'react-dom/server';
-// import {renderToStaticMarkup} from 'react-dom/server';
 import {renderStylesToNodeStream} from 'emotion-server';
-// import {renderStylesToString} from 'emotion-server';
 import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
@@ -95,7 +93,7 @@ const flushDll = clientStats => clientStats.assets.reduce((p, c) => [
     ...(c.name.endsWith('dll.js') ? [`<script type="text/javascript" src="/${c.name}" defer></script>`] : []),
 ], []).join('\n');
 
-const earlyChunk = (styles, materialUiCss, stateJson) => `
+const earlyChunk = (styles, stateJson) => `
     <!doctype html>
       <html lang="en">
         <head>
@@ -110,8 +108,7 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
           <meta name="theme-color" content="#000">
           <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
           <link rel="icon" sizes="192x192" href="launcher-icon-high-res.png">
-          ${styles}
-          <style id="jss-server-side">${materialUiCss}</style>
+          ${styles}          
         </head>
       <body>
           <noscript>
@@ -120,7 +117,8 @@ const earlyChunk = (styles, materialUiCss, stateJson) => `
           <script>window.REDUX_STATE = ${stateJson}</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
-    lateChunk = (cssHash, js, dll) => `</div>
+    lateChunk = (cssHash, materialUiCss, js, dll) => `</div>
+          <style id="jss-server-side" type="text/css">${materialUiCss}</style>
           ${process.env.NODE_ENV === 'development' ? '<div id="devTools"></div>' : ''}
           ${cssHash}
           ${dll}
@@ -146,14 +144,8 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
     const stream = renderToNodeStream(app).pipe(renderStylesToNodeStream());
 
-    // needed for jss and server side rendering, material-ui still does not work with stream...
-    // follow this issue for disabling below blocking line https://github.com/mui-org/material-ui/issues/8503
-    // renderToStaticMarkup(app);
-
-    const materialUiCss = sheetsRegistry.toString();
-
     // flush the head with css & js resource tags first so the download starts immediately
-    const early = earlyChunk(css, materialUiCss, stateJson);
+    const early = earlyChunk(css, stateJson);
 
 
     // DO not use redis cache on dev
@@ -161,7 +153,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     if (process.env.NODE_ENV === 'development') {
         mainStream = ctx.body;
     }
-    else {
+ else {
         mainStream = createCacheStream(path);
         mainStream.pipe(ctx.body);
     }
@@ -187,7 +179,8 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
         console.log('CHUNK NAMES', chunkNames);
 
-        const late = lateChunk(cssHash, js, dll);
+        const materialUiCss = sheetsRegistry.toString();
+        const late = lateChunk(cssHash, materialUiCss, js, dll);
         mainStream.end(late);
     });
 };
@@ -216,8 +209,7 @@ export default ({clientStats, outputPath}) => async (ctx) => {
     if (process.env.NODE_ENV === 'development') {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
-
-    else {
+ else {
         const reply = await exists(path);
 
         if (reply === 1) {
@@ -232,8 +224,7 @@ export default ({clientStats, outputPath}) => async (ctx) => {
                 ctx.body.end(reply);
             }
         }
-
-        else {
+ else {
             console.log('CACHE KEY DOES NOT EXIST: ', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
         }

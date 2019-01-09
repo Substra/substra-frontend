@@ -119,9 +119,11 @@ class Detail extends Component {
                             <div>
                                 <Chart actions={actions} model={model} />
                                 {!isEmpty(item) && <JSONPretty json={item} theme={owkin} />}
-                            </div>)
+                            </div>
+)
                         }
-                    </Fragment>)
+                    </Fragment>
+)
                 }
             </Content>
         );

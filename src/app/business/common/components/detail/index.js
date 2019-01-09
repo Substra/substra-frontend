@@ -152,7 +152,8 @@ class Detail extends Component {
                                     <span>
                                         {': Open to all'}
                                     </span>
-                                </Fragment>)
+                                </Fragment>
+)
                             }
                         </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
@@ -161,7 +162,8 @@ class Detail extends Component {
                                 <ReactMarkdown source={item.desc} />
                             </Section>
                         )}
-                    </Item>)}
+                    </Item>
+)}
             </Content>
         );
     }

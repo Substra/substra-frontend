@@ -11,7 +11,6 @@ import copy from 'copy-to-clipboard';
 import {Snackbar} from '@material-ui/core';
 import SnackbarContent from '../SnackbarContent';
 
-
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
@@ -297,7 +296,8 @@ class Base extends Component {
                         downloadFile={this.downloadFile}
                         addNotification={this.addNotification}
                     />
-                </Fragment>)
+                </Fragment>
+)
             }
                 <Snackbar
                     anchorOrigin={anchorOrigin}
@@ -316,7 +316,8 @@ class Base extends Component {
                                         {text}
                                     </p>
                                 </ClipboardContent>
-                            </div>)
+                            </div>
+)
                     }
                     />
                 </Snackbar>

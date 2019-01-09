@@ -21,7 +21,8 @@ const Routes = ({page}) => (
         <Top />
         <Search />
         <Route page={page} />
-    </Container>);
+    </Container>
+);
 
 Routes.propTypes = {
     page: PropTypes.string.isRequired,

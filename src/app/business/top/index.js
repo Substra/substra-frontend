@@ -104,7 +104,8 @@ class Top extends Component {
                                         <Picto className={picto} color={color} />
                                         {menu}
                                     </Link>
-                                </Li>);
+                                </Li>
+);
                         },
                     )}
                     <Li>
