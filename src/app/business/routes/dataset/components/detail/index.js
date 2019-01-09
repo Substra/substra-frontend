@@ -204,7 +204,8 @@ class DatasetDetail extends Detail {
                                     <span>
                                         {': Open to all'}
                                     </span>
-                                </Fragment>)
+                                </Fragment>
+)
                             }
                         </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
@@ -213,7 +214,8 @@ class DatasetDetail extends Detail {
                                 <ReactMarkdown source={item.description.content} />
                             </Section>
                         )}
-                    </Item>)}
+                    </Item>
+)}
                 <Popover
                     open={this.state.popover.open}
                     anchorEl={this.state.popover.anchorEl}

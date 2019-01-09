@@ -547,7 +547,8 @@ class Input extends React.Component {
                                                 ? (
                                                     <span key={i} className={styles.highligthed}>
                                                         {o.text}
-                                                    </span>)
+                                                    </span>
+)
                                                 : o.text)
                                         }
                                     </MenuItem>

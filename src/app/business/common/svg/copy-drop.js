@@ -35,7 +35,8 @@ const CopyDrop = ({
                                    <path fill="#1DBCC0" d="M4.9 8.313L1.75 2.7h6.3z" />
                                </g>
                            </g>
-                       </svg>);
+                       </svg>
+);
 
 CopyDrop.defaultProps = {
     className: '',

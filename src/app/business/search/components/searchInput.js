@@ -49,12 +49,13 @@ class SearchInput extends Component {
 
         return getInputProps({
             startAdornment: selectedItem.map(o => o.child
-                ? (<ChildChip
-                    key={o.uuid}
-                    tabIndex={-1}
-                    label={`${o.parent}:${o.child}`}
-                    onDelete={handleDelete(o)}
-                />
+                ? (
+                    <ChildChip
+                        key={o.uuid}
+                        tabIndex={-1}
+                        label={`${o.parent}:${o.child}`}
+                        onDelete={handleDelete(o)}
+                    />
                 )
                 : (
                     <span key={o.uuid} className={parentChip(o.isLogic)}>
@@ -89,7 +90,8 @@ class SearchInput extends Component {
                     InputProps={this.inputProps()}
                     inputRef={input}
                 />
-            </div>);
+            </div>
+);
     }
 }
 

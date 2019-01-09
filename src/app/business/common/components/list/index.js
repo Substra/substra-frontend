@@ -258,7 +258,8 @@ class List extends Component {
                                         {o.permissions === 'all' && (
                                         <Fragment>
                                             <Permission width={8} height={8} />
-                                        </Fragment>)
+                                        </Fragment>
+)
                                             }
                                         <Description o={o} />
                                     </Content>
@@ -268,8 +269,10 @@ class List extends Component {
                         {!o.length && (
                         <span>
                                     No items for this filter group
-                        </span>)}
-                    </Group>))
+                        </span>
+)}
+                    </Group>
+))
                 )}
                 <Popover
                     {...this.props}
@@ -307,6 +310,8 @@ List.defaultProps = {
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
+    hover: noop,
+    out: noop,
     Title,
     Popover,
     Description,
@@ -332,6 +337,8 @@ List.propTypes = {
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
     addNotification: PropTypes.func,
+    hover: PropTypes.func,
+    out: PropTypes.func,
     Title: PropTypes.func,
     Popover: PropTypes.func,
     Description: PropTypes.func,

@@ -2,6 +2,7 @@
 import ReactGA from 'react-ga';
 import React from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 export const ENTITY_TYPE = 'dimension1';
 export const ENTITY_KEY = 'dimension2';
@@ -106,6 +107,14 @@ const withAnalytics = (WrappedComponent, funcNames) => {
                 ...(funcNames.includes(funcName) ? {[funcName]: logFunctions[funcName](state)} : {}),
             }), {});
         return <WrappedComponent {...props} {...componentLogFuncs} />;
+    };
+
+    WithAnalyticsWrapper.defaultProps = {
+        state: null,
+    };
+
+    WithAnalyticsWrapper.propTypes = {
+        state: PropTypes.shape(),
     };
 
     const mapStateToProps = state => ({

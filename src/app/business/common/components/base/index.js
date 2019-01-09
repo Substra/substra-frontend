@@ -296,7 +296,8 @@ class Base extends Component {
                         downloadFile={this.downloadFile}
                         addNotification={this.addNotification}
                     />
-                </Fragment>)
+                </Fragment>
+)
             }
                 <Snackbar
                     anchorOrigin={anchorOrigin}
@@ -315,7 +316,8 @@ class Base extends Component {
                                         {text}
                                     </p>
                                 </ClipboardContent>
-                            </div>)
+                            </div>
+)
                     }
                     />
                 </Snackbar>
