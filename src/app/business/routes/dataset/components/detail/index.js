@@ -125,12 +125,13 @@ class DatasetDetail extends Detail {
     };
 
     addNotification = (key, text) => (e) => {
-        const {addNotification, item} = this.props;
+        const {addNotification, item, logCopyFromDetail} = this.props;
 
         const inputValue = isArray(item[key]) ? item[key].join(',') : item[key];
         addNotification(inputValue, text);
 
         this.popoverHandleClose();
+        logCopyFromDetail(item.key);
     };
 
     copyMore = (e) => {
@@ -256,6 +257,9 @@ DatasetDetail.defaultProps = {
     downloadFile: noop,
     addNotification: noop,
     descLoading: false,
+    logFilterFromDetail: noop,
+    logDownloadFromDetail: noop,
+    logCopyFromDetail: noop,
 };
 
 DatasetDetail.propTypes = {
@@ -273,6 +277,9 @@ DatasetDetail.propTypes = {
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
     descLoading: PropTypes.bool,
+    logFilterFromDetail: PropTypes.func,
+    logDownloadFromDetail: PropTypes.func,
+    logCopyFromDetail: PropTypes.func,
 };
 
 export default DatasetDetail;

@@ -73,17 +73,19 @@ class List extends Component {
     };
 
     componentDidMount(prevProps, prevState, snapshot) {
-        const {loading, fetchList} = this.props;
+        const {loading, fetchList, logList} = this.props;
 
         if (!loading) {
             fetchList();
         }
+        logList();
     }
 
     setSelected = item => () => {
-        const {setSelected} = this.props;
+        const {setSelected, logDetail} = this.props;
 
         setSelected(item);
+        logDetail(item.key);
     };
 
     hover = item => (e) => {
@@ -308,6 +310,8 @@ List.defaultProps = {
     Title,
     Popover,
     Description,
+    logList: noop,
+    logDetail: noop,
 };
 
 List.propTypes = {
@@ -331,6 +335,8 @@ List.propTypes = {
     Title: PropTypes.func,
     Popover: PropTypes.func,
     Description: PropTypes.func,
+    logList: PropTypes.func,
+    logDetail: PropTypes.func,
 };
 
 export default List;

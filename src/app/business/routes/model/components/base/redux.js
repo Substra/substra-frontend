@@ -3,12 +3,12 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import Base from './index';
+import BaseWithAnalytics from './analytics';
 import {getItem} from '../../../../common/selector';
 import {getChallengeFilters, getData} from '../../selector';
 import searchActions from '../../../../search/actions';
 
-const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
+const ReduxBase = (B = BaseWithAnalytics) => { // no override on List/Detail, neither principal Component
     const mapStateToProps = (state, {model, actions, download}) => ({
         selected: state[model].list.selected,
         results: state[model].list.results,

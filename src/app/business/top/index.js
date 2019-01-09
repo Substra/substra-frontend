@@ -7,6 +7,7 @@ import Link from 'redux-first-router-link';
 import {omit} from 'lodash';
 
 import {getRoutes} from './selector';
+import DocLink from './components/docLink';
 
 
 import Logo from '../common/svg/logo';
@@ -15,7 +16,6 @@ import {lightgrey, slate, coolBlue} from '../../../../assets/css/variables';
 import Algo from '../common/svg/algo';
 import Dataset from '../common/svg/data-set';
 import Folder from '../common/svg/folder';
-import Book from '../common/svg/book';
 import Model from '../common/svg/model';
 
 const wrapper = css`
@@ -66,21 +66,6 @@ const pictos = {
     dataset: Dataset,
     algorithm: Algo,
     model: Model,
-};
-
-const DocLink = ({className}) => (
-    <a href="https://gitlab.com/owkin/substradoc" className={className} target="_blank" rel="noopener noreferrer">
-        <Book className={picto} color={slate} />
-        Docs
-    </a>
-);
-
-DocLink.propTypes = {
-    className: PropTypes.string,
-};
-
-DocLink.defaultProps = {
-    className: '',
 };
 
 class Top extends Component {
@@ -141,10 +126,9 @@ Top.propTypes = {
     location: PropTypes.shape({}),
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     routes: getRoutes(state),
     location: state.location,
-    ...ownProps,
 });
 
 export default connect(mapStateToProps)(Top);
