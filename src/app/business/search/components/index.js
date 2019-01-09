@@ -53,11 +53,6 @@ const clear = css`
     cursor: pointer;
     z-index: 1;
     position: relative;
-    // fix bad material-ui ssr with streaming
-    width: 1em;
-    height: 1em;
-    font-size: 24px;
-    fill: currentColor;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
