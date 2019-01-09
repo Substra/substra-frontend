@@ -1,0 +1,20 @@
+@mixin font-face($name, $filename, $style, $weight) {
+    @font-face {
+        font-family: 'Lato';
+        font-style: $style;
+        font-weight: $weight;
+        src: local($name), local($filename), url('../fonts/lato/' + $filename + '.ttf') format('ttf');
+    }
+}
+
+@include font-face('Lato Black', 'Lato-Black', normal, 900);
+@include font-face('Lato Bold', 'Lato-Bold', normal, 700);
+@include font-face('Lato Regular', 'Lato-Regular', normal, 400);
+@include font-face('Lato Light', 'Lato-Light', normal, 300);
+@include font-face('Lato Hairline', 'Lato-Hairline', normal, 100);
+
+@include font-face('Lato Black Italic', 'Lato-BlackItalic', italic, 900);
+@include font-face('Lato Bold Italic', 'Lato-BoldItalic', italic, 700);
+@include font-face('Lato Italic', 'Lato-Italic', italic, 400);
+@include font-face('Lato Light Italic', 'Lato-LightItalic', italic, 300);
+@include font-face('Lato Hairline Italic', 'Lato-HairlineItalic', italic, 100);
