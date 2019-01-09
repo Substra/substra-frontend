@@ -1,0 +1,26 @@
+{
+    "private": true,
+    "name": "substrafront",
+    "productName": "Substra Front",
+    "author": "Guillaume Cisco <guillaume.cisco@owkin.com>",
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "Substra Front",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SubstraFoundation/substrafront"
+    },
+    "engines": {
+        "node": ">=8.4.0",
+        "npm": ">=5.3.0"
+    },
+    "workspaces": [
+        "packages/base",
+        "packages/plugins",
+        "packages/ssr"
+    ],
+    "scripts": {
+        "build:main": "cd packages/ssr && npm run build:main",
+        "serve": "cd packages/ssr && npm run serve"
+    }
+}
