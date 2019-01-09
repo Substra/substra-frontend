@@ -9,11 +9,11 @@ import {getItem} from '../../../../common/selector';
 import {getOrderedResults} from '../../selector';
 
 
-import {List} from '../../../../common/components/list/index';
-import {desc} from '../../../../common/components/list/desc';
+import List from '../../../../common/components/list';
+import {desc} from '../../../../common/components/list/components/desc';
 
 // update filterUp for using key
-class Index extends List {
+class ModelList extends List {
     filterUp = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -99,4 +99,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, mapDispatchToProps)(ModelList);

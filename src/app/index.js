@@ -27,6 +27,6 @@ Routes.propTypes = {
     page: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({location}, ownProps) => ({page: location.type, ...ownProps});
+const mapStateToProps = ({location}) => ({page: location.type});
 
 export default connect(mapStateToProps)(Routes);

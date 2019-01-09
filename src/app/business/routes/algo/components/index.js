@@ -1,5 +1,5 @@
 import React from 'react';
-import ReduxBase from '../../../common/components/base';
+import ReduxBase from '../../../common/components/base/redux';
 
 import actions from '../actions';
 

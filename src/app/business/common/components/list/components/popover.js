@@ -1,8 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
-
 import Popover from '@material-ui/core/Popover/Popover';
 
 export const Action = styled('span')`

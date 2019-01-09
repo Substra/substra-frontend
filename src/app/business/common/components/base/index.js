@@ -5,21 +5,17 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {flatten, isEmpty} from 'lodash';
-import {connect} from 'react-redux';
 import uuidv4 from 'uuid/v4';
-import {bindActionCreators} from 'redux';
 import copy from 'copy-to-clipboard';
 
 import {Snackbar} from '@material-ui/core';
-import SnackbarContent from './SnackbarContent';
+import SnackbarContent from '../SnackbarContent';
 
-import searchActions from '../../search/actions';
-import {getItem} from '../selector';
 
-import ListContainer from './list';
-import Detail from './detail';
-import Check from '../svg/check';
-import {tealish} from '../../../../../assets/css/variables';
+import List from '../list/redux';
+import Detail from '../detail/redux';
+import Check from '../../svg/check';
+import {tealish} from '../../../../../../assets/css/variables';
 
 const MIN_COL_WIDTH = 50;
 
@@ -86,7 +82,7 @@ export const anchorOrigin = {
     horizontal: 'left',
 };
 
-export class Base extends Component {
+class Base extends Component {
     state = {
         width: {
             list: {value: 40, unit: '%'},
@@ -181,6 +177,7 @@ export class Base extends Component {
     };
 
     addNotification = (inputValue, text) => {
+        const {logCopyFromList} = this.props;
         copy(inputValue);
 
         this.setState(state => ({
@@ -191,10 +188,13 @@ export class Base extends Component {
                 text,
             },
         }));
+        logCopyFromList(inputValue);
     };
 
     filterUp = (o) => {
-        const {setSearchState, selectedItem, model} = this.props;
+        const {
+            setSearchState, selectedItem, model, logFilterFromList,
+        } = this.props;
 
         const newSelectedItem = [
             ...selectedItem,
@@ -218,13 +218,14 @@ export class Base extends Component {
             item: o,
             toUpdate: true,
         });
+        logFilterFromList(selectedItem.key);
     };
 
     downloadFile = (o) => {
         // we need to act as a proxy as we need to pass the version for downloading th efile
 
         const {
-            fetchFile, item, results, download: {address, filename},
+            fetchFile, item, results, download: {address, filename}, logDownloadFromList,
         } = this.props;
 
         // item can be empty if we download from list with no expand on item
@@ -233,6 +234,7 @@ export class Base extends Component {
         const url = object ? address.reduce((p, c) => p[c], object) : '';
 
         fetchFile({url, filename});
+        logDownloadFromList(o);
     };
 
     list = () => css`
@@ -334,8 +336,11 @@ Base.defaultProps = {
     fetchFile: noop,
     download: {},
     results: [],
-    List: ListContainer,
+    List,
     Detail,
+    logFilterFromList: noop,
+    logDownloadFromList: noop,
+    logCopyFromList: noop,
 };
 
 Base.propTypes = {
@@ -360,26 +365,9 @@ Base.propTypes = {
     fetchFile: PropTypes.func,
     List: PropTypes.func,
     Detail: PropTypes.func,
+    logFilterFromList: PropTypes.func,
+    logDownloadFromList: PropTypes.func,
+    logCopyFromList: PropTypes.func,
 };
 
-// Basic customisable redux mapping
-const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
-    const mapStateToProps = (state, {model, actions, download}) => ({
-        selected: state[model].list.selected,
-        results: state[model].list.results,
-        selectedItem: state.search.selectedItem,
-        model,
-        actions,
-        download,
-        item: getItem(state, model),
-    });
-
-    const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-        setSearchState: searchActions.state.set,
-        fetchFile: actions.item.file.request,
-    }, dispatch);
-
-    return connect(mapStateToProps, mapDispatchToProps)(B);
-};
-
-export default ReduxBase;
+export default Base;
