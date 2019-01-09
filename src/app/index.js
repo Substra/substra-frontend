@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 import ServiceWorker from './business/common/components/serviceWorker';
-import Top from './business/top';
+import Top from './business/top/redux';
+import Nav from './business/nav/redux';
 
 import Route from './business/routes';
 import Search from './business/search/routes';
@@ -20,6 +21,7 @@ const Routes = ({page}) => (
         <ServiceWorker />
         <Top />
         <Search />
+        <Nav />
         <Route page={page} />
     </Container>
 );

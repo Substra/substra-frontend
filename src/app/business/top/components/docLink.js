@@ -8,7 +8,6 @@ import {slate} from '../../../../../assets/css/variables';
 
 const picto = css`
     display: block;
-    margin: 0 auto 15px;
 `;
 
 class DocLink extends React.Component {
