@@ -76,6 +76,10 @@ const styles = {
         ${disabled ? `
             color: ${theme.palette.text.disabled};
         ` : ''}
+        
+        &:before {
+            display: none;
+        }
     `,
     /* Styles applied to the root element if `disabledUnderline={false}`. */
     underline: (disabled, focused, error) => css`
@@ -130,7 +134,7 @@ const styles = {
     input: disabled => css`
         font: inherit;
         color: currentColor;
-        padding: ${8 - 2}px 0 ${8 - 1}px;
+        padding: 0;
         border: 0;
         box-sizing: content-box;
         vertical-align: middle;

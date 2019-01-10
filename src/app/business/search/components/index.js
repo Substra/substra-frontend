@@ -15,6 +15,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
+import IconButton from '../../common/components/iconButton';
 
 import {
     getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
@@ -22,6 +23,8 @@ import {
 
 import actions from '../actions';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
+import {spacingLarge} from '../../../../../assets/css/variables/spacing';
+import {ice, white} from '../../../../../assets/css/variables/colors';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers/index';
@@ -34,31 +37,28 @@ export modelReducer from '../../routes/model/reducers/index';
 export modelSagas from '../../routes/model/sagas/index';
 
 const Wrapper = styled('div')`
-    margin: 15px auto;
-    width: 90%;
+    margin: 0 ${spacingLarge};
 `;
 
-const middle = css`
-    display: inline-block;
-    vertical-align: middle;
+const InputWrapper = styled('div')`
+    border: 1px solid ${ice};
+    background-color: ${white};
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+    min-height: 40px;
+    border-radius: 20px;
+    padding: 10px 15px;
 `;
 
-const searchInput = css`
-    ${middle};
-    width: 95%;
-`;
-
-const clear = css`
-    ${middle};
-    cursor: pointer;
-    z-index: 1;
-    position: relative;
+const searchInputWrapper = css`
+    flex-grow: 1;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
 const SearchInputWrapper = ({innerRef, ...rest}) => (
     <div
-        className={searchInput}
+        className={searchInputWrapper}
         ref={innerRef}
         {...rest}
     />
@@ -276,17 +276,21 @@ class Search extends Component {
 
         return (
             <Wrapper>
-                <Downshift
-                    inputValue={inputValue}
-                    onChange={this.handleChange}
-                    onOuterClick={this.handleOuterClick}
-                    selectedItem={selectedItem}
-                    itemToString={this.itemToString}
-                >
-                    {this.searchInput}
-                </Downshift>
+                <InputWrapper>
+                    <Downshift
+                        inputValue={inputValue}
+                        onChange={this.handleChange}
+                        onOuterClick={this.handleOuterClick}
+                        selectedItem={selectedItem}
+                        itemToString={this.itemToString}
+                    >
+                        {this.searchInput}
+                    </Downshift>
 
-                <ClearIcon className={clear} onClick={this.clear} />
+                    <IconButton onClick={this.clear}>
+                        <ClearIcon />
+                    </IconButton>
+                </InputWrapper>
                 <ComplexSearchToggle />
             </Wrapper>
         );

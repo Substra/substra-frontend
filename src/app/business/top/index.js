@@ -18,6 +18,7 @@ const Wrapper = styled('div')`
     padding: ${spacingLarge};
     height: 80px;
     border-bottom: 1px solid ${ice};
+    margin-bottom: ${spacingLarge};
 `;
 
 

@@ -23,7 +23,6 @@ const styles = {
         width: 80px;
         display: inline-block;
         flex-grow: 0;        
-        //overflow: hidden;
     `,
     input: css`
         min-width: 450px;
