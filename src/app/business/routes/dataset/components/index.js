@@ -1,10 +1,10 @@
 import React from 'react';
-import ReduxBase from '../../../common/components/base';
+import ReduxBase from '../../../common/components/base/redux';
 
 import actions from '../actions';
 
-import List from './list';
-import Detail from './detail';
+import List from './list/redux';
+import Detail from './detail/redux';
 
 const DatasetBase = ReduxBase();
 

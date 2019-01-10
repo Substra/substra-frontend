@@ -28,7 +28,8 @@ const DownloadSimple = ({
                                    <path d="M0 0h24v24H0z" />
                                </mask>
                            </g>
-                       </svg>);
+                       </svg>
+);
 
 DownloadSimple.defaultProps = {
     className: '',

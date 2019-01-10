@@ -4,11 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Paper, withStyles} from '@material-ui/core';
-import {emphasize} from '@material-ui/core/styles/colorManipulator';
+
 
 export const styles = (theme) => {
-    const emphasis = theme.palette.type === 'light' ? 0.8 : 0.98;
-    const backgroundColor = emphasize(theme.palette.background.default, emphasis);
+    const backgroundColor = theme.palette.background.default;
 
     return {
         /* Styles applied to the root element. */

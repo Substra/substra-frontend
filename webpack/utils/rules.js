@@ -4,7 +4,9 @@ export default env => [
     {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: 'happypack/loader?id=babel',
+        use: [
+            {loader: 'happypack/loader?id=babel'},
+        ],
     },
     {
         test: /\.jpe?g$|\.gif$|\.png$/,

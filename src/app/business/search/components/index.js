@@ -21,6 +21,7 @@ import {
 } from '../selector';
 
 import actions from '../actions';
+import withRedux from '../../common/components/withRedux';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers/index';
@@ -52,11 +53,6 @@ const clear = css`
     cursor: pointer;
     z-index: 1;
     position: relative;
-    // fix bad material-ui ssr with streaming
-    width: 1em;
-    height: 1em;
-    font-size: 24px;
-    fill: currentColor;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
@@ -307,7 +303,7 @@ Search.propTypes = {
     isParent: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
@@ -317,11 +313,11 @@ const mapStateToProps = (state, ownProps) => ({
     parentSuggestions: getParentSuggestions(state),
     isInParentMode: getIsInParentMode(state),
     filters: getSearchFilters(state),
-    ...ownProps,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+
+export default withRedux(connect(mapStateToProps, mapDispatchToProps)(Search));

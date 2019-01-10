@@ -11,6 +11,7 @@ services:
   substrafront:
     build:
       context: ./
+      dockerfile: Dockerfile-build
     container_name: substrafront
     hostname: substrafront
     depends_on:
@@ -26,6 +27,7 @@ services:
       - BACK_AUTH_USER=${BACK_AUTH_USER}
       - BACK_AUTH_PASSWORD=${BACK_AUTH_PASSWORD}
       - API_URL=${API_URL}
+      - FRONT_RAVEN_URL=${FRONT_RAVEN_URL}
 
   # Distributed in-memory cache
   redis:

@@ -1,23 +1,20 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
-import {onlyUpdateForKeys} from 'recompose';
 import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
 import {capitalize} from 'lodash';
 
-import {getItem} from '../selector';
 
-import Search from '../svg/search';
-import Permission from '../svg/permission';
-import Clipboard from '../svg/clipboard';
-import CopySimple from '../svg/copy-simple';
-import DownloadSimple from '../svg/download-simple';
-import FilterUp from '../svg/filter-up';
+import Search from '../../svg/search';
+import Permission from '../../svg/permission';
+import Clipboard from '../../svg/clipboard';
+import CopySimple from '../../svg/copy-simple';
+import DownloadSimple from '../../svg/download-simple';
+import FilterUp from '../../svg/filter-up';
 
-import {coolBlue} from '../../../../../assets/css/variables';
+import {coolBlue} from '../../../../../../assets/css/variables';
 
 
 const middle = css`
@@ -90,22 +87,26 @@ const icon = css`
 
 class Detail extends Component {
     downloadFile = (e) => {
-        const {downloadFile} = this.props;
+        const {downloadFile, item, logDownloadFromDetail} = this.props;
 
         downloadFile();
+        logDownloadFromDetail(item.key);
     };
 
     addNotification = (key, text) => (e) => {
-        const {addNotification} = this.props;
+        const {addNotification, item, logCopyFromDetail} = this.props;
 
         addNotification(key, text);
+        logCopyFromDetail(item.key);
     };
 
     filterUp = o => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.filterUp(o);
+        const {item, filterUp, logFilterFromDetail} = this.props;
+        filterUp(o);
+        logFilterFromDetail(item.key);
     };
 
     render() {
@@ -151,7 +152,8 @@ class Detail extends Component {
                                     <span>
                                         {': Open to all'}
                                     </span>
-                                </Fragment>)
+                                </Fragment>
+)
                             }
                         </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
@@ -160,7 +162,8 @@ class Detail extends Component {
                                 <ReactMarkdown source={item.desc} />
                             </Section>
                         )}
-                    </Item>)}
+                    </Item>
+)}
             </Content>
         );
     }
@@ -177,6 +180,9 @@ Detail.defaultProps = {
     downloadFile: noop,
     addNotification: noop,
     model: '',
+    logFilterFromDetail: noop,
+    logDownloadFromDetail: noop,
+    logCopyFromDetail: noop,
 };
 
 Detail.propTypes = {
@@ -194,17 +200,9 @@ Detail.propTypes = {
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
     model: PropTypes.string,
+    logFilterFromDetail: PropTypes.func,
+    logDownloadFromDetail: PropTypes.func,
+    logCopyFromDetail: PropTypes.func,
 };
 
-const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification,
-}) => ({
-    item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
-    filterUp,
-    downloadFile,
-    addNotification,
-});
-
-
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Detail));
+export default Detail;

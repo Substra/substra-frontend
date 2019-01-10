@@ -39,4 +39,7 @@ module.exports = {
         host: redis_host,
         redis: redis_port,
     },
+    googleAnalytics: {
+        trackerID: 'UA-130128052-1',
+    },
 };

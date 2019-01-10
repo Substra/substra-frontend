@@ -1,19 +1,16 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {PulseLoader} from 'react-spinners';
 
-import Popover from './popover';
-import Title from './title';
-import Description from './desc';
+import Popover from './components/popover';
+import Title from './components/title';
+import Description from './components/desc';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 
 import More from '../../svg/more-vertical';
-import {getItem, getOrderedResults} from '../../selector';
 import Permission from '../../svg/permission';
 
 
@@ -65,7 +62,7 @@ const Actions = styled('div')`
     }
 `;
 
-export class List extends Component {
+class List extends Component {
     state = {
         popover: {
             open: false,
@@ -76,17 +73,19 @@ export class List extends Component {
     };
 
     componentDidMount(prevProps, prevState, snapshot) {
-        const {loading, fetchList} = this.props;
+        const {loading, fetchList, logList} = this.props;
 
         if (!loading) {
             fetchList();
         }
+        logList();
     }
 
     setSelected = item => () => {
-        const {setSelected} = this.props;
+        const {setSelected, logDetail} = this.props;
 
         setSelected(item);
+        logDetail(item.key);
     };
 
     hover = item => (e) => {
@@ -259,7 +258,8 @@ export class List extends Component {
                                         {o.permissions === 'all' && (
                                         <Fragment>
                                             <Permission width={8} height={8} />
-                                        </Fragment>)
+                                        </Fragment>
+)
                                             }
                                         <Description o={o} />
                                     </Content>
@@ -269,8 +269,10 @@ export class List extends Component {
                         {!o.length && (
                         <span>
                                     No items for this filter group
-                        </span>)}
-                    </Group>))
+                        </span>
+)}
+                    </Group>
+))
                 )}
                 <Popover
                     {...this.props}
@@ -308,9 +310,13 @@ List.defaultProps = {
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
+    hover: noop,
+    out: noop,
     Title,
     Popover,
     Description,
+    logList: noop,
+    logDetail: noop,
 };
 
 List.propTypes = {
@@ -331,31 +337,13 @@ List.propTypes = {
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
     addNotification: PropTypes.func,
+    hover: PropTypes.func,
+    out: PropTypes.func,
     Title: PropTypes.func,
     Popover: PropTypes.func,
     Description: PropTypes.func,
+    logList: PropTypes.func,
+    logDetail: PropTypes.func,
 };
 
-const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification, download,
-}) => ({
-    init: state[model].list.init,
-    loading: state[model].list.loading,
-    results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
-    order: state[model].order,
-    item: getItem(state, model),
-    filterUp,
-    downloadFile,
-    addNotification,
-    download,
-});
-
-const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    fetchList: actions.list.request,
-    setSelected: actions.list.selected,
-    setOrder: actions.order.set,
-}, dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default List;
