@@ -22,7 +22,8 @@ const Ul = styled('ul')`
 `;
 
 const Li = styled('li')`
-    display: inline-block;
+    display: inline-flex;
+    align-items: stretch;
     margin-right: ${spacingLarge};
 `;
 

@@ -14,7 +14,8 @@ import SnackbarContent from '../SnackbarContent';
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
-import {tealish} from '../../../../../../assets/css/variables';
+import {spacingLarge} from '../../../../../../assets/css/variables/spacing';
+import {white, tealish, ice} from '../../../../../../assets/css/variables/colors';
 
 const MIN_COL_WIDTH = 50;
 
@@ -42,7 +43,7 @@ export const verticalBar = css`
         top: 0;
         bottom: 0;
         left: ${(barSize - 1) / 2}px;
-        border-left: 1px solid #ccc;    
+        border-left: 1px solid ${ice};    
     }
 `;
 
@@ -249,7 +250,9 @@ class Base extends Component {
     `;
 
     layout = () => css`
-        margin: 0 ${margin}px;
+        margin: 0 ${spacingLarge} ${spacingLarge} ${spacingLarge};
+        background-color: ${white};
+        border: 1px solid ${ice};
         display: flex;
         flex: 1;
         ${this.state.hold ? `
