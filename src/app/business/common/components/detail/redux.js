@@ -15,4 +15,6 @@ const mapStateToProps = (state, {
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(DetailWithAnalytics));
+export const withDetailRedux = Component => connect(mapStateToProps)(onlyUpdateForKeys(['item', 'className', 'descLoading'])(Component));
+
+export default withDetailRedux(DetailWithAnalytics);

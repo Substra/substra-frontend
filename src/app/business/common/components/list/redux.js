@@ -25,5 +25,6 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     setOrder: actions.order.set,
 }, dispatch);
 
+export const withListRedux = Component => connect(mapStateToProps, mapDispatchToProps)(Component);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListWithAnalytics);
+export default withListRedux(ListWithAnalytics);
