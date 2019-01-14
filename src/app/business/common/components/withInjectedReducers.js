@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {ReactReduxContext} from 'react-redux';
 
-export default function withRedux(WrappedComponent) {
-    class WithRedux extends Component {
+export default function withInjectedReducers(WrappedComponent) {
+    class WithInjectedReducers extends Component {
         constructor(...args) {
             super(...args);
             this.firstRender = true;
@@ -30,5 +30,5 @@ export default function withRedux(WrappedComponent) {
         }
     }
 
-    return WithRedux;
+    return WithInjectedReducers;
 }

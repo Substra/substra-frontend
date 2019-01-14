@@ -21,7 +21,7 @@ import {
 } from '../selector';
 
 import actions from '../actions';
-import withRedux from '../../common/components/withRedux';
+import withInjectedReducers from '../../common/components/withInjectedReducers';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers/index';
@@ -320,4 +320,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 
-export default withRedux(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default withInjectedReducers(connect(mapStateToProps, mapDispatchToProps)(Search));
