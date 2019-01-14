@@ -44,15 +44,19 @@ const InputWrapper = styled('div')`
     border: 1px solid ${ice};
     background-color: ${white};
     display: flex;
-    align-items: top;
+    align-items: center;
     justify-content: space-between;
     min-height: 40px;
     border-radius: 20px;
-    padding: 10px 15px;
+    padding: 3px;
 `;
 
 const searchInputWrapper = css`
     flex-grow: 1;
+`;
+
+const clearButton = css`
+    z-index: 1;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
@@ -287,7 +291,7 @@ class Search extends Component {
                         {this.searchInput}
                     </Downshift>
 
-                    <IconButton onClick={this.clear}>
+                    <IconButton onClick={this.clear} className={clearButton}>
                         <ClearIcon />
                     </IconButton>
                 </InputWrapper>
