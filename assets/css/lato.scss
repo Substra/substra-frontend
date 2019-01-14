@@ -1,20 +1,27 @@
-@mixin font-face($name, $filename, $style, $weight) {
+@mixin font-face($variant, $style, $weight) {
     @font-face {
         font-family: 'Lato';
         font-style: $style;
         font-weight: $weight;
-        src: local($name), local($filename), url('../fonts/lato/' + $filename + '.ttf') format('ttf');
+        src: url('../fonts/lato/LatoLatin-' + $variant + '.eot'); /* IE9 Compat Modes */
+        src: url('../fonts/lato/LatoLatin-' + $variant + '.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('../fonts/lato/LatoLatin-' + $variant + '.woff2') format('woff2'), /* Super Modern Browsers */
+            url('../fonts/lato/LatoLatin-' + $variant + '.woff') format('woff'), /* Pretty Modern Browsers */
+            url('../fonts/lato/LatoLatin-' + $variant + '.ttf')  format('truetype'); /* Safari, Android, iOS */
     }
 }
 
-@include font-face('Lato Black', 'Lato-Black', normal, 900);
-@include font-face('Lato Bold', 'Lato-Bold', normal, 700);
-@include font-face('Lato Regular', 'Lato-Regular', normal, 400);
-@include font-face('Lato Light', 'Lato-Light', normal, 300);
-@include font-face('Lato Hairline', 'Lato-Hairline', normal, 100);
+@mixin font-face-italics($variant, $weight) {
+    @include font-face($variant, normal, $weight);
+    @include font-face($variant + 'Italic', italic, $weight);
+}
 
-@include font-face('Lato Black Italic', 'Lato-BlackItalic', italic, 900);
-@include font-face('Lato Bold Italic', 'Lato-BoldItalic', italic, 700);
-@include font-face('Lato Italic', 'Lato-Italic', italic, 400);
-@include font-face('Lato Light Italic', 'Lato-LightItalic', italic, 300);
-@include font-face('Lato Hairline Italic', 'Lato-HairlineItalic', italic, 100);
+@include font-face('Black', normal, 900);
+@include font-face('Heavy', normal, 800);
+@include font-face('Bold', normal, 700);
+@include font-face('Semibold', normal, 600);
+@include font-face('Medium', normal, 500);
+@include font-face('Regular', normal, 400);
+@include font-face('Light', normal, 300);
+@include font-face('Thin', normal, 200);
+@include font-face('Hairline', normal, 100);
