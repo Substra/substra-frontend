@@ -2,9 +2,7 @@ import React from 'react';
 
 import actions from '../actions';
 
-import List from './list';
-import Detail from './detail';
-import ReduxBase from './base/redux';
+import ReduxBase from '../../../common/components/base/redux';
 
 const ReduxModelBase = ReduxBase();
 
@@ -19,8 +17,6 @@ const Model = () => (
         actions={actions}
         model="model"
         download={download}
-        List={List}
-        Detail={Detail}
     />
 );
 

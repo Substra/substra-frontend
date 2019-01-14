@@ -20,13 +20,6 @@ export const actionTypes = {
     order: {
         SET: `${prefix}_ORDER_SET`,
     },
-
-    chart: {
-        SAVE: `${prefix}_CHART_SAVE`,
-        hoverKey: {
-            SET: `${prefix}_CHART_HOVERKEY_SET`,
-        },
-    },
 };
 
 export default {
@@ -61,12 +54,5 @@ export default {
 
     order: {
         set: createAction(actionTypes.order.SET),
-    },
-
-    chart: {
-        save: createAction(actionTypes.chart.SAVE),
-        hoverKey: {
-            set: createAction(actionTypes.chart.hoverKey.SET),
-        },
     },
 };
