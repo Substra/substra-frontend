@@ -16,7 +16,7 @@
         "emotion": "10.0.6",
         "emotion-server": "10.0.6",
         "fastclick": "1.0.6",
-        "file-saver": "2.0.0",
+        "file-saver": "^2.0.0",
         "history": "4.7.2",
         "jss": "9.8.7",
         "jss-preset-default": "10.0.0-alpha.7",

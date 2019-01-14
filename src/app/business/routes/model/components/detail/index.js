@@ -19,22 +19,26 @@ class ModelDetail extends Detail {
     };
 }
 
-const ModelDetailWithLocalComponents = ({item, ...rest}) => (
+const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
     <ModelDetail
         Title={Title}
         item={item}
         {...rest}
     >
-        <Traintuple traintuple={item} />
+        <Traintuple traintuple={item} addNotification={addNotification} />
     </ModelDetail>
 );
 
 ModelDetailWithLocalComponents.propTypes = {
     item: PropTypes.shape(),
+    addNotification: PropTypes.func,
 };
+
+const noop = () => {};
 
 ModelDetailWithLocalComponents.defaultProps = {
     item: null,
+    addNotification: noop,
 };
 
 export default withDetailRedux(withDetailAnalytics(ModelDetailWithLocalComponents));
