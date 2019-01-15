@@ -112,7 +112,7 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, descLoading, model, Title, children,
+            item, className, descLoading, model, Title, children, BrowseRelatedLinks,
         } = this.props;
 
         return (
@@ -157,6 +157,9 @@ class Detail extends Component {
 )
                             }
                         </Section>
+                        <Section>
+                            <BrowseRelatedLinks item={item} />
+                        </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.desc && (
                             <Section>
@@ -173,6 +176,7 @@ class Detail extends Component {
 
 const noop = () => {
 };
+const dummy = () => null;
 
 Detail.defaultProps = {
     item: null,
@@ -187,6 +191,7 @@ Detail.defaultProps = {
     logCopyFromDetail: noop,
     Title,
     children: null,
+    BrowseRelatedLinks: dummy,
 };
 
 Detail.propTypes = {
@@ -209,6 +214,7 @@ Detail.propTypes = {
     logCopyFromDetail: PropTypes.func,
     Title: PropTypes.func,
     children: PropTypes.node,
+    BrowseRelatedLinks: PropTypes.func,
 };
 
 export default Detail;
