@@ -75,10 +75,6 @@ const styles = {
         ${disabled ? `
             color: ${theme.palette.text.disabled};
         ` : ''}
-        
-        &:before {
-            display: none;
-        }
     `,
     /* Styles applied to the root element if `fullWidth={true}`. */
     fullWidth: css`

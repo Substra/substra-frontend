@@ -12,7 +12,6 @@ import TextField from './overrides/textField';
 
 const parentChip = isLogic => css`
     padding: ${spacingExtraSmall} ${spacingSmall};
-        verticalAlign: 'middle',
     display: inline-flex;
     font-size: ${fontLarge};
     ${isLogic ? 'color: #1935a7;font-weight: bold' : 'inherit'};
@@ -23,7 +22,7 @@ const ChildChip = withStyles({
         margin: '2px',
         height: 'auto',
         fontSize: fontLarge,
-        padding: `${spacingExtraSmall} ${spacingSmall} `,
+        padding: `${spacingExtraSmall} ${spacingSmall}`,
     },
     label: {
         padding: 0,
