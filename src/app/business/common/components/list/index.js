@@ -7,6 +7,7 @@ import {PulseLoader} from 'react-spinners';
 import Popover from './components/popover';
 import Title from './components/title';
 import Description from './components/desc';
+import Sort from './components/sort';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 import {ice} from '../../../../../../assets/css/variables/colors';
@@ -26,12 +27,6 @@ const H5 = styled('h5')`
     display: inline-block;
     padding-right: 5px;
     border-right: 1px solid rgba(75, 96, 115, 0.2);
-`;
-
-const Sort = styled('div')`
-    font-size: 14px;
-    display: inline-block;
-    padding-left: 5px;
 `;
 
 const Group = styled('div')`
@@ -217,7 +212,7 @@ class List extends Component {
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Description,
+            Title, Popover, Description, Sort, order, setOrder,
         } = this.props;
 
         const {open, anchorEl} = this.state.popover;
@@ -228,11 +223,7 @@ class List extends Component {
                     <H5>
                         {model.toUpperCase()}
                     </H5>
-                    <Sort>
-                        <span>
-                            Sort by LATEST
-                        </span>
-                    </Sort>
+                    <Sort order={order} setOrder={setOrder} />
                 </Top>
                 {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
@@ -318,6 +309,7 @@ List.defaultProps = {
     Description,
     logList: noop,
     logDetail: noop,
+    Sort,
 };
 
 List.propTypes = {
@@ -345,6 +337,7 @@ List.propTypes = {
     Description: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
+    Sort: PropTypes.func,
 };
 
 export default List;

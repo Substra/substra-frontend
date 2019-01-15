@@ -1,6 +1,6 @@
 const initialState = {
-    by: 'name',
-    direction: 'asc',
+    by: 'testData.perf',
+    direction: 'desc',
 };
 
 export default actionTypes => (state = initialState, {type, payload}) => {

@@ -5,6 +5,7 @@ import {withListRedux} from '../../../../common/components/list/redux';
 import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Description from './components/description';
+import Sort from './components/sort';
 
 class ModelList extends List {
     filterUp = (e) => {
@@ -24,6 +25,7 @@ const ModelListWithLocalComponents = props => (
     <ModelList
         Title={Title}
         Description={Description}
+        Sort={Sort}
         {...props}
     />
 );
