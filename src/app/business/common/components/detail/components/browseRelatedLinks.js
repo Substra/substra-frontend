@@ -1,11 +1,15 @@
 import React from 'react';
 import Link from 'redux-first-router-link';
 import PropTypes from 'prop-types';
+import {css} from 'emotion';
+
+const spacing = css`
+    margin-right: 5px;
+`;
 
 export const BrowseRelatedLinksWrapper = ({children}) => (
     <div>
-        Browse related:
-        {' '}
+        <span className={spacing}>Browse related</span>
         {children}
     </div>
 );
@@ -25,21 +29,11 @@ const routeTypes = {
     challenge: 'CHALLENGE',
 };
 
-export class BrowseRelatedLink extends React.Component {
-    searchString() {
-        const {model, filter} = this.props;
-        return `${model}:${filter}`;
-    }
-
-    render() {
-        const {label, model} = this.props;
-        return (
-            <Link to={{type: routeTypes[model], meta: {query: {search: this.searchString()}}}}>
-                {label}
-            </Link>
-        );
-    }
-}
+export const BrowseRelatedLink = ({label, model, filter}) => (
+    <Link to={{type: routeTypes[model], meta: {query: {search: filter}}}} className={spacing}>
+        {label}
+    </Link>
+);
 
 BrowseRelatedLink.propTypes = {
     label: PropTypes.string,

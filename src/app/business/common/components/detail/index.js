@@ -157,9 +157,11 @@ class Detail extends Component {
 )
                             }
                         </Section>
-                        <Section>
-                            <BrowseRelatedLinks item={item} />
-                        </Section>
+                        {BrowseRelatedLinks && (
+                            <Section>
+                                <BrowseRelatedLinks item={item} />
+                            </Section>
+                        )}
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.desc && (
                             <Section>

@@ -7,14 +7,13 @@ import {
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
 const BrowseRelatedLinks = ({item}) => {
-    const algoFilter = `algo:name:${item.algo.name}`;
-    const challengeFilter = `challenge:key:${item.challenge.hash}`;
+    const filter = `challenge:name:${item.name}`;
 
     return (
         <BrowseRelatedLinksWrapper>
-            <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} />
-            <BrowseRelatedLink model="challenge" label="challenge" filter={challengeFilter} />
-            <BrowseRelatedLink model="dataset" label="dataset" filter={challengeFilter} />
+            <BrowseRelatedLink model="dataset" label="dataset" filter={filter} />
+            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} />
+            <BrowseRelatedLink model="model" label="models" filter={filter} />
         </BrowseRelatedLinksWrapper>
     );
 };

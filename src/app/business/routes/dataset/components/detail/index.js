@@ -17,6 +17,7 @@ import Clipboard from '../../../../common/svg/clipboard';
 import CopyDrop from '../../../../common/svg/copy-drop';
 import DownloadSimple from '../../../../common/svg/download-simple';
 import FilterUp from '../../../../common/svg/filter-up';
+import BrowseRelatedLinks from './components/browseRelatedLinks';
 
 import {coolBlue} from '../../../../../../../assets/css/variables';
 
@@ -207,6 +208,9 @@ class DatasetDetail extends Detail {
                                 </Fragment>
 )
                             }
+                        </Section>
+                        <Section>
+                            <BrowseRelatedLinks item={item} />
                         </Section>
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.description && (
