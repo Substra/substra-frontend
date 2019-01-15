@@ -6,14 +6,10 @@ import {desc} from '../../../../../common/components/list/components/desc';
 const Description = ({o}) => (
     <div className={desc}>
         <div>
-            Status:
-            {' '}
-            {o && o.status}
+            {`Status: ${o && o.status}`}
         </div>
         <div>
-            Score:
-            {' '}
-            {o && o.testData && o.testData.perf}
+            {`Score: ${o && o.testData && o.testData.perf}}`}
         </div>
     </div>
 );
