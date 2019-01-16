@@ -25,7 +25,7 @@ function* fetchList(request) {
 //     const state = yield select();
 //
 //     if (!state.model.item.results.find(o => o.pkhash === payload)) {
-//         yield put(actions.item.request({id: payload.endModel.hash, get_parameters: {}}));
+//         yield put(actions.item.request({id: payload.outModel.hash, get_parameters: {}}));
 //     }
 // }
 

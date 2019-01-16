@@ -9,20 +9,20 @@ const datasetResults = state => state.dataset.persistent.results;
 const algoResults = state => state.algo.persistent.results;
 const modelResults = state => state.model.persistent.results;
 
-export const endModelsHashes = createDeepEqualSelector([modelResults],
-    modelResults => modelResults.length ? modelResults[0].filter(o => o.endModel).map(o => ({hash: `hash:${o.endModel.hash}`})) : modelResults,
+export const outModelsHashes = createDeepEqualSelector([modelResults],
+    modelResults => modelResults.length ? modelResults[0].filter(o => o.outModel).map(o => ({hash: `hash:${o.outModel.hash}`})) : modelResults,
 );
 
-export const getSearchFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, endModelsHashes],
-    (location, challenge, dataset, algo, endModelsHashes) => ({
+export const getSearchFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, outModelsHashes],
+    (location, challenge, dataset, algo, outModelsHashes) => ({
         challenge: challenge.length ? challenge[0] : challenge,
         dataset: dataset.length ? dataset[0] : dataset,
         algo: algo.length ? algo[0] : algo,
-        model: endModelsHashes, // output model i.e trained model (updated)
+        model: outModelsHashes, // output model i.e trained model (updated)
         ...(location.type === 'MODEL' ? {
-            model_parents: endModelsHashes,
-            model_children: endModelsHashes,
-            model_family: endModelsHashes,
+            model_parents: outModelsHashes,
+            model_children: outModelsHashes,
+            model_family: outModelsHashes,
         } : {}),
     }),
 );
