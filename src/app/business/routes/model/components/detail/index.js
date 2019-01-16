@@ -23,6 +23,7 @@ const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
     <ModelDetail
         Title={Title}
         item={item}
+        addNotification={addNotification}
         {...rest}
     >
         <Traintuple traintuple={item} addNotification={addNotification} />
