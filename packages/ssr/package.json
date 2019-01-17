@@ -33,6 +33,7 @@
         "react-jss": "10.0.0-alpha.6",
         "react-markdown": "4.0.6",
         "react-redux": "6.0.0",
+        "react-select": "2.2.0",
         "react-spinners": "0.5.1",
         "react-universal-component": "3.0.3",
         "recompose": "0.30.0",

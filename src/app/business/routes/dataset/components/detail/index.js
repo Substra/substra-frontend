@@ -10,6 +10,7 @@ import Popover from '@material-ui/core/Popover';
 
 
 import Detail from '../../../../common/components/detail';
+import PanelTop from '../../../../common/components/panelTop';
 
 import Search from '../../../../common/svg/search';
 import Permission from '../../../../common/svg/permission';
@@ -30,12 +31,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Top = styled('div')`
-    background-color: #f7f8f8;
-    padding: 3px 10px 3px 12px;
-    color: #4b6073;
 `;
 
 const H5 = styled('h5')`
@@ -166,12 +161,12 @@ class DatasetDetail extends Detail {
 
         return (
             <Content className={className}>
-                <Top>
+                <PanelTop>
                     <Search width={14} height={14} className={search} />
                     <H5 className={middle}>
                         {item ? item.name : ''}
                     </H5>
-                </Top>
+                </PanelTop>
                 {item && (
                     <Item>
                         <Section>

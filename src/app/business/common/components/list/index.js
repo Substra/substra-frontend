@@ -11,16 +11,11 @@ import Sort from './components/sort';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 import {ice} from '../../../../../../assets/css/variables/colors';
+import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
 import Permission from '../../svg/permission';
 
-
-const Top = styled('div')`
-    background-color: #f7f8f8;
-    padding: 3px 10px;
-    color: #4b6073;
-`;
 
 const H5 = styled('h5')`
     margin: 0;
@@ -219,12 +214,12 @@ class List extends Component {
 
         return (
             <div className={className}>
-                <Top>
+                <PanelTop>
                     <H5>
                         {model.toUpperCase()}
                     </H5>
                     <Sort order={order} setOrder={setOrder} />
-                </Top>
+                </PanelTop>
                 {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
                     <p>
