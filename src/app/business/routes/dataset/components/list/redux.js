@@ -2,7 +2,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import {getOrderedResults} from '../../../model/selector';
-import {getItem} from '../../../../common/selector';
+import {getItem, getSelected} from '../../../../common/selector';
 import Popover from './components/popover';
 
 import ListWithAnalytics from './analytics';
@@ -15,7 +15,7 @@ const mapStateToProps = (state, {
     itemLoading: state[model].item.loading,
     itemResults: state[model].item.results,
     results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
+    selected: getSelected(state, model),
     order: state[model].order,
     item: getItem(state, model),
     model,
