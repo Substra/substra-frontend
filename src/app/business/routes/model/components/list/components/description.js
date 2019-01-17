@@ -5,12 +5,16 @@ import {desc} from '../../../../../common/components/list/components/desc';
 
 const Description = ({o}) => (
     <div className={desc}>
-        {o && o.status && <div>
-            {`Status: ${o.status}`}
-        </div>}
-        {o && o.testData && <div>
-            {`Score: ${o.testData.perf}`}
-        </div>}
+        {o && o.status && (
+            <div>
+                {`Status: ${o.status}`}
+            </div>
+        )}
+        {o && o.testData && (
+            <div>
+                {`Score: ${o.testData.perf}`}
+            </div>
+        )}
     </div>
 );
 
