@@ -9,6 +9,7 @@ import Title from './components/title';
 import Description from './components/desc';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
+import {ice} from '../../../../../../assets/css/variables/colors';
 
 import More from '../../svg/more-vertical';
 import Permission from '../../svg/permission';
@@ -40,7 +41,7 @@ const Group = styled('div')`
 `;
 
 const Item = styled('div')`
-    border-top: 1px solid #ccc;
+    border-top: 1px solid ${ice};
     font-size: 12px;
     cursor: pointer;
     position: relative;

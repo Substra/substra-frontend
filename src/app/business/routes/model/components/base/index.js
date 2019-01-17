@@ -1,8 +1,8 @@
 import uuidv4 from 'uuid/v4';
-
-import Base from '../../../../common/components/base';
 import ReduxBase from '../../../../common/components/base/redux';
 import {withBaseAnalytics} from '../../../../common/components/base/analytics';
+import Base from '../../../../common/components/base';
+
 
 class ModelBase extends Base {
     filterUp = (o) => {

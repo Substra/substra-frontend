@@ -1,5 +1,13 @@
 @import 'lato';
 
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 html, body, #root, #root > div {
     height: 100%;
 }
@@ -7,10 +15,10 @@ html, body, #root, #root > div {
 body {
     margin: 0;
     padding: 0;
-    background: #fefefe;
+    background: #f7f8f8;
     color: #4b6073;
     font-family: 'Lato', sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     letter-spacing: 0.5px;
 
     -webkit-font-smoothing: antialiased; /* This needs to be set or some font faced fonts look bold on Mac in Chrome/Webkit based browsers. */

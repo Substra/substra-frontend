@@ -1,0 +1,119 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {css} from 'emotion';
+import styled from '@emotion/styled';
+import {omit} from 'lodash';
+import Link from 'redux-first-router-link';
+
+import Algo from '../common/svg/algo';
+import Dataset from '../common/svg/data-set';
+import Folder from '../common/svg/folder';
+import Model from '../common/svg/model';
+
+import {spacingLarge, spacingNormal, spacingExtraSmall} from '../../../../assets/css/variables/spacing';
+import {tealish, slate} from '../../../../assets/css/variables/colors';
+import {fontLarge} from '../../../../assets/css/variables/font';
+
+const Ul = styled('ul')`
+    display: flex;
+    list-style: none;
+    margin: ${spacingNormal} ${spacingLarge} 0 ${spacingLarge};
+    padding: 0;
+`;
+
+const Li = styled('li')`
+    display: inline-flex;
+    align-items: stretch;
+    margin-right: ${spacingLarge};
+`;
+
+const link = (active, hovered) => css`
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: ${active || hovered ? tealish : slate};
+    font-size: ${fontLarge};
+    font-weight: bold;
+    text-transform: capitalize;
+    padding-bottom: ${spacingExtraSmall};
+    border-bottom: 3px solid ${active ? tealish : 'transparent'};
+`;
+
+const picto = css`
+    margin: 0 8px 0 0;
+`;
+
+
+const pictos = {
+    challenge: Folder,
+    dataset: Dataset,
+    algorithm: Algo,
+    model: Model,
+};
+
+class Nav extends React.Component {
+    state = {
+        hoveredRoute: null,
+    };
+
+    isActive = (route) => {
+        const {location: {type}} = this.props;
+
+        return type === route || (route === 'CHALLENGE' && type === 'HOME');
+    };
+
+    isHovered = route => this.state.hoveredRoute === route;
+
+    onMouseEnter = route => () => {
+        this.setState({hoveredRoute: route});
+    };
+
+    onMouseLeave = route => () => {
+        if (this.isHovered(route)) {
+            this.setState({hoveredRoute: null});
+        }
+    };
+
+    render() {
+        const {routes, location} = this.props;
+        return (
+            <Ul>
+                {routes.map((route) => {
+                        const active = this.isActive(route);
+                        const hovered = this.isHovered(route);
+                        const color = active || hovered ? tealish : slate;
+
+                        const menu = route.toLowerCase();
+                        const Picto = pictos[menu];
+
+                        return (
+                            <Li key={route}>
+                                <Link
+                                    to={{type: route, meta: {query: omit(location.query, ['_sw-precache'])}}}
+                                    onMouseEnter={this.onMouseEnter(route)}
+                                    onMouseLeave={this.onMouseLeave(route)}
+                                    className={link(active, hovered)}
+                                >
+                                    <Picto className={picto} color={color} />
+                                    {menu}
+                                </Link>
+                            </Li>
+                        );
+                    },
+                )}
+            </Ul>
+        );
+    }
+}
+
+Nav.defaultProps = {
+    routes: [],
+    location: {},
+};
+
+Nav.propTypes = {
+    routes: PropTypes.arrayOf(PropTypes.string),
+    location: PropTypes.shape({}),
+};
+
+export default Nav;

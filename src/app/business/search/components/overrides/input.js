@@ -60,7 +60,6 @@ const placeholder = `
     duration: theme.transitions.duration.shorter,
 })};
     `;
-const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
 const styles = {
     /* Styles applied to the root element. */
@@ -77,46 +76,6 @@ const styles = {
             color: ${theme.palette.text.disabled};
         ` : ''}
     `,
-    /* Styles applied to the root element if `disabledUnderline={false}`. */
-    underline: (disabled, focused, error) => css`
-        &:after {
-            border-bottom: 2px solid ${theme.palette.primary[light ? 'dark' : 'light']};
-            left: 0;
-            bottom: 0;
-            // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
-            content: "";
-            position: absolute;
-            right: 0;
-            transform: scaleX(0);
-            transition:${theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shorter,
-        easing: theme.transitions.easing.easeOut,
-    })};
-            pointer-events: none; // Transparent to the hover style.
-            ${focused ? 'transform: scaleX(1);' : ''}
-            ${error ? `
-                border-bottom-color: ${theme.palette.error.main};
-                transform: scaleX(1);
-            ` : ''}  // error is always underlined in red
-        }
-        &:before {
-            border-bottom: 1px solid ${bottomLineColor};
-            left: 0;
-            bottom: 0;
-            // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
-            content: "\\00a0";
-            position: absolute;
-            right: 0;
-            transition: ${theme.transitions.create('border-bottom-color', {
-        duration: theme.transitions.duration.shorter,
-    })};
-            pointer-events: none; // Transparent to the hover style.
-            ${disabled ? `border-bottom: 1px dotted ${bottomLineColor};` : ''}
-        }
-        &:hover:before {
-            ${(!disabled || !focused || !error) ? `border-bottom: 2px solid ${theme.palette.text.primary};` : ''}
-        }
-    `,
     /* Styles applied to the root element if `fullWidth={true}`. */
     fullWidth: css`
         width: 100%;
@@ -130,7 +89,7 @@ const styles = {
     input: disabled => css`
         font: inherit;
         color: currentColor;
-        padding: ${8 - 2}px 0 ${8 - 1}px;
+        padding: 0;
         border: 0;
         box-sizing: content-box;
         vertical-align: middle;

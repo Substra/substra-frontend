@@ -14,7 +14,8 @@ import SnackbarContent from '../SnackbarContent';
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
-import {tealish} from '../../../../../../assets/css/variables';
+import {spacingLarge} from '../../../../../../assets/css/variables/spacing';
+import {white, tealish, ice} from '../../../../../../assets/css/variables/colors';
 
 const MIN_COL_WIDTH = 50;
 
@@ -23,14 +24,15 @@ export const middle = css`
     vertical-align: top;
 `;
 
-export const margin = 20;
+export const margin = 40;
 const barSize = 15;
+const halfBarSize = (barSize - 1) / 2;
 
 export const verticalBar = css`
     ${middle};
     width: ${barSize}px;
-    margin-right: -${(barSize - 1) / 2}px;
-    margin-left: -${(barSize - 1) / 2}px;
+    margin-right: -${halfBarSize}px;
+    margin-left: -${halfBarSize}px;
     z-index: 1;
     cursor: col-resize;
     background-color: transparent;
@@ -41,8 +43,8 @@ export const verticalBar = css`
         position: absolute;
         top: 0;
         bottom: 0;
-        left: ${(barSize - 1) / 2}px;
-        border-left: 1px solid #ccc;    
+        left: ${halfBarSize}px;
+        border-left: 1px solid ${ice};    
     }
 `;
 
@@ -237,19 +239,22 @@ class Base extends Component {
     };
 
     list = () => css`
-        ${middle};
         width: ${this.props.selected ? `${this.state.width.list.value}${this.state.width.list.unit}` : '100%'};
+        flex-grow: 0;
+        flex-shrink: 0;
         overflow-x: auto;
     `;
 
     detail = () => css`
-        ${middle};
         width: ${this.props.selected ? `${this.state.width.detail.value}${this.state.width.detail.unit}` : '100%'};
+        flex-grow: 1;
         overflow-x: auto;
     `;
 
     layout = () => css`
-        margin: 0 ${margin}px;
+        margin: 0 ${spacingLarge} ${spacingLarge} ${spacingLarge};
+        background-color: ${white};
+        border: 1px solid ${ice};
         display: flex;
         flex: 1;
         ${this.state.hold ? `

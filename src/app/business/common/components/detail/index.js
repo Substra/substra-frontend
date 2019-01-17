@@ -82,7 +82,7 @@ const Right = styled('div')`
 
 const icon = css`
     cursor: pointer;
-    padding-right: 13px;
+    margin-left: 13px;
 `;
 
 
