@@ -14,6 +14,7 @@ import CopySimple from '../../svg/copy-simple';
 import DownloadSimple from '../../svg/download-simple';
 import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
+import Section, {section} from './components/section';
 
 import {coolBlue} from '../../../../../../assets/css/variables';
 
@@ -25,10 +26,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Section = styled('div')`
-    margin: 8px 0;
 `;
 
 const Top = styled('div')`
@@ -157,11 +154,7 @@ class Detail extends Component {
 )
                             }
                         </Section>
-                        {BrowseRelatedLinks && (
-                            <Section>
-                                <BrowseRelatedLinks item={item} />
-                            </Section>
-                        )}
+                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.desc && (
                             <Section>

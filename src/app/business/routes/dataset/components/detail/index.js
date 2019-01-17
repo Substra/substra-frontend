@@ -18,6 +18,7 @@ import CopyDrop from '../../../../common/svg/copy-drop';
 import DownloadSimple from '../../../../common/svg/download-simple';
 import FilterUp from '../../../../common/svg/filter-up';
 import BrowseRelatedLinks from './components/browseRelatedLinks';
+import Section, {section} from '../../../../common/components/detail/components/section';
 
 import {coolBlue} from '../../../../../../../assets/css/variables';
 
@@ -29,10 +30,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Section = styled('div')`
-    margin: 8px 0;
 `;
 
 const Top = styled('div')`
@@ -209,9 +206,7 @@ class DatasetDetail extends Detail {
 )
                             }
                         </Section>
-                        <Section>
-                            <BrowseRelatedLinks item={item} />
-                        </Section>
+                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.description && (
                             <Section>

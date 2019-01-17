@@ -7,8 +7,8 @@ const spacing = css`
     margin-right: 5px;
 `;
 
-export const BrowseRelatedLinksWrapper = ({children}) => (
-    <div>
+export const BrowseRelatedLinksWrapper = ({children, ...rest}) => (
+    <div {...rest}>
         <span className={spacing}>Browse related</span>
         {children}
     </div>

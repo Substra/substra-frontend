@@ -6,11 +6,11 @@ import {
     BrowseRelatedLinksWrapper,
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
-const BrowseRelatedLinks = ({item}) => {
+const BrowseRelatedLinks = ({item, ...rest}) => {
     const filter = `dataset:name:${item.name}`;
 
     return (
-        <BrowseRelatedLinksWrapper>
+        <BrowseRelatedLinksWrapper {...rest}>
             <BrowseRelatedLink model="challenge" label="challenges" filter={filter} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} />
             <BrowseRelatedLink model="model" label="models" filter={filter} />

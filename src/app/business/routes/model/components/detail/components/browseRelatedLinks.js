@@ -6,12 +6,12 @@ import {
     BrowseRelatedLinksWrapper,
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
-const BrowseRelatedLinks = ({item}) => {
+const BrowseRelatedLinks = ({item, ...rest}) => {
     const algoFilter = `algo:name:${item.algo.name}`;
     const challengeFilter = `challenge:key:${item.challenge.hash}`;
 
     return (
-        <BrowseRelatedLinksWrapper>
+        <BrowseRelatedLinksWrapper {...rest}>
             <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} />
             <BrowseRelatedLink model="challenge" label="challenge" filter={challengeFilter} />
             <BrowseRelatedLink model="dataset" label="dataset" filter={challengeFilter} />
