@@ -13,6 +13,7 @@ import Clipboard from '../../svg/clipboard';
 import CopySimple from '../../svg/copy-simple';
 import DownloadSimple from '../../svg/download-simple';
 import FilterUp from '../../svg/filter-up';
+import Title from './components/title';
 
 import {coolBlue} from '../../../../../../assets/css/variables';
 
@@ -111,7 +112,7 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, descLoading, model,
+            item, className, descLoading, model, Title, children,
         } = this.props;
 
         return (
@@ -119,7 +120,7 @@ class Detail extends Component {
                 <Top>
                     <Search width={14} height={14} className={search} />
                     <H5 className={middle}>
-                        {item ? item.name : ''}
+                        <Title item={item} />
                     </H5>
                 </Top>
                 {item && (
@@ -162,6 +163,7 @@ class Detail extends Component {
                                 <ReactMarkdown source={item.desc} />
                             </Section>
                         )}
+                        {children && <Section>{children}</Section>}
                     </Item>
 )}
             </Content>
@@ -183,6 +185,8 @@ Detail.defaultProps = {
     logFilterFromDetail: noop,
     logDownloadFromDetail: noop,
     logCopyFromDetail: noop,
+    Title,
+    children: null,
 };
 
 Detail.propTypes = {
@@ -203,6 +207,8 @@ Detail.propTypes = {
     logFilterFromDetail: PropTypes.func,
     logDownloadFromDetail: PropTypes.func,
     logCopyFromDetail: PropTypes.func,
+    Title: PropTypes.func,
+    children: PropTypes.node,
 };
 
 export default Detail;
