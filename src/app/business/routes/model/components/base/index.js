@@ -1,14 +1,8 @@
 import uuidv4 from 'uuid/v4';
 import ReduxBase from '../../../../common/components/base/redux';
 import {withBaseAnalytics} from '../../../../common/components/base/analytics';
-import Base, {
-    verticalBar, anchorOrigin, ClipboardContent, middle, snackbarContent,
-} from '../../../../common/components/base';
+import Base from '../../../../common/components/base';
 
-import Check from '../../../../common/svg/check';
-import {ice, tealish, white} from '../../../../../../../assets/css/variables/colors';
-import {spacingLarge} from '../../../../../../../assets/css/variables/spacing';
-import {hover} from '../../selector';
 
 class ModelBase extends Base {
     filterUp = (o) => {
