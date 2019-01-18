@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import JSONPretty from 'react-json-prettify';
 import {atomOneLight} from 'react-json-prettify/dist/themes';
 import {saveAs} from 'file-saver';
-import CopySimple from '../../../../../common/svg/copy-simple';
-import DownloadSimple from '../../../../../common/svg/download-simple';
-import {slate, tealish} from "../../../../../../../../assets/css/variables/colors";
-import IconButton from '../../../../../common/components/detail/components/iconButton';
-import {fontLarge} from "../../../../../../../../assets/css/variables/font";
-import {spacingExtraSmall, spacingSmall} from "../../../../../../../../assets/css/variables/spacing";
 import {css} from 'emotion';
 import styled from '@emotion/styled';
+import CopySimple from '../../../../../common/svg/copy-simple';
+import DownloadSimple from '../../../../../common/svg/download-simple';
+import {slate, tealish} from '../../../../../../../../assets/css/variables/colors';
+import IconButton from '../../../../../common/components/detail/components/iconButton';
+import {fontLarge} from '../../../../../../../../assets/css/variables/font';
+import {spacingExtraSmall, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
 
 
 const owkin = {
@@ -67,14 +67,14 @@ class Traintuple extends React.Component {
                     <IconButton
                         onClick={this.copyTraintuple}
                         className={iconButton}
-                        title='Copy traintuple content'
+                        title="Copy traintuple content"
                     >
                         <CopySimple width={15} height={15} />
                     </IconButton>
                     <IconButton
                         onClick={this.downloadTraintuple}
                         className={iconButton}
-                        title='Download traintuple'
+                        title="Download traintuple"
                     >
                         <DownloadSimple width={15} height={15} />
                     </IconButton>

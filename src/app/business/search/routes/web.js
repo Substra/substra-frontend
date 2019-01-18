@@ -13,7 +13,7 @@ class Universal extends Component {
 
     render() {
         const U = universal(import('../../search/components/index'), {
-            loading: <PulseLoader size={6}/>,
+            loading: <PulseLoader size={6} />,
             onLoad: (module, info, {reduxcontext, ...props}) => {
                 // need all models reducers
                 // do not forget to pass the reduxcontext.store AND the withInjectedReducers wrapper to your imported redux component, or concurrent calls in the server part will fail

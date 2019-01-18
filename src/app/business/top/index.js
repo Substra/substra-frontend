@@ -5,7 +5,7 @@ import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
 import DocLink from './components/docLink';
-import Logo from '../common/svg/logo';
+import owkestra from '../../../../assets/img/owkestra.png';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge} from '../../../../assets/css/variables/spacing';
 
@@ -35,7 +35,7 @@ const link = css`
 const Top = ({location}) => (
     <Wrapper>
         <Link to={{type: 'HOME', meta: {query: location.query}}} className={link}>
-            <Logo height={50} />
+            <img src={owkestra} alt="Owkestra" height={50} />
         </Link>
         <DocLink className={link} />
     </Wrapper>
