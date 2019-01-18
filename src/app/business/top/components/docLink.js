@@ -4,7 +4,7 @@ import {css} from 'emotion';
 
 import withAnalytics, {LOG_DOC} from '../../../analytics';
 import Book from '../../common/svg/book';
-import {slate} from '../../../../../assets/css/variables';
+import {slate} from "../../../../../assets/css/variables/colors";
 
 const picto = css`
     display: block;

@@ -6,7 +6,6 @@ import {PulseLoader} from 'react-spinners';
 import Popover from '@material-ui/core/Popover/Popover';
 
 import PropTypes from 'prop-types';
-import {coolBlue} from '../../../../../../../../assets/css/variables';
 import {Action, PopItem, PopList} from '../../../../../common/components/list/components/popover';
 
 const popSubItem = css`
@@ -47,7 +46,7 @@ open, anchorEl, model, download, itemLoading, filterUp, downloadFile, addNotific
                 >
                     {`Copy ${model}'s key to clipboard`}
                 </Action>
-                {itemLoading && <PulseLoader size={6} color={coolBlue} />}
+                {itemLoading && <PulseLoader size={6} />}
                 {!itemLoading
                 && (
                     <Action

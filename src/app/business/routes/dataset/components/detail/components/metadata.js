@@ -17,6 +17,7 @@ const dataKeys = css`
     color: ${blueGrey};
     line-height: 1.4;
     padding: ${spacingExtraSmall};
+    margin-top: ${spacingExtraSmall};
 `;
 
 const Metadata = ({item, addNotification, model}) => (
@@ -24,14 +25,17 @@ const Metadata = ({item, addNotification, model}) => (
         <KeyMetadata item={item} addNotification={addNotification} model={model} />
         {item && item.trainDataKeys && (
             <SingleMetadata label="Data keys">
-                <div onClick={addNotification(item.trainDataKeys.join(','), 'Datas\'s key successfully copied to clipboard!')}>
+                <span
+                    onClick={addNotification(item.trainDataKeys.join(','), 'Datas\'s key successfully copied to clipboard!')}
+                    className={css`cursor: default;`}
+                >
                     Copy all as a CSV string
                     <Clipboard width={15} className={clipboard} color={blueGrey} />
-                </div>
+                </span>
                 <textarea
                     readOnly
                     className={dataKeys}
-                    rows={5}
+                    rows={Math.min(5, item.trainDataKeys.length)}
                     value={item.trainDataKeys.join('\n')}
                 />
             </SingleMetadata>

@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 import JSONPretty from 'react-json-prettify';
 import {atomOneLight} from 'react-json-prettify/dist/themes';
 import {saveAs} from 'file-saver';
-import {slate, tealish} from '../../../../../../../../assets/css/variables';
 import CopySimple from '../../../../../common/svg/copy-simple';
 import DownloadSimple from '../../../../../common/svg/download-simple';
+import {slate, tealish} from "../../../../../../../../assets/css/variables/colors";
+import IconButton from '../../../../../common/components/detail/components/iconButton';
+import {fontLarge} from "../../../../../../../../assets/css/variables/font";
+import {spacingExtraSmall, spacingSmall} from "../../../../../../../../assets/css/variables/spacing";
+import {css} from 'emotion';
+import styled from '@emotion/styled';
 
 
 const owkin = {
@@ -20,6 +25,26 @@ const owkin = {
         number: tealish,
     },
 };
+
+const Top = styled('div')`
+    margin-bottom: ${spacingExtraSmall};
+`;
+
+const Title = styled('span')`
+    font-size: ${fontLarge};
+    margin-right: ${spacingSmall};
+    font-weight: bold;
+`;
+
+const iconButton = css`
+    margin-right: ${spacingExtraSmall};
+`;
+
+const container = css`
+    pre {
+        margin: 0;
+    }
+`;
 
 class Traintuple extends React.Component {
     copyTraintuple = () => {
@@ -36,16 +61,24 @@ class Traintuple extends React.Component {
     render() {
         const {traintuple} = this.props;
         return (
-            <div>
-                <div>
-                    Traintuple
-                    <span onClick={this.copyTraintuple}>
+            <div className={container}>
+                <Top>
+                    <Title>Traintuple</Title>
+                    <IconButton
+                        onClick={this.copyTraintuple}
+                        className={iconButton}
+                        title='Copy traintuple content'
+                    >
                         <CopySimple width={15} height={15} />
-                    </span>
-                    <span onClick={this.downloadTraintuple}>
+                    </IconButton>
+                    <IconButton
+                        onClick={this.downloadTraintuple}
+                        className={iconButton}
+                        title='Download traintuple'
+                    >
                         <DownloadSimple width={15} height={15} />
-                    </span>
-                </div>
+                    </IconButton>
+                </Top>
                 <JSONPretty json={traintuple} theme={owkin} />
             </div>
         );
