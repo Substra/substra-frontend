@@ -25,6 +25,7 @@ const dt = css`
 `;
 
 const dd = css`
+    position: relative;
     margin-left: 0;
     width: calc(100% - 90px);
     margin-bottom: ${spacingExtraSmall};
