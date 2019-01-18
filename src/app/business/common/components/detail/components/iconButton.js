@@ -10,6 +10,7 @@ export default styled('button')`
     border-radius: 15px;
     border: 1px solid ${ice};
     padding: 0;
+    background-color: none;
     
     &:hover {
         background-color: ${ice};

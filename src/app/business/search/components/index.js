@@ -15,7 +15,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
-import IconButton from '../../common/components/iconButton';
+import IconButton from '../../common/components/detail/components/iconButton';
 
 import {
     getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
@@ -56,6 +56,7 @@ const searchInputWrapper = css`
 `;
 
 const clearButton = css`
+    border: none;
     z-index: 1;
 `;
 
