@@ -1,5 +1,6 @@
 import React from 'react';
 import ReduxBase from '../../../common/components/base/redux';
+import Detail from './detail';
 
 import actions from '../actions';
 
@@ -11,6 +12,6 @@ const download = {
     text: 'Download algo tarball',
 };
 
-const Algo = () => <AlgoBase actions={actions} model="algo" download={download} />;
+const Algo = () => <AlgoBase actions={actions} model="algo" download={download} Detail={Detail} />;
 
 export default Algo;

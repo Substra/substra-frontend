@@ -6,6 +6,7 @@ import {withDetailRedux} from '../../../../common/components/detail/redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import Title from './components/title';
 import Traintuple from './components/traintuple';
+import BrowseRelatedLinks from './components/browseRelatedLinks';
 
 
 class ModelDetail extends Detail {
@@ -22,6 +23,7 @@ class ModelDetail extends Detail {
 const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
     <ModelDetail
         Title={Title}
+        BrowseRelatedLinks={BrowseRelatedLinks}
         item={item}
         addNotification={addNotification}
         {...rest}

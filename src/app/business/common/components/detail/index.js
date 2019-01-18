@@ -14,6 +14,7 @@ import CopySimple from '../../svg/copy-simple';
 import DownloadSimple from '../../svg/download-simple';
 import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
+import Section, {section} from './components/section';
 
 import {coolBlue} from '../../../../../../assets/css/variables';
 
@@ -25,10 +26,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Section = styled('div')`
-    margin: 8px 0;
 `;
 
 const Top = styled('div')`
@@ -112,7 +109,7 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, descLoading, model, Title, children,
+            item, className, descLoading, model, Title, children, BrowseRelatedLinks,
         } = this.props;
 
         return (
@@ -157,6 +154,7 @@ class Detail extends Component {
 )
                             }
                         </Section>
+                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
                         {descLoading && <PulseLoader size={6} color={coolBlue} />}
                         {!descLoading && item.desc && (
                             <Section>
@@ -173,6 +171,7 @@ class Detail extends Component {
 
 const noop = () => {
 };
+const dummy = () => null;
 
 Detail.defaultProps = {
     item: null,
@@ -187,6 +186,7 @@ Detail.defaultProps = {
     logCopyFromDetail: noop,
     Title,
     children: null,
+    BrowseRelatedLinks: dummy,
 };
 
 Detail.propTypes = {
@@ -209,6 +209,7 @@ Detail.propTypes = {
     logCopyFromDetail: PropTypes.func,
     Title: PropTypes.func,
     children: PropTypes.node,
+    BrowseRelatedLinks: PropTypes.func,
 };
 
 export default Detail;
