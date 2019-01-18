@@ -215,9 +215,6 @@ class List extends Component {
         return (
             <div className={className}>
                 <PanelTop>
-                    <H5>
-                        {model.toUpperCase()}
-                    </H5>
                     <Sort order={order} setOrder={setOrder} />
                 </PanelTop>
                 {loading && <PulseLoader size={6} color={coolBlue} />}

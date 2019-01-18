@@ -11,8 +11,8 @@ import Popover from '@material-ui/core/Popover';
 
 import Detail from '../../../../common/components/detail';
 import PanelTop from '../../../../common/components/panelTop';
+import Title from '../../../../common/components/detail/components/title';
 
-import Search from '../../../../common/svg/search';
 import Permission from '../../../../common/svg/permission';
 import Clipboard from '../../../../common/svg/clipboard';
 import CopyDrop from '../../../../common/svg/copy-drop';
@@ -31,18 +31,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const H5 = styled('h5')`
-    font-size: 13px;
-    margin: 0;
-    display: inline-block;
-    padding-left: 7px;
-    color: #edc20f;
-`;
-
-const search = css`
-    ${middle};
 `;
 
 const Item = styled('div')`
@@ -162,10 +150,7 @@ class DatasetDetail extends Detail {
         return (
             <Content className={className}>
                 <PanelTop>
-                    <Search width={14} height={14} className={search} />
-                    <H5 className={middle}>
-                        {item ? item.name : ''}
-                    </H5>
+                    <Title item={item} />
                 </PanelTop>
                 {item && (
                     <Item>

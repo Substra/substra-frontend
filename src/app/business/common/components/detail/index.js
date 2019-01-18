@@ -7,7 +7,6 @@ import {PulseLoader} from 'react-spinners';
 import {capitalize} from 'lodash';
 
 
-import Search from '../../svg/search';
 import Permission from '../../svg/permission';
 import Clipboard from '../../svg/clipboard';
 import CopySimple from '../../svg/copy-simple';
@@ -110,10 +109,7 @@ class Detail extends Component {
         return (
             <Content className={className}>
                 <PanelTop>
-                    <Search width={14} height={14} className={search} />
-                    <H5 className={middle}>
-                        <Title item={item} />
-                    </H5>
+                    <Title item={item} />
                 </PanelTop>
                 {item && (
                     <Item>
