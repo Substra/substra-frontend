@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {title} from '../../../../../common/components/list/components/title';
 
 export const getTitle = o => (o && o.algo ? `${o.algo.name}-${o.key.slice(0, 4)}` : '');
 
-const Title = ({o}) => (
-    <h4>
-        {getTitle(o)}
-    </h4>
-);
+const Title = ({o}) => <div className={title}>{getTitle(o)}</div>;
 
 Title.propTypes = {
     o: PropTypes.shape(),

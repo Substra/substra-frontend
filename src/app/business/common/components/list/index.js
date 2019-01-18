@@ -1,57 +1,19 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {PulseLoader} from 'react-spinners';
 
 import Popover from './components/popover';
 import Title from './components/title';
-import Description from './components/desc';
 import Sort from './components/sort';
+import Item from './components/item';
+import Actions from './components/actions';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
-import {ice} from '../../../../../../assets/css/variables/colors';
+import {gold, offWhite} from '../../../../../../assets/css/variables/colors';
 import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
-import Permission from '../../svg/permission';
-
-
-const H5 = styled('h5')`
-    margin: 0;
-    display: inline-block;
-    padding-right: 5px;
-    border-right: 1px solid rgba(75, 96, 115, 0.2);
-`;
-
-const Group = styled('div')`
-    margin: 0 0 15px;
-    border-top: 2px solid #5796ff;
-    padding: 0 0 15px 0;
-`;
-
-const Item = styled('div')`
-    border-top: 1px solid ${ice};
-    font-size: 12px;
-    cursor: pointer;
-    position: relative;
-`;
-
-const Content = styled('div')`
-    margin-top: 5px;
-`;
-
-const Actions = styled('div')`
-    position: absolute;
-    right: 30px;
-    top: 0;
-    
-    svg {
-        cursor: pointer;
-        display: inline-block;
-        vertical-align: middle;
-    }
-`;
 
 class List extends Component {
     state = {
@@ -117,32 +79,26 @@ class List extends Component {
         return selected === key;
     };
 
-    borderHover = css`
-            border-image-source: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAMCAYAAABFohwTAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gkbDiM0iNMMGAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAIUlEQVQI12N4e4j//9tD/P8ZoICJAQ1QQ4ARxoDZRBNbAElRCE0HEPWfAAAAAElFTkSuQmCC");
-            border-image-slice: 0 0 0 4;
-            border-image-repeat: repeat;
-    `;
-
     itemWrapper = (key) => {
-        // this.state.hoverItem works with current Ract List
-        // this.props.hoverItem work from Base hovering (dynamic from Chart)
-        const hover = this.state.hoverItem === key;
+        const hovered = this.state.hoverItem === key;
+        const selected = this.isSelected(key);
 
         return css`
-            padding: 10px;
-            border-left: 4px solid ${this.isSelected(key) || hover ? '#edc20f' : 'transparent'};
-            ${!this.isSelected(key) && hover ? this.borderHover : ''}
+            position: relative;
+            background-color: ${hovered || selected ? offWhite : 'transparent'};
+            
+            &:before {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width 4px;
+                background-color: ${selected ? gold : 'transparent'};
+            }
         `;
     };
-
-    createSortHandler = by => (e) => {
-        const {order, setOrder} = this.props;
-
-        const direction = order.by === by && order.direction === 'desc' ? 'asc' : 'desc';
-
-        setOrder({direction, by});
-    };
-
 
     filterUp = (e) => {
         e.preventDefault();
@@ -207,7 +163,7 @@ class List extends Component {
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Description, Sort, order, setOrder,
+            Title, Popover, Metadata, Sort, order, setOrder,
         } = this.props;
 
         const {open, anchorEl} = this.state.popover;
@@ -225,29 +181,20 @@ class List extends Component {
                 )}
                 {init && !loading && !!results.length
                 && (results.map((o, i) => (
-                    <Group key={i}>
+                    <div key={i}>
                         {!!o.length && o.map(o => (
                             <Item
                                 key={o.key}
                                 onClick={this.setSelected(o)}
                                 onMouseEnter={this.hover(o)}
                                 onMouseLeave={this.out(o)}
+                                className={this.itemWrapper(o.key)}
                             >
-                                <div className={this.itemWrapper(o.key)}>
-                                    <Actions>
-                                        <More height={16} onClick={this.more(o)} />
-                                    </Actions>
-                                    <Title o={o} />
-                                    <Content>
-                                        {o.permissions === 'all' && (
-                                        <Fragment>
-                                            <Permission width={8} height={8} />
-                                        </Fragment>
-)
-                                            }
-                                        <Description o={o} />
-                                    </Content>
-                                </div>
+                                <Actions>
+                                    <More height={16} onClick={this.more(o)} />
+                                </Actions>
+                                <Title o={o} />
+                                {Metadata && <Metadata o={o} />}
                             </Item>
                             ))}
                         {!o.length && (
@@ -255,7 +202,7 @@ class List extends Component {
                                     No items for this filter group
                         </span>
 )}
-                    </Group>
+                    </div>
 ))
                 )}
                 <Popover
@@ -298,7 +245,7 @@ List.defaultProps = {
     out: noop,
     Title,
     Popover,
-    Description,
+    Metadata: null,
     logList: noop,
     logDetail: noop,
     Sort,
@@ -326,7 +273,7 @@ List.propTypes = {
     out: PropTypes.func,
     Title: PropTypes.func,
     Popover: PropTypes.func,
-    Description: PropTypes.func,
+    Metadata: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
     Sort: PropTypes.func,
