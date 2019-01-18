@@ -10,21 +10,23 @@ import Dataset from '../common/svg/data-set';
 import Folder from '../common/svg/folder';
 import Model from '../common/svg/model';
 
-import {spacingLarge, spacingNormal, spacingExtraSmall} from '../../../../assets/css/variables/spacing';
-import {tealish, slate} from '../../../../assets/css/variables/colors';
+import {spacingLarge, spacingNormal, spacingSmall} from '../../../../assets/css/variables/spacing';
+import {
+tealish, slate, ice, white,
+} from '../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../assets/css/variables/font';
 
 const Ul = styled('ul')`
     display: flex;
     list-style: none;
-    margin: ${spacingNormal} ${spacingLarge} 0 ${spacingLarge};
+    margin: ${spacingNormal} ${spacingLarge} -1px ${spacingLarge};
     padding: 0;
+    z-index: 1;
 `;
 
 const Li = styled('li')`
     display: inline-flex;
     align-items: stretch;
-    margin-right: ${spacingLarge};
 `;
 
 const link = (active, hovered) => css`
@@ -35,8 +37,11 @@ const link = (active, hovered) => css`
     font-size: ${fontLarge};
     font-weight: bold;
     text-transform: capitalize;
-    padding-bottom: ${spacingExtraSmall};
-    border-bottom: 3px solid ${active ? tealish : 'transparent'};
+    padding: ${spacingSmall} ${spacingNormal};
+    border-width: 3px 1px 1px 1px;
+    border-style: solid;
+    border-color: ${active ? `${tealish} ${ice} ${white} ${ice}` : 'transparent'};
+    background-color: ${active ? white : 'transparent'};
 `;
 
 const picto = css`
