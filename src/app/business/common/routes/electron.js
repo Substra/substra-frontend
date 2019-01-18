@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {injectSaga, injectReducer} from 'redux-sagas-injector';
-import {PulseLoader} from 'react-spinners';
-
-import {coolBlue} from '../../../../../assets/css/variables/index';
+import PulseLoader from './pulseLoader';
 
 // import classic, no need to lazy load on desktop
 class Route extends Component {
@@ -28,7 +26,7 @@ class Route extends Component {
 
     render() {
         const {Component} = this.state;
-        return Component ? <Component /> : <PulseLoader size={6} color={coolBlue} />;
+        return !Component ? <Component /> : <PulseLoader />;
     }
 }
 

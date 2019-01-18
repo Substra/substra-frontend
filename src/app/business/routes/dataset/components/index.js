@@ -4,7 +4,7 @@ import ReduxBase from '../../../common/components/base/redux';
 import actions from '../actions';
 
 import List from './list/redux';
-import Detail from './detail/redux';
+import Detail from './detail';
 
 const DatasetBase = ReduxBase();
 

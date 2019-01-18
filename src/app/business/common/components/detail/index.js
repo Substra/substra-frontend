@@ -1,83 +1,26 @@
-import React, {Component, Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import {css} from 'emotion';
-import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
-import {capitalize} from 'lodash';
 
-
-import Permission from '../../svg/permission';
-import Clipboard from '../../svg/clipboard';
-import CopySimple from '../../svg/copy-simple';
 import DownloadSimple from '../../svg/download-simple';
 import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
 import Section, {section} from './components/section';
 import PanelTop from '../panelTop';
+import Metadata from './components/metadata';
+import IconButton from './components/iconButton';
+import Actions from './components/actions';
+import Description from './components/description';
 
-import {coolBlue} from '../../../../../../assets/css/variables';
+const downloadButtonTitles = {
+    challenge: 'Download metrics',
+    dataset: 'Download opener',
+    algo: 'Download algorithm',
+    model: 'Download endmodel',
+};
 
-
-const middle = css`
-    display: inline-block;
-    vertical-align: middle;
-`;
-
-const Content = styled('div')`
-    font-size: 13px;
-`;
-
-const H5 = styled('h5')`
-    font-size: 13px;
-    margin: 0;
-    display: inline-block;
-    padding-left: 7px;
-    color: #edc20f;
-`;
-
-const search = css`
-    ${middle};
-`;
-
-const Item = styled('div')`
-    font-size: 12px;
-    padding: 9px 33px;
-`;
-
-const permission = css`
-    ${middle};
-    padding-right: 10px;
-    
-    & + span {
-        ${middle};        
-    }
-`;
-
-const clipboard = css`
-    ${middle};
-    padding-right: 6px;
-`;
-
-const idText = css`
-    ${middle};
-`;
-
-const id = css`
-    font-weight: bold;
-`;
-
-const Right = styled('div')`
-    float: right;
-`;
-
-const icon = css`
-    cursor: pointer;
-    margin-left: 13px;
-`;
-
-
-class Detail extends Component {
+class Detail extends React.Component {
     downloadFile = (e) => {
         const {downloadFile, item, logDownloadFromDetail} = this.props;
 
@@ -104,58 +47,42 @@ class Detail extends Component {
     render() {
         const {
             item, className, descLoading, model, Title, children, BrowseRelatedLinks,
+            Metadata, Description,
         } = this.props;
 
         return (
-            <Content className={className}>
-                <PanelTop>
+            <div className={className}>
+                <PanelTop className={css`justify-content: space-between;`}>
                     <Title item={item} />
+                    <Actions>
+                        <IconButton onClick={this.downloadFile} title={downloadButtonTitles[model]}>
+                            <DownloadSimple width={15} height={15} />
+                        </IconButton>
+                        <IconButton onClick={this.filterUp(item.name)} title="Filter">
+                            <FilterUp width={15} height={15} />
+                        </IconButton>
+                    </Actions>
                 </PanelTop>
                 {item && (
-                    <Item>
+                    <React.Fragment>
                         <Section>
-                            <Clipboard className={clipboard} width={15} />
-                            <div className={idText}>
-                                <span className={id}>
-                                    {'ID: '}
-                                </span>
-                                {item.key}
-                            </div>
-                            <Right>
-                                <DownloadSimple
-                                    width={22}
-                                    height={22}
-                                    onClick={this.downloadFile}
-                                    className={icon}
-                                />
-                                <span onClick={this.addNotification(item.key, `${capitalize(model)}'s key successfully copied to clipboard!`)}>
-                                    <CopySimple width={22} height={22} className={icon} />
-                                </span>
-                                <FilterUp onClick={this.filterUp(item.name)} className={icon} />
-                            </Right>
-                        </Section>
-                        <Section>
-                            {item.permissions === 'all' && (
-                                <Fragment>
-                                    <Permission width={13} height={13} className={permission} />
-                                    <span>
-                                        {': Open to all'}
-                                    </span>
-                                </Fragment>
-)
-                            }
+                            <Metadata
+                                item={item}
+                                addNotification={this.addNotification}
+                                model={model}
+                            />
                         </Section>
                         {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
-                        {descLoading && <PulseLoader size={6} color={coolBlue} />}
-                        {!descLoading && item.desc && (
+                        {Description && (
                             <Section>
-                                <ReactMarkdown source={item.desc} />
+                                {descLoading && <PulseLoader size={6} />}
+                                {!descLoading && <Description item={item} />}
                             </Section>
                         )}
                         {children && <Section>{children}</Section>}
-                    </Item>
+                    </React.Fragment>
 )}
-            </Content>
+            </div>
         );
     }
 }
@@ -178,6 +105,8 @@ Detail.defaultProps = {
     Title,
     children: null,
     BrowseRelatedLinks: dummy,
+    Metadata,
+    Description,
 };
 
 Detail.propTypes = {
@@ -201,6 +130,8 @@ Detail.propTypes = {
     Title: PropTypes.func,
     children: PropTypes.node,
     BrowseRelatedLinks: PropTypes.func,
+    Metadata: PropTypes.func,
+    Description: PropTypes.func,
 };
 
 export default Detail;

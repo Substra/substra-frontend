@@ -1,8 +1,9 @@
-import styled from '@emotion/styled';
+import React from 'react';
 import {css} from 'emotion';
+import {spacingNormal} from '../../../../../../../assets/css/variables/spacing';
 
 export const section = css`
-    margin: 8px 0;
+    margin: ${spacingNormal};
 `;
 
-export default styled('div')`${section}`;
+export default (props) => <div className={section} {...props}/>

@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
+import styled from '@emotion/styled';
 import {PulseLoader} from 'react-spinners';
 
 import Popover from './components/popover';
@@ -9,13 +10,17 @@ import Sort from './components/sort';
 import Item from './components/item';
 import Actions from './components/actions';
 
-import {coolBlue} from '../../../../../../assets/css/variables/index';
 import {gold, offWhite} from '../../../../../../assets/css/variables/colors';
 import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
+import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
 
-class List extends Component {
+const PulseLoaderWrapper = styled('div')`
+    margin: ${spacingNormal};
+`;
+
+class List extends React.Component {
     state = {
         popover: {
             open: false,
@@ -173,7 +178,12 @@ class List extends Component {
                 <PanelTop>
                     <Sort order={order} setOrder={setOrder} />
                 </PanelTop>
-                {loading && <PulseLoader size={6} color={coolBlue} />}
+
+                {loading && (
+                    <PulseLoaderWrapper>
+                        <PulseLoader size={6} />
+                        </PulseLoaderWrapper>
+                )}
                 {init && !loading && !results.length && (
                     <p>
                         There is no items
