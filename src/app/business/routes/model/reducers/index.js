@@ -4,9 +4,14 @@ import persistent from '../../../common/reducers/persistent';
 import order from '../../../common/reducers/order';
 import {actionTypes} from '../actions';
 
+const orderInitialState = {
+    by: 'testData.perf',
+    direction: 'desc',
+};
+
 export default {
     list: list(actionTypes),
     item: item(actionTypes),
     persistent: persistent(actionTypes),
-    order: order(actionTypes),
+    order: order(actionTypes, orderInitialState),
 };

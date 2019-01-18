@@ -1,9 +1,9 @@
-const initialState = {
-    by: '',
+const defaultInitialState = {
+    by: 'name',
     direction: 'asc',
 };
 
-export default actionTypes => (state = initialState, {type, payload}) => {
+export default (actionTypes, initialState = defaultInitialState) => (state = initialState, {type, payload}) => {
     switch (type) {
         case actionTypes.order.SET:
             return {

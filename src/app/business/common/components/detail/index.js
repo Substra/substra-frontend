@@ -15,6 +15,7 @@ import DownloadSimple from '../../svg/download-simple';
 import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
 import Section, {section} from './components/section';
+import PanelTop from '../panelTop';
 
 import {coolBlue} from '../../../../../../assets/css/variables';
 
@@ -26,12 +27,6 @@ const middle = css`
 
 const Content = styled('div')`
     font-size: 13px;
-`;
-
-const Top = styled('div')`
-    background-color: #f7f8f8;
-    padding: 3px 10px 3px 12px;
-    color: #4b6073;
 `;
 
 const H5 = styled('h5')`
@@ -114,12 +109,12 @@ class Detail extends Component {
 
         return (
             <Content className={className}>
-                <Top>
+                <PanelTop>
                     <Search width={14} height={14} className={search} />
                     <H5 className={middle}>
                         <Title item={item} />
                     </H5>
-                </Top>
+                </PanelTop>
                 {item && (
                     <Item>
                         <Section>

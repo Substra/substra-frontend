@@ -7,31 +7,21 @@ import {PulseLoader} from 'react-spinners';
 import Popover from './components/popover';
 import Title from './components/title';
 import Description from './components/desc';
+import Sort from './components/sort';
 
 import {coolBlue} from '../../../../../../assets/css/variables/index';
 import {ice} from '../../../../../../assets/css/variables/colors';
+import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
 import Permission from '../../svg/permission';
 
-
-const Top = styled('div')`
-    background-color: #f7f8f8;
-    padding: 3px 10px;
-    color: #4b6073;
-`;
 
 const H5 = styled('h5')`
     margin: 0;
     display: inline-block;
     padding-right: 5px;
     border-right: 1px solid rgba(75, 96, 115, 0.2);
-`;
-
-const Sort = styled('div')`
-    font-size: 14px;
-    display: inline-block;
-    padding-left: 5px;
 `;
 
 const Group = styled('div')`
@@ -217,23 +207,19 @@ class List extends Component {
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Description,
+            Title, Popover, Description, Sort, order, setOrder,
         } = this.props;
 
         const {open, anchorEl} = this.state.popover;
 
         return (
             <div className={className}>
-                <Top>
+                <PanelTop>
                     <H5>
                         {model.toUpperCase()}
                     </H5>
-                    <Sort>
-                        <span>
-                            Sort by LATEST
-                        </span>
-                    </Sort>
-                </Top>
+                    <Sort order={order} setOrder={setOrder} />
+                </PanelTop>
                 {loading && <PulseLoader size={6} color={coolBlue} />}
                 {init && !loading && !results.length && (
                     <p>
@@ -318,6 +304,7 @@ List.defaultProps = {
     Description,
     logList: noop,
     logDetail: noop,
+    Sort,
 };
 
 List.propTypes = {
@@ -345,6 +332,7 @@ List.propTypes = {
     Description: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
+    Sort: PropTypes.func,
 };
 
 export default List;
