@@ -1,24 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import Select from 'react-select';
+import {withStyles} from '@material-ui/core';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import {css} from 'emotion';
+import {ice, slate} from '../../../../../../../assets/css/variables/colors';
+import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
+import {fontNormal} from '../../../../../../../assets/css/variables/font';
 
 const Wrapper = styled('div')`
-    font-size: 14px;
+    font-size: ${fontNormal};
     display: inline-block;
     padding-left: 5px;
 `;
 
 const Label = styled('label')`
-    margin-right: 5px;
+    margin-right: ${spacingExtraSmall};
+`;
+
+const Select = withStyles({
+    root: {
+        border: `1px solid ${ice}`,
+        borderRadius: '20px',
+        color: slate,
+        overflow: 'hidden',
+        fontSize: fontNormal,
+    },
+    select: {
+        padding: `${spacingExtraSmall} ${spacingLarge} ${spacingExtraSmall} ${spacingSmall}`,
+        height: '20px',
+    },
+    outlined: {
+        display: 'none',
+    },
+})(NativeSelect);
+
+const select = css`
+    &:after,
+    &:before {
+        display: none;
+    }
 `;
 
 class Sort extends React.Component {
-    selectWidth = '130px';
-
     options = [
-        {value: 'name-asc', label: 'Name (A-Z)'},
-        {value: 'name-desc', label: 'Name (Z-A)'},
+        {value: 'name-asc', label: 'NAME (A-Z)'},
+        {value: 'name-desc', label: 'NAME (Z-A)'},
     ];
 
     currentOption() {
@@ -27,40 +54,21 @@ class Sort extends React.Component {
         return this.options.find(option => option.value === currentOptionValue);
     }
 
-    handleChange = (option) => {
-        const [by, direction] = option.value.split('-');
+    handleChange = (event) => {
+        const [by, direction] = event.target.value.split('-');
         const {setOrder} = this.props;
         setOrder({by, direction});
     };
-
-    selectStyles() {
-        return {
-            container: provided => ({
-                ...provided,
-                display: 'inline-block',
-                width: this.selectWidth,
-            }),
-            control: provided => ({
-                ...provided,
-                borderRadius: '20px',
-            }),
-            indicatorSeparator: () => ({
-                display: 'none',
-            }),
-        };
-    }
 
     render() {
         return (
             <Wrapper>
                 <Label htmlFor="sort">Sort by</Label>
-                <Select
-                    inputId="sort"
-                    options={this.options}
-                    styles={this.selectStyles()}
-                    value={this.currentOption()}
-                    onChange={this.handleChange}
-                />
+                <Select value={this.currentOption().value} onChange={this.handleChange} className={select}>
+                    {this.options.map(option => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                </Select>
             </Wrapper>
         );
     }
