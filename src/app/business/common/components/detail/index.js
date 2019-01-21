@@ -60,7 +60,7 @@ class Detail extends React.Component {
                                 model={model}
                             />
                         </Section>
-                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
+                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} css={section} />}
                         {Description && (
                             <Section>
                                 {descLoading && <PulseLoader size={6} />}

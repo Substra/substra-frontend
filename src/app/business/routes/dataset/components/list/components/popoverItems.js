@@ -12,7 +12,7 @@ const popSubItem = css`
     }
 `;
 
-const ModelPopoverItems = ({
+const DatasetPopoverItems = ({
 model, filterUp, addNotification, downloadFile, download, itemLoading,
 }) => (
     <PopList>
@@ -36,7 +36,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
     </PopList>
 );
 
-ModelPopoverItems.propTypes = PopoverItems.propTypes;
-ModelPopoverItems.defaultProps = PopoverItems.defaultProps;
+DatasetPopoverItems.propTypes = PopoverItems.propTypes;
+DatasetPopoverItems.defaultProps = PopoverItems.defaultProps;
 
-export default ModelPopoverItems;
+export default DatasetPopoverItems;

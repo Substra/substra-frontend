@@ -26,7 +26,7 @@ class Route extends Component {
 
     render() {
         const {Component} = this.state;
-        return !Component ? <Component /> : <PulseLoader />;
+        return Component ? <Component /> : <PulseLoader />;
     }
 }
 
