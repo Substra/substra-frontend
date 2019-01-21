@@ -11,6 +11,7 @@ export default styled('button')`
     border: 1px solid ${ice};
     padding: 0;
     background: none;
+    cursor: pointer;
     
     &:hover {
         background-color: ${ice};

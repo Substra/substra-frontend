@@ -27,7 +27,7 @@ const Metadata = ({item, addNotification, model}) => (
             <SingleMetadata label="Data keys">
                 <span
                     onClick={addNotification(item.trainDataKeys.join(','), 'Datas\'s key successfully copied to clipboard!')}
-                    className={css`cursor: default;`}
+                    className={css`cursor: pointer;`}
                 >
                     Copy all as a CSV string
                     <Clipboard width={15} className={clipboard} color={blueGrey} />

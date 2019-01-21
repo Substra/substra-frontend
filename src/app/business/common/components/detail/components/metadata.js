@@ -35,6 +35,7 @@ export const clipboard = css`
     position: absolute;
     margin-top: -5px;
     margin-left: ${spacingExtraSmall};
+    cursor: pointer;
 `;
 
 
