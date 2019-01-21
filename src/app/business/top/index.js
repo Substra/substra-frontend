@@ -5,7 +5,7 @@ import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
 import DocLink from './components/docLink';
-import owkestra from '../../../../assets/img/owkestra.png';
+import owkestra from '../../../../assets/img/OwkestraLogo.svg';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge} from '../../../../assets/css/variables/spacing';
 
