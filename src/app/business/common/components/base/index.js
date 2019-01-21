@@ -14,7 +14,7 @@ import SnackbarContent from '../SnackbarContent';
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
-import {spacingLarge} from '../../../../../../assets/css/variables/spacing';
+import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import {white, darkSkyBlue, ice} from '../../../../../../assets/css/variables/colors';
 
 const MIN_COL_WIDTH = 250;
@@ -245,7 +245,7 @@ class Base extends Component {
     `;
 
     layout = () => css`
-        margin: 0 ${spacingLarge} ${spacingLarge} ${spacingLarge};
+        margin: 0 ${spacingLarge} ${spacingNormal} ${spacingLarge};
         background-color: ${white};
         border: 1px solid ${ice};
         display: flex;

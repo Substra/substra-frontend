@@ -7,7 +7,7 @@ import Link from 'redux-first-router-link';
 import DocLink from './components/docLink';
 import owkestra from '../../../../assets/img/OwkestraLogo.svg';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
-import {spacingLarge} from '../../../../assets/css/variables/spacing';
+import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
 
 
 const Wrapper = styled('div')`
@@ -18,7 +18,7 @@ const Wrapper = styled('div')`
     padding: ${spacingLarge};
     height: 80px;
     border-bottom: 1px solid ${ice};
-    margin-bottom: ${spacingLarge};
+    margin-bottom: ${spacingNormal};
 `;
 
 
