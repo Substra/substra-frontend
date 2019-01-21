@@ -6,6 +6,7 @@ import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Sort from './components/sort';
 import Metadata from './components/metadata';
+import PopoverItems from './components/popoverItems';
 
 class ModelList extends List {
     filterUp = (e) => {
@@ -26,6 +27,7 @@ const ModelListWithLocalComponents = props => (
         Title={Title}
         Sort={Sort}
         Metadata={Metadata}
+        PopoverItems={PopoverItems}
         {...props}
     />
 );

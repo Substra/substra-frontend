@@ -3,22 +3,12 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {PulseLoader} from 'react-spinners';
 
-import DownloadSimple from '../../svg/download-simple';
-import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
 import Section, {section} from './components/section';
 import PanelTop from '../panelTop';
 import Metadata from './components/metadata';
-import IconButton from './components/iconButton';
 import Actions from './components/actions';
 import Description from './components/description';
-
-const downloadButtonTitles = {
-    challenge: 'Download metrics',
-    dataset: 'Download opener',
-    algo: 'Download algorithm',
-    model: 'Download endmodel',
-};
 
 class Detail extends React.Component {
     downloadFile = (e) => {
@@ -47,21 +37,19 @@ class Detail extends React.Component {
     render() {
         const {
             item, className, descLoading, model, Title, children, BrowseRelatedLinks,
-            Metadata, Description,
+            Metadata, Description, Actions,
         } = this.props;
 
         return (
             <div className={className}>
                 <PanelTop className={css`justify-content: space-between;`}>
                     <Title item={item} />
-                    <Actions>
-                        <IconButton onClick={this.downloadFile} title={downloadButtonTitles[model]}>
-                            <DownloadSimple width={15} height={15} />
-                        </IconButton>
-                        <IconButton onClick={this.filterUp(item.name)} title="Filter">
-                            <FilterUp width={15} height={15} />
-                        </IconButton>
-                    </Actions>
+                    <Actions
+                        downloadFile={this.downloadFile}
+                        filterUp={this.filterUp(item.name)}
+                        model={model}
+                        item={item}
+                    />
                 </PanelTop>
                 {item && (
                     <React.Fragment>
@@ -107,6 +95,7 @@ Detail.defaultProps = {
     BrowseRelatedLinks: dummy,
     Metadata,
     Description,
+    Actions,
 };
 
 Detail.propTypes = {
@@ -132,6 +121,7 @@ Detail.propTypes = {
     BrowseRelatedLinks: PropTypes.func,
     Metadata: PropTypes.func,
     Description: PropTypes.func,
+    Actions: PropTypes.func,
 };
 
 export default Detail;

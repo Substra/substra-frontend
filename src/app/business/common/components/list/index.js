@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import {PulseLoader} from 'react-spinners';
 
 import Popover from './components/popover';
+import PopoverItems from './components/popoverItems';
 import Title from './components/title';
 import Sort from './components/sort';
 import Item from './components/item';
@@ -168,10 +169,10 @@ class List extends React.Component {
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Metadata, Sort, order, setOrder,
+            Title, Popover, Metadata, Sort, order, setOrder, PopoverItems,
         } = this.props;
 
-        const {open, anchorEl} = this.state.popover;
+        const {open, anchorEl, item} = this.state.popover;
 
         return (
             <div className={className}>
@@ -216,16 +217,20 @@ class List extends React.Component {
 ))
                 )}
                 <Popover
-                    {...this.props}
                     open={open}
                     anchorEl={anchorEl}
-                    model={model}
-                    download={download}
-                    filterUp={this.filterUp}
-                    downloadFile={this.downloadFile}
-                    addNotification={this.addNotification}
                     popoverHandleClose={this.popoverHandleClose}
-                />
+                >
+                    <PopoverItems
+                        {...this.props}
+                        model={model}
+                        download={download}
+                        filterUp={this.filterUp}
+                        downloadFile={this.downloadFile}
+                        addNotification={this.addNotification}
+                        item={item}
+                    />
+                </Popover>
             </div>
         );
     }
@@ -255,6 +260,7 @@ List.defaultProps = {
     out: noop,
     Title,
     Popover,
+    PopoverItems,
     Metadata: null,
     logList: noop,
     logDetail: noop,
@@ -283,6 +289,7 @@ List.propTypes = {
     out: PropTypes.func,
     Title: PropTypes.func,
     Popover: PropTypes.func,
+    PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
