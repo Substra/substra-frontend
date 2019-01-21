@@ -11,7 +11,7 @@ import Sort from './components/sort';
 import Item from './components/item';
 import Actions from './components/actions';
 
-import {gold, offWhite} from '../../../../../../assets/css/variables/colors';
+import {iceBlueTwo, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
 import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
@@ -91,7 +91,7 @@ class List extends React.Component {
 
         return css`
             position: relative;
-            background-color: ${hovered || selected ? offWhite : 'transparent'};
+            background-color: ${hovered || selected ? iceBlueTwo : 'transparent'};
             
             &:before {
                 display: block;
@@ -101,7 +101,7 @@ class List extends React.Component {
                 bottom: 0;
                 left: 0;
                 width 4px;
-                background-color: ${selected ? gold : 'transparent'};
+                background-color: ${selected ? darkSkyBlue : 'transparent'};
             }
         `;
     };

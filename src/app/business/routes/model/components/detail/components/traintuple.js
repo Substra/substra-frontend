@@ -8,7 +8,7 @@ import {css} from 'emotion';
 import styled from '@emotion/styled';
 import CopySimple from '../../../../../common/svg/copy-simple';
 import DownloadSimple from '../../../../../common/svg/download-simple';
-import {slate, tealish} from '../../../../../../../../assets/css/variables/colors';
+import {slate, darkSkyBlue} from '../../../../../../../../assets/css/variables/colors';
 import IconButton from '../../../../../common/components/detail/components/iconButton';
 import {fontLarge} from '../../../../../../../../assets/css/variables/font';
 import {spacingExtraSmall, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
@@ -22,7 +22,7 @@ const owkin = {
     value: {
         ...atomOneLight.value,
         string: 'rgb(140, 153, 165)',
-        number: tealish,
+        number: darkSkyBlue,
     },
 };
 

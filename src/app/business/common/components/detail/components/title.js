@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {fontLarge} from '../../../../../../../assets/css/variables/font';
-import {gold} from '../../../../../../../assets/css/variables/colors';
+import {darkSkyBlue} from '../../../../../../../assets/css/variables/colors';
 
 export const title = css`
-    color: ${gold};
+    color: ${darkSkyBlue};
     font-weight: bold;
     font-size: ${fontLarge};
 `;
