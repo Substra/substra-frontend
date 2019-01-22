@@ -20,7 +20,7 @@ class DocLink extends React.Component {
         const {className} = this.props;
         return (
             <a
-                href="https://gitlab.com/owkin/substradoc"
+                href="https://gitlab.com/owkin/owkestra-doc"
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"
