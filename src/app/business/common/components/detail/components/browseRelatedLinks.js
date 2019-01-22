@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'redux-first-router-link';
 import PropTypes from 'prop-types';
-import {css} from '@emotion/core';
+import {css} from 'emotion';
 
 const spacing = css`
     margin-right: 5px;
@@ -9,7 +9,7 @@ const spacing = css`
 
 export const BrowseRelatedLinksWrapper = ({children, ...rest}) => (
     <div {...rest}>
-        <span css={spacing}>Browse related</span>
+        <span className={spacing}>Browse related</span>
         {children}
     </div>
 );
@@ -30,7 +30,7 @@ const routeTypes = {
 };
 
 export const BrowseRelatedLink = ({label, model, filter}) => (
-    <Link to={{type: routeTypes[model], meta: {query: {search: filter}}}} css={spacing}>
+    <Link to={{type: routeTypes[model], meta: {query: {search: filter}}}} className={spacing}>
         {label}
     </Link>
 );
