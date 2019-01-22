@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    BrowseRelatedLink,
+import BrowseRelatedLink, {
     BrowseRelatedLinksWrapper,
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 

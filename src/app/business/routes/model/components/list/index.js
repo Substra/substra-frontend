@@ -4,7 +4,6 @@ import List from '../../../../common/components/list';
 import {withListRedux} from '../../../../common/components/list/redux';
 import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
-import Sort from './components/sort';
 import Metadata from './components/metadata';
 import PopoverItems from './components/popoverItems';
 
@@ -23,12 +22,17 @@ class ModelList extends List {
     };
 }
 
+const options = [
+    {value: {by: 'testData.perf', direction: 'asc'}, label: 'LOWEST SCORE'},
+    {value: {by: 'testData.perf', direction: 'desc'}, label: 'HIGHEST SCORE'},
+];
+
 const ModelListWithLocalComponents = props => (
     <ModelList
         Title={Title}
-        Sort={Sort}
         Metadata={Metadata}
         PopoverItems={PopoverItems}
+        options={options}
         {...props}
     />
 );

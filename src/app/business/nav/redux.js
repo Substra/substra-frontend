@@ -1,11 +1,13 @@
 import {connect} from 'react-redux';
 
-import {getRoutes} from './selector';
-import Nav from './index';
+import {getRoutes, getOrders} from './selector';
+import Nav from './components';
+import withInjectedReducers from '../common/components/withInjectedReducers';
 
 const mapStateToProps = state => ({
-    routes: getRoutes(state),
-    location: state.location,
-});
+        routes: getRoutes(state),
+        location: state.location,
+        orders: getOrders(state),
+    });
 
-export default connect(mapStateToProps)(Nav);
+export default withInjectedReducers(connect(mapStateToProps)(Nav));

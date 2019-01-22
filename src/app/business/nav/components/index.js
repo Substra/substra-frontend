@@ -5,16 +5,16 @@ import styled from '@emotion/styled';
 import {omit} from 'lodash';
 import Link from 'redux-first-router-link';
 
-import Algo from '../common/svg/algo';
-import Dataset from '../common/svg/data-set';
-import Folder from '../common/svg/folder';
-import Model from '../common/svg/model';
+import Algo from '../../common/svg/algo';
+import Dataset from '../../common/svg/data-set';
+import Folder from '../../common/svg/folder';
+import Model from '../../common/svg/model';
 
-import {spacingLarge, spacingNormal, spacingSmall} from '../../../../assets/css/variables/spacing';
+import {spacingLarge, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 import {
 darkSkyBlue, slate, ice, white,
-} from '../../../../assets/css/variables/colors';
-import {fontLarge} from '../../../../assets/css/variables/font';
+} from '../../../../../assets/css/variables/colors';
+import {fontLarge} from '../../../../../assets/css/variables/font';
 
 const Ul = styled('ul')`
     display: flex;
@@ -79,8 +79,25 @@ class Nav extends React.Component {
         }
     };
 
+    getUrl = (route) => {
+        const {location, orders} = this.props;
+
+        const menu = route.toLowerCase();
+        const order = orders[menu];
+
+        return {
+            type: route,
+            meta: {
+                query: {
+                    ...omit(location.query, ['_sw-precache', 'by', 'direction']), // remove location url order
+                    ...(order.prune ? omit(order, ['prune']) : {}), // add own order if necessary
+                },
+            },
+        };
+    };
+
     render() {
-        const {routes, location} = this.props;
+        const {routes} = this.props;
         return (
             <Ul>
                 {routes.map((route) => {
@@ -94,7 +111,7 @@ class Nav extends React.Component {
                         return (
                             <Li key={route}>
                                 <Link
-                                    to={{type: route, meta: {query: omit(location.query, ['_sw-precache'])}}}
+                                    to={this.getUrl(route)}
                                     onMouseEnter={this.onMouseEnter(route)}
                                     onMouseLeave={this.onMouseLeave(route)}
                                     className={link(active, hovered)}
@@ -114,11 +131,13 @@ class Nav extends React.Component {
 Nav.defaultProps = {
     routes: [],
     location: {},
+    orders: {},
 };
 
 Nav.propTypes = {
     routes: PropTypes.arrayOf(PropTypes.string),
     location: PropTypes.shape({}),
+    orders: PropTypes.shape({}),
 };
 
 export default Nav;

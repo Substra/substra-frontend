@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import {css} from 'emotion';
 import {noop} from 'lodash';
+
 import {ice, slate} from '../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {fontNormal} from '../../../../../../../assets/css/variables/font';
@@ -44,30 +45,25 @@ const select = css`
 `;
 
 class Sort extends React.Component {
-    options = [
-        {value: 'name-asc', label: 'NAME (A-Z)'},
-        {value: 'name-desc', label: 'NAME (Z-A)'},
-    ];
-
-    currentOption() {
-        const {order} = this.props;
-        const currentOptionValue = `${order.by}-${order.direction}`;
-        return this.options.find(option => option.value === currentOptionValue);
-    }
-
     handleChange = (event) => {
-        const [by, direction] = event.target.value.split('-');
-        const {setOrder} = this.props;
+        console.log('change');
+
+        const {setOrder, options} = this.props;
+
+        const {value: {by, direction}} = options.find(o => o.label === event.target.value);
+
         setOrder({by, direction});
     };
 
     render() {
+        const {currentOption, options} = this.props;
+
         return (
             <Wrapper>
                 <Label htmlFor="sort">Sort by</Label>
-                <Select value={this.currentOption().value} onChange={this.handleChange} className={select}>
-                    {this.options.map(option => (
-                        <option key={option.value} value={option.value}>{option.label}</option>
+                <Select value={currentOption ? currentOption.label : ''} onChange={this.handleChange} className={select}>
+                    {options.map(option => (
+                        <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
                     ))}
                 </Select>
             </Wrapper>
@@ -77,12 +73,14 @@ class Sort extends React.Component {
 
 Sort.propTypes = {
     setOrder: PropTypes.func,
-    order: PropTypes.shape({by: PropTypes.string, direction: PropTypes.string}),
+    currentOption: PropTypes.shape(),
+    options: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 Sort.defaultProps = {
     setOrder: noop,
-    order: '',
+    currentOption: null,
+    options: [],
 };
 
 export default Sort;

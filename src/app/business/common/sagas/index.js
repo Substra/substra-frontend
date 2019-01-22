@@ -1,4 +1,7 @@
-import {call, put} from 'redux-saga/effects';
+import {call, put, select} from 'redux-saga/effects';
+import url from 'url';
+import {replace} from 'redux-first-router';
+import {omit} from 'lodash';
 
 
 export const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
@@ -45,8 +48,25 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
     return item;
 };
 
+export const setOrderSaga = function* setOrderSaga({payload}) {
+    const state = yield select();
+
+    const {location} = state;
+
+    const newUrl = url.format({
+        pathname: location.pathname,
+        query: {
+            ...location.query,
+            ...omit(payload, ['prune']),
+        },
+    });
+
+    yield replace(newUrl);
+};
+
 export default {
     fetchListSaga,
     fetchPersistentSaga,
     fetchItemSaga,
+    setOrderSaga,
 };

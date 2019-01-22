@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    BrowseRelatedLink,
+import BrowseRelatedLink, {
     BrowseRelatedLinksWrapper,
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
 const BrowseRelatedLinks = ({item, ...rest}) => {
-    const filter = `algo:name:${item.name}`;
+    const filter = `algo:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...rest}>
@@ -22,8 +21,9 @@ BrowseRelatedLinks.propTypes = {
     item: PropTypes.shape(),
 };
 
+
 BrowseRelatedLinks.defaultProps = {
-    item: {},
+    item: null,
 };
 
 export default BrowseRelatedLinks;

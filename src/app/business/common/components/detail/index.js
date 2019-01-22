@@ -37,8 +37,8 @@ class Detail extends React.Component {
 
     render() {
         const {
-            item, className, descLoading, model, Title, children, BrowseRelatedLinks,
-            Metadata, Description, Actions,
+            item, className, descLoading, model, children,
+            Title, BrowseRelatedLinks, Metadata, Description, Actions,
         } = this.props;
 
         return (
