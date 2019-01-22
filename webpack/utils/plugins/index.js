@@ -85,6 +85,7 @@ export default env => [
     definePlugin(),
     new LodashModuleReplacementPlugin({
         shorthands: true,
+        paths: true,
     }),
     new HappyPack({
         id: 'babel',
