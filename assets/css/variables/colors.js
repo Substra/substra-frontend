@@ -4,6 +4,5 @@ export const
     ice = '#e7e8e8',
     blueGrey = '#81909d',
     slate = '#4b6073',
-    tealish = '#1dbcc0',
-    gold = '#edc20f',
-    offWhite = '#fdf8e6';
+    darkSkyBlue = '#4ba5d2',
+    iceBlueTwo = '#edf6fa';

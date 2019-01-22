@@ -10,33 +10,38 @@ import Dataset from '../common/svg/data-set';
 import Folder from '../common/svg/folder';
 import Model from '../common/svg/model';
 
-import {spacingLarge, spacingNormal, spacingExtraSmall} from '../../../../assets/css/variables/spacing';
-import {tealish, slate} from '../../../../assets/css/variables/colors';
+import {spacingLarge, spacingNormal, spacingSmall} from '../../../../assets/css/variables/spacing';
+import {
+darkSkyBlue, slate, ice, white,
+} from '../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../assets/css/variables/font';
 
 const Ul = styled('ul')`
     display: flex;
     list-style: none;
-    margin: ${spacingNormal} ${spacingLarge} 0 ${spacingLarge};
+    margin: ${spacingNormal} ${spacingLarge} -1px ${spacingLarge};
     padding: 0;
+    z-index: 1;
 `;
 
 const Li = styled('li')`
     display: inline-flex;
     align-items: stretch;
-    margin-right: ${spacingLarge};
 `;
 
 const link = (active, hovered) => css`
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: ${active || hovered ? tealish : slate};
+    color: ${active || hovered ? darkSkyBlue : slate};
     font-size: ${fontLarge};
     font-weight: bold;
     text-transform: capitalize;
-    padding-bottom: ${spacingExtraSmall};
-    border-bottom: 3px solid ${active ? tealish : 'transparent'};
+    padding: ${spacingSmall} ${spacingNormal};
+    border-width: 3px 1px 1px 1px;
+    border-style: solid;
+    border-color: ${active ? `${darkSkyBlue} ${ice} ${white} ${ice}` : 'transparent'};
+    background-color: ${active ? white : 'transparent'};
 `;
 
 const picto = css`
@@ -81,7 +86,7 @@ class Nav extends React.Component {
                 {routes.map((route) => {
                         const active = this.isActive(route);
                         const hovered = this.isHovered(route);
-                        const color = active || hovered ? tealish : slate;
+                        const color = active || hovered ? darkSkyBlue : slate;
 
                         const menu = route.toLowerCase();
                         const Picto = pictos[menu];

@@ -1,15 +1,17 @@
 import styled from '@emotion/styled';
-import {ice} from '../../../../../assets/css/variables/colors';
+import {ice} from '../../../../../../../assets/css/variables/colors';
 
 export default styled('button')`
     display: inline-flex;
-    justify-content: center;
     align-items: center;
-    background-color: none;
-    border: none;
+    justify-content: center;
     width: 30px;
     height: 30px;
     border-radius: 15px;
+    border: 1px solid ${ice};
+    padding: 0;
+    background: none;
+    cursor: pointer;
     
     &:hover {
         background-color: ${ice};

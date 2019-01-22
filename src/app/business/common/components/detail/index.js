@@ -1,84 +1,16 @@
-import React, {Component, Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import {css} from 'emotion';
-import ReactMarkdown from 'react-markdown';
 import {PulseLoader} from 'react-spinners';
-import {capitalize} from 'lodash';
 
-
-import Search from '../../svg/search';
-import Permission from '../../svg/permission';
-import Clipboard from '../../svg/clipboard';
-import CopySimple from '../../svg/copy-simple';
-import DownloadSimple from '../../svg/download-simple';
-import FilterUp from '../../svg/filter-up';
 import Title from './components/title';
 import Section, {section} from './components/section';
 import PanelTop from '../panelTop';
+import Metadata from './components/metadata';
+import Actions from './components/actions';
+import Description from './components/description';
 
-import {coolBlue} from '../../../../../../assets/css/variables';
-
-
-const middle = css`
-    display: inline-block;
-    vertical-align: middle;
-`;
-
-const Content = styled('div')`
-    font-size: 13px;
-`;
-
-const H5 = styled('h5')`
-    font-size: 13px;
-    margin: 0;
-    display: inline-block;
-    padding-left: 7px;
-    color: #edc20f;
-`;
-
-const search = css`
-    ${middle};
-`;
-
-const Item = styled('div')`
-    font-size: 12px;
-    padding: 9px 33px;
-`;
-
-const permission = css`
-    ${middle};
-    padding-right: 10px;
-    
-    & + span {
-        ${middle};        
-    }
-`;
-
-const clipboard = css`
-    ${middle};
-    padding-right: 6px;
-`;
-
-const idText = css`
-    ${middle};
-`;
-
-const id = css`
-    font-weight: bold;
-`;
-
-const Right = styled('div')`
-    float: right;
-`;
-
-const icon = css`
-    cursor: pointer;
-    margin-left: 13px;
-`;
-
-
-class Detail extends Component {
+class Detail extends React.Component {
     downloadFile = (e) => {
         const {downloadFile, item, logDownloadFromDetail} = this.props;
 
@@ -105,61 +37,40 @@ class Detail extends Component {
     render() {
         const {
             item, className, descLoading, model, Title, children, BrowseRelatedLinks,
+            Metadata, Description, Actions,
         } = this.props;
 
         return (
-            <Content className={className}>
-                <PanelTop>
-                    <Search width={14} height={14} className={search} />
-                    <H5 className={middle}>
-                        <Title item={item} />
-                    </H5>
+            <div className={className}>
+                <PanelTop className={css`justify-content: space-between;`}>
+                    <Title item={item} />
+                    <Actions
+                        downloadFile={this.downloadFile}
+                        filterUp={this.filterUp(item.name)}
+                        model={model}
+                        item={item}
+                    />
                 </PanelTop>
                 {item && (
-                    <Item>
+                    <React.Fragment>
                         <Section>
-                            <Clipboard className={clipboard} width={15} />
-                            <div className={idText}>
-                                <span className={id}>
-                                    {'ID: '}
-                                </span>
-                                {item.key}
-                            </div>
-                            <Right>
-                                <DownloadSimple
-                                    width={22}
-                                    height={22}
-                                    onClick={this.downloadFile}
-                                    className={icon}
-                                />
-                                <span onClick={this.addNotification(item.key, `${capitalize(model)}'s key successfully copied to clipboard!`)}>
-                                    <CopySimple width={22} height={22} className={icon} />
-                                </span>
-                                <FilterUp onClick={this.filterUp(item.name)} className={icon} />
-                            </Right>
+                            <Metadata
+                                item={item}
+                                addNotification={this.addNotification}
+                                model={model}
+                            />
                         </Section>
-                        <Section>
-                            {item.permissions === 'all' && (
-                                <Fragment>
-                                    <Permission width={13} height={13} className={permission} />
-                                    <span>
-                                        {': Open to all'}
-                                    </span>
-                                </Fragment>
-)
-                            }
-                        </Section>
-                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
-                        {descLoading && <PulseLoader size={6} color={coolBlue} />}
-                        {!descLoading && item.desc && (
+                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} css={section} />}
+                        {Description && (
                             <Section>
-                                <ReactMarkdown source={item.desc} />
+                                {descLoading && <PulseLoader size={6} />}
+                                {!descLoading && <Description item={item} />}
                             </Section>
                         )}
                         {children && <Section>{children}</Section>}
-                    </Item>
+                    </React.Fragment>
 )}
-            </Content>
+            </div>
         );
     }
 }
@@ -182,6 +93,9 @@ Detail.defaultProps = {
     Title,
     children: null,
     BrowseRelatedLinks: dummy,
+    Metadata,
+    Description,
+    Actions,
 };
 
 Detail.propTypes = {
@@ -205,6 +119,9 @@ Detail.propTypes = {
     Title: PropTypes.func,
     children: PropTypes.node,
     BrowseRelatedLinks: PropTypes.func,
+    Metadata: PropTypes.func,
+    Description: PropTypes.func,
+    Actions: PropTypes.func,
 };
 
 export default Detail;

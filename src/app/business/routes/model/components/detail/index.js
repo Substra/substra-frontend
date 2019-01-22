@@ -7,6 +7,8 @@ import {withDetailAnalytics} from '../../../../common/components/detail/analytic
 import Title from './components/title';
 import Traintuple from './components/traintuple';
 import BrowseRelatedLinks from './components/browseRelatedLinks';
+import Metadata from './components/metadata';
+import Actions from './components/actions';
 
 
 class ModelDetail extends Detail {
@@ -23,7 +25,9 @@ class ModelDetail extends Detail {
 const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
     <ModelDetail
         Title={Title}
+        Actions={Actions}
         BrowseRelatedLinks={BrowseRelatedLinks}
+        Metadata={Metadata}
         item={item}
         addNotification={addNotification}
         {...rest}

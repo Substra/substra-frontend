@@ -14,10 +14,10 @@ import SnackbarContent from '../SnackbarContent';
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
-import {spacingLarge} from '../../../../../../assets/css/variables/spacing';
-import {white, tealish, ice} from '../../../../../../assets/css/variables/colors';
+import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
+import {white, darkSkyBlue, ice} from '../../../../../../assets/css/variables/colors';
 
-const MIN_COL_WIDTH = 50;
+const MIN_COL_WIDTH = 250;
 
 export const middle = css`
     display: inline-block;
@@ -36,6 +36,8 @@ export const verticalBar = css`
     z-index: 1;
     cursor: col-resize;
     background-color: transparent;
+    flex-grow: 0;
+    flex-shrink: 0;
     
     position: relative;
     :before {
@@ -51,7 +53,7 @@ export const verticalBar = css`
 const lightGrey = '#fafafa';
 
 export const snackbarContent = css`
-    color: ${tealish};
+    color: ${darkSkyBlue};
     background-color: ${lightGrey};
     
     @media (min-width: 960px) {
@@ -85,10 +87,7 @@ export const anchorOrigin = {
 
 class Base extends Component {
     state = {
-        width: {
-            list: {value: 40, unit: '%'},
-            detail: {value: 59, unit: '%'},
-        },
+        listWidth: {value: 40, unit: '%'},
         hold: false,
         clipboard: {
             open: false,
@@ -130,16 +129,10 @@ class Base extends Component {
 
     updateDimensions = () => {
         if (this.contentRef.current) {
-            const oldWidth = this.state.width.list.value + this.state.width.detail.value,
-                newWidth = this.contentRef.current.offsetWidth;
+            const containerWidth = this.contentRef.current.offsetWidth;
+            const listWidth = this.state.listWidth.unit === '%' ? this.state.listWidth.value * containerWidth / 100 : this.state.listWidth.value;
 
-            this.setState(state => ({
-                ...state,
-                width: {
-                    list: {value: state.width.list.value * newWidth / oldWidth, unit: 'px'},
-                    detail: {value: state.width.detail.value * newWidth / oldWidth, unit: 'px'},
-                },
-            }));
+            this.updateListWidth(containerWidth, listWidth);
         }
     };
 
@@ -147,21 +140,22 @@ class Base extends Component {
         if (this.state.hold) {
             e.persist();
 
-            const offsetWidth = e.currentTarget.offsetWidth;
-            // prevent list and detail panels from being less than MIN_COL_WIDTH px
-            const listWidth = Math.min(Math.max(MIN_COL_WIDTH, e.clientX - margin), offsetWidth - MIN_COL_WIDTH);
-            const detailWidth = offsetWidth - listWidth - barSize;
-
-            this.setState(state => ({
-                    ...state,
-                    width: {
-                        list: {value: listWidth, unit: 'px'},
-                        detail: {value: detailWidth, unit: 'px'},
-                    },
-                }
-            ));
+            const containerWidth = e.currentTarget.offsetWidth;
+            const listWidth = e.clientX - margin - 1;
+            this.updateListWidth(containerWidth, listWidth);
         }
     };
+
+    updateListWidth(containerWidth, listWidth) {
+        const MAX_COL_WIDTH = Math.max(0, containerWidth - MIN_COL_WIDTH);
+        const actualListWidth = Math.min(Math.max(MIN_COL_WIDTH, listWidth), MAX_COL_WIDTH);
+
+        this.setState(state => ({
+                ...state,
+                listWidth: {value: actualListWidth, unit: 'px'},
+            }
+        ));
+    }
 
     mouseDown = () => this.setState(state => ({
         ...state,
@@ -239,20 +233,19 @@ class Base extends Component {
     };
 
     list = () => css`
-        width: ${this.props.selected ? `${this.state.width.list.value}${this.state.width.list.unit}` : '100%'};
+        width: ${this.props.selected ? `${this.state.listWidth.value}${this.state.listWidth.unit}` : '100%'};
         flex-grow: 0;
         flex-shrink: 0;
         overflow-x: auto;
     `;
 
     detail = () => css`
-        width: ${this.props.selected ? `${this.state.width.detail.value}${this.state.width.detail.unit}` : '100%'};
         flex-grow: 1;
         overflow-x: auto;
     `;
 
     layout = () => css`
-        margin: 0 ${spacingLarge} ${spacingLarge} ${spacingLarge};
+        margin: 0 ${spacingLarge} ${spacingNormal} ${spacingLarge};
         background-color: ${white};
         border: 1px solid ${ice};
         display: flex;
@@ -314,7 +307,7 @@ class Base extends Component {
                         className={snackbarContent}
                         message={(
                             <div>
-                                <Check color={tealish} className={middle} />
+                                <Check color={darkSkyBlue} className={middle} />
                                 <ClipboardContent className={middle}>
                                     <input disabled value={inputValue} />
                                     <p>

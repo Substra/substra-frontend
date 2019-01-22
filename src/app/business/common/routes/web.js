@@ -4,9 +4,7 @@ import universal from 'react-universal-component';
 import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import {ReactReduxContext} from 'react-redux';
 
-import {PulseLoader} from 'react-spinners';
-
-import {coolBlue} from '../../../../../assets/css/variables/index';
+import PulseLoader from './pulseLoader';
 
 class Universal extends Component {
     constructor(props) {
@@ -20,7 +18,7 @@ class Universal extends Component {
         // need to pass different path for generating different chunks
         // https://github.com/faceyspacey/babel-plugin-universal-import#caveat
         const U = universal(import(`../../routes/${model}/preload/index`), {
-            loading: <PulseLoader size={6} color={coolBlue} />,
+            loading: <PulseLoader />,
             ignoreBabelRename: true,
             onLoad: (module, info, {reduxcontext}) => {
                 if (reduxcontext && reduxcontext.store) {

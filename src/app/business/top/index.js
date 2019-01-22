@@ -5,9 +5,9 @@ import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
 import DocLink from './components/docLink';
-import Logo from '../common/svg/logo';
+import OwkestraLogo from './components/owkestraLogo';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
-import {spacingLarge} from '../../../../assets/css/variables/spacing';
+import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
 
 
 const Wrapper = styled('div')`
@@ -18,7 +18,7 @@ const Wrapper = styled('div')`
     padding: ${spacingLarge};
     height: 80px;
     border-bottom: 1px solid ${ice};
-    margin-bottom: ${spacingLarge};
+    margin-bottom: ${spacingNormal};
 `;
 
 
@@ -35,7 +35,7 @@ const link = css`
 const Top = ({location}) => (
     <Wrapper>
         <Link to={{type: 'HOME', meta: {query: location.query}}} className={link}>
-            <Logo height={50} />
+            <OwkestraLogo alt="Owkestra" height={50} />
         </Link>
         <DocLink className={link} />
     </Wrapper>

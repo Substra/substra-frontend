@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {getOrderedResults} from '../../../model/selector';
 import {getItem, getSelected} from '../../../../common/selector';
-import Popover from './components/popover';
+import PopoverItems from './components/popoverItems';
 
 import ListWithAnalytics from './analytics';
 
@@ -24,7 +24,7 @@ const mapStateToProps = (state, {
     downloadFile,
     addNotification,
     more,
-    Popover,
+    PopoverItems,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({

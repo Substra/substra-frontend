@@ -4,8 +4,9 @@ import List from '../../../../common/components/list';
 import {withListRedux} from '../../../../common/components/list/redux';
 import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
-import Description from './components/description';
 import Sort from './components/sort';
+import Metadata from './components/metadata';
+import PopoverItems from './components/popoverItems';
 
 class ModelList extends List {
     filterUp = (e) => {
@@ -24,8 +25,9 @@ class ModelList extends List {
 const ModelListWithLocalComponents = props => (
     <ModelList
         Title={Title}
-        Description={Description}
         Sort={Sort}
+        Metadata={Metadata}
+        PopoverItems={PopoverItems}
         {...props}
     />
 );
