@@ -6,8 +6,8 @@ import BrowseRelatedLink, {
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
 const BrowseRelatedLinks = ({item, ...rest}) => {
-    const algoFilter = `algo:name:${item.algo.name}`;
-    const challengeFilter = `challenge:key:${item.challenge.hash}`;
+    const algoFilter = `algo:name:${item ? item.name : ''}`;
+    const challengeFilter = `challenge:key:${item && item.challenge ? item.challenge.hash : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...rest}>
@@ -23,7 +23,7 @@ BrowseRelatedLinks.propTypes = {
 };
 
 BrowseRelatedLinks.defaultProps = {
-    item: {},
+    item: null,
 };
 
 export default BrowseRelatedLinks;

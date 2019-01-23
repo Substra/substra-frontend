@@ -10,4 +10,6 @@ const mapStateToProps = state => ({
         orders: getOrders(state),
     });
 
+// injected reducer have been loaded from search component, no need to inject them a second time
+// however, we need to make this component aware about he injected reducers
 export default withInjectedReducers(connect(mapStateToProps)(Nav));

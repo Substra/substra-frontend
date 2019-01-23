@@ -46,8 +46,6 @@ const select = css`
 
 class Sort extends React.Component {
     handleChange = (event) => {
-        console.log('change');
-
         const {setOrder, options} = this.props;
 
         const {value: {by, direction}} = options.find(o => o.label === event.target.value);

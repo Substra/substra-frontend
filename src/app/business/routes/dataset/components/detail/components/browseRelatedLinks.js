@@ -6,7 +6,7 @@ import BrowseRelatedLink, {
 } from '../../../../../common/components/detail/components/browseRelatedLinks';
 
 const BrowseRelatedLinks = ({item, ...rest}) => {
-    const filter = `dataset:name:${item.name}`;
+    const filter = `dataset:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...rest}>
@@ -22,7 +22,7 @@ BrowseRelatedLinks.propTypes = {
 };
 
 BrowseRelatedLinks.defaultProps = {
-    item: {},
+    item: null,
 };
 
 export default BrowseRelatedLinks;

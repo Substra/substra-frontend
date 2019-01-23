@@ -40,7 +40,7 @@ class BrowseRelatedLink extends Component {
             meta: {
                 query: {
                     search: filter,
-                    ...(order.prune ? omit(order, ['prune']) : {}), // add own order if necessary
+                    ...(order && order.prune ? omit(order, ['prune']) : {}), // add own order if necessary
                 },
             },
         };
@@ -53,7 +53,7 @@ class BrowseRelatedLink extends Component {
             <Link to={this.getUrl()} className={spacing}>
                 {label}
             </Link>
-);
+        );
     }
 }
 
@@ -72,12 +72,9 @@ BrowseRelatedLink.defaultProps = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-    console.log(ownProps);
-
-    return {
-        order: ownProps && ownProps.model ? state[ownProps.model].order : null,
-    };
-};
+const mapStateToProps = (state, ownProps) => ({
+        order: ownProps && ownProps.model && state[ownProps.model] ? state[ownProps.model].order : null,
+    }
+);
 
 export default connect(mapStateToProps)(BrowseRelatedLink);
