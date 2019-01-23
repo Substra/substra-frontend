@@ -1,17 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
-import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-const BrowseRelatedLinks = ({item, ...props}) => {
+import challengeActions from '../../../../challenge/actions';
+import algoActions from '../../../../algo/actions';
+import modelActions from '../../../../model/actions';
+
+import {
+    BrowseRelatedLink,
+    BrowseRelatedLinksWrapper,
+} from '../../../../../common/components/detail/components/browseRelatedLinks';
+
+const BrowseRelatedLinks = ({
+                                item, unselectAlgo, unselectChallenge, unselectModel, ...props
+                            }) => {
     const filter = `dataset:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...props}>
-            <BrowseRelatedLink model="challenge" label="challenges" filter={filter} />
-            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} />
-            <BrowseRelatedLink model="model" label="models" filter={filter} />
+            <BrowseRelatedLink model="challenge" label="challenges" filter={filter} unselect={unselectChallenge}/>
+            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo}/>
+            <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel}/>
         </BrowseRelatedLinksWrapper>
     );
 };
@@ -24,4 +35,11 @@ BrowseRelatedLinks.defaultProps = {
     item: null,
 };
 
-export default BrowseRelatedLinks;
+const mapDispatchToProps = dispatch => bindActionCreators({
+    unselectAlgo: algoActions.list.unselect,
+    unselectChallenge: challengeActions.list.unselect,
+    unselectModel: modelActions.list.unselect,
+}, dispatch);
+
+
+export default connect(null, mapDispatchToProps)(BrowseRelatedLinks);
