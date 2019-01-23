@@ -181,17 +181,17 @@ loading, fetchList, logList, location, setOrder,
         }));
     };
 
-    getCurrentOption = () => {
-        const {options, order} = this.props;
+    getCurrentSortOption = () => {
+        const {sortOptions, order} = this.props;
 
-        return options.find(option => isEqual(option.value, omit(order, ['prune']))) || options[0];
+        return sortOptions.find(option => isEqual(option.value, omit(order, ['prune']))) || sortOptions[0];
     };
 
     render() {
         const {
             results, init, loading, model, className, download,
             Title, Popover, Metadata, setOrder, PopoverItems,
-            options,
+            sortOptions,
         } = this.props;
 
         const {open, anchorEl, item} = this.state.popover;
@@ -199,7 +199,7 @@ loading, fetchList, logList, location, setOrder,
         return (
             <div className={className}>
                 <PanelTop>
-                    <Sort currentOption={this.getCurrentOption()} setOrder={setOrder} options={options} />
+                    <Sort current={this.getCurrentSortOption()} setOrder={setOrder} options={sortOptions} />
                 </PanelTop>
 
                 {loading && (
@@ -269,7 +269,7 @@ List.defaultProps = {
     className: '',
     model: '',
     download: {},
-    options: [
+    sortOptions: [
         {value: {by: 'name', direction: 'asc'}, label: 'NAME (A-Z)'},
         {value: {by: 'name', direction: 'desc'}, label: 'NAME (Z-A)'},
     ],
@@ -305,7 +305,7 @@ List.propTypes = {
         address: PropTypes.arrayOf(PropTypes.string),
         filename: PropTypes.string,
     }),
-    options: PropTypes.arrayOf(PropTypes.shape()),
+    sortOptions: PropTypes.arrayOf(PropTypes.shape()),
     location: PropTypes.shape(),
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,

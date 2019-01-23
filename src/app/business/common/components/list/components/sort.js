@@ -54,12 +54,12 @@ class Sort extends React.Component {
     };
 
     render() {
-        const {currentOption, options} = this.props;
+        const {current, options} = this.props;
 
         return (
             <Wrapper>
                 <Label htmlFor="sort">Sort by</Label>
-                <Select value={currentOption ? currentOption.label : ''} onChange={this.handleChange} className={select}>
+                <Select value={current ? current.label : ''} onChange={this.handleChange} className={select}>
                     {options.map(option => (
                         <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
                     ))}
@@ -71,13 +71,13 @@ class Sort extends React.Component {
 
 Sort.propTypes = {
     setOrder: PropTypes.func,
-    currentOption: PropTypes.shape(),
+    current: PropTypes.shape(),
     options: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 Sort.defaultProps = {
     setOrder: noop,
-    currentOption: null,
+    current: null,
     options: [],
 };
 

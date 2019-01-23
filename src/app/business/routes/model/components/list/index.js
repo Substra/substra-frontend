@@ -22,7 +22,7 @@ class ModelList extends List {
     };
 }
 
-const options = [
+const sortOptions = [
     {value: {by: 'testData.perf', direction: 'asc'}, label: 'LOWEST SCORE'},
     {value: {by: 'testData.perf', direction: 'desc'}, label: 'HIGHEST SCORE'},
 ];
@@ -32,7 +32,7 @@ const ModelListWithLocalComponents = props => (
         Title={Title}
         Metadata={Metadata}
         PopoverItems={PopoverItems}
-        options={options}
+        sortOptions={sortOptions}
         {...props}
     />
 );
