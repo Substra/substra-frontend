@@ -53,7 +53,6 @@ export default {
             new HtmlWebpackPlugin({
                 title: config.appName,
                 META_DESCRIPTION: config.apps.frontend.meta.description,
-                META_KEYWORDS: config.apps.frontend.meta.keywords,
                 serviceWorker,
                 filename: path.resolve(__dirname, '../../index.html'),
                 template: path.resolve(__dirname, '../static/index.html'),
@@ -62,7 +61,6 @@ export default {
             new HtmlWebpackPlugin({
                 title: config.appName,
                 META_DESCRIPTION: config.apps.frontend.meta.description,
-                META_KEYWORDS: config.apps.frontend.meta.keywords,
                 serviceWorker,
                 filename: path.resolve(__dirname, '../../404.html'),
                 template: path.resolve(__dirname, '../static/index.html'),

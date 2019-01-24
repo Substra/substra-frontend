@@ -1,3 +1,3 @@
 module.exports = {
-    appName: 'Substra Front Staging',
+    appName: 'Owkestra Staging',
 };
