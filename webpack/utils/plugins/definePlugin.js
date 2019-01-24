@@ -9,7 +9,6 @@ export default () => new webpack.DefinePlugin({
     APP_NAME: JSON.stringify(config.appName),
     API_URL: JSON.stringify(config.apps.frontend.apiUrl),
     META_DESCRIPTION: JSON.stringify(config.apps.frontend.meta.description),
-    META_KEYWORDS: JSON.stringify(config.apps.frontend.meta.keywords),
     PRODUCTION_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.production),
     DEBUG_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.debug),
     SUBSTRABAC_USER: JSON.stringify(config.credentials.SUBSTRABAC_USER),
