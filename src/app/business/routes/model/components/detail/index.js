@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {noop} from 'lodash';
 import Detail from '../../../../common/components/detail';
 import {withDetailRedux} from '../../../../common/components/detail/redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
@@ -40,8 +41,6 @@ ModelDetailWithLocalComponents.propTypes = {
     item: PropTypes.shape(),
     addNotification: PropTypes.func,
 };
-
-const noop = () => {};
 
 ModelDetailWithLocalComponents.defaultProps = {
     item: null,

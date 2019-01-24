@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {PulseLoader} from 'react-spinners';
+import {noop} from 'lodash';
 
 import Popover from './components/popover';
 import PopoverItems from './components/popoverItems';
@@ -239,9 +240,6 @@ class List extends React.Component {
         );
     }
 }
-
-const noop = () => {
-};
 
 const order = {by: '', direction: 'asc'};
 

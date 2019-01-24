@@ -4,7 +4,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
-import {flatten, isEmpty} from 'lodash';
+import {flatten, isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
 import copy from 'copy-to-clipboard';
 
@@ -319,9 +319,6 @@ class Base extends Component {
 );
     }
 }
-
-const noop = () => {
-};
 
 Base.defaultProps = {
     selected: null,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
+import {noop} from 'lodash';
 
 import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
@@ -521,9 +522,6 @@ class Input extends React.Component {
         );
     }
 }
-
-const noop = () => {
-};
 
 Input.propTypes = {
     /**

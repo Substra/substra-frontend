@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
+import {noop} from 'lodash';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import DownloadSimple from '../../../svg/download-simple';
 import FilterUp from '../../../svg/filter-up';
@@ -14,8 +15,6 @@ export const actions = css`
         margin-left: ${spacingExtraSmall};
     }
 `;
-
-const noop = () => {};
 
 const downloadButtonTitles = {
     challenge: 'Download metrics',

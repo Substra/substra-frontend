@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {PulseLoader} from 'react-spinners';
+import {noop} from 'lodash';
 
 import Title from './components/title';
 import Section, {section} from './components/section';
@@ -75,10 +76,6 @@ class Detail extends React.Component {
     }
 }
 
-const noop = () => {
-};
-const dummy = () => null;
-
 Detail.defaultProps = {
     item: null,
     className: '',
@@ -92,7 +89,7 @@ Detail.defaultProps = {
     logCopyFromDetail: noop,
     Title,
     children: null,
-    BrowseRelatedLinks: dummy,
+    BrowseRelatedLinks: null,
     Metadata,
     Description,
     Actions,

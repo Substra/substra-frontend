@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
+import {noop} from 'lodash';
 
 import withAnalytics, {LOG_DOC} from '../../../analytics';
 import Book from '../../common/svg/book';
@@ -37,8 +38,6 @@ DocLink.propTypes = {
     className: PropTypes.string,
     logDoc: PropTypes.func,
 };
-
-const noop = () => {};
 
 DocLink.defaultProps = {
     className: null,
