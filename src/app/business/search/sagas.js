@@ -3,6 +3,7 @@ import {
 } from 'redux-saga/effects';
 import {push} from 'redux-first-router';
 import url from 'url';
+import {omit} from 'lodash';
 
 import {actionTypes} from './actions';
 
@@ -39,7 +40,8 @@ function* setFilters(request) {
         const newUrl = url.format({
             pathname: location.pathname,
             query: {
-                ...(search ? {search} : {}),
+                ...(search ? {search} : {}), // add new search
+                ...omit(location.query, ['search']), // keep all get parameters except search
             },
         });
         yield push(newUrl);

@@ -30,11 +30,11 @@ export const getColumns = createDeepEqualSelector([results],
 );
 
 // will get deep attribute from object, example if 'testData.perf' is passed as a string, it will get o.testData.perf
-const deepOrder = (o, order) => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
+const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
 export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
     (results, order, isComplex) => {
-        const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [deepOrder(o, order)], [order.direction]) : o) : [];
+        const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [deepOrder(order)], [order.direction]) : o) : [];
 
         return isComplex ? res : [uniqBy(flatten(res), 'key')];
     },
