@@ -13,10 +13,11 @@ class ModelList extends List {
         e.preventDefault();
         e.stopPropagation();
 
-        const {filterUp} = this.props;
+        const {filterUp, logFilterFromList} = this.props;
         const {popover: {item: {key}}} = this.state;
 
         filterUp(key);
+        logFilterFromList(key);
 
         this.popoverHandleClose();
     };

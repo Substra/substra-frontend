@@ -1,13 +1,12 @@
 import uuidv4 from 'uuid/v4';
 import ReduxBase from '../../../../common/components/base/redux';
-import {withBaseAnalytics} from '../../../../common/components/base/analytics';
 import Base from '../../../../common/components/base';
 
 
 class ModelBase extends Base {
     filterUp = (o) => {
         const {
-            setSearchState, selectedItem, model, logFilterFromList,
+            setSearchState, selectedItem, model,
         } = this.props;
 
         const newSelectedItem = [
@@ -32,8 +31,7 @@ class ModelBase extends Base {
             item: o,
             toUpdate: true,
         });
-        logFilterFromList(selectedItem.key);
     };
 }
 
-export default ReduxBase(withBaseAnalytics(ModelBase));
+export default ReduxBase(ModelBase);

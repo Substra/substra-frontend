@@ -4,10 +4,10 @@ import {connect} from 'react-redux';
 // Basic customisable redux mapping
 import {getItem, getSelected} from '../../selector';
 import searchActions from '../../../search/actions';
-import BaseWithAnalytics from './analytics';
+import Base from './index';
 import withInjectedReducers from '../withInjectedReducers';
 
-const ReduxBase = (B = BaseWithAnalytics) => { // no override on List/Detail, neither principal Component
+const ReduxBase = (B = Base) => { // no override on List/Detail, neither principal Component
     const mapStateToProps = (state, {model, actions, download}) => ({
         selected: getSelected(state, model),
         results: state[model].list.results,

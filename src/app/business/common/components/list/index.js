@@ -110,10 +110,11 @@ class List extends React.Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {filterUp} = this.props;
-        const {popover: {item: {name}}} = this.state;
+        const {filterUp, logFilterFromList} = this.props;
+        const {popover: {item: {name, key}}} = this.state;
 
         filterUp(name);
+        logFilterFromList(key);
 
         this.popoverHandleClose();
     };
@@ -122,10 +123,11 @@ class List extends React.Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {downloadFile} = this.props;
+        const {downloadFile, logDownloadFromList} = this.props;
         const {popover: {item: {key}}} = this.state;
 
         downloadFile(key);
+        logDownloadFromList(key);
 
         this.popoverHandleClose();
     };
@@ -134,9 +136,11 @@ class List extends React.Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {addNotification} = this.props;
+        const {addNotification, logCopyFromList} = this.props;
+        const {popover: {item: {key}}} = this.state;
 
-        addNotification(this.state.popover.item.key, text);
+        addNotification(key, text);
+        logCopyFromList(key);
 
         this.popoverHandleClose();
     };
@@ -264,6 +268,9 @@ List.defaultProps = {
     Metadata: null,
     logList: noop,
     logDetail: noop,
+    logFilterFromList: noop,
+    logDownloadFromList: noop,
+    logCopyFromList: noop,
     Sort,
 };
 
@@ -293,6 +300,9 @@ List.propTypes = {
     Metadata: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
+    logFilterFromList: PropTypes.func,
+    logDownloadFromList: PropTypes.func,
+    logCopyFromList: PropTypes.func,
     Sort: PropTypes.func,
 };
 

@@ -4,7 +4,10 @@ import {connect} from 'react-redux';
 import {getItem, getSelected, getOrderedResults} from '../../../../common/selector';
 import PopoverItems from './components/popoverItems';
 
-import ListWithAnalytics from './analytics';
+import {withListAnalytics} from '../../../../common/components/list/analytics';
+import List from './index';
+
+const ListWithAnalytics = withListAnalytics(List);
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, download, addNotification, more,
