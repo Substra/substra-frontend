@@ -10,6 +10,7 @@ const initialState = {
     toUpdate: false,
 
     isComplex: false,
+    updated: false,
 };
 
 export default (state = initialState, {type, payload}) => {
@@ -17,6 +18,7 @@ export default (state = initialState, {type, payload}) => {
 
     switch (type) {
         case actionTypes.state.SET:
+
             filters = payload.selectedItem ? payload.selectedItem.reduce((p, c) => (
                 [
                     ...p,
@@ -27,12 +29,18 @@ export default (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 ...payload,
+                updated: true,
                 filters,
             };
         case actionTypes.isComplex.SET:
             return {
                 ...state,
                 isComplex: payload,
+            };
+        case actionTypes.updated.SET:
+            return {
+                ...state,
+                updated: payload,
             };
         default:
             return state;

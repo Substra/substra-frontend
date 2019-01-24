@@ -9,12 +9,14 @@ import algoActions from '../routes/algo/actions';
 import challengeActions from '../routes/challenge/actions';
 import datasetActions from '../routes/dataset/actions';
 import modelActions from '../routes/model/actions';
+import searchActions from '../search/actions';
 
 const mapStateToProps = state => ({
-        routes: getRoutes(state),
-        location: state.location,
-        orders: getOrders(state),
-    });
+    routes: getRoutes(state),
+    location: state.location,
+    orders: getOrders(state),
+    searchUpdated: state.search.updated,
+});
 
 const mapDispatchToProps = dispatch => ({
     unselect: bindActionCreators({
@@ -22,6 +24,9 @@ const mapDispatchToProps = dispatch => ({
         challenge: challengeActions.list.unselect,
         dataset: datasetActions.list.unselect,
         model: modelActions.list.unselect,
+    }, dispatch),
+    ...bindActionCreators({
+        setSearchUpdated: searchActions.updated.set,
     }, dispatch),
 });
 

@@ -5,6 +5,7 @@ import Downshift from 'downshift';
 import uuidv4 from 'uuid/v4';
 import {bindActionCreators} from 'redux';
 import decodeUriComponent from 'decode-uri-component';
+import {isEqual} from 'lodash';
 
 import {connect} from 'react-redux';
 
@@ -82,16 +83,16 @@ class Search extends Component {
 
     componentDidMount() {
         // init suggestions
-        const {location, setState} = this.props;
+        const {location, setState, selectedItem} = this.props;
 
-        let selectedItem = [];
+        let newSelectedItem = [];
         // fill search from state.location
         if (location.query && location.query.search) {
             // get groups separated by -OR-
             const groups = location.query.search.split('-OR-');
 
 
-            selectedItem = groups.reduce((p, group) => {
+            newSelectedItem = groups.reduce((p, group) => {
                 // create related chips
                 const chips = group.split(',').map((o) => {
                     const el = decodeUriComponent(o).split(':');
@@ -120,10 +121,12 @@ class Search extends Component {
             }, []).slice(0, -1); // remove last added `-OR-`
         }
 
-        setState({
-            selectedItem,
-            toUpdate: false,
-        });
+        if (!isEqual(selectedItem, newSelectedItem)) {
+            setState({
+                selectedItem: newSelectedItem,
+                toUpdate: false,
+            });
+        }
     }
 
     handleKeyDown = (event) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {omit} from 'lodash';
+import {omit, noop} from 'lodash';
 import Link from 'redux-first-router-link';
 
 import Algo from '../../common/svg/algo';
@@ -98,10 +98,11 @@ class Nav extends React.Component {
     };
 
     handleClick = menu => (e) => {
-        const {unselect} = this.props;
+        const {unselect, searchUpdated, setSearchUpdated} = this.props;
 
-        if (unselect && unselect[menu]) {
+        if (searchUpdated && unselect && unselect[menu]) {
             unselect[menu]();
+            setSearchUpdated(false); // pass search updated to false
         }
     };
 
@@ -143,6 +144,8 @@ Nav.defaultProps = {
     location: {},
     orders: {},
     unselect: null,
+    searchUpdated: false,
+    setSearchUpdated: noop,
 };
 
 Nav.propTypes = {
@@ -150,6 +153,8 @@ Nav.propTypes = {
     location: PropTypes.shape({}),
     orders: PropTypes.shape({}),
     unselect: PropTypes.shape(),
+    searchUpdated: PropTypes.bool,
+    setSearchUpdated: PropTypes.func,
 };
 
 export default Nav;
