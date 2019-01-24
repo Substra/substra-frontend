@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import {withStyles} from '@material-ui/core';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import {css} from 'emotion';
+import {noop} from 'lodash';
 import {ice, slate} from '../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {fontNormal} from '../../../../../../../assets/css/variables/font';
@@ -73,7 +74,6 @@ class Sort extends React.Component {
         );
     }
 }
-const noop = () => {};
 
 Sort.propTypes = {
     setOrder: PropTypes.func,

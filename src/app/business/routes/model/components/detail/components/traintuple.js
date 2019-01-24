@@ -6,6 +6,7 @@ import {atomOneLight} from 'react-json-prettify/dist/themes';
 import {saveAs} from 'file-saver';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
+import {noop} from 'lodash';
 import CopySimple from '../../../../../common/svg/copy-simple';
 import DownloadSimple from '../../../../../common/svg/download-simple';
 import {slate, darkSkyBlue} from '../../../../../../../../assets/css/variables/colors';
@@ -84,8 +85,6 @@ class Traintuple extends React.Component {
         );
     }
 }
-
-const noop = () => {};
 
 Traintuple.defaultProps = {
     traintuple: null,

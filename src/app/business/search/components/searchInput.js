@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
 import PropTypes from 'prop-types';
+import {noop} from 'lodash';
 
 import {withStyles} from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
@@ -113,9 +114,6 @@ class SearchInput extends Component {
 );
     }
 }
-
-const noop = () => {
-};
 
 SearchInput.defaultProps = {
     input: null,

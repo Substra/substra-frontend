@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {capitalize} from 'lodash';
+import {capitalize, noop} from 'lodash';
 
 import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
 import Clipboard from '../../../svg/clipboard';
@@ -57,8 +57,6 @@ SingleMetadata.defaultProps = {
     value: '',
     children: null,
 };
-
-const noop = () => {};
 
 export const MetadataInterface = {
     propTypes: {
