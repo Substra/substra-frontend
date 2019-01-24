@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BrowseRelatedLink, {
-    BrowseRelatedLinksWrapper,
-} from '../../../../../common/components/detail/components/browseRelatedLinks';
+import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
+import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
 
-const BrowseRelatedLinks = ({item, ...rest}) => {
+const BrowseRelatedLinks = ({item, ...props}) => {
     const filter = `dataset:name:${item ? item.name : ''}`;
 
     return (
-        <BrowseRelatedLinksWrapper {...rest}>
+        <BrowseRelatedLinksWrapper {...props}>
             <BrowseRelatedLink model="challenge" label="challenges" filter={filter} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} />
             <BrowseRelatedLink model="model" label="models" filter={filter} />

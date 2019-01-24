@@ -9,21 +9,6 @@ const spacing = css`
     margin-right: 5px;
 `;
 
-export const BrowseRelatedLinksWrapper = ({children, ...rest}) => (
-    <div {...rest}>
-        <span className={spacing}>Browse related</span>
-        {children}
-    </div>
-);
-
-BrowseRelatedLinksWrapper.propTypes = {
-    children: PropTypes.node,
-};
-
-BrowseRelatedLinksWrapper.defaultProps = {
-    children: null,
-};
-
 const routeTypes = {
     algo: 'ALGORITHM',
     dataset: 'DATASET',
