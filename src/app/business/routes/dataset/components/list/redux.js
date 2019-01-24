@@ -1,8 +1,7 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {getOrderedResults} from '../../../model/selector';
-import {getItem, getSelected} from '../../../../common/selector';
+import {getItem, getSelected, getOrderedResults} from '../../../../common/selector';
 import PopoverItems from './components/popoverItems';
 
 import ListWithAnalytics from './analytics';
