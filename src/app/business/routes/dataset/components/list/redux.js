@@ -5,7 +5,10 @@ import {getOrderedResults} from '../../../model/selector';
 import {getItem, getSelected} from '../../../../common/selector';
 import PopoverItems from './components/popoverItems';
 
-import ListWithAnalytics from './analytics';
+import {withListAnalytics} from '../../../../common/components/list/analytics';
+import List from './index';
+
+const ListWithAnalytics = withListAnalytics(List);
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, download, addNotification, more,
