@@ -57,7 +57,7 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
         pathname: location.pathname,
         query: {
             ...location.query,
-            ...omit(payload, ['prune']),
+            ...omit(payload, ['pristine']),
         },
     });
 

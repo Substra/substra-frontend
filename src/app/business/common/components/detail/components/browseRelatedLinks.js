@@ -40,7 +40,7 @@ class BrowseRelatedLink extends Component {
             meta: {
                 query: {
                     search: filter,
-                    ...(order && order.prune ? omit(order, ['prune']) : {}), // add own order if necessary
+                    ...(order && !order.pristine ? omit(order, ['pristine']) : {}), // add own order if necessary
                 },
             },
         };

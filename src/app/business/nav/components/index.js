@@ -90,7 +90,7 @@ class Nav extends React.Component {
             meta: {
                 query: {
                     ...omit(location.query, ['_sw-precache', 'by', 'direction']), // remove location url order
-                    ...(order.prune ? omit(order, ['prune']) : {}), // add own order if necessary
+                    ...(order && !order.pristine ? omit(order, ['pristine']) : {}), // add own order if necessary
                 },
             },
         };

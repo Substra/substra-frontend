@@ -184,7 +184,7 @@ loading, fetchList, logList, location, setOrder,
     getCurrentSortOption = () => {
         const {sortOptions, order} = this.props;
 
-        return sortOptions.find(option => isEqual(option.value, omit(order, ['prune']))) || sortOptions[0];
+        return sortOptions.find(option => isEqual(option.value, omit(order, ['pristine']))) || sortOptions[0];
     };
 
     render() {
