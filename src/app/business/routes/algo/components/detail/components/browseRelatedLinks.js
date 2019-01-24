@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {noop} from 'lodash';
 
 import challengeActions from '../../../../challenge/actions';
 import datasetActions from '../../../../dataset/actions';
 import modelActions from '../../../../model/actions';
 
-import {
-    BrowseRelatedLink,
-    BrowseRelatedLinksWrapper,
-} from '../../../../../common/components/detail/components/browseRelatedLinks';
+import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
+import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
 
 
 const BrowseRelatedLinks = ({
-                                item, unselectChallenge, unselectDataset, unselectModel, ...props
+                                item, unselectChallenge, unselectDataset, unselectModel,
+                                ...props
                             }) => {
     const filter = `algo:name:${item ? item.name : ''}`;
 
@@ -30,11 +30,17 @@ const BrowseRelatedLinks = ({
 
 BrowseRelatedLinks.propTypes = {
     item: PropTypes.shape(),
+    unselectChallenge: PropTypes.func,
+    unselectDataset: PropTypes.func,
+    unselectModel: PropTypes.func,
 };
 
 
 BrowseRelatedLinks.defaultProps = {
     item: null,
+    unselectChallenge: noop,
+    unselectDataset: noop,
+    unselectModel: noop,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -16,6 +16,7 @@ darkSkyBlue, slate, ice, white,
 } from '../../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../../assets/css/variables/font';
 
+
 const Ul = styled('ul')`
     display: flex;
     list-style: none;
@@ -96,6 +97,14 @@ class Nav extends React.Component {
         };
     };
 
+    handleClick = menu => (e) => {
+        const {unselect} = this.props;
+
+        if (unselect && unselect[menu]) {
+            unselect[menu]();
+        }
+    };
+
     render() {
         const {routes} = this.props;
         return (
@@ -115,6 +124,7 @@ class Nav extends React.Component {
                                     onMouseEnter={this.onMouseEnter(route)}
                                     onMouseLeave={this.onMouseLeave(route)}
                                     className={link(active, hovered)}
+                                    onClick={this.handleClick(menu)}
                                 >
                                     <Picto className={picto} color={color} />
                                     {menu}
@@ -132,12 +142,14 @@ Nav.defaultProps = {
     routes: [],
     location: {},
     orders: {},
+    unselect: null,
 };
 
 Nav.propTypes = {
     routes: PropTypes.arrayOf(PropTypes.string),
     location: PropTypes.shape({}),
     orders: PropTypes.shape({}),
+    unselect: PropTypes.shape(),
 };
 
 export default Nav;
