@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Link from 'redux-first-router-link';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
-import {omit} from 'lodash';
+import {omit, noop} from 'lodash';
 import {connect} from 'react-redux';
 
 const spacing = css`
@@ -32,10 +32,10 @@ class BrowseRelatedLink extends Component {
     };
 
     render() {
-        const {label} = this.props;
+        const {label, unselect} = this.props;
 
         return (
-            <Link to={this.getUrl()} className={spacing}>
+            <Link to={this.getUrl()} className={spacing} onClick={unselect}>
                 {label}
             </Link>
         );
@@ -47,6 +47,7 @@ BrowseRelatedLink.propTypes = {
     model: PropTypes.string,
     filter: PropTypes.string,
     order: PropTypes.shape(),
+    unselect: PropTypes.func,
 };
 
 BrowseRelatedLink.defaultProps = {
@@ -54,6 +55,7 @@ BrowseRelatedLink.defaultProps = {
     model: '',
     filter: '',
     order: null,
+    unselect: noop,
 };
 
 

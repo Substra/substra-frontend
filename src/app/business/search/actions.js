@@ -9,6 +9,9 @@ export const actionTypes = {
     isComplex: {
         SET: `${prefix}_IS_COMPLEX_SET`,
     },
+    updated: {
+        SET: `${prefix}_UPDATED_SET`,
+    },
 };
 
 
@@ -18,5 +21,8 @@ export default {
     },
     isComplex: {
         set: createAction(actionTypes.isComplex.SET),
+    },
+    updated: {
+        set: createAction(actionTypes.updated.SET),
     },
 };

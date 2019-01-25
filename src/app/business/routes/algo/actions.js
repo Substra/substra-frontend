@@ -7,6 +7,7 @@ export const actionTypes = {
     list: {
         ...createRequestActionTypes(`${prefix}_LIST`),
         SELECTED: `${prefix}_LIST_SELECTED`,
+        UNSELECT: `${prefix}_LIST_UNSELECT`,
     },
 
     item: {
@@ -28,6 +29,7 @@ export default {
         success: createAction(actionTypes.list.SUCCESS),
         failure: createAction(actionTypes.list.FAILURE),
         selected: createAction(actionTypes.list.SELECTED),
+        unselect: createAction(actionTypes.list.UNSELECT),
     },
 
     item: {

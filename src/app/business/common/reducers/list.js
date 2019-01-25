@@ -36,6 +36,11 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 ...state,
                 selected: payload.key,
             };
+        case actionTypes.list.UNSELECT:
+            return {
+                ...state,
+                selected: '',
+            };
         default:
             return state;
     }
