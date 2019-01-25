@@ -20,9 +20,9 @@ const BrowseRelatedLinks = ({
 
     return (
         <BrowseRelatedLinksWrapper {...props}>
-            <BrowseRelatedLink model="challenge" label="challenges" filter={filter} unselect={unselectChallenge}/>
-            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo}/>
-            <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel}/>
+            <BrowseRelatedLink model="challenge" label="challenges" filter={filter} unselect={unselectChallenge} />
+            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
+            <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </BrowseRelatedLinksWrapper>
     );
 };

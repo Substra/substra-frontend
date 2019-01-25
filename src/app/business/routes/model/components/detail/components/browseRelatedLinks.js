@@ -21,9 +21,9 @@ const BrowseRelatedLinks = ({
 
     return (
         <BrowseRelatedLinksWrapper {...props}>
-            <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo}/>
-            <BrowseRelatedLink model="challenge" label="challenge" filter={challengeFilter} unselect={unselectChallenge}/>
-            <BrowseRelatedLink model="dataset" label="dataset" filter={challengeFilter} unselect={unselectDataset}/>
+            <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo} />
+            <BrowseRelatedLink model="challenge" label="challenge" filter={challengeFilter} unselect={unselectChallenge} />
+            <BrowseRelatedLink model="dataset" label="dataset" filter={challengeFilter} unselect={unselectDataset} />
         </BrowseRelatedLinksWrapper>
     );
 };
