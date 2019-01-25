@@ -10,7 +10,7 @@ const redis_host = process.env.REDIS_HOST || 'localhost';
 const redis_port = process.env.REDIS_PORT || 6379;
 
 module.exports = {
-    appName: 'Substra Front',
+    appName: 'Owkestra',
     apps: {
         frontend: {
             apiUrl,
@@ -21,8 +21,7 @@ module.exports = {
                 debug: '/substrafront/build/ssr/client/',
             },
             meta: {
-                description: 'Substra Front',
-                keywords: 'substra hyperledger fabric blockchain',
+                description: 'Owkestra',
             },
             raven_url: ravenUrl,
         },

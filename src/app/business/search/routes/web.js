@@ -4,7 +4,6 @@ import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import {ReactReduxContext} from 'react-redux';
 
 import {PulseLoader} from 'react-spinners';
-import {coolBlue} from '../../../../../assets/css/variables/index';
 
 class Universal extends Component {
     constructor(props) {
@@ -14,10 +13,10 @@ class Universal extends Component {
 
     render() {
         const U = universal(import('../../search/components/index'), {
-            loading: <PulseLoader size={6} color={coolBlue} />,
+            loading: <PulseLoader size={6} />,
             onLoad: (module, info, {reduxcontext, ...props}) => {
                 // need all models reducers
-                // do not forget to pass the reduxcontext.store AND the withRedux wrapper to your imported redux component, or concurrent calls in the server part will fail
+                // do not forget to pass the reduxcontext.store AND the withInjectedReducers wrapper to your imported redux component, or concurrent calls in the server part will fail
 
                 if (reduxcontext && reduxcontext.store) {
                     injectSaga('challenge', module.challengeSagas, false, reduxcontext.store);

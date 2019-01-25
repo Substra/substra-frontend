@@ -1,33 +1,52 @@
 import React, {Component} from 'react';
-import styled from '@emotion/styled';
 import {css} from 'emotion';
 import PropTypes from 'prop-types';
+import {noop} from 'lodash';
 
+import {withStyles} from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import {spacingExtraSmall, spacingSmall} from '../../../../../assets/css/variables/spacing';
+import {fontLarge} from '../../../../../assets/css/variables/font';
 
 // modified textField for our needs
 import TextField from './overrides/textField';
 
 const parentChip = isLogic => css`
-    margin: 0 3px;
+    padding: ${spacingExtraSmall} ${spacingSmall};
+    display: inline-flex;
+    font-size: ${fontLarge};
     ${isLogic ? 'color: #1935a7;font-weight: bold' : 'inherit'};
 `;
 
-const ChildChip = styled(Chip)`
-    margin: 2px;
-`;
+const ChildChip = withStyles({
+    root: {
+        margin: '2px',
+        height: 'auto',
+        fontSize: fontLarge,
+        padding: `${spacingExtraSmall} ${spacingSmall}`,
+    },
+    label: {
+        padding: 0,
+    },
+    deleteIcon: {
+        fontSize: '20px',
+        margin: `0 -${spacingExtraSmall} 0 ${spacingExtraSmall}`,
+    },
+})(Chip);
 
 
 const styles = {
     inputWrapper: css`
+        margin: 2px 8px;
+        font-size: ${fontLarge};
         width: 80px;
         display: inline-block;
-        flex-grow: 0;        
-        //overflow: hidden;
+        flex-grow: 1;        
     `,
     input: css`
+        font-size: ${fontLarge};
         min-width: 450px;
-        height: 28px;
+        height: 30px;
     `,
 };
 
@@ -71,6 +90,7 @@ class SearchInput extends Component {
             inputValue,
             highlightedIndex,
             suggestions: this.getSuggestions,
+            disableUnderline: true,
         });
     };
 
@@ -94,9 +114,6 @@ class SearchInput extends Component {
 );
     }
 }
-
-const noop = () => {
-};
 
 SearchInput.defaultProps = {
     input: null,

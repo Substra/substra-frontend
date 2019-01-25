@@ -1,4 +1,4 @@
-/* global APP_NAME META_DESCRIPTION META_KEYWORDS */
+/* global APP_NAME META_DESCRIPTION */
 
 import React from 'react';
 import config from 'config';
@@ -104,7 +104,6 @@ const earlyChunk = (styles, stateJson) => `
           <meta name="mobile-web-app-capable" content="yes">
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
           <meta name="description" content="${META_DESCRIPTION}"/>
-          <meta name="keywords" content="${META_KEYWORDS}" />
           <meta name="theme-color" content="#000">
           <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
           <link rel="icon" sizes="192x192" href="launcher-icon-high-res.png">
@@ -153,7 +152,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     if (process.env.NODE_ENV === 'development') {
         mainStream = ctx.body;
     }
- else {
+    else {
         mainStream = createCacheStream(path);
         mainStream.pipe(ctx.body);
     }
@@ -209,7 +208,7 @@ export default ({clientStats, outputPath}) => async (ctx) => {
     if (process.env.NODE_ENV === 'development') {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
- else {
+    else {
         const reply = await exists(path);
 
         if (reply === 1) {
@@ -224,7 +223,7 @@ export default ({clientStats, outputPath}) => async (ctx) => {
                 ctx.body.end(reply);
             }
         }
- else {
+        else {
             console.log('CACHE KEY DOES NOT EXIST: ', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
         }

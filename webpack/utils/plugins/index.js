@@ -123,7 +123,7 @@ export default env => [
                     ['@babel/plugin-proposal-class-properties', {loose: true}],
                     '@babel/plugin-proposal-json-strings',
                     ...(PRODUCTION && env === 'client' ? [
-                        '@babel/plugin-transform-react-constant-elements',
+                        // '@babel/plugin-transform-react-constant-elements',
                         '@babel/plugin-transform-react-inline-elements',
                         'transform-react-remove-prop-types',
                     ] : []),

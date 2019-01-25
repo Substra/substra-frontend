@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
+import {noop} from 'lodash';
 
 import withAnalytics, {LOG_DOC} from '../../../analytics';
 import Book from '../../common/svg/book';
-import {slate} from '../../../../../assets/css/variables';
+import {slate} from '../../../../../assets/css/variables/colors';
 
 const picto = css`
     display: block;
-    margin: 0 auto 15px;
 `;
 
 class DocLink extends React.Component {
@@ -21,7 +21,7 @@ class DocLink extends React.Component {
         const {className} = this.props;
         return (
             <a
-                href="https://gitlab.com/owkin/substradoc"
+                href="https://gitlab.com/owkin/owkestra-doc"
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -38,8 +38,6 @@ DocLink.propTypes = {
     className: PropTypes.string,
     logDoc: PropTypes.func,
 };
-
-const noop = () => {};
 
 DocLink.defaultProps = {
     className: null,

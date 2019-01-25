@@ -5,6 +5,7 @@ import Downshift from 'downshift';
 import uuidv4 from 'uuid/v4';
 import {bindActionCreators} from 'redux';
 import decodeUriComponent from 'decode-uri-component';
+import {isEqual} from 'lodash';
 
 import {connect} from 'react-redux';
 
@@ -15,13 +16,16 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
+import IconButton from '../../common/components/detail/components/iconButton';
 
 import {
     getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
 } from '../selector';
 
 import actions from '../actions';
-import withRedux from '../../common/components/withRedux';
+import withInjectedReducers from '../../common/components/withInjectedReducers';
+import {spacingLarge} from '../../../../../assets/css/variables/spacing';
+import {ice, white} from '../../../../../assets/css/variables/colors';
 
 // export needed reducers and sagas
 export challengeReducer from '../../routes/challenge/reducers/index';
@@ -34,31 +38,33 @@ export modelReducer from '../../routes/model/reducers/index';
 export modelSagas from '../../routes/model/sagas/index';
 
 const Wrapper = styled('div')`
-    margin: 15px auto;
-    width: 90%;
+    margin: 0 ${spacingLarge};
 `;
 
-const middle = css`
-    display: inline-block;
-    vertical-align: middle;
+const InputWrapper = styled('div')`
+    border: 1px solid ${ice};
+    background-color: ${white};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
+    border-radius: 20px;
+    padding: 3px;
 `;
 
-const searchInput = css`
-    ${middle};
-    width: 95%;
+const searchInputWrapper = css`
+    flex-grow: 1;
 `;
 
-const clear = css`
-    ${middle};
-    cursor: pointer;
+const clearButton = css`
+    border: none;
     z-index: 1;
-    position: relative;
 `;
 
 // use getRootProps https://github.com/paypal/downshift#getrootprops
 const SearchInputWrapper = ({innerRef, ...rest}) => (
     <div
-        className={searchInput}
+        className={searchInputWrapper}
         ref={innerRef}
         {...rest}
     />
@@ -77,16 +83,16 @@ class Search extends Component {
 
     componentDidMount() {
         // init suggestions
-        const {location, setState} = this.props;
+        const {location, setState, selectedItem} = this.props;
 
-        let selectedItem = [];
+        let newSelectedItem = [];
         // fill search from state.location
         if (location.query && location.query.search) {
             // get groups separated by -OR-
             const groups = location.query.search.split('-OR-');
 
 
-            selectedItem = groups.reduce((p, group) => {
+            newSelectedItem = groups.reduce((p, group) => {
                 // create related chips
                 const chips = group.split(',').map((o) => {
                     const el = decodeUriComponent(o).split(':');
@@ -115,10 +121,12 @@ class Search extends Component {
             }, []).slice(0, -1); // remove last added `-OR-`
         }
 
-        setState({
-            selectedItem,
-            toUpdate: false,
-        });
+        if (!isEqual(selectedItem, newSelectedItem)) {
+            setState({
+                selectedItem: newSelectedItem,
+                toUpdate: false,
+            });
+        }
     }
 
     handleKeyDown = (event) => {
@@ -276,17 +284,21 @@ class Search extends Component {
 
         return (
             <Wrapper>
-                <Downshift
-                    inputValue={inputValue}
-                    onChange={this.handleChange}
-                    onOuterClick={this.handleOuterClick}
-                    selectedItem={selectedItem}
-                    itemToString={this.itemToString}
-                >
-                    {this.searchInput}
-                </Downshift>
+                <InputWrapper>
+                    <Downshift
+                        inputValue={inputValue}
+                        onChange={this.handleChange}
+                        onOuterClick={this.handleOuterClick}
+                        selectedItem={selectedItem}
+                        itemToString={this.itemToString}
+                    >
+                        {this.searchInput}
+                    </Downshift>
 
-                <ClearIcon className={clear} onClick={this.clear} />
+                    <IconButton onClick={this.clear} className={clearButton}>
+                        <ClearIcon />
+                    </IconButton>
+                </InputWrapper>
                 <ComplexSearchToggle />
             </Wrapper>
         );
@@ -320,4 +332,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 
-export default withRedux(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default withInjectedReducers(connect(mapStateToProps, mapDispatchToProps)(Search));

@@ -4,12 +4,8 @@ import universal from 'react-universal-component';
 import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import {ReactReduxContext} from 'react-redux';
 
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from './pulseLoader';
 
-import {coolBlue} from '../../../../../assets/css/variables/index';
-
-// need to pass different path for generating different chunks
-// https://github.com/faceyspacey/babel-plugin-universal-import#caveat
 class Universal extends Component {
     constructor(props) {
         super(props);
@@ -19,8 +15,10 @@ class Universal extends Component {
     render() {
         const {model} = this.props;
 
+        // need to pass different path for generating different chunks
+        // https://github.com/faceyspacey/babel-plugin-universal-import#caveat
         const U = universal(import(`../../routes/${model}/preload/index`), {
-            loading: <PulseLoader size={6} color={coolBlue} />,
+            loading: <PulseLoader />,
             ignoreBabelRename: true,
             onLoad: (module, info, {reduxcontext}) => {
                 if (reduxcontext && reduxcontext.store) {

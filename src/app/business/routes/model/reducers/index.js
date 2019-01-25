@@ -2,13 +2,17 @@ import list from '../../../common/reducers/list';
 import item from '../../../common/reducers/item';
 import persistent from '../../../common/reducers/persistent';
 import order from '../../../common/reducers/order';
-import chart from './chart';
 import {actionTypes} from '../actions';
+
+const orderInitialState = {
+    by: 'testData.perf',
+    direction: 'desc',
+    prune: true,
+};
 
 export default {
     list: list(actionTypes),
     item: item(actionTypes),
     persistent: persistent(actionTypes),
-    order: order(actionTypes),
-    chart: chart(actionTypes),
+    order: order(actionTypes, orderInitialState),
 };

@@ -1,7 +1,7 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {getItem, getOrderedResults} from '../../selector';
+import {getItem, getOrderedResults, getSelected} from '../../selector';
 import ListWithAnalytics from './analytics';
 
 const mapStateToProps = (state, {
@@ -10,9 +10,10 @@ const mapStateToProps = (state, {
     init: state[model].list.init,
     loading: state[model].list.loading,
     results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
+    selected: getSelected(state, model),
     order: state[model].order,
     item: getItem(state, model),
+    location: state.location,
     filterUp,
     downloadFile,
     addNotification,
@@ -25,5 +26,6 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     setOrder: actions.order.set,
 }, dispatch);
 
+export const withListRedux = Component => connect(mapStateToProps, mapDispatchToProps)(Component);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListWithAnalytics);
+export default withListRedux(ListWithAnalytics);

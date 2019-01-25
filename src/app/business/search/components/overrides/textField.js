@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import {noop} from 'lodash';
 
 import FormControl from '@material-ui/core/FormControl';
 
@@ -171,8 +172,6 @@ TextField.propTypes = {
         PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     ]),
 };
-
-const noop = () => {};
 
 TextField.defaultProps = {
     required: false,

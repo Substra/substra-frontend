@@ -8,12 +8,14 @@ class DatasetList extends List {
         e.preventDefault();
         e.stopPropagation();
 
-        const {addNotification, itemResults} = this.props;
+        const {addNotification, itemResults, logCopyFromList} = this.props;
+
         const item = itemResults.find(x => x.key === this.state.popover.item.key);
 
         if (item) {
             const inputValue = isArray(item[key]) ? item[key].join(',') : item[key];
             addNotification(inputValue, text);
+            logCopyFromList(this.state.popover.item.key);
         }
 
         this.popoverHandleClose();

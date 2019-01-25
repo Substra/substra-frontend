@@ -1,3 +1,13 @@
+@import 'lato';
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 html, body, #root, #root > div {
     height: 100%;
 }
@@ -5,10 +15,10 @@ html, body, #root, #root > div {
 body {
     margin: 0;
     padding: 0;
-    background: #fefefe;
+    background: #f7f8f8;
     color: #4b6073;
-    font-family: 'nunitoextralight', sans-serif;
-    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
     letter-spacing: 0.5px;
 
     -webkit-font-smoothing: antialiased; /* This needs to be set or some font faced fonts look bold on Mac in Chrome/Webkit based browsers. */
@@ -24,77 +34,4 @@ html [type="button"], /* 1 */
 [type="reset"],
 [type="submit"] {
     -webkit-appearance: none; /* 2 */
-}
-
-
-@font-face {
-    font-family: 'nunitoblack';
-    src: url('../fonts/nunito/nunito-black-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-black-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitobold';
-    src: url('../fonts/nunito/nunito-bold-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-bold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitoextrabold';
-    src: url('../fonts/nunito/nunito-extrabold-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-extrabold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitoextralight';
-    src: url('../fonts/nunito/nunito-extralight-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-extralight-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitolight';
-    src: url('../fonts/nunito/nunito-light-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-light-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitomedium';
-    src: url('../fonts/nunito/nunito-medium-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-medium-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitoregular';
-    src: url('../fonts/nunito/nunito-regular-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'nunitosemibold';
-    src: url('../fonts/nunito/nunito-semibold-webfont.woff2') format('woff2'),
-    url('../fonts/nunito/nunito-semibold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
 }

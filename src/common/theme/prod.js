@@ -7,6 +7,8 @@ const theme = createMuiTheme({
     },
     typography: {
         useNextVariants: true,
+        fontFamily: 'Lato',
+        fontSize: 12,
     },
 });
 

@@ -1,11 +1,13 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {getOrderedResults} from '../../../model/selector';
-import {getItem} from '../../../../common/selector';
-import Popover from './components/popover';
+import {getItem, getSelected, getOrderedResults} from '../../../../common/selector';
+import PopoverItems from './components/popoverItems';
 
-import ListWithAnalytics from './analytics';
+import {withListAnalytics} from '../../../../common/components/list/analytics';
+import List from './index';
+
+const ListWithAnalytics = withListAnalytics(List);
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, download, addNotification, more,
@@ -15,16 +17,17 @@ const mapStateToProps = (state, {
     itemLoading: state[model].item.loading,
     itemResults: state[model].item.results,
     results: getOrderedResults(state, model),
-    selected: state[model].list.selected,
+    selected: getSelected(state, model),
     order: state[model].order,
     item: getItem(state, model),
+    location: state.location,
     model,
     download,
     filterUp,
     downloadFile,
     addNotification,
     more,
-    Popover,
+    PopoverItems,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({

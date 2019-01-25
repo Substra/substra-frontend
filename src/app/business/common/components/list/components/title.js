@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {css} from 'emotion';
+import {fontLarge} from '../../../../../../../assets/css/variables/font';
+
+export const title = css`
+    font-weight: bold;
+    font-size: ${fontLarge};
+`;
 
 const Title = ({o}) => (
-    <h4>
+    <div className={title}>
         {o && o.name}
-    </h4>
+    </div>
 );
 
 Title.propTypes = {
