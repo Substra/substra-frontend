@@ -13,6 +13,7 @@ const mapStateToProps = (state, {
     selected: getSelected(state, model),
     order: state[model].order,
     item: getItem(state, model),
+    location: state.location,
     filterUp,
     downloadFile,
     addNotification,

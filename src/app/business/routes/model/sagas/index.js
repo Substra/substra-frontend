@@ -8,7 +8,9 @@ import {saveAs} from 'file-saver';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
-import {fetchListSaga, fetchPersistentSaga, fetchItemSaga} from '../../../common/sagas/index';
+import {
+fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+} from '../../../common/sagas';
 import {basic} from '../../../../entities/fetchEntities';
 
 function* fetchList(request) {
@@ -62,6 +64,8 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
 
         takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+
+        takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);
 };
 

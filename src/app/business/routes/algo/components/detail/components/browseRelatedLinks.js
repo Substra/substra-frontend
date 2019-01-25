@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    BrowseRelatedLink,
-    BrowseRelatedLinksWrapper,
-} from '../../../../../common/components/detail/components/browseRelatedLinks';
+import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
+import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
 
-const BrowseRelatedLinks = ({item, ...rest}) => {
-    const filter = `algo:name:${item.name}`;
+const BrowseRelatedLinks = ({item, ...props}) => {
+    const filter = `algo:name:${item ? item.name : ''}`;
 
     return (
-        <BrowseRelatedLinksWrapper {...rest}>
+        <BrowseRelatedLinksWrapper {...props}>
             <BrowseRelatedLink model="challenge" label="challenge" filter={filter} />
             <BrowseRelatedLink model="dataset" label="dataset" filter={filter} />
             <BrowseRelatedLink model="model" label="models" filter={filter} />
@@ -22,8 +20,9 @@ BrowseRelatedLinks.propTypes = {
     item: PropTypes.shape(),
 };
 
+
 BrowseRelatedLinks.defaultProps = {
-    item: {},
+    item: null,
 };
 
 export default BrowseRelatedLinks;
