@@ -12,6 +12,14 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-build
+      args:
+        - REDIS_HOST
+        - FRONT_AUTH_USER
+        - FRONT_AUTH_PASSWORD
+        - BACK_AUTH_USER
+        - BACK_AUTH_PASSWORD
+        - API_URL
+        - FRONT_RAVEN_URL
     container_name: substrafront
     hostname: substrafront
     depends_on:
