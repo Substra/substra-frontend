@@ -16,6 +16,13 @@ COPY packages/plugins /usr/src/app/packages/plugins
 COPY src /usr/src/app/src
 COPY webpack /usr/src/app/webpack
 
+ARG REDIS_HOST
+ARG FRONT_AUTH_USER
+ARG FRONT_AUTH_PASSWORD
+ARG BACK_AUTH_USER
+ARG BACK_AUTH_PASSWORD
+ARG API_URL
+ARG FRONT_RAVEN_URL
 
 RUN yarn install
 
