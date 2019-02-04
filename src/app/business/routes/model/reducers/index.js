@@ -7,7 +7,7 @@ import {actionTypes} from '../actions';
 const orderInitialState = {
     by: 'testData.perf',
     direction: 'desc',
-    prune: true,
+    pristine: true,
 };
 
 export default {
