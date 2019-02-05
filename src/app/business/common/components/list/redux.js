@@ -11,9 +11,7 @@ const mapStateToProps = (state, {
     loading: state[model].list.loading,
     results: getOrderedResults(state, model),
     selected: getSelected(state, model),
-    order: state[model].order,
     item: getItem(state, model),
-    location: state.location,
     filterUp,
     downloadFile,
     addNotification,
@@ -23,7 +21,6 @@ const mapStateToProps = (state, {
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     fetchList: actions.list.request,
     setSelected: actions.list.selected,
-    setOrder: actions.order.set,
 }, dispatch);
 
 export const withListRedux = Component => connect(mapStateToProps, mapDispatchToProps)(Component);
