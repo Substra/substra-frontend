@@ -48,43 +48,6 @@ const select = css`
 `;
 
 export class Sort extends React.Component {
-    handleChange = (event) => {
-        const {setOrder, options} = this.props;
-
-        const {value: {by, direction}} = options.find(o => o.label === event.target.value);
-
-        setOrder({by, direction});
-    };
-
-    render() {
-        const {current, options} = this.props;
-
-        return (
-            <Wrapper>
-                <Label htmlFor="sort">Sort by</Label>
-                <Select value={current ? current.label : ''} onChange={this.handleChange} className={select}>
-                    {options.map(option => (
-                        <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
-                    ))}
-                </Select>
-            </Wrapper>
-        );
-    }
-}
-
-Sort.propTypes = {
-    setOrder: PropTypes.func,
-    current: PropTypes.shape(),
-    options: PropTypes.arrayOf(PropTypes.shape()),
-};
-
-Sort.defaultProps = {
-    setOrder: noop,
-    current: null,
-    options: [],
-};
-
-export class URLSyncedSort extends React.Component {
     componentDidMount() {
         const {location, setOrder} = this.props;
 
@@ -103,20 +66,40 @@ export class URLSyncedSort extends React.Component {
         return options.find(option => isEqual(option.value, omit(order, ['pristine']))) || options[0];
     };
 
-    render() {
+
+    handleChange = (event) => {
         const {setOrder, options} = this.props;
-        return <Sort current={this.getCurrentOption()} setOrder={setOrder} options={options} />;
+
+        const {value: {by, direction}} = options.find(o => o.label === event.target.value);
+
+        setOrder({by, direction});
+    };
+
+    render() {
+        const {options} = this.props;
+        const currentOption = this.getCurrentOption();
+
+        return (
+            <Wrapper>
+                <Label htmlFor="sort">Sort by</Label>
+                <Select value={currentOption ? currentOption.label : ''} onChange={this.handleChange} className={select}>
+                    {options.map(option => (
+                        <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
+                    ))}
+                </Select>
+            </Wrapper>
+        );
     }
 }
 
-URLSyncedSort.propTypes = {
+Sort.propTypes = {
     setOrder: PropTypes.func,
     order: PropTypes.shape(),
     options: PropTypes.arrayOf(PropTypes.shape()),
     location: PropTypes.shape(),
 };
 
-URLSyncedSort.defaultProps = {
+Sort.defaultProps = {
     setOrder: noop,
     order: null,
     options: [],
@@ -132,18 +115,18 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     setOrder: actions.order.set,
 }, dispatch);
 
-export const ReduxURLSyncedSort = connect(mapStateToProps, mapDispatchToProps)(URLSyncedSort);
+export const ReduxSort = connect(mapStateToProps, mapDispatchToProps)(Sort);
 
 const defaultOptions = [
     {value: {by: 'name', direction: 'asc'}, label: 'NAME (A-Z)'},
     {value: {by: 'name', direction: 'desc'}, label: 'NAME (Z-A)'},
 ];
 
-const DefaultReduxURLSyncedSort = ({model, actions}) => <ReduxURLSyncedSort options={defaultOptions} model={model} actions={actions} />;
+const DefaultReduxSort = ({model, actions}) => <ReduxSort options={defaultOptions} model={model} actions={actions} />;
 
-DefaultReduxURLSyncedSort.propTypes = {
+DefaultReduxSort.propTypes = {
     actions: PropTypes.shape().isRequired,
     model: PropTypes.string.isRequired,
 };
 
-export default DefaultReduxURLSyncedSort;
+export default DefaultReduxSort;

@@ -17,11 +17,11 @@ import sinonChai from 'sinon-chai';
 import {setOrderSaga} from '../../../sagas';
 import orderReducer from '../../../reducers/order';
 
-import {Sort, URLSyncedSort, ReduxURLSyncedSort} from './sort';
+import {Sort, ReduxSort} from './sort';
 
 chai.use(sinonChai);
 
-describe('Sort, URLSyncedSort, ReduxURLSyncedSort', () => {
+describe('Sort, ReduxSort', () => {
     const options = [
         {label: 'Label A', value: {by: 'by A', direction: 'direction A'}},
         {label: 'Label B', value: {by: 'by B', direction: 'direction B'}},
@@ -29,54 +29,11 @@ describe('Sort, URLSyncedSort, ReduxURLSyncedSort', () => {
 
     const setup = () => {
         const setOrder = sinon.spy();
-        const wrapper = mount(<Sort options={options} setOrder={setOrder} />);
+        const wrapper = mount(<Sort options={options} setOrder={setOrder} location={{}} />);
         return {wrapper, setOrder, options};
     };
 
-    it('calls setOrder with new selected value', () => {
-        const {wrapper, setOrder, options} = setup();
-
-        // select exists and has both options
-        expect(wrapper.exists('select')).to.be.true;
-        const optionWrappers = wrapper.find('option');
-        expect(optionWrappers).to.have.lengthOf(2);
-        expect(optionWrappers.at(0).text()).to.equal('Label A');
-        expect(optionWrappers.at(1).text()).to.equal('Label B');
-
-        // select is passed to setOrder
-        const select = wrapper.find('select');
-        select.simulate('change', {target: {value: optionWrappers.get(0).props.value}});
-        expect(setOrder).to.have.been.calledOnceWith(options[0].value);
-    });
-
-    it('selects the default value', () => {
-        const {wrapper, options} = setup();
-
-        expect(wrapper.find('select').props().value).to.equal('');
-
-        wrapper.setProps({current: options[0]});
-        expect(wrapper.find('select').props().value).to.equal(options[0].label);
-
-        wrapper.setProps({current: options[1]});
-        expect(wrapper.find('select').props().value).to.equal(options[1].label);
-    });
-
-    it('syncs with the location at mount', () => {
-        let setOrder,
-location;
-
-        setOrder = sinon.spy();
-        location = {query: {by: 'by A', direction: 'direction A'}};
-        mount(<URLSyncedSort options={options} setOrder={setOrder} location={location} />);
-        expect(setOrder).to.have.been.calledOnceWith({by: 'by A', direction: 'direction A'});
-
-        setOrder = sinon.spy();
-        location = {};
-        mount(<URLSyncedSort options={options} setOrder={setOrder} location={location} />);
-        expect(setOrder).to.have.not.been.called;
-    });
-
-    it('updates location with new selected value', () => {
+    const reduxSetup = () => {
         // setup routes
         const routesMap = {
             DUMMY: '/dummyModel',
@@ -110,7 +67,6 @@ location;
         };
         const sagaMiddleWare = createSagaMiddleware();
 
-
         // setup store
         const defaultState = {
             dummyModel: {
@@ -128,7 +84,61 @@ location;
         const store = createStore(rootReducer, defaultState, compose(connectedRoutes.enhancer, middlewares));
         sagaMiddleWare.run(sagas);
 
-        const wrapper = mount(<Provider store={store}><ReduxURLSyncedSort options={options} model="dummyModel" actions={actions} /></Provider>);
+        // mount component
+        const wrapper = mount(<Provider store={store}><ReduxSort options={options} model="dummyModel" actions={actions} /></Provider>);
+
+        return {
+wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
+};
+    };
+
+    it('calls setOrder with new selected value', () => {
+        const {wrapper, setOrder, options} = setup();
+
+        // select exists and has both options
+        expect(wrapper.exists('select')).to.be.true;
+        const optionWrappers = wrapper.find('option');
+        expect(optionWrappers).to.have.lengthOf(2);
+        expect(optionWrappers.at(0).text()).to.equal('Label A');
+        expect(optionWrappers.at(1).text()).to.equal('Label B');
+
+        // select is passed to setOrder
+        const select = wrapper.find('select');
+        select.simulate('change', {target: {value: optionWrappers.get(0).props.value}});
+        expect(setOrder).to.have.been.calledOnceWith(options[0].value);
+    });
+
+    it('selects the default value', () => {
+        const {wrapper, options} = setup();
+
+        expect(wrapper.find('select').props().value).to.equal(options[0].label);
+
+        wrapper.setProps({order: options[1].value});
+        expect(wrapper.find('select').props().value).to.equal(options[1].label);
+
+        wrapper.setProps({order: options[0].value});
+        expect(wrapper.find('select').props().value).to.equal(options[0].label);
+    });
+
+    it('syncs with the location at mount', () => {
+        let setOrder,
+            location;
+
+        setOrder = sinon.spy();
+        location = {query: {by: 'by A', direction: 'direction A'}};
+        mount(<Sort options={options} setOrder={setOrder} location={location} />);
+        expect(setOrder).to.have.been.calledOnceWith({by: 'by A', direction: 'direction A'});
+
+        setOrder = sinon.spy();
+        location = {};
+        mount(<Sort options={options} setOrder={setOrder} location={location} />);
+        expect(setOrder).to.have.not.been.called;
+    });
+
+    it('updates location with new selected value', () => {
+        const {
+wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
+} = reduxSetup();
 
         // simulate select new value
         const select = wrapper.find('select');
