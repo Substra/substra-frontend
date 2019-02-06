@@ -83,7 +83,7 @@ const _createLogFunctionWithEntityType = action => state => (entityType) => {
     });
 };
 
-const logFunctions = {
+export const logFunctions = {
     [LOG_LIST]: _createLogFunction('List'),
     [LOG_DETAIL]: _createLogFunctionWithEntityKey('Detail'),
     [LOG_FILTER_FROM_DETAIL]: _createLogFunctionWithEntityKey('Filter from detail'),
