@@ -5,7 +5,7 @@ const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
         <KeyMetadata item={item} addNotification={addNotification} model={model} />
         <SingleMetadata label="Status" value={item.status} />
-        <SingleMetadata label="Score" value={`${item.testData.perf}`} />
+        <SingleMetadata label="Score" value={`${item.data.perf}`} />
     </MetadataWrapper>
 );
 
