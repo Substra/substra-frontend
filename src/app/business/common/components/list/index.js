@@ -229,7 +229,8 @@ loading, fetchList, logList, location, setOrder,
                                 <Title o={o} />
                                 {Metadata && <Metadata o={o} />}
                             </Item>
-                            ))}
+                            ))
+                        }
                         {!o.length && (
                         <span>
                                     No items for this filter group

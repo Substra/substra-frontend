@@ -16,8 +16,8 @@ const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectChallenge, unselectDataset,
                                 ...props
                             }) => {
-    const algoFilter = `algo:name:${item && item.algo ? item.algo.name : ''}`;
-    const challengeFilter = `challenge:key:${item && item.challenge ? item.challenge.hash : ''}`;
+    const algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? item.traintuple.algo.name : ''}`;
+    const challengeFilter = `challenge:key:${item && item.traintuple && item.traintuple.challenge ? item.traintuple.challenge.hash : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...props}>

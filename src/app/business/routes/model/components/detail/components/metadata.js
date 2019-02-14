@@ -3,9 +3,9 @@ import BaseMetadata, {SingleMetadata, KeyMetadata, MetadataWrapper} from '../../
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
-        <KeyMetadata item={item} addNotification={addNotification} model={model} />
-        <SingleMetadata label="Status" value={item.status} />
-        <SingleMetadata label="Score" value={`${item.data.perf}`} />
+        <KeyMetadata item_key={item.traintuple.key} addNotification={addNotification} model={model} />
+        <SingleMetadata label="Status" value={item.traintuple.status} />
+        {item.testtuple && <SingleMetadata label="Score" value={`${item.testtuple.data.perf}`} />}
     </MetadataWrapper>
 );
 

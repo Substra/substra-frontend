@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {title} from '../../../../../common/components/list/components/title';
 
-export const getTitle = o => (o && o.algo ? `${o.algo.name}-${o.key.slice(0, 4)}` : '');
+export const getTitle = o => (o && o.traintuple && o.traintuple.algo ? `${o.traintuple.algo.name}-${o.key.slice(0, 4)}` : '');
 
 const Title = ({o}) => <div className={title}>{getTitle(o)}</div>;
 

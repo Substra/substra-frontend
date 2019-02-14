@@ -9,7 +9,7 @@ import Detail from './detail';
 
 const download = {
     filename: 'model',
-    address: ['outModel', 'storageAddress'],
+    address: ['traintuple', 'outModel', 'storageAddress'],
     text: 'Download outModel',
 };
 
