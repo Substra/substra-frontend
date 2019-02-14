@@ -71,14 +71,14 @@ export const MetadataInterface = {
     },
 };
 
-export const KeyMetadata = ({item, addNotification, model}) => (
+export const KeyMetadata = ({item_key, addNotification, model}) => (
     <SingleMetadata label="key">
-        {item.key}
+        {item_key}
         <Clipboard
             width={15}
             className={clipboard}
             color={blueGrey}
-            onClick={addNotification(item.key, `${capitalize(model)}'s key successfully copied to clipboard!`)}
+            onClick={addNotification(item_key, `${capitalize(model)}'s key successfully copied to clipboard!`)}
         />
     </SingleMetadata>
 );
@@ -89,7 +89,7 @@ KeyMetadata.defaultProps = MetadataInterface.defaultProps;
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
-        <KeyMetadata item={item} addNotification={addNotification} model={model} />
+        <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
     </MetadataWrapper>
 );
 

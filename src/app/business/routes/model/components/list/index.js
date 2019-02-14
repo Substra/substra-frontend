@@ -1,7 +1,7 @@
 import React from 'react';
 
 import List from '../../../../common/components/list';
-import {withListRedux} from '../../../../common/components/list/redux';
+import {withListRedux} from './redux';
 import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Metadata from './components/metadata';
@@ -13,7 +13,7 @@ class ModelList extends List {
         e.stopPropagation();
 
         const {filterUp, logFilterFromList} = this.props;
-        const {popover: {item: {key}}} = this.state;
+        const {popover: {item: {traintuple: {key}}}} = this.state;
 
         filterUp(key);
         logFilterFromList(key);
@@ -23,8 +23,8 @@ class ModelList extends List {
 }
 
 const sortOptions = [
-    {value: {by: 'testData.perf', direction: 'asc'}, label: 'LOWEST SCORE'},
-    {value: {by: 'testData.perf', direction: 'desc'}, label: 'HIGHEST SCORE'},
+    {value: {by: 'testtuple.data.perf', direction: 'asc'}, label: 'LOWEST SCORE'},
+    {value: {by: 'testtuple.data.perf', direction: 'desc'}, label: 'HIGHEST SCORE'},
 ];
 
 const ModelListWithLocalComponents = props => (
