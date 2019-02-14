@@ -22,7 +22,7 @@ const dataKeys = css`
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
-        <KeyMetadata item={item} addNotification={addNotification} model={model} />
+        <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
         {item && item.trainDataKeys && (
             <SingleMetadata label="Data keys">
                 <span

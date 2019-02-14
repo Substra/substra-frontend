@@ -8,7 +8,7 @@ import {
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
-        <KeyMetadata item={item} addNotification={addNotification} model={model} />
+        <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
         <SingleMetadata label="Metric" value={item.metrics.name} />
     </MetadataWrapper>
 );

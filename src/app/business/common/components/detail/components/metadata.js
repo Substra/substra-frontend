@@ -60,12 +60,12 @@ SingleMetadata.defaultProps = {
 
 export const MetadataInterface = {
     propTypes: {
-        item: PropTypes.shape({}),
+        item_key: PropTypes.string,
         addNotification: PropTypes.func,
         model: PropTypes.string,
     },
     defaultProps: {
-        item: null,
+        item_key: '',
         addNotification: noop,
         model: '',
     },
