@@ -9,7 +9,7 @@ const ModelActions = ({
 filterUp, downloadFile, model, item,
 }) => (
     <div className={actions}>
-        {item && item.endModel && <DownloadAction downloadFile={downloadFile} model={model} />}
+        {item && item.traintuple.outModel && <DownloadAction downloadFile={downloadFile} model={model} />}
         <FilterAction filterUp={filterUp} />
     </div>
 );

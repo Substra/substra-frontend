@@ -2,7 +2,7 @@ import {
 orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
-import createDeepEqualSelector from '../../utils/selector';
+import createDeepEqualSelector from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
@@ -17,21 +17,25 @@ const itemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
 const isComplex = state => state.search.isComplex;
 
-export const getSelectedResult = createDeepEqualSelector([results, selected],
-    (results, selected) => uniqBy(flatten(results), 'key').find(o => o.key === selected),
+const enhancedResults = createDeepEqualSelector([results],
+    results => results.map(o => o.map(o => ({...o, key: o.traintuple.key}))),
+);
+
+export const getSelectedResult = createDeepEqualSelector([enhancedResults, selected],
+    (results, selected) => uniqBy(flatten(results), o => o.traintuple.key).find(o => o.traintuple.key === selected),
 );
 
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
-export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.key);
+export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.traintuple.key);
 
-// will get deep attribute from object, example if 'testData.perf' is passed as a string, it will get o.testData.perf
+// will get deep attribute from object, example if 'testtuple.data.perf' is passed as a string, it will get o.testtuple.data.perf
 const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
-export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
+export const getOrderedResults = createDeepEqualSelector([enhancedResults, order, isComplex],
     (results, order, isComplex) => {
         const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [deepOrder(order)], [order.direction]) : o) : [];
 
-        return isComplex ? res : [uniqBy(flatten(res), 'key')];
+        return isComplex ? res : [uniqBy(flatten(res), o => o.traintuple.key)];
     },
 );
 

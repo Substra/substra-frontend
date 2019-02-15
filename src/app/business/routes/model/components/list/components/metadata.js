@@ -14,10 +14,10 @@ const ScoreWrapper = styled('div')`
 
 const Metadata = ({o}) => (
     <div className={metadata}>
-        <SingleMetadata label="Status" value={o.status} />
-        {o && o.testData && (
+        <SingleMetadata label="Status" value={o.traintuple.status} />
+        {o && o.testtuple && o.testtuple.data && (
             <ScoreWrapper>
-                <SingleMetadata label="Score" value={o.testData.perf} />
+                <SingleMetadata label="Score" value={o.testtuple.data.perf} />
             </ScoreWrapper>
         )}
     </div>

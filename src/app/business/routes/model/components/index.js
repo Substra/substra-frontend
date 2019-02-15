@@ -9,8 +9,8 @@ import Detail from './detail';
 
 const download = {
     filename: 'model',
-    address: ['endModel', 'storageAddress'],
-    text: 'Download endModel',
+    address: ['traintuple', 'outModel', 'storageAddress'],
+    text: 'Download outModel',
 };
 
 const Model = () => (
