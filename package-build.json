@@ -22,5 +22,8 @@
     "scripts": {
         "build:main": "cd packages/ssr && npm run build:main",
         "serve": "cd packages/ssr && npm run serve"
+    },
+    "dependencies": {
+        "react-ga": "2.5.6"
     }
 }
