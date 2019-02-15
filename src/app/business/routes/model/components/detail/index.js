@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {noop} from 'lodash';
 import Detail from '../../../../common/components/detail';
-import {withDetailRedux} from '../../../../common/components/detail/redux';
+import {withDetailRedux} from './redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import Title from './components/title';
 import Traintuple from './components/traintuple';

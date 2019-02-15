@@ -10,7 +10,7 @@ model, filterUp, addNotification, downloadFile, download, item,
     <PopList>
         <FilterUpPopItem filterUp={filterUp} />
         <CopyPopItem model={model} addNotification={addNotification} />
-        {item && item.endModel && <DownloadPopItem downloadFile={downloadFile} download={download} />}
+        {item && item.traintuple.outModel && <DownloadPopItem downloadFile={downloadFile} download={download} />}
     </PopList>
 );
 
