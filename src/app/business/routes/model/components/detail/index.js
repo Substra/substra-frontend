@@ -18,8 +18,8 @@ class ModelDetail extends Detail {
         e.stopPropagation();
 
         const {item, filterUp, logFilterFromDetail} = this.props;
-        filterUp(item.key);
-        logFilterFromDetail(item.key);
+        filterUp(item.traintuple.outModel.hash);
+        logFilterFromDetail(item.traintuple.outModel.hash);
     };
 }
 
