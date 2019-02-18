@@ -29,6 +29,7 @@ module.exports = {
         "no-underscore-dangle": [0],
         "import/no-webpack-loader-syntax": [0],
         "import/no-unresolved": [0],
+        "import/no-useless-path-segments": [0], // for react-universal-component lazy loading
         "arrow-parens": [2],
         "max-len": [0],
         "no-unused-vars": [2, {"args": "none"}],
