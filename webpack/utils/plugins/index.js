@@ -127,7 +127,10 @@ export default env => [
                         '@babel/plugin-transform-react-inline-elements',
                         'transform-react-remove-prop-types',
                     ] : []),
-                    ...(DEVELOPMENT ? ['react-hot-loader/babel'] : []),
+                    ...(DEVELOPMENT ? [
+                        'react-hot-loader/babel',
+                        'babel-plugin-redux-saga',
+                    ] : []),
                 ],
                 presets: [
                     // do not transpil es6 import into require, webpack needs to see the import and exports statements to do tree-shaking
