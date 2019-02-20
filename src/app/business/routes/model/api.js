@@ -1,7 +1,7 @@
-import {fetchEntitiesFactory, fetchEntityFactory} from '../../../entities/fetchEntities';
+import {fetchEntitiesFactory, fetchEntitiesByPathFactory} from '../../../entities/fetchEntities';
 
 export const fetchListApi = fetchEntitiesFactory('model');
-export const fetchItemApi = fetchEntityFactory('model');
+export const fetchItemApi = fetchEntitiesByPathFactory('model', 'details');
 
 export default {
     fetchListApi,
