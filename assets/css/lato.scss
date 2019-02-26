@@ -16,12 +16,14 @@
     @include font-face($variant + 'Italic', italic, $weight);
 }
 
-@include font-face('Black', normal, 900);
-@include font-face('Heavy', normal, 800);
+// Styles not actually used in the codebase are commented out
+
+//@include font-face('Black', normal, 900);
+//@include font-face('Heavy', normal, 800);
 @include font-face('Bold', normal, 700);
-@include font-face('Semibold', normal, 600);
-@include font-face('Medium', normal, 500);
+//@include font-face('Semibold', normal, 600);
+//@include font-face('Medium', normal, 500);
 @include font-face('Regular', normal, 400);
-@include font-face('Light', normal, 300);
-@include font-face('Thin', normal, 200);
-@include font-face('Hairline', normal, 100);
+//@include font-face('Light', normal, 300);
+//@include font-face('Thin', normal, 200);
+//@include font-face('Hairline', normal, 100);
