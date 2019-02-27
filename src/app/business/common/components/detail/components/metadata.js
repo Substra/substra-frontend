@@ -19,7 +19,7 @@ export const MetadataWrapper = styled('dl')`
 const dt = css`
     text-transform: uppercase;
     font-weight: bold;
-    width: 90px;
+    width: 120px;
     margin-bottom: ${spacingExtraSmall};
     padding: 0;
 `;
@@ -27,7 +27,7 @@ const dt = css`
 const dd = css`
     position: relative;
     margin-left: 0;
-    width: calc(100% - 90px);
+    width: calc(100% - 120px);
     margin-bottom: ${spacingExtraSmall};
 `;
 
