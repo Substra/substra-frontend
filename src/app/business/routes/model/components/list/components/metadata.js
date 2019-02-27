@@ -15,7 +15,7 @@ const ScoreWrapper = styled('div')`
 const Metadata = ({o}) => (
     <div className={metadata}>
         <SingleMetadata label="Status" value={o.traintuple.status} />
-        {o && o.testtuple && o.testtuple.data && (
+        {o && o.testtuple && o.testtuple.status === 'done' && o.testtuple.data && (
             <ScoreWrapper>
                 <SingleMetadata label="Score" value={o.testtuple.data.perf} />
             </ScoreWrapper>
