@@ -31,9 +31,30 @@ export const getSelected = createDeepEqualSelector([getSelectedResult], result =
 // will get deep attribute from object, example if 'testtuple.data.perf' is passed as a string, it will get o.testtuple.data.perf
 const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
+const modelOrder = order => (o) => {
+    const getActualScore = deepOrder(order);
+    const scoreByStatus = {
+        failed: {null: -7},
+        todo: {null: -6},
+        doing: {null: -5},
+        done: {
+            null: -4,
+            failed: -3,
+            todo: -2,
+            doing: -1,
+            done: getActualScore,
+        },
+    };
+    const score = scoreByStatus[o.traintuple.status][o.testtuple ? o.testtuple.status : 'null'];
+    if (typeof score === 'function') {
+        return score(o);
+    }
+    return score;
+};
+
 export const getOrderedResults = createDeepEqualSelector([enhancedResults, order, isComplex],
     (results, order, isComplex) => {
-        const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [deepOrder(order)], [order.direction]) : o) : [];
+        const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [modelOrder(order)], [order.direction]) : o) : [];
 
         return isComplex ? res : [uniqBy(flatten(res), o => o.traintuple.key)];
     },
