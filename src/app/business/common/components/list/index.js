@@ -14,7 +14,7 @@ import Actions from './components/actions';
 
 import {iceBlueTwo, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
 import {PanelWrapper, PanelTop, PanelContent} from '../panel';
-import IconButton from '../detail/components/iconButton';
+import IconButton from '../iconButton';
 
 import More from '../../svg/more-vertical';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';

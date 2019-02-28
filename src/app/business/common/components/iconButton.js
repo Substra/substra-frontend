@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {ice} from '../../../../../../../assets/css/variables/colors';
+import {ice} from '../../../../../assets/css/variables/colors';
 
 export default styled.button`
     display: inline-flex;
