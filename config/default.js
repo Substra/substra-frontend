@@ -31,6 +31,7 @@ module.exports = {
         fullchain: encryption_fullchain,
     },
     credentials: {
+        enabled: false,
         SUBSTRABAC_USER,
         SUBSTRABAC_PASSWORD,
     },
