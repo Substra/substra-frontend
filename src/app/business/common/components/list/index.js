@@ -17,6 +17,7 @@ import PanelTop from '../panelTop';
 
 import More from '../../svg/more-vertical';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
+import NoItemFound from './components/noItemFound';
 
 const PulseLoaderWrapper = styled('div')`
     margin: ${spacingNormal};
@@ -231,11 +232,7 @@ loading, fetchList, logList, location, setOrder,
                             </Item>
                             ))
                         }
-                        {!o.length && (
-                        <span>
-                                    No items for this filter group
-                        </span>
-)}
+                        {!o.length && <NoItemFound model={model} />}
                     </div>
 ))
                 )}
