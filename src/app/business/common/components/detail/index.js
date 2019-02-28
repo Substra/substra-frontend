@@ -6,7 +6,7 @@ import {noop} from 'lodash';
 
 import Title from './components/title';
 import Section, {section} from './components/section';
-import PanelTop from '../panelTop';
+import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
 import Description from './components/description';
@@ -43,17 +43,18 @@ class Detail extends React.Component {
 
         return (
             <div className={className}>
-                <PanelTop className={css`justify-content: space-between;`}>
-                    <Title item={item} />
-                    <Actions
-                        downloadFile={this.downloadFile}
-                        filterUp={this.filterUp(item.name)}
-                        model={model}
-                        item={item}
-                    />
-                </PanelTop>
-                {item && (
-                    <React.Fragment>
+                <PanelWrapper>
+                    <PanelTop className={css`justify-content: space-between;`}>
+                        <Title item={item} />
+                        <Actions
+                            downloadFile={this.downloadFile}
+                            filterUp={this.filterUp(item.name)}
+                            model={model}
+                            item={item}
+                        />
+                    </PanelTop>
+                    {item && (
+                    <PanelContent>
                         <Section>
                             <Metadata
                                 item={item}
@@ -69,8 +70,9 @@ class Detail extends React.Component {
                             </Section>
                         )}
                         {children && <Section>{children}</Section>}
-                    </React.Fragment>
-)}
+                    </PanelContent>
+                )}
+                </PanelWrapper>
             </div>
         );
     }
