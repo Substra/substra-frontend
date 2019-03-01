@@ -1,5 +1,5 @@
 import {
-orderBy, isArray, flatten, uniqBy, isEmpty,
+    orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
 import createDeepEqualSelector from '../../../utils/selector';
@@ -32,7 +32,25 @@ export const getSelected = createDeepEqualSelector([getSelectedResult], result =
 const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
 const modelOrder = order => (o) => {
-    const getActualScore = deepOrder(order);
+    /*
+        We want to order by highest/lowest score on the testtuple score if available.
+        For getting a testtuple score, we need a traintuple with done status.
+
+        Rules can be divided in two groupe:
+        - If traintuple status is set to done:
+            - we have a testtutple, order by its status:
+                1. done
+                2. doing
+                3. todo
+                4. failed
+            - we do not have a testtutple:
+                5. null
+         - else traintutple status:
+                6. doing
+                7. todo
+                8. failed
+    */
+
     const scoreByStatus = {
         failed: {null: -7},
         todo: {null: -6},
@@ -42,10 +60,11 @@ const modelOrder = order => (o) => {
             failed: -3,
             todo: -2,
             doing: -1,
-            done: getActualScore,
+            done: deepOrder(order),
         },
     };
     const score = scoreByStatus[o.traintuple.status][o.testtuple ? o.testtuple.status : 'null'];
+
     if (typeof score === 'function') {
         return score(o);
     }
