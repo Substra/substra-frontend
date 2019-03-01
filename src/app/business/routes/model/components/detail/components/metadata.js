@@ -5,7 +5,7 @@ const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
         <KeyMetadata item_key={item.traintuple.key} addNotification={addNotification} model={model} />
         <SingleMetadata label="Status" value={item.traintuple.status} />
-        {item.testtuple && <SingleMetadata label="Score" value={`${item.testtuple.data.perf}`} />}
+        {item.testtuple && item.testtuple.status === 'done' && <SingleMetadata label="Score" value={`${item.testtuple.data.perf}`} />}
     </MetadataWrapper>
 );
 
