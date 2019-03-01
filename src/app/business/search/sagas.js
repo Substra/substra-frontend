@@ -44,7 +44,7 @@ function* setFilters(request) {
                 ...omit(location.query, ['search']), // keep all get parameters except search
             },
         });
-        yield push(newUrl);
+        push(newUrl);
 
         // fetch list
         const type = location.type.toLowerCase();
