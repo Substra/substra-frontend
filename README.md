@@ -121,3 +121,16 @@ The certificates will only last for 90 days, so be sure to create a cronjob with
 sudo certbot renew
 ```
 for issuing new certificates and rebuild and deploy your docker app.
+
+## Debugging with JetBrains editors
+
+In order to debug your code within a JetBrains editor you'll need to:
+
+1. Run your code in dev mode,
+2. Setup a "Javascript debug" configuration in the editor. Use the URL at which your dev server is accessible for the URL field,
+3. Run this new configuration in debug mode.
+4. You're done!
+
+This will open a new browser window that will respond to your breakpoints.
+
+*Taken from https://blog.jetbrains.com/webstorm/2017/01/debugging-react-apps/* 
