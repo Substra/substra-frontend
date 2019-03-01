@@ -232,12 +232,14 @@ class Base extends Component {
         width: ${this.props.selected ? `${this.state.listWidth.value}${this.state.listWidth.unit}` : '100%'};
         flex-grow: 0;
         flex-shrink: 0;
-        overflow-x: auto;
+        display: flex;
+        overflow: hidden;
     `;
 
     detail = () => css`
         flex-grow: 1;
-        overflow-x: auto;
+        display: flex;
+        overflow: hidden;
     `;
 
     layout = () => css`
@@ -246,6 +248,8 @@ class Base extends Component {
         border: 1px solid ${ice};
         display: flex;
         flex: 1;
+        align-items: stretch;
+        overflow: hidden;
         ${this.state.hold ? `
             cursor: col-resize;
             user-select: none;

@@ -10,7 +10,7 @@ import {noop} from 'lodash';
 import CopySimple from '../../../../../common/svg/copy-simple';
 import DownloadSimple from '../../../../../common/svg/download-simple';
 import {slate, darkSkyBlue} from '../../../../../../../../assets/css/variables/colors';
-import IconButton from '../../../../../common/components/detail/components/iconButton';
+import IconButton from '../../../../../common/components/iconButton';
 import {fontLarge} from '../../../../../../../../assets/css/variables/font';
 import {spacingExtraSmall, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
 
