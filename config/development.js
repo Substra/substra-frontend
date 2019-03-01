@@ -6,8 +6,4 @@ module.exports = {
             apiUrl,
         },
     },
-    // if we need to send credentials to connect to substrabac API
-    credentials: {
-        enabled: false,
-    },
 };

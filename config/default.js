@@ -31,7 +31,8 @@ module.exports = {
         fullchain: encryption_fullchain,
     },
     credentials: {
-        enabled: false,
+        // if we need to send credentials to connect to substrabac API
+        enabled: process.env.SUBSTRABAC_AUTH_ENABLED || false,
         SUBSTRABAC_USER,
         SUBSTRABAC_PASSWORD,
     },
