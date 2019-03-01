@@ -61,7 +61,7 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
         },
     });
 
-    yield replace(newUrl);
+    replace(newUrl);
 };
 
 export default {
