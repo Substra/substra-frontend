@@ -236,11 +236,7 @@ loading, fetchList, logList, location, setOrder,
                                         </Item>
                                         ))
                                     }
-                                    {!o.length && (
-                                        <span>
-                                            No items for this filter group
-                                        </span>
-                                    )}
+                                    {!o.length && <NoItemFound model={model} />}
                                 </div>
                             ))
                         )}
