@@ -23,6 +23,7 @@ import {
 chai.use(sinonChai);
 
 global.API_URL = 'http://api';
+global.SUBSTRABAC_AUTH_ENABLED = false;
 global.SUBSTRABAC_USER = 'foo';
 global.SUBSTRABAC_PASSWORD = 'bar';
 global.fetch = sinon.stub();
@@ -35,7 +36,6 @@ describe('fetchEntitiesFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -47,7 +47,6 @@ describe('fetchEntitiesFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -59,7 +58,6 @@ describe('fetchEntitiesFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -101,7 +99,6 @@ describe('fetchEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -113,7 +110,6 @@ describe('fetchEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -155,7 +151,6 @@ describe('fetchEntitiesByPathFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/1/view/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -221,7 +216,6 @@ describe('fetchByUrl', () => {
         expect(fetch).to.have.been.calledWith('http://api/toto/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -287,7 +281,6 @@ describe('deleteEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -339,7 +332,6 @@ describe('updateEntityFactory', () => {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -410,7 +402,6 @@ describe('createEntityFactory', () => {
             method: 'POST',
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'Basic Zm9vOmJhcg==',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
