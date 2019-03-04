@@ -13,10 +13,12 @@ import Item from './components/item';
 import Actions from './components/actions';
 
 import {iceBlueTwo, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
-import PanelTop from '../panelTop';
+import {PanelWrapper, PanelTop, PanelContent} from '../panel';
+import IconButton from '../iconButton';
 
 import More from '../../svg/more-vertical';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
+import NoItemFound from './components/noItemFound';
 
 const PulseLoaderWrapper = styled('div')`
     margin: ${spacingNormal};
@@ -198,47 +200,48 @@ loading, fetchList, logList, location, setOrder,
 
         return (
             <div className={className}>
-                <PanelTop>
-                    <Sort current={this.getCurrentSortOption()} setOrder={setOrder} options={sortOptions} />
-                </PanelTop>
-
-                {loading && (
-                    <PulseLoaderWrapper>
-                        <PulseLoader size={6} />
-                    </PulseLoaderWrapper>
-                )}
-                {init && !loading && !results.length && (
-                    <p>
-                        There is no items
-                    </p>
-                )}
-                {init && !loading && !!results.length
-                && (results.map((o, i) => (
-                    <div key={i}>
-                        {!!o.length && o.map(o => (
-                            <Item
-                                key={o.key}
-                                onClick={this.setSelected(o)}
-                                onMouseEnter={this.hover(o)}
-                                onMouseLeave={this.out(o)}
-                                className={this.itemWrapper(o.key)}
-                            >
-                                <Actions>
-                                    <More height={16} onClick={this.more(o)} />
-                                </Actions>
-                                <Title o={o} />
-                                {Metadata && <Metadata o={o} />}
-                            </Item>
+                <PanelWrapper>
+                    <PanelTop>
+                        <Sort current={this.getCurrentSortOption()} setOrder={setOrder} options={sortOptions} />
+                    </PanelTop>
+                    <PanelContent>
+                        {loading && (
+                            <PulseLoaderWrapper>
+                                <PulseLoader size={6} />
+                            </PulseLoaderWrapper>
+                        )}
+                        {init && !loading && !results.length && (
+                            <p>
+                                There is no items
+                            </p>
+                        )}
+                        {init && !loading && !!results.length
+                            && (results.map((o, i) => (
+                                <div key={i}>
+                                    {!!o.length && o.map(o => (
+                                        <Item
+                                            key={o.key}
+                                            onClick={this.setSelected(o)}
+                                            onMouseEnter={this.hover(o)}
+                                            onMouseLeave={this.out(o)}
+                                            className={this.itemWrapper(o.key)}
+                                        >
+                                            <Actions>
+                                                <IconButton onClick={this.more(o)} title="Show actions" noBorder>
+                                                    <More height={16} />
+                                                </IconButton>
+                                            </Actions>
+                                            <Title o={o} />
+                                            {Metadata && <Metadata o={o} />}
+                                        </Item>
+                                        ))
+                                    }
+                                    {!o.length && <NoItemFound model={model} />}
+                                </div>
                             ))
-                        }
-                        {!o.length && (
-                        <span>
-                                    No items for this filter group
-                        </span>
-)}
-                    </div>
-))
-                )}
+                        )}
+                    </PanelContent>
+                </PanelWrapper>
                 <Popover
                     open={open}
                     anchorEl={anchorEl}

@@ -5,7 +5,7 @@ import {noop} from 'lodash';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import DownloadSimple from '../../../svg/download-simple';
 import FilterUp from '../../../svg/filter-up';
-import IconButton from './iconButton';
+import IconButton from '../../iconButton';
 
 export const actions = css`
     margin-right: -${spacingNormal};

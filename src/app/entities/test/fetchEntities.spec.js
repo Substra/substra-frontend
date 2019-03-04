@@ -23,6 +23,7 @@ import {
 chai.use(sinonChai);
 
 global.API_URL = 'http://api';
+global.SUBSTRABAC_AUTH_ENABLED = false;
 global.SUBSTRABAC_USER = 'foo';
 global.SUBSTRABAC_PASSWORD = 'bar';
 global.fetch = sinon.stub();
@@ -46,7 +47,6 @@ describe('fetchEntitiesFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -58,7 +58,6 @@ describe('fetchEntitiesFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
@@ -111,7 +110,6 @@ describe('fetchEntityFactory', () => {
         expect(fetch).to.have.been.calledWith('http://api/foo/entityId/', {
             headers: {
                 Accept: 'application/json;version=0.0',
-                Authorization: 'JWT token',
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
