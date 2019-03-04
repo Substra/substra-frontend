@@ -8,6 +8,8 @@ import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spaci
 import Clipboard from '../../../svg/clipboard';
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
 
+const LABEL_WIDTH = '120';
+
 export const MetadataWrapper = styled('dl')`
     display: flex;
     flex-wrap: wrap;
@@ -19,7 +21,7 @@ export const MetadataWrapper = styled('dl')`
 const dt = css`
     text-transform: uppercase;
     font-weight: bold;
-    width: 90px;
+    width: ${LABEL_WIDTH}px;
     margin-bottom: ${spacingExtraSmall};
     padding: 0;
 `;
@@ -27,7 +29,7 @@ const dt = css`
 const dd = css`
     position: relative;
     margin-left: 0;
-    width: calc(100% - 90px);
+    width: calc(100% - ${LABEL_WIDTH}px);
     margin-bottom: ${spacingExtraSmall};
 `;
 
