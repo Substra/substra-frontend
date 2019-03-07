@@ -10,7 +10,6 @@ import algoActions from '../../../../algo/actions';
 import modelActions from '../../../../model/actions';
 
 import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
-import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
 
 
 const BrowseRelatedLinks = ({
@@ -20,11 +19,11 @@ const BrowseRelatedLinks = ({
     const filter = `objective:name:${item ? item.name : ''}`;
 
     return (
-        <BrowseRelatedLinksWrapper {...props}>
+        <React.Fragment {...props}>
             <BrowseRelatedLink model="dataset" label="dataset" filter={filter} unselect={unselectDataset} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
-        </BrowseRelatedLinksWrapper>
+        </React.Fragment>
     );
 };
 

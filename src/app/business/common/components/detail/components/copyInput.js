@@ -57,9 +57,12 @@ class CopyInput extends React.Component {
     }
 
     copy = () => {
-        const {value} = this.props;
+        const {value, addNotification} = this.props;
         copy(value);
         /* todo: add animation (checkmark instead of copy icon) */
+        if (addNotification) {
+            addNotification();
+        }
     };
 
     select = () => {
@@ -92,11 +95,13 @@ class CopyInput extends React.Component {
 CopyInput.propTypes = {
     value: PropTypes.string,
     isPrompt: PropTypes.bool,
+    addNotification: PropTypes.func,
 };
 
 CopyInput.defaultProps = {
     value: '',
     isPrompt: false,
+    addNotification: null,
 };
 
 export default CopyInput;

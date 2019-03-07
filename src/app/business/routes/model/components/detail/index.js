@@ -5,7 +5,6 @@ import Detail from '../../../../common/components/detail';
 import {withDetailRedux} from './redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import Title from './components/title';
-import BrowseRelatedLinks from './components/browseRelatedLinks';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
 import {
@@ -30,7 +29,6 @@ const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
     <ModelDetail
         Title={Title}
         Actions={Actions}
-        BrowseRelatedLinks={BrowseRelatedLinks}
         Metadata={Metadata}
         item={item}
         addNotification={addNotification}

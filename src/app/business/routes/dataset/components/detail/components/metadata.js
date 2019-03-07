@@ -3,9 +3,12 @@ import {css} from 'emotion';
 import {blueGrey, iceBlue} from '../../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 import Clipboard from '../../../../../common/svg/clipboard';
+import BrowseRelatedLinks from './browseRelatedLinks';
 
 import {
-    KeyMetadata, MetadataInterface,
+    KeyMetadata,
+    BrowseRelatedMetadata,
+    MetadataInterface,
     MetadataWrapper,
     SingleMetadata, clipboard,
 } from '../../../../../common/components/detail/components/metadata';
@@ -40,6 +43,9 @@ const Metadata = ({item, addNotification, model}) => (
                 />
             </SingleMetadata>
         )}
+        <BrowseRelatedMetadata>
+            <BrowseRelatedLinks item={item} />
+        </BrowseRelatedMetadata>
     </MetadataWrapper>
 );
 

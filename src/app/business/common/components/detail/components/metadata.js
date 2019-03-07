@@ -4,11 +4,11 @@ import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {capitalize, noop} from 'lodash';
 
-import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
-import Clipboard from '../../../svg/clipboard';
+import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
+import CopyInput from './copyInput';
 
-const LABEL_WIDTH = '120';
+const LABEL_WIDTH = '130';
 
 export const MetadataWrapper = styled('dl')`
     display: flex;
@@ -41,10 +41,12 @@ export const clipboard = css`
 `;
 
 
-export const SingleMetadata = ({label, value, children}) => (
+export const SingleMetadata = ({
+    label, value, children, labelClassName, valueClassName,
+}) => (
     <React.Fragment>
-        <dt className={dt}>{label}</dt>
-        <dd className={dd}>{value || children}</dd>
+        <dt className={css`${dt} ${labelClassName}`}>{label}</dt>
+        <dd className={css`${dd} ${valueClassName}`}>{value || children}</dd>
     </React.Fragment>
 );
 
@@ -52,12 +54,16 @@ SingleMetadata.propTypes = {
     label: PropTypes.string,
     value: PropTypes.node,
     children: PropTypes.node,
+    labelClassName: PropTypes.string,
+    valueClassName: PropTypes.string,
 };
 
 SingleMetadata.defaultProps = {
     label: '',
     value: '',
     children: null,
+    labelClassName: null,
+    valueClassName: null,
 };
 
 export const MetadataInterface = {
@@ -73,20 +79,36 @@ export const MetadataInterface = {
     },
 };
 
+export const keyLabelClassName = css`
+    line-height: 30px;
+`;
+export const keyValueClassName = css`
+    margin-left: -${spacingSmall};
+    width: calc(100% - ${LABEL_WIDTH}px + ${spacingSmall});
+`;
+
 export const KeyMetadata = ({item_key, addNotification, model}) => (
-    <SingleMetadata label="key">
-        {item_key}
-        <Clipboard
-            width={15}
-            className={clipboard}
-            color={blueGrey}
-            onClick={addNotification(item_key, `${capitalize(model)}'s key successfully copied to clipboard!`)}
+    <SingleMetadata
+        label="key"
+        labelClassName={keyLabelClassName}
+        valueClassName={keyValueClassName}
+    >
+        <CopyInput
+            value={item_key}
+            addNotification={addNotification(item_key, `${capitalize(model)}'s key successfully copied to clipboard!`)}
         />
     </SingleMetadata>
 );
 
 KeyMetadata.propTypes = MetadataInterface.propTypes;
 KeyMetadata.defaultProps = MetadataInterface.defaultProps;
+
+export const BrowseRelatedMetadata = ({children}) => (
+    <SingleMetadata label="Browse related">{children}</SingleMetadata>
+);
+
+BrowseRelatedMetadata.propTypes = MetadataInterface.propTypes;
+BrowseRelatedMetadata.defaultProps = MetadataInterface.defaultProps;
 
 
 const Metadata = ({item, addNotification, model}) => (
