@@ -1,7 +1,7 @@
 import {describe, it} from 'mocha';
 import chai, {expect} from 'chai';
 import React from 'react';
-import {mount} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -55,12 +55,12 @@ describe('Sort', () => {
 
         setOrder = sinon.spy();
         location = {query: {by: 'by A', direction: 'direction A'}};
-        mount(<Sort options={options} setOrder={setOrder} location={location} />);
+        shallow(<Sort options={options} setOrder={setOrder} location={location} />);
         expect(setOrder).to.have.been.calledOnceWith({by: 'by A', direction: 'direction A'});
 
         setOrder = sinon.spy();
         location = {};
-        mount(<Sort options={options} setOrder={setOrder} location={location} />);
+        shallow(<Sort options={options} setOrder={setOrder} location={location} />);
         expect(setOrder).to.have.not.been.called;
     });
 });
