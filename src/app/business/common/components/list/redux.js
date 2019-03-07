@@ -21,6 +21,7 @@ const mapStateToProps = (state, {
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
     fetchList: actions.list.request,
     setSelected: actions.list.selected,
+    setOrder: actions.order.set,
 }, dispatch);
 
 export const withListRedux = Component => connect(mapStateToProps, mapDispatchToProps)(Component);

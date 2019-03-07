@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -6,12 +5,10 @@ import {withStyles} from '@material-ui/core';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import {css} from 'emotion';
 import {isEqual, omit, noop} from 'lodash';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
-import {ice, slate} from '../../../../../../../assets/css/variables/colors';
-import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
-import {fontNormal} from '../../../../../../../assets/css/variables/font';
+import {ice, slate} from '../../../../../../../../assets/css/variables/colors';
+import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
+import {fontNormal} from '../../../../../../../../assets/css/variables/font';
 
 const Wrapper = styled('div')`
     font-size: ${fontNormal};
@@ -47,7 +44,7 @@ const select = css`
     }
 `;
 
-export class Sort extends React.Component {
+class Sort extends React.Component {
     componentDidMount() {
         const {location, setOrder} = this.props;
 
@@ -92,6 +89,11 @@ export class Sort extends React.Component {
     }
 }
 
+const defaultOptions = [
+    {value: {by: 'name', direction: 'asc'}, label: 'NAME (A-Z)'},
+    {value: {by: 'name', direction: 'desc'}, label: 'NAME (Z-A)'},
+];
+
 Sort.propTypes = {
     setOrder: PropTypes.func,
     order: PropTypes.shape(),
@@ -102,31 +104,8 @@ Sort.propTypes = {
 Sort.defaultProps = {
     setOrder: noop,
     order: null,
-    options: [],
+    options: defaultOptions,
     location: null,
 };
 
-const mapStateToProps = (state, {model}) => ({
-    order: state[model].order,
-    location: state.location,
-});
-
-const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    setOrder: actions.order.set,
-}, dispatch);
-
-export const ReduxSort = connect(mapStateToProps, mapDispatchToProps)(Sort);
-
-const defaultOptions = [
-    {value: {by: 'name', direction: 'asc'}, label: 'NAME (A-Z)'},
-    {value: {by: 'name', direction: 'desc'}, label: 'NAME (Z-A)'},
-];
-
-const DefaultReduxSort = ({model, actions}) => <ReduxSort options={defaultOptions} model={model} actions={actions} />;
-
-DefaultReduxSort.propTypes = {
-    actions: PropTypes.shape().isRequired,
-    model: PropTypes.string.isRequired,
-};
-
-export default DefaultReduxSort;
+export default Sort;

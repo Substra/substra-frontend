@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import {
-createStore, applyMiddleware, compose, combineReducers,
+    createStore, applyMiddleware, compose, combineReducers,
 } from 'redux';
 import {Provider} from 'react-redux';
 import {connectRoutes} from 'redux-first-router';
@@ -38,7 +38,7 @@ describe('Top', () => {
         expect(store.getState().location.query).to.deep.equal({dummy: 'dummy'});
 
         // for some reason, homeLink.simulate('click') doesn't work
-        // we have to use the onClick prop with the following event (found in the tests of react-first-router-link
+        // we have to use the onClick prop with the following event (found in the tests of react-first-router-link)
         // without button: 0, the event doesn't work
         const event = {
             preventDefault: () => undefined,

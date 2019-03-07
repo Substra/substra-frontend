@@ -1,12 +1,12 @@
 import {describe, it} from 'mocha';
 import chai, {expect} from 'chai';
 import React from 'react';
+import {Provider, connect} from 'react-redux';
 import {
-createStore, applyMiddleware, combineReducers, compose,
+    createStore, applyMiddleware, combineReducers, compose, bindActionCreators,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {createAction} from 'redux-actions';
-import {Provider} from 'react-redux';
 import {takeLatest, all} from 'redux-saga/effects';
 import {connectRoutes} from 'redux-first-router';
 import createHistory from 'history/createMemoryHistory';
@@ -14,24 +14,19 @@ import queryString from 'query-string';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {setOrderSaga} from '../../../sagas';
-import orderReducer from '../../../reducers/order';
 
-import {Sort, ReduxSort} from './sort';
+import {setOrderSaga} from '../../../../sagas';
+import orderReducer from '../../../../reducers/order';
+
+import ReduxSort from './redux';
 
 chai.use(sinonChai);
 
-describe('Sort, ReduxSort', () => {
+describe('ReduxSort', () => {
     const options = [
         {label: 'Label A', value: {by: 'by A', direction: 'direction A'}},
         {label: 'Label B', value: {by: 'by B', direction: 'direction B'}},
     ];
-
-    const setup = () => {
-        const setOrder = sinon.spy();
-        const wrapper = mount(<Sort options={options} setOrder={setOrder} location={{}} />);
-        return {wrapper, setOrder, options};
-    };
 
     const reduxSetup = () => {
         // setup routes
@@ -85,60 +80,26 @@ describe('Sort, ReduxSort', () => {
         sagaMiddleWare.run(sagas);
 
         // mount component
-        const wrapper = mount(<Provider store={store}><ReduxSort options={options} model="dummyModel" actions={actions} /></Provider>);
+
+        const mapDispatchToProps = dispatch => bindActionCreators({
+            setOrder: actions.order.set,
+        }, dispatch);
+
+        const Wrapper = connect(null, mapDispatchToProps)(({setOrder}) => <ReduxSort options={options} model="dummyModel" setOrder={setOrder} />);
+
+        const wrapper = mount(<Provider store={store}>
+            <Wrapper />
+        </Provider>);
 
         return {
-wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
-};
+            wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
+        };
     };
-
-    it('calls setOrder with new selected value', () => {
-        const {wrapper, setOrder, options} = setup();
-
-        // select exists and has both options
-        expect(wrapper.exists('select')).to.be.true;
-        const optionWrappers = wrapper.find('option');
-        expect(optionWrappers).to.have.lengthOf(2);
-        expect(optionWrappers.at(0).text()).to.equal('Label A');
-        expect(optionWrappers.at(1).text()).to.equal('Label B');
-
-        // select is passed to setOrder
-        const select = wrapper.find('select');
-        select.simulate('change', {target: {value: optionWrappers.get(0).props.value}});
-        expect(setOrder).to.have.been.calledOnceWith(options[0].value);
-    });
-
-    it('selects the default value', () => {
-        const {wrapper, options} = setup();
-
-        expect(wrapper.find('select').props().value).to.equal(options[0].label);
-
-        wrapper.setProps({order: options[1].value});
-        expect(wrapper.find('select').props().value).to.equal(options[1].label);
-
-        wrapper.setProps({order: options[0].value});
-        expect(wrapper.find('select').props().value).to.equal(options[0].label);
-    });
-
-    it('syncs with the location at mount', () => {
-        let setOrder,
-            location;
-
-        setOrder = sinon.spy();
-        location = {query: {by: 'by A', direction: 'direction A'}};
-        mount(<Sort options={options} setOrder={setOrder} location={location} />);
-        expect(setOrder).to.have.been.calledOnceWith({by: 'by A', direction: 'direction A'});
-
-        setOrder = sinon.spy();
-        location = {};
-        mount(<Sort options={options} setOrder={setOrder} location={location} />);
-        expect(setOrder).to.have.not.been.called;
-    });
 
     it('updates location with new selected value', () => {
         const {
-wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
-} = reduxSetup();
+            wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
+        } = reduxSetup();
 
         // simulate select new value
         const select = wrapper.find('select');
@@ -146,7 +107,10 @@ wrapper, orderReducerSpy, setOrderSagaSpy, store, actionTypes,
         select.simulate('change', {target: {value: optionWrappers.get(1).props.value}});
 
         // make sure the event has been dispatched
-        expect(orderReducerSpy).to.have.been.calledWith({order: {}}, {type: actionTypes.order.SET, payload: options[1].value});
+        expect(orderReducerSpy).to.have.been.calledWith({order: {}}, {
+            type: actionTypes.order.SET,
+            payload: options[1].value,
+        });
 
         // make sure the saga has been triggered
         expect(setOrderSagaSpy).to.have.been.calledWith({type: actionTypes.order.SET, payload: options[1].value});

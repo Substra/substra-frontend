@@ -8,7 +8,7 @@ import {noop} from 'lodash';
 import Popover from './components/popover';
 import PopoverItems from './components/popoverItems';
 import Title from './components/title';
-import DefaultSort from './components/sort';
+import Sort from './components/sort/redux';
 import Item from './components/item';
 import Actions from './components/actions';
 
@@ -178,7 +178,7 @@ loading, fetchList, logList,
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Metadata, PopoverItems, Sort, actions,
+            Title, Popover, Metadata, PopoverItems, Sort, setOrder,
         } = this.props;
 
         const {open, anchorEl, item} = this.state.popover;
@@ -187,7 +187,7 @@ loading, fetchList, logList,
             <div className={className}>
                 <PanelWrapper>
                     <PanelTop>
-                        <Sort model={model} actions={actions} />
+                        <Sort model={model} setOrder={setOrder} />
                     </PanelTop>
                     <PanelContent>
                         {loading && (
@@ -270,7 +270,7 @@ List.defaultProps = {
     Popover,
     PopoverItems,
     Metadata: null,
-    Sort: DefaultSort,
+    Sort,
     logList: noop,
     logDetail: noop,
     logFilterFromList: noop,
