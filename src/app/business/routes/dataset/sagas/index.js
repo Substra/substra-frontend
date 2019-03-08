@@ -9,7 +9,7 @@ import {saveAs} from 'file-saver';
 import actions, {actionTypes} from '../actions';
 import {fetchItemApi, fetchListApi} from '../api';
 import {
-fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
+    fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
 
@@ -43,6 +43,10 @@ function* fetchDetail(request) {
     if (item && !item.description.content) {
         yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
     }
+
+    if (item && !item.opener) {
+        yield put(actions.item.opener.request({key: item.key, url: item.openerStorageAddress}));
+    }
 }
 
 function* fetchItemDescriptionSaga({payload: {id, url}}) {
@@ -50,6 +54,13 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
 
     if (res && status === 200) {
         yield put(actions.item.description.success({id, desc: res}));
+    }
+}
+
+function* fetchItemOpenerSaga({payload: {key, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
+    if (res && status === 200) {
+        yield put(actions.item.opener.success({key, openerContent: res}));
     }
 }
 
@@ -88,6 +99,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeEvery(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
 
         takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
 

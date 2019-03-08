@@ -14,6 +14,7 @@ export const actionTypes = {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
         file: createRequestActionTypes(`${prefix}_ITEM_FILE`),
+        opener: createRequestActionTypes(`${prefix}_ITEM_OPENER`),
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
@@ -45,6 +46,11 @@ export default {
             request: createAction(actionTypes.item.file.REQUEST),
             success: createAction(actionTypes.item.file.SUCCESS),
             failure: createAction(actionTypes.item.file.FAILURE),
+        },
+        opener: {
+            request: createAction(actionTypes.item.opener.REQUEST),
+            success: createAction(actionTypes.item.opener.SUCCESS),
+            failure: createAction(actionTypes.item.opener.FAILURE),
         },
     },
 

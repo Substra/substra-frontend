@@ -2,6 +2,7 @@ const initialState = {
     init: false,
     loading: false,
     descLoading: false,
+    openerLoading: false,
     error: null,
     results: [],
 };
@@ -50,6 +51,32 @@ export default actionTypes => (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 descLoading: false,
+            };
+
+        case actionTypes.item.opener.REQUEST:
+            return {
+                ...state,
+                openerLoading: true,
+            };
+        case actionTypes.item.opener.SUCCESS:
+            return {
+                ...state,
+                results: state.results.reduce((p, c) => [
+                    ...p,
+                    ...(c.pkhash === payload.key ? [{
+                        ...c,
+                        opener: {
+                            storageAddress: c.openerStorageAddress,
+                            content: payload.openerContent,
+                        },
+                    }] : [c]),
+                ], []),
+                openerLoading: false,
+            };
+        case actionTypes.item.opener.FAILURE:
+            return {
+                ...state,
+                openerLoading: false,
             };
 
         default:

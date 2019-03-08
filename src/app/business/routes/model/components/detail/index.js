@@ -41,7 +41,6 @@ const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
                 {/* todo: add other testtuples tab */}
             </TabList>
             <TabPanel>
-                {/* todo: fix download of json code (contains "\n") */}
                 <CodeSample
                     filename="traintuple.json"
                     language="json"

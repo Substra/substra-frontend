@@ -1,17 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import {PulseLoader} from 'react-spinners';
 
 import Detail from '../../../../common/components/detail';
 import {
     Tab, TabList, TabPanel, Tabs,
 } from '../../../../common/components/detail/components/tabs';
 import Metadata from './components/metadata';
-import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
-import {withDetailRedux} from '../../../../common/components/detail/redux';
 import DataKeysTable from './components/dataKeysTable';
 import Description from './components/description';
+import CodeSample from '../../../../common/components/detail/components/codeSample';
 
 
-const DatasetDetail = ({item, addNotification, ...props}) => (
+const DatasetDetail = ({
+item, addNotification, openerLoading, ...props
+}) => (
     <Detail
         {...props}
         item={item}
@@ -29,7 +33,14 @@ const DatasetDetail = ({item, addNotification, ...props}) => (
                 <Description item={item} />
             </TabPanel>
             <TabPanel>
-                {/* todo: add opener */}
+                {openerLoading && <PulseLoader size={6} />}
+                {!openerLoading && item.opener && item.opener.content && (
+                    <CodeSample
+                        codeString={item.opener.content}
+                        filename="opener.py"
+                        language="python"
+                    />
+                )}
             </TabPanel>
             <TabPanel>
                 {item && item.trainDataSampleKeys && (
@@ -47,7 +58,14 @@ const DatasetDetail = ({item, addNotification, ...props}) => (
     </Detail>
 );
 
-DatasetDetail.propTypes = Detail.propTypes;
-DatasetDetail.defaultProps = Detail.defaultProps;
+DatasetDetail.propTypes = {
+    ...Detail.propTypes,
+    openerLoading: PropTypes.bool,
+};
 
-export default withDetailRedux(withDetailAnalytics(DatasetDetail));
+DatasetDetail.defaultProps = {
+    ...Detail.defaultProps,
+    openerLoading: false,
+};
+
+export default DatasetDetail;
