@@ -14,13 +14,18 @@ import CodeSample from '../../../../common/components/detail/components/codeSamp
 
 
 const DatasetDetail = ({
-item, addNotification, openerLoading, ...props
-}) => (
+                           item,
+                           addNotification,
+                           openerLoading,
+                           descLoading,
+                           ...props
+                       }) => (
     <Detail
         {...props}
         item={item}
         addNotification={addNotification}
         Metadata={Metadata}
+        Description={null}
     >
         <Tabs>
             <TabList>
@@ -30,7 +35,8 @@ item, addNotification, openerLoading, ...props
                 <Tab>Test data</Tab>
             </TabList>
             <TabPanel>
-                <Description item={item} />
+                {descLoading && <PulseLoader size={6}/>}
+                {!descLoading && <Description item={item} />}
             </TabPanel>
             <TabPanel>
                 {openerLoading && <PulseLoader size={6} />}
@@ -43,7 +49,8 @@ item, addNotification, openerLoading, ...props
                 )}
             </TabPanel>
             <TabPanel>
-                {item && item.trainDataSampleKeys && (
+                {descLoading && <PulseLoader size={6}/>}
+                {!descLoading && item && item.trainDataSampleKeys && (
                     <DataKeysTable
                         dataKeys={item.trainDataSampleKeys}
                         addNotification={addNotification}
