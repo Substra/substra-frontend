@@ -14,56 +14,57 @@ import CodeSample from '../../../../common/components/detail/components/codeSamp
 
 
 const DatasetDetail = ({
-                           item,
-                           addNotification,
-                           openerLoading,
-                           descLoading,
-                           ...props
-                       }) => (
-    <Detail
-        {...props}
-        item={item}
-        addNotification={addNotification}
-        Metadata={Metadata}
-        Description={null}
-    >
-        <Tabs>
-            <TabList>
-                <Tab>Description</Tab>
-                <Tab>Opener</Tab>
-                <Tab>Train data</Tab>
-                <Tab>Test data</Tab>
-            </TabList>
-            <TabPanel>
-                {descLoading && <PulseLoader size={6}/>}
-                {!descLoading && <Description item={item} />}
-            </TabPanel>
-            <TabPanel>
-                {openerLoading && <PulseLoader size={6} />}
-                {!openerLoading && item.opener && item.opener.content && (
+    item,
+    addNotification,
+    openerLoading,
+    descLoading,
+    ...props
+    }) => (
+        <Detail
+            {...props}
+            item={item}
+            addNotification={addNotification}
+            Metadata={Metadata}
+            Description={null}
+        >
+            <Tabs>
+                <TabList>
+                    <Tab>Description</Tab>
+                    <Tab>Opener</Tab>
+                    <Tab>Train data</Tab>
+                    <Tab>Test data</Tab>
+                </TabList>
+                <TabPanel>
+                    {descLoading && <PulseLoader size={6} />}
+                    {!descLoading && <Description item={item} />}
+                </TabPanel>
+                <TabPanel>
+                    {openerLoading && <PulseLoader size={6} />}
+                    {!openerLoading && item.opener && item.opener.content && (
                     <CodeSample
                         codeString={item.opener.content}
                         filename="opener.py"
                         language="python"
                     />
-                )}
-            </TabPanel>
-            <TabPanel>
-                {descLoading && <PulseLoader size={6}/>}
-                {!descLoading && item && item.trainDataSampleKeys && (
+                    )}
+                </TabPanel>
+                <TabPanel>
+                    {descLoading && <PulseLoader size={6} />}
+                    {!descLoading && item && item.trainDataSampleKeys && (
                     <DataKeysTable
                         dataKeys={item.trainDataSampleKeys}
                         addNotification={addNotification}
                         noKeysMessage="This dataset has no train data asset associated yet"
                     />
-                )}
-            </TabPanel>
-            <TabPanel>
-                {/* todo: add test data */}
-            </TabPanel>
-        </Tabs>
-    </Detail>
-);
+                       // todo: improve display when there are no keys (remove empty table, add code example)
+                   )}
+                </TabPanel>
+                <TabPanel>
+                    {/* todo: add test data */}
+                </TabPanel>
+            </Tabs>
+        </Detail>
+    );
 
 DatasetDetail.propTypes = {
     ...Detail.propTypes,

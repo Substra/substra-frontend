@@ -32,6 +32,7 @@ function* fetchItem({payload}) {
 
     if (item) {
         yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
+        yield put(actions.item.metrics.request({id: payload.key, url: payload.metrics.storageAddress}));
     }
 }
 
@@ -48,6 +49,14 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
 
     if (res && status === 200) {
         yield put(actions.item.description.success({id, desc: res}));
+    }
+}
+
+function* fetchItemMetricsSaga({payload: {id, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
+
+    if (res && status === 200) {
+        yield put(actions.item.metrics.success({id, metrics: res}));
     }
 }
 
@@ -84,6 +93,7 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeEvery(actionTypes.item.metrics.REQUEST, fetchItemMetricsSaga),
 
         takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
 

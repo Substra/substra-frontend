@@ -13,6 +13,7 @@ export const actionTypes = {
     item: {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
+        metrics: createRequestActionTypes(`${prefix}_ITEM_METRICS`),
         file: createRequestActionTypes(`${prefix}_ITEM_FILE`),
     },
 
@@ -40,6 +41,11 @@ export default {
             request: createAction(actionTypes.item.description.REQUEST),
             success: createAction(actionTypes.item.description.SUCCESS),
             failure: createAction(actionTypes.item.description.FAILURE),
+        },
+        metrics: {
+            request: createAction(actionTypes.item.metrics.REQUEST),
+            success: createAction(actionTypes.item.metrics.SUCCESS),
+            failure: createAction(actionTypes.item.metrics.FAILURE),
         },
         file: {
             request: createAction(actionTypes.item.file.REQUEST),
