@@ -72,4 +72,12 @@ module.exports = {
         "jsx-a11y",
         "import",
     ],
+    "overrides": [
+        {
+            "files": "**/*.spec.js",
+            "rules": {
+                "no-unused-expressions": [0],
+            }
+        }
+    ]
 };

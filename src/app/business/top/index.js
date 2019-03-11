@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
-import DocLink from './components/docLink';
+import DocLinkWithAnalytics from './components/docLink';
 import OwkestraLogo from '../common/svg/owkestraLogo';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
@@ -37,7 +37,7 @@ const Top = ({location}) => (
         <Link to={{type: 'HOME', meta: {query: location.query}}} className={link}>
             <OwkestraLogo alt="Owkestra" height={50} />
         </Link>
-        <DocLink className={link} />
+        <DocLinkWithAnalytics className={link} />
     </Wrapper>
 );
 

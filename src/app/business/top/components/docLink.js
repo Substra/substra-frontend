@@ -11,7 +11,7 @@ const picto = css`
     display: block;
 `;
 
-class DocLink extends React.Component {
+export class DocLink extends React.Component {
     logDoc = () => {
         const {logDoc} = this.props;
         logDoc();
