@@ -1,4 +1,6 @@
 import React from 'react';
+import {capitalize} from 'lodash';
+
 import BaseMetadata, {
     SingleMetadata,
     MetadataWrapper,
@@ -8,6 +10,7 @@ import BaseMetadata, {
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
+import InlinePulseLoader from '../../inlinePulseLoader';
 
 
 const Metadata = ({item, addNotification}) => (
@@ -37,8 +40,20 @@ const Metadata = ({item, addNotification}) => (
         {!item.traintuple.outModel && (
             <SingleMetadata label="Model key" value="N/A" />
         )}
-        <SingleMetadata label="Status" value={item.traintuple.status} />
-        {item.testtuple && item.testtuple.status === 'done' && <SingleMetadata label="Score" value={`${item.testtuple.data.perf}`} />}
+        <SingleMetadata label="Status">
+            {capitalize(item.traintuple.status)}
+            <InlinePulseLoader loading={['todo', 'doing'].includes(item.traintuple.status)} />
+        </SingleMetadata>
+        <SingleMetadata label="Score">
+            {!item.testtuple && 'N/A'}
+            {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.data.perf}
+            {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
+                <React.Fragment>
+                    {capitalize(item.testtuple.status)}
+                    <InlinePulseLoader loading={['todo', 'doing'].includes(item.testtuple.status)} />
+                </React.Fragment>
+            )}
+        </SingleMetadata>
         <BrowseRelatedMetadata>
             <BrowseRelatedLinks item={item} />
         </BrowseRelatedMetadata>

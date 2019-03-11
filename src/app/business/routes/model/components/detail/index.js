@@ -12,6 +12,9 @@ Tab, TabList, TabPanel, Tabs,
 } from '../../../../common/components/detail/components/tabs';
 import CodeSample from '../../../../common/components/detail/components/codeSample';
 import CopyInput from '../../../../common/components/detail/components/copyInput';
+import {
+    AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
+} from '../../../../common/components/alert';
 
 
 class ModelDetail extends Detail {
@@ -25,60 +28,98 @@ class ModelDetail extends Detail {
     };
 }
 
-const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
-    <ModelDetail
-        Title={Title}
-        Actions={Actions}
-        Metadata={Metadata}
-        item={item}
-        addNotification={addNotification}
-        {...rest}
-    >
-        <Tabs>
-            <TabList>
-                <Tab>Traintuple/Model</Tab>
-                <Tab>Certified testtuple</Tab>
-                {/* todo: add other testtuples tab */}
-            </TabList>
-            <TabPanel>
-                <CodeSample
-                    filename="traintuple.json"
-                    language="json"
-                    codeString={JSON.stringify(item.traintuple, null, 2)}
-                />
-            </TabPanel>
-            <TabPanel>
-                {item.testtuple && (
-                    <React.Fragment>
-                        <CodeSample
-                            filename="testtuple.json"
-                            language="json"
-                            codeString={JSON.stringify(item.testtuple, null, 2)}
-                        />
-                    </React.Fragment>
-                )}
-                {item.traintuple && !item.testtuple && (
-                    (item.traintuple.status === 'done' && (
-                        <React.Fragment>
-                            <p>In order to test this model, either execute the following command or click the trigger button above.</p>
-                            <CopyInput value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`} isPrompt />
-                        </React.Fragment>
+class ModelDetailWithLocalComponents extends React.Component {
+    state = {
+        selectedTab: 0,
+    };
 
-                    ))
-                    || (item.traintuple.status === 'failed' && (
-                        <p>This model could not complete its training (no testing possible).</p>
-                    ))
-                    || (['todo', 'doing'].includes(item.traintuple.status) && (
-                        <React.Fragment>
-                            <p>You can execute the code below to launch a testing task as soon as the training is over.</p>
-                            <CopyInput value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`} isPrompt />
-                        </React.Fragment>
-                    ))
+    setSelectedTab = (index) => {
+        this.setState({
+            selectedTab: index,
+        });
+    };
+
+    gotoTesttuple = () => {
+        this.setSelectedTab(1);
+    };
+
+    render() {
+        const {item, addNotification, ...rest} = this.props;
+        return (
+            <ModelDetail
+                Title={Title}
+                Actions={Actions}
+                Metadata={Metadata}
+                item={item}
+                addNotification={addNotification}
+                {...rest}
+            >
+                {item && item.traintuple && item.traintuple.status === 'done' && !item.testtuple && (
+                    <AlertWrapper>
+                        <AlertTitle>This model has not been tested yet</AlertTitle>
+                        <AlertActions>
+                            <AlertInlineButton onClick={this.gotoTesttuple}>learn more</AlertInlineButton>
+                        </AlertActions>
+                    </AlertWrapper>
                 )}
-            </TabPanel>
-        </Tabs>
-    </ModelDetail>
-);
+                <Tabs
+                    selectedIndex={this.state.selectedTab}
+                    onSelect={this.setSelectedTab}
+                >
+                    <TabList>
+                        <Tab>Traintuple/Model</Tab>
+                        <Tab>Certified testtuple</Tab>
+                        {/* todo: add other testtuples tab */}
+                    </TabList>
+                    <TabPanel>
+                        <CodeSample
+                            filename="traintuple.json"
+                            language="json"
+                            codeString={JSON.stringify(item.traintuple, null, 2)}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        {item.testtuple && (
+                            <React.Fragment>
+                                <CodeSample
+                                    filename="testtuple.json"
+                                    language="json"
+                                    codeString={JSON.stringify(item.testtuple, null, 2)}
+                                />
+                            </React.Fragment>
+                        )}
+                        {item.traintuple && !item.testtuple && (
+                            (item.traintuple.status === 'done' && (
+                                <React.Fragment>
+                                    <p>
+                                        {'In order to test this model, execute the following command:'}
+                                    </p>
+                                    <CopyInput
+                                        value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
+                                        isPrompt
+                                    />
+                                </React.Fragment>
+
+                            ))
+                            || (item.traintuple.status === 'failed' && (
+                                <p>This model could not complete its training (no testing possible).</p>
+                            ))
+                            || (['todo', 'doing'].includes(item.traintuple.status) && (
+                                <React.Fragment>
+                                    <p>You can execute the code below to launch a testing task as soon as the training is over.</p>
+                                    <CopyInput
+                                        value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
+                                        isPrompt
+                                    />
+                                </React.Fragment>
+                            ))
+                        )}
+                    </TabPanel>
+                </Tabs>
+            </ModelDetail>
+        );
+    }
+}
 
 ModelDetailWithLocalComponents.propTypes = {
     item: PropTypes.shape(),
