@@ -10,6 +10,7 @@ import {
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
 import RoundedButton from '../../../../../common/components/roundedButton';
 import CopySimple from '../../../../../common/svg/copy-simple';
+import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 
 const SpaceBetween = styled('div')`
     display: flex;
@@ -79,7 +80,7 @@ class DataKeysTable extends React.Component {
     };
 
     render() {
-        const {dataKeys, noKeysMessage} = this.props;
+        const {dataKeys} = this.props;
         return (
             <Table>
                 <thead>
@@ -94,11 +95,12 @@ class DataKeysTable extends React.Component {
                         </Th>
                         <Th>
                             <SpaceBetween>
-                            Keys
+                                Keys
                                 <RoundedButton
                                     onClick={this.copy}
                                     disabled={!dataKeys.length}
                                     Icon={CopySimple}
+                                    className={css`margin-right: -${spacingExtraSmall};`}
                                 >
                                     {'Copy as JSON array'}
                                 </RoundedButton>
@@ -122,13 +124,6 @@ class DataKeysTable extends React.Component {
                             </Td>
                         </Tr>
                 ))}
-                    {!dataKeys.length && (
-                    <Tr>
-                        <Td colSpan={2}>
-                            {noKeysMessage}
-                        </Td>
-                    </Tr>
-                )}
                 </tbody>
             </Table>
         );
@@ -138,12 +133,10 @@ class DataKeysTable extends React.Component {
 DataKeysTable.propTypes = {
     dataKeys: PropTypes.arrayOf(PropTypes.string),
     addNotification: PropTypes.func,
-    noKeysMessage: PropTypes.string,
 };
 
 DataKeysTable.defaultProps = {
     dataKeys: [],
-    noKeysMessage: 'No data assets associated yet',
     addNotification: null,
 };
 
