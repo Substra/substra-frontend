@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {css} from 'emotion';
+import styled from '@emotion/styled';
 import {noop} from 'lodash';
 import Detail from '../../../../common/components/detail';
 import {withDetailRedux} from './redux';
@@ -20,6 +20,9 @@ import RoundedButton from '../../../../common/components/roundedButton';
 import DownloadSimple from '../../../../common/svg/download-simple';
 import {spacingNormal} from '../../../../../../../assets/css/variables/spacing';
 
+const Span = styled('span')`
+    margin-right: ${spacingNormal};
+`;
 
 class ModelDetail extends Detail {
     filterUp = o => (e) => {
@@ -77,12 +80,14 @@ class ModelDetailWithLocalComponents extends React.Component {
                     <TabPanel>
                         {item && item.traintuple && item.traintuple.status === 'done' && (
                             <p>
-                                {'Model successfully trained with a score of '}
-                                <b>{item.traintuple.data.perf}</b>
-                                {' on '}
-                                <b>train data</b>
-                                .
-                                <RoundedButton Icon={DownloadSimple} className={css`margin-left: ${spacingNormal};`}>
+                                <Span>
+                                    {'Model successfully trained with a score of '}
+                                    <b>{item.traintuple.data.perf}</b>
+                                    {' on '}
+                                    <b>train data</b>
+                                    .
+                                </Span>
+                                <RoundedButton Icon={DownloadSimple}>
                                     Download model
                                 </RoundedButton>
                             </p>

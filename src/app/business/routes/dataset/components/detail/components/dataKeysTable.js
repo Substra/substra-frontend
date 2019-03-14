@@ -32,7 +32,6 @@ class DataKeysTable extends React.Component {
     copy = () => {
         const {dataKeys, addNotification} = this.props;
         if (this.state.allSelected || this.state.selectedKeys.length === 0) {
-            /* todo: do not copy in "addNotification", only display message */
             addNotification(JSON.stringify(dataKeys), 'All keys successfully copied!');
         }
         else if (this.state.selectedKeys.length === 1) {
