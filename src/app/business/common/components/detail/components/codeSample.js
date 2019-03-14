@@ -62,8 +62,7 @@ const ActionsWrapper = styled('div')`
 class CodeSample extends React.Component {
     downloadCode = () => {
         const {codeString, filename} = this.props;
-        /* todo: fix download of json and python code (contains "\n") */
-        const jsonBlob = new Blob([JSON.stringify(codeString)], {type: mime.lookup(filename)});
+        const jsonBlob = new Blob([codeString], {type: mime.lookup(filename)});
         saveAs(jsonBlob, filename);
     };
 
