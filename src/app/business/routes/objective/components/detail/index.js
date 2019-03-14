@@ -18,8 +18,6 @@ const ChallengeDetail = ({
                 }) => (
                     <Detail
                         Metadata={Metadata}
-                        Description={null}
-                        descLoading={descLoading}
                         item={item}
                         {...props}
                     >
@@ -35,12 +33,12 @@ const ChallengeDetail = ({
                             <TabPanel>
                                 {metricsLoading && <PulseLoader size={6} />}
                                 {!metricsLoading && item && item.metrics && item.metrics.content && (
-                                <CodeSample
-                                    filename="metrics.py"
-                                    language="python"
-                                    codeString={item.metrics.content}
-                                />
-                )}
+                                    <CodeSample
+                                        filename="metrics.py"
+                                        language="python"
+                                        codeString={item.metrics.content}
+                                    />
+                                )}
                             </TabPanel>
                         </Tabs>
                     </Detail>

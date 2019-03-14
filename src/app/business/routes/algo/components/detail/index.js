@@ -24,9 +24,7 @@ const AlgoDetail = ({
 }) => (
     <Detail
         Metadata={Metadata}
-        Description={null}
         item={item}
-        descLoading={descLoading}
         {...props}
     >
         <Tabs>

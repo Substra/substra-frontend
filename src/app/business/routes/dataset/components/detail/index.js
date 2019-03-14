@@ -37,7 +37,6 @@ const DatasetDetail = ({
             item={item}
             addNotification={addNotification}
             Metadata={Metadata}
-            Description={null}
         >
             <Tabs>
                 <TabList>
