@@ -5,6 +5,7 @@ import {css} from 'emotion';
 import copy from 'copy-to-clipboard';
 
 import CopySimple from '../../../svg/copy-simple';
+import Check from '../../../svg/check';
 import IconButton from '../../iconButton';
 import {ice} from '../../../../../../../assets/css/variables/colors';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
@@ -54,23 +55,57 @@ class CopyInput extends React.Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
+        this.state = {
+            clicked: false,
+        };
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
     }
 
     copy = () => {
         const {value, addNotification} = this.props;
         copy(value);
-        /* todo: add animation (checkmark instead of copy icon) */
         if (addNotification) {
             addNotification();
         }
+        // animate icon
+        this.setState({clicked: true});
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            this.setState({clicked: false});
+        }, 2000);
     };
 
     select = () => {
         this.inputRef.current.select();
     };
 
+    iconStyles = () => {
+        const clicked = this.state.clicked;
+        const hasChanged = this.props.value !== this.previousValue;
+        if (hasChanged) {
+            clearTimeout(this.timeout);
+        }
+        this.previousValue = this.props.value;
+
+        return {
+            copySimple: css`
+                opacity: ${!hasChanged && clicked ? 0 : 1};
+                ${!hasChanged && 'transition: opacity 200ms ease-out;'}
+            `,
+            check: css`
+                position: absolute;
+                opacity: ${!hasChanged && clicked ? 1 : 0};
+                ${!hasChanged && 'transition: opacity 200ms ease-out;'}
+            `,
+        };
+    };
+
     render() {
         const {value, isPrompt} = this.props;
+        const {copySimple, check} = this.iconStyles();
         return (
             <Wrapper>
                 {isPrompt && <Prompt />}
@@ -85,7 +120,8 @@ class CopyInput extends React.Component {
                     onClick={this.copy}
                     className={button}
                 >
-                    <CopySimple width={15} height={15} />
+                    <CopySimple width={15} height={15} className={copySimple} />
+                    <Check width={15} height={15} className={check} />
                 </IconButton>
             </Wrapper>
         );
