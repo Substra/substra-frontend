@@ -6,10 +6,7 @@ import {ice, slate, blueGrey} from '../../../../../assets/css/variables/colors';
 import {spacingNormal, spacingExtraSmall} from '../../../../../assets/css/variables/spacing';
 
 const Button = styled.button`
-    display: inline-flex;
     color: ${slate};
-    align-items: center;
-    justify-content: center;
     height: 30px;
     line-height: 28px;
     border-radius: 15px;
@@ -28,6 +25,11 @@ const Button = styled.button`
     }
 `;
 
+const icon = css`
+    margin-right: ${spacingExtraSmall};
+    margin-bottom: -3px;
+`;
+
 const RoundedButton = ({
 disabled, Icon, children, ...props
 }) => (
@@ -37,7 +39,7 @@ disabled, Icon, children, ...props
                 width={15}
                 height={15}
                 color={disabled ? blueGrey : slate}
-                className={css`margin-right: ${spacingExtraSmall};`}
+                className={icon}
             />
 )}
         {children}

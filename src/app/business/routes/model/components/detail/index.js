@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {css} from 'emotion';
 import {noop} from 'lodash';
 import Detail from '../../../../common/components/detail';
 import {withDetailRedux} from './redux';
@@ -15,6 +16,9 @@ import CopyInput from '../../../../common/components/detail/components/copyInput
 import {
     AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
 } from '../../../../common/components/alert';
+import RoundedButton from '../../../../common/components/roundedButton';
+import DownloadSimple from '../../../../common/svg/download-simple';
+import {spacingNormal} from '../../../../../../../assets/css/variables/spacing';
 
 
 class ModelDetail extends Detail {
@@ -68,10 +72,21 @@ class ModelDetailWithLocalComponents extends React.Component {
                 >
                     <TabList>
                         <Tab>Traintuple/Model</Tab>
-                        <Tab>Certified testtuple</Tab>
-                        {/* todo: add other testtuples tab */}
+                        <Tab>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
+                        {item && item.traintuple && item.traintuple.status === 'done' && (
+                            <p>
+                                {'Model successfully trained with a score of '}
+                                <b>{item.traintuple.data.perf}</b>
+                                {' on '}
+                                <b>train data</b>
+                                .
+                                <RoundedButton Icon={DownloadSimple} className={css`margin-left: ${spacingNormal};`}>
+                                    Download model
+                                </RoundedButton>
+                            </p>
+                        )}
                         <CodeSample
                             filename="traintuple.json"
                             language="json"
