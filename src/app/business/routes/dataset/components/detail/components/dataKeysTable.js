@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {without} from 'lodash';
 
 import {
     Table, Tr, Td, Th,
@@ -22,23 +21,30 @@ const small = css`
     width: 1px;
 `;
 
+const buttonPosition = css`
+    margin-right: -${spacingExtraSmall};
+`;
+
+const monospace = css`
+    font-family: ${monospaceFamily};
+    font-size: ${fontNormalMonospace};
+`;
+
 class DataKeysTable extends React.Component {
     state = {
         selectedKeys: [],
         allSelected: false,
     };
 
-
     copy = () => {
         const {dataKeys, addNotification} = this.props;
-        if (this.state.allSelected || this.state.selectedKeys.length === 0) {
+        const {allSelected, selectedKeys} = this.state;
+        if (allSelected || selectedKeys.length === 0) {
             addNotification(JSON.stringify(dataKeys), 'All keys successfully copied!');
         }
-        else if (this.state.selectedKeys.length === 1) {
-            addNotification(JSON.stringify(this.state.selectedKeys), '1 key successfully copied!');
-        }
         else {
-            addNotification(JSON.stringify(this.state.selectedKeys), `${this.state.selectedKeys.length} keys successfully copied!`);
+            const msg = `${selectedKeys.length} key${selectedKeys.length > 1 && 's'} successfully copied!`;
+            addNotification(JSON.stringify(selectedKeys), msg);
         }
     };
 
@@ -53,15 +59,16 @@ class DataKeysTable extends React.Component {
     handleCheckboxChange = key => (event) => {
         const checked = event.target.checked;
         const {dataKeys} = this.props;
-        if (this.state.allSelected && !checked) {
+        const {allSelected} = this.state;
+        if (allSelected && !checked) {
             this.setState({
                 allSelected: false,
-                selectedKeys: without(dataKeys, key),
+                selectedKeys: dataKeys.filter(x => x !== key),
             });
         }
         else if (!checked) {
             this.setState((previousState) => {
-                const selectedKeys = without(previousState.selectedKeys, key);
+                const selectedKeys = previousState.selectedKeys.filter(x => x !== key);
                 return {
                     selectedKeys,
                 };
@@ -80,6 +87,7 @@ class DataKeysTable extends React.Component {
 
     render() {
         const {dataKeys} = this.props;
+        const {allSelected, selectedKeys} = this.state;
         return (
             <Table>
                 <thead>
@@ -87,7 +95,7 @@ class DataKeysTable extends React.Component {
                         <Th className={small}>
                             <input
                                 type="checkbox"
-                                checked={this.state.allSelected}
+                                checked={allSelected}
                                 disabled={!dataKeys.length}
                                 onChange={this.handleGlobalCheckboxChange}
                             />
@@ -99,7 +107,7 @@ class DataKeysTable extends React.Component {
                                     onClick={this.copy}
                                     disabled={!dataKeys.length}
                                     Icon={CopySimple}
-                                    className={css`margin-right: -${spacingExtraSmall};`}
+                                    className={buttonPosition}
                                 >
                                     {'Copy as JSON array'}
                                 </RoundedButton>
@@ -114,11 +122,11 @@ class DataKeysTable extends React.Component {
                                 <input
                                     type="checkbox"
                                     id={key}
-                                    checked={this.state.allSelected || this.state.selectedKeys.includes(key)}
+                                    checked={allSelected || selectedKeys.includes(key)}
                                     onChange={this.handleCheckboxChange(key)}
                                 />
                             </Td>
-                            <Td className={css`font-family: ${monospaceFamily}; font-size: ${fontNormalMonospace};`}>
+                            <Td className={monospace}>
                                 <label htmlFor={key}>{key}</label>
                             </Td>
                         </Tr>

@@ -55,7 +55,6 @@ const FilenameWrapper = styled('div')`
 
 const ActionsWrapper = styled('div')`
     padding: ${spacingExtraSmall};
-    align-self: top;
 `;
 
 

@@ -2,7 +2,7 @@ import baseReducerBuilder, {initialState as baseInitialState} from '../../../com
 
 const initialState = {
     ...baseInitialState,
-    metricsLoading: true,
+    metricsLoading: false,
 };
 
 export default (actionTypes) => {
