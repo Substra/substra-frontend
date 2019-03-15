@@ -75,7 +75,12 @@ const DatasetDetail = ({
                                 <Code>data_files</Code>
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>
-                            <CopyInput value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": false, "data_files": []}'`} isPrompt />
+                            <CopyInput
+                                value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": false, "data_files": []}'`}
+                                addNotification={addNotification}
+                                addNotificationMessage="Command copied to clipboard!"
+                                isPrompt
+                            />
                         </React.Fragment>
                     )}
                 </TabPanel>
@@ -95,7 +100,12 @@ const DatasetDetail = ({
                                 <Code>data_files</Code>
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>
-                            <CopyInput value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": true, "data_files": []}'`} isPrompt />
+                            <CopyInput
+                                value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": true, "data_files": []}'`}
+                                addNotification={addNotification}
+                                addNotificationMessage="Command copied to clipboard!"
+                                isPrompt
+                            />
                         </React.Fragment>
                     )}
                 </TabPanel>

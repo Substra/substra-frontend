@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
-import copy from 'copy-to-clipboard';
+import {noop} from 'lodash';
 
 import CopySimple from '../../../svg/copy-simple';
 import Check from '../../../svg/check';
 import IconButton from '../../iconButton';
-import {ice} from '../../../../../../../assets/css/variables/colors';
+import {ice, darkSkyBlue} from '../../../../../../../assets/css/variables/colors';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
 import {spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 
@@ -65,11 +65,8 @@ class CopyInput extends React.Component {
     }
 
     copy = () => {
-        const {value, addNotification} = this.props;
-        copy(value);
-        if (addNotification) {
-            addNotification();
-        }
+        const {value, addNotification, addNotificationMessage} = this.props;
+        addNotification(value, addNotificationMessage);
         // animate icon
         this.setState({clicked: true});
         clearTimeout(this.timeout);
@@ -121,7 +118,7 @@ class CopyInput extends React.Component {
                     className={button}
                 >
                     <CopySimple width={15} height={15} className={copySimple} />
-                    <Check width={15} height={15} className={check} />
+                    <Check width={15} height={15} color={darkSkyBlue} className={check} />
                 </IconButton>
             </Wrapper>
         );
@@ -132,12 +129,14 @@ CopyInput.propTypes = {
     value: PropTypes.string,
     isPrompt: PropTypes.bool,
     addNotification: PropTypes.func,
+    addNotificationMessage: PropTypes.string,
 };
 
 CopyInput.defaultProps = {
     value: '',
     isPrompt: false,
-    addNotification: null,
+    addNotification: noop,
+    addNotificationMessage: 'Copied!',
 };
 
 export default CopyInput;

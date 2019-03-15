@@ -129,6 +129,8 @@ class ModelDetailWithLocalComponents extends React.Component {
                                     </p>
                                     <CopyInput
                                         value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
+                                        addNotification={addNotification}
+                                        addNotificationMessage="Command copied to clipboard!"
                                         isPrompt
                                     />
                                 </React.Fragment>
@@ -142,6 +144,8 @@ class ModelDetailWithLocalComponents extends React.Component {
                                     <p>You can execute the code below to launch a testing task as soon as the training is over.</p>
                                     <CopyInput
                                         value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
+                                        addNotification={addNotification}
+                                        addNotificationMessage="Command copied to clipboard!"
                                         isPrompt
                                     />
                                 </React.Fragment>
