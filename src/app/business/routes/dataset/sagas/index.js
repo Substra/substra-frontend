@@ -1,4 +1,4 @@
-/* globals fetch */
+/* globals fetch SUBSTRABAC_AUTH_ENABLED */
 
 import {
     all, call, put, select, takeEvery, takeLatest,
@@ -59,7 +59,7 @@ function* fetchItemFileSaga({payload: {url}}) {
 
     yield fetch(url, {
         headers: {
-            ...(process.env.NODE_ENV === 'production' ? {Authorization: `Basic ${basic()}`} : {}),
+            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',
