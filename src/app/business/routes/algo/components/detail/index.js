@@ -17,34 +17,47 @@ const Span = styled('span')`
     margin-right: ${spacingNormal};
 `;
 
-const AlgoDetail = ({
-    item,
-    descLoading,
-    ...props
-}) => (
-    <Detail
-        Metadata={Metadata}
-        item={item}
-        {...props}
-    >
-        <Tabs>
-            <TabList>
-                <Tab>Description</Tab>
-                <Tab>Code</Tab>
-            </TabList>
-            <TabPanel>
-                {descLoading && <PulseLoader size={6} />}
-                {!descLoading && <Description item={item} />}
-            </TabPanel>
-            <TabPanel>
-                <Span>The algorithm's source code and Dockerfile are packaged within a zip or tar.gz file.</Span>
-                <RoundedButton Icon={DownloadSimple}>
-                    Download algo
-                </RoundedButton>
-            </TabPanel>
-        </Tabs>
-    </Detail>
-);
+class AlgoDetail extends React.Component {
+    constructor(props) {
+        super(props);
+        this.innerDetailRef = React.createRef();
+    }
+
+    downloadFile = () => {
+        if (this.innerDetailRef && this.innerDetailRef.current) {
+            this.innerDetailRef.current.downloadFile();
+        }
+    };
+
+    render() {
+        const {item, descLoading, ...props} = this.props;
+        return (
+            <Detail
+                ref={this.innerDetailRef}
+                Metadata={Metadata}
+                item={item}
+                {...props}
+            >
+                <Tabs>
+                    <TabList>
+                        <Tab>Description</Tab>
+                        <Tab>Code</Tab>
+                    </TabList>
+                    <TabPanel>
+                        {descLoading && <PulseLoader size={6} />}
+                        {!descLoading && <Description item={item} />}
+                    </TabPanel>
+                    <TabPanel>
+                        <Span>The algorithm's source code and Dockerfile are packaged within a zip or tar.gz file.</Span>
+                        <RoundedButton Icon={DownloadSimple} onClick={this.downloadFile}>
+                            Download algo
+                        </RoundedButton>
+                    </TabPanel>
+                </Tabs>
+            </Detail>
+        );
+    }
+}
 
 AlgoDetail.propTypes = {
     item: PropTypes.shape(),

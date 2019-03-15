@@ -40,6 +40,12 @@ class ModelDetailWithLocalComponents extends React.Component {
         selectedTab: 0,
     };
 
+    constructor(props) {
+        super(props);
+        this.innerDetailRef = React.createRef();
+    }
+
+
     setSelectedTab = (index) => {
         this.setState({
             selectedTab: index,
@@ -50,10 +56,17 @@ class ModelDetailWithLocalComponents extends React.Component {
         this.setSelectedTab(1);
     };
 
+    downloadFile = () => {
+        if (this.innerDetailRef && this.innerDetailRef.current) {
+            this.innerDetailRef.current.downloadFile();
+        }
+    };
+
     render() {
         const {item, addNotification, ...rest} = this.props;
         return (
             <ModelDetail
+                ref={this.innerDetailRef}
                 Title={Title}
                 Actions={Actions}
                 Metadata={Metadata}
@@ -87,7 +100,7 @@ class ModelDetailWithLocalComponents extends React.Component {
                                     <b>train data</b>
                                     .
                                 </Span>
-                                <RoundedButton Icon={DownloadSimple}>
+                                <RoundedButton Icon={DownloadSimple} onClick={this.downloadFile}>
                                     Download model
                                 </RoundedButton>
                             </p>
