@@ -18,7 +18,7 @@ export const MetadataWrapper = styled('dl')`
     margin: 0;
 `;
 
-const dt = css`
+const baseDt = css`
     text-transform: uppercase;
     font-weight: bold;
     width: ${LABEL_WIDTH}px;
@@ -26,7 +26,7 @@ const dt = css`
     padding: 0;
 `;
 
-const dd = css`
+const baseDd = css`
     position: relative;
     margin-left: 0;
     width: calc(100% - ${LABEL_WIDTH}px);
@@ -43,12 +43,23 @@ export const clipboard = css`
 
 export const SingleMetadata = ({
     label, value, children, labelClassName, valueClassName,
-}) => (
-    <React.Fragment>
-        <dt className={css`${dt} ${labelClassName}`}>{label}</dt>
-        <dd className={css`${dd} ${valueClassName}`}>{value || children}</dd>
-    </React.Fragment>
-);
+}) => {
+    const dt = css`
+        ${baseDt}
+        ${labelClassName}
+    `;
+
+    const dd = css`
+        ${baseDd}
+        ${valueClassName}
+    `;
+    return (
+        <React.Fragment>
+            <dt className={dt}>{label}</dt>
+            <dd className={dd}>{value || children}</dd>
+        </React.Fragment>
+    );
+};
 
 SingleMetadata.propTypes = {
     label: PropTypes.string,
