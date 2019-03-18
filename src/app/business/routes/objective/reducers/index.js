@@ -1,5 +1,5 @@
 import list from '../../../common/reducers/list';
-import item from '../../../common/reducers/item';
+import item from './item';
 import persistent from '../../../common/reducers/persistent';
 import order from '../../../common/reducers/order';
 import {actionTypes} from '../actions';

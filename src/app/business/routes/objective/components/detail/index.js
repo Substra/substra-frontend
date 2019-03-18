@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 
 import Detail from '../../../../common/components/detail/redux';
@@ -8,11 +7,10 @@ Tabs, TabList, Tab, TabPanel,
 } from '../../../../common/components/detail/components/tabs';
 import Metadata from './components/metadata';
 import Description from '../../../../common/components/detail/components/description';
-import CodeSample from '../../../../common/components/detail/components/codeSample';
+import MetricsCode from './components/metricsCode';
 
-const ChallengeDetail = ({
+const ObjectiveDetail = ({
     descLoading,
-    metricsLoading,
     item,
     ...props
                 }) => (
@@ -31,29 +29,13 @@ const ChallengeDetail = ({
                                 {!descLoading && <Description item={item} />}
                             </TabPanel>
                             <TabPanel>
-                                {metricsLoading && <PulseLoader size={6} />}
-                                {!metricsLoading && item && item.metrics && item.metrics.content && (
-                                    <CodeSample
-                                        filename="metrics.py"
-                                        language="python"
-                                        codeString={item.metrics.content}
-                                    />
-                                )}
+                                <MetricsCode />
                             </TabPanel>
                         </Tabs>
                     </Detail>
 );
 
-ChallengeDetail.propTypes = {
-    descLoading: PropTypes.bool,
-    metricsLoading: PropTypes.bool,
-    item: PropTypes.shape(),
-};
+ObjectiveDetail.propTypes = Detail.propTypes;
+ObjectiveDetail.defaultProps = Detail.defaultProps;
 
-ChallengeDetail.defaultProps = {
-    descLoading: false,
-    metricsLoading: false,
-    item: null,
-};
-
-export default ChallengeDetail;
+export default ObjectiveDetail;

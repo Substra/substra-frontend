@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
@@ -11,7 +10,7 @@ import {
 import Metadata from './components/metadata';
 import DataKeysTable from './components/dataKeysTable';
 import Description from './components/description';
-import CodeSample from '../../../../common/components/detail/components/codeSample';
+import OpenerCode from './components/openerCode';
 import CopyInput from '../../../../common/components/detail/components/copyInput';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../assets/css/variables/colors';
@@ -28,7 +27,6 @@ const Code = styled('code')`
 const DatasetDetail = ({
     item,
     addNotification,
-    openerLoading,
     descLoading,
     ...props
     }) => (
@@ -50,14 +48,7 @@ const DatasetDetail = ({
                     {!descLoading && <Description item={item} />}
                 </TabPanel>
                 <TabPanel>
-                    {openerLoading && <PulseLoader size={6} />}
-                    {!openerLoading && item.opener && item.opener.content && (
-                    <CodeSample
-                        codeString={item.opener.content}
-                        filename="opener.py"
-                        language="python"
-                    />
-                    )}
+                    <OpenerCode />
                 </TabPanel>
                 <TabPanel>
                     {descLoading && <PulseLoader size={6} />}
@@ -113,14 +104,7 @@ const DatasetDetail = ({
         </Detail>
     );
 
-DatasetDetail.propTypes = {
-    ...Detail.propTypes,
-    openerLoading: PropTypes.bool,
-};
-
-DatasetDetail.defaultProps = {
-    ...Detail.defaultProps,
-    openerLoading: false,
-};
+DatasetDetail.propTypes = Detail.propTypes;
+DatasetDetail.defaultProps = Detail.defaultProps;
 
 export default DatasetDetail;

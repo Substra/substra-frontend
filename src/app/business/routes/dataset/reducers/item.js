@@ -63,10 +63,10 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 ...state,
                 results: state.results.reduce((p, c) => [
                     ...p,
-                    ...(c.pkhash === payload.key ? [{
+                    ...(c.pkhash === payload.id ? [{
                         ...c,
                         opener: {
-                            storageAddress: c.openerStorageAddress,
+                            ...c.opener,
                             content: payload.openerContent,
                         },
                     }] : [c]),

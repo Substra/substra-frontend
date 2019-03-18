@@ -29,7 +29,7 @@ const Metadata = ({o}) => (
                             <InlinePulseLoader loading={['todo', 'doing'].includes(o.testtuple.status)} />
                         </React.Fragment>
                     )}
-                    {o.testtuple.status === 'done' && o.testtuple.data && o.testtuple.data.perf}
+                    {o.testtuple.status === 'done' && o.testtuple.dataset && o.testtuple.dataset.perf}
                 </SingleMetadata>
             </ScoreWrapper>
         )}

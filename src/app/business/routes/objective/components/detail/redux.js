@@ -3,7 +3,7 @@ import {onlyUpdateForKeys} from 'recompose';
 
 import {getItem} from '../../../../common/selector';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
-import ChallengeDetail from './index';
+import ObjectiveDetail from './index';
 
 
 const mapStateToProps = (state, {
@@ -18,5 +18,5 @@ const mapStateToProps = (state, {
 });
 
 
-const ChallengeDetailWithAnalytics = withDetailAnalytics(ChallengeDetail);
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading', 'metricsLoading'])(ChallengeDetailWithAnalytics));
+const ObjectiveDetailWithAnalytics = withDetailAnalytics(ObjectiveDetail);
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading', 'metricsLoading'])(ObjectiveDetailWithAnalytics));

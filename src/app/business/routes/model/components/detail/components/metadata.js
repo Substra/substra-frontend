@@ -46,7 +46,7 @@ const Metadata = ({item, addNotification}) => (
         </SingleMetadata>
         <SingleMetadata label="Score">
             {!item.testtuple && 'N/A'}
-            {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.data.perf}
+            {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
             {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
                 <React.Fragment>
                     {capitalize(item.testtuple.status)}

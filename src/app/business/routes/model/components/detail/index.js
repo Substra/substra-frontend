@@ -95,7 +95,7 @@ class ModelDetailWithLocalComponents extends React.Component {
                             <p>
                                 <Span>
                                     {'Model successfully trained with a score of '}
-                                    <b>{item.traintuple.data.perf}</b>
+                                    <b>{item.traintuple.dataset.perf}</b>
                                     {' on '}
                                     <b>train data</b>
                                     .

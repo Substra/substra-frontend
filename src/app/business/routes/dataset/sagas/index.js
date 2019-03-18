@@ -43,10 +43,6 @@ function* fetchDetail(request) {
     if (item && !item.description.content) {
         yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
     }
-
-    if (item && !item.opener) {
-        yield put(actions.item.opener.request({key: item.key, url: item.openerStorageAddress}));
-    }
 }
 
 function* fetchItemDescriptionSaga({payload: {id, url}}) {
@@ -57,10 +53,10 @@ function* fetchItemDescriptionSaga({payload: {id, url}}) {
     }
 }
 
-function* fetchItemOpenerSaga({payload: {key, url}}) {
+function* fetchItemOpenerSaga({payload: {id, url}}) {
     const {res, status} = yield call(fetchRaw, url);
     if (res && status === 200) {
-        yield put(actions.item.opener.success({key, openerContent: res}));
+        yield put(actions.item.opener.success({id, openerContent: res}));
     }
 }
 
