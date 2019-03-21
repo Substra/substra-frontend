@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 export const ENTITY_TYPE = 'dimension1';
 export const ENTITY_KEY = 'dimension2';
-export const SEARCHBAR_CHALLENGE_COUNT = 'metric1';
+export const SEARCHBAR_OBJECTIVE_COUNT = 'metric1';
 export const SEARCHBAR_MODEL_COUNT = 'metric2';
 export const SEARCHBAR_ALGO_COUNT = 'metric3';
 export const SEARCHBAR_DATASET_COUNT = 'metric4';
@@ -28,11 +28,11 @@ const metricsMap = {
     dataset: SEARCHBAR_DATASET_COUNT,
     model: SEARCHBAR_MODEL_COUNT,
     algo: SEARCHBAR_MODEL_COUNT,
-    challenge: SEARCHBAR_CHALLENGE_COUNT,
+    objective: SEARCHBAR_OBJECTIVE_COUNT,
 };
 
 const defaultMetrics = {
-    [SEARCHBAR_CHALLENGE_COUNT]: 0,
+    [SEARCHBAR_OBJECTIVE_COUNT]: 0,
     [SEARCHBAR_MODEL_COUNT]: 0,
     [SEARCHBAR_ALGO_COUNT]: 0,
     [SEARCHBAR_DATASET_COUNT]: 0,

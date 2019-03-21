@@ -38,7 +38,7 @@ function* fetchItem({payload}) {
 function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.challenge.item.results.find(o => o.pkhash === request.payload.key)) {
+    if (!state.objective.item.results.find(o => o.pkhash === request.payload.key)) {
         yield fetchItem(request);
     }
 }

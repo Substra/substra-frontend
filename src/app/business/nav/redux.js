@@ -6,7 +6,7 @@ import {getRoutes, getOrders} from './selector';
 import Nav from './components';
 import withInjectedReducers from '../common/components/withInjectedReducers';
 import algoActions from '../routes/algo/actions';
-import challengeActions from '../routes/challenge/actions';
+import objectiveActions from '../routes/objective/actions';
 import datasetActions from '../routes/dataset/actions';
 import modelActions from '../routes/model/actions';
 import searchActions from '../search/actions';
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     unselect: bindActionCreators({
         algorithm: algoActions.list.unselect,
-        challenge: challengeActions.list.unselect,
+        objective: objectiveActions.list.unselect,
         dataset: datasetActions.list.unselect,
         model: modelActions.list.unselect,
     }, dispatch),

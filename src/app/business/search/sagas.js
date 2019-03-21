@@ -7,7 +7,7 @@ import {omit} from 'lodash';
 
 import {actionTypes} from './actions';
 
-import challengeActions from '../routes/challenge/actions';
+import objectiveActions from '../routes/objective/actions';
 import datasetActions from '../routes/dataset/actions';
 import algoActions from '../routes/algo/actions';
 import modelActions from '../routes/model/actions';
@@ -16,7 +16,7 @@ function* setFilters(request) {
     const state = yield select();
 
     const {
-        challenge, dataset, algo, model, location,
+        objective, dataset, algo, model, location,
     } = state;
 
     const {filters, item, toUpdate} = state.search;
@@ -49,8 +49,8 @@ function* setFilters(request) {
         // fetch list
         const type = location.type.toLowerCase();
 
-        if (['home', 'challenge'].includes(type)) {
-            yield put(challengeActions.list.request());
+        if (['home', 'objective'].includes(type)) {
+            yield put(objectiveActions.list.request());
         }
         else if (type === 'dataset') {
             yield put(datasetActions.list.request());
@@ -64,8 +64,8 @@ function* setFilters(request) {
     }
     else {
         // fetch related data if not already done
-        if (item === 'challenge' && !challenge.persistent.init && !challenge.persistent.loading) {
-            yield put(challengeActions.persistent.request());
+        if (item === 'objective' && !objective.persistent.init && !objective.persistent.loading) {
+            yield put(objectiveActions.persistent.request());
         }
         else if (item === 'dataset' && !dataset.persistent.init && !dataset.persistent.loading) {
             yield put(datasetActions.persistent.request());
