@@ -31,7 +31,7 @@ function* fetchItem({payload}) {
     });
 
     if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.descriptionStorageAddress}));
+        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
     }
 }
 
