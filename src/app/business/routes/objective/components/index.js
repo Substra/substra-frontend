@@ -4,7 +4,7 @@ import Detail from './detail';
 import List from './list';
 import actions from '../actions';
 
-const ChallengeBase = ReduxBase();
+const ObjectiveBase = ReduxBase();
 
 const download = {
     filename: 'metrics.py',
@@ -12,14 +12,14 @@ const download = {
     text: 'Download metrics',
 };
 
-const Challenge = () => (
-    <ChallengeBase
+const Objective = () => (
+    <ObjectiveBase
         actions={actions}
-        model="challenge"
+        model="objective"
         download={download}
         List={List}
         Detail={Detail}
     />
 );
 
-export default Challenge;
+export default Objective;

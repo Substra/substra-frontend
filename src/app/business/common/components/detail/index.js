@@ -100,11 +100,7 @@ Detail.defaultProps = {
 Detail.propTypes = {
     item: PropTypes.shape({
         key: PropTypes.string,
-        descriptionStorageAddress: PropTypes.string,
-        description: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.shape({}),
-        ]),
+        description: PropTypes.shape(),
     }),
     descLoading: PropTypes.bool,
     className: PropTypes.string,

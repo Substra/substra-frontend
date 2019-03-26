@@ -17,7 +17,7 @@ const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectModel, unselectDataset,
                                 ...props
                             }) => {
-    const filter = `challenge:name:${item ? item.name : ''}`;
+    const filter = `objective:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...props}>

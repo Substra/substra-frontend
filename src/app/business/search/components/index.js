@@ -28,8 +28,8 @@ import {spacingLarge} from '../../../../../assets/css/variables/spacing';
 import {ice, white} from '../../../../../assets/css/variables/colors';
 
 // export needed reducers and sagas
-export challengeReducer from '../../routes/challenge/reducers/index';
-export challengeSagas from '../../routes/challenge/sagas/index';
+export objectiveReducer from '../../routes/objective/reducers/index';
+export objectiveSagas from '../../routes/objective/sagas/index';
 export datasetReducer from '../../routes/dataset/reducers/index';
 export datasetSagas from '../../routes/dataset/sagas/index';
 export algoReducer from '../../routes/algo/reducers/index';

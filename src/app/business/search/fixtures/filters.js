@@ -1,10 +1,10 @@
-import challenge from './challenge';
+import objective from './objective';
 import dataset from './dataset';
 import algo from './algo';
 import {outModelsHashes} from './traintuples';
 
 export default {
-    challenge,
+    objective,
     dataset,
     algo,
     model: outModelsHashes, // output model i.e trained model (updated)

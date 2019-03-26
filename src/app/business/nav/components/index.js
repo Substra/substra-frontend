@@ -51,7 +51,7 @@ const picto = css`
 
 
 const pictos = {
-    challenge: Folder,
+    objective: Folder,
     dataset: Dataset,
     algorithm: Algo,
     model: Model,
@@ -65,7 +65,7 @@ class Nav extends React.Component {
     isActive = (route) => {
         const {location: {type}} = this.props;
 
-        return type === route || (route === 'CHALLENGE' && type === 'HOME');
+        return type === route || (route === 'OBJECTIVE' && type === 'HOME');
     };
 
     isHovered = route => this.state.hoveredRoute === route;

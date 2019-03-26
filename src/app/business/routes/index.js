@@ -9,8 +9,8 @@ import NotFoundRoutes from './notFound/routes';
 const Route = ({page}) => {
     switch (page) {
         case 'HOME':
-        case 'CHALLENGE':
-            return <Component model="challenge" />;
+        case 'OBJECTIVE':
+            return <Component model="objective" />;
         case 'DATASET':
             return <Component model="dataset" />;
         case 'ALGORITHM':

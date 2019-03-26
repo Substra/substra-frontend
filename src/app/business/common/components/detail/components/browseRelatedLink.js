@@ -13,7 +13,7 @@ const routeTypes = {
     algo: 'ALGORITHM',
     dataset: 'DATASET',
     model: 'MODEL',
-    challenge: 'CHALLENGE',
+    objective: 'OBJECTIVE',
 };
 
 class BrowseRelatedLink extends Component {
