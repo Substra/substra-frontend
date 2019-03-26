@@ -59,7 +59,7 @@ function* fetchItemMetricsSaga({payload: {id, url}}) {
     }
 }
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -94,7 +94,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
         takeEvery(actionTypes.item.metrics.REQUEST, fetchItemMetricsSaga),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

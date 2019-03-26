@@ -45,7 +45,7 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
     return list;
 };
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -79,7 +79,7 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

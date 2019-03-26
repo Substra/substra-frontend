@@ -60,7 +60,7 @@ function* fetchItemOpenerSaga({payload: {id, url}}) {
     }
 }
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -97,7 +97,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
         takeEvery(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

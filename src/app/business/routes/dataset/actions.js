@@ -13,7 +13,7 @@ export const actionTypes = {
     item: {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
-        file: createRequestActionTypes(`${prefix}_ITEM_FILE`),
+        download: createRequestActionTypes(`${prefix}_ITEM_FILE`, ['REQUEST', 'FAILURE']),
         opener: createRequestActionTypes(`${prefix}_ITEM_OPENER`),
     },
 
@@ -42,10 +42,9 @@ export default {
             success: createAction(actionTypes.item.description.SUCCESS),
             failure: createAction(actionTypes.item.description.FAILURE),
         },
-        file: {
-            request: createAction(actionTypes.item.file.REQUEST),
-            success: createAction(actionTypes.item.file.SUCCESS),
-            failure: createAction(actionTypes.item.file.FAILURE),
+        download: {
+            request: createAction(actionTypes.item.download.REQUEST),
+            failure: createAction(actionTypes.item.download.FAILURE),
         },
         opener: {
             request: createAction(actionTypes.item.opener.REQUEST),
