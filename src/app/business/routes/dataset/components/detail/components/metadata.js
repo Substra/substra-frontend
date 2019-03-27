@@ -23,10 +23,10 @@ const dataKeys = css`
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
         <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
-        {item && item.trainDataKeys && (
+        {item && item.trainDataSampleKeys && (
             <SingleMetadata label="Data keys">
                 <span
-                    onClick={addNotification(item.trainDataKeys.join(','), 'Datas\'s key successfully copied to clipboard!')}
+                    onClick={addNotification(item.trainDataSampleKeys.join(','), 'Datas\'s key successfully copied to clipboard!')}
                     className={css`cursor: pointer;`}
                 >
                     Copy all as a CSV string
@@ -35,8 +35,8 @@ const Metadata = ({item, addNotification, model}) => (
                 <textarea
                     readOnly
                     className={dataKeys}
-                    rows={Math.min(5, item.trainDataKeys.length)}
-                    value={item.trainDataKeys.join('\n')}
+                    rows={Math.min(5, item.trainDataSampleKeys.length)}
+                    value={item.trainDataSampleKeys.join('\n')}
                 />
             </SingleMetadata>
         )}
