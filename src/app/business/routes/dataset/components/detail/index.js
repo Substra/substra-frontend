@@ -67,7 +67,7 @@ const DatasetDetail = ({
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>
                             <CopyInput
-                                value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": false, "data_files": []}'`}
+                                value={`substra add data_sample '{"data_manager_keys": ["${item.key}"], "test_only": false, "files": []}'`}
                                 addNotification={addNotification}
                                 addNotificationMessage="Command copied to clipboard!"
                                 isPrompt
@@ -92,7 +92,7 @@ const DatasetDetail = ({
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>
                             <CopyInput
-                                value={`substra add data '{"dataset_keys": ["${item.key}"], "test_only": true, "data_files": []}'`}
+                                value={`substra add data_sample '{"data_manager_keys": ["${item.key}"], "test_only": true, "files": []}'`}
                                 addNotification={addNotification}
                                 addNotificationMessage="Command copied to clipboard!"
                                 isPrompt
