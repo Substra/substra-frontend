@@ -13,7 +13,7 @@ class DatasetList extends List {
         const item = itemResults.find(x => x.key === this.state.popover.item.key);
 
         if (item) {
-            const inputValue = isArray(item[key]) ? item[key].join(',') : item[key];
+            const inputValue = isArray(item[key]) ? JSON.stringify(item[key]) : item[key];
             addNotification(inputValue, text);
             logCopyFromList(this.state.popover.item.key);
         }

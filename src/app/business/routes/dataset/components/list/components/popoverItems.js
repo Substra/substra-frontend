@@ -25,11 +25,18 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             </Action>
             {itemLoading && <PulseLoader size={6} />}
             {!itemLoading && (
-            <Action
-                onClick={addNotification('trainDataSampleKeys', 'Datas\'s key successfully copied to clipboard!')}
-            >
-                Copy all datas' key to clipboard
-            </Action>
+                <React.Fragment>
+                    <Action
+                        onClick={addNotification('trainDataSampleKeys', 'Train data samples keys successfully copied to clipboard!')}
+                    >
+                        Copy all train data samples keys to clipboard
+                    </Action>
+                    <Action
+                        onClick={addNotification('testDataSampleKeys', 'Test data samples keys successfully copied to clipboard!')}
+                    >
+                        Copy all test data samples keys to clipboard
+                    </Action>
+                </React.Fragment>
             )}
         </PopItem>
         <DownloadPopItem downloadFile={downloadFile} download={download} />

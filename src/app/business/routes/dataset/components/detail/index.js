@@ -40,8 +40,8 @@ const DatasetDetail = ({
                 <TabList>
                     <Tab>Description</Tab>
                     <Tab>Opener</Tab>
-                    <Tab>Train data</Tab>
-                    <Tab>Test data</Tab>
+                    <Tab>Train data samples</Tab>
+                    <Tab>Test data samples</Tab>
                 </TabList>
                 <TabPanel>
                     {descLoading && <PulseLoader size={6} />}
@@ -58,11 +58,11 @@ const DatasetDetail = ({
                     {!descLoading && item && item.trainDataSampleKeys && !item.trainDataSampleKeys.length && (
                         <React.Fragment>
                             <p>
-                                {'No train data setup yet.'}
+                                {'No train data samples setup yet.'}
                                 <br />
                             </p>
                             <p>
-                                {'Use the following command to add new train data to this dataset. You\'ll need to fill the '}
+                                {'Use the following command to add new train data samples to this dataset. You\'ll need to fill the '}
                                 <Code>data_files</Code>
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>
@@ -83,11 +83,11 @@ const DatasetDetail = ({
                     {!descLoading && item && item.testDataSampleKeys && !item.testDataSampleKeys.length && (
                         <React.Fragment>
                             <p>
-                                {'No test data setup yet.'}
+                                {'No test data samples setup yet.'}
                                 <br />
                             </p>
                             <p>
-                                {'Use the following command to add new test data to this dataset. You\'ll need to fill the'}
+                                {'Use the following command to add new test data samples to this dataset. You\'ll need to fill the'}
                                 <Code>data_files</Code>
                                 {' key with paths to the assets\' zip or tar.gz files.'}
                             </p>

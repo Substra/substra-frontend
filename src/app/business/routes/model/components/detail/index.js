@@ -97,7 +97,7 @@ class ModelDetailWithLocalComponents extends React.Component {
                                     {'Model successfully trained with a score of '}
                                     <b>{item.traintuple.dataset.perf}</b>
                                     {' on '}
-                                    <b>train data</b>
+                                    <b>train data samples</b>
                                     .
                                 </Span>
                                 <RoundedButton Icon={DownloadSimple} onClick={this.downloadFile}>
