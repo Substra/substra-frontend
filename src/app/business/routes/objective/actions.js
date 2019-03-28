@@ -14,7 +14,7 @@ export const actionTypes = {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
         metrics: createRequestActionTypes(`${prefix}_ITEM_METRICS`),
-        download: createRequestActionTypes(`${prefix}_ITEM_FILE`, ['REQUEST', 'FAILURE']),
+        download: createRequestActionTypes(`${prefix}_ITEM_FILE`),
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
@@ -49,6 +49,7 @@ export default {
         },
         download: {
             request: createAction(actionTypes.item.download.REQUEST),
+            success: createAction(actionTypes.item.download.SUCCESS),
             failure: createAction(actionTypes.item.download.FAILURE),
         },
     },
