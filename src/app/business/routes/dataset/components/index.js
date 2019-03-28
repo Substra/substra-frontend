@@ -10,7 +10,7 @@ const DatasetBase = ReduxBase();
 
 const download = {
     filename: 'opener.py',
-    address: ['openerStorageAddress'],
+    address: ['opener', 'storageAddress'],
     text: 'Download opener',
 };
 

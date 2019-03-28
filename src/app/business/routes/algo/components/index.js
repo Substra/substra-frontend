@@ -8,7 +8,7 @@ const AlgoBase = ReduxBase();
 
 const download = {
     filename: 'algo.tar.gz',
-    address: ['storageAddress'],
+    address: ['content', 'storageAddress'],
     text: 'Download algo tarball',
 };
 
