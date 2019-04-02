@@ -43,6 +43,22 @@ function* fetchDetail(request) {
     if (item && !item.description.content) {
         yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
     }
+
+    const tabIndex = state.dataset.item.tabIndex;
+    if (item && item.opener && !item.opener.content && tabIndex === 1) {
+        yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
+    }
+}
+
+function* setTabIndexSaga({payload}) {
+    if (payload === 1) {
+        const state = yield select();
+        const selected = state.dataset.list.selected;
+        const item = state.dataset.item.results.find(o => o.pkhash === selected);
+        if (item && item.opener && !item.opener.content) {
+            yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
+        }
+    }
 }
 
 function* fetchItemDescriptionSaga({payload: {id, url}}) {
@@ -100,6 +116,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 

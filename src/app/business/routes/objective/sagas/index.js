@@ -33,6 +33,12 @@ function* fetchItem({payload}) {
     if (item) {
         yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
     }
+
+    const state = yield select();
+    const tabIndex = state.objective.item.tabIndex;
+    if (item && item.metrics && !item.metrics.content && tabIndex === 1) {
+        yield put(actions.item.metrics.request({id: item.key, url: item.metrics.storageAddress}));
+    }
 }
 
 function* fetchDetail(request) {
@@ -40,6 +46,17 @@ function* fetchDetail(request) {
 
     if (!state.objective.item.results.find(o => o.pkhash === request.payload.key)) {
         yield fetchItem(request);
+    }
+}
+
+function* setTabIndexSaga({payload}) {
+    if (payload === 1) {
+        const state = yield select();
+        const selected = state.objective.list.selected;
+        const item = state.objective.item.results.find(o => o.pkhash === selected);
+        if (item && item.metrics && !item.metrics.content) {
+            yield put(actions.item.metrics.request({id: item.key, url: item.metrics.storageAddress}));
+        }
     }
 }
 
@@ -97,6 +114,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 

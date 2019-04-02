@@ -3,6 +3,7 @@ const initialState = {
     loading: false,
     descLoading: false,
     openerLoading: false,
+    tabIndex: 0,
     error: null,
     results: [],
 };
@@ -78,7 +79,11 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 ...state,
                 openerLoading: false,
             };
-
+        case actionTypes.item.tabIndex.SET:
+            return {
+                ...state,
+                tabIndex: payload,
+            };
         default:
             return state;
     }

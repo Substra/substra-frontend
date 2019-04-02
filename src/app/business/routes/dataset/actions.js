@@ -15,6 +15,9 @@ export const actionTypes = {
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
         download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
         opener: createRequestActionTypes(`${prefix}_ITEM_OPENER`),
+        tabIndex: {
+            SET: `${prefix}_TAB_INDEX`,
+        },
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
@@ -51,6 +54,9 @@ export default {
             request: createAction(actionTypes.item.opener.REQUEST),
             success: createAction(actionTypes.item.opener.SUCCESS),
             failure: createAction(actionTypes.item.opener.FAILURE),
+        },
+        tabIndex: {
+            set: createAction(actionTypes.item.tabIndex.SET),
         },
     },
 

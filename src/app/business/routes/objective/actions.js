@@ -15,6 +15,9 @@ export const actionTypes = {
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
         metrics: createRequestActionTypes(`${prefix}_ITEM_METRICS`),
         download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
+        tabIndex: {
+            SET: `${prefix}_TAB_INDEX`,
+        },
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
@@ -51,6 +54,9 @@ export default {
             request: createAction(actionTypes.item.download.REQUEST),
             success: createAction(actionTypes.item.download.SUCCESS),
             failure: createAction(actionTypes.item.download.FAILURE),
+        },
+        tabIndex: {
+            set: createAction(actionTypes.item.tabIndex.SET),
         },
     },
 

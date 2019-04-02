@@ -3,6 +3,7 @@ import baseReducerBuilder, {initialState as baseInitialState} from '../../../com
 const initialState = {
     ...baseInitialState,
     metricsLoading: false,
+    tabIndex: 0,
 };
 
 export default (actionTypes) => {
@@ -29,6 +30,11 @@ export default (actionTypes) => {
                 return {
                     ...reducedState,
                     metricsLoading: false,
+                };
+            case actionTypes.item.tabIndex.SET:
+                return {
+                    ...state,
+                    tabIndex: payload,
                 };
             default:
                 return reducedState;

@@ -1,19 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
+import {noop} from 'lodash';
 
 import Detail from '../../../../common/components/detail';
 import {
-    Tab, TabList, TabPanel, Tabs,
+Tab, TabList, TabPanel, Tabs,
 } from '../../../../common/components/detail/components/tabs';
 import Metadata from './components/metadata';
 import DataKeysTable from './components/dataKeysTable';
 import Description from './components/description';
-import OpenerCode from './components/openerCode';
 import CopyInput from '../../../../common/components/detail/components/copyInput';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../assets/css/variables/colors';
+import CodeSample from '../../../../common/components/detail/components/codeSample';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -28,6 +30,9 @@ const DatasetDetail = ({
     item,
     addNotification,
     descLoading,
+    openerLoading,
+    tabIndex,
+    setTabIndex,
     ...props
     }) => (
         <Detail
@@ -36,7 +41,10 @@ const DatasetDetail = ({
             addNotification={addNotification}
             Metadata={Metadata}
         >
-            <Tabs>
+            <Tabs
+                selectedIndex={tabIndex}
+                onSelect={setTabIndex}
+            >
                 <TabList>
                     <Tab>Description</Tab>
                     <Tab>Opener</Tab>
@@ -48,7 +56,14 @@ const DatasetDetail = ({
                     {!descLoading && <Description item={item} />}
                 </TabPanel>
                 <TabPanel>
-                    <OpenerCode />
+                    {openerLoading && <PulseLoader size={6} />}
+                    {!openerLoading && item && item.opener && item.opener.content && (
+                        <CodeSample
+                            filename="opener.py"
+                            language="python"
+                            codeString={item.opener.content}
+                        />
+                    )}
                 </TabPanel>
                 <TabPanel>
                     {descLoading && <PulseLoader size={6} />}
@@ -104,7 +119,18 @@ const DatasetDetail = ({
         </Detail>
     );
 
-DatasetDetail.propTypes = Detail.propTypes;
-DatasetDetail.defaultProps = Detail.defaultProps;
+DatasetDetail.propTypes = {
+    ...Detail.propTypes,
+    openerLoading: PropTypes.bool,
+    tabIndex: PropTypes.number,
+    setTabIndex: PropTypes.func,
+};
+
+DatasetDetail.defaultProps = {
+    ...Detail.defaultProps,
+    openerLoading: false,
+    tabIndex: 0,
+    setTabIndex: noop,
+};
 
 export default DatasetDetail;
