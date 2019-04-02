@@ -13,7 +13,7 @@ export const actionTypes = {
     item: {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
-        download: createRequestActionTypes(`${prefix}_ITEM_FILE`),
+        download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
         opener: createRequestActionTypes(`${prefix}_ITEM_OPENER`),
     },
 

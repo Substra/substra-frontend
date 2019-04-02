@@ -14,7 +14,7 @@ export const actionTypes = {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
         metrics: createRequestActionTypes(`${prefix}_ITEM_METRICS`),
-        download: createRequestActionTypes(`${prefix}_ITEM_FILE`),
+        download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
