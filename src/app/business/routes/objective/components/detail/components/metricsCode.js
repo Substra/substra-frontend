@@ -30,19 +30,18 @@ class MetricsCode extends React.Component {
 
     render() {
         const {metricsLoading, item} = this.props;
-        if (metricsLoading) {
-            return <PulseLoader size={6} />;
-        }
-        if (item && item.metrics && item.metrics.content) {
-            return (
-                <CodeSample
-                    filename="metrics.py"
-                    language="python"
-                    codeString={item.metrics.content}
-                />
-            );
-        }
-        return null;
+        return (
+            <React.Fragment>
+                {metricsLoading && <PulseLoader size={6} />}
+                {!metricsLoading && item && item.metrics && item.metrics.content && (
+                    <CodeSample
+                        filename="metrics.py"
+                        language="python"
+                        codeString={item.metrics.content}
+                    />
+                )}
+            </React.Fragment>
+        );
     }
 }
 
