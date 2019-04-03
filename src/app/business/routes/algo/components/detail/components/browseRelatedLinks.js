@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {noop} from 'lodash';
 
-import challengeActions from '../../../../challenge/actions';
+import objectiveActions from '../../../../objective/actions';
 import datasetActions from '../../../../dataset/actions';
 import modelActions from '../../../../model/actions';
 
@@ -14,14 +14,14 @@ import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/c
 
 
 const BrowseRelatedLinks = ({
-                                item, unselectChallenge, unselectDataset, unselectModel,
+                                item, unselectObjective, unselectDataset, unselectModel,
                                 ...props
                             }) => {
     const filter = `algo:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...props}>
-            <BrowseRelatedLink model="challenge" label="challenge" filter={filter} unselect={unselectChallenge} />
+            <BrowseRelatedLink model="objective" label="objective" filter={filter} unselect={unselectObjective} />
             <BrowseRelatedLink model="dataset" label="dataset" filter={filter} unselect={unselectDataset} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </BrowseRelatedLinksWrapper>
@@ -30,7 +30,7 @@ const BrowseRelatedLinks = ({
 
 BrowseRelatedLinks.propTypes = {
     item: PropTypes.shape(),
-    unselectChallenge: PropTypes.func,
+    unselectObjective: PropTypes.func,
     unselectDataset: PropTypes.func,
     unselectModel: PropTypes.func,
 };
@@ -38,13 +38,13 @@ BrowseRelatedLinks.propTypes = {
 
 BrowseRelatedLinks.defaultProps = {
     item: null,
-    unselectChallenge: noop,
+    unselectObjective: noop,
     unselectDataset: noop,
     unselectModel: noop,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    unselectChallenge: challengeActions.list.unselect,
+    unselectObjective: objectiveActions.list.unselect,
     unselectDataset: datasetActions.list.unselect,
     unselectModel: modelActions.list.unselect,
 }, dispatch);

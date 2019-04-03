@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {PulseLoader} from 'react-spinners';
-import {isEqual, omit, noop} from 'lodash';
+import {noop} from 'lodash';
 
 import Popover from './components/popover';
 import PopoverItems from './components/popoverItems';
 import Title from './components/title';
-import Sort from './components/sort';
+import Sort from './components/sort/redux';
 import Item from './components/item';
 import Actions from './components/actions';
 
@@ -36,21 +36,13 @@ class List extends React.Component {
 
     componentDidMount(prevProps, prevState, snapshot) {
         const {
-loading, fetchList, logList, location, setOrder,
+loading, fetchList, logList,
 } = this.props;
 
         if (!loading) {
             fetchList();
         }
         logList();
-
-        if (location && location.query && location.query.by && location.query.direction) {
-            const {by, direction} = location.query;
-            setOrder({
-                by,
-                direction,
-            });
-        }
     }
 
     setSelected = item => () => {
@@ -183,17 +175,10 @@ loading, fetchList, logList, location, setOrder,
         }));
     };
 
-    getCurrentSortOption = () => {
-        const {sortOptions, order} = this.props;
-
-        return sortOptions.find(option => isEqual(option.value, omit(order, ['pristine']))) || sortOptions[0];
-    };
-
     render() {
         const {
             results, init, loading, model, className, download,
-            Title, Popover, Metadata, setOrder, PopoverItems,
-            sortOptions,
+            Title, Popover, Metadata, PopoverItems, Sort, setOrder,
         } = this.props;
 
         const {open, anchorEl, item} = this.state.popover;
@@ -202,7 +187,7 @@ loading, fetchList, logList, location, setOrder,
             <div className={className}>
                 <PanelWrapper>
                     <PanelTop>
-                        <Sort current={this.getCurrentSortOption()} setOrder={setOrder} options={sortOptions} />
+                        <Sort model={model} setOrder={setOrder} />
                     </PanelTop>
                     <PanelContent>
                         {loading && (
@@ -273,11 +258,6 @@ List.defaultProps = {
     className: '',
     model: '',
     download: {},
-    sortOptions: [
-        {value: {by: 'name', direction: 'asc'}, label: 'NAME (A-Z)'},
-        {value: {by: 'name', direction: 'desc'}, label: 'NAME (Z-A)'},
-    ],
-    location: null,
     setSelected: noop,
     setOrder: noop,
     fetchList: noop,
@@ -290,6 +270,7 @@ List.defaultProps = {
     Popover,
     PopoverItems,
     Metadata: null,
+    Sort,
     logList: noop,
     logDetail: noop,
     logFilterFromList: noop,
@@ -309,8 +290,6 @@ List.propTypes = {
         address: PropTypes.arrayOf(PropTypes.string),
         filename: PropTypes.string,
     }),
-    sortOptions: PropTypes.arrayOf(PropTypes.shape()),
-    location: PropTypes.shape(),
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,
     fetchList: PropTypes.func,
@@ -323,11 +302,13 @@ List.propTypes = {
     Popover: PropTypes.func,
     PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
+    Sort: PropTypes.func,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
     logFilterFromList: PropTypes.func,
     logDownloadFromList: PropTypes.func,
     logCopyFromList: PropTypes.func,
+    actions: PropTypes.shape().isRequired,
 };
 
 export default List;

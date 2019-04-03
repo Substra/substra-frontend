@@ -342,11 +342,7 @@ Base.propTypes = {
     model: PropTypes.string.isRequired,
     item: PropTypes.shape({
         key: PropTypes.string,
-        descriptionStorageAddress: PropTypes.string,
-        description: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.shape({}),
-        ]),
+        description: PropTypes.shape(),
     }),
     download: PropTypes.shape({
         address: PropTypes.arrayOf(PropTypes.string),

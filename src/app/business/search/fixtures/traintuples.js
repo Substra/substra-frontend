@@ -1,6 +1,6 @@
 export const traintuples = [
     {
-        challenge: {hash: '34563735737'},
+        objective: {hash: '34563735737'},
         algo: {hash: '34563735737'},
         inModel: {hash: '34563735737'},
         outModel: {hash: '34563735737'},
@@ -11,7 +11,7 @@ export const traintuples = [
         creator: 'guillaume',
     },
     {
-        challenge: {hash: '34563735737'},
+        objective: {hash: '34563735737'},
         algo: {hash: '34563735737'},
         inModel: {hash: '34563735737'},
         outModel: {hash: '34563735737'},

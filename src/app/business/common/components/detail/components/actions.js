@@ -17,7 +17,7 @@ export const actions = css`
 `;
 
 const downloadButtonTitles = {
-    challenge: 'Download metrics',
+    objective: 'Download metrics',
     dataset: 'Download opener',
     algo: 'Download algorithm',
     model: 'Download endmodel',

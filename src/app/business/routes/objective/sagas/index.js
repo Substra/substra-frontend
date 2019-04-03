@@ -1,4 +1,4 @@
-/* globals fetch */
+/* globals fetch SUBSTRABAC_AUTH_ENABLED */
 
 import {
     takeLatest, takeEvery, all, select, call, put,
@@ -31,14 +31,14 @@ function* fetchItem({payload}) {
     });
 
     if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.descriptionStorageAddress}));
+        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
     }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.challenge.item.results.find(o => o.pkhash === request.payload.key)) {
+    if (!state.objective.item.results.find(o => o.pkhash === request.payload.key)) {
         yield fetchItem(request);
     }
 }
@@ -57,7 +57,7 @@ function* fetchItemFileSaga({payload: {url}}) {
 
     yield fetch(url, {
         headers: {
-            ...(process.env.NODE_ENV === 'production' ? {Authorization: `Basic ${basic()}`} : {}),
+            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',

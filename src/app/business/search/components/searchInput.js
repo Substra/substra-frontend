@@ -83,7 +83,7 @@ class SearchInput extends Component {
                 )),
             onChange: handleInputChange,
             onKeyDown: handleKeyDown,
-            placeholder: selectedItem.length ? '' : 'Add item filters. Ex: "challenge: challenge1", "dataset: dataset2"',
+            placeholder: selectedItem.length ? '' : 'Add item filters. Ex: "objective: objective1", "dataset: dataset2"',
             classes: styles,
             isOpen,
             getItemProps,

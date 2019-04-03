@@ -26,7 +26,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             {itemLoading && <PulseLoader size={6} />}
             {!itemLoading && (
             <Action
-                onClick={addNotification('trainDataKeys', 'Datas\'s key successfully copied to clipboard!')}
+                onClick={addNotification('trainDataSampleKeys', 'Datas\'s key successfully copied to clipboard!')}
             >
                 Copy all datas' key to clipboard
             </Action>

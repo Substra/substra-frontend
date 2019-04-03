@@ -19,8 +19,8 @@ class Universal extends Component {
                 // do not forget to pass the reduxcontext.store AND the withInjectedReducers wrapper to your imported redux component, or concurrent calls in the server part will fail
 
                 if (reduxcontext && reduxcontext.store) {
-                    injectSaga('challenge', module.challengeSagas, false, reduxcontext.store);
-                    injectReducer('challenge', module.challengeReducer, false, reduxcontext.store);
+                    injectSaga('objective', module.objectiveSagas, false, reduxcontext.store);
+                    injectReducer('objective', module.objectiveReducer, false, reduxcontext.store);
 
                     injectSaga('dataset', module.datasetSagas, false, reduxcontext.store);
                     injectReducer('dataset', module.datasetReducer, false, reduxcontext.store);

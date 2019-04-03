@@ -6,6 +6,7 @@ import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Metadata from './components/metadata';
 import PopoverItems from './components/popoverItems';
+import Sort from './components/sort';
 
 class ModelList extends List {
     filterUp = (e) => {
@@ -22,17 +23,12 @@ class ModelList extends List {
     };
 }
 
-const sortOptions = [
-    {value: {by: 'testtuple.data.perf', direction: 'asc'}, label: 'LOWEST SCORE'},
-    {value: {by: 'testtuple.data.perf', direction: 'desc'}, label: 'HIGHEST SCORE'},
-];
-
 const ModelListWithLocalComponents = props => (
     <ModelList
         Title={Title}
         Metadata={Metadata}
         PopoverItems={PopoverItems}
-        sortOptions={sortOptions}
+        Sort={Sort}
         {...props}
     />
 );

@@ -4,7 +4,7 @@ const location = state => state.location;
 const item = state => state.search.item;
 const filters = state => state.search.filters;
 
-const challengeResults = state => state.challenge.persistent.results;
+const objectiveResults = state => state.objective.persistent.results;
 const datasetResults = state => state.dataset.persistent.results;
 const algoResults = state => state.algo.persistent.results;
 const modelResults = state => state.model.persistent.results;
@@ -13,9 +13,9 @@ export const outModelsHashes = createDeepEqualSelector([modelResults],
     modelResults => modelResults.length ? modelResults[0].filter(o => o.traintuple.outModel).map(o => ({hash: `hash:${o.traintuple.outModel.hash}`})) : modelResults,
 );
 
-export const getSearchFilters = createDeepEqualSelector([location, challengeResults, datasetResults, algoResults, outModelsHashes],
-    (location, challenge, dataset, algo, outModelsHashes) => ({
-        challenge: challenge.length ? challenge[0] : challenge,
+export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, algoResults, outModelsHashes],
+    (location, objective, dataset, algo, outModelsHashes) => ({
+        objective: objective.length ? objective[0] : objective,
         dataset: dataset.length ? dataset[0] : dataset,
         algo: algo.length ? algo[0] : algo,
         model: outModelsHashes, // output model i.e trained model (updated)
@@ -46,7 +46,7 @@ export const getSuggestions = createDeepEqualSelector([getSearchFilters, item, g
                     ...(c.key ? [{label: `key:${c.key}`, uuid: `${c.key}_key`}] : []),
                     ...(c.hash ? [{label: c.hash, uuid: `${c.hash}_hash`}] : []),
 
-                    // add metrics name if exists for challenge
+                    // add metrics name if exists for objective
                     ...(c.metrics && c.metrics.name ? [{
                         label: `metrics:${c.metrics.name}`,
                         uuid: `${c.key}_metrics`,

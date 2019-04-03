@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {noop} from 'lodash';
 
-import challengeActions from '../../../../challenge/actions';
+import objectiveActions from '../../../../objective/actions';
 import algoActions from '../../../../algo/actions';
 import modelActions from '../../../../model/actions';
 
@@ -13,14 +13,14 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
 
 const BrowseRelatedLinks = ({
-                                item, unselectAlgo, unselectChallenge, unselectModel,
+                                item, unselectAlgo, unselectObjective, unselectModel,
                                 ...props
                             }) => {
     const filter = `dataset:name:${item ? item.name : ''}`;
 
     return (
         <BrowseRelatedLinksWrapper {...props}>
-            <BrowseRelatedLink model="challenge" label="challenges" filter={filter} unselect={unselectChallenge} />
+            <BrowseRelatedLink model="objective" label="objectives" filter={filter} unselect={unselectObjective} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </BrowseRelatedLinksWrapper>
@@ -30,20 +30,20 @@ const BrowseRelatedLinks = ({
 BrowseRelatedLinks.propTypes = {
     item: PropTypes.shape(),
     unselectAlgo: PropTypes.func,
-    unselectChallenge: PropTypes.func,
+    unselectObjective: PropTypes.func,
     unselectModel: PropTypes.func,
 };
 
 BrowseRelatedLinks.defaultProps = {
     item: null,
     unselectAlgo: noop,
-    unselectChallenge: noop,
+    unselectObjective: noop,
     unselectModel: noop,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     unselectAlgo: algoActions.list.unselect,
-    unselectChallenge: challengeActions.list.unselect,
+    unselectObjective: objectiveActions.list.unselect,
     unselectModel: modelActions.list.unselect,
 }, dispatch);
 

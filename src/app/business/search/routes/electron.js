@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import Search, {
-    challengeSagas, challengeReducer,
+    objectiveSagas, objectiveReducer,
     datasetSagas, datasetReducer,
     algoSagas, algoReducer,
     modelSagas, modelReducer,
@@ -10,8 +10,8 @@ import Search, {
 class C extends Component {
     constructor(props) {
         super(props);
-        injectSaga('challenge', challengeSagas);
-        injectReducer('challenge', challengeReducer);
+        injectSaga('objective', objectiveSagas);
+        injectReducer('objective', objectiveReducer);
 
         injectSaga('dataset', datasetSagas);
         injectReducer('dataset', datasetReducer);
