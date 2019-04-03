@@ -51,17 +51,19 @@ const ObjectiveDetail = ({
 );
 
 ObjectiveDetail.propTypes = {
-    ...Detail.propTypes,
+    descLoading: PropTypes.bool,
     metricsLoading: PropTypes.bool,
     tabIndex: PropTypes.number,
     setTabIndex: PropTypes.func,
+    item: PropTypes.shape(),
 };
 
 ObjectiveDetail.defaultProps = {
-    ...Detail.defaultProps,
+    descLoading: false,
     metricsLoading: false,
     tabIndex: 0,
     setTabIndex: noop,
+    item: null,
 };
 
 export default ObjectiveDetail;
