@@ -4,7 +4,7 @@ import {withDetailRedux} from './redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import Title from './components/title';
 import Metadata from './components/metadata';
-import Tabs from './components/tabs';
+import Tabs from './components/tabs/redux';
 import Actions from './components/actions';
 
 class ModelDetail extends Detail {

@@ -4,6 +4,7 @@ export const initialState = {
     descLoading: false,
     error: null,
     results: [],
+    tabIndex: 0,
 };
 
 export default actionTypes => (state = initialState, {type, payload}) => {
@@ -42,7 +43,7 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 init: true,
                 results: state.results.reduce((p, c) => [
                     ...p,
-                    ...(c.pkhash === payload.id ? [{...c, desc: payload.desc}] : [c]),
+                    ...(c.pkhash === payload.id ? [{...c, description: {...c.description, content: payload.desc}}] : [c]),
                 ], []),
                 descLoading: false,
             };
@@ -50,6 +51,11 @@ export default actionTypes => (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 descLoading: false,
+            };
+        case actionTypes.item.tabIndex.SET:
+            return {
+                ...state,
+                tabIndex: payload,
             };
         default:
             return state;

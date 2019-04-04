@@ -6,14 +6,14 @@ import {noop} from 'lodash';
 
 import {
     Tab, TabList, Tabs, TabPanel,
-} from '../../../../../common/components/detail/components/tabs';
-import DataKeysTable from './dataKeysTable';
-import Description from './description';
-import CopyInput from '../../../../../common/components/detail/components/copyInput';
+} from '../../../../../../common/components/detail/components/tabs';
+import DataKeysTable from '../dataKeysTable';
+import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 
-import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
-import {ice} from '../../../../../../../../assets/css/variables/colors';
-import CodeSample from '../../../../../common/components/detail/components/codeSample';
+import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
+import {ice} from '../../../../../../../../../assets/css/variables/colors';
+import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+import Description from '../../../../../../common/components/detail/components/description';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};

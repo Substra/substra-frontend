@@ -24,7 +24,7 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const state = yield select();
 
-    if (!state.model.item.results.find(o => o.pkhash === payload)) {
+    if (!state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key)) {
         yield put(actions.item.request({id: payload.traintuple.key, get_parameters: {}}));
     }
 }

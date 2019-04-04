@@ -5,9 +5,9 @@ import {noop} from 'lodash';
 
 import {
     Tab, TabList, Tabs, TabPanel,
-} from '../../../../../common/components/detail/components/tabs';
-import Description from '../../../../../common/components/detail/components/description';
-import CodeSample from '../../../../../common/components/detail/components/codeSample';
+} from '../../../../../../common/components/detail/components/tabs';
+import Description from '../../../../../../common/components/detail/components/description';
+import CodeSample from '../../../../../../common/components/detail/components/codeSample';
 
 
 const ObjectiveTabs = ({

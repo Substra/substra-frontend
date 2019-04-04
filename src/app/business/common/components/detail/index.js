@@ -63,10 +63,9 @@ class Detail extends Component {
                         {Tabs && (
                             <Section>
                                 <Tabs
-                                    item={item}
                                     downloadFile={this.downloadFile}
                                     addNotification={this.addNotification}
-                                    {...this.props}
+                                    model={model}
                                 />
                             </Section>
                         )}

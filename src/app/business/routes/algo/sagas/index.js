@@ -11,6 +11,7 @@ import {
 fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 function* fetchList(request) {
     const state = yield select();
@@ -18,6 +19,14 @@ function* fetchList(request) {
     const f = () => fetchListApi(state.location.query);
 
     yield call(fetchListSaga(actions, f), request);
+}
+
+function* manageTabs(item, tabIndex) {
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
+        }
+    }
 }
 
 function* fetchItem({payload}) {
@@ -29,7 +38,9 @@ function* fetchItem({payload}) {
     });
 
     if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
+        const state = yield select();
+        const tabIndex = state.algo.item.tabIndex;
+        yield manageTabs(item, tabIndex);
     }
 }
 
@@ -38,6 +49,15 @@ function* fetchDetail(request) {
 
     if (!state.algo.item.results.find(o => o.pkhash === request.payload.key)) {
         yield fetchItem(request);
+    }
+}
+
+function* setTabIndexSaga({payload}) {
+    const state = yield select();
+    const item = getItem(state, 'algo');
+
+    if (item) {
+        yield manageTabs(item, payload);
     }
 }
 
@@ -88,6 +108,7 @@ const sagas = function* sagas() {
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 

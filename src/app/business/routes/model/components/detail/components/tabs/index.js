@@ -4,16 +4,16 @@ import styled from '@emotion/styled';
 
 import {
     Tab, TabList, Tabs, TabPanel,
-} from '../../../../../common/components/detail/components/tabs';
-import CodeSample from '../../../../../common/components/detail/components/codeSample';
+} from '../../../../../../common/components/detail/components/tabs';
+import CodeSample from '../../../../../../common/components/detail/components/codeSample';
 
-import CopyInput from '../../../../../common/components/detail/components/copyInput';
-import RoundedButton from '../../../../../common/components/roundedButton';
-import DownloadSimple from '../../../../../common/svg/download-simple';
-import {spacingNormal} from '../../../../../../../../assets/css/variables/spacing';
+import CopyInput from '../../../../../../common/components/detail/components/copyInput';
+import RoundedButton from '../../../../../../common/components/roundedButton';
+import DownloadSimple from '../../../../../../common/svg/download-simple';
+import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
     AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
-} from '../../../../../common/components/alert';
+} from '../../../../../../common/components/alert';
 
 
 const Span = styled('span')`
