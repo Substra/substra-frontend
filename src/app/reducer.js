@@ -1,5 +1,6 @@
 import {actionTypes} from './actions';
 import search from './business/search/reducers';
+import title from './business/routes/reducers/title';
 
 const initialState = {
     error: '',
@@ -20,4 +21,5 @@ export const general = (state = initialState, {type, payload}) => {
 export default {
     general,
     search,
+    title,
 };
