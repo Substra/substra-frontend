@@ -3,7 +3,7 @@ import universal from 'react-universal-component';
 import {injectSaga, injectReducer} from 'redux-sagas-injector';
 import {ReactReduxContext} from 'react-redux';
 
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 class Universal extends Component {
     constructor(props) {
