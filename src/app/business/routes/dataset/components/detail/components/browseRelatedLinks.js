@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
@@ -17,11 +17,11 @@ const BrowseRelatedLinks = ({
     const filter = `dataset:name:${item ? item.name : ''}`;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <BrowseRelatedLink model="objective" label="objectives" filter={filter} unselect={unselectObjective} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

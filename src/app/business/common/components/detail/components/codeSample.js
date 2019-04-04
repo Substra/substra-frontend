@@ -1,5 +1,5 @@
 /* global Blob */
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import mime from 'mime-types';
@@ -58,7 +58,7 @@ const ActionsWrapper = styled('div')`
 `;
 
 
-class CodeSample extends React.Component {
+class CodeSample extends Component {
     downloadCode = () => {
         const {codeString, filename} = this.props;
         const jsonBlob = new Blob([codeString], {type: mime.lookup(filename)});

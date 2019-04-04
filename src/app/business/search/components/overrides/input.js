@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
@@ -175,7 +175,7 @@ function formControlState(props, context) {
     };
 }
 
-class Input extends React.Component {
+class Input extends Component {
     isControlled = this.props.value != null;
 
     input = null; // Holds the input reference

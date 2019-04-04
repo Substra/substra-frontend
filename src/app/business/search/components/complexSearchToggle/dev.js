@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 
 import actions from '../../actions';
 
-class ComplexSearchToggle extends React.Component {
+class ComplexSearchToggle extends Component {
     handleIsComplex = (e) => {
         const {setIsComplex} = this.props;
 

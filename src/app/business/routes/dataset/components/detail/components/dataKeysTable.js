@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -30,7 +30,7 @@ const monospace = css`
     font-size: ${fontNormalMonospace};
 `;
 
-class DataKeysTable extends React.Component {
+class DataKeysTable extends Component {
     state = {
         selectedKeys: [],
         allSelected: false,

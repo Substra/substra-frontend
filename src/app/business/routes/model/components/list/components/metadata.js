@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {capitalize} from 'lodash';
@@ -24,10 +24,10 @@ const Metadata = ({o}) => (
             <ScoreWrapper>
                 <SingleMetadata label="Score">
                     {o.testtuple.status !== 'done' && (
-                        <React.Fragment>
+                        <Fragment>
                             {capitalize(o.testtuple.status)}
                             <InlinePulseLoader loading={['todo', 'doing'].includes(o.testtuple.status)} />
-                        </React.Fragment>
+                        </Fragment>
                     )}
                     {o.testtuple.status === 'done' && o.testtuple.dataset && o.testtuple.dataset.perf}
                 </SingleMetadata>

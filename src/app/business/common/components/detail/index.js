@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
@@ -9,7 +9,7 @@ import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
 
-class Detail extends React.Component {
+class Detail extends Component {
     downloadFile = (e) => {
         const {downloadFile, item, logDownloadFromDetail} = this.props;
 
@@ -36,7 +36,7 @@ class Detail extends React.Component {
     render() {
         const {
             item, className, model, children,
-            Title, Metadata, Actions,
+            Title, Metadata, Actions, Tabs,
         } = this.props;
 
         return (
@@ -60,6 +60,16 @@ class Detail extends React.Component {
                                 model={model}
                             />
                         </Section>
+                        {Tabs && (
+                            <Section>
+                                <Tabs
+                                    item={item}
+                                    downloadFile={this.downloadFile}
+                                    addNotification={this.addNotification}
+                                    {...this.props}
+                                />
+                            </Section>
+                        )}
                         {children && <Section>{children}</Section>}
                     </PanelContent>
                 )}
@@ -72,6 +82,7 @@ class Detail extends React.Component {
 Detail.defaultProps = {
     item: null,
     className: '',
+    descLoading: false,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -80,6 +91,7 @@ Detail.defaultProps = {
     logDownloadFromDetail: noop,
     logCopyFromDetail: noop,
     Title,
+    Tabs: noop,
     children: null,
     Metadata,
     Actions,
@@ -90,6 +102,7 @@ Detail.propTypes = {
         key: PropTypes.string,
         description: PropTypes.shape(),
     }),
+    descLoading: PropTypes.bool,
     className: PropTypes.string,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
@@ -99,6 +112,7 @@ Detail.propTypes = {
     logDownloadFromDetail: PropTypes.func,
     logCopyFromDetail: PropTypes.func,
     Title: PropTypes.func,
+    Tabs: PropTypes.func,
     children: PropTypes.node,
     Metadata: PropTypes.func,
     Actions: PropTypes.func,

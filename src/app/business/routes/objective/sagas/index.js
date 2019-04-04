@@ -12,6 +12,7 @@ import {
 fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 
 function* fetchList(request) {
@@ -20,6 +21,17 @@ function* fetchList(request) {
     const f = () => fetchListApi(state.location.query);
 
     yield call(fetchListSaga(actions, f), request);
+}
+
+function* manageTabs(item, tabIndex) {
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
+        }
+        else if (item.metrics && !item.metrics.content && tabIndex === 1) {
+            yield put(actions.item.metrics.request({id: item.key, url: item.metrics.storageAddress}));
+        }
+    }
 }
 
 function* fetchItem({payload}) {
@@ -31,13 +43,9 @@ function* fetchItem({payload}) {
     });
 
     if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
-    }
-
-    const state = yield select();
-    const tabIndex = state.objective.item.tabIndex;
-    if (item && item.metrics && !item.metrics.content && tabIndex === 1) {
-        yield put(actions.item.metrics.request({id: item.key, url: item.metrics.storageAddress}));
+        const state = yield select();
+        const tabIndex = state.objective.item.tabIndex;
+        yield manageTabs(item, tabIndex);
     }
 }
 
@@ -50,13 +58,11 @@ function* fetchDetail(request) {
 }
 
 function* setTabIndexSaga({payload}) {
-    if (payload === 1) {
-        const state = yield select();
-        const selected = state.objective.list.selected;
-        const item = state.objective.item.results.find(o => o.pkhash === selected);
-        if (item && item.metrics && !item.metrics.content) {
-            yield put(actions.item.metrics.request({id: item.key, url: item.metrics.storageAddress}));
-        }
+    const state = yield select();
+    const item = getItem(state, 'objective');
+
+    if (item) {
+        yield manageTabs(item, payload);
     }
 }
 

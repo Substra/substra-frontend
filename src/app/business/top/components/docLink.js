@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
@@ -11,7 +11,7 @@ const picto = css`
     display: block;
 `;
 
-export class DocLink extends React.Component {
+export class DocLink extends Component {
     logDoc = () => {
         const {logDoc} = this.props;
         logDoc();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
@@ -18,11 +18,11 @@ const BrowseRelatedLinks = ({
     const objectiveFilter = `objective:key:${item && item.traintuple && item.traintuple.objective ? item.traintuple.objective.hash : ''}`;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />
             <BrowseRelatedLink model="dataset" label="dataset" filter={objectiveFilter} unselect={unselectDataset} />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

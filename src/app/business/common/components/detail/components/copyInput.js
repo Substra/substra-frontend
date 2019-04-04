@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
@@ -50,7 +50,7 @@ const prompt = css`
 const Prompt = () => <div className={prompt}>$</div>;
 
 
-class CopyInput extends React.Component {
+class CopyInput extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();

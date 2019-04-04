@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {capitalize} from 'lodash';
 import {css} from 'emotion';
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -25,7 +25,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             </Action>
             {itemLoading && <PulseLoader size={6} />}
             {!itemLoading && (
-                <React.Fragment>
+                <Fragment>
                     <Action
                         onClick={addNotification('trainDataSampleKeys', 'Train data samples keys successfully copied to clipboard!')}
                     >
@@ -36,7 +36,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
                     >
                         Copy all test data samples keys to clipboard
                     </Action>
-                </React.Fragment>
+                </Fragment>
             )}
         </PopItem>
         <DownloadPopItem downloadFile={downloadFile} download={download} />

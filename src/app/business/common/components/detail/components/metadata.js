@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -54,10 +54,10 @@ export const SingleMetadata = ({
         ${valueClassName}
     `;
     return (
-        <React.Fragment>
+        <Fragment>
             <dt className={dt}>{label}</dt>
             <dd className={dd}>{value || children}</dd>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

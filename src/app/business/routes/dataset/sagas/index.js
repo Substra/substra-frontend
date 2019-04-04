@@ -12,6 +12,7 @@ import {
     fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 
 function* fetchList(request) {
@@ -22,42 +23,48 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
+function* manageTabs(item, tabIndex) {
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
+        }
+        else if (item.opener && !item.opener.content && tabIndex === 1) {
+            yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
+        }
+    }
+}
+
 function* fetchItem({payload}) {
-    return yield call(fetchItemSaga(actions, fetchItemApi), {
+    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
         },
     });
+
+    if (item) {
+        const state = yield select();
+        const tabIndex = state.dataset.item.tabIndex;
+        yield manageTabs(item, tabIndex);
+    }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    let item = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+    const item = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
 
     if (!item) {
-        item = yield fetchItem(request);
-    }
-
-    if (item && !item.description.content) {
-        yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
-    }
-
-    const tabIndex = state.dataset.item.tabIndex;
-    if (item && item.opener && !item.opener.content && tabIndex === 1) {
-        yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
+        yield fetchItem(request);
     }
 }
 
 function* setTabIndexSaga({payload}) {
-    if (payload === 1) {
-        const state = yield select();
-        const selected = state.dataset.list.selected;
-        const item = state.dataset.item.results.find(o => o.pkhash === selected);
-        if (item && item.opener && !item.opener.content) {
-            yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
-        }
+    const state = yield select();
+    const item = getItem(state, 'dataset');
+
+    if (item) {
+        yield manageTabs(item, payload);
     }
 }
 

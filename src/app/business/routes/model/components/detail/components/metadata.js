@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {capitalize} from 'lodash';
 
 import BaseMetadata, {
@@ -48,10 +48,10 @@ const Metadata = ({item, addNotification}) => (
             {!item.testtuple && 'N/A'}
             {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
             {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
-                <React.Fragment>
+                <Fragment>
                     {capitalize(item.testtuple.status)}
                     <InlinePulseLoader loading={['todo', 'doing'].includes(item.testtuple.status)} />
-                </React.Fragment>
+                </Fragment>
             )}
         </SingleMetadata>
         <BrowseRelatedMetadata>
