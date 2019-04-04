@@ -1,7 +1,7 @@
 import React from 'react';
 import {capitalize} from 'lodash';
 import {css} from 'emotion';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import PopoverItems, {
 PopList, FilterUpPopItem, DownloadPopItem, PopItem, Action,
 } from '../../../../../common/components/list/components/popoverItems';

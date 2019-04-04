@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
 import Popover from './components/popover';

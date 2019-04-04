@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
 import Title from './components/title';

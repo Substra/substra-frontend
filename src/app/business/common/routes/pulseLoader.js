@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import {ice, white} from '../../../../../assets/css/variables/colors';
 import {spacingLarge, spacingNormal} from '../../../../../assets/css/variables/spacing';
 
