@@ -1,4 +1,12 @@
-import Tabs from './index';
-import {withDetailRedux} from '../../../../../../common/components/detail/redux';
+import {connect} from 'react-redux';
+import {onlyUpdateForKeys} from 'recompose';
 
-export default withDetailRedux(Tabs);
+import Tabs from './index';
+import {getItem} from '../../../../../../common/selector';
+
+const mapStateToProps = (state, {model}) => ({
+    item: getItem(state, model),
+    descLoading: state[model].item.descLoading,
+});
+
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(Tabs));
