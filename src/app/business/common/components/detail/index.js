@@ -82,7 +82,6 @@ class Detail extends Component {
 Detail.defaultProps = {
     item: null,
     className: '',
-    descLoading: false,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -102,7 +101,6 @@ Detail.propTypes = {
         key: PropTypes.string,
         description: PropTypes.shape(),
     }),
-    descLoading: PropTypes.bool,
     className: PropTypes.string,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
