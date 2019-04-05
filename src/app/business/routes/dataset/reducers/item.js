@@ -9,7 +9,52 @@ export default (actionTypes) => {
     const baseReducer = baseReducerBuilder(actionTypes);
     return (state = initialState, {type, payload}) => {
         const reducedState = baseReducer(state, {type, payload});
+
+        // know if item exists
+        const exists = state.results.find(x => x.pkhash === payload.pkhash);
+
         switch (type) {
+            // override for updating if necessary
+            case actionTypes.item.SUCCESS:
+                return {
+                    ...state,
+                    init: true,
+                    results: !exists ? [...state.results, payload] : state.results.reduce((p, c) => [
+                        ...p,
+                        ...(c.pkhash === payload.pkhash ? [{
+                            ...c,
+                            ...payload,
+                            opener: {
+                                ...c.opener,
+                                ...payload.opener,
+                            },
+                            description: {
+                                ...c.description,
+                                ...payload.description,
+                            },
+                        }] : [c]),
+                    ], []),
+                    error: false,
+                    loading: false,
+                };
+            case actionTypes.item.description.SUCCESS:
+                return {
+                    ...state,
+                    results: !exists ? [...state.results, {
+                        pkhash: payload.pkhash,
+                        description: {content: payload.desc},
+                    }] : state.results.reduce((p, c) => [
+                        ...p,
+                        ...(c.pkhash === payload.pkhash ? [{
+                            ...c,
+                            description: {
+                                ...c.description,
+                                content: payload.desc,
+                            },
+                        }] : [c]),
+                    ], []),
+                    descLoading: false,
+                };
             case actionTypes.item.opener.REQUEST:
                 return {
                     ...state,
@@ -18,9 +63,12 @@ export default (actionTypes) => {
             case actionTypes.item.opener.SUCCESS:
                 return {
                     ...state,
-                    results: state.results.reduce((p, c) => [
+                    results: !exists ? [...state.results, {
+                        pkhash: payload.pkhash,
+                        opener: {content: payload.openerContent},
+                    }] : state.results.reduce((p, c) => [
                         ...p,
-                        ...(c.pkhash === payload.id ? [{
+                        ...(c.pkhash === payload.pkhash ? [{
                             ...c,
                             opener: {
                                 ...c.opener,

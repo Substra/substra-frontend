@@ -23,63 +23,57 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
-function* manageTabs(item, tabIndex) {
+function* manageTabs(tabIndex) {
+    const state = yield select();
+    const item = getItem(state, 'dataset');
+
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
-            yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
+            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
         }
         else if (item.opener && !item.opener.content && tabIndex === 1) {
-            yield put(actions.item.opener.request({id: item.key, url: item.opener.storageAddress}));
+            yield put(actions.item.opener.request({pkhash: item.key, url: item.opener.storageAddress}));
         }
     }
 }
 
 function* fetchItem({payload}) {
-    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
+    yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
         },
     });
-
-    if (item) {
-        const state = yield select();
-        const tabIndex = state.dataset.item.tabIndex;
-        yield manageTabs(item, tabIndex);
-    }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    const item = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+    // fetch current tab content if needed
+    yield manageTabs(state.dataset.item.tabIndex);
 
-    if (!item) {
-        yield fetchItem(request);
+    const exists = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+    if (!exists) {
+        yield put(actions.item.request(request.payload));
     }
 }
 
 function* setTabIndexSaga({payload}) {
-    const state = yield select();
-    const item = getItem(state, 'dataset');
-
-    if (item) {
-        yield manageTabs(item, payload);
-    }
+    yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({payload: {id, url}}) {
+function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({id, desc: res}));
+        yield put(actions.item.description.success({pkhash, desc: res}));
     }
 }
 
-function* fetchItemOpenerSaga({payload: {id, url}}) {
+function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
     if (res && status === 200) {
-        yield put(actions.item.opener.success({id, openerContent: res}));
+        yield put(actions.item.opener.success({pkhash, openerContent: res}));
     }
 }
 
@@ -117,8 +111,8 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
-        takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
-        takeEvery(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
