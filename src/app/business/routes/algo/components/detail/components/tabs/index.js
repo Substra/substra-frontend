@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
+import {noop} from 'lodash';
 
 import Description from '../../../../../../common/components/detail/components/description';
 import {
@@ -15,8 +16,13 @@ const Span = styled('span')`
     margin-right: ${spacingNormal};
 `;
 
-const AlgoTabs = ({descLoading, item, downloadFile}) => (
-    <Tabs>
+const AlgoTabs = ({
+descLoading, item, tabIndex, setTabIndex, downloadFile,
+}) => (
+    <Tabs
+        selectedIndex={tabIndex}
+        onSelect={setTabIndex}
+    >
         <TabList>
             <Tab>Description</Tab>
             <Tab>Code</Tab>
@@ -38,12 +44,16 @@ const AlgoTabs = ({descLoading, item, downloadFile}) => (
 AlgoTabs.propTypes = {
     item: PropTypes.shape(),
     descLoading: PropTypes.bool,
+    tabIndex: PropTypes.number,
+    setTabIndex: PropTypes.func,
     downloadFile: PropTypes.func.isRequired,
 };
 
 AlgoTabs.defaultProps = {
     item: null,
     descLoading: false,
+    tabIndex: 0,
+    setTabIndex: noop,
 };
 
 export default AlgoTabs;
