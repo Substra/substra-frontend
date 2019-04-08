@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
@@ -10,8 +10,6 @@ import algoActions from '../../../../algo/actions';
 import modelActions from '../../../../model/actions';
 
 import BrowseRelatedLink from '../../../../../common/components/detail/components/browseRelatedLink';
-import BrowseRelatedLinksWrapper from '../../../../../common/components/detail/components/browseRelatedLinksWrapper';
-
 
 const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectModel, unselectDataset,
@@ -20,11 +18,11 @@ const BrowseRelatedLinks = ({
     const filter = `objective:name:${item ? item.name : ''}`;
 
     return (
-        <BrowseRelatedLinksWrapper {...props}>
+        <Fragment {...props}>
             <BrowseRelatedLink model="dataset" label="dataset" filter={filter} unselect={unselectDataset} />
             <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
-        </BrowseRelatedLinksWrapper>
+        </Fragment>
     );
 };
 

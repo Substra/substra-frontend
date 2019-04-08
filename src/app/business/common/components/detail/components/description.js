@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 
 const Description = ({item}) => {
-    if (item && item.desc) {
-        return <ReactMarkdown source={item.desc} />;
+    if (item && item.description) {
+        return <ReactMarkdown source={item.description.content} />;
     }
     return null;
 };

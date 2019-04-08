@@ -1,17 +1,15 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
-import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
 import Title from './components/title';
-import Section, {section} from './components/section';
+import Section from './components/section';
 import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
-import Description from './components/description';
 
-class Detail extends React.Component {
+class Detail extends Component {
     downloadFile = (e) => {
         const {downloadFile, item, logDownloadFromDetail} = this.props;
 
@@ -37,8 +35,8 @@ class Detail extends React.Component {
 
     render() {
         const {
-            item, className, descLoading, model, children,
-            Title, BrowseRelatedLinks, Metadata, Description, Actions,
+            item, className, model, children,
+            Title, Metadata, Actions, Tabs,
         } = this.props;
 
         return (
@@ -62,11 +60,13 @@ class Detail extends React.Component {
                                 model={model}
                             />
                         </Section>
-                        {BrowseRelatedLinks && <BrowseRelatedLinks item={item} className={section} />}
-                        {Description && (
+                        {Tabs && (
                             <Section>
-                                {descLoading && <PulseLoader size={6} />}
-                                {!descLoading && <Description item={item} />}
+                                <Tabs
+                                    downloadFile={this.downloadFile}
+                                    addNotification={this.addNotification}
+                                    model={model}
+                                />
                             </Section>
                         )}
                         {children && <Section>{children}</Section>}
@@ -81,7 +81,6 @@ class Detail extends React.Component {
 Detail.defaultProps = {
     item: null,
     className: '',
-    descLoading: false,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -90,10 +89,9 @@ Detail.defaultProps = {
     logDownloadFromDetail: noop,
     logCopyFromDetail: noop,
     Title,
+    Tabs: noop,
     children: null,
-    BrowseRelatedLinks: null,
     Metadata,
-    Description,
     Actions,
 };
 
@@ -102,7 +100,6 @@ Detail.propTypes = {
         key: PropTypes.string,
         description: PropTypes.shape(),
     }),
-    descLoading: PropTypes.bool,
     className: PropTypes.string,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
@@ -112,10 +109,9 @@ Detail.propTypes = {
     logDownloadFromDetail: PropTypes.func,
     logCopyFromDetail: PropTypes.func,
     Title: PropTypes.func,
+    Tabs: PropTypes.func,
     children: PropTypes.node,
-    BrowseRelatedLinks: PropTypes.func,
     Metadata: PropTypes.func,
-    Description: PropTypes.func,
     Actions: PropTypes.func,
 };
 

@@ -20,7 +20,7 @@ const ReduxBase = (B = Base) => { // no override on List/Detail, neither princip
 
     const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
         setSearchState: searchActions.state.set,
-        fetchFile: actions.item.file.request,
+        downloadItem: actions.item.download.request,
     }, dispatch);
 
     return withInjectedReducers(connect(mapStateToProps, mapDispatchToProps)(B));

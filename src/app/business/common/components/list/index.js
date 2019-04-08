@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -24,7 +24,7 @@ const PulseLoaderWrapper = styled('div')`
     margin: ${spacingNormal};
 `;
 
-class List extends React.Component {
+class List extends Component {
     state = {
         popover: {
             open: false,

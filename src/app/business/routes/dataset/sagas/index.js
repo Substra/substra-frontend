@@ -9,9 +9,10 @@ import {saveAs} from 'file-saver';
 import actions, {actionTypes} from '../actions';
 import {fetchItemApi, fetchListApi} from '../api';
 import {
-fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
+    fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 
 function* fetchList(request) {
@@ -22,8 +23,22 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
+function* manageTabs(tabIndex) {
+    const state = yield select();
+    const item = getItem(state, 'dataset');
+
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
+        }
+        else if (item.opener && !item.opener.content && tabIndex === 1) {
+            yield put(actions.item.opener.request({pkhash: item.key, url: item.opener.storageAddress}));
+        }
+    }
+}
+
 function* fetchItem({payload}) {
-    return yield call(fetchItemSaga(actions, fetchItemApi), {
+    yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
@@ -34,26 +49,35 @@ function* fetchItem({payload}) {
 function* fetchDetail(request) {
     const state = yield select();
 
-    let item = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+    // fetch current tab content if needed
+    yield manageTabs(state.dataset.item.tabIndex);
 
-    if (!item) {
-        item = yield fetchItem(request);
-    }
-
-    if (item && !item.description.content) {
-        yield put(actions.item.description.request({id: item.key, url: item.description.storageAddress}));
+    const exists = state.dataset.item.results.find(o => o.pkhash === request.payload.key);
+    if (!exists) {
+        yield put(actions.item.request(request.payload));
     }
 }
 
-function* fetchItemDescriptionSaga({payload: {id, url}}) {
+function* setTabIndexSaga({payload}) {
+    yield manageTabs(payload);
+}
+
+function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({id, desc: res}));
+        yield put(actions.item.description.success({pkhash, desc: res}));
     }
 }
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
+    if (res && status === 200) {
+        yield put(actions.item.opener.success({pkhash, openerContent: res}));
+    }
+}
+
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -87,11 +111,13 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
-        takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 

@@ -217,7 +217,7 @@ class Base extends Component {
         // we need to act as a proxy as we need to pass the version for downloading th efile
 
         const {
-            fetchFile, item, results, download: {address, filename},
+            downloadItem, item, results, download: {address, filename},
         } = this.props;
 
         // item can be empty if we download from list with no expand on item
@@ -225,7 +225,7 @@ class Base extends Component {
 
         const url = object ? address.reduce((p, c) => p[c], object) : '';
 
-        fetchFile({url, filename});
+        downloadItem({url, filename});
     };
 
     list = () => css`
@@ -329,7 +329,7 @@ Base.defaultProps = {
     selectedItem: [],
     item: null,
     setSearchState: noop,
-    fetchFile: noop,
+    downloadItem: noop,
     download: {},
     results: [],
     List,
@@ -351,7 +351,7 @@ Base.propTypes = {
     results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     setSearchState: PropTypes.func,
-    fetchFile: PropTypes.func,
+    downloadItem: PropTypes.func,
     List: PropTypes.func,
     Detail: PropTypes.func,
 };
