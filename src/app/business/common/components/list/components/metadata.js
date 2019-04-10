@@ -15,21 +15,23 @@ const metadataLabel = css`
     font-weight: bold;
 `;
 
-export const SingleMetadata = ({label, value}) => (
+export const SingleMetadata = ({label, value, children}) => (
     <span className={singleMetadata}>
         <span className={metadataLabel}>{label}</span>
-        {value}
+        {value || children}
     </span>
 );
 
 SingleMetadata.propTypes = {
     label: PropTypes.string,
     value: PropTypes.node,
+    children: PropTypes.node,
 };
 
 SingleMetadata.defaultProps = {
     label: '',
     value: '',
+    children: null,
 };
 
 export const metadata = css`

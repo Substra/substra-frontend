@@ -13,7 +13,10 @@ export const actionTypes = {
     item: {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
-        file: createRequestActionTypes(`${prefix}_ITEM_FILE`),
+        download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
+        tabIndex: {
+            SET: `${prefix}_TAB_INDEX`,
+        },
     },
 
     persistent: createRequestActionTypes(`${prefix}_PERSISTENT`),
@@ -41,10 +44,13 @@ export default {
             success: createAction(actionTypes.item.description.SUCCESS),
             failure: createAction(actionTypes.item.description.FAILURE),
         },
-        file: {
-            request: createAction(actionTypes.item.file.REQUEST),
-            success: createAction(actionTypes.item.file.SUCCESS),
-            failure: createAction(actionTypes.item.file.FAILURE),
+        download: {
+            request: createAction(actionTypes.item.download.REQUEST),
+            success: createAction(actionTypes.item.download.SUCCESS),
+            failure: createAction(actionTypes.item.download.FAILURE),
+        },
+        tabIndex: {
+            set: createAction(actionTypes.item.tabIndex.SET),
         },
     },
 

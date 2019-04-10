@@ -5,7 +5,7 @@ import order from '../../../common/reducers/order';
 import {actionTypes} from '../actions';
 
 const orderInitialState = {
-    by: 'testtuple.data.perf',
+    by: 'testtuple.dataset.perf',
     direction: 'desc',
     pristine: true,
 };

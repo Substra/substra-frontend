@@ -1,6 +1,6 @@
 import React from 'react';
 import ReduxBase from '../../../common/components/base/redux';
-import Detail from './detail';
+import Detail from './detail/redux';
 
 import actions from '../actions';
 
@@ -8,7 +8,7 @@ const AlgoBase = ReduxBase();
 
 const download = {
     filename: 'algo.tar.gz',
-    address: ['storageAddress'],
+    address: ['content', 'storageAddress'],
     text: 'Download algo tarball',
 };
 

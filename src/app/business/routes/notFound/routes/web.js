@@ -1,6 +1,6 @@
 import React from 'react';
 import universal from 'react-universal-component';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 
 // need to pass different path for generating different chunks

@@ -15,7 +15,7 @@ const DownloadSimple = ({
                            <g fill="none" fillRule="evenodd">
 
                                <path
-                                   fill="#000"
+                                   fill={color}
                                    fillRule="nonzero"
                                    d="M11 13.586V2a1 1 0 0 1 2 0v11.586l2.293-2.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L11 13.586zM2 17a1 1 0 0 1 2 0v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3a1 1 0 0 1 2 0v3a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-3z"
                                />

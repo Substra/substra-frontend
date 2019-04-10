@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {withStyles} from '@material-ui/core';
@@ -44,7 +44,7 @@ const select = css`
     }
 `;
 
-class Sort extends React.Component {
+class Sort extends Component {
     componentDidMount() {
         const {location, setOrder} = this.props;
 

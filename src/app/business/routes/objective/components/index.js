@@ -1,6 +1,6 @@
 import React from 'react';
 import ReduxBase from '../../../common/components/base/redux';
-import Detail from './detail';
+import Detail from './detail/redux';
 import List from './list';
 import actions from '../actions';
 

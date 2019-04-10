@@ -12,6 +12,7 @@ import {
 fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 
 function* fetchList(request) {
@@ -22,36 +23,62 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
+function* manageTabs(tabIndex) {
+    const state = yield select();
+    const item = getItem(state, 'objective');
+
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
+        }
+        else if (item.metrics && !item.metrics.content && tabIndex === 1) {
+            yield put(actions.item.metrics.request({pkhash: item.key, url: item.metrics.storageAddress}));
+        }
+    }
+}
+
 function* fetchItem({payload}) {
-    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
+    yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
         },
     });
-
-    if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
-    }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.objective.item.results.find(o => o.pkhash === request.payload.key)) {
-        yield fetchItem(request);
+    // fetch current tab content if needed
+    yield manageTabs(state.objective.item.tabIndex);
+
+    const exists = state.objective.item.results.find(o => o.pkhash === request.payload.key);
+    if (!exists) {
+        yield put(actions.item.request(request.payload));
     }
 }
 
-function* fetchItemDescriptionSaga({payload: {id, url}}) {
+function* setTabIndexSaga({payload}) {
+    yield manageTabs(payload);
+}
+
+function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({id, desc: res}));
+        yield put(actions.item.description.success({pkhash, desc: res}));
     }
 }
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* fetchItemMetricsSaga({payload: {pkhash, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
+
+    if (res && status === 200) {
+        yield put(actions.item.metrics.success({pkhash, metricsContent: res}));
+    }
+}
+
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -83,11 +110,13 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
-        takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.metrics.REQUEST, fetchItemMetricsSaga),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 

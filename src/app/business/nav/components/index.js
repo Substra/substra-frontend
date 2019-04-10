@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -57,7 +57,7 @@ const pictos = {
     model: Model,
 };
 
-class Nav extends React.Component {
+class Nav extends Component {
     state = {
         hoveredRoute: null,
     };

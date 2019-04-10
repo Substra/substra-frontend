@@ -24,7 +24,7 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const state = yield select();
 
-    if (!state.model.item.results.find(o => o.pkhash === payload)) {
+    if (!state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key)) {
         yield put(actions.item.request({id: payload.traintuple.key, get_parameters: {}}));
     }
 }
@@ -45,7 +45,7 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
     return list;
 };
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -79,7 +79,7 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

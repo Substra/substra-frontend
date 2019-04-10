@@ -1,16 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import {noop} from 'lodash';
 import Detail from '../../../../common/components/detail';
 import {withDetailRedux} from './redux';
 import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import Title from './components/title';
-import Traintuple from './components/traintuple';
-import BrowseRelatedLinks from './components/browseRelatedLinks';
 import Metadata from './components/metadata';
+import Tabs from './components/tabs/redux';
 import Actions from './components/actions';
-
 
 class ModelDetail extends Detail {
     filterUp = o => (e) => {
@@ -23,28 +18,14 @@ class ModelDetail extends Detail {
     };
 }
 
-const ModelDetailWithLocalComponents = ({item, addNotification, ...rest}) => (
+const ModelDetailWithLocalComponents = props => (
     <ModelDetail
+        {...props}
         Title={Title}
         Actions={Actions}
-        BrowseRelatedLinks={BrowseRelatedLinks}
         Metadata={Metadata}
-        item={item}
-        addNotification={addNotification}
-        {...rest}
-    >
-        <Traintuple traintuple={item} addNotification={addNotification} />
-    </ModelDetail>
+        Tabs={Tabs}
+    />
 );
-
-ModelDetailWithLocalComponents.propTypes = {
-    item: PropTypes.shape(),
-    addNotification: PropTypes.func,
-};
-
-ModelDetailWithLocalComponents.defaultProps = {
-    item: null,
-    addNotification: noop,
-};
 
 export default withDetailRedux(withDetailAnalytics(ModelDetailWithLocalComponents));

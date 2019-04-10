@@ -63,7 +63,7 @@ const modelOrder = order => (o) => {
             done: deepOrder(order),
         },
     };
-    const score = scoreByStatus[o.traintuple.status][o.testtuple ? o.testtuple.status : 'null'];
+    const score = scoreByStatus[o.traintuple.status][o.traintuple.status === 'done' && o.testtuple ? o.testtuple.status : 'null'];
 
     if (typeof score === 'function') {
         return score(o);

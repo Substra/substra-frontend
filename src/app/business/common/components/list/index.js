@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
 import Popover from './components/popover';
@@ -24,7 +24,7 @@ const PulseLoaderWrapper = styled('div')`
     margin: ${spacingNormal};
 `;
 
-class List extends React.Component {
+class List extends Component {
     state = {
         popover: {
             open: false,

@@ -1,6 +1,6 @@
 /* global window */
 
-import React from 'react';
+import React, {Component} from 'react';
 import styled from '@emotion/styled';
 import {css, keyframes} from 'emotion';
 
@@ -35,7 +35,7 @@ const Red = styled('span')`
     background-color: #c30e15;
 `;
 
-class ServiceWorker extends React.Component {
+class ServiceWorker extends Component {
     constructor() {
         super();
         this.update = this.update.bind(this);

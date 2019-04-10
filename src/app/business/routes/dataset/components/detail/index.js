@@ -1,16 +1,15 @@
 import React from 'react';
 
-import Detail from '../../../../common/components/detail/redux';
+import Detail from '../../../../common/components/detail';
 import Metadata from './components/metadata';
-import Description from './components/description';
-import BrowseRelatedLinks from './components/browseRelatedLinks';
+import Tabs from './components/tabs/redux';
 
-
-export default props => (
+const DatasetDetail = props => (
     <Detail
         {...props}
         Metadata={Metadata}
-        Description={Description}
-        BrowseRelatedLinks={BrowseRelatedLinks}
+        Tabs={Tabs}
     />
 );
+
+export default DatasetDetail;

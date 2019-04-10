@@ -1,15 +1,21 @@
 import React from 'react';
 
 import {
-    KeyMetadata, MetadataInterface,
+    KeyMetadata,
+    BrowseRelatedMetadata,
+    MetadataInterface,
     MetadataWrapper,
     SingleMetadata,
 } from '../../../../../common/components/detail/components/metadata';
+import BrowseRelatedLinks from './browseRelatedLinks';
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>
         <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
         <SingleMetadata label="Metric" value={item.metrics.name} />
+        <BrowseRelatedMetadata>
+            <BrowseRelatedLinks item={item} />
+        </BrowseRelatedMetadata>
     </MetadataWrapper>
 );
 

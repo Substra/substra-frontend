@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {capitalize} from 'lodash';
 import {css} from 'emotion';
-import {PulseLoader} from 'react-spinners';
+import PulseLoader from 'react-spinners/PulseLoader';
 import PopoverItems, {
 PopList, FilterUpPopItem, DownloadPopItem, PopItem, Action,
 } from '../../../../../common/components/list/components/popoverItems';
@@ -25,11 +25,18 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             </Action>
             {itemLoading && <PulseLoader size={6} />}
             {!itemLoading && (
-            <Action
-                onClick={addNotification('trainDataSampleKeys', 'Datas\'s key successfully copied to clipboard!')}
-            >
-                Copy all datas' key to clipboard
-            </Action>
+                <Fragment>
+                    <Action
+                        onClick={addNotification('trainDataSampleKeys', 'Train data samples keys successfully copied to clipboard!')}
+                    >
+                        Copy all train data samples keys to clipboard
+                    </Action>
+                    <Action
+                        onClick={addNotification('testDataSampleKeys', 'Test data samples keys successfully copied to clipboard!')}
+                    >
+                        Copy all test data samples keys to clipboard
+                    </Action>
+                </Fragment>
             )}
         </PopItem>
         <DownloadPopItem downloadFile={downloadFile} download={download} />

@@ -1,13 +1,15 @@
 import React from 'react';
 
-import Detail from '../../../../common/components/detail/redux';
-import BrowseRelatedLinks from './components/browseRelatedLinks';
+import Detail from '../../../../common/components/detail';
 import Metadata from './components/metadata';
+import Tabs from './components/tabs/redux';
 
-export default props => (
+const ObjectiveDetail = props => (
     <Detail
-        BrowseRelatedLinks={BrowseRelatedLinks}
-        Metadata={Metadata}
         {...props}
+        Metadata={Metadata}
+        Tabs={Tabs}
     />
 );
+
+export default ObjectiveDetail;

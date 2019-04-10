@@ -11,6 +11,7 @@ import {
 fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 function* fetchList(request) {
     const state = yield select();
@@ -20,36 +21,51 @@ function* fetchList(request) {
     yield call(fetchListSaga(actions, f), request);
 }
 
+function* manageTabs(tabIndex) {
+    const state = yield select();
+    const item = getItem(state, 'algo');
+
+    if (item) {
+        if (item.description && !item.description.content && tabIndex === 0) {
+            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
+        }
+    }
+}
+
 function* fetchItem({payload}) {
-    const item = yield call(fetchItemSaga(actions, fetchItemApi), {
+    yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
         },
     });
-
-    if (item) {
-        yield put(actions.item.description.request({id: payload.key, url: payload.description.storageAddress}));
-    }
 }
 
 function* fetchDetail(request) {
     const state = yield select();
 
-    if (!state.algo.item.results.find(o => o.pkhash === request.payload.key)) {
-        yield fetchItem(request);
+    // fetch current tab content if needed
+    yield manageTabs(state.algo.item.tabIndex);
+
+    const exists = state.algo.item.results.find(o => o.pkhash === request.payload.key);
+    if (!exists) {
+        yield put(actions.item.request(request.payload));
     }
 }
 
-function* fetchItemDescriptionSaga({payload: {id, url}}) {
+function* setTabIndexSaga({payload}) {
+    yield manageTabs(payload);
+}
+
+function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({id, desc: res}));
+        yield put(actions.item.description.success({pkhash, desc: res}));
     }
 }
 
-function* fetchItemFileSaga({payload: {url}}) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
@@ -83,11 +99,12 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
-        takeEvery(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
 
-        takeEvery(actionTypes.item.file.REQUEST, fetchItemFileSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
 
