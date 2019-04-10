@@ -12,7 +12,7 @@ import Model from '../../common/svg/model';
 
 import {spacingLarge, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 import {
-darkSkyBlue, slate, ice, white,
+primaryAccent, slate, ice, white,
 } from '../../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../../assets/css/variables/font';
 
@@ -34,14 +34,14 @@ const link = (active, hovered) => css`
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: ${active || hovered ? darkSkyBlue : slate};
+    color: ${active || hovered ? primaryAccent : slate};
     font-size: ${fontLarge};
     font-weight: bold;
     text-transform: capitalize;
     padding: ${spacingSmall} ${spacingNormal};
     border-width: 3px 1px 1px 1px;
     border-style: solid;
-    border-color: ${active ? `${darkSkyBlue} ${ice} ${white} ${ice}` : 'transparent'};
+    border-color: ${active ? `${primaryAccent} ${ice} ${white} ${ice}` : 'transparent'};
     background-color: ${active ? white : 'transparent'};
 `;
 
@@ -113,7 +113,7 @@ class Nav extends Component {
                 {routes.map((route) => {
                         const active = this.isActive(route);
                         const hovered = this.isHovered(route);
-                        const color = active || hovered ? darkSkyBlue : slate;
+                        const color = active || hovered ? primaryAccent : slate;
 
                         const menu = route.toLowerCase();
                         const Picto = pictos[menu];
