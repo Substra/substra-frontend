@@ -2,6 +2,7 @@ import {
     orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
+import bundleByTag from './bundleByTag';
 import createDeepEqualSelector from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
@@ -11,7 +12,7 @@ export const flattenUniq = xs => Array.from(xs.reduce(
     new Set(),
 ));
 
-const results = (state, model) => state[model].list.results;
+const results = (state, model) => bundleByTag(state[model].list.results);
 const selected = (state, model) => state[model].list.selected;
 const itemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
