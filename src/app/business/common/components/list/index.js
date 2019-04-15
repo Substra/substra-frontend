@@ -302,7 +302,7 @@ List.propTypes = {
     Popover: PropTypes.func,
     PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
-    Sort: PropTypes.func,
+    Sort: PropTypes.elementType,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
     logFilterFromList: PropTypes.func,

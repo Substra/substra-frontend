@@ -1,8 +1,6 @@
 import React from 'react';
 
 import List from '../../../../common/components/list';
-import {withListRedux} from './redux';
-import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Metadata from './components/metadata';
 import PopoverItems from './components/popoverItems';
@@ -33,4 +31,4 @@ const ModelListWithLocalComponents = props => (
     />
 );
 
-export default withListRedux(withListAnalytics(ModelListWithLocalComponents));
+export default ModelListWithLocalComponents;
