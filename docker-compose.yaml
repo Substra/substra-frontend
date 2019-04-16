@@ -7,7 +7,6 @@ networks:
 
 services:
 
-  # Data API and authentication/authorization
   substrafront:
     build:
       context: ./
@@ -18,7 +17,6 @@ services:
     ports:
       - "3000:8000"
     restart: unless-stopped
-    # command: ./node_modules/.bin/babel-node ./build/ssr/index.js
     environment:
       - REDIS_HOST=redis
       - FRONT_AUTH_USER=${FRONT_AUTH_USER}
@@ -27,11 +25,8 @@ services:
       - BACK_AUTH_PASSWORD=${BACK_AUTH_PASSWORD}
       - API_URL=${API_URL}
 
-  # Distributed in-memory cache
   redis:
     container_name: redis
     hostname: redis
     image: redis:4.0.11-alpine
     restart: unless-stopped
-#    ports:
-#      - "6379:6379"

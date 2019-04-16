@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+ # Build step outputs
+build
+.happypack
+
+ # Docker configuration
+Dockerfile
+docker-compose*.yml
+
+ # NPM dependencies
+node_modules
+
+ # Other
+.editorconfig
+.csslintrc
+.eslintignore
+.eslintrc.js
