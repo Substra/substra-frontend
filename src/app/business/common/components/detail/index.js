@@ -17,7 +17,9 @@ class Detail extends Component {
         logDownloadFromDetail(item.key);
     };
 
-    addNotification = (key, text) => (e) => {
+    addNotificationBuilder = (key, text) => () => this.addNotification(key, text);
+
+    addNotification = (key, text) => {
         const {addNotification, item, logCopyFromDetail} = this.props;
 
         addNotification(key, text);
@@ -56,7 +58,7 @@ class Detail extends Component {
                         <Section>
                             <Metadata
                                 item={item}
-                                addNotification={this.addNotification}
+                                addNotification={this.addNotificationBuilder}
                                 model={model}
                             />
                         </Section>
