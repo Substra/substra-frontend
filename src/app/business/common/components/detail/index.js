@@ -17,7 +17,7 @@ class Detail extends Component {
         logDownloadFromDetail(item.key);
     };
 
-    addNotification = (key, text) => (e) => {
+    addNotification = (key, text) => {
         const {addNotification, item, logCopyFromDetail} = this.props;
 
         addNotification(key, text);
