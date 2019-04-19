@@ -19,27 +19,16 @@ class ModelDetail extends Detail {
     };
 }
 
-class BundleModelDetail extends Detail {
-    // filterUp = o => (e) => {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //
-    //     const {item, filterUp, logFilterFromDetail} = this.props;
-    //     filterUp(o);
-    //     logFilterFromDetail(item.key);
-    // };
-}
-
 const ModelDetailWithLocalComponents = (props) => {
     const {item: {tag}} = props;
-    const ModelDetailComponent = tag ? BundleModelDetail : ModelDetail;
     const MetadataComponent = tag ? BundleMetadata : Metadata;
     const TabsComponent = tag ? BundleTabs : Tabs;
+    const ActionsComponent = tag ? () => null : Actions;
     return (
-        <ModelDetailComponent
+        <ModelDetail
             {...props}
             Title={Title}
-            Actions={Actions}
+            Actions={ActionsComponent}
             Metadata={MetadataComponent}
             Tabs={TabsComponent}
         />

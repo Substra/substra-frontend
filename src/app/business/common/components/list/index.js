@@ -14,9 +14,6 @@ import Actions from './components/actions';
 
 import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
 import {PanelWrapper, PanelTop, PanelContent} from '../panel';
-import IconButton from '../iconButton';
-
-import More from '../../svg/more-vertical';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import NoItemFound from './components/noItemFound';
 
@@ -179,6 +176,7 @@ loading, fetchList, logList,
         const {
             results, init, loading, model, className, download,
             Title, Popover, Metadata, PopoverItems, Sort, setOrder,
+            Actions,
         } = this.props;
 
         const {open, anchorEl, item} = this.state.popover;
@@ -211,11 +209,10 @@ loading, fetchList, logList,
                                             onMouseLeave={this.out(o)}
                                             className={this.itemWrapper(o.key)}
                                         >
-                                            <Actions>
-                                                <IconButton onClick={this.more(o)} title="Show actions" noBorder>
-                                                    <More height={16} />
-                                                </IconButton>
-                                            </Actions>
+                                            <Actions
+                                                openPopover={this.more(o)}
+                                                item={o}
+                                            />
                                             <Title o={o} />
                                             {Metadata && <Metadata o={o} />}
                                         </Item>
@@ -267,6 +264,7 @@ List.defaultProps = {
     hover: noop,
     out: noop,
     Title,
+    Actions,
     Popover,
     PopoverItems,
     Metadata: null,
@@ -308,7 +306,7 @@ List.propTypes = {
     logFilterFromList: PropTypes.func,
     logDownloadFromList: PropTypes.func,
     logCopyFromList: PropTypes.func,
-    actions: PropTypes.shape().isRequired,
+    Actions: PropTypes.elementType,
 };
 
 export default List;

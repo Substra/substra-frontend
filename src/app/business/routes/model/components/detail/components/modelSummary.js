@@ -3,7 +3,7 @@ import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import CodeSample from '../../../../../common/components/detail/components/codeSample';
 import {spacingNormal} from '../../../../../../../../assets/css/variables/spacing';
 import {ice} from '../../../../../../../../assets/css/variables/colors';
