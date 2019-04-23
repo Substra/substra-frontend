@@ -108,11 +108,11 @@ Detail.propTypes = {
     logFilterFromDetail: PropTypes.func,
     logDownloadFromDetail: PropTypes.func,
     logCopyFromDetail: PropTypes.func,
-    Title: PropTypes.func,
-    Tabs: PropTypes.func,
+    Title: PropTypes.elementType,
+    Tabs: PropTypes.elementType,
     children: PropTypes.node,
-    Metadata: PropTypes.func,
-    Actions: PropTypes.func,
+    Metadata: PropTypes.elementType,
+    Actions: PropTypes.elementType,
 };
 
 export default Detail;

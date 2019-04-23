@@ -2,9 +2,9 @@ import React from 'react';
 
 import actions from '../actions';
 
-import Base from './base';
-import List from './list';
-import Detail from './detail';
+import Base from './base/redux';
+import List from './list/redux';
+import Detail from './detail/redux';
 
 
 const download = {

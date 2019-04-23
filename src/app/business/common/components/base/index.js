@@ -352,8 +352,8 @@ Base.propTypes = {
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     setSearchState: PropTypes.func,
     downloadItem: PropTypes.func,
-    List: PropTypes.func,
-    Detail: PropTypes.func,
+    List: PropTypes.elementType,
+    Detail: PropTypes.elementType,
 };
 
 export default Base;
