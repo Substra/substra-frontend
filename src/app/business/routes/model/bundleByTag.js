@@ -92,7 +92,7 @@ const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
         return Object.keys(byTags).reduce((groupedModels, tag) => {
             const models = byTags[tag];
 
-            if (tag === 'undefined') {
+            if (tag === 'undefined' || tag === '') {
                 // these models have no tag, they shouldn't be bundled
                 return [
                     ...groupedModels,

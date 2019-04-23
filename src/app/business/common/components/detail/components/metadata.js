@@ -8,7 +8,7 @@ import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/v
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
 import CopyInput from './copyInput';
 
-const LABEL_WIDTH = '130';
+const LABEL_WIDTH = '160';
 
 export const MetadataWrapper = styled('dl')`
     display: flex;

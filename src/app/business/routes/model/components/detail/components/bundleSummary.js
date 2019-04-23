@@ -18,13 +18,13 @@ class BundleSummary extends Component {
     render() {
         const {models} = this.props;
         return (
-            <Table>
+            <Table centered>
                 <thead>
                     <Tr>
                         <Th>Traintuple</Th>
-                        <Th>Testtuple</Th>
                         <Th>Model</Th>
                         <Th>Status</Th>
+                        <Th>Non-certified Score</Th>
                         <Th>Score</Th>
                     </Tr>
                 </thead>
@@ -33,12 +33,6 @@ class BundleSummary extends Component {
                         <Tr key={model.traintuple.key}>
                             <Td>
                                 <a href={`#${model.traintuple.key}`}>{model.traintuple.key.slice(0, 4)}</a>
-                            </Td>
-                            <Td>
-                                {model.testtuple && (
-                                <a href={`#${model.traintuple.key}`}>{model.testtuple.key.slice(0, 4)}</a>
-                            )}
-                                {!model.testtuple && 'N/A'}
                             </Td>
                             <Td>
                                 {model.traintuple.status === 'done' && (
@@ -53,6 +47,9 @@ class BundleSummary extends Component {
                             </Td>
                             <Td>
                                 {capitalize(model.traintuple.status)}
+                            </Td>
+                            <Td>
+                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' ? model.nonCertifiedTesttuple.dataset.perf : 'N/A'}
                             </Td>
                             <Td>
                                 {model.testtuple && model.testtuple.status === 'done' ? model.testtuple.dataset.perf : 'N/A'}

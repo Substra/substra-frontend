@@ -23,6 +23,29 @@ const Tag = styled('div')`
     border: 1px solid ${slate};
 `;
 
+const ScoreMetadata = ({label, testtuple}) => (
+    <SingleMetadata label={label}>
+        {testtuple.status !== 'done' && (
+            <Fragment>
+                {capitalize(testtuple.status)}
+                <InlinePulseLoader loading={['todo', 'doing'].includes(testtuple.status)} />
+            </Fragment>
+        )}
+        {testtuple.status === 'done' && testtuple.dataset && testtuple.dataset.perf}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance !== 'undefined' && ` ±${testtuple.dataset.variance}`}
+    </SingleMetadata>
+);
+
+ScoreMetadata.propTypes = {
+    label: PropTypes.string,
+    testtuple: PropTypes.shape(),
+};
+
+ScoreMetadata.defaultProps = {
+    label: '',
+    testtuple: null,
+};
+
 const Metadata = ({o}) => (
     <Fragment>
         {o && o.tag && (
@@ -36,22 +59,17 @@ const Metadata = ({o}) => (
                 <InlinePulseLoader loading={['todo', 'doing'].includes(o.traintuple.status)} />
             </SingleMetadata>
             {o && o.tag && o.nonCertifiedTesttuple && (
-                <SingleMetadata label="Non certified score">
-                    {`${o.nonCertifiedTesttuple.dataset.perf} ±${o.nonCertifiedTesttuple.dataset.variance}`}
-                </SingleMetadata>
+                <ScoreMetadata
+                    label="Non-certified score"
+                    testtuple={o.nonCertifiedTesttuple}
+                />
             )}
             {o && o.testtuple && (
                 <ScoreWrapper>
-                    <SingleMetadata label="Score">
-                        {o.testtuple.status !== 'done' && (
-                            <Fragment>
-                                {capitalize(o.testtuple.status)}
-                                <InlinePulseLoader loading={['todo', 'doing'].includes(o.testtuple.status)} />
-                            </Fragment>
-                        )}
-                        {o.testtuple.status === 'done' && o.testtuple.dataset && o.testtuple.dataset.perf}
-                        {o.testtuple.status === 'done' && o.testtuple.dataset && 'variance' in o.testtuple.dataset && ` ±${o.testtuple.dataset.variance}`}
-                    </SingleMetadata>
+                    <ScoreMetadata
+                        label="Score"
+                        testtuple={o.testtuple}
+                    />
                 </ScoreWrapper>
             )}
         </div>

@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 
 import BaseMetadata, {
@@ -11,6 +12,32 @@ import BaseMetadata, {
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
 import InlinePulseLoader from '../../inlinePulseLoader';
+
+
+const ScoreMetadata = ({item, label, tupleName}) => (
+    <SingleMetadata label={label}>
+        {!item[tupleName] && 'N/A'}
+        {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && `${item[tupleName].dataset.perf} ±${item[tupleName].dataset.variance}`}
+        {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (
+            <Fragment>
+                {capitalize(item[tupleName].status)}
+                <InlinePulseLoader loading={['todo', 'doing'].includes(item[tupleName].status)} />
+            </Fragment>
+        )}
+    </SingleMetadata>
+);
+
+ScoreMetadata.propTypes = {
+    item: PropTypes.shape(),
+    label: PropTypes.string,
+    tupleName: PropTypes.string,
+};
+
+ScoreMetadata.defaultProps = {
+    item: null,
+    label: '',
+    tupleName: '',
+};
 
 
 class Metadata extends Component {
@@ -37,16 +64,16 @@ class Metadata extends Component {
                     {capitalize(item.traintuple.status)}
                     <InlinePulseLoader loading={['todo', 'doing'].includes(item.traintuple.status)} />
                 </SingleMetadata>
-                <SingleMetadata label="Score">
-                    {!item.testtuple && 'N/A'}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
-                        <Fragment>
-                            {capitalize(item.testtuple.status)}
-                            <InlinePulseLoader loading={['todo', 'doing'].includes(item.testtuple.status)} />
-                        </Fragment>
-                    )}
-                </SingleMetadata>
+                <ScoreMetadata
+                    label="Non-certified Score"
+                    tupleName="nonCertifiedTesttuple"
+                    item={item}
+                />
+                <ScoreMetadata
+                    label="Score"
+                    tupleName="testtuple"
+                    item={item}
+                />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
                 </BrowseRelatedMetadata>
