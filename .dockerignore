@@ -18,6 +18,7 @@ node_modules/
 .npmrc
 .yarnrc
 yarn.lock
+package-lock.json
 
  # Other
 .cicd/
