@@ -1,28 +1,37 @@
-FROM mhart/alpine-node:10
+FROM node:alpine AS build
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /workspace
 
-COPY packages/ssr/package.json package.json
-RUN npm install && npm cache clean --force
+COPY package-build.json /workspace/package.json
+COPY packages/ssr /workspace/packages/ssr
+COPY packages/base /workspace/packages/base
+COPY packages/plugins  /workspace/packages/plugins
 
-COPY build /usr/src/app/build
-COPY webpack/ssr/client.js /usr/src/app/webpack/ssr/client.js
-COPY webpack/ssr/server.js /usr/src/app/webpack/ssr/server.js
-COPY webpack/ssr/vendors.js /usr/src/app/webpack/ssr/vendors.js
-COPY webpack/utils /usr/src/app/webpack/utils
-COPY packages/ssr/package.json /usr/src/app/packages/ssr/package.json
-COPY config /usr/src/app/config
-COPY .babelrc /usr/src/app/.babelrc
-COPY src/app/routesMap.js /usr/src/app/src/app/routesMap.js
+RUN yarn install
 
+COPY . /workspace/
 
-# setting NODE_ENV need to be AFTER npm install
+RUN NODE_ENV=production yarn build:main
+
+FROM node:alpine
+
+WORKDIR /workspace
+
+COPY --from=build /workspace/packages/ssr/package.json /workspace/package.json
+
+RUN yarn install
+
 ENV NODE_ENV=production \
-    NODE_PORT=8000 \
-    SECURE_NODE_PORT=8443 \
-    REDIS_PORT=6379
+  NODE_PORT=8000 \
+  SECURE_NODE_PORT=8443 \
+  REDIS_PORT=6379 \
+  REDIS_HOST=localhost \
+  API_URL=localhost
 
-EXPOSE $NODE_PORT $SECURE_NODE_PORT
+COPY --from=build /workspace/build /workspace/build
+COPY --from=build /workspace/config /workspace/config
+COPY --from=build /workspace/.babelrc /workspace/.babelrc
+COPY --from=build /workspace/webpack /workspace/webpack
+COPY --from=build /workspace/src/app/routesMap.js /workspace/src/app/routesMap.js
 
 CMD ["./node_modules/.bin/babel-node", "./build/ssr/index.js"]

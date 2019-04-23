@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+.gitattributes
+.github
+
+ # Build step outputs
+build
+.happypack
+
+ # Docker configuration
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+ # NPM dependencies
+node_modules/
+.npmrc
+.yarnrc
+yarn.lock
+package-lock.json
+
+ # Other
+.cicd/
+coverage/
+test/
+tools/
+.csslintrc
+.editorconfig
+.eslintignore
+.eslintrc.js
+Jenkinsfile
+LICENSE
+mocha.png
+README.md
