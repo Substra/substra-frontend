@@ -12,11 +12,22 @@ export const flattenUniq = xs => Array.from(xs.reduce(
     new Set(),
 ));
 
-const results = (state, model) => bundleByTag(state[model].list.results);
+const listResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
 const itemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
 const isComplex = state => state.search.isComplex;
+
+const itemResultsByKey = createDeepEqualSelector([itemResults],
+    results => results.reduce((resultsByKey, result) => ({
+            ...resultsByKey,
+            [result.traintuple.key]: result,
+        }), {}),
+);
+
+const results = createDeepEqualSelector([listResults, itemResultsByKey],
+    (listResults, itemResultsByKey) => bundleByTag(listResults, itemResultsByKey),
+);
 
 const enhancedResults = createDeepEqualSelector([results],
     results => results.map(o => o.map(o => ({...o, key: o.traintuple.key}))),

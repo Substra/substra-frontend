@@ -31,6 +31,20 @@ function* fetchDetail({payload}) {
     }
 }
 
+function* fetchBundleDetail({payload}) {
+    const state = yield select();
+
+    for (const group of state.model.list.results) {
+        const models = group.filter(model => model.traintuple.tag);
+        for (const model of models) {
+            const modelDetail = state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key);
+            if (!modelDetail) {
+                yield put(actions.item.request({id: model.traintuple.key}));
+            }
+        }
+    }
+}
+
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
     const {id, get_parameters, jwt} = payload;
 
@@ -76,6 +90,7 @@ function* downloadItemSaga({payload: {url}}) {
 const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchList),
+        takeLatest(actionTypes.list.SUCCESS, fetchBundleDetail),
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 

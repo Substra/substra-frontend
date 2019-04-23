@@ -35,6 +35,11 @@ const Metadata = ({o}) => (
                 {capitalize(o.traintuple.status)}
                 <InlinePulseLoader loading={['todo', 'doing'].includes(o.traintuple.status)} />
             </SingleMetadata>
+            {o && o.tag && o.nonCertifiedTesttuple && (
+                <SingleMetadata label="Non certified score">
+                    {`${o.nonCertifiedTesttuple.dataset.perf} ±${o.nonCertifiedTesttuple.dataset.variance}`}
+                </SingleMetadata>
+            )}
             {o && o.testtuple && (
                 <ScoreWrapper>
                     <SingleMetadata label="Score">

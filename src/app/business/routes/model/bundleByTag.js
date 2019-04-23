@@ -1,4 +1,4 @@
-import {groupBy, isEqual} from 'lodash';
+import {groupBy, uniqBy} from 'lodash';
 
 // math functions
 
@@ -9,30 +9,30 @@ const calc_variance = (arr) => {
     return avg(arr.map(n => (n - m) ** 2));
 };
 
-function minStatus(models, tupletype) {
-    const groupedModels = groupBy(models, `${tupletype}.status`);
-    if (isEqual(Object.keys(groupedModels), ['undefined'])) {
-        return undefined;
-    }
-
-    const statuses = ['failed', 'todo', 'doing'];
+function minStatus(models, getStatus) {
+    const statuses = ['failed', 'todo', 'doing', 'done'];
+    const modelStatuses = uniqBy(models.map(m => getStatus(m)));
     for (const status of statuses) {
-        if (groupedModels[status]) {
+        if (modelStatuses.includes(status)) {
             return status;
         }
     }
-    return 'done';
+    return undefined;
 }
 
+const minTraintupleStatus = models => minStatus(models, model => model.traintuple.status);
+const minTesttupleStatus = models => minStatus(models, model => model.testtuple && model.testtuple.status);
+const minNonCertifiedTesttupleStatus = nonCertifiedTesttuples => minStatus(nonCertifiedTesttuples, t => t.status);
 
-const calcPerf = (models, status) => {
+
+const calcPerf = (testtuples, status) => {
     let average = 0,
         variance = 0;
 
     if (status === 'done') {
-        const perfs = models.reduce((p, c) => [
+        const perfs = testtuples.reduce((p, t) => [
             ...p,
-            ...(c.testtuple && c.testtuple.dataset ? [c.testtuple.dataset.perf] : []),
+            ...(t && t.dataset ? [t.dataset.perf] : []),
         ], []);
 
         average = avg(perfs);
@@ -45,12 +45,23 @@ const calcPerf = (models, status) => {
     };
 };
 
-const getTesttuple = (models, testStatus) => {
-    const perf = calcPerf(models, testStatus);
+const getFakeTraintuple = (models, tag) => ({
+    traintuple: {
+        key: tag,
+        status: minTraintupleStatus(models),
+    },
+});
+
+const buildTesttuple = (name, testtuples, status) => {
+    if (!status) {
+        return {};
+    }
+
+    const perf = calcPerf(testtuples, status);
 
     return {
-        testtuple: {
-            status: testStatus,
+        [name]: {
+            status,
             dataset: {
                 perf: perf.average,
                 variance: perf.variance,
@@ -59,7 +70,24 @@ const getTesttuple = (models, testStatus) => {
     };
 };
 
-const bundleByTag = groups => groups.map((models) => {
+const getFakeTesttuple = (models) => {
+    const status = minTesttupleStatus(models);
+    return buildTesttuple('testtuple', models.map(m => m.testtuple), status);
+};
+
+const getFakeNonCertifiedTesttuple = (models, modelsDetailsByKey) => {
+    const nonCertifiedTesttuples = models.reduce((t, m) => {
+        const modelDetails = modelsDetailsByKey[m.traintuple.key];
+        return [
+            ...t,
+            ...(modelDetails && modelDetails.nonCertifiedTraintuples ? modelDetails.nonCertifiedTraintuples : []),
+        ];
+    }, []);
+    const status = minNonCertifiedTesttupleStatus(nonCertifiedTesttuples);
+    return buildTesttuple('nonCertifiedTesttuple', nonCertifiedTesttuples, status);
+};
+
+const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
         const byTags = groupBy(models, 'traintuple.tag');
         return Object.keys(byTags).reduce((groupedModels, tag) => {
             const models = byTags[tag];
@@ -72,19 +100,12 @@ const bundleByTag = groups => groups.map((models) => {
                 ];
             }
 
-            const testStatus = minStatus(models, 'testtuple');
-
             return [...groupedModels, {
                 tag,
                 models,
-                // fake traintuple to ensure compatibility with rest of the code
-                traintuple: {
-                    ...models[0].traintuple,
-                    key: tag,
-                    status: minStatus(models, 'traintuple'),
-                },
-                // add testtuple if test status
-                ...(testStatus ? getTesttuple(models, testStatus) : {}),
+                ...getFakeTraintuple(models, tag),
+                ...getFakeTesttuple(models),
+                ...getFakeNonCertifiedTesttuple(models, modelsDetailsByKey),
             }];
         }, []);
     });
