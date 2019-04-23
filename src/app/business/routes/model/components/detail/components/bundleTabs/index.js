@@ -8,7 +8,7 @@ import BundleSummary from '../bundleSummary';
 
 
 function BundleModelTabs(props) {
-    const {item: {models}, downloadItem} = props;
+    const {item: {models}, downloadItem, addNotification} = props;
 
     return (
         <Fragment>
@@ -18,6 +18,7 @@ function BundleModelTabs(props) {
                     key={model.traintuple.key}
                     model={model}
                     downloadItem={downloadItem}
+                    addNotification={addNotification}
                 />
             ))}
         </Fragment>
@@ -27,11 +28,13 @@ function BundleModelTabs(props) {
 BundleModelTabs.propTypes = {
     item: PropTypes.shape(),
     downloadItem: PropTypes.func,
+    addNotification: PropTypes.func,
 };
 
 BundleModelTabs.defaultProps = {
     item: null,
     downloadItem: noop,
+    addNotification: noop,
 };
 
 export default BundleModelTabs;

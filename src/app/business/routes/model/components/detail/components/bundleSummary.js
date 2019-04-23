@@ -22,8 +22,8 @@ class BundleSummary extends Component {
                 <thead>
                     <Tr>
                         <Th>Traintuple</Th>
-                        <Th>Model</Th>
                         <Th>Status</Th>
+                        <Th>Model</Th>
                         <Th>Non-certified Score</Th>
                         <Th>Score</Th>
                     </Tr>
@@ -35,6 +35,9 @@ class BundleSummary extends Component {
                                 <a href={`#${model.traintuple.key}`}>{model.traintuple.key.slice(0, 4)}</a>
                             </Td>
                             <Td>
+                                {capitalize(model.traintuple.status)}
+                            </Td>
+                            <Td>
                                 {model.traintuple.status === 'done' && (
                                 <RoundedButton
                                     Icon={DownloadSimple}
@@ -44,9 +47,6 @@ class BundleSummary extends Component {
                                 </RoundedButton>
                             )}
                                 {model.traintuple.status !== 'done' && 'N/A'}
-                            </Td>
-                            <Td>
-                                {capitalize(model.traintuple.status)}
                             </Td>
                             <Td>
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' ? model.nonCertifiedTesttuple.dataset.perf : 'N/A'}

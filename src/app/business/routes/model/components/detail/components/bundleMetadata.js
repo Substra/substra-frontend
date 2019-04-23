@@ -7,10 +7,8 @@ import BaseMetadata, {
     MetadataWrapper,
     keyLabelClassName,
     keyValueClassName,
-    BrowseRelatedMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
-import BrowseRelatedLinks from './browseRelatedLinks';
 import InlinePulseLoader from '../../inlinePulseLoader';
 
 
@@ -74,9 +72,6 @@ class Metadata extends Component {
                     tupleName="testtuple"
                     item={item}
                 />
-                <BrowseRelatedMetadata>
-                    <BrowseRelatedLinks item={item} />
-                </BrowseRelatedMetadata>
             </MetadataWrapper>
         );
     }

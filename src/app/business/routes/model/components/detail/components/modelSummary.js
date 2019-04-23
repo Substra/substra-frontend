@@ -7,10 +7,16 @@ import PropTypes from 'prop-types';
 import CodeSample from '../../../../../common/components/detail/components/codeSample';
 import {spacingNormal} from '../../../../../../../../assets/css/variables/spacing';
 import {ice} from '../../../../../../../../assets/css/variables/colors';
-import {SingleMetadata, MetadataWrapper} from '../../../../../common/components/detail/components/metadata';
+import {
+    SingleMetadata,
+    MetadataWrapper,
+    keyLabelClassName,
+    keyValueClassName, BrowseRelatedMetadata
+} from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import RoundedButton from '../../../../../common/components/roundedButton';
 import DownloadSimple from '../../../../../common/svg/download-simple';
+import BrowseRelatedLinks from "./browseRelatedLinks";
 
 const PseudoSection = styled('div')`
     padding-top: ${spacingNormal};
@@ -32,16 +38,30 @@ class ModelSummary extends Component {
         downloadItem({url: model.traintuple.outModel.storageAddress});
     };
 
+    copyTraintupleKey = () => {
+        const {model: {traintuple: {key}}, addNotification} = this.props;
+        addNotification(key, 'Traintuple\'s key successfully copied to clipboard!')
+
+    };
+
     render() {
         const {model} = this.props;
         return (
             <PseudoSection id={model.traintuple.key}>
                 <MetadataWrapper>
-                    <SingleMetadata label="Train/test split">
-                        {model.traintuple.key.slice(0, 4)}
-/
-                        {model.testtuple ? model.testtuple.key.slice(0, 4) : 'none'}
+                    <SingleMetadata
+                        label="Traintuple key"
+                        labelClassName={keyLabelClassName}
+                        valueClassName={keyValueClassName}
+                    >
+                        <CopyInput
+                            value={model.traintuple.key}
+                            addNotification={this.copyTraintupleKey}
+                        />
                     </SingleMetadata>
+                    <BrowseRelatedMetadata>
+                        <BrowseRelatedLinks item={model}/>
+                    </BrowseRelatedMetadata>
                 </MetadataWrapper>
                 {model && model.traintuple && (
                     (model.traintuple.status === 'todo' && <p>Preparing training.</p>)
@@ -52,7 +72,7 @@ class ModelSummary extends Component {
                             {!model.testtuple && (
                                 <Fragment>
                                     <p>
-                                        {'Training successful. In order to test this model, execute the following command:'}
+                                        {'Training successful. In order to test this model against the objective\'s test data samples, execute the following command:'}
                                     </p>
                                     <CopyInput
                                         value={`substra add testtuple '{"traintuple_key": "${model.traintuple.key}"}'`}
@@ -69,13 +89,9 @@ class ModelSummary extends Component {
                                 || (model.testtuple.status === 'done' && (
                                     <p>
                                         <Span>
-                                            Model successfully trained with a score
-                                        of
-                                            {' '}
+                                            {'Model successfully trained with a score of '}
                                             <b>{model.testtuple.dataset.perf}</b>
-                                            {' '}
-on this split's
-                                        test data samples.
+                                            {' on this split\'s test data samples.'}
                                         </Span>
                                         <RoundedButton
                                             Icon={DownloadSimple}
@@ -105,6 +121,16 @@ on this split's
                         codeString={JSON.stringify(model.testtuple, null, 2)}
                     />
                 )}
+                {model && model.nonCertifiedTesttuples && model.nonCertifiedTesttuples.map(nonCertifiedTesttuple => (
+                    <CodeSample
+                        key={nonCertifiedTesttuple.key}
+                        className={margins}
+                        filename="non-certified-testtuple.json"
+                        language="json"
+                        collapsible
+                        codeString={JSON.stringify(nonCertifiedTesttuple, null, 2)}
+                    />)
+                )}
             </PseudoSection>
         );
     }
@@ -113,11 +139,13 @@ on this split's
 ModelSummary.propTypes = {
     model: PropTypes.shape(),
     downloadItem: PropTypes.func,
+    addNotification: PropTypes.func,
 };
 
 ModelSummary.defaultProps = {
     model: null,
     downloadItem: noop,
+    addNotification: noop,
 };
 
 export default ModelSummary;
