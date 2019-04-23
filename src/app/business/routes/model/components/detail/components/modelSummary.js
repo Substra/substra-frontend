@@ -11,12 +11,12 @@ import {
     SingleMetadata,
     MetadataWrapper,
     keyLabelClassName,
-    keyValueClassName, BrowseRelatedMetadata
+    keyValueClassName, BrowseRelatedMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import RoundedButton from '../../../../../common/components/roundedButton';
 import DownloadSimple from '../../../../../common/svg/download-simple';
-import BrowseRelatedLinks from "./browseRelatedLinks";
+import BrowseRelatedLinks from './browseRelatedLinks';
 
 const PseudoSection = styled('div')`
     padding-top: ${spacingNormal};
@@ -40,8 +40,7 @@ class ModelSummary extends Component {
 
     copyTraintupleKey = () => {
         const {model: {traintuple: {key}}, addNotification} = this.props;
-        addNotification(key, 'Traintuple\'s key successfully copied to clipboard!')
-
+        addNotification(key, 'Traintuple\'s key successfully copied to clipboard!');
     };
 
     render() {
@@ -60,7 +59,7 @@ class ModelSummary extends Component {
                         />
                     </SingleMetadata>
                     <BrowseRelatedMetadata>
-                        <BrowseRelatedLinks item={model}/>
+                        <BrowseRelatedLinks item={model} />
                     </BrowseRelatedMetadata>
                 </MetadataWrapper>
                 {model && model.traintuple && (
@@ -129,8 +128,8 @@ class ModelSummary extends Component {
                         language="json"
                         collapsible
                         codeString={JSON.stringify(nonCertifiedTesttuple, null, 2)}
-                    />)
-                )}
+                    />
+                ))}
             </PseudoSection>
         );
     }

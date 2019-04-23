@@ -14,14 +14,31 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectObjective, unselectDataset,
                             }) => {
-    const algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? item.traintuple.algo.name : ''}`;
-    const objectiveFilter = `objective:key:${item && item.traintuple && item.traintuple.objective ? item.traintuple.objective.hash : ''}`;
+    const modelHash = item && item.traintuple && item.traintuple.outModel && item.traintuple.outModel.hash;
+    let algoFilter,
+        objectiveFilter,
+        datasetFilter;
+    if (modelHash) {
+        algoFilter = objectiveFilter = datasetFilter = `model:hash:${modelHash}`;
+    }
+    else {
+        algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? item.traintuple.algo.name : ''}`;
+        objectiveFilter = `objective:key:${item && item.traintuple && item.traintuple.objective ? item.traintuple.objective.hash : ''}`;
+        datasetFilter = [
+            item.traintuple,
+            ...(item.testtuple ? [item.traintuple] : []),
+            ...(item.nonCertifiedTesttuples ? item.nonCertifiedTesttuples : []),
+        ]
+            .map(tuple => tuple && tuple.dataset && tuple.dataset.openerHash)
+            .map(key => `dataset:key:${key}`)
+            .join('-OR-');
+    }
 
     return (
         <Fragment>
             <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />
-            <BrowseRelatedLink model="dataset" label="dataset" filter={objectiveFilter} unselect={unselectDataset} />
+            <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />
         </Fragment>
     );
 };
