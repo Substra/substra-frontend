@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
-import {darkSkyBlue, iceBlueTwo} from '../../../../../assets/css/variables/colors';
+import {secondaryAccent, iceSecondaryAccent} from '../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 
 export const AlertWrapper = styled('div')`
-    background-color: ${iceBlueTwo};
-    border: 1px solid ${darkSkyBlue};
+    background-color: ${iceSecondaryAccent};
+    border: 1px solid ${secondaryAccent};
     border-radius: 3px;
     min-height: 40px;
     display: flex;
@@ -16,7 +16,7 @@ export const AlertWrapper = styled('div')`
 `;
 
 export const AlertTitle = styled('div')`
-    color: ${darkSkyBlue};
+    color: ${secondaryAccent};
     font-weight: bold;
     margin: ${spacingSmall};
 `;
@@ -28,7 +28,7 @@ export const AlertActions = styled('div')`
 export const AlertInlineButton = styled('button')`
     border: none;
     background: none;
-    color: ${darkSkyBlue};
+    color: ${secondaryAccent};
     text-decoration: underline;
     cursor: pointer;
     padding: ${spacingExtraSmall};

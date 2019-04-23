@@ -12,7 +12,7 @@ import Sort from './components/sort/redux';
 import Item from './components/item';
 import Actions from './components/actions';
 
-import {iceBlueTwo, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
+import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
 import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import IconButton from '../iconButton';
 
@@ -96,7 +96,7 @@ loading, fetchList, logList,
 
         return css`
             position: relative;
-            background-color: ${hovered || selected ? iceBlueTwo : 'transparent'};
+            background-color: ${hovered || selected ? iceSecondaryAccent : 'transparent'};
             
             &:before {
                 display: block;
@@ -106,7 +106,7 @@ loading, fetchList, logList,
                 bottom: 0;
                 left: 0;
                 width: 4px;
-                background-color: ${selected ? darkSkyBlue : 'transparent'};
+                background-color: ${selected ? secondaryAccent : 'transparent'};
             }
         `;
     };

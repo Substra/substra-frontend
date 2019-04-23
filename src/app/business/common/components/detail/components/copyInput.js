@@ -7,7 +7,7 @@ import {noop} from 'lodash';
 import CopySimple from '../../../svg/copy-simple';
 import Check from '../../../svg/check';
 import IconButton from '../../iconButton';
-import {ice, darkSkyBlue} from '../../../../../../../assets/css/variables/colors';
+import {ice, primaryAccent} from '../../../../../../../assets/css/variables/colors';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
 import {spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 
@@ -117,7 +117,7 @@ class CopyInput extends Component {
                     className={button}
                 >
                     <CopySimple width={15} height={15} className={copySimple} />
-                    <Check width={15} height={15} color={darkSkyBlue} className={check} />
+                    <Check width={15} height={15} color={primaryAccent} className={check} />
                 </IconButton>
             </Wrapper>
         );

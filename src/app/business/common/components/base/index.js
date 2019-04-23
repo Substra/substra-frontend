@@ -15,7 +15,9 @@ import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
 import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
-import {white, darkSkyBlue, ice} from '../../../../../../assets/css/variables/colors';
+import {
+white, primaryAccent, ice,
+} from '../../../../../../assets/css/variables/colors';
 
 const MIN_COL_WIDTH = 250;
 
@@ -53,7 +55,7 @@ export const verticalBar = css`
 const lightGrey = '#fafafa';
 
 export const snackbarContent = css`
-    color: ${darkSkyBlue};
+    color: ${primaryAccent};
     background-color: ${lightGrey};
     
     @media (min-width: 960px) {
@@ -307,7 +309,7 @@ class Base extends Component {
                         className={snackbarContent}
                         message={(
                             <div>
-                                <Check color={darkSkyBlue} className={middle} />
+                                <Check color={primaryAccent} className={middle} />
                                 <ClipboardContent className={middle}>
                                     <input disabled value={inputValue} />
                                     <p>
