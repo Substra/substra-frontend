@@ -26,7 +26,8 @@ ENV NODE_ENV=production \
   SECURE_NODE_PORT=8443 \
   REDIS_PORT=6379 \
   REDIS_HOST=localhost \
-  API_URL=localhost
+  API_URL=localhost \
+  FRONT_BRANDING=substra
 
 COPY --from=build /workspace/build /workspace/build
 COPY --from=build /workspace/config /workspace/config
