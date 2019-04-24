@@ -52,7 +52,7 @@ class BundleSummary extends Component {
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' ? `${model.nonCertifiedTesttuple.dataset.perf.toFixed(2)} ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}` : 'N/A'}
                             </Td>
                             <Td>
-                                {model.testtuple && model.testtuple.status === 'done' ? model.testtuple.dataset.perf : 'N/A'}
+                                {model.testtuple && model.testtuple.status === 'done' ? model.testtuple.dataset.perf.toFixed(2) : 'N/A'}
                             </Td>
                         </Tr>
                 ))}

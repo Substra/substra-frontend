@@ -62,7 +62,7 @@ class ModelTabs extends Component {
                         <p>
                             <Span>
                                 {'Model successfully trained with a score of '}
-                                <b>{item.traintuple.dataset.perf}</b>
+                                <b>{item.traintuple.dataset.perf.toFixed(2)}</b>
                                 {' on '}
                                 <b>train data samples</b>
                                 .
