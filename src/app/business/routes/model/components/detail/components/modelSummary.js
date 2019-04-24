@@ -17,6 +17,7 @@ import CopyInput from '../../../../../common/components/detail/components/copyIn
 import RoundedButton from '../../../../../common/components/roundedButton';
 import DownloadSimple from '../../../../../common/svg/download-simple';
 import BrowseRelatedLinks from './browseRelatedLinks';
+import ScoreMetadata from './scoreMetadata';
 
 const PseudoSection = styled('div')`
     padding-top: ${spacingNormal};
@@ -38,13 +39,8 @@ class ModelSummary extends Component {
         downloadItem({url: model.traintuple.outModel.storageAddress});
     };
 
-    copyTraintupleKey = () => {
-        const {model: {traintuple: {key}}, addNotification} = this.props;
-        addNotification(key, 'Traintuple\'s key successfully copied to clipboard!');
-    };
-
     render() {
-        const {model} = this.props;
+        const {model, addNotification} = this.props;
         return (
             <PseudoSection id={model.traintuple.key}>
                 <MetadataWrapper>
@@ -55,9 +51,20 @@ class ModelSummary extends Component {
                     >
                         <CopyInput
                             value={model.traintuple.key}
-                            addNotification={this.copyTraintupleKey}
+                            addNotification={addNotification}
+                            addNotificationMessage="Traintuple\'s key successfully copied to clipboard!"
                         />
                     </SingleMetadata>
+                    <ScoreMetadata
+                        label="Non-certified Score"
+                        tupleName="nonCertifiedTesttuple"
+                        item={model}
+                    />
+                    <ScoreMetadata
+                        label="Score"
+                        tupleName="testtuple"
+                        item={model}
+                    />
                     <BrowseRelatedMetadata>
                         <BrowseRelatedLinks item={model} />
                     </BrowseRelatedMetadata>
@@ -74,6 +81,8 @@ class ModelSummary extends Component {
                                         {'Training successful. In order to test this model against the objective\'s test data samples, execute the following command:'}
                                     </p>
                                     <CopyInput
+                                        addNotification={addNotification}
+                                        addNotificationMessage="Command copied to clipboard!"
                                         value={`substra add testtuple '{"traintuple_key": "${model.traintuple.key}"}'`}
                                         isPrompt
                                     />
@@ -84,7 +93,7 @@ class ModelSummary extends Component {
                                 || (model.testtuple.status === 'doing'
                                     && <p>Training successful. Undergoing testing.</p>)
                                 || (model.testtuple.status === 'failed'
-                                    && <p>Training successful. Preparing testing.</p>)
+                                    && <p>Training successful. Failed testing.</p>)
                                 || (model.testtuple.status === 'done' && (
                                     <p>
                                         <Span>

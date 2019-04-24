@@ -31,8 +31,8 @@ const ScoreMetadata = ({label, testtuple}) => (
                 <InlinePulseLoader loading={['todo', 'doing'].includes(testtuple.status)} />
             </Fragment>
         )}
-        {testtuple.status === 'done' && testtuple.dataset && testtuple.dataset.perf}
-        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance !== 'undefined' && ` ±${testtuple.dataset.variance}`}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(2)}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance === 'number' && ` ±${testtuple.dataset.variance.toFixed(2)}`}
     </SingleMetadata>
 );
 

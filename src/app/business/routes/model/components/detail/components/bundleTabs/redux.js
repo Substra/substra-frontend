@@ -1,6 +1,5 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {onlyUpdateForKeys} from 'recompose';
 
 import {getItem} from '../../../../selector';
 import actions from '../../../../actions';
@@ -15,4 +14,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['item'])(Tabs));
+// this used to be:
+// export default connect(mapStateToProps, mapDispatchToProps)(onlyUpdateForKeys(['item'])(Tabs));
+// however, onlyUpdateForKeys relies on shallowEqual which doesn't detect deep changes in the item object
+// (and the bundle item object is quite complex)
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs);

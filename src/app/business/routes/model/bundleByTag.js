@@ -75,14 +75,11 @@ const getFakeTesttuple = (models) => {
     return buildTesttuple('testtuple', models.map(m => m.testtuple), status);
 };
 
-const getFakeNonCertifiedTesttuple = (models, modelsDetailsByKey) => {
-    const nonCertifiedTesttuples = models.reduce((t, m) => {
-        const modelDetails = modelsDetailsByKey[m.traintuple.key];
-        return [
+const getFakeNonCertifiedTesttuple = (models) => {
+    const nonCertifiedTesttuples = models.reduce((t, m) => [
             ...t,
-            ...(modelDetails && modelDetails.nonCertifiedTraintuples ? modelDetails.nonCertifiedTraintuples : []),
-        ];
-    }, []);
+            ...(m && m.nonCertifiedTesttuples ? m.nonCertifiedTesttuples : []),
+        ], []);
     const status = minNonCertifiedTesttupleStatus(nonCertifiedTesttuples);
     return buildTesttuple('nonCertifiedTesttuple', nonCertifiedTesttuples, status);
 };
@@ -100,12 +97,17 @@ const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
                 ];
             }
 
+            // add details to models and compute average non certified testtuple
+            const modelsWithDetails = models
+                .map(m => modelsDetailsByKey[m.traintuple.key] || m)
+                .map(m => ({...m, ...getFakeNonCertifiedTesttuple([m])}));
+
             return [...groupedModels, {
                 tag,
-                models,
+                models: modelsWithDetails,
                 ...getFakeTraintuple(models, tag),
                 ...getFakeTesttuple(models),
-                ...getFakeNonCertifiedTesttuple(models, modelsDetailsByKey),
+                ...getFakeNonCertifiedTesttuple(modelsWithDetails),
             }];
         }, []);
     });
