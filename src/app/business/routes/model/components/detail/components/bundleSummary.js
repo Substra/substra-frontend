@@ -49,11 +49,13 @@ class BundleSummary extends Component {
                                 {model.traintuple.status !== 'done' && 'N/A'}
                             </Td>
                             <Td>
-                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' ? `${model.nonCertifiedTesttuple.dataset.perf.toFixed(2)} ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}` : capitalize(model.nonCertifiedTesttuple.status)}
+                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && `${model.nonCertifiedTesttuple.dataset.perf.toFixed(2)} ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}`}
+                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status !== 'done' && capitalize(model.nonCertifiedTesttuple.status)}
                                 {!model.nonCertifiedTesttuple && 'N/A'}
                             </Td>
                             <Td>
-                                {model.testtuple && model.testtuple.status === 'done' ? model.testtuple.dataset.perf.toFixed(2) : capitalize(model.testtuple.status)}
+                                {model.testtuple && model.testtuple.status === 'done' && model.testtuple.dataset.perf.toFixed(2)}
+                                {model.testtuple && model.testtuple.status !== 'done' && capitalize(model.testtuple.status)}
                                 {!model.testtuple && 'N/A'}
                             </Td>
                         </Tr>
