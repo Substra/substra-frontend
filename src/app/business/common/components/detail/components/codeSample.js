@@ -15,17 +15,6 @@ import Expand from '../../../svg/expand';
 import Collapse from '../../../svg/collapse';
 import IconButton from '../../iconButton';
 
-const Header = styled('div')`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid ${ice};
-    background-color: ${iceBlue};
-    min-height: 40px;
-    font-family: ${monospaceFamily};
-    font-size: ${fontNormalMonospace};
-`;
-
 const customStyle = {
     ...ghcolors,
     'pre[class*="language-"]': {
@@ -64,13 +53,15 @@ class CodeSample extends Component {
         collapsed: true,
     };
 
-    downloadCode = () => {
+    downloadCode = (e) => {
+        e.stopPropagation();
         const {codeString, filename} = this.props;
         const jsonBlob = new Blob([codeString], {type: mime.lookup(filename)});
         saveAs(jsonBlob, filename);
     };
 
-    toggleCollapsed = () => {
+    toggleCollapsed = (e) => {
+        e.stopPropagation();
         this.setState(state => ({collapsed: !state.collapsed}));
     };
 
@@ -88,9 +79,21 @@ class CodeSample extends Component {
             ${collapsible && collapsed && 'max-height: 150px;'}
         `;
 
+        const Header = styled('div')`
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid ${ice};
+            background-color: ${iceBlue};
+            min-height: 40px;
+            font-family: ${monospaceFamily};
+            font-size: ${fontNormalMonospace};
+            ${collapsible && 'cursor: pointer;'}
+        `;
+
         return (
             <Wrapper className={className}>
-                <Header>
+                <Header onClick={this.toggleCollapsed}>
                     <FilenameWrapper>
                         {filename}
                     </FilenameWrapper>
