@@ -5,29 +5,23 @@ import {capitalize} from 'lodash';
 import {SingleMetadata} from '../../../../../common/components/detail/components/metadata';
 import InlinePulseLoader from '../../inlinePulseLoader';
 
-const ScoreMetadata = ({item, label, tupleName}) => {
-    let score;
-    if (item[tupleName] && item[tupleName].status && item[tupleName].status === 'done') {
-        const dataset = item[tupleName].dataset;
-        score = dataset.perf.toFixed(2);
-        if (typeof dataset.variance === 'number') {
-            score = `${score} ±${item[tupleName].dataset.variance.toFixed(2)}`;
-        }
-    }
-
-    return (
-        <SingleMetadata label={label}>
-            {!item[tupleName] && 'N/A'}
-            {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && score}
-            {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (
-                <Fragment>
-                    {capitalize(item[tupleName].status)}
-                    <InlinePulseLoader loading={['todo', 'doing'].includes(item[tupleName].status)} />
-                </Fragment>
-            )}
-        </SingleMetadata>
-    );
-};
+const ScoreMetadata = ({item, label, tupleName}) => (
+    <SingleMetadata label={label}>
+        {!item[tupleName] && 'N/A'}
+        {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && item[tupleName].dataset && (
+            <Fragment>
+                {item[tupleName].dataset.perf.toFixed(2)}
+                {typeof item[tupleName].dataset.variance === 'number' && ` ±${item[tupleName].dataset.variance.toFixed(2)}`}
+            </Fragment>
+        )}
+        {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (
+            <Fragment>
+                {capitalize(item[tupleName].status)}
+                <InlinePulseLoader loading={['todo', 'doing'].includes(item[tupleName].status)} />
+            </Fragment>
+        )}
+    </SingleMetadata>
+);
 
 ScoreMetadata.propTypes = {
     item: PropTypes.shape(),

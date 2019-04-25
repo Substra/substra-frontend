@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {capitalize, noop} from 'lodash';
@@ -49,7 +49,12 @@ class BundleSummary extends Component {
                                 {model.traintuple.status !== 'done' && 'N/A'}
                             </Td>
                             <Td>
-                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && `${model.nonCertifiedTesttuple.dataset.perf.toFixed(2)} ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}`}
+                                {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && (
+                                    <Fragment>
+                                        {model.nonCertifiedTesttuple.dataset.perf.toFixed(2)}
+                                        {typeof model.nonCertifiedTesttuple.dataset.variance === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}`}
+                                    </Fragment>
+                                )}
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status !== 'done' && capitalize(model.nonCertifiedTesttuple.status)}
                                 {!model.nonCertifiedTesttuple && 'N/A'}
                             </Td>
