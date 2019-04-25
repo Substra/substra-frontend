@@ -100,7 +100,7 @@ class ModelSummary extends Component {
                                         <Span>
                                             {'Model successfully trained with a score of '}
                                             <b>{model.testtuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
-                                            {' on this split\'s test data samples.'}
+                                            {' on the objective\'s test data samples.'}
                                         </Span>
                                         <RoundedButton
                                             Icon={DownloadSimple}
