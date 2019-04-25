@@ -27,7 +27,7 @@ const minNonCertifiedTesttupleStatus = nonCertifiedTesttuples => minStatus(nonCe
 
 const calcPerf = (testtuples, status) => {
     let average = 0,
-        variance = undefined;
+        variance;
 
     if (status === 'done') {
         const perfs = testtuples.reduce((p, t) => [

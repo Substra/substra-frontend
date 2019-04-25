@@ -26,6 +26,7 @@ module.exports = {
             },
             raven_url: ravenUrl,
             branding,
+            scorePrecision: 3,
         },
     },
     encryption: {

@@ -1,3 +1,4 @@
+/* global SCORE_PRECISION */
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
@@ -10,8 +11,8 @@ const ScoreMetadata = ({item, label, tupleName}) => (
         {!item[tupleName] && 'N/A'}
         {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && item[tupleName].dataset && (
             <Fragment>
-                {item[tupleName].dataset.perf.toFixed(2)}
-                {typeof item[tupleName].dataset.variance === 'number' && ` ±${item[tupleName].dataset.variance.toFixed(2)}`}
+                {item[tupleName].dataset.perf.toFixed(SCORE_PRECISION)}
+                {typeof item[tupleName].dataset.variance === 'number' && ` ±${item[tupleName].dataset.variance.toFixed(SCORE_PRECISION)}`}
             </Fragment>
         )}
         {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (

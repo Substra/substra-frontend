@@ -1,3 +1,4 @@
+/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
@@ -51,15 +52,15 @@ class BundleSummary extends Component {
                             <Td>
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && (
                                     <Fragment>
-                                        {model.nonCertifiedTesttuple.dataset.perf.toFixed(2)}
-                                        {typeof model.nonCertifiedTesttuple.dataset.variance === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(2)}`}
+                                        {model.nonCertifiedTesttuple.dataset.perf.toFixed(SCORE_PRECISION)}
+                                        {typeof model.nonCertifiedTesttuple.dataset.variance === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(SCORE_PRECISION)}`}
                                     </Fragment>
                                 )}
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status !== 'done' && capitalize(model.nonCertifiedTesttuple.status)}
                                 {!model.nonCertifiedTesttuple && 'N/A'}
                             </Td>
                             <Td>
-                                {model.testtuple && model.testtuple.status === 'done' && model.testtuple.dataset.perf.toFixed(2)}
+                                {model.testtuple && model.testtuple.status === 'done' && model.testtuple.dataset.perf.toFixed(SCORE_PRECISION)}
                                 {model.testtuple && model.testtuple.status !== 'done' && capitalize(model.testtuple.status)}
                                 {!model.testtuple && 'N/A'}
                             </Td>

@@ -1,3 +1,4 @@
+/* global SCORE_PRECISION */
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -31,8 +32,8 @@ const ScoreMetadata = ({label, testtuple}) => (
                 <InlinePulseLoader loading={['todo', 'doing'].includes(testtuple.status)} />
             </Fragment>
         )}
-        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(2)}
-        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance === 'number' && ` ±${testtuple.dataset.variance.toFixed(2)}`}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(SCORE_PRECISION)}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance === 'number' && ` ±${testtuple.dataset.variance.toFixed(SCORE_PRECISION)}`}
     </SingleMetadata>
 );
 

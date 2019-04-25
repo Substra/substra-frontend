@@ -1,3 +1,4 @@
+/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -98,7 +99,7 @@ class ModelSummary extends Component {
                                     <p>
                                         <Span>
                                             {'Model successfully trained with a score of '}
-                                            <b>{model.testtuple.dataset.perf.toFixed(2)}</b>
+                                            <b>{model.testtuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
                                             {' on this split\'s test data samples.'}
                                         </Span>
                                         <RoundedButton

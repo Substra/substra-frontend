@@ -1,3 +1,4 @@
+/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -62,7 +63,7 @@ class ModelTabs extends Component {
                         <p>
                             <Span>
                                 {'Model successfully trained with a score of '}
-                                <b>{item.traintuple.dataset.perf.toFixed(2)}</b>
+                                <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
                                 {' on '}
                                 <b>train data samples</b>
                                 .
