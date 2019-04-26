@@ -23,13 +23,14 @@ const BrowseRelatedLinks = ({
     }
     else {
         algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? item.traintuple.algo.name : ''}`;
-        objectiveFilter = `objective:key:${item && item.traintuple && item.traintuple.objective ? item.traintuple.objective.hash : ''}`;
+        objectiveFilter = item && item.traintuple && item.traintuple.objective && `objective:key:${item.traintuple.objective.hash}`;
         datasetFilter = [
             item.traintuple,
             ...(item.testtuple ? [item.traintuple] : []),
             ...(item.nonCertifiedTesttuples ? item.nonCertifiedTesttuples : []),
         ]
             .map(tuple => tuple && tuple.dataset && tuple.dataset.openerHash)
+            .filter(key => key)
             .map(key => `dataset:key:${key}`)
             .join('-OR-');
     }
@@ -37,8 +38,8 @@ const BrowseRelatedLinks = ({
     return (
         <Fragment>
             <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo} />
-            <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />
-            <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />
+            {objectiveFilter && <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />}
+            {datasetFilter && <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />}
         </Fragment>
     );
 };

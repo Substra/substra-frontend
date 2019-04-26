@@ -5,11 +5,12 @@ import BaseMetadata, {
     SingleMetadata,
     MetadataWrapper,
     keyLabelClassName,
-    keyValueClassName,
+    keyValueClassName, BrowseRelatedMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import InlinePulseLoader from '../../inlinePulseLoader';
 import ScoreMetadata from './scoreMetadata';
+import BrowseRelatedLinks from './browseRelatedLinks';
 
 
 class Metadata extends Component {
@@ -46,6 +47,9 @@ class Metadata extends Component {
                     tupleName="testtuple"
                     item={item}
                 />
+                <BrowseRelatedMetadata>
+                    <BrowseRelatedLinks item={item} />
+                </BrowseRelatedMetadata>
             </MetadataWrapper>
         );
     }

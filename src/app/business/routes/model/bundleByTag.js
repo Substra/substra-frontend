@@ -47,10 +47,12 @@ const calcPerf = (testtuples, status) => {
     };
 };
 
-const getFakeTraintuple = (models, tag) => ({
+const getFakeTraintuple = models => ({
     traintuple: {
-        key: tag,
+        key: models[0].traintuple.key,
         status: minTraintupleStatus(models),
+        algo: models[0].traintuple.algo,
+        objective: models[0].traintuple.objective,
     },
 });
 
@@ -86,32 +88,61 @@ const getFakeNonCertifiedTesttuple = (models) => {
     return buildTesttuple('nonCertifiedTesttuple', nonCertifiedTesttuples, status);
 };
 
-const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
-        const byTags = groupBy(models, 'traintuple.tag');
-        return Object.keys(byTags).reduce((groupedModels, tag) => {
-            const models = byTags[tag];
+const bundleByObjective = (tag, models, modelsDetailsByKey) => {
+    const byObjective = groupBy(models, 'traintuple.objective.hash');
 
-            if (tag === 'undefined' || tag === '') {
-                // these models have no tag, they shouldn't be bundled
-                return [
-                    ...groupedModels,
-                    ...models,
-                ];
-            }
+    return Object.keys(byObjective).reduce((groupedModels, objectiveKey) => {
+        const models = byObjective[objectiveKey];
 
-            // add details to models and compute average non certified testtuple
-            const modelsWithDetails = models
-                .map(m => modelsDetailsByKey[m.traintuple.key] || m)
-                .map(m => ({...m, ...getFakeNonCertifiedTesttuple([m])}));
+        // add details to models and compute average non certified testtuple
+        const modelsWithDetails = models
+            .map(m => modelsDetailsByKey[m.traintuple.key] || m)
+            .map(m => ({...m, ...getFakeNonCertifiedTesttuple([m])}));
 
-            return [...groupedModels, {
+        return [
+            ...groupedModels,
+            {
                 tag,
                 models: modelsWithDetails,
-                ...getFakeTraintuple(models, tag),
+                ...getFakeTraintuple(models),
                 ...getFakeTesttuple(models),
                 ...getFakeNonCertifiedTesttuple(modelsWithDetails),
-            }];
-        }, []);
-    });
+            },
+        ];
+    }, []);
+};
+
+const bundleByAlgo = (tag, models, modelsDetailsByKey) => {
+    const byAlgo = groupBy(models, 'traintuple.algo.hash');
+
+    return Object.keys(byAlgo).reduce((groupedModels, algoKey) => {
+        const models = byAlgo[algoKey];
+
+        return [
+            ...groupedModels,
+            ...bundleByObjective(tag, models, modelsDetailsByKey),
+        ];
+    }, []);
+};
+
+const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
+    const byTags = groupBy(models, 'traintuple.tag');
+    return Object.keys(byTags).reduce((groupedModels, tag) => {
+        const tagModels = byTags[tag];
+
+        if (tag === 'undefined' || tag === '') {
+            // these models have no tag, they shouldn't be bundled
+            return [
+                ...groupedModels,
+                ...tagModels,
+            ];
+        }
+
+        return [
+            ...groupedModels,
+            ...bundleByAlgo(tag, tagModels, modelsDetailsByKey),
+        ];
+    }, []);
+});
 
 export default bundleByTag;
