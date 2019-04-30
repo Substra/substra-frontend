@@ -25,7 +25,7 @@ class BundleSummary extends Component {
                         <Th>Traintuple</Th>
                         <Th>Status</Th>
                         <Th>Model</Th>
-                        <Th>Non-certified Score</Th>
+                        <Th>Validation Score</Th>
                         <Th>Score</Th>
                     </Tr>
                 </thead>

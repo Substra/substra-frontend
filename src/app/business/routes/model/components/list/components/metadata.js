@@ -61,7 +61,7 @@ const Metadata = ({o}) => (
             </SingleMetadata>
             {o && o.tag && o.nonCertifiedTesttuple && (
                 <ScoreMetadata
-                    label="Non-certified score"
+                    label="Validation score"
                     testtuple={o.nonCertifiedTesttuple}
                 />
             )}

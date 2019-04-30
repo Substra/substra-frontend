@@ -38,7 +38,7 @@ class Metadata extends Component {
                     <InlinePulseLoader loading={['todo', 'doing'].includes(item.traintuple.status)} />
                 </SingleMetadata>
                 <ScoreMetadata
-                    label="Non-certified Score"
+                    label="Validation Score"
                     tupleName="nonCertifiedTesttuple"
                     item={item}
                 />

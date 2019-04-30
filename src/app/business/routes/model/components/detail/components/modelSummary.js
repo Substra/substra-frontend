@@ -57,7 +57,7 @@ class ModelSummary extends Component {
                         />
                     </SingleMetadata>
                     <ScoreMetadata
-                        label="Non-certified Score"
+                        label="Validation Score"
                         tupleName="nonCertifiedTesttuple"
                         item={model}
                     />
@@ -134,7 +134,7 @@ class ModelSummary extends Component {
                     <CodeSample
                         key={nonCertifiedTesttuple.key}
                         className={margins}
-                        filename="non-certified-testtuple.json"
+                        filename="validation-testtuple.json"
                         language="json"
                         collapsible
                         codeString={JSON.stringify(nonCertifiedTesttuple, null, 2)}
