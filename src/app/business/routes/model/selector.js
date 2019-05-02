@@ -94,7 +94,7 @@ export const getOrderedResults = createDeepEqualSelector([enhancedResults, order
 export const getItem = createDeepEqualSelector([itemResults, getSelectedResult, selected],
     (itemResults, selectedResult, selected) => ({
         ...selectedResult,
-        ...itemResults.find(o => o.traintuple.key === selected),
+        ...(selected && selectedResult.tag ? {} : itemResults.find(o => o.traintuple.key === selected)),
     }),
 );
 
