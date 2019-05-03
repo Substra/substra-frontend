@@ -10,6 +10,13 @@ services:
   substrafront:
     build:
       context: ./
+      args:
+          API_URL: $API_URL
+          FRONT_BRANDING: $FRONT_BRANDING
+          FRONT_AUTH_USER: $FRONT_AUTH_USER
+          FRONT_AUTH_PASSWORD: $FRONT_AUTH_PASSWORD
+          BACK_AUTH_USER: $BACK_AUTH_USER
+          BACK_AUTH_PASSWORD: $BACK_AUTH_PASSWORD
     container_name: substrafront
     hostname: substrafront
     depends_on:
@@ -18,13 +25,10 @@ services:
       - "3000:8000"
     restart: unless-stopped
     environment:
-      - REDIS_HOST=redis
-      - FRONT_AUTH_USER=${FRONT_AUTH_USER}
-      - FRONT_AUTH_PASSWORD=${FRONT_AUTH_PASSWORD}
-      - BACK_AUTH_USER=${BACK_AUTH_USER}
-      - BACK_AUTH_PASSWORD=${BACK_AUTH_PASSWORD}
-      - API_URL=${API_URL}
-
+        - REDIS_HOST=$REDIS_HOST
+        - REDIS_PORT=$REDIS_PORT
+        - NODE_PORT=$NODE_PORT
+        - SECURE_NODE_PORT=$SECURE_NODE_PORT
   redis:
     container_name: redis
     hostname: redis
