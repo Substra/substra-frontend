@@ -15,7 +15,7 @@ const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectModel, unselectDataset,
                                 ...props
                             }) => {
-    const filter = `objective:name:${item ? item.name : ''}`;
+    const filter = `objective:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (
         <Fragment {...props}>

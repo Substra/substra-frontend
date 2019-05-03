@@ -22,7 +22,7 @@ const BrowseRelatedLinks = ({
         algoFilter = objectiveFilter = datasetFilter = `model:hash:${modelHash}`;
     }
     else {
-        algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? item.traintuple.algo.name : ''}`;
+        algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? encodeURIComponent(item.traintuple.algo.name) : ''}`;
         objectiveFilter = item && item.traintuple && item.traintuple.objective && `objective:key:${item.traintuple.objective.hash}`;
         datasetFilter = [
             item.traintuple,

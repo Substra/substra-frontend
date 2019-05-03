@@ -201,7 +201,7 @@ class Base extends Component {
             // }] : []),
             {
                 parent: model,
-                child: `name:${o}`,
+                child: `name:${encodeURIComponent(o)}`,
                 isLogic: false,
                 uuid: uuidv4(),
             }];
@@ -210,7 +210,7 @@ class Base extends Component {
             isParent: true,
             inputValue: '',
             selectedItem: newSelectedItem,
-            item: o,
+            item: encodeURIComponent(o),
             toUpdate: true,
         });
     };

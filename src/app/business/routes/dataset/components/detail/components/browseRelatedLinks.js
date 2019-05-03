@@ -14,7 +14,7 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectObjective, unselectModel,
                             }) => {
-    const filter = `dataset:name:${item ? item.name : ''}`;
+    const filter = `dataset:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (
         <Fragment>
