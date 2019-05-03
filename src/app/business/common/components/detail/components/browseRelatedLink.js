@@ -24,7 +24,7 @@ class BrowseRelatedLink extends Component {
             type: routeTypes[model],
             meta: {
                 query: {
-                    search: filter,
+                    search: encodeURIComponent(filter),
                     ...(order && !order.pristine ? omit(order, ['pristine']) : {}), // add own order if necessary
                 },
             },
