@@ -3,7 +3,7 @@ import {
 } from 'lodash';
 
 import bundleByTag from './bundleByTag';
-import createDeepEqualSelector from '../../../utils/selector';
+import {createDeepEqualSelector, deepOrder} from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
@@ -39,9 +39,6 @@ export const getSelectedResult = createDeepEqualSelector([enhancedResults, selec
 
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
 export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.traintuple.key);
-
-// will get deep attribute from object, example if 'testtuple.data.perf' is passed as a string, it will get o.testtuple.data.perf
-const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
 const modelOrder = order => (o) => {
     /*

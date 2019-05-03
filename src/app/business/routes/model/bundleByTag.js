@@ -1,4 +1,5 @@
 import {groupBy, uniqBy} from 'lodash';
+import {deepGet} from '../../../utils/selector';
 
 // math functions
 
@@ -89,7 +90,7 @@ const getFakeNonCertifiedTesttuple = (models) => {
 };
 
 const bundleByObjective = (tag, models, modelsDetailsByKey) => {
-    const byObjective = groupBy(models, 'traintuple.objective.hash');
+    const byObjective = groupBy(models, deepGet('traintuple.objective.hash'));
 
     return Object.keys(byObjective).reduce((groupedModels, objectiveKey) => {
         const models = byObjective[objectiveKey];
@@ -113,7 +114,7 @@ const bundleByObjective = (tag, models, modelsDetailsByKey) => {
 };
 
 const bundleByAlgo = (tag, models, modelsDetailsByKey) => {
-    const byAlgo = groupBy(models, 'traintuple.algo.hash');
+    const byAlgo = groupBy(models, deepGet('traintuple.algo.hash'));
 
     return Object.keys(byAlgo).reduce((groupedModels, algoKey) => {
         const models = byAlgo[algoKey];
@@ -126,7 +127,7 @@ const bundleByAlgo = (tag, models, modelsDetailsByKey) => {
 };
 
 const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
-    const byTags = groupBy(models, 'traintuple.tag');
+    const byTags = groupBy(models, deepGet('traintuple.tag'));
     return Object.keys(byTags).reduce((groupedModels, tag) => {
         const tagModels = byTags[tag];
 
