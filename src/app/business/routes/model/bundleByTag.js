@@ -96,9 +96,13 @@ const bundleByObjective = (tag, models, modelsDetailsByKey) => {
         const models = byObjective[objectiveKey];
 
         // add details to models and compute average non certified testtuple
-        const modelsWithDetails = models
-            .map(m => modelsDetailsByKey[m.traintuple.key] || m)
-            .map(m => ({...m, ...getFakeNonCertifiedTesttuple([m])}));
+        const modelsWithDetails = models.map(m => {
+            const model = modelsDetailsByKey[m.traintuple.key] || m;
+            return {
+                ...model,
+                ...getFakeNonCertifiedTesttuple([model]),
+            }
+        });
 
         return [
             ...groupedModels,
