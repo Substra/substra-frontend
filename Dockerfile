@@ -11,7 +11,23 @@ RUN yarn install
 
 COPY . /workspace/
 
-RUN NODE_ENV=production yarn build:main
+ARG API_URL
+ARG FRONT_AUTH_USER
+ARG FRONT_AUTH_PASSWORD
+ARG BACK_AUTH_USER
+ARG BACK_AUTH_PASSWORD
+ARG FRONT_BRANDING
+
+# NODE_ENV production need to be after yarn install, otherwise devdependencies are not isntalled
+ENV API_URL=${API_URL} \
+    FRONT_BRANDING=${FRONT_BRANDING} \
+    FRONT_AUTH_USER=${FRONT_AUTH_USER} \
+    FRONT_AUTH_PASSWORD=${FRONT_AUTH_PASSWORD} \
+    BACK_AUTH_USER=${BACK_AUTH_USER} \
+    BACK_AUTH_PASSWORD=${BACK_AUTH_PASSWORD} \
+    NODE_ENV=production
+
+RUN yarn build:main
 
 FROM node:alpine
 
@@ -21,13 +37,8 @@ COPY --from=build /workspace/packages/ssr/package.json /workspace/package.json
 
 RUN yarn install
 
-ENV NODE_ENV=production \
-  NODE_PORT=8000 \
-  SECURE_NODE_PORT=8443 \
-  REDIS_PORT=6379 \
-  REDIS_HOST=localhost \
-  API_URL=localhost \
-  FRONT_BRANDING=substra
+# NODE_ENV production need to be after yarn install, otherwise devdependencies are not isntalled
+ENV NODE_ENV=production
 
 COPY --from=build /workspace/build /workspace/build
 COPY --from=build /workspace/config /workspace/config
