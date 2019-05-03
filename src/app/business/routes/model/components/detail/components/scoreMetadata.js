@@ -12,7 +12,7 @@ const ScoreMetadata = ({item, label, tupleName}) => (
         {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && item[tupleName].dataset && (
             <Fragment>
                 {item[tupleName].dataset.perf.toFixed(SCORE_PRECISION)}
-                {typeof item[tupleName].dataset.variance === 'number' && ` ±${item[tupleName].dataset.variance.toFixed(SCORE_PRECISION)}`}
+                {typeof item[tupleName].dataset.standardDeviation === 'number' && ` ±${item[tupleName].dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
             </Fragment>
         )}
         {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (

@@ -53,7 +53,7 @@ class BundleSummary extends Component {
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && (
                                     <Fragment>
                                         {model.nonCertifiedTesttuple.dataset.perf.toFixed(SCORE_PRECISION)}
-                                        {typeof model.nonCertifiedTesttuple.dataset.variance === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.variance.toFixed(SCORE_PRECISION)}`}
+                                        {typeof model.nonCertifiedTesttuple.dataset.standardDeviation === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
                                     </Fragment>
                                 )}
                                 {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status !== 'done' && capitalize(model.nonCertifiedTesttuple.status)}
