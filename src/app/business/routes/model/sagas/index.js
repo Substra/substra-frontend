@@ -24,8 +24,24 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const state = yield select();
 
-    if (!state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key)) {
-        yield put(actions.item.request({id: payload.traintuple.key, get_parameters: {}}));
+    const item = state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key);
+
+    if (!item) {
+        yield put(actions.item.success(payload));
+    }
+}
+
+function* fetchBundleDetail() {
+    const state = yield select();
+
+    for (const group of state.model.list.results) {
+        const models = group.filter(model => model.traintuple.tag);
+        for (const model of models) {
+            const modelDetail = state.model.item.results.find(o => o.traintuple.key === model.traintuple.key);
+            if (!modelDetail) {
+                yield put(actions.item.request({id: model.traintuple.key}));
+            }
+        }
     }
 }
 
@@ -74,6 +90,7 @@ function* downloadItemSaga({payload: {url}}) {
 const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchList),
+        takeLatest(actionTypes.list.SUCCESS, fetchBundleDetail),
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 

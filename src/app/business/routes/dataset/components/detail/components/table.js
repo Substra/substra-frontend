@@ -7,6 +7,10 @@ export const Table = styled('table')`
     border-radius: 3px;
     width: 100%;
     border-collapse: collapse;
+    
+    td, th {
+        text-align: ${props => props.centered ? 'center' : 'left'};
+    }
 `;
 
 export const Tr = styled('tr')`

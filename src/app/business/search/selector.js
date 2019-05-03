@@ -1,4 +1,4 @@
-import createDeepEqualSelector from '../../utils/selector';
+import {createDeepEqualSelector} from '../../utils/selector';
 
 const location = state => state.location;
 const item = state => state.search.item;
