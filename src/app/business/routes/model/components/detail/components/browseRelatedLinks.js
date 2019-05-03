@@ -29,9 +29,13 @@ const BrowseRelatedLinks = ({
             ...(item.testtuple ? [item.traintuple] : []),
             ...(item.nonCertifiedTesttuples ? item.nonCertifiedTesttuples : []),
         ]
-            .map(tuple => tuple && tuple.dataset && tuple.dataset.openerHash)
-            .filter(key => key)
-            .map(key => `dataset:key:${key}`)
+            .reduce((keys, tuple) => {
+                const key = tuple && tuple.dataset && tuple.dataset.openerHash;
+                return [
+                    ...keys,
+                    ...(key ? [`dataset:key:${key}`] : []),
+                ];
+            }, [])
             .join('-OR-');
     }
 
