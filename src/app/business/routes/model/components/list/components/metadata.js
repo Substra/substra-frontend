@@ -33,7 +33,7 @@ const ScoreMetadata = ({label, testtuple}) => (
             </Fragment>
         )}
         {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(SCORE_PRECISION)}
-        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.variance === 'number' && ` ±${testtuple.dataset.variance.toFixed(SCORE_PRECISION)}`}
+        {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.standardDeviation === 'number' && ` ±${testtuple.dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
     </SingleMetadata>
 );
 

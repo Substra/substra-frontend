@@ -5,10 +5,11 @@ import {deepGet} from '../../../utils/selector';
 
 const sum = arr => arr.reduce((total, current) => total + current, 0);
 const avg = arr => sum(arr) / arr.length;
-const calc_variance = (arr) => {
+const calcVariance = (arr) => {
     const m = avg(arr);
     return avg(arr.map(n => (n - m) ** 2));
 };
+const calcStandardDeviation = arr => Math.sqrt(calcVariance(arr));
 
 function minStatus(models, getStatus) {
     const statuses = ['failed', 'waiting', 'todo', 'doing', 'done'];
@@ -28,7 +29,7 @@ const minNonCertifiedTesttupleStatus = nonCertifiedTesttuples => minStatus(nonCe
 
 const calcPerf = (testtuples, status) => {
     let average = 0,
-        variance;
+        standardDeviation;
 
     if (status === 'done') {
         const perfs = testtuples.reduce((p, t) => [
@@ -38,13 +39,13 @@ const calcPerf = (testtuples, status) => {
 
         average = avg(perfs);
         if (perfs.length > 1) {
-            variance = calc_variance(perfs);
+            standardDeviation = calcStandardDeviation(perfs);
         }
     }
 
     return {
         average,
-        variance,
+        standardDeviation,
     };
 };
 
@@ -69,7 +70,7 @@ const buildTesttuple = (name, testtuples, status) => {
             status,
             dataset: {
                 perf: perf.average,
-                variance: perf.variance,
+                standardDeviation: perf.standardDeviation,
             },
         },
     };
