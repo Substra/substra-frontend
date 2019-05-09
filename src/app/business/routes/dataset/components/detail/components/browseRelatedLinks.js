@@ -19,7 +19,6 @@ const BrowseRelatedLinks = ({
     return (
         <Fragment>
             <BrowseRelatedLink model="objective" label="objectives" filter={filter} unselect={unselectObjective} />
-            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </Fragment>
     );
