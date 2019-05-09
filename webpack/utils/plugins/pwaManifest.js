@@ -1,12 +1,15 @@
 import path from 'path';
+import config from 'config';
 import PWAManifestPlugin from './tools/PWAManifestPlugin';
 
+const isOwkestra = config.apps.frontend.branding === 'owkestra';
+
 export default new PWAManifestPlugin({
-        iconsPath: path.resolve(__dirname, '../../../assets/img/'),
+        iconsPath: path.resolve(__dirname, '../../../assets/img/', isOwkestra ? 'owkestra' : 'substra'),
     },
     {
-        name: 'Substra Foundation',
-        short_name: 'Substra',
+        name: isOwkestra ? 'Owkestra' : 'Substra',
+        short_name: isOwkestra ? 'Owkestra' : 'Substra',
         start_url: '/',
         display: 'standalone',
         background_color: '#000',
