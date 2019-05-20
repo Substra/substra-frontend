@@ -9,7 +9,7 @@ import uuidv4 from 'uuid/v4';
 import copy from 'copy-to-clipboard';
 
 import {Snackbar} from '@material-ui/core';
-import SnackbarContent from '../SnackbarContent';
+import SnackbarContent from './components/snackbarContent';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
@@ -88,6 +88,8 @@ export const anchorOrigin = {
 };
 
 class Base extends Component {
+    notificationsQueue = [];
+
     state = {
         listWidth: {value: 40, unit: '%'},
         hold: false,
@@ -114,20 +116,6 @@ class Base extends Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
-
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        this.setState(state => ({
-            ...state,
-            clipboard: {
-                ...state.clipboard,
-                open: false,
-            },
-        }));
-    };
 
     updateDimensions = () => {
         if (this.contentRef.current) {
@@ -173,18 +161,64 @@ class Base extends Component {
         }
     };
 
-    addNotification = (inputValue, text) => {
-        copy(inputValue);
+    // Notifications methods
+
+    processNotificationQueue = () => {
+        if (this.notificationsQueue.length > 0) {
+            this.setState(state => ({
+                ...state,
+                clipboard: {
+                    ...this.notificationsQueue.shift(),
+                    open: true,
+                },
+            }));
+        }
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
         this.setState(state => ({
             ...state,
             clipboard: {
-                open: true,
-                inputValue,
-                text,
+                ...state.clipboard,
+                open: false,
             },
         }));
     };
+
+
+    handleExited = () => {
+        this.processNotificationQueue();
+    };
+
+    addNotification = (inputValue, text) => {
+        copy(inputValue);
+        this.notificationsQueue.push({
+            inputValue,
+            text,
+            key: new Date().getTime(),
+        });
+
+        if (this.state.clipboard.open) {
+            // immediately begin dismissing current message
+            // to start showing new one
+            this.setState(state => ({
+                ...state,
+                clipboard: {
+                    ...state.clipboard,
+                    open: false,
+                },
+            }));
+        }
+        else {
+            this.processNotificationQueue();
+        }
+    };
+
+    // End of notifications methods
 
     filterUp = (o) => {
         const {
@@ -303,6 +337,7 @@ class Base extends Component {
                     anchorOrigin={anchorOrigin}
                     open={open}
                     onClose={this.handleClose}
+                    onExited={this.handleExited}
                     autoHideDuration={2000}
                 >
                     <SnackbarContent
