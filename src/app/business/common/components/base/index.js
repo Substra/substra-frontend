@@ -199,7 +199,6 @@ class Base extends Component {
         this.notificationsQueue.push({
             inputValue,
             text,
-            key: new Date().getTime(),
         });
 
         if (this.state.clipboard.open) {
