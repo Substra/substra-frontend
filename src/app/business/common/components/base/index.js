@@ -88,7 +88,7 @@ export const anchorOrigin = {
 };
 
 class Base extends Component {
-    notificationsQueue = [];
+    queuedNotification;
 
     state = {
         listWidth: {value: 40, unit: '%'},
@@ -164,14 +164,18 @@ class Base extends Component {
     // Notifications methods
 
     processNotificationQueue = () => {
-        if (this.notificationsQueue.length > 0) {
-            this.setState(state => ({
-                ...state,
-                clipboard: {
-                    ...this.notificationsQueue.shift(),
-                    open: true,
-                },
-            }));
+        if (this.queuedNotification) {
+            this.setState(state => {
+                const queuedNotification = this.queuedNotification;
+                this.queuedNotification = undefined;
+                return {
+                    ...state,
+                    clipboard: {
+                        ...queuedNotification,
+                        open: true,
+                    },
+                }
+            });
         }
     };
 
@@ -196,10 +200,10 @@ class Base extends Component {
 
     addNotification = (inputValue, text) => {
         copy(inputValue);
-        this.notificationsQueue.push({
+        this.queuedNotification = {
             inputValue,
             text,
-        });
+        };
 
         if (this.state.clipboard.open) {
             // immediately begin dismissing current message
