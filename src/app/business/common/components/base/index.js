@@ -162,10 +162,9 @@ class Base extends Component {
     };
 
     // Notifications methods
-
     processNotificationQueue = () => {
         if (this.queuedNotification) {
-            this.setState(state => {
+            this.setState((state) => {
                 const queuedNotification = this.queuedNotification;
                 this.queuedNotification = undefined;
                 return {
@@ -174,7 +173,7 @@ class Base extends Component {
                         ...queuedNotification,
                         open: true,
                     },
-                }
+                };
             });
         }
     };
