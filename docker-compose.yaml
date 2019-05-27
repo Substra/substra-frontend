@@ -11,10 +11,7 @@ services:
     build:
       context: ./
       args:
-          API_URL: $API_URL
           FRONT_BRANDING: $FRONT_BRANDING
-          BACK_AUTH_USER: $BACK_AUTH_USER
-          BACK_AUTH_PASSWORD: $BACK_AUTH_PASSWORD
     container_name: substrafront
     hostname: substrafront
     depends_on:
@@ -23,6 +20,9 @@ services:
       - "3000:8000"
     restart: unless-stopped
     environment:
+        - API_URL=$API_URL
+        - BACK_AUTH_USER=$BACK_AUTH_USER
+        - BACK_AUTH_PASSWORD=$BACK_AUTH_PASSWORD
         - FRONT_AUTH_USER=$FRONT_AUTH_USER
         - FRONT_AUTH_PASSWORD=$FRONT_AUTH_PASSWORD
         - REDIS_HOST=$REDIS_HOST
