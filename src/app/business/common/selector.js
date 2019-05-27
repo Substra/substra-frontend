@@ -2,7 +2,7 @@ import {
 orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
-import createDeepEqualSelector from '../../utils/selector';
+import {createDeepEqualSelector, deepOrder} from '../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
@@ -23,9 +23,6 @@ export const getSelectedResult = createDeepEqualSelector([results, selected],
 
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
 export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.key);
-
-// will get deep attribute from object, example if 'testData.perf' is passed as a string, it will get o.testData.perf
-const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
 export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
     (results, order, isComplex) => {

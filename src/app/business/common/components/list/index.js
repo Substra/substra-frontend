@@ -12,11 +12,8 @@ import Sort from './components/sort/redux';
 import Item from './components/item';
 import Actions from './components/actions';
 
-import {iceBlueTwo, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
+import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
 import {PanelWrapper, PanelTop, PanelContent} from '../panel';
-import IconButton from '../iconButton';
-
-import More from '../../svg/more-vertical';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import NoItemFound from './components/noItemFound';
 
@@ -96,7 +93,7 @@ loading, fetchList, logList,
 
         return css`
             position: relative;
-            background-color: ${hovered || selected ? iceBlueTwo : 'transparent'};
+            background-color: ${hovered || selected ? iceSecondaryAccent : 'transparent'};
             
             &:before {
                 display: block;
@@ -106,7 +103,7 @@ loading, fetchList, logList,
                 bottom: 0;
                 left: 0;
                 width: 4px;
-                background-color: ${selected ? darkSkyBlue : 'transparent'};
+                background-color: ${selected ? secondaryAccent : 'transparent'};
             }
         `;
     };
@@ -179,6 +176,7 @@ loading, fetchList, logList,
         const {
             results, init, loading, model, className, download,
             Title, Popover, Metadata, PopoverItems, Sort, setOrder,
+            Actions,
         } = this.props;
 
         const {open, anchorEl, item} = this.state.popover;
@@ -211,11 +209,10 @@ loading, fetchList, logList,
                                             onMouseLeave={this.out(o)}
                                             className={this.itemWrapper(o.key)}
                                         >
-                                            <Actions>
-                                                <IconButton onClick={this.more(o)} title="Show actions" noBorder>
-                                                    <More height={16} />
-                                                </IconButton>
-                                            </Actions>
+                                            <Actions
+                                                openPopover={this.more(o)}
+                                                item={o}
+                                            />
                                             <Title o={o} />
                                             {Metadata && <Metadata o={o} />}
                                         </Item>
@@ -267,6 +264,7 @@ List.defaultProps = {
     hover: noop,
     out: noop,
     Title,
+    Actions,
     Popover,
     PopoverItems,
     Metadata: null,
@@ -302,13 +300,13 @@ List.propTypes = {
     Popover: PropTypes.func,
     PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
-    Sort: PropTypes.func,
+    Sort: PropTypes.elementType,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
     logFilterFromList: PropTypes.func,
     logDownloadFromList: PropTypes.func,
     logCopyFromList: PropTypes.func,
-    actions: PropTypes.shape().isRequired,
+    Actions: PropTypes.elementType,
 };
 
 export default List;

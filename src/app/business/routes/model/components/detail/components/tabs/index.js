@@ -1,6 +1,8 @@
+/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import {noop} from 'lodash';
 
 import {
     Tab, TabList, Tabs, TabPanel,
@@ -35,7 +37,7 @@ class ModelTabs extends Component {
     };
 
     render() {
-        const {item, addNotification} = this.props;
+        const {item, addNotification, downloadFile} = this.props;
         const {tabIndex} = this.state;
 
         return (
@@ -61,12 +63,12 @@ class ModelTabs extends Component {
                         <p>
                             <Span>
                                 {'Model successfully trained with a score of '}
-                                <b>{item.traintuple.dataset.perf}</b>
+                                <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
                                 {' on '}
                                 <b>train data samples</b>
                                 .
                             </Span>
-                            <RoundedButton Icon={DownloadSimple} onClick={this.downloadFile}>
+                            <RoundedButton Icon={DownloadSimple} onClick={downloadFile}>
                                 Download model
                             </RoundedButton>
                         </p>
@@ -128,11 +130,14 @@ class ModelTabs extends Component {
 
 ModelTabs.propTypes = {
     item: PropTypes.shape(),
-    addNotification: PropTypes.func.isRequired,
+    addNotification: PropTypes.func,
+    downloadFile: PropTypes.func,
 };
 
 ModelTabs.defaultProps = {
     item: null,
+    addNotification: noop,
+    downloadFile: noop,
 };
 
 export default ModelTabs;

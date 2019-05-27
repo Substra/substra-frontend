@@ -2,7 +2,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import {getItem, getOrderedResults, getSelected} from '../../selector';
-import ListWithAnalytics from '../../../../common/components/list/analytics';
+import {withListAnalytics} from '../../../../common/components/list/analytics';
+import List from './index';
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification, download,
@@ -28,4 +29,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 
 export const withListRedux = Component => connect(mapStateToProps, mapDispatchToProps)(Component);
 
-export default withListRedux(ListWithAnalytics);
+export default withListRedux(withListAnalytics(List));

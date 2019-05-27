@@ -9,13 +9,15 @@ import uuidv4 from 'uuid/v4';
 import copy from 'copy-to-clipboard';
 
 import {Snackbar} from '@material-ui/core';
-import SnackbarContent from '../SnackbarContent';
+import SnackbarContent from './components/snackbarContent';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
 import Check from '../../svg/check';
 import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
-import {white, darkSkyBlue, ice} from '../../../../../../assets/css/variables/colors';
+import {
+white, primaryAccent, ice,
+} from '../../../../../../assets/css/variables/colors';
 
 const MIN_COL_WIDTH = 250;
 
@@ -53,7 +55,7 @@ export const verticalBar = css`
 const lightGrey = '#fafafa';
 
 export const snackbarContent = css`
-    color: ${darkSkyBlue};
+    color: ${primaryAccent};
     background-color: ${lightGrey};
     
     @media (min-width: 960px) {
@@ -86,6 +88,8 @@ export const anchorOrigin = {
 };
 
 class Base extends Component {
+    queuedNotification;
+
     state = {
         listWidth: {value: 40, unit: '%'},
         hold: false,
@@ -112,20 +116,6 @@ class Base extends Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
-
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        this.setState(state => ({
-            ...state,
-            clipboard: {
-                ...state.clipboard,
-                open: false,
-            },
-        }));
-    };
 
     updateDimensions = () => {
         if (this.contentRef.current) {
@@ -171,18 +161,66 @@ class Base extends Component {
         }
     };
 
-    addNotification = (inputValue, text) => {
-        copy(inputValue);
+    // Notifications methods
+    processNotificationQueue = () => {
+        if (this.queuedNotification) {
+            this.setState((state) => {
+                const queuedNotification = this.queuedNotification;
+                this.queuedNotification = undefined;
+                return {
+                    ...state,
+                    clipboard: {
+                        ...queuedNotification,
+                        open: true,
+                    },
+                };
+            });
+        }
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
         this.setState(state => ({
             ...state,
             clipboard: {
-                open: true,
-                inputValue,
-                text,
+                ...state.clipboard,
+                open: false,
             },
         }));
     };
+
+
+    handleExited = () => {
+        this.processNotificationQueue();
+    };
+
+    addNotification = (inputValue, text) => {
+        copy(inputValue);
+        this.queuedNotification = {
+            inputValue,
+            text,
+        };
+
+        if (this.state.clipboard.open) {
+            // immediately begin dismissing current message
+            // to start showing new one
+            this.setState(state => ({
+                ...state,
+                clipboard: {
+                    ...state.clipboard,
+                    open: false,
+                },
+            }));
+        }
+        else {
+            this.processNotificationQueue();
+        }
+    };
+
+    // End of notifications methods
 
     filterUp = (o) => {
         const {
@@ -199,7 +237,7 @@ class Base extends Component {
             // }] : []),
             {
                 parent: model,
-                child: `name:${o}`,
+                child: `name:${encodeURIComponent(o)}`,
                 isLogic: false,
                 uuid: uuidv4(),
             }];
@@ -208,7 +246,7 @@ class Base extends Component {
             isParent: true,
             inputValue: '',
             selectedItem: newSelectedItem,
-            item: o,
+            item: encodeURIComponent(o),
             toUpdate: true,
         });
     };
@@ -301,13 +339,14 @@ class Base extends Component {
                     anchorOrigin={anchorOrigin}
                     open={open}
                     onClose={this.handleClose}
+                    onExited={this.handleExited}
                     autoHideDuration={2000}
                 >
                     <SnackbarContent
                         className={snackbarContent}
                         message={(
                             <div>
-                                <Check color={darkSkyBlue} className={middle} />
+                                <Check color={primaryAccent} className={middle} />
                                 <ClipboardContent className={middle}>
                                     <input disabled value={inputValue} />
                                     <p>
@@ -352,8 +391,8 @@ Base.propTypes = {
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     setSearchState: PropTypes.func,
     downloadItem: PropTypes.func,
-    List: PropTypes.func,
-    Detail: PropTypes.func,
+    List: PropTypes.elementType,
+    Detail: PropTypes.elementType,
 };
 
 export default Base;

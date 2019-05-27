@@ -4,7 +4,7 @@ import {
 Tab as ReactTab, Tabs, TabList as ReactTabList, TabPanel,
 } from 'react-tabs';
 import {
-blueGrey, darkSkyBlue, ice, white,
+    blueGrey, primaryAccent, ice, white,
 } from '../../../../../../../assets/css/variables/colors';
 import {spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 
@@ -26,7 +26,7 @@ const tab = css`
     
     &.selected {
         border-color: ${ice} ${ice} ${white} ${ice};
-        color: ${darkSkyBlue};
+        color: ${primaryAccent};
     }
     
     &.disabled {

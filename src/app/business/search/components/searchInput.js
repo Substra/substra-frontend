@@ -72,7 +72,7 @@ class SearchInput extends Component {
                     <ChildChip
                         key={o.uuid}
                         tabIndex={-1}
-                        label={`${o.parent}:${o.child}`}
+                        label={`${o.parent}:${decodeURIComponent(o.child)}`}
                         onDelete={handleDelete(o)}
                     />
                 )

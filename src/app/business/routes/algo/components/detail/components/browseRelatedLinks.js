@@ -15,12 +15,10 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 const BrowseRelatedLinks = ({
                                 item, unselectObjective, unselectDataset, unselectModel,
                             }) => {
-    const filter = `algo:name:${item ? item.name : ''}`;
+    const filter = `algo:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (
         <Fragment>
-            <BrowseRelatedLink model="objective" label="objective" filter={filter} unselect={unselectObjective} />
-            <BrowseRelatedLink model="dataset" label="dataset" filter={filter} unselect={unselectDataset} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </Fragment>
     );

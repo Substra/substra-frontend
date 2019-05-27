@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Logo = ({
+const SubstraLogo = ({
                   className, width, height, ...props
               }) => (
                   <svg
@@ -35,16 +35,16 @@ const Logo = ({
                   </svg>
 );
 
-Logo.defaultProps = {
+SubstraLogo.defaultProps = {
     className: '',
     width: 340,
     height: 64,
 };
 
-Logo.propTypes = {
+SubstraLogo.propTypes = {
     className: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
 };
 
-export default Logo;
+export default SubstraLogo;

@@ -15,12 +15,11 @@ const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectModel, unselectDataset,
                                 ...props
                             }) => {
-    const filter = `objective:name:${item ? item.name : ''}`;
+    const filter = `objective:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (
         <Fragment {...props}>
             <BrowseRelatedLink model="dataset" label="dataset" filter={filter} unselect={unselectDataset} />
-            <BrowseRelatedLink model="algo" label="algorithms" filter={filter} unselect={unselectAlgo} />
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
         </Fragment>
     );

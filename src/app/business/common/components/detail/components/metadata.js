@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -8,12 +8,11 @@ import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/v
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
 import CopyInput from './copyInput';
 
-const LABEL_WIDTH = '130';
+const LABEL_WIDTH = '160';
 
 export const MetadataWrapper = styled('dl')`
     display: flex;
     flex-wrap: wrap;
-    align-items: top;
     color: ${blueGrey};
     margin: 0;
 `;
@@ -98,18 +97,28 @@ export const keyValueClassName = css`
     width: calc(100% - ${LABEL_WIDTH}px + ${spacingSmall});
 `;
 
-export const KeyMetadata = ({item_key, addNotification, model}) => (
-    <SingleMetadata
-        label="key"
-        labelClassName={keyLabelClassName}
-        valueClassName={keyValueClassName}
-    >
-        <CopyInput
-            value={item_key}
-            addNotification={addNotification(item_key, `${capitalize(model)}'s key successfully copied to clipboard!`)}
-        />
-    </SingleMetadata>
-);
+export class KeyMetadata extends Component {
+    copy = () => {
+        const {item_key, addNotification, model} = this.props;
+        addNotification(item_key, `${capitalize(model)}'s key successfully copied to clipboard!`);
+    };
+
+    render() {
+        const {item_key} = this.props;
+        return (
+            <SingleMetadata
+                label="key"
+                labelClassName={keyLabelClassName}
+                valueClassName={keyValueClassName}
+            >
+                <CopyInput
+                    value={item_key}
+                    addNotification={this.copy}
+                />
+            </SingleMetadata>
+        );
+    }
+}
 
 KeyMetadata.propTypes = MetadataInterface.propTypes;
 KeyMetadata.defaultProps = MetadataInterface.defaultProps;

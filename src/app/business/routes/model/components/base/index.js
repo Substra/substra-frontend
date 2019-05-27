@@ -1,5 +1,4 @@
 import uuidv4 from 'uuid/v4';
-import ReduxBase from './redux';
 import Base from '../../../../common/components/base';
 
 
@@ -34,4 +33,4 @@ class ModelBase extends Base {
     };
 }
 
-export default ReduxBase(ModelBase);
+export default ModelBase;

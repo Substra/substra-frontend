@@ -2,7 +2,8 @@ import {
     orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
-import createDeepEqualSelector from '../../../utils/selector';
+import bundleByTag from './bundleByTag';
+import {createDeepEqualSelector, deepOrder} from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
@@ -11,11 +12,22 @@ export const flattenUniq = xs => Array.from(xs.reduce(
     new Set(),
 ));
 
-const results = (state, model) => state[model].list.results;
+const listResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
 const itemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
 const isComplex = state => state.search.isComplex;
+
+const itemResultsByKey = createDeepEqualSelector([itemResults],
+    results => results.reduce((resultsByKey, result) => ({
+            ...resultsByKey,
+            [result.traintuple.key]: result,
+        }), {}),
+);
+
+const results = createDeepEqualSelector([listResults, itemResultsByKey],
+    (listResults, itemResultsByKey) => bundleByTag(listResults, itemResultsByKey),
+);
 
 const enhancedResults = createDeepEqualSelector([results],
     results => results.map(o => o.map(o => ({...o, key: o.traintuple.key}))),
@@ -27,9 +39,6 @@ export const getSelectedResult = createDeepEqualSelector([enhancedResults, selec
 
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
 export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.traintuple.key);
-
-// will get deep attribute from object, example if 'testtuple.data.perf' is passed as a string, it will get o.testtuple.data.perf
-const deepOrder = order => o => order && order.by ? order.by.split('.').reduce((p, c) => p ? p[c] : null, o) : null;
 
 const modelOrder = order => (o) => {
     /*
@@ -82,7 +91,7 @@ export const getOrderedResults = createDeepEqualSelector([enhancedResults, order
 export const getItem = createDeepEqualSelector([itemResults, getSelectedResult, selected],
     (itemResults, selectedResult, selected) => ({
         ...selectedResult,
-        ...itemResults.find(o => o.traintuple.key === selected),
+        ...(selected && selectedResult && selectedResult.tag ? {} : itemResults.find(o => o.traintuple.key === selected)),
     }),
 );
 

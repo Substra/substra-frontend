@@ -1,12 +1,11 @@
 import React from 'react';
 
 import List from '../../../../common/components/list';
-import {withListRedux} from './redux';
-import {withListAnalytics} from '../../../../common/components/list/analytics';
 import Title from './components/title';
 import Metadata from './components/metadata';
 import PopoverItems from './components/popoverItems';
 import Sort from './components/sort';
+import Actions from './components/actions';
 
 class ModelList extends List {
     filterUp = (e) => {
@@ -29,8 +28,9 @@ const ModelListWithLocalComponents = props => (
         Metadata={Metadata}
         PopoverItems={PopoverItems}
         Sort={Sort}
+        Actions={Actions}
         {...props}
     />
 );
 
-export default withListRedux(withListAnalytics(ModelListWithLocalComponents));
+export default ModelListWithLocalComponents;

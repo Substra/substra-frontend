@@ -71,7 +71,7 @@ export default (actionTypes) => {
                         ...(c.pkhash === payload.pkhash ? [{
                             ...c,
                             metrics: {
-                                ...c.opener,
+                                ...c.metrics,
                                 content: payload.metricsContent,
                             },
                         }] : [c]),

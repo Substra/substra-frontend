@@ -1,6 +1,6 @@
 import {NOT_FOUND} from 'redux-first-router';
 
-import createDeepEqualSelector from '../../utils/selector';
+import {createDeepEqualSelector} from '../../utils/selector';
 
 const location = state => state.location;
 const objectiveOrder = state => state.objective.order;

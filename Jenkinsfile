@@ -15,29 +15,41 @@ pipeline {
       }
     }
 
-    stage('Test') {
-      agent {
-        kubernetes {
-          label 'node'
-          defaultContainer 'node'
-          yaml """
-            apiVersion: v1
-            kind: Pod
-            spec:
-              containers:
-              - name: node
-                image: node:lts-slim
-                command: [cat]
-                tty: true
-            """
-        }
-      }
+    stage('Test & Build') {
+      parallel {
+        stage('Test') {
+          agent {
+            kubernetes {
+              label 'substrafront-test'
+              defaultContainer 'node'
+              yamlFile '.cicd/agent-test.yaml'
+            }
+          }
 
-      steps {
-        sh "yarn config set workspaces-experimental true"
-        sh "yarn install"
-        sh "yarn eslint"
-        sh "yarn test"
+          steps {
+            sh "yarn config set workspaces-experimental true"
+            sh "yarn install"
+            sh "yarn eslint"
+            sh "yarn test"
+          }
+        }
+
+        stage('Build') {
+          agent {
+            kubernetes {
+              label 'substrafront-build'
+              yamlFile '.cicd/agent-build.yaml'
+            }
+          }
+
+          steps {
+            container(name:'kaniko', shell:'/busybox/sh') {
+              sh '''#!/busybox/sh
+                /kaniko/executor -f `pwd`/Dockerfile -c `pwd` -d "eu.gcr.io/substra-208412/substrafront:$GIT_COMMIT"
+              '''
+            }
+          }
+        }
       }
     }
   }

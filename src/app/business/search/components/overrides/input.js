@@ -506,10 +506,10 @@ class Input extends Component {
                                             : highlighted.map((o, i) => o.highlight
                                                 ? (
                                                     <span key={i} className={styles.highligthed}>
-                                                        {o.text}
+                                                        {decodeURIComponent(o.text)}
                                                     </span>
 )
-                                                : o.text)
+                                                : decodeURIComponent(o.text))
                                         }
                                     </MenuItem>
                                 );

@@ -6,6 +6,7 @@ const initialState = {
     selected: '',
 };
 
+
 export default actionTypes => (state = initialState, {type, payload}) => {
     switch (type) {
         case actionTypes.list.REQUEST:

@@ -1,11 +1,11 @@
 {
     "private": true,
     "name": "substrafront",
-    "productName": "Owkestra",
+    "productName": "Substra",
     "author": "Guillaume Cisco <guillaume.cisco@owkin.com>",
     "version": "0.0.1",
     "license": "MIT",
-    "description": "Owkestra",
+    "description": "Substra",
     "repository": {
         "type": "git",
         "url": "https://github.com/SubstraFoundation/substrafront"

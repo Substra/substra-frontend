@@ -13,7 +13,6 @@ import {fontNormal} from '../../../../../../../../assets/css/variables/font';
 const Wrapper = styled('div')`
     font-size: ${fontNormal};
     display: inline-block;
-    padding-left: 5px;
 `;
 
 const Label = styled('label')`

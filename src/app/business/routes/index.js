@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {NOT_FOUND} from 'redux-first-router';
 
 /* Declare routes */
@@ -21,6 +22,14 @@ const Route = ({page}) => {
         default:
             return <NotFoundRoutes />;
     }
+};
+
+Route.propTypes = {
+    page: PropTypes.string,
+};
+
+Route.defaultProps = {
+    page: '',
 };
 
 export default Route;
