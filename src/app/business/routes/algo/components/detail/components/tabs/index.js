@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
+import {RoundedButton} from 'substra-ui';
 
 import Description from '../../../../../../common/components/detail/components/description';
 import {
     Tab, TabList, Tabs, TabPanel,
 } from '../../../../../../common/components/detail/components/tabs';
-import RoundedButton from '../../../../../../common/components/roundedButton';
 import DownloadSimple from '../../../../../../common/svg/download-simple';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 

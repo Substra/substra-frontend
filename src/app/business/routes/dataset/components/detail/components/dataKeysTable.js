@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
+import {RoundedButton} from 'substra-ui';
 
 import {
     Table, Tr, Td, Th,
 } from './table';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
-import RoundedButton from '../../../../../common/components/roundedButton';
 import CopySimple from '../../../../../common/svg/copy-simple';
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 
