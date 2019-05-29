@@ -8,7 +8,6 @@ import {
     Table, Tr, Td, Th,
 } from './table';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
-
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 
 const SpaceBetween = styled('div')`
