@@ -3,7 +3,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {capitalize, noop} from 'lodash';
-import {RoundedButton} from 'substra-ui';
+import {RoundedButton} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Th, Td,

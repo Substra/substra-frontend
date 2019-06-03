@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {RoundedButton} from 'substra-ui';
+import {RoundedButton} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Td, Th,

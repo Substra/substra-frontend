@@ -3,7 +3,7 @@ import React, {Component, Fragment} from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton} from 'substra-ui';
+import {RoundedButton} from '@substrafoundation/substra-ui';
 
 import PropTypes from 'prop-types';
 import CodeSample from '../../../../../common/components/detail/components/codeSample';

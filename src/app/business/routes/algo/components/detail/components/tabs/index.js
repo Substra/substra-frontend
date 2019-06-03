@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton} from 'substra-ui';
+import {RoundedButton} from '@substrafoundation/substra-ui';
 
 import Description from '../../../../../../common/components/detail/components/description';
 import {
