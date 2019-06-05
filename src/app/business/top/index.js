@@ -5,9 +5,8 @@ import styled from '@emotion/styled';
 import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
+import {SubstraLogo, OwkestraLogo} from '@substrafoundation/substra-ui';
 import DocLinkWithAnalytics from './components/docLink';
-import SubstraLogo from '../common/svg/substraLogo';
-import OwkestraLogo from '../common/svg/owkestraLogo';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
 

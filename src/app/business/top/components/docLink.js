@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
+import {Book} from '@substrafoundation/substra-ui';
 import withAnalytics, {LOG_DOC} from '../../../analytics';
-import Book from '../../common/svg/book';
 import {slate} from '../../../../../assets/css/variables/colors';
 
 const picto = css`

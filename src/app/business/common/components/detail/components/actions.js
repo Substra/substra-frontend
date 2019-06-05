@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
+import {DownloadSimple, FilterUp} from '@substrafoundation/substra-ui';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
-import DownloadSimple from '../../../svg/download-simple';
-import FilterUp from '../../../svg/filter-up';
 import IconButton from '../../iconButton';
 
 export const actions = css`

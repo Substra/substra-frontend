@@ -4,8 +4,7 @@ import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
-import CopySimple from '../../../svg/copy-simple';
-import Check from '../../../svg/check';
+import {CopySimple, Check} from '@substrafoundation/substra-ui';
 import IconButton from '../../iconButton';
 import {ice, primaryAccent} from '../../../../../../../assets/css/variables/colors';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';

@@ -9,11 +9,11 @@ import uuidv4 from 'uuid/v4';
 import copy from 'copy-to-clipboard';
 
 import {Snackbar} from '@material-ui/core';
+import {Check} from '@substrafoundation/substra-ui';
 import SnackbarContent from './components/snackbarContent';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
-import Check from '../../svg/check';
 import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import {
 white, primaryAccent, ice,

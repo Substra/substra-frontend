@@ -3,8 +3,8 @@ import {css} from 'emotion';
 import {noop} from 'lodash';
 
 import PropTypes from 'prop-types';
+import {MoreVertical} from '@substrafoundation/substra-ui';
 import IconButton from '../../iconButton';
-import More from '../../../svg/more-vertical';
 
 import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
 
@@ -34,7 +34,7 @@ class Actions extends Component {
                     title="Show actions"
                     noBorder
                 >
-                    <More height={16} />
+                    <MoreVertical height={16} />
                 </IconButton>
             </div>
         );
