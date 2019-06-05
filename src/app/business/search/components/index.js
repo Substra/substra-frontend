@@ -14,9 +14,9 @@ import {css} from 'emotion';
 
 import ClearIcon from '@material-ui/icons/Clear';
 
+import {IconButton} from '@substrafoundation/substra-ui';
 import ComplexSearchToggle from './complexSearchToggle';
 import SearchInput from './searchInput';
-import IconButton from '../../common/components/iconButton';
 
 import {
     getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
@@ -295,9 +295,12 @@ class Search extends Component {
                         {this.searchInput}
                     </Downshift>
 
-                    <IconButton onClick={this.clear} className={clearButton}>
-                        <ClearIcon />
-                    </IconButton>
+                    <IconButton
+                        Icon={ClearIcon}
+                        iconSize={18}
+                        onClick={this.clear}
+                        className={clearButton}
+                    />
                 </InputWrapper>
                 <ComplexSearchToggle />
             </Wrapper>

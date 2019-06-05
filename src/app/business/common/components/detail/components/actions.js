@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
-import {DownloadSimple, FilterUp} from '@substrafoundation/substra-ui';
+import {DownloadSimple, FilterUp, IconButton} from '@substrafoundation/substra-ui';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
-import IconButton from '../../iconButton';
 
 export const actions = css`
     margin-right: -${spacingNormal};
@@ -23,9 +22,11 @@ const downloadButtonTitles = {
 };
 
 export const DownloadAction = ({downloadFile, model}) => (
-    <IconButton onClick={downloadFile} title={downloadButtonTitles[model]}>
-        <DownloadSimple width={15} height={15} />
-    </IconButton>
+    <IconButton
+        Icon={DownloadSimple}
+        onClick={downloadFile}
+        title={downloadButtonTitles[model]}
+    />
 );
 
 DownloadAction.propTypes = {
@@ -39,9 +40,11 @@ DownloadAction.defaultProps = {
 };
 
 export const FilterAction = ({filterUp}) => (
-    <IconButton onClick={filterUp} title="Filter">
-        <FilterUp width={15} height={15} />
-    </IconButton>
+    <IconButton
+        Icon={FilterUp}
+        onClick={filterUp}
+        title="Filter"
+    />
 );
 
 FilterAction.propTypes = {

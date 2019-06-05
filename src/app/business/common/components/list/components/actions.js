@@ -3,8 +3,7 @@ import {css} from 'emotion';
 import {noop} from 'lodash';
 
 import PropTypes from 'prop-types';
-import {MoreVertical} from '@substrafoundation/substra-ui';
-import IconButton from '../../iconButton';
+import {MoreVertical, IconButton} from '@substrafoundation/substra-ui';
 
 import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
 
@@ -30,12 +29,11 @@ class Actions extends Component {
         return (
             <div className={actions}>
                 <IconButton
+                    Icon={MoreVertical}
                     onClick={this.openPopover}
                     title="Show actions"
                     noBorder
-                >
-                    <MoreVertical height={16} />
-                </IconButton>
+                />
             </div>
         );
     }
