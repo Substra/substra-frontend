@@ -49,6 +49,36 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.Co
 Then run `flushall`. You should automatize this part.
 More information in the cache part below.
 
+## Substra-UI
+
+This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
+
+Normal install relies on a private npm registry. If you need to add/move 
+a component to substra-ui and need to test its integration within 
+substrafront, you'll need to "link" substra-ui:
+
+In the substra-ui directory:
+
+```sh
+yarn link
+```
+
+In the substrafront directory:
+
+```sh
+yarn link @substrafoundation/substra-ui
+```
+
+Your local built version of substra-ui will be the one used by your 
+local substrafront. In order to automatically rebuild substra-ui at each 
+change, do:
+
+In the substra-ui directory:
+
+```sh
+yarn build --watch
+```  
+
 ## Generate static for github pages
 
 Simply run `npm run static` for generating a `static` folder and an `index.html` file a the root of the project.
