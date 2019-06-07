@@ -53,8 +53,8 @@ More information in the cache part below.
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
 
-Normal install relies on a private npm registry. If you need to add/move 
-a component to substra-ui and need to test its integration within 
+Normal install relies on a private npm registry (see the [installation instructions](https://github.com/SubstraFoundation/substra-doc/blob/master/local_install.md#start-owkestra-frontend)). 
+If you need to add/move a component to substra-ui and need to test its integration within 
 substrafront, you'll need to "link" substra-ui:
 
 In the substra-ui directory:
