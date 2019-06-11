@@ -7,6 +7,14 @@ This project use yarn and the experimental yarn workspaces for package.json spli
 Please install the last version of yarn and run:<br/>
 `yarn config set workspaces-experimental true`
 
+Configure yarn/npm to use our private registry (use the credentials that we provided to you):
+
+```bash
+npm config set registry https://substra-npm.owkin.com
+npm login
+npm config set always-auth true
+```
+
 Then run:<br/>
 `yarn install`
 
@@ -53,7 +61,7 @@ More information in the cache part below.
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
 
-Normal install relies on a private npm registry (see the [installation instructions](https://github.com/SubstraFoundation/substra-doc/blob/master/local_install.md#start-owkestra-frontend)). 
+Normal install relies on a private npm registry (see the [installation instructions](#Installation)).
 If you need to add/move a component to substra-ui and need to test its integration within 
 substrafront, you'll need to "link" substra-ui:
 
