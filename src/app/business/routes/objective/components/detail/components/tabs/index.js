@@ -6,10 +6,10 @@ import {
     TabList,
     Tabs,
     TabPanel,
+    CodeSample,
 } from '@substrafoundation/substra-ui';
-import Tab from '../../../../../../common/components/detail/components/tabs';
 
-import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+import Tab from '../../../../../../common/components/detail/components/tabs';
 import Description from '../../../../../../common/components/detail/components/description';
 
 const ObjectiveTabs = ({

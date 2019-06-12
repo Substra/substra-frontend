@@ -4,6 +4,7 @@ import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
+import {CodeSample} from '@substrafoundation/substra-ui';
 import {
     CodeSample,
     Tabs,
