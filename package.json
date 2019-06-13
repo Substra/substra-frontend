@@ -28,6 +28,7 @@
         "static": "cd packages/static && npm run static",
         "static-debug": "cd packages/static && npm run static-debug",
         "test": "cd packages/test && npm run test",
+        "coverage": "cd packages/test && npm run coverage",
         "cover": "cd packages/test && npm run cover",
         "eslint": "cd packages/eslint && npm run eslint",
         "dev": "cd packages/electron && npm run dev",

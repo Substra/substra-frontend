@@ -2,27 +2,15 @@
     "name": "test-package",
     "version": "0.0.1",
     "devDependencies": {
-        "babel-core": "7.0.0-bridge.0",
-        "chai": "4.2.0",
-        "enzyme": "3.9.0",
-        "enzyme-adapter-react-16": "1.12.1",
-        "enzyme-to-json": "3.3.5",
-        "expect": "24.7.1",
-        "istanbul": "1.1.0-alpha.1",
+        "@testing-library/react": "^8.0.1",
         "jest": "24.7.1",
-        "jest-emotion-react": "0.0.2",
-        "jest-glamor-react": "4.3.1",
-        "mocha": "6.1.3",
+        "jest-dom": "^3.5.0",
         "mock-fs": "4.8.0",
         "react-test-renderer": "16.8.6",
-        "redux-mock-store": "1.5.3",
-        "sinon": "7.3.1",
-        "sinon-chai": "3.3.0"
+        "react-testing-library": "8.0.1"
     },
     "scripts": {
-        "test": "cd ../../ && cross-env NODE_ENV=development ./node_modules/.bin/mocha $NODE_DEBUG_OPTION -r @babel/register -r test/mocha-setup.js  \"./src/**/*.spec.js\" && cd -",
-        "jest-test": "jest",
-        "coverage": "jest --coverage --no-cache --ci --runInBand",
-        "cover": "cd ../../ && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require @babel/register \"./src/frontend/js/**/*.spec.js\" && cd -"
+        "test": "cd ../../ && jest src && cd -",
+        "coverage": "cd ../../ && jest src --coverage --no-cache --ci --runInBand && cd -"
     }
 }

@@ -31,5 +31,5 @@ tools/
 .eslintrc.js
 Jenkinsfile
 LICENSE
-mocha.png
+jest.png
 README.md

@@ -63,9 +63,8 @@ For running the test suite:
 For displaying covering:
 `yarn cover`
 
-If you are using Webstorm, you can use the mocha configuration for easily debugging your tests with breakpoints:
-
-![](mocha.png)
+If you are using Webstorm, you can use the jest configuration for easily debugging your tests with breakpoints:
+![](jest.png)
 
 ## Eslint
 
