@@ -10,36 +10,47 @@ const options = [
 
 test('It calls setOrder with new selected value', () => {
     const setOrder = jest.fn();
-    const {container} = render(<Sort options={options} setOrder={setOrder} location={{}} />);
+    const {getByTestId} = render(<Sort options={options} setOrder={setOrder} location={{}} />);
 
     expect(setOrder).not.toHaveBeenCalled();
-    fireEvent.change(container.querySelector('select'), {target: {value: options[0].value}});
+    fireEvent.change(getByTestId('select'), {target: {value: options[0].label}});
     expect(setOrder).toHaveBeenLastCalledWith(options[0].value);
+
+    fireEvent.change(getByTestId('select'), {target: {value: options[1].label}});
+    expect(setOrder).toHaveBeenLastCalledWith(options[1].value);
 });
 
 test('It selects the default value', () => {
     const setOrder = jest.fn();
-    const {container, rerender} = render(<Sort options={options} setOrder={setOrder} location={{}} />);
-    expect(container.querySelector('select').value).toEqual(options[0].label);
+    const {getByTestId, rerender} = render(<Sort options={options} setOrder={setOrder} location={{}} />);
+    expect(getByTestId('select').value).toEqual(options[0].label);
 
     rerender(<Sort options={options} setOrder={setOrder} location={{}} order={options[1].value} />);
-    expect(container.querySelector('select').value).toEqual(options[1].label);
+    expect(getByTestId('select').value).toEqual(options[1].label);
 
     rerender(<Sort options={options} setOrder={setOrder} location={{}} order={options[0].value} />);
-    expect(container.querySelector('select').value).toEqual(options[0].label);
+    expect(getByTestId('select').value).toEqual(options[0].label);
 });
 
 test('It syncs with the location at mount', () => {
-    let setOrder,
-        location;
+    const setOrder = jest.fn();
 
-    setOrder = jest.fn();
-    location = {query: {by: 'by A', direction: 'direction A'}};
-    render(<Sort options={options} setOrder={setOrder} location={location} />);
+    render(<Sort
+        options={options}
+        setOrder={setOrder}
+        location={{query: {by: 'by A', direction: 'direction A'}}}
+    />);
     expect(setOrder).toHaveBeenCalledWith({by: 'by A', direction: 'direction A'});
 
-    setOrder = jest.fn();
-    location = {};
-    render(<Sort options={options} setOrder={setOrder} location={location} />);
+    setOrder.mockClear();
+    render(<Sort
+        options={options}
+        setOrder={setOrder}
+        location={{query: {by: 'by B', direction: 'direction B'}}}
+    />);
+    expect(setOrder).toHaveBeenCalledWith({by: 'by B', direction: 'direction B'});
+
+    setOrder.mockClear();
+    render(<Sort options={options} setOrder={setOrder} />);
     expect(setOrder).not.toHaveBeenCalled();
 });
