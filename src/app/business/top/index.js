@@ -36,7 +36,7 @@ const link = css`
 
 const Top = ({location}) => (
     <Wrapper>
-        <Link to={{type: 'HOME', meta: {query: location.query}}} className={link}>
+        <Link to={{type: 'HOME', meta: {query: location.query}}} className={link} data-testid="homelink">
             {IS_OWKESTRA
                 ? <OwkestraLogo alt="Owkestra" height={50} />
                 : <SubstraLogo alt="Substra" height={50} width={266} />
