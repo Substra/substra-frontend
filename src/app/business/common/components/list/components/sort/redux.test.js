@@ -7,7 +7,7 @@ import createSagaMiddleware from 'redux-saga';
 import {createAction} from 'redux-actions';
 import {takeLatest, all} from 'redux-saga/effects';
 import {connectRoutes} from 'redux-first-router';
-import createHistory from 'history/createMemoryHistory';
+import {createMemoryHistory as createHistory} from 'history';
 import queryString from 'query-string';
 import {render, fireEvent} from '@testing-library/react';
 

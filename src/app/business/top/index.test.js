@@ -4,7 +4,7 @@ import {
 } from 'redux';
 import {Provider} from 'react-redux';
 import {connectRoutes} from 'redux-first-router';
-import createHistory from 'history/createMemoryHistory';
+import {createMemoryHistory as createHistory} from 'history';
 import queryString from 'query-string';
 import {render, fireEvent} from '@testing-library/react';
 import ReduxTop from './redux';
