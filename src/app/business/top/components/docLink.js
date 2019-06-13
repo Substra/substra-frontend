@@ -26,6 +26,7 @@ export class DocLink extends Component {
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-testid="link"
                 onClick={this.logDoc}
             >
                 <Book className={picto} color={slate} />
