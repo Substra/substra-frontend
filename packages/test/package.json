@@ -11,6 +11,6 @@
     },
     "scripts": {
         "test": "cd ../../ && jest src && cd -",
-        "coverage": "jest --coverage --no-cache --ci --runInBand"
+        "coverage": "cd ../../ && jest src --coverage --no-cache --ci --runInBand && cd -"
     }
 }
