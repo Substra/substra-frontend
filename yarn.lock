@@ -4955,7 +4955,7 @@ eslint-plugin-import@2.17.1:
     read-pkg-up "^2.0.0"
     resolve "^1.10.0"
 
-eslint-plugin-jest@^22.6.4:
+eslint-plugin-jest@22.6.4:
   version "22.6.4"
   resolved "https://substra-npm.owkin.com/eslint-plugin-jest/-/eslint-plugin-jest-22.6.4.tgz#2895b047dd82f90f43a58a25cf136220a21c9104"
   integrity sha512-36OqnZR/uMCDxXGmTsqU4RwllR0IiB/XF8GW3ODmhsjiITKuI0GpgultWFt193ipN3HARkaIcKowpE6HBvRHNg==
@@ -4973,13 +4973,6 @@ eslint-plugin-jsx-a11y@6.2.1:
     emoji-regex "^7.0.2"
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
-
-eslint-plugin-mocha@5.3.0:
-  version "5.3.0"
-  resolved "https://substra-npm.owkin.com/eslint-plugin-mocha/-/eslint-plugin-mocha-5.3.0.tgz#cf3eb18ae0e44e433aef7159637095a7cb19b15b"
-  integrity sha512-3uwlJVLijjEmBeNyH60nzqgA1gacUWLUmcKV8PIGNvj1kwP/CTgAWQHn2ayyJVwziX+KETkr9opNwT1qD/RZ5A==
-  dependencies:
-    ramda "^0.26.1"
 
 eslint-plugin-react@7.12.4:
   version "7.12.4"
@@ -10918,7 +10911,7 @@ querystringify@^2.1.1:
   resolved "https://substra-npm.owkin.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
   integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
 
-ramda@^0.26, ramda@^0.26.1:
+ramda@^0.26:
   version "0.26.1"
   resolved "https://substra-npm.owkin.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
   integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
