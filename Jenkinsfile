@@ -49,7 +49,9 @@ pipeline {
 
           steps {
             container(name:'kaniko', shell:'/busybox/sh') {
-              sh 'echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc'
+              sh '''#!/busybox/sh
+                echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc
+              '''
               sh '''#!/busybox/sh
                 /kaniko/executor -f `pwd`/Dockerfile -c `pwd` -d "eu.gcr.io/substra-208412/substrafront:$GIT_COMMIT"
               '''
