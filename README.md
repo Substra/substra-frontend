@@ -57,6 +57,17 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.Co
 Then run `flushall`. You should automatize this part.
 More information in the cache part below.
 
+## Building the docker container
+
+You'll need to update the `.npmrc` file in this repository with your credentials for the private substra npm registry.
+
+Assuming the auth token for the registry is in the `VERDACCIO_TOKEN` env variable, you can do:
+
+```bash
+echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc
+``` 
+
+Alternatively, you can `npm login` into our private repository and copy/paste the credentials from `~/.npmrc` in the local `.npmrc`.
 ## Substra-UI
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.

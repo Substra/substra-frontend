@@ -15,8 +15,6 @@ docker-compose*.yml
 
  # NPM dependencies
 node_modules/
-.npmrc
-.yarnrc
 yarn.lock
 package-lock.json
 

@@ -6,7 +6,10 @@ COPY package-build.json /workspace/package.json
 COPY packages/ssr /workspace/packages/ssr
 COPY packages/base /workspace/packages/base
 COPY packages/plugins  /workspace/packages/plugins
+COPY .npmrc .npmrc
+COPY .yarnrc .yarnrc
 
+RUN yarn config list
 RUN yarn install
 
 COPY . /workspace/
@@ -24,6 +27,8 @@ FROM node:alpine
 WORKDIR /workspace
 
 COPY --from=build /workspace/packages/ssr/package.json /workspace/package.json
+COPY .npmrc .npmrc
+COPY .yarnrc .yarnrc
 
 RUN yarn install
 
