@@ -1436,10 +1436,10 @@
   resolved "https://substra-npm.owkin.com/@sheerun%2fmutationobserver-shim/-/mutationobserver-shim-0.3.2.tgz#8013f2af54a2b7d735f71560ff360d3a8176a87b"
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
-"@substrafoundation/substra-ui@0.0.2":
-  version "0.0.2"
-  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-0.0.2.tgz#04685dfe1cbebef44d5cdaa2fa764a1e80a80bb5"
-  integrity sha512-gGbjUei9tZcLdnT3INjopmLuixH1JxOIOpzC7OpeEvGKqmWUEYscDFLvbvKBL5xasylWQLwMlRaYqLNOxBKPVw==
+"@substrafoundation/substra-ui@0.0.3-rc.1":
+  version "0.0.3-rc.1"
+  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-0.0.3-rc.1.tgz#ffa5fc0f379554571a3eb039435686ebdf62e3cc"
+  integrity sha512-gOWTNoI8xK6WZEGhuEvm/ixuqxiw46ZpEkxGa6TMjn9kXauUOh51dysWcXahQcsSD7v8th9tGaAAOazFdP5AlQ==
   dependencies:
     "@emotion/styled" "10.0.11"
     babel-plugin-emotion "10.0.9"
