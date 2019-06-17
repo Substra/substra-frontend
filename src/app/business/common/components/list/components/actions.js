@@ -29,10 +29,10 @@ class Actions extends Component {
         return (
             <div className={actions}>
                 <IconButton
+                    className={css`border: none;`}
                     Icon={MoreVertical}
                     onClick={this.openPopover}
                     title="Show actions"
-                    noBorder
                 />
             </div>
         );
