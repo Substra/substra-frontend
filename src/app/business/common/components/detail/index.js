@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
+import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
 import Title from './components/title';
 import Section from './components/section';
-import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
 
@@ -35,52 +35,49 @@ class Detail extends Component {
 
     render() {
         const {
-            item, className, model, children,
+            item, model, children,
             Title, Metadata, Actions, Tabs,
         } = this.props;
 
         return (
-            <div className={className}>
-                <PanelWrapper>
-                    <PanelTop className={css`justify-content: space-between;`}>
-                        <Title item={item} />
-                        <Actions
-                            downloadFile={this.downloadFile}
-                            filterUp={this.filterUp(item.name)}
-                            model={model}
+            <PanelWrapper>
+                <PanelTop className={css`justify-content: space-between;`}>
+                    <Title item={item} />
+                    <Actions
+                        downloadFile={this.downloadFile}
+                        filterUp={this.filterUp(item.name)}
+                        model={model}
+                        item={item}
+                    />
+                </PanelTop>
+                {item && (
+                <PanelContent>
+                    <Section>
+                        <Metadata
                             item={item}
+                            addNotification={this.addNotification}
+                            model={model}
                         />
-                    </PanelTop>
-                    {item && (
-                    <PanelContent>
+                    </Section>
+                    {Tabs && (
                         <Section>
-                            <Metadata
-                                item={item}
+                            <Tabs
+                                downloadFile={this.downloadFile}
                                 addNotification={this.addNotification}
                                 model={model}
                             />
                         </Section>
-                        {Tabs && (
-                            <Section>
-                                <Tabs
-                                    downloadFile={this.downloadFile}
-                                    addNotification={this.addNotification}
-                                    model={model}
-                                />
-                            </Section>
-                        )}
-                        {children && <Section>{children}</Section>}
-                    </PanelContent>
-                )}
-                </PanelWrapper>
-            </div>
+                    )}
+                    {children && <Section>{children}</Section>}
+                </PanelContent>
+            )}
+            </PanelWrapper>
         );
     }
 }
 
 Detail.defaultProps = {
     item: null,
-    className: '',
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -100,7 +97,6 @@ Detail.propTypes = {
         key: PropTypes.string,
         description: PropTypes.shape(),
     }),
-    className: PropTypes.string,
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,

@@ -1,18 +1,15 @@
-/* global window IS_OWKESTRA */
-
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {flatten, isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
-import {Check, withAddNotification} from '@substrafoundation/substra-ui';
+import {Snackbar} from '@material-ui/core';
+import {Check, TwoPanelLayout, withAddNotification} from '@substrafoundation/substra-ui';
+import SnackbarContent from './components/snackbarContent';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
-import {spacingLarge, spacingNormal} from '../../../../../../assets/css/variables/spacing';
-import {white, ice, darkSkyBlue} from '../../../../../../assets/css/variables/colors';
-
-const MIN_COL_WIDTH = 250;
+import {primaryAccent} from '../../../../../../assets/css/variables/colors';
 
 export const middle = css`
     display: inline-block;
@@ -20,35 +17,9 @@ export const middle = css`
 `;
 
 export const margin = 40;
-const barSize = 15;
-const halfBarSize = (barSize - 1) / 2;
-
-export const verticalBar = css`
-    ${middle};
-    width: ${barSize}px;
-    margin-right: -${halfBarSize}px;
-    margin-left: -${halfBarSize}px;
-    z-index: 1;
-    cursor: col-resize;
-    background-color: transparent;
-    flex-grow: 0;
-    flex-shrink: 0;
-    
-    position: relative;
-    :before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: ${halfBarSize}px;
-        border-left: 1px solid ${ice};    
-    }
-`;
 
 class Base extends Component {
     state = {
-        listWidth: {value: 40, unit: '%'},
-        hold: false,
         clipboard: {
             open: false,
             key: '',
@@ -56,68 +27,66 @@ class Base extends Component {
         },
     };
 
-    constructor(props) {
-        super(props);
-        this.contentRef = React.createRef();
-    }
-
-    componentWillMount() {
-        this.updateDimensions();
-    }
-
-    componentDidMount() {
-        window.addEventListener('resize', this.updateDimensions);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensions);
-    }
-
-    updateDimensions = () => {
-        if (this.contentRef.current) {
-            const containerWidth = this.contentRef.current.offsetWidth;
-            const listWidth = this.state.listWidth.unit === '%'
-                ? this.state.listWidth.value * containerWidth / 100
-                : this.state.listWidth.value;
-
-            this.updateListWidth(containerWidth, listWidth);
+    // Notifications methods
+    processNotificationQueue = () => {
+        if (this.queuedNotification) {
+            this.setState((state) => {
+                const queuedNotification = this.queuedNotification;
+                this.queuedNotification = undefined;
+                return {
+                    ...state,
+                    clipboard: {
+                        ...queuedNotification,
+                        open: true,
+                    },
+                };
+            });
         }
     };
 
-    move = (e) => {
-        if (this.state.hold) {
-            e.persist();
-
-            const containerWidth = e.currentTarget.offsetWidth;
-            const listWidth = e.clientX - margin - 1;
-            this.updateListWidth(containerWidth, listWidth);
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
         }
-    };
-
-    updateListWidth(containerWidth, listWidth) {
-        const MAX_COL_WIDTH = Math.max(0, containerWidth - MIN_COL_WIDTH);
-        const actualListWidth = Math.min(Math.max(MIN_COL_WIDTH, listWidth), MAX_COL_WIDTH);
 
         this.setState(state => ({
-                ...state,
-                listWidth: {value: actualListWidth, unit: 'px'},
-            }
-        ));
-    }
+            ...state,
+            clipboard: {
+                ...state.clipboard,
+                open: false,
+            },
+        }));
+    };
 
-    mouseDown = () => this.setState(state => ({
-        ...state,
-        hold: true,
-    }));
 
-    mouseUp = () => {
-        if (this.state.hold) {
+    handleExited = () => {
+        this.processNotificationQueue();
+    };
+
+    addNotification = (inputValue, text) => {
+        copy(inputValue);
+        this.queuedNotification = {
+            inputValue,
+            text,
+        };
+
+        if (this.state.clipboard.open) {
+            // immediately begin dismissing current message
+            // to start showing new one
             this.setState(state => ({
                 ...state,
-                hold: false,
+                clipboard: {
+                    ...state.clipboard,
+                    open: false,
+                },
             }));
         }
+        else {
+            this.processNotificationQueue();
+        }
     };
+
+    // End of notifications methods
 
     filterUp = (o) => {
         const {
@@ -157,73 +126,65 @@ class Base extends Component {
         downloadItem({url, filename});
     };
 
-    list = () => css`
-        width: ${this.props.selected ? `${this.state.listWidth.value}${this.state.listWidth.unit}` : '100%'};
-        flex-grow: 0;
-        flex-shrink: 0;
-        display: flex;
-        overflow: hidden;
-    `;
-
-    detail = () => css`
-        flex-grow: 1;
-        display: flex;
-        overflow: hidden;
-    `;
-
-    layout = () => css`
-        margin: 0 ${spacingLarge} ${spacingNormal} ${spacingLarge};
-        background-color: ${white};
-        border: 1px solid ${ice};
-        display: flex;
-        flex: 1;
-        align-items: stretch;
-        overflow: hidden;
-        ${this.state.hold ? `
-            cursor: col-resize;
-            user-select: none;
-        ` : ''}
-    `;
-
     render() {
         const {
             selected, actions, model, download,
             List, Detail, addNotification,
         } = this.props;
 
+        const {clipboard: {open, text, inputValue}} = this.state;
+
+        const leftPanelContent = (
+            <List
+                model={model}
+                actions={actions}
+                filterUp={this.filterUp}
+                downloadFile={this.downloadFile}
+                addNotification={this.addNotification}
+                download={download}
+            />
+        );
+
+        const rightPanelContent = selected && (
+            <Detail
+                model={model}
+                actions={actions}
+                filterUp={this.filterUp}
+                downloadFile={this.downloadFile}
+                addNotification={this.addNotification}
+            />
+        );
+
         return (
-            <div
-                ref={this.contentRef}
-                onMouseMove={this.move}
-                onMouseUp={this.mouseUp}
-                className={this.layout()}
-            >
-                <List
-                    className={this.list()}
-                    model={model}
-                    actions={actions}
-                    filterUp={this.filterUp}
-                    downloadFile={this.downloadFile}
-                    addNotification={addNotification}
-                    download={download}
+            <Fragment>
+                <TwoPanelLayout
+                    leftPanelContent={leftPanelContent}
+                    rightPanelContent={rightPanelContent}
                 />
-                {selected && (
-                    <Fragment>
-                        <div
-                            onMouseDown={this.mouseDown}
-                            className={verticalBar}
-                        />
-                        <Detail
-                            className={this.detail()}
-                            model={model}
-                            actions={actions}
-                            filterUp={this.filterUp}
-                            downloadFile={this.downloadFile}
-                            addNotification={addNotification}
-                        />
-                    </Fragment>
-                )}
-            </div>
+                <Snackbar
+                    anchorOrigin={anchorOrigin}
+                    open={open}
+                    onClose={this.handleClose}
+                    onExited={this.handleExited}
+                    autoHideDuration={2000}
+                >
+                    <SnackbarContent
+                        className={snackbarContent}
+                        message={(
+                            <div>
+                                <Check color={primaryAccent} className={middle} />
+                                <ClipboardContent className={middle}>
+                                    <input disabled value={inputValue} />
+                                    <p>
+                                        {text}
+                                    </p>
+                                </ClipboardContent>
+                            </div>
+)
+                    }
+                    />
+                </Snackbar>
+            </Fragment>
         );
     }
 }
