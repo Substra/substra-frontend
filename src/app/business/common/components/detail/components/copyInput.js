@@ -1,12 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
-import CopySimple from '../../../svg/copy-simple';
-import Check from '../../../svg/check';
-import IconButton from '../../iconButton';
+import {CopySimple, Check, IconButton} from '@substrafoundation/substra-ui';
 import {ice, primaryAccent} from '../../../../../../../assets/css/variables/colors';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../assets/css/variables/font';
 import {spacingSmall} from '../../../../../../../assets/css/variables/spacing';
@@ -78,7 +76,7 @@ class CopyInput extends Component {
         this.inputRef.current.select();
     };
 
-    iconStyles = () => {
+    icon = () => {
         const clicked = this.state.clicked;
         const hasChanged = this.props.value !== this.previousValue;
         if (hasChanged) {
@@ -86,22 +84,36 @@ class CopyInput extends Component {
         }
         this.previousValue = this.props.value;
 
-        return {
-            copySimple: css`
-                opacity: ${!hasChanged && clicked ? 0 : 1};
-                ${!hasChanged && 'transition: opacity 200ms ease-out;'}
-            `,
-            check: css`
-                position: absolute;
-                opacity: ${!hasChanged && clicked ? 1 : 0};
-                ${!hasChanged && 'transition: opacity 200ms ease-out;'}
-            `,
-        };
+        const copySimple = css`
+            opacity: ${!hasChanged && clicked ? 0 : 1};
+            ${!hasChanged && 'transition: opacity 200ms ease-out;'}
+        `;
+
+        const check = css`
+            position: absolute;
+            opacity: ${!hasChanged && clicked ? 1 : 0};
+            ${!hasChanged && 'transition: opacity 200ms ease-out;'}
+        `;
+
+        return ({width, height}) => (
+            <Fragment>
+                <CopySimple
+                    width={width}
+                    height={height}
+                    className={copySimple}
+                />
+                <Check
+                    width={width}
+                    height={height}
+                    color={primaryAccent}
+                    className={check}
+                />
+            </Fragment>
+        );
     };
 
     render() {
         const {value, isPrompt} = this.props;
-        const {copySimple, check} = this.iconStyles();
         return (
             <Wrapper>
                 {isPrompt && <Prompt />}
@@ -113,12 +125,10 @@ class CopyInput extends Component {
                     ref={this.inputRef}
                 />
                 <IconButton
+                    Icon={this.icon()}
                     onClick={this.copy}
                     className={button}
-                >
-                    <CopySimple width={15} height={15} className={copySimple} />
-                    <Check width={15} height={15} color={primaryAccent} className={check} />
-                </IconButton>
+                />
             </Wrapper>
         );
     }

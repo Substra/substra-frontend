@@ -5,10 +5,9 @@ import styled from '@emotion/styled';
 import {omit, noop} from 'lodash';
 import Link from 'redux-first-router-link';
 
-import Algo from '../../common/svg/algo';
-import Dataset from '../../common/svg/data-set';
-import Folder from '../../common/svg/folder';
-import Model from '../../common/svg/model';
+import {
+Algo, Dataset, Folder, Model,
+} from '@substrafoundation/substra-ui';
 
 import {spacingLarge, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 import {

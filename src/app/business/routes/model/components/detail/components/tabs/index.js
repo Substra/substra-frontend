@@ -3,6 +3,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
+import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
 
 import {
     Tab, TabList, Tabs, TabPanel,
@@ -10,8 +11,6 @@ import {
 import CodeSample from '../../../../../../common/components/detail/components/codeSample';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
-import RoundedButton from '../../../../../../common/components/roundedButton';
-import DownloadSimple from '../../../../../../common/svg/download-simple';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
     AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
