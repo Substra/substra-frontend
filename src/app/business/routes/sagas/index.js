@@ -7,6 +7,8 @@ import datasetActions from '../dataset/actions';
 import algoActions from '../algo/actions';
 import modelActions from '../model/actions';
 
+import {LOG_LIST, logFunctions} from "../../../analytics";
+
 const assetActions = {
     objective: objectiveActions,
     dataset: datasetActions,
@@ -21,13 +23,16 @@ const getRouteAsset = (route) => {
     return route.toLowerCase();
 };
 
-const fetchList = route => function* fetchAssetList() {
+const fetchList = route => function* () {
     const asset = getRouteAsset(route);
     const actions = assetActions[asset];
     const state = yield select();
     if (!state[asset].list.loading) {
         yield put(actions.list.request());
     }
+
+    // analytics
+    logFunctions[LOG_LIST](state)();
 };
 
 function* fetchInitialList() {
@@ -36,10 +41,10 @@ function* fetchInitialList() {
     const asset = getRouteAsset(route);
     const actions = assetActions[asset];
     yield put(actions.list.request());
+
+    // analytics
+    logFunctions[LOG_LIST](state)();
 }
-
-
-// TODO: loglist
 
 const sagas = function* sagas() {
     yield all([
@@ -47,7 +52,6 @@ const sagas = function* sagas() {
         takeLatest('DATASET', fetchList('DATASET')),
         takeLatest('ALGORITHM', fetchList('ALGORITHM')),
         takeLatest('MODEL', fetchList('MODEL')),
-
     ]);
 
     yield fork(fetchInitialList);
