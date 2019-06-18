@@ -5,6 +5,7 @@ import Search, {
     datasetSagas, datasetReducer,
     algoSagas, algoReducer,
     modelSagas, modelReducer,
+    routeSagas,
 } from '../components';
 
 class C extends Component {
@@ -21,6 +22,8 @@ class C extends Component {
 
         injectSaga('model', modelSagas);
         injectReducer('model', modelReducer);
+
+        injectSaga('route', routeSagas);
     }
 
     render() {

@@ -30,6 +30,8 @@ class Universal extends Component {
 
                     injectSaga('model', module.modelSagas, false, reduxcontext.store);
                     injectReducer('model', module.modelReducer, false, reduxcontext.store);
+
+                    injectSaga('route', module.routeSagas, false, reduxcontext.store);
                 }
             },
             ignoreBabelRename: true,
