@@ -7,7 +7,7 @@ import datasetActions from '../dataset/actions';
 import algoActions from '../algo/actions';
 import modelActions from '../model/actions';
 
-import {LOG_LIST, logFunctions} from "../../../analytics";
+import {LOG_LIST, logFunctions} from '../../../analytics';
 
 const assetActions = {
     objective: objectiveActions,
@@ -23,7 +23,7 @@ const getRouteAsset = (route) => {
     return route.toLowerCase();
 };
 
-const fetchList = route => function* () {
+const fetchList = route => function* fetchAssetList() {
     const asset = getRouteAsset(route);
     const actions = assetActions[asset];
     const state = yield select();
