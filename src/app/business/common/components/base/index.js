@@ -76,7 +76,9 @@ class Base extends Component {
     updateDimensions = () => {
         if (this.contentRef.current) {
             const containerWidth = this.contentRef.current.offsetWidth;
-            const listWidth = this.state.listWidth.unit === '%' ? this.state.listWidth.value * containerWidth / 100 : this.state.listWidth.value;
+            const listWidth = this.state.listWidth.unit === '%'
+                ? this.state.listWidth.value * containerWidth / 100
+                : this.state.listWidth.value;
 
             this.updateListWidth(containerWidth, listWidth);
         }
