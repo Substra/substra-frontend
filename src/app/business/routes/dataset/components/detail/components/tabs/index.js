@@ -1,4 +1,3 @@
-/* global IS_OWKESTRA */
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
@@ -7,20 +6,21 @@ import {noop} from 'lodash';
 
 import {
     CodeSample,
+} from '@substrafoundation/substra-ui';
+
+import {
     Tab,
     TabList,
     Tabs,
     TabPanel,
-    colors,
-} from '@substrafoundation/substra-ui';
+} from '../../../../../../common/components/detail/components/tabs';
+
 import DataKeysTable from '../dataKeysTable';
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';
 import Description from '../../../../../../common/components/detail/components/description';
-
-const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -38,10 +38,10 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
         onSelect={setTabIndex}
     >
         <TabList>
-            <Tab color={owkestraColors}>Description</Tab>
-            <Tab color={owkestraColors}>Opener</Tab>
-            <Tab color={owkestraColors}>Train data samples</Tab>
-            <Tab color={owkestraColors}>Test data samples</Tab>
+            <Tab>Description</Tab>
+            <Tab>Opener</Tab>
+            <Tab>Train data samples</Tab>
+            <Tab>Test data samples</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}

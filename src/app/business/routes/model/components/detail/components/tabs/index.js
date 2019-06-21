@@ -1,4 +1,4 @@
-/* global SCORE_PRECISION IS_OWKESTRA */
+/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -7,20 +7,20 @@ import {
     CodeSample,
     RoundedButton,
     DownloadSimple,
+} from '@substrafoundation/substra-ui';
+
+import {
     Tab,
     TabList,
     Tabs,
     TabPanel,
-    colors,
-} from '@substrafoundation/substra-ui';
+} from '../../../../../../common/components/detail/components/tabs';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
     AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
 } from '../../../../../../common/components/alert';
-
-const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
@@ -59,8 +59,8 @@ class ModelTabs extends Component {
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
-                        <Tab color={owkestraColors}>Traintuple/Model</Tab>
-                        <Tab color={owkestraColors}>Testtuple</Tab>
+                        <Tab>Traintuple/Model</Tab>
+                        <Tab>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
                         {item && item.traintuple && item.traintuple.status === 'done' && (

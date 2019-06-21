@@ -3,9 +3,10 @@ import React, {Component, Fragment} from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton, DownloadSimple, CodeSample} from '@substrafoundation/substra-ui';
+import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
 
 import PropTypes from 'prop-types';
+import CodeSample from '../../../../../common/components/detail/components/codeSample';
 import {spacingNormal} from '../../../../../../../../assets/css/variables/spacing';
 import {ice} from '../../../../../../../../assets/css/variables/colors';
 import {

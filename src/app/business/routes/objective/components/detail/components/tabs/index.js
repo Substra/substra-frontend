@@ -1,15 +1,17 @@
-/* global IS_OWKESTRA */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import {noop} from 'lodash';
 
 import {
-    CodeSample, Tab, TabList, Tabs, TabPanel, colors,
-} from '@substrafoundation/substra-ui';
-import Description from '../../../../../../common/components/detail/components/description';
+    Tabs,
+    TabList,
+    Tab,
+    TabPanel,
+} from '../../../../../../common/components/detail/components/tabs';
 
-const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
+import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+import Description from '../../../../../../common/components/detail/components/description';
 
 const ObjectiveTabs = ({
 descLoading, item, metricsLoading, tabIndex, setTabIndex,
@@ -19,8 +21,8 @@ descLoading, item, metricsLoading, tabIndex, setTabIndex,
         onSelect={setTabIndex}
     >
         <TabList>
-            <Tab color={owkestraColors}>Description</Tab>
-            <Tab color={owkestraColors}>Metrics</Tab>
+            <Tab>Description</Tab>
+            <Tab>Metrics</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
