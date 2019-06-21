@@ -1,16 +1,24 @@
+/* global IS_OWKESTRA */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
+import {
+    RoundedButton,
+    DownloadSimple,
+    Tab,
+    TabList,
+    Tabs,
+    TabPanel,
+    colors,
+} from '@substrafoundation/substra-ui';
 
 import Description from '../../../../../../common/components/detail/components/description';
-import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
 
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
+
+const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
@@ -24,8 +32,8 @@ descLoading, item, tabIndex, setTabIndex, downloadFile,
         onSelect={setTabIndex}
     >
         <TabList>
-            <Tab>Description</Tab>
-            <Tab>Code</Tab>
+            <Tab color={owkestraColors}>Description</Tab>
+            <Tab color={owkestraColors}>Code</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}

@@ -1,3 +1,4 @@
+/* global IS_OWKESTRA */
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
@@ -5,15 +6,21 @@ import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
 import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
+    CodeSample,
+    Tab,
+    TabList,
+    Tabs,
+    TabPanel,
+    colors,
+} from '@substrafoundation/substra-ui';
 import DataKeysTable from '../dataKeysTable';
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';
-import CodeSample from '../../../../../../common/components/detail/components/codeSample';
 import Description from '../../../../../../common/components/detail/components/description';
+
+const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -31,10 +38,10 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
         onSelect={setTabIndex}
     >
         <TabList>
-            <Tab>Description</Tab>
-            <Tab>Opener</Tab>
-            <Tab>Train data samples</Tab>
-            <Tab>Test data samples</Tab>
+            <Tab color={owkestraColors}>Description</Tab>
+            <Tab color={owkestraColors}>Opener</Tab>
+            <Tab color={owkestraColors}>Train data samples</Tab>
+            <Tab color={owkestraColors}>Test data samples</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}

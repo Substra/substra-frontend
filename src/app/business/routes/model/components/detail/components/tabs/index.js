@@ -1,14 +1,18 @@
-/* global SCORE_PRECISION */
+/* global SCORE_PRECISION IS_OWKESTRA */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
-
 import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
-import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+    CodeSample,
+    RoundedButton,
+    DownloadSimple,
+    Tab,
+    TabList,
+    Tabs,
+    TabPanel,
+    colors,
+} from '@substrafoundation/substra-ui';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
@@ -16,6 +20,7 @@ import {
     AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
 } from '../../../../../../common/components/alert';
 
+const owkestraColors = IS_OWKESTRA ? colors.darkSkyBlue : colors.tealish;
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
@@ -54,8 +59,8 @@ class ModelTabs extends Component {
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
-                        <Tab>Traintuple/Model</Tab>
-                        <Tab>Testtuple</Tab>
+                        <Tab color={owkestraColors}>Traintuple/Model</Tab>
+                        <Tab color={owkestraColors}>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
                         {item && item.traintuple && item.traintuple.status === 'done' && (
