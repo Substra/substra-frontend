@@ -1,35 +1,34 @@
 import styled from '@emotion/styled';
 
-import {secondaryAccent, iceSecondaryAccent} from '../../../../../assets/css/variables/colors';
-import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
+import {
+    alertInlineButton,
+    AlertActions,
+    alertTitle,
+    alertWrapper,
+} from '@substrafoundation/substra-ui';
 
-export const AlertWrapper = styled('div')`
+import {
+    secondaryAccent,
+    iceSecondaryAccent,
+} from '../../../../../assets/css/variables/colors';
+
+const AlertWrapper = styled('div')`
+    ${alertWrapper};
     background-color: ${iceSecondaryAccent};
     border: 1px solid ${secondaryAccent};
-    border-radius: 3px;
-    min-height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: ${spacingNormal} 0;
-    flex-wrap: wrap;
+`;
+const AlertTitle = styled('div')`
+    ${alertTitle};
+    color: ${secondaryAccent}
+`;
+const AlertInlineButton = styled('button')`
+    ${alertInlineButton};
+    color: ${secondaryAccent}
 `;
 
-export const AlertTitle = styled('div')`
-    color: ${secondaryAccent};
-    font-weight: bold;
-    margin: ${spacingSmall};
-`;
-
-export const AlertActions = styled('div')`
-    margin: ${spacingExtraSmall} ${spacingExtraSmall} ${spacingExtraSmall} ${spacingSmall};
-`;
-
-export const AlertInlineButton = styled('button')`
-    border: none;
-    background: none;
-    color: ${secondaryAccent};
-    text-decoration: underline;
-    cursor: pointer;
-    padding: ${spacingExtraSmall};
-`;
+export {
+    AlertWrapper,
+    AlertTitle,
+    AlertActions,
+    AlertInlineButton,
+};
