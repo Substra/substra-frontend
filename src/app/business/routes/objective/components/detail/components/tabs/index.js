@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import {noop} from 'lodash';
-
 import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
-import Description from '../../../../../../common/components/detail/components/description';
-import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+    TabList,
+    Tabs,
+    TabPanel,
+} from '@substrafoundation/substra-ui';
+import Tab from '../../../../../../common/components/detail/components/tabs';
 
+import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+import Description from '../../../../../../common/components/detail/components/description';
 
 const ObjectiveTabs = ({
 descLoading, item, metricsLoading, tabIndex, setTabIndex,

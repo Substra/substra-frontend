@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
-
-import Description from '../../../../../../common/components/detail/components/description';
 import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
+    RoundedButton,
+    DownloadSimple,
+    Tabs,
+    TabList,
+    TabPanel,
+} from '@substrafoundation/substra-ui';
 
+import Tab from '../../../../../../common/components/detail/components/tabs';
+import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 
 const Span = styled('span')`
