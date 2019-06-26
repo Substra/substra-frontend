@@ -6,14 +6,12 @@ import {noop} from 'lodash';
 import {
     RoundedButton,
     DownloadSimple,
+    Tabs,
+    TabList,
+    TabPanel,
 } from '@substrafoundation/substra-ui';
 
-import {
-    Tab,
-    TabList,
-    Tabs,
-    TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
+import Tab from '../../../../../../common/components/detail/components/tabs';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 

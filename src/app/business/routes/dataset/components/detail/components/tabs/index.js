@@ -6,14 +6,12 @@ import {noop} from 'lodash';
 
 import {
     CodeSample,
-} from '@substrafoundation/substra-ui';
-
-import {
-    Tab,
-    TabList,
     Tabs,
     TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
+    TabList,
+} from '@substrafoundation/substra-ui';
+
+import Tab from '../../../../../../common/components/detail/components/tabs';
 
 import DataKeysTable from '../dataKeysTable';
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';

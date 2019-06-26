@@ -7,14 +7,12 @@ import {
     CodeSample,
     RoundedButton,
     DownloadSimple,
-} from '@substrafoundation/substra-ui';
-
-import {
-    Tab,
-    TabList,
     Tabs,
     TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
+    TabList,
+} from '@substrafoundation/substra-ui';
+
+import Tab from '../../../../../../common/components/detail/components/tabs';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
