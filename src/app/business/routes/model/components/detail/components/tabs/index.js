@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
 import {
+    AlertActions,
     CodeSample,
     RoundedButton,
     DownloadSimple,
@@ -17,7 +18,7 @@ import Tab from '../../../../../../common/components/detail/components/tabs';
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
-    AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
+    AlertWrapper, AlertTitle, AlertInlineButton,
 } from '../../../../../../common/components/alert';
 
 const Span = styled('span')`
