@@ -9,7 +9,7 @@ import {primaryAccent} from '../../../../../../../assets/css/variables/colors';
 const colorOverride = css`
     ${cssTabTemplate};
     &.selected {
-        color: ${primaryAccent}
+        color: ${primaryAccent};
     }
 `;
 
