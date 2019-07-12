@@ -1,15 +1,14 @@
-import React, {Component, Fragment} from 'react';
+/* global window IS_OWKESTRA */
+
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {flatten, isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
-import {Snackbar} from '@material-ui/core';
 import {Check, TwoPanelLayout, withAddNotification} from '@substrafoundation/substra-ui';
-import SnackbarContent from './components/snackbarContent';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
-import {primaryAccent} from '../../../../../../assets/css/variables/colors';
 
 export const middle = css`
     display: inline-block;
@@ -19,75 +18,6 @@ export const middle = css`
 export const margin = 40;
 
 class Base extends Component {
-    state = {
-        clipboard: {
-            open: false,
-            key: '',
-            text: '',
-        },
-    };
-
-    // Notifications methods
-    processNotificationQueue = () => {
-        if (this.queuedNotification) {
-            this.setState((state) => {
-                const queuedNotification = this.queuedNotification;
-                this.queuedNotification = undefined;
-                return {
-                    ...state,
-                    clipboard: {
-                        ...queuedNotification,
-                        open: true,
-                    },
-                };
-            });
-        }
-    };
-
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        this.setState(state => ({
-            ...state,
-            clipboard: {
-                ...state.clipboard,
-                open: false,
-            },
-        }));
-    };
-
-
-    handleExited = () => {
-        this.processNotificationQueue();
-    };
-
-    addNotification = (inputValue, text) => {
-        copy(inputValue);
-        this.queuedNotification = {
-            inputValue,
-            text,
-        };
-
-        if (this.state.clipboard.open) {
-            // immediately begin dismissing current message
-            // to start showing new one
-            this.setState(state => ({
-                ...state,
-                clipboard: {
-                    ...state.clipboard,
-                    open: false,
-                },
-            }));
-        }
-        else {
-            this.processNotificationQueue();
-        }
-    };
-
-    // End of notifications methods
-
     filterUp = (o) => {
         const {
             setSearchState, selectedItem, model,
@@ -129,10 +59,8 @@ class Base extends Component {
     render() {
         const {
             selected, actions, model, download,
-            List, Detail, addNotification,
+            List, Detail,
         } = this.props;
-
-        const {clipboard: {open, text, inputValue}} = this.state;
 
         const leftPanelContent = (
             <List
@@ -156,35 +84,10 @@ class Base extends Component {
         );
 
         return (
-            <Fragment>
-                <TwoPanelLayout
-                    leftPanelContent={leftPanelContent}
-                    rightPanelContent={rightPanelContent}
-                />
-                <Snackbar
-                    anchorOrigin={anchorOrigin}
-                    open={open}
-                    onClose={this.handleClose}
-                    onExited={this.handleExited}
-                    autoHideDuration={2000}
-                >
-                    <SnackbarContent
-                        className={snackbarContent}
-                        message={(
-                            <div>
-                                <Check color={primaryAccent} className={middle} />
-                                <ClipboardContent className={middle}>
-                                    <input disabled value={inputValue} />
-                                    <p>
-                                        {text}
-                                    </p>
-                                </ClipboardContent>
-                            </div>
-)
-                    }
-                    />
-                </Snackbar>
-            </Fragment>
+            <TwoPanelLayout
+                leftPanelContent={leftPanelContent}
+                rightPanelContent={rightPanelContent}
+            />
         );
     }
 }
@@ -223,7 +126,7 @@ Base.propTypes = {
     addNotification: PropTypes.func,
 };
 
-const OwkestraCheck = () => <Check color={darkSkyBlue} />;
+const OwkestraCheck = () => <Check color={darkSkyBlue}/>;
 
 const BaseWithAddNotification = withAddNotification(Base, IS_OWKESTRA ? OwkestraCheck : Check);
 
