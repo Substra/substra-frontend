@@ -8814,18 +8814,6 @@ mime-db@1.40.0, "mime-db@>= 1.40.0 < 2":
   resolved "https://substra-npm.owkin.com/mime-db/-/mime-db-1.40.0.tgz#a65057e998db090f732a68f6c276d387d4126c32"
   integrity sha512-jYdeOMPy9vnxEqFRRo6ZvTZ8d9oPb+k18PKoYNYUe2stVEBPPwsln/qWzdbmaIvnhZ9v2P+CuecK+fpUfsV2mA==
 
-mime-db@~1.38.0:
-  version "1.38.0"
-  resolved "https://substra-npm.owkin.com/mime-db/-/mime-db-1.38.0.tgz#1a2aab16da9eb167b49c6e4df2d9c68d63d8e2ad"
-  integrity sha512-bqVioMFFzc2awcdJZIzR3HjZFX20QhilVS7hytkKrv7xFAn8bM1gzc/FOX2awLISvWe0PV8ptFKcon+wZ5qYkg==
-
-mime-types@2.1.22:
-  version "2.1.22"
-  resolved "https://substra-npm.owkin.com/mime-types/-/mime-types-2.1.22.tgz#fe6b355a190926ab7698c9a0556a11199b2199bd"
-  integrity sha512-aGl6TZGnhm/li6F7yx82bJiBZwgiEa4Hf6CNr8YO+r5UHr53tSTYZb102zyU50DOWWKeOv0uQLRL0/9EiKWCog==
-  dependencies:
-    mime-db "~1.38.0"
-
 mime-types@2.1.24, mime-types@^2.1.12, mime-types@^2.1.18, mime-types@~2.1.17, mime-types@~2.1.19, mime-types@~2.1.24:
   version "2.1.24"
   resolved "https://substra-npm.owkin.com/mime-types/-/mime-types-2.1.24.tgz#b6f8d0b3e951efb77dedeca194cff6d16f676f81"
@@ -11224,17 +11212,6 @@ react-spinners@0.5.4:
     "@emotion/core" "^10.0.4"
     prop-types "^15.5.10"
     recompose "0.27.1 - 0.30.0"
-
-react-syntax-highlighter@10.2.1:
-  version "10.2.1"
-  resolved "https://substra-npm.owkin.com/react-syntax-highlighter/-/react-syntax-highlighter-10.2.1.tgz#a30bf8e131c29e714a8e781ecadbace329da1530"
-  integrity sha512-oiCu5H0cv8FoBx1RfKWFJJEWARIyvl8FbOpzLtTextkN2D6mPAFjRooSyP0sU7/BqZnt7C6vF1CqrjdnEKREYw==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    highlight.js "~9.13.0"
-    lowlight "~1.11.0"
-    prismjs "^1.8.4"
-    refractor "^2.4.1"
 
 react-syntax-highlighter@10.3.0:
   version "10.3.0"
