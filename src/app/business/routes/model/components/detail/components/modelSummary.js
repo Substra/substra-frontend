@@ -16,7 +16,6 @@ import {
     keyValueClassName, BrowseRelatedMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
-
 import BrowseRelatedLinks from './browseRelatedLinks';
 import ScoreMetadata from './scoreMetadata';
 

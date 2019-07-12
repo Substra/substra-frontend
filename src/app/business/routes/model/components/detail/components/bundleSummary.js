@@ -9,7 +9,6 @@ import {
     Table, Tr, Th, Td,
 } from '../../../../dataset/components/detail/components/table';
 
-
 class BundleSummary extends Component {
     downloadModel = model => () => {
         const {downloadItem} = this.props;
