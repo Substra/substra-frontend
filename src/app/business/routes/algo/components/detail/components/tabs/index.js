@@ -4,8 +4,6 @@ import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
-import Description from '../../../../../../common/components/detail/components/description';
-
 import {
     RoundedButton,
     DownloadSimple,
@@ -15,6 +13,7 @@ import {
 } from '@substrafoundation/substra-ui';
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
+import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 
 const Span = styled('span')`
