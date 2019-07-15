@@ -12,6 +12,8 @@ import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
+import {GlobalStyles} from '@substrafoundation/substra-ui';
+
 import {JssProvider, SheetsRegistry} from 'react-jss';
 import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
 
@@ -87,6 +89,7 @@ const createApp = (App, store, chunkNames) => (
         <Provider store={store}>
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
                 <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
+                    <GlobalStyles />
                     <App />
                 </MuiThemeProvider>
             </JssProvider>
