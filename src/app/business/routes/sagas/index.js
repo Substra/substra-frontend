@@ -1,3 +1,5 @@
+/* global window */
+
 import {
     takeLatest, all, select, put, fork,
 } from 'redux-saga/effects';
@@ -24,26 +26,35 @@ const getRouteAsset = (route) => {
 };
 
 const fetchList = route => function* fetchAssetList() {
-    const asset = getRouteAsset(route);
-    const actions = assetActions[asset];
-    const state = yield select();
-    if (!state[asset].list.loading) {
-        yield put(actions.list.request());
-    }
 
-    // analytics
-    logFunctions[LOG_LIST](state)();
+    // do not load in server mode
+    if (typeof global.window !== 'undefined') {
+        const state = yield select();
+        const asset = getRouteAsset(route);
+
+        if (!state[asset].list.loading) {
+            const actions = assetActions[asset];
+            yield put(actions.list.request());
+        }
+
+        // analytics
+        logFunctions[LOG_LIST](state)();
+    }
 };
 
 function* fetchInitialList() {
-    const state = yield select();
-    const route = state.location.type;
-    const asset = getRouteAsset(route);
-    const actions = assetActions[asset];
-    yield put(actions.list.request());
+    // do not load in server mode
+    if (typeof global.window !== 'undefined') {
+        const state = yield select();
+        const route = state.location.type;
+        const asset = getRouteAsset(route);
 
-    // analytics
-    logFunctions[LOG_LIST](state)();
+        const actions = assetActions[asset];
+        yield put(actions.list.request());
+
+        // analytics
+        logFunctions[LOG_LIST](state)();
+    }
 }
 
 const sagas = function* sagas() {
