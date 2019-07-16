@@ -1577,7 +1577,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.4.18":
+"@types/react@*":
   version "16.8.19"
   resolved "https://substra-npm.owkin.com/@types%2freact/-/react-16.8.19.tgz#629154ef05e2e1985cdde94477deefd823ad9be3"
   integrity sha512-QzEzjrd1zFzY9cDlbIiFvdr+YUmefuuRYrPxmkwG0UQv5XF35gFIi7a95m1bNVcFU0VimxSZ5QVGSiBmlggQXQ==
@@ -3730,14 +3730,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-context@^0.2.3:
-  version "0.2.3"
-  resolved "https://substra-npm.owkin.com/create-react-context/-/create-react-context-0.2.3.tgz#9ec140a6914a22ef04b8b09b7771de89567cb6f3"
-  integrity sha512-CQBmD0+QGgTaxDL3OX1IDXYqjkp2It4RIbcb99jS6AEg27Ga+a9G3JtK6SIu0HBwPLZlmwt9F7UwWA4Bn92Rag==
-  dependencies:
-    fbjs "^0.8.0"
-    gud "^1.0.0"
-
 cross-env@5.2.0:
   version "5.2.0"
   resolved "https://substra-npm.owkin.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
@@ -3923,22 +3915,6 @@ css-vendor@^0.3.8:
   resolved "https://substra-npm.owkin.com/css-vendor/-/css-vendor-0.3.8.tgz#6421cfd3034ce664fe7673972fd0119fc28941fa"
   integrity sha1-ZCHP0wNM5mT+dnOXL9ARn8KJQfo=
   dependencies:
-    is-in-browser "^1.0.2"
-
-css-vendor@^1.1.0:
-  version "1.2.1"
-  resolved "https://substra-npm.owkin.com/css-vendor/-/css-vendor-1.2.1.tgz#21b914913d3a68bab2708090dab2e61db7c9eaec"
-  integrity sha512-ZpwiWxn5jWNJ7NF3DAb/Dc/+c2lRu+fnovej/adCv3VJsULJSjdXEpUwRcq4fnpAAh98Hi7b0GDnlyoNFcdv1g==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    is-in-browser "^1.0.2"
-
-css-vendor@^2.0.1:
-  version "2.0.2"
-  resolved "https://substra-npm.owkin.com/css-vendor/-/css-vendor-2.0.2.tgz#dd75b41064944c8eaa001796a204782164c69dfd"
-  integrity sha512-Xn5ZAlI00d8HaQ8/oQ8d+iBzSF//NCc77LPzsucM32X/R/yTqmXy6otVsAM0XleXk6HjPuXoVZwXsayky/fsFQ==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
     is-in-browser "^1.0.2"
 
 css-what@2.1, css-what@^2.1.2:
@@ -5444,7 +5420,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://substra-npm.owkin.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -6059,11 +6035,6 @@ growly@^1.3.0:
   resolved "https://substra-npm.owkin.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-gud@^1.0.0:
-  version "1.0.0"
-  resolved "https://substra-npm.owkin.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
-  integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
-
 gzip-size@5.1.0:
   version "5.1.0"
   resolved "https://substra-npm.owkin.com/gzip-size/-/gzip-size-5.1.0.tgz#2db0396c71f5c902d5cf6b52add5030b93c99bd2"
@@ -6345,12 +6316,12 @@ hoist-non-react-statics@^1.2.0:
   resolved "https://substra-npm.owkin.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
   integrity sha1-qkSM8JhtVcxAdzsXF0t90GbLfPs=
 
-hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.1:
+hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://substra-npm.owkin.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
   version "3.3.0"
   resolved "https://substra-npm.owkin.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -6589,7 +6560,7 @@ humanize-plus@^1.8.1:
   resolved "https://substra-npm.owkin.com/humanize-plus/-/humanize-plus-1.8.2.tgz#a65b34459ad6367adbb3707a82a3c9f916167030"
   integrity sha1-pls0RZrWNnrbs3B6gqPJ+RYWcDA=
 
-hyphenate-style-name@^1.0.2, hyphenate-style-name@^1.0.3:
+hyphenate-style-name@^1.0.2:
   version "1.0.3"
   resolved "https://substra-npm.owkin.com/hyphenate-style-name/-/hyphenate-style-name-1.0.3.tgz#097bb7fa0b8f1a9cf0bd5c734cf95899981a9b48"
   integrity sha512-EcuixamT82oplpoJ2XU4pDtKGWQ7b00CD9f1ug9IaQ3p1bkHMiKCZ9ut9QDI6qsa6cpUuB+A/I+zLtdNK4n2DQ==
@@ -6984,6 +6955,11 @@ is-fullwidth-code-point@^2.0.0:
   version "2.0.0"
   resolved "https://substra-npm.owkin.com/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz#a3b30a5c4f199183167aaab93beefae3ddfb654f"
   integrity sha1-o7MKXE8ZkYMWeqq5O+764937ZU8=
+
+is-function@^1.0.1:
+  version "1.0.1"
+  resolved "https://substra-npm.owkin.com/is-function/-/is-function-1.0.1.tgz#12cfb98b65b57dd3d193a3121f5f6e2f437602b5"
+  integrity sha1-Es+5i2W1fdPRk6MSH19uL0N2ArU=
 
 is-generator-fn@^2.0.0:
   version "2.1.0"
@@ -7822,17 +7798,36 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jss-camel-case@^6.0.0:
+jss-camel-case@^6.0.0, jss-camel-case@^6.1.0:
   version "6.1.0"
   resolved "https://substra-npm.owkin.com/jss-camel-case/-/jss-camel-case-6.1.0.tgz#ccb1ff8d6c701c02a1fed6fb6fb6b7896e11ce44"
   integrity sha512-HPF2Q7wmNW1t79mCqSeU2vdd/vFFGpkazwvfHMOhPlMgXrJDzdj9viA2SaHk9ZbD5pfL63a8ylp4++irYbbzMQ==
   dependencies:
     hyphenate-style-name "^1.0.2"
 
+jss-compose@^5.0.0:
+  version "5.0.0"
+  resolved "https://substra-npm.owkin.com/jss-compose/-/jss-compose-5.0.0.tgz#ce01b2e4521d65c37ea42cf49116e5f7ab596484"
+  integrity sha512-YofRYuiA0+VbeOw0VjgkyO380sA4+TWDrW52nSluD9n+1FWOlDzNbgpZ/Sb3Y46+DcAbOS21W5jo6SAqUEiuwA==
+  dependencies:
+    warning "^3.0.0"
+
 jss-default-unit@^8.0.2:
   version "8.0.2"
   resolved "https://substra-npm.owkin.com/jss-default-unit/-/jss-default-unit-8.0.2.tgz#cc1e889bae4c0b9419327b314ab1c8e2826890e6"
   integrity sha512-WxNHrF/18CdoAGw2H0FqOEvJdREXVXLazn7PQYU7V6/BWkCV0GkmWsppNiExdw8dP4TU1ma1dT9zBNJ95feLmg==
+
+jss-expand@^5.3.0:
+  version "5.3.0"
+  resolved "https://substra-npm.owkin.com/jss-expand/-/jss-expand-5.3.0.tgz#02be076efe650125c842f5bb6fb68786fe441ed6"
+  integrity sha512-NiM4TbDVE0ykXSAw6dfFmB1LIqXP/jdd0ZMnlvlGgEMkMt+weJIl8Ynq1DsuBY9WwkNyzWktdqcEW2VN0RAtQg==
+
+jss-extend@^6.2.0:
+  version "6.2.0"
+  resolved "https://substra-npm.owkin.com/jss-extend/-/jss-extend-6.2.0.tgz#4af09d0b72fb98ee229970f8ca852fec1ca2a8dc"
+  integrity sha512-YszrmcB6o9HOsKPszK7NeDBNNjVyiW864jfoiHoMlgMIg2qlxKw70axZHqgczXHDcoyi/0/ikP1XaHDPRvYtEA==
+  dependencies:
+    warning "^3.0.0"
 
 jss-global@^3.0.0:
   version "3.0.0"
@@ -7846,243 +7841,33 @@ jss-nested@^6.0.1:
   dependencies:
     warning "^3.0.0"
 
-jss-plugin-camel-case@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-camel-case/-/jss-plugin-camel-case-10.0.0-alpha.17.tgz#6f7c9d9742e349bb061e53cd9b1c3cb006169a67"
-  integrity sha512-aPY4kr6MwliH7KToLRzeSk1NxXUo9n7MQsAa0Hghwj01x9UnMkDkGAKENMKUtPjGkQZfiJpB9tTLFrSJ/6VrIQ==
+jss-preset-default@4.5.0, jss-preset-default@^4.3.0:
+  version "4.5.0"
+  resolved "https://substra-npm.owkin.com/jss-preset-default/-/jss-preset-default-4.5.0.tgz#d3a457012ccd7a551312014e394c23c4b301cadd"
+  integrity sha512-qZbpRVtHT7hBPpZEBPFfafZKWmq3tA/An5RNqywDsZQGrlinIF/mGD9lmj6jGqu8GrED2SMHZ3pPKLmjCZoiaQ==
   dependencies:
-    "@babel/runtime" "^7.3.1"
-    hyphenate-style-name "^1.0.3"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-camel-case@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-camel-case/-/jss-plugin-camel-case-10.0.0-alpha.7.tgz#7dcbd9acb6682f3102cb2d3356b4fd9642d93f17"
-  integrity sha512-Bwrav1ZB0XywdJW6TaEuFhKe1ZpZvUlESh3jsFOvebA9aFTYNCkmHMEqjA5+u9VMxksl3u77nnZHtukpxkzrBA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    hyphenate-style-name "^1.0.2"
-
-jss-plugin-compose@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-compose/-/jss-plugin-compose-10.0.0-alpha.17.tgz#bc6579620ccc42d0615bbbc250bcfcab1338dcbb"
-  integrity sha512-R9dcX0lKOQg92GaYT05RDm/q3I0LKmWJlyJm8rWe5u6DCxkPMHuvgZiWufMKsZfaDzqTVEhTQwWP0iYQGT5C2Q==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    tiny-warning "^1.0.2"
-
-jss-plugin-compose@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-compose/-/jss-plugin-compose-10.0.0-alpha.7.tgz#3b7347980f9f483d932340b654fe602dfe0d0fb2"
-  integrity sha512-2Yye7vnxS2k6Xo5TpL4bzxAtZvhT1jJGLak4DNYVL/fRKeGaSGIjU8XIMiX2AhOR6oVcSVSNRmrCmeFWXfx4RA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    tiny-warning "^1.0.2"
-
-jss-plugin-default-unit@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-default-unit/-/jss-plugin-default-unit-10.0.0-alpha.17.tgz#4e3bf6d8e9691a8e05d50b5abf300515eb0f67ee"
-  integrity sha512-KQgiXczvzJ9AlFdD8NS7FZLub0NSctSrCA9Yi/GqdsfJg4ZCriU4DzIybCZBHCi/INFGJmLIESYWSxnuhAzgSQ==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-default-unit@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-default-unit/-/jss-plugin-default-unit-10.0.0-alpha.7.tgz#f6dd0a03d545e7bf243c062bae3a832ac8c5ff6d"
-  integrity sha512-auuJUbQaWMxoHOVFPrfZNZpZm9ab8PZeDyvey8nMt2lbokkmZ53UyAnM/1kNsg5BdAXTItcLDxDB3I4gwNU84g==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-jss-plugin-expand@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-expand/-/jss-plugin-expand-10.0.0-alpha.17.tgz#692fd2d51b0f3a8c4d701aadfd68c68d0797c2bf"
-  integrity sha512-Kz2UWN0LieYRkdmuXDrsrCwmuk/5ZspFRG9zOkOfUhqZl8gh6NIP16e7PQETBp1bSFiY1tybOSmgrmt6k6oUOA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-expand@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-expand/-/jss-plugin-expand-10.0.0-alpha.7.tgz#4704df5c2cd2df21bebfa0d0c1ef07a64ad26867"
-  integrity sha512-09w7IE997lBji8LjCMlvQjpupoIQHi7S5l8n91H8zyk3oca4R6ecudEmfZEIUZlPufWGDHbdmvPYG0icjBg5kA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-jss-plugin-extend@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-extend/-/jss-plugin-extend-10.0.0-alpha.17.tgz#729fd8b9b8f66a44e1a86708c65c80a72ed59fc7"
-  integrity sha512-Hx+VxRrMxd9KnFWusLj5v0ivG8Vg4bZoSasDZXepzEp1zBdFfIGvluB3GJHHbYDvLgkXomAEGsxQiBNFwJLeYg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    tiny-warning "^1.0.2"
-
-jss-plugin-extend@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-extend/-/jss-plugin-extend-10.0.0-alpha.7.tgz#d625aa13e6d64839aedac3fbf76aee961191236f"
-  integrity sha512-1tkTV4upGR3KZ02DC66KcJJra6ru/jB+vZ/M7Wet0MWvMOtf/Q82oS5dp98+xa5NlJCOcMKi01VidoHyvWT94w==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    tiny-warning "^1.0.2"
-
-jss-plugin-global@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-global/-/jss-plugin-global-10.0.0-alpha.17.tgz#13005f6b963aee3c1498fe2bad767967ad2eb838"
-  integrity sha512-WYxiwwI+CLk0ozW8loeceqXBAZXBMsLBEZeRwVf9WX+FljdJkGwVZpRCk6LBX4aXnqAGyKqCxIAIJ3KP2yBdEg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-global@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-global/-/jss-plugin-global-10.0.0-alpha.7.tgz#38ca390802b62da490afbaafc581552a81977729"
-  integrity sha512-OWeoW4szLDgRUKviST+xfilqa8O5uXJCW+O3YonheCRTRJg6rRzlE/b5pfYPoU9UtwvY9n7JvwBX5r3c1lMsEQ==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-jss-plugin-nested@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-nested/-/jss-plugin-nested-10.0.0-alpha.17.tgz#cb1c20cdc81558c164eaa333bbb24c88bef12202"
-  integrity sha512-onpFqv904KCujryf2t6IIV1/QoB7cSF7ojrd4UujcN5TPvYOvXF5bchi7jnHG5U0SLlRSDGMLJ9fhtoCknhEbw==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    tiny-warning "^1.0.2"
-
-jss-plugin-nested@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-nested/-/jss-plugin-nested-10.0.0-alpha.7.tgz#03a89c8f7c1d570a3d5f16dae3e61f7f2edb0316"
-  integrity sha512-wsRzuIZXAc6WMjc61mREW9cUrDxgSI7dK/fx5c7a06IDUfSn+83NJ30J/RB4oBnbQW9SijV/muujz7IJqpn9Gw==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    tiny-warning "^1.0.2"
-
-jss-plugin-props-sort@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-props-sort/-/jss-plugin-props-sort-10.0.0-alpha.17.tgz#a49be72b8dc8e2861f8136661c53d130abb07ccd"
-  integrity sha512-KnbyrxCbtQTqpDx2mSZU/r/E5QnDPIVfIxRi8K+W/q4gZpomBvqWC+xgvAk9hbpmA6QBoQaOilV8o12w2IZ6fg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-props-sort@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-props-sort/-/jss-plugin-props-sort-10.0.0-alpha.7.tgz#46f1809fcae0acc048d0047aa54a4b9b6973597d"
-  integrity sha512-KXOCaHUk1+KXqE0z3q66/w1fDoy+VsZvI77gLxOqTsTrvIKFLX0jarwXogW3CDlaPQQFTZ6JykJJXtPRTBlstA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-jss-plugin-rule-value-function@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-rule-value-function/-/jss-plugin-rule-value-function-10.0.0-alpha.17.tgz#45617ccc2d695d77287554e7dbe3b9c37f5f5af4"
-  integrity sha512-8AuJB44Q+ehfkWVRi2XlRbUf6SrLmrHTa5EXd6dgQRCCRuvGmqX8Dl4fZvNeKRFjTLPZgzg9+31rqeOMhKa2vA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-rule-value-function@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-rule-value-function/-/jss-plugin-rule-value-function-10.0.0-alpha.7.tgz#63df1078ac361dda67996e25291d90f7226ae59a"
-  integrity sha512-ett83hvIM69/LknmrWndrrdiDlfLfP+rneU5qP7gTOWJ7g1P9GuEL1Tc4CWdZUWBX+T58tgIBP0V1pzWCkP0QA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-jss-plugin-rule-value-observable@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-rule-value-observable/-/jss-plugin-rule-value-observable-10.0.0-alpha.17.tgz#de83be7bc64a4a43b088277f820c03e0aa904b61"
-  integrity sha512-C8fUtJhxDoUNXLLxGUFMNQJPpvaWe6NNYl2khV9RcL6KWsApNc1i5HyokS5w6OhTRe53B6XIpjsWM81FGfxpSA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    symbol-observable "^1.2.0"
-
-jss-plugin-rule-value-observable@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-rule-value-observable/-/jss-plugin-rule-value-observable-10.0.0-alpha.7.tgz#3bc63f151da0660734d3e3c36755725052fa85d3"
-  integrity sha512-5OGAPbeEs7Oj9laMU3Mea8WCaaRABpVgEw9ELGnsqxWYU+KA721nwMw96eAh7Q5ENO6L2RszeBLlEUye0Dqtcw==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    symbol-observable "^1.2.0"
-
-jss-plugin-template@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-template/-/jss-plugin-template-10.0.0-alpha.17.tgz#f36441bc50b1282d9a10433fb4475b4182803999"
-  integrity sha512-dNuE+km2D0Qh/6uASvbf4RXaARr2OgeB6xPEX5hd8+b0DkvzijTymrN6+X8mI2nMVpCLoDhw5KPjOWWYtNaa7w==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    tiny-warning "^1.0.2"
-
-jss-plugin-template@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-template/-/jss-plugin-template-10.0.0-alpha.7.tgz#336958b8cbf74c922443ea893cad0e4d6793717c"
-  integrity sha512-ao+eK/0yNYsPaVhmv/XYiiixaFyMcb8vAMthdpcYv0/9HzjexetO5huBrlvScLOtc5tw6pFQEJLG6HnTJquZ6Q==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    tiny-warning "^1.0.2"
-
-jss-plugin-vendor-prefixer@10.0.0-alpha.17:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-plugin-vendor-prefixer/-/jss-plugin-vendor-prefixer-10.0.0-alpha.17.tgz#7bb05076d1a14d20b567231c36e57ebf6cb6625f"
-  integrity sha512-wDq9EL0QaoMGSGifPEBb+/SA9LBcqPEW0jpL9ht+Z2t+lV7NNz0j7uCEOuE6FvNWqHzUKTsiATs1rTHPkzNBEQ==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    css-vendor "^2.0.1"
-    jss "10.0.0-alpha.17"
-
-jss-plugin-vendor-prefixer@^10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-plugin-vendor-prefixer/-/jss-plugin-vendor-prefixer-10.0.0-alpha.7.tgz#caa34eb0bc39f0c98f425e174fc220d1f1a8760a"
-  integrity sha512-YbIVgqq+dLimOBOEYggho1Iuc0roz4PJSZYyaok9n8JnXVIqPnxYJbr8+bMbvzJ5CL3eeJij/e7L2IPCceRKrA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    css-vendor "^1.1.0"
-
-jss-preset-default@10.0.0-alpha.7:
-  version "10.0.0-alpha.7"
-  resolved "https://substra-npm.owkin.com/jss-preset-default/-/jss-preset-default-10.0.0-alpha.7.tgz#f5f04edd7f19c73f82ea028681b4c0d96ceeecce"
-  integrity sha512-3hmuOW/5b2J2h5x0zSOOBl4dp5/9PFeX8h6xm13cNVG63sXcR1dGrddX2Q7jUWXmLeP8uQCBTaH2FcmRM+OmtA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    jss-plugin-camel-case "^10.0.0-alpha.7"
-    jss-plugin-compose "^10.0.0-alpha.7"
-    jss-plugin-default-unit "^10.0.0-alpha.7"
-    jss-plugin-expand "^10.0.0-alpha.7"
-    jss-plugin-extend "^10.0.0-alpha.7"
-    jss-plugin-global "^10.0.0-alpha.7"
-    jss-plugin-nested "^10.0.0-alpha.7"
-    jss-plugin-props-sort "^10.0.0-alpha.7"
-    jss-plugin-rule-value-function "^10.0.0-alpha.7"
-    jss-plugin-rule-value-observable "^10.0.0-alpha.7"
-    jss-plugin-template "^10.0.0-alpha.7"
-    jss-plugin-vendor-prefixer "^10.0.0-alpha.7"
-
-jss-preset-default@^10.0.0-alpha.6:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss-preset-default/-/jss-preset-default-10.0.0-alpha.17.tgz#f13324a489f22912a9f3c2bdf30e7a1b533bc25c"
-  integrity sha512-wUKfTJZeoypPs6aR8yc59ZMm9+Z6zIkMg5vtEKQvawEgPSUkUAXTPaRGkAGPuzq33hyAtvmTJW/KgVzB+B0K7w==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    jss "10.0.0-alpha.17"
-    jss-plugin-camel-case "10.0.0-alpha.17"
-    jss-plugin-compose "10.0.0-alpha.17"
-    jss-plugin-default-unit "10.0.0-alpha.17"
-    jss-plugin-expand "10.0.0-alpha.17"
-    jss-plugin-extend "10.0.0-alpha.17"
-    jss-plugin-global "10.0.0-alpha.17"
-    jss-plugin-nested "10.0.0-alpha.17"
-    jss-plugin-props-sort "10.0.0-alpha.17"
-    jss-plugin-rule-value-function "10.0.0-alpha.17"
-    jss-plugin-rule-value-observable "10.0.0-alpha.17"
-    jss-plugin-template "10.0.0-alpha.17"
-    jss-plugin-vendor-prefixer "10.0.0-alpha.17"
+    jss-camel-case "^6.1.0"
+    jss-compose "^5.0.0"
+    jss-default-unit "^8.0.2"
+    jss-expand "^5.3.0"
+    jss-extend "^6.2.0"
+    jss-global "^3.0.0"
+    jss-nested "^6.0.1"
+    jss-props-sort "^6.0.0"
+    jss-template "^1.0.1"
+    jss-vendor-prefixer "^7.0.0"
 
 jss-props-sort@^6.0.0:
   version "6.0.0"
   resolved "https://substra-npm.owkin.com/jss-props-sort/-/jss-props-sort-6.0.0.tgz#9105101a3b5071fab61e2d85ea74cc22e9b16323"
   integrity sha512-E89UDcrphmI0LzmvYk25Hp4aE5ZBsXqMWlkFXS0EtPkunJkRr+WXdCNYbXbksIPnKlBenGB9OxzQY+mVc70S+g==
+
+jss-template@^1.0.1:
+  version "1.0.1"
+  resolved "https://substra-npm.owkin.com/jss-template/-/jss-template-1.0.1.tgz#09aed9d86cc547b07f53ef355d7e1777f7da430a"
+  integrity sha512-m5BqEWha17fmIVXm1z8xbJhY6GFJxNB9H68GVnCWPyGYfxiAgY9WTQyvDAVj+pYRgrXSOfN5V1T4+SzN1sJTeg==
+  dependencies:
+    warning "^3.0.0"
 
 jss-vendor-prefixer@^7.0.0:
   version "7.0.0"
@@ -8091,16 +7876,7 @@ jss-vendor-prefixer@^7.0.0:
   dependencies:
     css-vendor "^0.3.8"
 
-jss@10.0.0-alpha.17, jss@^10.0.0-alpha.6:
-  version "10.0.0-alpha.17"
-  resolved "https://substra-npm.owkin.com/jss/-/jss-10.0.0-alpha.17.tgz#3057c85a846c3bd207c04aafd91c8277955d9c57"
-  integrity sha512-egGIUg+YRu0+U+XXlD0gmVtU/gW5sn7+qmDv7opwK5s8emZBE/VoN55X6CaMrAa0kLeGMldnI43KOWea6M9/mA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    is-in-browser "^1.1.3"
-    tiny-warning "^1.0.2"
-
-jss@9.8.7, jss@^9.8.7:
+jss@9.8.7, jss@^9.7.0, jss@^9.8.7:
   version "9.8.7"
   resolved "https://substra-npm.owkin.com/jss/-/jss-9.8.7.tgz#ed9763fc0f2f0260fc8260dac657af61e622ce05"
   integrity sha512-awj3XRZYxbrmmrx9LUSj5pXSUfm12m8xzi/VKeqI1ZwWBtQ0kVPTs3vYs32t4rFw83CgFDukA8wKzOE9sMQnoQ==
@@ -11017,11 +10793,6 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-display-name@^0.2.4:
-  version "0.2.4"
-  resolved "https://substra-npm.owkin.com/react-display-name/-/react-display-name-0.2.4.tgz#e2a670b81d79a2204335510c01246f4c92ff12cf"
-  integrity sha512-zvU6iouW+SWwHTyThwxGICjJYCMZFk/6r/+jmOdC7ntQoPlS/Pqb81MkxaMf2bHTSq9TN3K3zX2/ayMW/jCtyA==
-
 react-dock@^0.2.4:
   version "0.2.4"
   resolved "https://substra-npm.owkin.com/react-dock/-/react-dock-0.2.4.tgz#e727dc7550b3b73116635dcb9c0e04d0b7afe17c"
@@ -11147,18 +10918,16 @@ react-jsonschema-form@^0.48.2:
     prop-types "^15.5.8"
     setimmediate "^1.0.5"
 
-react-jss@10.0.0-alpha.6:
-  version "10.0.0-alpha.6"
-  resolved "https://substra-npm.owkin.com/react-jss/-/react-jss-10.0.0-alpha.6.tgz#24242c236d59b37ccb8a412406ae28a9bca0c226"
-  integrity sha512-4UlDn1BfqmwLBPRJ/mQkQrPMcQytshDJ/7pM6MEh9iiTJaw19FG0XVuTYKvQY2XUUSfKyxCWL4uMwDgsUjsdvw==
+react-jss@8.6.1:
+  version "8.6.1"
+  resolved "https://substra-npm.owkin.com/react-jss/-/react-jss-8.6.1.tgz#a06e2e1d2c4d91b4d11befda865e6c07fbd75252"
+  integrity sha512-SH6XrJDJkAphp602J14JTy3puB2Zxz1FkM3bKVE8wON+va99jnUTKWnzGECb3NfIn9JPR5vHykge7K3/A747xQ==
   dependencies:
-    "@babel/runtime" "^7.0.0"
-    "@types/react" "^16.4.18"
-    hoist-non-react-statics "^3.2.0"
-    jss "^10.0.0-alpha.6"
-    jss-preset-default "^10.0.0-alpha.6"
+    hoist-non-react-statics "^2.5.0"
+    jss "^9.7.0"
+    jss-preset-default "^4.3.0"
     prop-types "^15.6.0"
-    theming "^2.2.0"
+    theming "^1.3.0"
 
 react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
@@ -13181,17 +12950,15 @@ tfunk@^3.0.1:
     chalk "^1.1.1"
     object-path "^0.9.0"
 
-theming@^2.2.0:
-  version "2.2.0"
-  resolved "https://substra-npm.owkin.com/theming/-/theming-2.2.0.tgz#64fe667afc5fb742060dd084fe4af6fac1227a97"
-  integrity sha512-S+augXK6352pVHzuo3usMWpPMDZGYywhQkqwhhgHBaXt5nAohzbItm4ptBsXXDZZ5fN+BIlGGmf1ADI7Q/DduQ==
+theming@^1.3.0:
+  version "1.3.0"
+  resolved "https://substra-npm.owkin.com/theming/-/theming-1.3.0.tgz#286d5bae80be890d0adc645e5ca0498723725bdc"
+  integrity sha512-ya5Ef7XDGbTPBv5ENTwrwkPUexrlPeiAg/EI9kdlUAZhNlRbCdhMKRgjNX1IcmsmiPcqDQZE6BpSaH+cr31FKw==
   dependencies:
-    "@types/react" "^16.4.18"
-    create-react-context "^0.2.3"
-    hoist-non-react-statics "^3.1.0"
+    brcast "^3.0.1"
+    is-function "^1.0.1"
+    is-plain-object "^2.0.1"
     prop-types "^15.5.8"
-    react-display-name "^0.2.4"
-    warning "^4.0.2"
 
 thenify-all@^1.0.0:
   version "1.6.0"
@@ -13283,7 +13050,7 @@ tiny-invariant@^1.0.2:
   resolved "https://substra-npm.owkin.com/tiny-invariant/-/tiny-invariant-1.0.4.tgz#346b5415fd93cb696b0c4e8a96697ff590f92463"
   integrity sha512-lMhRd/djQJ3MoaHEBrw8e2/uM4rs9YMNk0iOr8rHQ0QdbM7D4l0gFl3szKdeixrlyfm9Zqi4dxHCM2qVG8ND5g==
 
-tiny-warning@^1.0.0, tiny-warning@^1.0.2:
+tiny-warning@^1.0.0:
   version "1.0.2"
   resolved "https://substra-npm.owkin.com/tiny-warning/-/tiny-warning-1.0.2.tgz#1dfae771ee1a04396bdfde27a3adcebc6b648b28"
   integrity sha512-rru86D9CpQRLvsFG5XFdy0KdLAvjdQDyZCsRcuu60WtzFylDM3eAWSxEVz5kzL2Gp544XiUvPbVKtOA/txLi9Q==
@@ -13923,7 +13690,7 @@ warning@^3.0.0:
   dependencies:
     loose-envify "^1.0.0"
 
-warning@^4.0.1, warning@^4.0.2:
+warning@^4.0.1:
   version "4.0.3"
   resolved "https://substra-npm.owkin.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
