@@ -7,6 +7,7 @@
         "@emotion/styled": "10.0.10",
         "@material-ui/core": "3.9.3",
         "@material-ui/icons": "3.0.2",
+        "@substrafoundation/substra-ui": "0.0.1",
         "babel-runtime": "6.26.0",
         "copy-to-clipboard": "3.1.0",
         "decimal.js": "10.1.1",
@@ -44,7 +45,6 @@
         "redux-saga": "1.0.2",
         "redux-sagas-injector": "1.0.0",
         "reselect": "4.0.0",
-        "@substrafoundation/substra-ui": "0.0.1",
         "uuid": "3.3.2"
     },
     "devDependencies": {

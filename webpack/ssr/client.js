@@ -52,6 +52,9 @@ export default {
     plugins: plugins('client'),
     resolve: resolve(),
     ...(DEVELOPMENT ? {
+        optimization: {
+            sideEffects: true,
+        },
         devServer: {
             historyApiFallback: true,
             headers: {
