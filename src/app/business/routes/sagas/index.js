@@ -1,5 +1,3 @@
-/* global window */
-
 import {
     takeLatest, all, select, put, fork,
 } from 'redux-saga/effects';
