@@ -31,18 +31,6 @@ class List extends Component {
         hoverItem: null,
     };
 
-    componentDidMount(prevProps, prevState, snapshot) {
-        const {
-            loading, fetchList, logList,
-        } = this.props;
-
-        if (!loading) {
-            fetchList();
-        }
-
-        logList();
-    }
-
     setSelected = item => () => {
         const {setSelected, logDetail} = this.props;
 
@@ -257,7 +245,6 @@ List.defaultProps = {
     download: {},
     setSelected: noop,
     setOrder: noop,
-    fetchList: noop,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -269,7 +256,6 @@ List.defaultProps = {
     PopoverItems,
     Metadata: null,
     Sort,
-    logList: noop,
     logDetail: noop,
     logFilterFromList: noop,
     logDownloadFromList: noop,
@@ -289,7 +275,6 @@ List.propTypes = {
     }),
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,
-    fetchList: PropTypes.func,
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
     addNotification: PropTypes.func,
@@ -300,7 +285,6 @@ List.propTypes = {
     PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
     Sort: PropTypes.elementType,
-    logList: PropTypes.func,
     logDetail: PropTypes.func,
     logFilterFromList: PropTypes.func,
     logDownloadFromList: PropTypes.func,

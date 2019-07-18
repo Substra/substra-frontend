@@ -19,7 +19,6 @@ const mapStateToProps = (state, {
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
-    fetchList: actions.list.request,
     setSelected: actions.list.selected,
     setOrder: actions.order.set,
 }, dispatch);
