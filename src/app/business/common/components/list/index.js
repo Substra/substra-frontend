@@ -33,12 +33,14 @@ class List extends Component {
 
     componentDidMount(prevProps, prevState, snapshot) {
         const {
-            loading, fetchList,
+            loading, fetchList, logList,
         } = this.props;
 
         if (!loading) {
             fetchList();
         }
+
+        logList();
     }
 
     setSelected = item => () => {
@@ -267,6 +269,7 @@ List.defaultProps = {
     PopoverItems,
     Metadata: null,
     Sort,
+    logList: noop,
     logDetail: noop,
     logFilterFromList: noop,
     logDownloadFromList: noop,
@@ -297,6 +300,7 @@ List.propTypes = {
     PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
     Sort: PropTypes.elementType,
+    logList: PropTypes.func,
     logDetail: PropTypes.func,
     logFilterFromList: PropTypes.func,
     logDownloadFromList: PropTypes.func,

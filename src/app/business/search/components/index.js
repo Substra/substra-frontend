@@ -24,7 +24,6 @@ export algoReducer from '../../routes/algo/reducers/index';
 export algoSagas from '../../routes/algo/sagas/index';
 export modelReducer from '../../routes/model/reducers/index';
 export modelSagas from '../../routes/model/sagas/index';
-export routeSagas from '../../routes/sagas/index';
 
 
 const mapStateToProps = state => ({
