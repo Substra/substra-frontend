@@ -31,6 +31,16 @@ class List extends Component {
         hoverItem: null,
     };
 
+    componentDidMount(prevProps, prevState, snapshot) {
+        const {
+            loading, fetchList,
+        } = this.props;
+
+        if (!loading) {
+            fetchList();
+        }
+    }
+
     setSelected = item => () => {
         const {setSelected, logDetail} = this.props;
 
@@ -245,6 +255,7 @@ List.defaultProps = {
     download: {},
     setSelected: noop,
     setOrder: noop,
+    fetchList: noop,
     filterUp: noop,
     downloadFile: noop,
     addNotification: noop,
@@ -275,6 +286,7 @@ List.propTypes = {
     }),
     setSelected: PropTypes.func,
     setOrder: PropTypes.func,
+    fetchList: PropTypes.func,
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
     addNotification: PropTypes.func,

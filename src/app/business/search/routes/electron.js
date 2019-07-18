@@ -23,7 +23,7 @@ class C extends Component {
         injectSaga('model', modelSagas);
         injectReducer('model', modelReducer);
 
-        injectSaga('route', routeSagas);
+        //injectSaga('route', routeSagas);
     }
 
     render() {
