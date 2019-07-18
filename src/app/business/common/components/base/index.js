@@ -55,7 +55,7 @@ class Base extends Component {
     getLeftPanelContent = () => {
         const {
             actions, model, download,
-            List,
+            List, addNotification,
         } = this.props;
 
         return (
@@ -64,7 +64,7 @@ class Base extends Component {
                 actions={actions}
                 filterUp={this.filterUp}
                 downloadFile={this.downloadFile}
-                addNotification={this.addNotification}
+                addNotification={addNotification}
                 download={download}
             />
         );
@@ -73,7 +73,7 @@ class Base extends Component {
     getRightPanelContent = () => {
         const {
             actions, model, selected,
-            Detail,
+            Detail, addNotification,
         } = this.props;
 
         return selected && (
@@ -82,7 +82,7 @@ class Base extends Component {
                 actions={actions}
                 filterUp={this.filterUp}
                 downloadFile={this.downloadFile}
-                addNotification={this.addNotification}
+                addNotification={addNotification}
             />
             );
     };
@@ -101,6 +101,7 @@ Base.defaultProps = {
     selected: null,
     selectedItem: [],
     item: null,
+    addNotification: noop,
     setSearchState: noop,
     downloadItem: noop,
     download: {},
@@ -123,6 +124,7 @@ Base.propTypes = {
     }),
     results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
+    addNotification: PropTypes.func,
     setSearchState: PropTypes.func,
     downloadItem: PropTypes.func,
     List: PropTypes.elementType,
