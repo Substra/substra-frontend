@@ -31,7 +31,6 @@ class List extends Component {
         hoverItem: null,
     };
 
-
     setSelected = item => () => {
         const {setSelected, logDetail} = this.props;
 

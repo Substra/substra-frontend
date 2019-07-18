@@ -1,21 +1,17 @@
-/* global window IS_OWKESTRA */
+/* global IS_OWKESTRA */
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {css} from 'emotion';
 import {flatten, isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
 import {Check, TwoPanelLayout, withAddNotification} from '@substrafoundation/substra-ui';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
-
-export const middle = css`
-    display: inline-block;
-    vertical-align: top;
-`;
+import {darkSkyBlue} from '../../../../../../assets/css/variables/colors';
 
 export const margin = 40;
+
 
 class Base extends Component {
     filterUp = (o) => {
@@ -56,13 +52,13 @@ class Base extends Component {
         downloadItem({url, filename});
     };
 
-    render() {
+    getLeftPanelContent = () => {
         const {
-            selected, actions, model, download,
-            List, Detail,
+            actions, model, download,
+            List,
         } = this.props;
 
-        const leftPanelContent = (
+        return (
             <List
                 model={model}
                 actions={actions}
@@ -72,8 +68,15 @@ class Base extends Component {
                 download={download}
             />
         );
+    };
 
-        const rightPanelContent = selected && (
+    getRightPanelContent = () => {
+        const {
+            actions, model, selected,
+            Detail,
+        } = this.props;
+
+        return selected && (
             <Detail
                 model={model}
                 actions={actions}
@@ -81,12 +84,14 @@ class Base extends Component {
                 downloadFile={this.downloadFile}
                 addNotification={this.addNotification}
             />
-        );
+            );
+    };
 
+    render() {
         return (
             <TwoPanelLayout
-                leftPanelContent={leftPanelContent}
-                rightPanelContent={rightPanelContent}
+                leftPanelContent={this.getLeftPanelContent()}
+                rightPanelContent={this.getRightPanelContent()}
             />
         );
     }
@@ -102,7 +107,6 @@ Base.defaultProps = {
     results: [],
     List,
     Detail,
-    addNotification: noop,
 };
 
 Base.propTypes = {
@@ -123,7 +127,6 @@ Base.propTypes = {
     downloadItem: PropTypes.func,
     List: PropTypes.elementType,
     Detail: PropTypes.elementType,
-    addNotification: PropTypes.func,
 };
 
 const OwkestraCheck = () => <Check color={darkSkyBlue}/>;
