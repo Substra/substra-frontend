@@ -1,3 +1,3 @@
-import 'jest-dom/extend-expect';
+import '@testing-library/jest-dom/extend-expect';
 
 global.IS_OWKESTRA = false;

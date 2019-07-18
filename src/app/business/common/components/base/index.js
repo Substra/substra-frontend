@@ -129,7 +129,7 @@ Base.propTypes = {
     Detail: PropTypes.elementType,
 };
 
-const OwkestraCheck = () => <Check color={darkSkyBlue}/>;
+const OwkestraCheck = () => <Check color={darkSkyBlue} />;
 
 const BaseWithAddNotification = withAddNotification(Base, IS_OWKESTRA ? OwkestraCheck : Check);
 
