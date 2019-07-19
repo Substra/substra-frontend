@@ -14,11 +14,8 @@ RUN yarn install
 
 COPY . /workspace/
 
-ARG FRONT_BRANDING
-
 # NODE_ENV production need to be after yarn install, otherwise devdependencies are not installed
-ENV FRONT_BRANDING=${FRONT_BRANDING} \
-    NODE_ENV=production
+ENV NODE_ENV=production
 
 RUN yarn build:main
 

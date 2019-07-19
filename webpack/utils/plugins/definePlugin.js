@@ -12,6 +12,5 @@ export default () => new webpack.DefinePlugin({
     DEBUG_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.debug),
     SUBSTRABAC_AUTH_ENABLED: JSON.stringify(config.credentials.enabled),
     GOOGLE_ANALYTICS_TRACKER_ID: JSON.stringify(config.googleAnalytics.trackerID),
-    IS_OWKESTRA: JSON.stringify(config.apps.frontend.branding === 'owkestra'),
     SCORE_PRECISION: JSON.stringify(config.apps.frontend.scorePrecision),
 });

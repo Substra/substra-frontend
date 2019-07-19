@@ -1,4 +1,3 @@
-/* global IS_OWKESTRA */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
@@ -22,7 +21,7 @@ export class DocLink extends Component {
         const {className} = this.props;
         return (
             <a
-                href={IS_OWKESTRA ? 'https://gitlab.com/owkin/owkestra-doc' : 'https://github.com/substrafoundation/substra-doc'}
+                href="https://github.com/substrafoundation/substra-doc"
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"

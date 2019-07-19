@@ -9,10 +9,9 @@ const encryption_privkey = './encryption/ca.key';
 const encryption_fullchain = './encryption/ca.crt';
 const redis_host = process.env.REDIS_HOST || 'localhost';
 const redis_port = process.env.REDIS_PORT || 6379;
-const branding = process.env.FRONT_BRANDING || 'substra';
 
 module.exports = {
-    appName: branding === 'owkestra' ? 'Owkestra' : 'Substra',
+    appName: 'Substra',
     apps: {
         frontend: {
             apiUrl,
@@ -23,10 +22,9 @@ module.exports = {
                 debug: '/substrafront/build/ssr/client/',
             },
             meta: {
-                description: branding === 'owkestra' ? 'Owkestra' : 'Substra',
+                description: 'Substra',
             },
             raven_url: ravenUrl,
-            branding,
             scorePrecision: 3,
         },
     },

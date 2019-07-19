@@ -1,5 +1,3 @@
-/* global IS_OWKESTRA */
-
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {flatten, isEmpty, noop} from 'lodash';
@@ -8,7 +6,6 @@ import {Check, TwoPanelLayout, withAddNotification} from '@substrafoundation/sub
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
-import {darkSkyBlue} from '../../../../../../assets/css/variables/colors';
 
 export const margin = 40;
 
@@ -131,8 +128,6 @@ Base.propTypes = {
     Detail: PropTypes.elementType,
 };
 
-const OwkestraCheck = () => <Check color={darkSkyBlue} />;
-
-const BaseWithAddNotification = withAddNotification(Base, IS_OWKESTRA ? OwkestraCheck : Check);
+const BaseWithAddNotification = withAddNotification(Base, Check);
 
 export default BaseWithAddNotification;

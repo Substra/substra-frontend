@@ -1,11 +1,10 @@
-/* global IS_OWKESTRA */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 
-import {SubstraLogo, OwkestraLogo} from '@substrafoundation/substra-ui';
+import {SubstraLogo} from '@substrafoundation/substra-ui';
 import DocLinkWithAnalytics from './components/docLink';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
@@ -36,10 +35,7 @@ const link = css`
 const Top = ({location}) => (
     <Wrapper>
         <Link to={{type: 'HOME', meta: {query: location.query}}} className={link} data-testid="homelink">
-            {IS_OWKESTRA
-                ? <OwkestraLogo alt="Owkestra" height={50} />
-                : <SubstraLogo alt="Substra" height={50} width={266} />
-            }
+            <SubstraLogo alt="Substra" height={50} width={266} />
         </Link>
         <DocLinkWithAnalytics className={link} />
     </Wrapper>

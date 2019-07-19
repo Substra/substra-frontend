@@ -10,8 +10,6 @@ services:
   substrafront:
     build:
       context: ./
-      args:
-          FRONT_BRANDING: $FRONT_BRANDING
     container_name: substrafront
     hostname: substrafront
     depends_on:
