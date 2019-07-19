@@ -4,7 +4,7 @@
     "productName": "Substra",
     "author": "Guillaume Cisco <guillaume.cisco@owkin.com>",
     "version": "0.0.1",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "description": "Substra",
     "repository": {
         "type": "git",
