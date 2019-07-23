@@ -1,11 +1,10 @@
-/* global IS_OWKESTRA */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
+import {Book} from '@substrafoundation/substra-ui';
 import withAnalytics, {LOG_DOC} from '../../../analytics';
-import Book from '../../common/svg/book';
 import {slate} from '../../../../../assets/css/variables/colors';
 
 const picto = css`
@@ -22,10 +21,11 @@ export class DocLink extends Component {
         const {className} = this.props;
         return (
             <a
-                href={IS_OWKESTRA ? 'https://gitlab.com/owkin/owkestra-doc' : 'https://github.com/substrafoundation/substra-doc'}
+                href="https://github.com/substrafoundation/substra-doc"
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-testid="link"
                 onClick={this.logDoc}
             >
                 <Book className={picto} color={slate} />

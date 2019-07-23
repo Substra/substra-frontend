@@ -3,20 +3,23 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-
 import {
-    Tab, TabList, Tabs, TabPanel,
-} from '../../../../../../common/components/detail/components/tabs';
-import CodeSample from '../../../../../../common/components/detail/components/codeSample';
+    AlertActions,
+    CodeSample,
+    RoundedButton,
+    DownloadSimple,
+    Tabs,
+    TabPanel,
+    TabList,
+} from '@substrafoundation/substra-ui';
+
+import Tab from '../../../../../../common/components/detail/components/tabs';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
-import RoundedButton from '../../../../../../common/components/roundedButton';
-import DownloadSimple from '../../../../../../common/svg/download-simple';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
-    AlertWrapper, AlertTitle, AlertActions, AlertInlineButton,
+    AlertWrapper, AlertTitle, AlertInlineButton,
 } from '../../../../../../common/components/alert';
-
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};

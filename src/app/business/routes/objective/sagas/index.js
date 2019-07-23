@@ -19,7 +19,6 @@ function* fetchList(request) {
     const state = yield select();
 
     const f = () => fetchListApi(state.location.query);
-
     yield call(fetchListSaga(actions, f), request);
 }
 

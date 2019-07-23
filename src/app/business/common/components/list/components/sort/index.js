@@ -78,7 +78,12 @@ class Sort extends Component {
         return (
             <Wrapper>
                 <Label htmlFor="sort">Sort by</Label>
-                <Select value={currentOption ? currentOption.label : ''} onChange={this.handleChange} className={select}>
+                <Select
+                    value={currentOption ? currentOption.label : ''}
+                    onChange={this.handleChange}
+                    className={select}
+                    inputProps={{'data-testid': 'select'}}
+                >
                     {options.map(option => (
                         <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
                     ))}

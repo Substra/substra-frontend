@@ -7,6 +7,14 @@ This project use yarn and the experimental yarn workspaces for package.json spli
 Please install the last version of yarn and run:<br/>
 `yarn config set workspaces-experimental true`
 
+Configure yarn/npm to use our private registry (use the credentials that we provided to you):
+
+```bash
+npm config set registry https://substra-npm.owkin.com
+npm login
+npm config set always-auth true
+```
+
 Then run:<br/>
 `yarn install`
 
@@ -49,6 +57,47 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.Co
 Then run `flushall`. You should automatize this part.
 More information in the cache part below.
 
+## Building the docker container
+
+You'll need to update the `.npmrc` file in this repository with your credentials for the private substra npm registry.
+
+Assuming the auth token for the registry is in the `VERDACCIO_TOKEN` env variable, you can do:
+
+```bash
+echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc
+``` 
+
+Alternatively, you can `npm login` into our private repository and copy/paste the credentials from `~/.npmrc` in the local `.npmrc`.
+## Substra-UI
+
+This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
+
+Normal install relies on a private npm registry (see the [installation instructions](#Installation)).
+If you need to add/move a component to substra-ui and need to test its integration within 
+substrafront, you'll need to "link" substra-ui:
+
+In the substra-ui directory:
+
+```sh
+yarn link
+```
+
+In the substrafront directory:
+
+```sh
+yarn link @substrafoundation/substra-ui
+```
+
+Your local built version of substra-ui will be the one used by your 
+local substrafront. In order to automatically rebuild substra-ui at each 
+change, do:
+
+In the substra-ui directory:
+
+```sh
+yarn build --watch
+```  
+
 ## Generate static for github pages
 
 Simply run `npm run static` for generating a `static` folder and an `index.html` file a the root of the project.
@@ -63,9 +112,8 @@ For running the test suite:
 For displaying covering:
 `yarn cover`
 
-If you are using Webstorm, you can use the mocha configuration for easily debugging your tests with breakpoints:
-
-![](mocha.png)
+If you are using Webstorm, you can use the jest configuration for easily debugging your tests with breakpoints:
+![](jest.png)
 
 ## Eslint
 

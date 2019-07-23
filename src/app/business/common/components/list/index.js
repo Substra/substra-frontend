@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
+import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
 import Popover from './components/popover';
 import PopoverItems from './components/popoverItems';
 import Title from './components/title';
@@ -13,7 +14,6 @@ import Item from './components/item';
 import Actions from './components/actions';
 
 import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
-import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import NoItemFound from './components/noItemFound';
 
@@ -33,12 +33,13 @@ class List extends Component {
 
     componentDidMount(prevProps, prevState, snapshot) {
         const {
-loading, fetchList, logList,
-} = this.props;
+            loading, fetchList, logList,
+        } = this.props;
 
         if (!loading) {
             fetchList();
         }
+
         logList();
     }
 
@@ -174,7 +175,7 @@ loading, fetchList, logList,
 
     render() {
         const {
-            results, init, loading, model, className, download,
+            results, init, loading, model, download,
             Title, Popover, Metadata, PopoverItems, Sort, setOrder,
             Actions,
         } = this.props;
@@ -182,7 +183,7 @@ loading, fetchList, logList,
         const {open, anchorEl, item} = this.state.popover;
 
         return (
-            <div className={className}>
+            <Fragment>
                 <PanelWrapper>
                     <PanelTop>
                         <Sort model={model} setOrder={setOrder} />
@@ -239,7 +240,7 @@ loading, fetchList, logList,
                         item={item}
                     />
                 </Popover>
-            </div>
+            </Fragment>
         );
     }
 }
@@ -252,7 +253,6 @@ List.defaultProps = {
     results: [],
     selected: '',
     order,
-    className: '',
     model: '',
     download: {},
     setSelected: noop,
@@ -282,7 +282,6 @@ List.propTypes = {
     results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
     selected: PropTypes.string,
     order: PropTypes.shape({}),
-    className: PropTypes.string,
     model: PropTypes.string,
     download: PropTypes.shape({
         address: PropTypes.arrayOf(PropTypes.string),

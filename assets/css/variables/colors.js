@@ -1,5 +1,3 @@
-/* global IS_OWKESTRA */
-
 export const
     white = '#ffffff',
     iceBlue = '#f7f8f8',
@@ -12,6 +10,6 @@ export const
     darkSkyBlue = '#4ba5d2',
     iceBlueTwo = '#edf6fa',
     // accent colors
-    primaryAccent = IS_OWKESTRA ? darkSkyBlue : tealish,
-    secondaryAccent = IS_OWKESTRA ? darkSkyBlue : gold,
-    iceSecondaryAccent = IS_OWKESTRA ? iceBlueTwo : iceGold;
+    primaryAccent = tealish,
+    secondaryAccent = gold,
+    iceSecondaryAccent = iceGold;

@@ -1,17 +1,17 @@
 const {SUBSTRABAC_USER, SUBSTRABAC_PASSWORD} = require('./credentials');
 
 const apiPort = process.env.NODE_PORT || 3000;
-const apiUrl = 'http://owkin.substrabac:8000';
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
+
+const apiUrl = 'http://owkin.substrabac:8000';
 const ravenUrl = process.env.FRONT_RAVEN_URL || '';
 const encryption_privkey = './encryption/ca.key';
 const encryption_fullchain = './encryption/ca.crt';
 const redis_host = process.env.REDIS_HOST || 'localhost';
 const redis_port = process.env.REDIS_PORT || 6379;
-const branding = process.env.FRONT_BRANDING || 'substra';
 
 module.exports = {
-    appName: branding === 'owkestra' ? 'Owkestra' : 'Substra',
+    appName: 'Substra',
     apps: {
         frontend: {
             apiUrl,
@@ -22,10 +22,9 @@ module.exports = {
                 debug: '/substrafront/build/ssr/client/',
             },
             meta: {
-                description: branding === 'owkestra' ? 'Owkestra' : 'Substra',
+                description: 'Substra',
             },
             raven_url: ravenUrl,
-            branding,
             scorePrecision: 3,
         },
     },

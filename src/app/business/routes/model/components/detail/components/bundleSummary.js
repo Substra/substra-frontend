@@ -3,12 +3,11 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import {capitalize, noop} from 'lodash';
+import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Th, Td,
 } from '../../../../dataset/components/detail/components/table';
-import RoundedButton from '../../../../../common/components/roundedButton';
-import DownloadSimple from '../../../../../common/svg/download-simple';
 
 class BundleSummary extends Component {
     downloadModel = model => () => {

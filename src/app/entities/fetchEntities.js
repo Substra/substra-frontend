@@ -1,4 +1,4 @@
-/* globals API_URL fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD SUBSTRABAC_AUTH_ENABLED */
+/* global API_URL fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD SUBSTRABAC_AUTH_ENABLED */
 
 import queryString from 'query-string';
 import {isEmpty} from 'lodash';

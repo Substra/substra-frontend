@@ -15,8 +15,6 @@ docker-compose*.yml
 
  # NPM dependencies
 node_modules/
-.npmrc
-.yarnrc
 yarn.lock
 package-lock.json
 
@@ -31,5 +29,5 @@ tools/
 .eslintrc.js
 Jenkinsfile
 LICENSE
-mocha.png
+jest.png
 README.md
