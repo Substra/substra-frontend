@@ -30,9 +30,6 @@ function* manageTabs(tabIndex) {
         if (item.description && !item.description.content && tabIndex === 0) {
             yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
         }
-        else if (item.metrics && !item.metrics.content && tabIndex === 1) {
-            yield put(actions.item.metrics.request({pkhash: item.key, url: item.metrics.storageAddress}));
-        }
     }
 }
 
@@ -69,14 +66,6 @@ function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     }
 }
 
-function* fetchItemMetricsSaga({payload: {pkhash, url}}) {
-    const {res, status} = yield call(fetchRaw, url);
-
-    if (res && status === 200) {
-        yield put(actions.item.metrics.success({pkhash, metricsContent: res}));
-    }
-}
-
 function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
@@ -110,7 +99,6 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
         takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
-        takeLatest(actionTypes.item.metrics.REQUEST, fetchItemMetricsSaga),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
