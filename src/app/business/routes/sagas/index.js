@@ -20,6 +20,9 @@ const getRouteAsset = (route) => {
     if (route === 'ALGORITHM') {
         return 'algo';
     }
+    if (route === 'HOME') {
+        return 'objective';
+    }
     return route.toLowerCase();
 };
 
@@ -61,6 +64,7 @@ const sagas = function* sagas() {
         takeLatest('DATASET', fetchList('DATASET')),
         takeLatest('ALGORITHM', fetchList('ALGORITHM')),
         takeLatest('MODEL', fetchList('MODEL')),
+        takeLatest('HOME', fetchList('HOME')),
     ]);
 
     yield fork(fetchInitialList);
