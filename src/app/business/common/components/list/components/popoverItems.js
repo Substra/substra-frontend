@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {capitalize} from 'lodash';
+import {ice, white} from '../../../../../../../assets/css/variables/colors';
 
 export const Action = styled('span')`
     display: block;
@@ -16,6 +17,8 @@ export const Action = styled('span')`
 export const PopList = styled('div')`
     list-style: none;
     margin: 0;
+    background-color: ${white};
+    border: 1px solid ${ice};
 `;
 
 export const PopItem = styled('li')`
