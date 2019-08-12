@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import Switch from '@material-ui/core/Switch';
 
 import actions from '../../actions';
 
@@ -16,13 +15,14 @@ class ComplexSearchToggle extends Component {
     render() {
         const {isComplex} = this.props;
         return (
-            <div>
-                <Switch
+            <label>
+                <input
+                    type='checkbox'
                     checked={isComplex}
                     onChange={this.handleIsComplex}
                 />
                 <span>Is Complex?</span>
-            </div>
+            </label>
         );
     }
 }

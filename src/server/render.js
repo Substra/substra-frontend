@@ -26,8 +26,6 @@ import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
 
-import theme from '../common/theme/index';
-
 
 const cache = redis.createClient({
     host: config.redis.host,
@@ -88,7 +86,7 @@ const createApp = (App, store, chunkNames) => (
     <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
         <Provider store={store}>
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
+                <MuiThemeProvider  sheetsManager={sheetsManager}>
                     <GlobalStyles />
                     <App />
                 </MuiThemeProvider>
