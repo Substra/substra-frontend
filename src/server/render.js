@@ -14,9 +14,6 @@ import flushChunks from 'webpack-flush-chunks';
 
 import {GlobalStyles} from '@substrafoundation/substra-ui';
 
-import {JssProvider, SheetsRegistry} from 'react-jss';
-import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
-
 import {promisify} from 'util';
 
 import routesMap from '../app/routesMap';
@@ -73,24 +70,11 @@ const createCacheStream = (key) => {
     });
 };
 
-// Create a sheetsRegistry instance.
-const sheetsRegistry = new SheetsRegistry();
-
-// Create a sheetsManager instance.
-const sheetsManager = new Map();
-
-// Create a new class name generator.
-const generateClassName = createGenerateClassName();
-
 const createApp = (App, store, chunkNames) => (
     <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
         <Provider store={store}>
-            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                <MuiThemeProvider  sheetsManager={sheetsManager}>
-                    <GlobalStyles />
-                    <App />
-                </MuiThemeProvider>
-            </JssProvider>
+            <GlobalStyles />
+            <App />
         </Provider>
     </ReportChunks>
 );
@@ -128,8 +112,7 @@ const earlyChunk = (styles, stateJson) => `
           <script>window.REDUX_STATE = ${stateJson}</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
-    lateChunk = (cssHash, materialUiCss, js, dll) => `</div>
-          <style id="jss-server-side" type="text/css">${materialUiCss}</style>
+    lateChunk = (cssHash, js, dll) => `</div>
           ${process.env.NODE_ENV === 'development' ? '<div id="devTools"></div>' : ''}
           ${cssHash}
           ${dll}
@@ -190,8 +173,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
         console.log('CHUNK NAMES', chunkNames);
 
-        const materialUiCss = sheetsRegistry.toString();
-        const late = lateChunk(cssHash, materialUiCss, js, dll);
+        const late = lateChunk(cssHash, js, dll);
         mainStream.end(late);
     });
 };
