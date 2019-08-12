@@ -15,8 +15,9 @@ class ComplexSearchToggle extends Component {
     render() {
         const {isComplex} = this.props;
         return (
-            <label>
+            <label htmlFor="isComplex">
                 <input
+                    id="isComplex"
                     type="checkbox"
                     checked={isComplex}
                     onChange={this.handleIsComplex}

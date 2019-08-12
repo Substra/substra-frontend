@@ -21,6 +21,10 @@ const actions = css`
     }
 `;
 
+const container = css`z-index: 1000;`;
+const noBorder = css`border: none;`;
+
+
 class Actions extends Component {
     state = {
         isOpen: false,
@@ -92,14 +96,14 @@ class Actions extends Component {
             <Popover
                 isOpen={isOpen}
                 position="bottom"
-                containerClassName={css`z-index: 1000;`}
+                containerClassName={container}
                 transitionDuration={0}
                 content={this.popoverContent()}
                 onClickOutside={this.togglePopover}
             >
                 <div className={actions}>
                     <IconButton
-                        className={css`border: none;`}
+                        className={noBorder}
                         Icon={MoreVertical}
                         onClick={this.togglePopover}
                         title="Show actions"
