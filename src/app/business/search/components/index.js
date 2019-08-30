@@ -2,7 +2,7 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
-import {SearchBar, withMuiTheme} from '@substrafoundation/substra-ui';
+import {SearchBar} from '@substrafoundation/substra-ui';
 
 import ComplexSearchToggle from './complexSearchToggle';
 
@@ -13,7 +13,6 @@ import {
 import actions from '../actions';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
 import {spacingLarge} from '../../../../../assets/css/variables/spacing';
-import theme from '../../../../common/theme/index';
 
 // export needed reducers and sagas
 export objectiveReducer from '../../routes/objective/reducers/index';
@@ -43,7 +42,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setState: actions.state.set,
 }, dispatch);
 
-const ReduxSearchBar = withInjectedReducers(connect(mapStateToProps, mapDispatchToProps)(withMuiTheme(SearchBar, theme)));
+const ReduxSearchBar = withInjectedReducers(connect(mapStateToProps, mapDispatchToProps)(SearchBar));
 
 const Wrapper = styled('div')`
     margin: 0 ${spacingLarge};
