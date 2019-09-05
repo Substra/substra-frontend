@@ -10,9 +10,7 @@ Please install the last version of yarn and run:<br/>
 Configure yarn/npm to use our private registry (use the credentials that we provided to you):
 
 ```bash
-npm config set registry https://substra-npm.owkin.com
-npm login
-npm config set always-auth true
+npm login --registry=https://substra-npm.owkin.com --scope=@substrafoundation
 ```
 
 Then run:<br/>
@@ -64,6 +62,7 @@ You'll need to update the `.npmrc` file in this repository with your credentials
 Assuming the auth token for the registry is in the `VERDACCIO_TOKEN` env variable, you can do:
 
 ```bash
+echo "@substrafoundation:registry=https://substra-npm.owkin.com/" >> .npmrc
 echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc
 ``` 
 
