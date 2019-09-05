@@ -21,6 +21,7 @@ package-lock.json
  # Other
 .cicd/
 coverage/
+charts/
 test/
 tools/
 .csslintrc
