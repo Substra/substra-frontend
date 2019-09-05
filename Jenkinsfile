@@ -77,7 +77,7 @@ pipeline {
       stage('Publish Helm') {
         agent {
           kubernetes {
-            label 'substra-network-tools-helm'
+            label 'substrafront-helm'
             defaultContainer 'helm'
             yamlFile '.cicd/agent-helm.yaml'
           }
@@ -88,8 +88,8 @@ pipeline {
         steps {
           sh "helm init --client-only"
           sh "helm plugin install https://github.com/chartmuseum/helm-push"
-          sh "helm repo add substra-charts https://substra-charts.owkin.com --username owlways --password Cokear4nnRK9ooC"
-          sh "helm push charts/substra-network-tools"
+          sh "helm repo add substra https://substra-charts.owkin.com --username owlways --password Cokear4nnRK9ooC"
+          sh "helm push charts/substrafront substra || true"
         }
       }
     }
