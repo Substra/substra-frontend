@@ -73,24 +73,24 @@ pipeline {
           }
         }
       }
+    }
 
-      stage('Publish Helm') {
-        agent {
-          kubernetes {
-            label 'substrafront-helm'
-            defaultContainer 'helm'
-            yamlFile '.cicd/agent-helm.yaml'
-          }
+    stage('Publish Helm') {
+      agent {
+        kubernetes {
+          label 'substrafront-helm'
+          defaultContainer 'helm'
+          yamlFile '.cicd/agent-helm.yaml'
         }
+      }
 
-        when { buildingTag() }
+      when { buildingTag() }
 
-        steps {
-          sh "helm init --client-only"
-          sh "helm plugin install https://github.com/chartmuseum/helm-push"
-          sh "helm repo add substra https://substra-charts.owkin.com --username owlways --password Cokear4nnRK9ooC"
-          sh "helm push charts/substrafront substra || true"
-        }
+      steps {
+        sh "helm init --client-only"
+        sh "helm plugin install https://github.com/chartmuseum/helm-push"
+        sh "helm repo add substra https://substra-charts.owkin.com --username owlways --password Cokear4nnRK9ooC"
+        sh "helm push charts/substrafront substra || true"
       }
     }
   }
