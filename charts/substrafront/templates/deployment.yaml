@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "substrafront.fullname" . }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/name: {{ template "substrafront.name" . }}
+    app.kubernetes.io/part-of: {{ template "substrafront.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ template "substrafront.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "substrafront.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range . }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: substrafront
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if .Values.image.pullPolicy }}
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          {{- end }}
+          command: ["./node_modules/.bin/babel-node", "./build/ssr/index.js"]
+          env:
+            - name: REDIS_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-{{ .Values.redis.host }}"
+            {{- with .Values.auth }}
+            - name: FRONT_AUTH_USER
+              value: {{ .user | quote }}
+            - name: FRONT_AUTH_PASSWORD
+              value: {{ .password | quote }}
+            {{- end }}
+            - name: API_URL
+              value: {{ .Values.api.url | quote }}
+            {{- with .Values.api.auth }}
+            - name: BACK_AUTH_USER
+              value: {{ .user | quote }}
+            - name: BACK_AUTH_PASSWORD
+              value: {{ .password | quote }}
+            {{- end }}
+            - name: NODE_PORT
+              value: "80"
+            - name: SECURE_NODE_PORT
+              value: "443"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- with .Values.auth }}
+              httpHeaders:
+                - name: Authorization
+                  value: {{ .header | quote }}
+              {{- end }}
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- with .Values.auth }}
+              httpHeaders:
+                - name: Authorization
+                  value: {{ .header | quote }}
+              {{- end }}
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
