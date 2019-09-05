@@ -2,9 +2,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "substrafront.fullname" . }}-frontend
+  name: {{ template "substrafront.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ template "substrafront.fullname" . }}-frontend
+    app.kubernetes.io/name: {{ template "substrafront.fullname" . }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -31,7 +31,7 @@ spec:
         {{- range .paths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ template "substrafront.fullname" $ }}-frontend
+              serviceName: {{ template "substrafront.fullname" $ }}
               servicePort: http
         {{- end }}
   {{- end }}
