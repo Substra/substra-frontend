@@ -45,7 +45,7 @@ export default {
         libraryTarget: 'commonjs2',
         publicPath: DEBUG ? DEBUG_BASE_NAME : PRODUCTION_BASE_NAME,
     },
-    resolve: resolve(),
+    resolve: resolve(DEVELOPMENT),
     plugins: plugins('server'),
     // optimization: {
     //     minimize: false,

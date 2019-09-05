@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 import {css} from 'emotion';
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -23,7 +24,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             >
                 {`Copy ${model}'s key to clipboard`}
             </Action>
-            {itemLoading && <PulseLoader size={6} />}
+            {itemLoading && <Action><PulseLoader size={6} /></Action>}
             {!itemLoading && (
                 <Fragment>
                     <Action
@@ -43,7 +44,14 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
     </PopList>
 );
 
-DatasetPopoverItems.propTypes = PopoverItems.propTypes;
-DatasetPopoverItems.defaultProps = PopoverItems.defaultProps;
+DatasetPopoverItems.propTypes = {
+    ...PopoverItems.propTypes,
+    itemLoading: PropTypes.bool,
+};
+
+DatasetPopoverItems.defaultProps = {
+    ...PopoverItems.defaultProps,
+    itemLoading: false,
+};
 
 export default DatasetPopoverItems;
