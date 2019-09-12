@@ -1425,14 +1425,13 @@
   resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.2.tgz#8013f2af54a2b7d735f71560ff360d3a8176a87b"
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
-"@substrafoundation/substra-ui@1.1.1":
-  version "1.1.1"
-  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-1.1.1.tgz#c866c3c6df8b2524797ef2ec80c4547c47b63a9c"
-  integrity sha512-dNx3P+yYfmcQCZ/1uRK4YzlAHRk25uKyycdSBXYd34kDd2VVzjBT4qlwrHtwgGpM5pa+zExWl6VRL+aI7xQjIw==
+"@substrafoundation/substra-ui@1.1.2":
+  version "1.1.2"
+  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-1.1.2.tgz#8e370e65416c30acaadb383f90fae931b3492155"
+  integrity sha512-4mdwIcytWWKSnwEmMfjKQRVsC2eXROcWqKq7lA87M+UbK3UaOZ+0G20FhpPLrE3HtrvjmYb/RndHc32mYT8vtg==
   dependencies:
     "@emotion/core" "10.0.15"
     "@emotion/styled" "10.0.15"
-    classnames "2.2.6"
     copy-to-clipboard "3.2.0"
     diacritic "0.0.2"
     downshift "3.2.12"
@@ -3222,7 +3221,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.2.6, classnames@^2.2.0, classnames@^2.2.4:
+classnames@^2.2.0, classnames@^2.2.4:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
