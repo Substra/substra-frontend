@@ -1425,10 +1425,10 @@
   resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.2.tgz#8013f2af54a2b7d735f71560ff360d3a8176a87b"
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
-"@substrafoundation/substra-ui@1.1.0":
-  version "1.1.0"
-  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-1.1.0.tgz#a6eb6400c7b527efa9e7486687016150f9555305"
-  integrity sha512-d66bHAwcQl2C1IrkfKm2VjtHPF8oSKmkP4y9UwM8Mn0L8CRDXZKYOj60PA42+rqG89cfCphtSHYG/SPvCP5YHg==
+"@substrafoundation/substra-ui@1.1.1":
+  version "1.1.1"
+  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-1.1.1.tgz#c866c3c6df8b2524797ef2ec80c4547c47b63a9c"
+  integrity sha512-dNx3P+yYfmcQCZ/1uRK4YzlAHRk25uKyycdSBXYd34kDd2VVzjBT4qlwrHtwgGpM5pa+zExWl6VRL+aI7xQjIw==
   dependencies:
     "@emotion/core" "10.0.15"
     "@emotion/styled" "10.0.15"
@@ -1442,8 +1442,6 @@
     keycode "2.2.0"
     mime-types "2.1.24"
     prop-types "15.7.2"
-    react "16.9.0"
-    react-is "16.9.0"
     react-syntax-highlighter "11.0.2"
     react-tabs "3.0.0"
 
@@ -11020,7 +11018,7 @@ react-input-autosize@^2.1.2:
   dependencies:
     prop-types "^15.5.8"
 
-react-is@16.9.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
+react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
@@ -11174,7 +11172,7 @@ react@16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-react@16.9.0, react@^16.5.2:
+react@^16.5.2:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
   integrity sha512-+7LQnFBwkiw+BobzOF6N//BdoNw0ouwmSJTEm9cglOOmsg/TMiFHZLe2sEoN5M7LgJTj9oHH0gxklfnQe66S1w==
