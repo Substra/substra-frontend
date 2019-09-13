@@ -2,7 +2,7 @@ FROM node:alpine AS build
 
 WORKDIR /workspace
 
-COPY package-build.json /workspace/package.json
+COPY package.json /workspace/package.json
 COPY packages/ssr /workspace/packages/ssr
 COPY packages/base /workspace/packages/base
 COPY packages/plugins  /workspace/packages/plugins
@@ -23,7 +23,8 @@ FROM node:alpine
 
 WORKDIR /workspace
 
-COPY --from=build /workspace/packages/ssr/package.json /workspace/package.json
+COPY --from=build /workspace/package.json /workspace/package.json
+COPY --from=build /workspace/packages/ssr /workspace/packages/ssr
 COPY .npmrc .npmrc
 COPY .yarnrc .yarnrc
 
