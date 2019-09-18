@@ -33,6 +33,7 @@ describe('fetchEntitiesFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -44,6 +45,7 @@ describe('fetchEntitiesFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -55,6 +57,7 @@ describe('fetchEntitiesFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -95,6 +98,7 @@ describe('fetchEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -106,6 +110,7 @@ describe('fetchEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -147,6 +152,7 @@ describe('fetchEntitiesByPathFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -159,6 +165,7 @@ describe('fetchEntitiesByPathFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -171,6 +178,7 @@ describe('fetchEntitiesByPathFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -212,6 +220,7 @@ describe('fetchByUrl', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -224,6 +233,7 @@ describe('fetchByUrl', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -236,6 +246,7 @@ describe('fetchByUrl', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -277,6 +288,7 @@ describe('deleteEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -290,6 +302,7 @@ describe('deleteEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
         });
     });
 
@@ -328,6 +341,7 @@ describe('updateEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -342,6 +356,7 @@ describe('updateEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -356,6 +371,7 @@ describe('updateEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify({name: 'foo'}),
         });
     });
@@ -398,6 +414,7 @@ describe('createEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -412,6 +429,7 @@ describe('createEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -426,6 +444,7 @@ describe('createEntityFactory', () => {
                 'Content-Type': 'application/json;',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify({name: 'foo'}),
         });
     });
@@ -466,6 +485,7 @@ describe('createFormEntityFactory', () => {
             method: 'POST',
             headers: {},
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -478,6 +498,7 @@ describe('createFormEntityFactory', () => {
                 Authorization: 'JWT token',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -540,6 +561,7 @@ describe('updateFormEntityFactory', () => {
             method: 'PATCH',
             headers: {},
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });
@@ -552,6 +574,7 @@ describe('updateFormEntityFactory', () => {
                 Authorization: 'JWT token',
             },
             mode: 'cors',
+            credentials: 'include',
             body: JSON.stringify(undefined),
         });
     });

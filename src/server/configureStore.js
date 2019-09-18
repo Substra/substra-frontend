@@ -1,6 +1,8 @@
 /* globals PRODUCTION_BASE_NAME */
 import {NOT_FOUND} from 'redux-first-router';
-
+import cookie from 'cookie-parse';
+import atob from 'atob';
+import isBefore from 'date-fns/isBefore';
 
 import configureStore from '../common/configureStore';
 
@@ -12,10 +14,33 @@ const doesRedirect = ({kind, pathname, search}, res) => {
 };
 
 export default async (ctx) => {
-    const {store, thunk} = configureStore({}, [ctx.originalUrl], {
+    let preLoadedState = {};
+
+    if (ctx.req.headers.cookie) {
+        const cookies = cookie.parse(ctx.req.headers.cookie);
+        const headerPayload = cookies['header.payload'];
+
+        if (headerPayload) {
+            let payload;
+            try {
+                payload = JSON.parse(atob(headerPayload.split('.')[1]));
+            }
+            catch (e) {
+                payload = {};
+            }
+            console.log(payload);
+
+            preLoadedState = {
+                user: {
+                    authenticated: isBefore(new Date(payload.exp), new Date()),
+                },
+            };
+        }
+    }
+
+    const {store, thunk} = configureStore(preLoadedState, [ctx.originalUrl], {
         basename: PRODUCTION_BASE_NAME,
     });
-
 
     // if not using onBeforeChange + jwTokens, you can also async authenticate
     // here against your db (i.e. using req.cookies.sessionId)
