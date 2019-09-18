@@ -1,10 +1,12 @@
-/* globals fetch SUBSTRABAC_AUTH_ENABLED */
+/* globals fetch SUBSTRABAC_AUTH_ENABLED window */
 
 import {
     takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
 
 import {saveAs} from 'file-saver';
+import cookie from 'cookie-parse';
+
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
@@ -15,8 +17,16 @@ import {getItem} from '../../../common/selector';
 
 function* fetchList(request) {
     const state = yield select();
+    let jwt;
 
-    const f = () => fetchListApi(state.location.query);
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    const f = () => fetchListApi(state.location.query, jwt);
 
     yield call(fetchListSaga(actions, f), request);
 }
@@ -33,10 +43,20 @@ function* manageTabs(tabIndex) {
 }
 
 function* fetchItem({payload}) {
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
     yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
             get_parameters: {},
+            jwt,
         },
     });
 }
@@ -58,7 +78,16 @@ function* setTabIndexSaga({payload}) {
 }
 
 function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    const {res, status} = yield call(fetchRaw, url);
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    const {res, status} = yield call(fetchRaw, url, jwt);
 
     if (res && status === 200) {
         yield put(actions.item.description.success({pkhash, desc: res}));
@@ -69,11 +98,22 @@ function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
     yield fetch(url, {
         headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
+            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
+            ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
         },
+        credentials: 'include',
         mode: 'cors',
     }).then((response) => {
         status = response.status;

@@ -1,7 +1,10 @@
+/* global window */
+
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
+import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
@@ -11,8 +14,16 @@ fetchListSaga, fetchPersistentSaga, setOrderSaga,
 
 function* fetchList(request) {
     const state = yield select();
+    let jwt;
 
-    const f = () => fetchListApi(state.location.query);
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    const f = () => fetchListApi(state.location.query, jwt);
 
     yield call(fetchListSaga(actions, f), request);
 }
@@ -42,7 +53,16 @@ function* fetchBundleDetail() {
 }
 
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
-    const {id, get_parameters, jwt} = payload;
+    const {id, get_parameters} = payload;
+
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
 
     const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
 
@@ -56,7 +76,6 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
 
     return list;
 };
-
 
 /* istanbul ignore next */
 const sagas = function* sagas() {

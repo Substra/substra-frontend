@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
@@ -8,6 +8,7 @@ import Nav from './business/nav/redux';
 
 import Route from './business/routes';
 import Search from './business/search/routes';
+import UserRoute from './business/user/routes';
 
 const Container = styled('div')`
     height: 100%;
@@ -15,21 +16,27 @@ const Container = styled('div')`
     flex-direction: column;
 `;
 
-
-const Routes = ({page}) => (
+const Routes = ({page, user}) => (
     <Container>
         <ServiceWorker />
-        <Top />
-        <Search />
-        <Nav />
-        <Route page={page} />
+        {user && user.authenticated ? (
+            <Fragment>
+                <Top />
+                <Search />
+                <Nav />
+                <Route page={page} />
+            </Fragment>
+            )
+            : <UserRoute />
+        }
     </Container>
 );
 
 Routes.propTypes = {
     page: PropTypes.string.isRequired,
+    user: PropTypes.shape().isRequired,
 };
 
-const mapStateToProps = ({location}) => ({page: location.type});
+const mapStateToProps = ({location, user}) => ({page: location.type, user});
 
 export default connect(mapStateToProps)(Routes);

@@ -5,10 +5,13 @@ import {NOT_FOUND} from 'redux-first-router';
 /* Declare routes */
 import Component from '../common/routes';
 import NotFoundRoutes from './notFound/routes';
+import User from '../user/routes';
 
 
 const Route = ({page}) => {
     switch (page) {
+        case 'USER':
+            return <User />;
         case 'HOME':
         case 'OBJECTIVE':
             return <Component model="objective" />;
