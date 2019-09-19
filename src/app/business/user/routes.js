@@ -3,8 +3,11 @@ import universal from 'react-universal-component';
 import {connect} from 'react-redux';
 import PulseLoader from '../common/routes/pulseLoader';
 
-const Universal = universal(import('./components/index'), {
+// need to pass different path for generating different chunks
+// https://github.com/faceyspacey/babel-plugin-universal-import#caveat
+const Universal = universal(import('../user/components/index'), {
     loading: <PulseLoader />,
+    ignoreBabelRename: true,
 });
 
 const mapStateToProps = ({user}, ownProps) => ({user, ...ownProps});

@@ -1,6 +1,5 @@
 import {reducer as formReducer} from 'redux-form';
 
-import localStorage from '../utils/localStorage';
 import {actionTypes} from './actions';
 import search from './business/search/reducers';
 import title from './business/routes/reducers/title';
@@ -24,7 +23,7 @@ export const general = (state = initialState, {type, payload}) => {
 
 export default {
     form: formReducer,
-    user: userReducerFactory(localStorage),
+    user: userReducerFactory(),
     general,
     search,
     title,
