@@ -27,12 +27,11 @@ export const signIn = (fetchSignIn, storeLocalUser) => function* signInSaga({pay
             yield call(storeLocalUser, res);
             yield put(signInActions.success(res));
 
+            // redirect
             const route = previousRoute;
             if (route.pathname === '') {
                 route.pathname = '/';
             }
-
-            // redirect
             replace(route);
         }
     };

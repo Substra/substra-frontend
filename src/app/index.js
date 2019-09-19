@@ -1,7 +1,9 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
+import {replace} from 'redux-first-router';
+
 import ServiceWorker from './business/common/components/serviceWorker';
 import Top from './business/top/redux';
 import Nav from './business/nav/redux';
@@ -16,19 +18,27 @@ const Container = styled('div')`
     flex-direction: column;
 `;
 
+const Content = ({user, children}) => {
+    if (user && !user.authenticated) {
+        replace('/user');
+        return null;
+    }
+
+    return children;
+};
+
 const Routes = ({page, user}) => (
     <Container>
         <ServiceWorker />
-        {user && user.authenticated ? (
-            <Fragment>
-                <Top />
-                <Search />
-                <Nav />
-                <Route page={page} />
-            </Fragment>
-            )
-            : <UserRoute />
-        }
+        {page === 'USER' ? <UserRoute user={user} />
+            : (
+                <Content user={user}>
+                    <Top />
+                    <Search />
+                    <Nav />
+                    <Route page={page} />
+                </Content>
+        )}
     </Container>
 );
 
