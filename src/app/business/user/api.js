@@ -54,12 +54,10 @@ export function fetchSignOut() {
 }
 
 export const storeLocalUser = ({payload}) => {
-    // localStorage.setItem('exp', exp);
     localStorage.setItem('payload', payload);
 };
 
 export const removeLocalUser = () => {
     // user
-    // localStorage.removeItem('exp');
     localStorage.removeItem('payload');
 };

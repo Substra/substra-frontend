@@ -26,7 +26,6 @@ export default function () {
         }
     }
 
-
     const initialState = {
         payload,
         authenticated: isBefore(new Date(payload.exp), now),

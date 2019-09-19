@@ -36,7 +36,7 @@ const style = {
 
 class Index extends Component {
     signIn = ({username, password}) => {
-        this.props.signIn({username, password, previousRoute: this.props.location});
+        this.props.signIn({username, password, previousRoute: this.props.location.prev});
     };
 
     render() {

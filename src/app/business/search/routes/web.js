@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import universal from 'react-universal-component';
-import {injectSaga, injectReducer} from 'redux-sagas-injector';
+import {injectSagaBulk, injectReducerBulk} from 'redux-sagas-injector';
 import {ReactReduxContext} from 'react-redux';
 
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -19,17 +19,21 @@ class Universal extends Component {
                 // do not forget to pass the reduxcontext.store AND the withInjectedReducers wrapper to your imported redux component, or concurrent calls in the server part will fail
 
                 if (reduxcontext && reduxcontext.store) {
-                    injectSaga('objective', module.objectiveSagas, false, reduxcontext.store);
-                    injectReducer('objective', module.objectiveReducer, false, reduxcontext.store);
+                    const sagas = [
+                        {key: 'objective', saga: module.objectiveSagas},
+                        {key: 'dataset', saga: module.datasetSagas},
+                        {key: 'algo', saga: module.algoSagas},
+                        {key: 'model', saga: module.modelSagas},
+                    ];
+                    const reducers = [
+                        {key: 'objective', reducer: module.objectiveReducer},
+                        {key: 'dataset', reducer: module.datasetReducer},
+                        {key: 'algo', reducer: module.algoReducer},
+                        {key: 'model', reducer: module.modelReducer},
+                    ];
 
-                    injectSaga('dataset', module.datasetSagas, false, reduxcontext.store);
-                    injectReducer('dataset', module.datasetReducer, false, reduxcontext.store);
-
-                    injectSaga('algo', module.algoSagas, false, reduxcontext.store);
-                    injectReducer('algo', module.algoReducer, false, reduxcontext.store);
-
-                    injectSaga('model', module.modelSagas, false, reduxcontext.store);
-                    injectReducer('model', module.modelReducer, false, reduxcontext.store);
+                    injectSagaBulk(sagas, false, reduxcontext.store);
+                    injectReducerBulk(reducers, false, reduxcontext.store);
                 }
             },
             ignoreBabelRename: true,

@@ -6,9 +6,9 @@ import isBefore from 'date-fns/isBefore';
 
 import configureStore from '../common/configureStore';
 
-const doesRedirect = ({kind, pathname, search}, res) => {
+const doesRedirect = ({kind, pathname, search}, ctx) => {
     if (kind === 'redirect') {
-        res.redirect(302, search ? `${pathname}?${search}` : pathname);
+        ctx.redirect(search ? `${pathname}?${search}` : pathname);
         return true;
     }
 };
@@ -49,7 +49,7 @@ export default async (ctx) => {
     // serverRender.js will short-circuit since the redirect is made here already
     const location = store.getState().location;
 
-    if (doesRedirect(location, ctx.res)) return false;
+    if (doesRedirect(location, ctx)) return false;
 
     // using redux-thunk perhaps request and dispatch some app-wide state as well, e.g:
     // await Promise.all([store.dispatch(myThunkA), store.dispatch(myThunkB)])

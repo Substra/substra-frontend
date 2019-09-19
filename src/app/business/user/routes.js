@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import universal from 'react-universal-component';
-import {connect} from 'react-redux';
+
 import PulseLoader from '../common/routes/pulseLoader';
 
 // need to pass different path for generating different chunks
@@ -10,9 +11,10 @@ const Universal = universal(import('../user/components/index'), {
     ignoreBabelRename: true,
 });
 
-const mapStateToProps = ({user}, ownProps) => ({user, ...ownProps});
+const User = ({user}) => user && user.authenticated ? null : <Universal />;
 
-export default connect(mapStateToProps)((props) => {
-    const {user} = props;
-    return user && user.authenticated ? null : <Universal />;
-});
+User.propTypes = {
+    user: PropTypes.shape().isRequired,
+};
+
+export default User;
