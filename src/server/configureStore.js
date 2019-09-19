@@ -28,7 +28,6 @@ export default async (ctx) => {
             catch (e) {
                 payload = {};
             }
-            console.log(payload);
 
             preLoadedState = {
                 user: {

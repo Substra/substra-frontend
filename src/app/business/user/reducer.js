@@ -1,10 +1,35 @@
+/* globals window */
+
+import cookie from 'cookie-parse';
+import atob from 'atob';
+import isBefore from 'date-fns/isBefore';
+
 import {actionTypes} from './actions';
 
-export default function (localStorage) {
+export default function () {
+    const now = new Date();
+    let payload = {
+        exp: now,
+    };
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            const headerPayload = cookies['header.payload'];
+            try {
+                payload = JSON.parse(atob(headerPayload.split('.')[1]));
+            }
+            catch (e) {
+                payload = {
+                    exp: now,
+                };
+            }
+        }
+    }
+
+
     const initialState = {
-        payload: localStorage ? localStorage.getItem('payload') : '',
-        // exp: localStorage.getItem('exp') ? parseInt(localStorage.getItem('exp'), 10) : localStorage.getItem('exp'),
-        authenticated: localStorage ? !!localStorage.getItem('payload') : false,
+        payload,
+        authenticated: isBefore(new Date(payload.exp), now),
         loading: false,
         modal: false,
         registered: false,
@@ -17,7 +42,6 @@ export default function (localStorage) {
                 ...state,
                 authenticated: false,
                 payload: null,
-                // exp: null,
                 error: false,
                 loading: true,
             };
@@ -38,7 +62,6 @@ export default function (localStorage) {
                 error: payload,
                 loading: false,
                 payload: null,
-                // exp: null,
                 registered: false,
             };
 
@@ -49,7 +72,6 @@ export default function (localStorage) {
                 has_permission: false,
                 payload: null,
                 loading: false,
-                // exp: null,
             };
         case actionTypes.modal.SET:
             return {
