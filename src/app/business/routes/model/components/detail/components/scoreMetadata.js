@@ -18,7 +18,7 @@ const ScoreMetadata = ({item, label, tupleName}) => (
         {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (
             <Fragment>
                 {capitalize(item[tupleName].status)}
-                <InlinePulseLoader loading={['todo', 'doing'].includes(item[tupleName].status)} />
+                <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item[tupleName].status)} />
             </Fragment>
         )}
     </SingleMetadata>

@@ -110,7 +110,7 @@ class ModelTabs extends Component {
                         || (item.traintuple.status === 'failed' && (
                             <p>This model could not complete its training (no testing possible).</p>
                         ))
-                        || (['todo', 'doing'].includes(item.traintuple.status) && (
+                        || (['waiting', 'todo', 'doing'].includes(item.traintuple.status) && (
                             <Fragment>
                                 <p>
                                     You can execute the code below to launch a testing task as soon as the training is over.
