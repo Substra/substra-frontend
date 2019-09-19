@@ -29,7 +29,7 @@ const ScoreMetadata = ({label, testtuple}) => (
         {testtuple.status !== 'done' && (
             <Fragment>
                 {capitalize(testtuple.status)}
-                <InlinePulseLoader loading={['todo', 'doing'].includes(testtuple.status)} />
+                <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(testtuple.status)} />
             </Fragment>
         )}
         {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(SCORE_PRECISION)}
@@ -57,7 +57,7 @@ const Metadata = ({o}) => (
         <div className={metadata}>
             <SingleMetadata label="Status">
                 {capitalize(o.traintuple.status)}
-                <InlinePulseLoader loading={['todo', 'doing'].includes(o.traintuple.status)} />
+                <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
             </SingleMetadata>
             {o && o.tag && o.nonCertifiedTesttuple && (
                 <ScoreMetadata
