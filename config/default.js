@@ -1,5 +1,3 @@
-const {SUBSTRABAC_USER, SUBSTRABAC_PASSWORD} = require('./credentials');
-
 const apiPort = process.env.NODE_PORT || 3000;
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
 
@@ -31,12 +29,6 @@ module.exports = {
     encryption: {
         privkey: encryption_privkey,
         fullchain: encryption_fullchain,
-    },
-    credentials: {
-        // if we need to send credentials to connect to substrabac API
-        enabled: process.env.SUBSTRABAC_AUTH_ENABLED || false,
-        SUBSTRABAC_USER,
-        SUBSTRABAC_PASSWORD,
     },
     redis: {
         host: redis_host,

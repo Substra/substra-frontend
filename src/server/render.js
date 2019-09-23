@@ -32,8 +32,6 @@ const cache = redis.createClient({
 // override variables between same built app, but not remote API
 // There are not present in the webpack definePlugin
 const API_URL = config.apps.frontend.apiUrl;
-const SUBSTRABAC_USER = config.credentials.SUBSTRABAC_USER;
-const SUBSTRABAC_PASSWORD = config.credentials.SUBSTRABAC_PASSWORD;
 
 const exists = promisify(cache.exists).bind(cache);
 const get = promisify(cache.get).bind(cache);
@@ -106,8 +104,6 @@ const earlyChunk = (styles, stateJson) => `
           </noscript>
           <script>
             window.API_URL="${API_URL}";
-            window.SUBSTRABAC_USER="${SUBSTRABAC_USER}";
-            window.SUBSTRABAC_PASSWORD="${SUBSTRABAC_PASSWORD}";
           </script>
           <script>window.REDUX_STATE = ${stateJson}</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}

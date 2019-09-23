@@ -17,9 +17,6 @@ import {
 // const FormData = require('form-data');
 
 global.API_URL = 'http://api';
-global.SUBSTRABAC_AUTH_ENABLED = false;
-global.SUBSTRABAC_USER = 'foo';
-global.SUBSTRABAC_PASSWORD = 'bar';
 global.fetch = jest.fn();
 global.fetch.mockReturnValue(Promise.resolve());
 
