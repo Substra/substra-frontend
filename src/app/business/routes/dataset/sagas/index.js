@@ -1,4 +1,4 @@
-/* globals fetch SUBSTRABACKEND_AUTH_ENABLED window */
+/* globals fetch window */
 
 import {
     all, call, put, select, takeEvery, takeLatest,
@@ -12,7 +12,7 @@ import {fetchItemApi, fetchListApi} from '../api';
 import {
     fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 
 
@@ -130,7 +130,6 @@ function* downloadItemSaga({payload: {url}}) {
     yield fetch(url, {
         headers: {
             Accept: 'application/json;version=0.0',
-            ...(SUBSTRABACKEND_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
         },
         credentials: 'include',

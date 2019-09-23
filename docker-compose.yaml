@@ -18,8 +18,6 @@ services:
     restart: unless-stopped
     environment:
       - API_URL=$API_URL
-      - BACK_AUTH_USER=$BACK_AUTH_USER
-      - BACK_AUTH_PASSWORD=$BACK_AUTH_PASSWORD
       - FRONT_AUTH_USER=$FRONT_AUTH_USER
       - FRONT_AUTH_PASSWORD=$FRONT_AUTH_PASSWORD
       - REDIS_HOST=$REDIS_HOST

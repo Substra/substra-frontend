@@ -49,12 +49,6 @@ spec:
             {{- end }}
             - name: API_URL
               value: {{ .Values.api.url | quote }}
-            {{- with .Values.api.auth }}
-            - name: BACK_AUTH_USER
-              value: {{ .user | quote }}
-            - name: BACK_AUTH_PASSWORD
-              value: {{ .password | quote }}
-            {{- end }}
             - name: NODE_PORT
               value: "80"
             - name: SECURE_NODE_PORT

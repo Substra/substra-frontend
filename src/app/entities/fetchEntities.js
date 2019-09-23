@@ -1,15 +1,11 @@
-/* global API_URL fetch SUBSTRABACKEND_USER SUBSTRABACKEND_PASSWORD SUBSTRABACKEND_AUTH_ENABLED */
+/* global API_URL fetch */
 
 import queryString from 'query-string';
 import {isEmpty} from 'lodash';
-import btoa from 'btoa';
-
-export const basic = () => btoa(`${SUBSTRABACKEND_USER}:${SUBSTRABACKEND_PASSWORD}`);
 
 export const getHeaders = jwt => ({
     Accept: 'application/json;version=0.0',
     'Content-Type': 'application/json;',
-    ...(SUBSTRABACKEND_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
     ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
 });
 

@@ -1,5 +1,3 @@
-const { SUBSTRABACKEND_USER, SUBSTRABACKEND_PASSWORD } = require('./credentials');
-
 const apiPort = process.env.NODE_PORT || 3000;
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
 
@@ -31,12 +29,6 @@ module.exports = {
     encryption: {
         privkey: encryption_privkey,
         fullchain: encryption_fullchain,
-    },
-    credentials: {
-        // if we need to send credentials to connect to substra-backend API
-        enabled: process.env.SUBSTRABACKEND_AUTH_ENABLED || false,
-        SUBSTRABACKEND_USER,
-        SUBSTRABACKEND_PASSWORD,
     },
     redis: {
         host: redis_host,
