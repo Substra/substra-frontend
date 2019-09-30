@@ -7,7 +7,7 @@ import {RoundedButton, DownloadSimple} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Th, Td,
-} from '../../../../dataset/components/detail/components/table';
+} from '../../../../../common/components/detail/components/table';
 
 class BundleSummary extends Component {
     downloadModel = model => () => {

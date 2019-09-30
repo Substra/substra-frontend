@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import {ice, iceBlue} from '../../../../../../../../assets/css/variables/colors';
-import {spacingExtraSmall, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
+import {ice, iceBlue} from '../../../../../../../assets/css/variables/colors';
+import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 
 export const Table = styled('table')`
     border: 1px solid ${ice};

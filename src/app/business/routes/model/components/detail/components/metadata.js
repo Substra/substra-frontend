@@ -7,6 +7,7 @@ import BaseMetadata, {
     keyLabelClassName,
     keyValueClassName,
     BrowseRelatedMetadata,
+    PermissionsMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
@@ -62,6 +63,9 @@ class Metadata extends Component {
                         </Fragment>
                     )}
                 </SingleMetadata>
+                <SingleMetadata label="Creator" value={item.traintuple.creator} />
+                <SingleMetadata label="Worker" value={item.traintuple.dataset.worker} />
+                <PermissionsMetadata permissions={item.traintuple.permissions} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
                 </BrowseRelatedMetadata>

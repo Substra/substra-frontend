@@ -12,6 +12,7 @@ import {
 } from '@substrafoundation/substra-ui';
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
+import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 
@@ -29,6 +30,7 @@ descLoading, item, downloadFile, tabIndex, setTabIndex,
         <TabList>
             <Tab>Description</Tab>
             <Tab>Metrics</Tab>
+            <Tab>Permissions</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
@@ -39,6 +41,13 @@ descLoading, item, downloadFile, tabIndex, setTabIndex,
             <RoundedButton Icon={DownloadSimple} onClick={downloadFile}>
                 Download metrics
             </RoundedButton>
+        </TabPanel>
+        <TabPanel>
+            <PermissionsTabPanelContent
+                permissions={item.permissions}
+                owner={item.owner}
+                asset="objective"
+            />
         </TabPanel>
     </Tabs>
 );

@@ -15,6 +15,7 @@ import {
 import Tab from '../../../../../../common/components/detail/components/tabs';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
+import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
@@ -30,6 +31,7 @@ descLoading, item, tabIndex, setTabIndex, downloadFile,
         <TabList>
             <Tab>Description</Tab>
             <Tab>Code</Tab>
+            <Tab>Permissions</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
@@ -40,6 +42,13 @@ descLoading, item, tabIndex, setTabIndex, downloadFile,
             <RoundedButton Icon={DownloadSimple} onClick={downloadFile}>
                 Download algo
             </RoundedButton>
+        </TabPanel>
+        <TabPanel>
+            <PermissionsTabPanelContent
+                permissions={item.permissions}
+                owner={item.owner}
+                asset="dataset"
+            />
         </TabPanel>
     </Tabs>
 );

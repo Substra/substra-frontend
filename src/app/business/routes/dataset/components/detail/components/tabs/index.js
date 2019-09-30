@@ -19,6 +19,7 @@ import CopyInput from '../../../../../../common/components/detail/components/cop
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';
 import Description from '../../../../../../common/components/detail/components/description';
+import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -40,6 +41,7 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
             <Tab>Opener</Tab>
             <Tab>Train data samples</Tab>
             <Tab>Test data samples</Tab>
+            <Tab>Permissions</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
@@ -104,6 +106,13 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
                     />
                 </Fragment>
             )}
+        </TabPanel>
+        <TabPanel>
+            <PermissionsTabPanelContent
+                permissions={item.permissions}
+                owner={item.owner}
+                asset="dataset"
+            />
         </TabPanel>
     </Tabs>
 );
