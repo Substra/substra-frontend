@@ -12,7 +12,9 @@ import {
     SingleMetadata,
     MetadataWrapper,
     keyLabelClassName,
-    keyValueClassName, BrowseRelatedMetadata,
+    keyValueClassName,
+    BrowseRelatedMetadata,
+    PermissionsMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
@@ -64,6 +66,9 @@ class ModelSummary extends Component {
                         tupleName="testtuple"
                         item={model}
                     />
+                    <SingleMetadata label="Creator" value={model.traintuple.creator} />
+                    <SingleMetadata label="Worker" value={model.traintuple.dataset.worker} />
+                    <PermissionsMetadata permissions={model.traintuple.permissions} />
                     <BrowseRelatedMetadata>
                         <BrowseRelatedLinks item={model} />
                     </BrowseRelatedMetadata>
