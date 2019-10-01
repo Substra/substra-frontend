@@ -41,12 +41,6 @@ spec:
               value: {{ .Values.redis.port | quote }}
             - name: REDIS_HOST
               value: "{{ .Release.Name }}-{{ .Values.redis.host }}"
-            {{- with .Values.auth }}
-            - name: FRONT_AUTH_USER
-              value: {{ .user | quote }}
-            - name: FRONT_AUTH_PASSWORD
-              value: {{ .password | quote }}
-            {{- end }}
             - name: API_URL
               value: {{ .Values.api.url | quote }}
             - name: NODE_PORT
