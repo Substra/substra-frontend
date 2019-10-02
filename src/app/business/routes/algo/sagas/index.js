@@ -14,6 +14,7 @@ fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
@@ -26,9 +27,13 @@ function* fetchList(request) {
         }
     }
 
-    const f = () => fetchListApi(state.location.query, jwt);
-
-    yield call(fetchListSaga(actions, f), request);
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchListSaga(actions, f), request);
+    }
 }
 
 function* manageTabs(tabIndex) {
@@ -51,14 +56,18 @@ function* fetchItem({payload}) {
             jwt = cookies['header.payload'];
         }
     }
-
-    yield call(fetchItemSaga(actions, fetchItemApi), {
-        payload: {
-            id: payload.key,
-            get_parameters: {},
-            jwt,
-        },
-    });
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
+    }
+    else {
+        yield call(fetchItemSaga(actions, fetchItemApi), {
+            payload: {
+                id: payload.key,
+                get_parameters: {},
+                jwt,
+            },
+        });
+    }
 }
 
 function* fetchDetail(request) {
@@ -87,10 +96,15 @@ function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
         }
     }
 
-    const {res, status} = yield call(fetchRaw, url, jwt);
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
+    }
+    else {
+        const {res, status} = yield call(fetchRaw, url, jwt);
 
-    if (res && status === 200) {
-        yield put(actions.item.description.success({pkhash, desc: res}));
+        if (res && status === 200) {
+            yield put(actions.item.description.success({pkhash, desc: res}));
+        }
     }
 }
 
@@ -107,25 +121,30 @@ function* downloadItemSaga({payload: {url}}) {
         }
     }
 
-    yield fetch(url, {
-        headers: {
-            Accept: 'application/json;version=0.0',
-            ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
-        },
-        credentials: 'include',
-        mode: 'cors',
-    }).then((response) => {
-        status = response.status;
-        if (!response.ok) {
-            return response.text().then(result => Promise.reject(new Error(result)));
-        }
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
+    }
+    else {
+        yield fetch(url, {
+            headers: {
+                Accept: 'application/json;version=0.0',
+                ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
+            },
+            credentials: 'include',
+            mode: 'cors',
+        }).then((response) => {
+            status = response.status;
+            if (!response.ok) {
+                return response.text().then(result => Promise.reject(new Error(result)));
+            }
 
-        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
+            filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
 
-        return response.blob();
-    }).then((res) => {
-        saveAs(res, filename);
-    }, error => ({error, status}));
+            return response.blob();
+        }).then((res) => {
+            saveAs(res, filename);
+        }, error => ({error, status}));
+    }
 }
 
 

@@ -51,8 +51,6 @@ export const fetchEntitiesByPathFactory = (path, view) => (get_parameters, id, j
 };
 
 export const fetchRaw = (url, jwt) => {
-    console.log(url, jwt);
-
     const headers = getHeaders(jwt);
 
     let status;
