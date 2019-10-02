@@ -11,6 +11,7 @@ import {fetchListApi, fetchItemApi} from '../api';
 import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
@@ -23,9 +24,13 @@ function* fetchList(request) {
         }
     }
 
-    const f = () => fetchListApi(state.location.query, jwt);
-
-    yield call(fetchListSaga(actions, f), request);
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchListSaga(actions, f), request);
+    }
 }
 
 function* fetchDetail({payload}) {
@@ -64,17 +69,22 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
         }
     }
 
-    const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
-
-    if (error) {
-        console.error(error, status);
-        yield put(actions.item.failure(error));
+    if (!jwt) { // redirect to login page
+        yield put(signOut.success());
     }
     else {
-        yield put(actions.item.success(list));
-    }
+        const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
 
-    return list;
+        if (error) {
+            console.error(error, status);
+            yield put(actions.item.failure(error));
+        }
+        else {
+            yield put(actions.item.success(list));
+        }
+
+        return list;
+    }
 };
 
 /* istanbul ignore next */
