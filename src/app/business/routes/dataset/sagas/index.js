@@ -29,6 +29,7 @@ function* fetchList(request) {
     }
 
     if (!jwt) { // redirect to login page
+        yield put(actions.list.failure());
         yield put(signOut.success());
     }
     else {
@@ -62,6 +63,7 @@ function* fetchItem({payload}) {
     }
 
     if (!jwt) { // redirect to login page
+        yield put(actions.item.failure());
         yield put(signOut.success());
     }
     else {
@@ -102,6 +104,7 @@ function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     }
 
     if (!jwt) { // redirect to login page
+        yield put(actions.item.description.failure());
         yield put(signOut.success());
     }
     else {
@@ -123,6 +126,7 @@ function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
     }
 
     if (!jwt) { // redirect to login page
+        yield put(actions.item.opener.failure());
         yield put(signOut.success());
     }
     else {
@@ -147,6 +151,7 @@ function* downloadItemSaga({payload: {url}}) {
     }
 
     if (!jwt) { // redirect to login page
+        yield put(actions.item.download.failure());
         yield put(signOut.success());
     }
     else {
