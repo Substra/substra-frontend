@@ -5,6 +5,7 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
   pullSecrets: []
+  pullSecretsInline: []
 
 auth: {}
   # user: owkward
