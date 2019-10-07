@@ -49,6 +49,23 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.Co
 Then run `flushall`. You should automatize this part.
 More information in the cache part below.
 
+## Docker launch
+
+The `docker-compose.yaml` file will launch substrafront and redis docker instances.
+Substrafront will be launch with prod settings, which is a bit different from the settings.
+Launch it with:
+```bash
+$> docker-compose up -d --force-recreate
+```
+
+If you want to update the docker images, execute:
+```bash
+$> docker-compose up -d --force-recreate --build
+```
+
+If your substrabac instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
+
+
 ## Substra-UI
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
