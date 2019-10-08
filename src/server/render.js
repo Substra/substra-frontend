@@ -14,7 +14,7 @@ import flushChunks from 'webpack-flush-chunks';
 
 import {GlobalStyles} from '@substrafoundation/substra-ui';
 
-// import {promisify} from 'util';
+import {promisify} from 'util';
 
 import routesMap from '../app/routesMap';
 import vendors from '../../webpack/ssr/vendors';
@@ -33,8 +33,8 @@ const cache = redis.createClient({
 // There are not present in the webpack definePlugin
 const API_URL = config.apps.frontend.apiUrl;
 
-// const exists = promisify(cache.exists).bind(cache);
-// const get = promisify(cache.get).bind(cache);
+const exists = promisify(cache.exists).bind(cache);
+const get = promisify(cache.get).bind(cache);
 
 cache.on('connect', () => {
     console.log('CACHE CONNECTED');
@@ -194,31 +194,35 @@ export default ({clientStats, outputPath}) => async (ctx) => {
 
     console.log('REQUESTED PARSED PATH:', path);
 
-    // Cached disabled with user authent
-    renderStreamed(ctx, path, clientStats, outputPath);
+    // DO not use redis cache on dev
+    if (process.env.NODE_ENV === 'development') {
+        renderStreamed(ctx, path, clientStats, outputPath);
+    }
+    else {
+        if (paths.filter(o => !['/404'].includes(o)).includes(path)) {
+            console.log('UNCACHABLE ROUTE', path);
+            await renderStreamed(ctx, path, clientStats, outputPath);
+        }
+        // only cache 404 route
+        else {
+            const reply = await exists(path);
 
-    // // DO not use redis cache on dev
-    // if (process.env.NODE_ENV === 'development') {
-    //     renderStreamed(ctx, path, clientStats, outputPath);
-    // }
-    // else {
-    //     const reply = await exists(path);
-    //
-    //     if (reply === 1) {
-    //         const reply = await get(path);
-    //
-    //         if (reply) {
-    //             console.log('CACHE KEY EXISTS: ', path);
-    //             // handle status 404
-    //             if (path === '/404') {
-    //                 ctx.status = 404;
-    //             }
-    //             ctx.body.end(reply);
-    //         }
-    //     }
-    //     else {
-    //         console.log('CACHE KEY DOES NOT EXIST: ', path);
-    //         await renderStreamed(ctx, path, clientStats, outputPath);
-    //     }
-    // }
+            if (reply === 1) {
+                const reply = await get(path);
+
+                if (reply) {
+                    console.log('CACHE KEY EXISTS: ', path);
+                    // handle status 404
+                    if (path === '/404') {
+                        ctx.status = 404;
+                    }
+                    ctx.body.end(reply);
+                }
+            }
+            else {
+                console.log('CACHE KEY DOES NOT EXIST: ', path);
+                await renderStreamed(ctx, path, clientStats, outputPath);
+            }
+        }
+    }
 };
