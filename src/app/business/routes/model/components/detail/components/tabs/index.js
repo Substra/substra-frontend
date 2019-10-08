@@ -1,13 +1,10 @@
 /* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import {noop} from 'lodash';
 import {
     AlertActions,
     CodeSample,
-    RoundedButton,
-    DownloadSimple,
     Tabs,
     TabPanel,
     TabList,
@@ -16,14 +13,9 @@ import {
 import Tab from '../../../../../../common/components/detail/components/tabs';
 
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
-import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import {
     AlertWrapper, AlertTitle, AlertInlineButton,
 } from '../../../../../../common/components/alert';
-
-const Span = styled('span')`
-    margin-right: ${spacingNormal};
-`;
 
 
 class ModelTabs extends Component {
@@ -40,7 +32,7 @@ class ModelTabs extends Component {
     };
 
     render() {
-        const {item, addNotification, downloadFile} = this.props;
+        const {item, addNotification} = this.props;
         const {tabIndex} = this.state;
 
         return (
@@ -64,16 +56,11 @@ class ModelTabs extends Component {
                     <TabPanel>
                         {item && item.traintuple && item.traintuple.status === 'done' && (
                         <p>
-                            <Span>
-                                {'Model successfully trained with a score of '}
-                                <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
-                                {' on '}
-                                <b>train data samples</b>
-                                .
-                            </Span>
-                            <RoundedButton Icon={DownloadSimple} onClick={downloadFile}>
-                                Download model
-                            </RoundedButton>
+                            {'Model successfully trained with a score of '}
+                            <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
+                            {' on '}
+                            <b>train data samples</b>
+                            .
                         </p>
                     )}
                         <CodeSample
@@ -134,13 +121,11 @@ class ModelTabs extends Component {
 ModelTabs.propTypes = {
     item: PropTypes.shape(),
     addNotification: PropTypes.func,
-    downloadFile: PropTypes.func,
 };
 
 ModelTabs.defaultProps = {
     item: null,
     addNotification: noop,
-    downloadFile: noop,
 };
 
 export default ModelTabs;

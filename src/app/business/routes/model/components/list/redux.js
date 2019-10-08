@@ -6,7 +6,7 @@ import {withListAnalytics} from '../../../../common/components/list/analytics';
 import List from './index';
 
 const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification, download,
+    model, filterUp, addNotification,
 }) => ({
     init: state[model].list.init,
     loading: state[model].list.loading,
@@ -16,9 +16,7 @@ const mapStateToProps = (state, {
     item: getItem(state, model),
     location: state.location,
     filterUp,
-    downloadFile,
     addNotification,
-    download,
 });
 
 const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
