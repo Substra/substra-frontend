@@ -1,16 +1,15 @@
 import React from 'react';
 import PopoverItems, {
-PopList, FilterUpPopItem, DownloadPopItem, CopyPopItem,
+PopList, FilterUpPopItem, CopyPopItem,
 } from '../../../../../common/components/list/components/popoverItems';
 
 
 const ModelPopoverItems = ({
-model, filterUp, addNotification, downloadFile, download, item,
+model, filterUp, addNotification,
 }) => (
     <PopList>
         <FilterUpPopItem filterUp={filterUp} />
         <CopyPopItem model={model} addNotification={addNotification} />
-        {item && item.traintuple.outModel && <DownloadPopItem downloadFile={downloadFile} download={download} />}
     </PopList>
 );
 

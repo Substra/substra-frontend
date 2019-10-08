@@ -6,12 +6,11 @@ import {withDetailAnalytics} from '../../../../common/components/detail/analytic
 import Detail from './index';
 
 const mapStateToProps = (state, {
-    model, filterUp, downloadFile, addNotification,
+    model, filterUp, addNotification,
 }) => ({
     item: getItem(state, model),
     descLoading: state[model].item.descLoading,
     filterUp,
-    downloadFile,
     addNotification,
 });
 

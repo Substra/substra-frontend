@@ -1,17 +1,13 @@
-/* global fetch SUBSTRABAC_AUTH_ENABLED */
-
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
-import {saveAs} from 'file-saver';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {basic} from '../../../../entities/fetchEntities';
 
 function* fetchList(request) {
     const state = yield select();
@@ -61,30 +57,6 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
     return list;
 };
 
-function* downloadItemSaga({payload: {url}}) {
-    let status;
-    let filename;
-
-    yield fetch(url, {
-        headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
-            Accept: 'application/json;version=0.0',
-        },
-        mode: 'cors',
-    }).then((response) => {
-        status = response.status;
-        if (!response.ok) {
-            return response.text().then(result => Promise.reject(new Error(result)));
-        }
-
-        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
-
-        return response.blob();
-    }).then((res) => {
-        saveAs(res, filename);
-    }, error => ({error, status}));
-}
-
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
@@ -95,8 +67,6 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
-
-        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);
