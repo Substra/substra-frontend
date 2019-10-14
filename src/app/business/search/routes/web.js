@@ -5,7 +5,7 @@ import {ReactReduxContext} from 'react-redux';
 
 import PulseLoader from 'react-spinners/PulseLoader';
 
-class Universal extends Component {
+class UniversalSearch extends Component {
     constructor(props) {
         super(props);
         this.firstRender = true;
@@ -51,4 +51,4 @@ class Universal extends Component {
     }
 }
 
-export default Universal;
+export default UniversalSearch;

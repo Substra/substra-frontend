@@ -6,7 +6,7 @@ import {ReactReduxContext} from 'react-redux';
 
 import PulseLoader from './pulseLoader';
 
-class Universal extends Component {
+class UniversalRoute extends Component {
     constructor(props) {
         super(props);
         this.firstRender = true;
@@ -34,7 +34,7 @@ class Universal extends Component {
                 <ReactReduxContext.Consumer>
                     {reduxContext => <U model={model} reduxcontext={reduxContext} />}
                 </ReactReduxContext.Consumer>
-);
+            );
         }
 
         return <U model={model} />;
@@ -42,12 +42,12 @@ class Universal extends Component {
 }
 
 
-Universal.defaultProps = {
+UniversalRoute.defaultProps = {
     model: '',
 };
 
-Universal.propTypes = {
+UniversalRoute.propTypes = {
     model: PropTypes.string,
 };
 
-export default Universal;
+export default UniversalRoute;
