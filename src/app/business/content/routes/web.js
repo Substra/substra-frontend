@@ -5,14 +5,14 @@ import {ReactReduxContext} from 'react-redux';
 
 import PulseLoader from 'react-spinners/PulseLoader';
 
-class UniversalSearch extends Component {
+class UniversalContent extends Component {
     constructor(props) {
         super(props);
         this.firstRender = true;
     }
 
     render() {
-        const U = universal(import('../../search/components/index'), {
+        const U = universal(import('../../content/components/index'), {
             loading: <PulseLoader size={6} />,
             onLoad: (module, info, {reduxcontext, ...props}) => {
                 // need all models reducers
@@ -44,11 +44,11 @@ class UniversalSearch extends Component {
                 <ReactReduxContext.Consumer>
                     {reduxContext => <U reduxcontext={reduxContext} />}
                 </ReactReduxContext.Consumer>
-);
+            );
         }
 
         return <U />;
     }
 }
 
-export default UniversalSearch;
+export default UniversalContent;

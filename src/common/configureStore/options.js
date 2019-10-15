@@ -13,6 +13,9 @@ export default {
         else if (location.type === 'USER' && user && user.authenticated) {
             dispatch(redirect({type: 'HOME'}));
         }
+        else if (location.type !== 'USER' && user && !user.authenticated) {
+            dispatch(redirect({type: 'USER'}));
+        }
     },
     querySerializer: queryString,
 };
