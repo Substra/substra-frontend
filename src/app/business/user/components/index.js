@@ -47,19 +47,10 @@ class Index extends Component {
                 <div style={style.form}>
                     <h1>Substra</h1>
                     {signInError && (
-                    <div className="error">
-                        <ul>
-                            {signInError.length && Object.keys(signInError).map(o => (
-                                <li key={o}>
-                                    {o}
-:
-                                    <ul>{signInError[o].map(x => <li key={x}>{x}</li>)}</ul>
-                                </li>
-))}
-                        </ul>
-                        {signInError.detail || signInError.message}
-                    </div>
-)}
+                        <span className="error">
+                            {signInError}
+                        </span>
+                    )}
                     <FormTemplate
                         signInError={signInError}
                         signIn={this.signIn}
@@ -74,6 +65,7 @@ Index.propTypes = {
     signInError: PropTypes.oneOfType([
         PropTypes.shape({}),
         PropTypes.bool,
+        PropTypes.string,
     ]),
     signIn: PropTypes.func,
     location: PropTypes.shape({

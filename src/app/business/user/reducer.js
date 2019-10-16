@@ -53,7 +53,6 @@ export default function () {
                 error: false,
                 loading: false,
             };
-
         case actionTypes.signIn.FAILURE:
             return {
                 ...state,
@@ -63,7 +62,6 @@ export default function () {
                 payload: null,
                 registered: false,
             };
-
         case actionTypes.signOut.SUCCESS:
             return {
                 ...state,
