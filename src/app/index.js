@@ -16,7 +16,7 @@ const Container = styled('div')`
 const Routes = ({page, user}) => (
     <Container>
         <ServiceWorker />
-        {page === 'USER'
+        {page === 'LOGIN'
             ? <UserRoute user={user} />
             : <Content />}
     </Container>

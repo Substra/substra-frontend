@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {css} from 'emotion';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 
@@ -7,32 +8,24 @@ import {signIn as signInActions} from '../actions';
 import FormTemplate from './form';
 import {getError} from '../selector';
 
-const style = {
-    logo: {
-        margin: '0 auto 40px',
-        display: 'block',
-    },
-    main: {
-        margin: '0 auto',
-        padding: '10% 0 0',
-    },
-    title: {
-        fontSize: '3.5rem',
-        fontWeight: '300',
-    },
-    form: {
-        width: 380,
-        margin: '0 auto',
-        backgroundColor: '#fff',
-        padding: '50px 30px 10px',
-        borderRadius: 10,
-        textAlign: 'center',
-        boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.05)',
-    },
-    p: {
-        margin: '10px 0 30px',
-    },
-};
+const main = css`
+    margin: 0 auto;
+    padding: 10% 0 0;
+`;
+
+const form = css`
+    width: 380px;
+    margin: 0 auto;;
+    background-color: #fff;
+    padding: 50px 30px 10px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
+`;
+
+const error = css`
+    color: red;
+`;
 
 class Index extends Component {
     signIn = ({username, password}) => {
@@ -43,16 +36,15 @@ class Index extends Component {
         const {signInError} = this.props;
 
         return (
-            <div style={style.main}>
-                <div style={style.form}>
+            <div className={main}>
+                <div className={form}>
                     <h1>Substra</h1>
                     {signInError && (
-                        <span className="error">
+                        <span className={error}>
                             {signInError}
                         </span>
                     )}
                     <FormTemplate
-                        signInError={signInError}
                         signIn={this.signIn}
                     />
                 </div>
@@ -78,18 +70,14 @@ Index.defaultProps = {
     signIn: null,
 };
 
-function mapStateToProps(state) {
-    return {
+const mapStateToProps = state => ({
         // get previousRoute from state
         location: state.location,
         signInError: getError(state),
-    };
-}
+    });
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
+const mapDispatchToProps = dispatch => bindActionCreators({
         signIn: signInActions.request,
     }, dispatch);
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

@@ -10,7 +10,7 @@ const modelOrder = state => state.model ? state.model.order : null;
 
 export const getRoutes = createDeepEqualSelector([location],
     // put name in first
-    location => Object.keys(location.routesMap).filter(o => ![NOT_FOUND, 'HOME', 'USER'].includes(o)),
+    location => Object.keys(location.routesMap).filter(o => ![NOT_FOUND, 'HOME', 'LOGIN'].includes(o)),
 );
 
 

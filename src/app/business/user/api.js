@@ -18,7 +18,12 @@ export function fetchSignIn(username, password) {
     })
         .then((response) => {
             if (!response.ok) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.text().then(result => Promise.reject(new Error(result)));
+                }
+
+                    return response.text().then(() => Promise.reject(new Error('Error, Please dial in json with the api server (Make sure you have deactivated mod header)')));
             }
 
             return response.json();

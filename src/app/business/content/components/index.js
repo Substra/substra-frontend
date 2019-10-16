@@ -23,7 +23,7 @@ export modelSagas from '../../routes/model/sagas/index';
 
 const Content = ({page, user}) => {
     if (user && !user.authenticated) {
-        replace('/user');
+        replace('/login');
         return null;
     }
 

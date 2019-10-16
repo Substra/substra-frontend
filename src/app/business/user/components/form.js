@@ -18,7 +18,7 @@ const wrapper = css`
 const inputCss = css`
     border: 1px solid ${slate};
     background-color: transparent;
-    padding 12px 10px;
+    padding: 12px 10px;
     margin: 2px;
     width: 100%;
     font-size: 16px;
@@ -60,8 +60,8 @@ RenderField.propTypes = {
     meta: PropTypes.shape({}).isRequired,
 };
 
-const SignInForm = ({signInError, signIn, handleSubmit}) => (
-    <form onSubmit={signIn} className={form}>
+const SignInForm = ({signIn, handleSubmit}) => (
+    <form onSubmit={handleSubmit(signIn)} className={form}>
         <Field name="username" component={RenderField} type="text" placeholder="username" autoComplete="username" />
         <Field name="password" component={RenderField} type="password" placeholder="password" autoComplete="current-password" />
         <button
@@ -76,17 +76,11 @@ const SignInForm = ({signInError, signIn, handleSubmit}) => (
 
 
 SignInForm.propTypes = {
-    signInError: PropTypes.oneOfType([
-        PropTypes.shape({}),
-        PropTypes.bool,
-        PropTypes.string,
-    ]),
     signIn: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
 };
 
 SignInForm.defaultProps = {
-    signInError: null,
     signIn: null,
 };
 
