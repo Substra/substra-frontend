@@ -11,13 +11,24 @@ const form = css`
     margin: 10px;
 `;
 
-const input = css`
+const wrapper = css`
+    position: relative;
+`;
+
+const inputCss = css`
     border: 1px solid ${slate};
     background-color: transparent;
     padding 12px 10px;
-    width: 100%;
     margin: 2px;
+    width: 100%;
     font-size: 16px;
+`;
+
+const errorCss = css`
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    color: red;
 `;
 
 const submit = css`
@@ -33,16 +44,26 @@ const submit = css`
     cursor: pointer;
 `;
 
+const RenderField = ({
+input, placeholder, type, meta: {touched, error},
+}) => (
+    <div className={wrapper}>
+        <input {...input} placeholder={placeholder} type={type} className={inputCss} />
+        {touched && error && <span className={errorCss}>{error}</span>}
+    </div>
+);
+
+RenderField.propTypes = {
+    input: PropTypes.shape({}).isRequired,
+    placeholder: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    meta: PropTypes.shape({}).isRequired,
+};
+
 const SignInForm = ({signInError, signIn, handleSubmit}) => (
-    <form onSubmit={handleSubmit(signIn)} className={form}>
-        <Field name="username" component="input" type="text" placeholder="username" className={input} autoComplete="username" />
-        {signInError && signInError.username && signInError.username.map((error, i) => (
-            <span key={error} className="error">{error}</span>))
-        }
-        <Field name="password" component="input" type="password" placeholder="password" className={input} autoComplete="current-password" />
-        {signInError && signInError.password && signInError.password.map((error, i) => (
-            <span key={error} className="error">{error}</span>))
-        }
+    <form onSubmit={signIn} className={form}>
+        <Field name="username" component={RenderField} type="text" placeholder="username" autoComplete="username" />
+        <Field name="password" component={RenderField} type="password" placeholder="password" autoComplete="current-password" />
         <button
             type="submit"
             className={submit}
@@ -58,6 +79,7 @@ SignInForm.propTypes = {
     signInError: PropTypes.oneOfType([
         PropTypes.shape({}),
         PropTypes.bool,
+        PropTypes.string,
     ]),
     signIn: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
