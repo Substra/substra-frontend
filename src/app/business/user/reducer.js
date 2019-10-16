@@ -36,18 +36,17 @@ export default function () {
 
     return (state = initialState, {type, payload}) => {
         switch (type) {
-        case actionTypes.signIn.REQUEST:
+            case actionTypes.signIn.REQUEST:
             return {
                 ...state,
                 authenticated: false,
-                payload: null,
                 error: false,
                 loading: true,
             };
         case actionTypes.signIn.SUCCESS:
             return {
                 ...state,
-                ...payload,
+                payload,
                 authenticated: true,
                 registered: true,
                 error: false,
@@ -59,7 +58,6 @@ export default function () {
                 authenticated: false,
                 error: payload,
                 loading: false,
-                payload: null,
                 registered: false,
             };
         case actionTypes.signOut.SUCCESS:
@@ -67,13 +65,7 @@ export default function () {
                 ...state,
                 authenticated: false,
                 has_permission: false,
-                payload: null,
                 loading: false,
-            };
-        case actionTypes.modal.SET:
-            return {
-                ...state,
-                modal: payload,
             };
         default:
             return state;

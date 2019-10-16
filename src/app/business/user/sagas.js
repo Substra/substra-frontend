@@ -45,7 +45,7 @@ export const signOut = (fetchSignOut, removeLocalUser) => function* signOutSaga(
         else {
             yield call(removeLocalUser);
             yield put(signOutActions.success());
-            replace('/user');
+            replace('/login');
         }
     };
 

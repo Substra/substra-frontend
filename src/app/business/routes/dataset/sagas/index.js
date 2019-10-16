@@ -16,7 +16,6 @@ import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 import {signOut} from '../../../user/actions';
 
-
 function* fetchList(request) {
     const state = yield select();
     let jwt;

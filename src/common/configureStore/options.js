@@ -10,11 +10,11 @@ export default {
         if (endsWith(location.pathname, '/dist/index.html')) {
             dispatch(redirect({type: 'HOME'}));
         }
-        else if (location.type === 'USER' && user && user.authenticated) {
+        else if (location.type === 'LOGIN' && user && user.authenticated) {
             dispatch(redirect({type: 'HOME'}));
         }
-        else if (location.type !== 'USER' && user && !user.authenticated) {
-            dispatch(redirect({type: 'USER'}));
+        else if (location.type !== 'LOGIN' && user && !user.authenticated) {
+            dispatch(redirect({type: 'LOGIN'}));
         }
     },
     querySerializer: queryString,

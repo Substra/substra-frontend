@@ -4,9 +4,6 @@ import createRequestActionTypes from '../../actions/createRequestActionTypes';
 export const actionTypes = {
     signIn: createRequestActionTypes('SIGN_IN'),
     signOut: createRequestActionTypes('SIGN_OUT'),
-    modal: {
-        SET: 'USER_MODAL_SET',
-    },
 };
 
 export const signIn = {
@@ -21,14 +18,7 @@ export const signOut = {
     failure: createAction(actionTypes.signOut.FAILURE),
 };
 
-
-export const modal = {
-    set: createAction(actionTypes.modal.SET),
-};
-
-
 export default {
     signIn,
     signOut,
-    modal,
 };

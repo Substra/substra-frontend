@@ -14,17 +14,6 @@ import actions from '../actions';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
 import {spacingLarge} from '../../../../../assets/css/variables/spacing';
 
-// export needed reducers and sagas
-export objectiveReducer from '../../routes/objective/reducers/index';
-export objectiveSagas from '../../routes/objective/sagas/index';
-export datasetReducer from '../../routes/dataset/reducers/index';
-export datasetSagas from '../../routes/dataset/sagas/index';
-export algoReducer from '../../routes/algo/reducers/index';
-export algoSagas from '../../routes/algo/sagas/index';
-export modelReducer from '../../routes/model/reducers/index';
-export modelSagas from '../../routes/model/sagas/index';
-
-
 const mapStateToProps = state => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
