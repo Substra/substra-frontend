@@ -1,4 +1,4 @@
-/* globals  localStorage, fetch API_URL */
+/* globals fetch API_URL */
 
 export function fetchSignIn(username, password) {
     return fetch(`${API_URL}/user/login/`, {
@@ -23,7 +23,7 @@ export function fetchSignIn(username, password) {
                     return response.text().then(result => Promise.reject(new Error(result)));
                 }
 
-                    return response.text().then(() => Promise.reject(new Error('Error, Please dial in json with the api server (Make sure you have deactivated mod header)')));
+                return response.text().then(() => Promise.reject(new Error('Error, Please dial in json with the api server (Make sure you have deactivated mod header)')));
             }
 
             return response.json();
@@ -57,12 +57,3 @@ export function fetchSignOut() {
             error,
         }));
 }
-
-export const storeLocalUser = ({payload}) => {
-    localStorage.setItem('payload', payload);
-};
-
-export const removeLocalUser = () => {
-    // user
-    localStorage.removeItem('payload');
-};

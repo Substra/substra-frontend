@@ -8,30 +8,26 @@ import {actionTypes} from './actions';
 
 export default function () {
     const now = new Date();
-    let payload = {
-        exp: now,
-    };
+    let exp = null;
     if (typeof window !== 'undefined') {
         const cookies = cookie.parse(window.document.cookie);
         if (cookies['header.payload']) {
             const headerPayload = cookies['header.payload'];
             try {
-                payload = JSON.parse(atob(headerPayload.split('.')[1]));
+                exp = JSON.parse(atob(headerPayload.split('.')[1]));
             }
             catch (e) {
-                payload = {
-                    exp: now,
-                };
+                exp = null;
             }
         }
     }
 
     const initialState = {
-        payload,
-        authenticated: isBefore(new Date(payload.exp), now),
+        authenticated: isBefore(new Date(exp), now),
+        error: false,
         loading: false,
-        modal: false,
-        registered: false,
+        exp,
+        payload: null,
     };
 
     return (state = initialState, {type, payload}) => {
@@ -42,15 +38,17 @@ export default function () {
                 authenticated: false,
                 error: false,
                 loading: true,
+                exp: null,
+                payload: null,
             };
         case actionTypes.signIn.SUCCESS:
             return {
                 ...state,
-                payload,
                 authenticated: true,
-                registered: true,
                 error: false,
                 loading: false,
+                exp: new Date(payload.exp * 1000),
+                payload,
             };
         case actionTypes.signIn.FAILURE:
             return {
@@ -58,14 +56,17 @@ export default function () {
                 authenticated: false,
                 error: payload,
                 loading: false,
-                registered: false,
+                exp: null,
+                payload: null,
             };
         case actionTypes.signOut.SUCCESS:
             return {
                 ...state,
                 authenticated: false,
-                has_permission: false,
+                error: null,
                 loading: false,
+                payload: null,
+                exp: null,
             };
         default:
             return state;
