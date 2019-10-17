@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: eu.gcr.io/substra-208412/substrafront
+  repository: eu.gcr.io/substra-208412/substra-frontend
   tag: latest
   pullPolicy: IfNotPresent
   pullSecrets: []

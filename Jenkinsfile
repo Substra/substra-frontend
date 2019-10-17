@@ -20,21 +20,21 @@ pipeline {
         stage('Test Helm') {
           agent {
             kubernetes {
-              label 'substrafront-helm'
+              label 'substra-frontend-helm'
               defaultContainer 'helm'
               yamlFile '.cicd/agent-helm.yaml'
             }
           }
 
           steps {
-            sh "helm lint charts/substrafront"
+            sh "helm lint charts/substra-frontend"
           }
         }
 
         stage('Test JS') {
           agent {
             kubernetes {
-              label 'substrafront-test'
+              label 'substra-frontend-test'
               defaultContainer 'node'
               yamlFile '.cicd/agent-test.yaml'
             }
@@ -51,7 +51,7 @@ pipeline {
         stage('Build') {
           agent {
             kubernetes {
-              label 'substrafront-build'
+              label 'substra-frontend-build'
               yamlFile '.cicd/agent-build.yaml'
             }
           }
@@ -59,7 +59,7 @@ pipeline {
           steps {
             container(name:'kaniko', shell:'/busybox/sh') {
               sh '''#!/busybox/sh
-                /kaniko/executor -f `pwd`/Dockerfile -c `pwd` -d "eu.gcr.io/substra-208412/substrafront:$GIT_COMMIT"
+                /kaniko/executor -f `pwd`/Dockerfile -c `pwd` -d "eu.gcr.io/substra-208412/substra-frontend:$GIT_COMMIT"
               '''
             }
           }
@@ -70,7 +70,7 @@ pipeline {
     stage('Publish Helm') {
       agent {
         kubernetes {
-          label 'substrafront-helm'
+          label 'substra-frontend-helm'
           defaultContainer 'helm'
           yamlFile '.cicd/agent-helm.yaml'
         }
@@ -82,7 +82,7 @@ pipeline {
         sh "helm init --client-only"
         sh "helm plugin install https://github.com/chartmuseum/helm-push"
         sh "helm repo add substra https://substra-charts.owkin.com --username owlways --password Cokear4nnRK9ooC"
-        sh "helm push charts/substrafront substra || true"
+        sh "helm push charts/substra-frontend substra || true"
       }
     }
   }

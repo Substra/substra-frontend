@@ -1,4 +1,4 @@
-const {SUBSTRABAC_USER, SUBSTRABAC_PASSWORD} = require('./credentials');
+const { SUBSTRABAC_USER, SUBSTRABAC_PASSWORD } = require('./credentials');
 
 const apiPort = process.env.NODE_PORT || 3000;
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
@@ -19,7 +19,7 @@ module.exports = {
             secure_api_port: secureApiPort,
             baseName: {
                 production: '/',
-                debug: '/substrafront/build/ssr/client/',
+                debug: '/substra-frontend/build/ssr/client/',
             },
             meta: {
                 description: 'Substra',

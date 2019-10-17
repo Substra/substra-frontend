@@ -1,13 +1,13 @@
 {
     "name": "base-package",
-    "productName": "SubstraFront Website",
+    "productName": "Substra Frontend Website",
     "author": "Guillaume Cisco <guillaumecisco@gmail.com>",
     "version": "0.0.1",
     "license": "MIT",
-    "description": "SubstraFront website",
+    "description": "Substra Frontend website",
     "repository": {
         "type": "git",
-        "url": "https://github.com/SubstraFoundation/SubstraFront"
+        "url": "https://github.com/SubstraFoundation/substra-frontend"
     },
     "engines": {
         "node": ">=8.4.0",
