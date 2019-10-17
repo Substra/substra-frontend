@@ -45,10 +45,10 @@ const submit = css`
 `;
 
 const RenderField = ({
-input, placeholder, type, meta: {touched, error},
+input, placeholder, type, autoComplete, meta: {touched, error},
 }) => (
     <div className={wrapper}>
-        <input {...input} placeholder={placeholder} type={type} className={inputCss} />
+        <input {...input} placeholder={placeholder} type={type} className={inputCss} autoComplete={autoComplete} />
         {touched && error && <span className={errorCss}>{error}</span>}
     </div>
 );
@@ -57,6 +57,7 @@ RenderField.propTypes = {
     input: PropTypes.shape({}).isRequired,
     placeholder: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    autoComplete: PropTypes.string.isRequired,
     meta: PropTypes.shape({}).isRequired,
 };
 

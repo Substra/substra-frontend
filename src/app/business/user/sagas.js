@@ -12,11 +12,9 @@ import {
 import {
     fetchSignIn as fetchSignInApi,
     fetchSignOut as fetchSignOutApi,
-    removeLocalUser as removeLocalUserApi,
-    storeLocalUser as storeLocalUserApi,
 } from './api';
 
-export const signIn = (fetchSignIn, storeLocalUser) => function* signInSaga({payload: {username, password, previousRoute}}) {
+export const signIn = fetchSignIn => function* signInSaga({payload: {username, password, previousRoute}}) {
         const {error, res} = yield call(fetchSignIn, username, password);
 
         if (error) {
@@ -24,7 +22,6 @@ export const signIn = (fetchSignIn, storeLocalUser) => function* signInSaga({pay
             yield put(signInActions.failure(error));
         }
         else {
-            yield call(storeLocalUser, res);
             yield put(signInActions.success(res));
 
             // redirect
@@ -36,14 +33,13 @@ export const signIn = (fetchSignIn, storeLocalUser) => function* signInSaga({pay
         }
     };
 
-export const signOut = (fetchSignOut, removeLocalUser) => function* signOutSaga() {
+export const signOut = fetchSignOut => function* signOutSaga() {
         const {error} = yield call(fetchSignOut);
         if (error) {
             console.error(error);
             yield put(signInActions.failure(error));
         }
         else {
-            yield call(removeLocalUser);
             yield put(signOutActions.success());
             replace('/login');
         }
@@ -52,10 +48,9 @@ export const signOut = (fetchSignOut, removeLocalUser) => function* signOutSaga(
 /* istanbul ignore next */
 const sagas = function* sagas() {
     yield all([
-        takeLatest(actionTypes.signIn.REQUEST, signIn(fetchSignInApi, storeLocalUserApi)),
-        takeLatest(actionTypes.signOut.REQUEST, signOut(fetchSignOutApi, removeLocalUserApi)),
+        takeLatest(actionTypes.signIn.REQUEST, signIn(fetchSignInApi)),
+        takeLatest(actionTypes.signOut.REQUEST, signOut(fetchSignOutApi)),
     ]);
 };
-
 
 export default sagas;
