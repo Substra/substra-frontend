@@ -21,7 +21,7 @@ export class DocLink extends Component {
         const {className} = this.props;
         return (
             <a
-                href="https://github.com/substrafoundation/substra-doc"
+                href="https://github.com/substrafoundation/substra-cli"
                 className={className}
                 target="_blank"
                 rel="noopener noreferrer"
