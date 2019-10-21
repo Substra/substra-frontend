@@ -19,7 +19,7 @@ deploy:
           frontend.image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
-            url: http://substrabac.node-1
+            url: http://substra-backend.node-1
             auth:
               user: node-1
               password: node-1pwd
@@ -40,7 +40,7 @@ deploy:
           frontend.image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
-            url: http://substrabac.node-2
+            url: http://substra-backend.node-2
             auth:
               user: node-2
               password: node-2pwd
