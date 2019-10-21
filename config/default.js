@@ -1,9 +1,9 @@
-const { SUBSTRABAC_USER, SUBSTRABAC_PASSWORD } = require('./credentials');
+const { SUBSTRABACKEND_USER, SUBSTRABACKEND_PASSWORD } = require('./credentials');
 
 const apiPort = process.env.NODE_PORT || 3000;
 const secureApiPort = process.env.SECURE_NODE_PORT || 3443;
 
-const apiUrl = 'http://owkin.substrabac:8000';
+const apiUrl = 'http://owkin.substra-backend:8000';
 const ravenUrl = process.env.FRONT_RAVEN_URL || '';
 const encryption_privkey = './encryption/ca.key';
 const encryption_fullchain = './encryption/ca.crt';
@@ -33,10 +33,10 @@ module.exports = {
         fullchain: encryption_fullchain,
     },
     credentials: {
-        // if we need to send credentials to connect to substrabac API
-        enabled: process.env.SUBSTRABAC_AUTH_ENABLED || false,
-        SUBSTRABAC_USER,
-        SUBSTRABAC_PASSWORD,
+        // if we need to send credentials to connect to substra-backend API
+        enabled: process.env.SUBSTRABACKEND_AUTH_ENABLED || false,
+        SUBSTRABACKEND_USER,
+        SUBSTRABACKEND_PASSWORD,
     },
     redis: {
         host: redis_host,

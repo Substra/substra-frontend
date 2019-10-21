@@ -1,16 +1,16 @@
-/* global API_URL fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD SUBSTRABAC_AUTH_ENABLED */
+/* global API_URL fetch SUBSTRABACKEND_USER SUBSTRABACKEND_PASSWORD SUBSTRABACKEND_AUTH_ENABLED */
 
 import queryString from 'query-string';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 import btoa from 'btoa';
 
-export const basic = () => btoa(`${SUBSTRABAC_USER}:${SUBSTRABAC_PASSWORD}`);
+export const basic = () => btoa(`${SUBSTRABACKEND_USER}:${SUBSTRABACKEND_PASSWORD}`);
 
 export const getHeaders = jwt => ({
     Accept: 'application/json;version=0.0',
     'Content-Type': 'application/json;',
-    ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
-    ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
+    ...(SUBSTRABACKEND_AUTH_ENABLED ? { Authorization: `Basic ${basic()}` } : {}),
+    ...(jwt ? { Authorization: `JWT ${jwt}` } : {}),
 });
 
 export const handleResponse = (response) => {
@@ -37,7 +37,7 @@ export const fetchList = (url, jwt) => {
             status = response.status;
             return handleResponse(response);
         })
-        .then(json => ({list: json, status}), error => ({error, status}));
+        .then(json => ({ list: json, status }), error => ({ error, status }));
 };
 
 export const fetchByUrl = (urlToFetch, jwt) => fetchList(urlToFetch, jwt);
@@ -74,7 +74,7 @@ export const fetchRaw = (url, jwt) => {
 
             return response.text(); // /!\ Note the text, not json
         })
-        .then(res => ({res, status}), error => ({error, status}));
+        .then(res => ({ res, status }), error => ({ error, status }));
 };
 
 export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
@@ -96,7 +96,7 @@ export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
             status = response.status;
             return handleResponse(response);
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then(json => ({ item: json, status }), error => ({ error, status }));
 };
 
 export const deleteEntityFactory = path => (id, jwt) => {
@@ -120,7 +120,7 @@ export const deleteEntityFactory = path => (id, jwt) => {
             }
 
             return response;
-        }).then(() => true, error => ({error, status}));
+        }).then(() => true, error => ({ error, status }));
 };
 
 export const updateEntityFactory = path => (id, jwt, payload) => {
@@ -137,7 +137,7 @@ export const updateEntityFactory = path => (id, jwt, payload) => {
         body: JSON.stringify(payload),
     })
         .then(response => handleResponse(response))
-        .then(json => ({item: json}), error => ({error}));
+        .then(json => ({ item: json }), error => ({ error }));
 };
 
 export const updateFormEntityFactory = path => (id, jwt, payload) => {
@@ -159,7 +159,7 @@ export const updateFormEntityFactory = path => (id, jwt, payload) => {
         body: payload,
     })
         .then(response => handleResponse(response))
-        .then(json => ({item: json}), error => ({error}));
+        .then(json => ({ item: json }), error => ({ error }));
 };
 
 export const createEntityFactory = path => (jwt, payload) => {
@@ -185,7 +185,7 @@ export const createEntityFactory = path => (jwt, payload) => {
 
             return response.json();
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then(json => ({ item: json, status }), error => ({ error, status }));
 };
 
 export const createFormEntityFactory = path => (jwt, payload) => {
@@ -216,5 +216,5 @@ export const createFormEntityFactory = path => (jwt, payload) => {
 
             return response.json();
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then(json => ({ item: json, status }), error => ({ error, status }));
 };

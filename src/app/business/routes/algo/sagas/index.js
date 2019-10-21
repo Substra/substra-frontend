@@ -1,17 +1,17 @@
-/* globals fetch SUBSTRABAC_AUTH_ENABLED */
+/* globals fetch SUBSTRABACKEND_AUTH_ENABLED */
 
 import {
     takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
 
-import {saveAs} from 'file-saver';
-import actions, {actionTypes} from '../actions';
-import {fetchListApi, fetchItemApi} from '../api';
+import { saveAs } from 'file-saver';
+import actions, { actionTypes } from '../actions';
+import { fetchListApi, fetchItemApi } from '../api';
 import {
-fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+    fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {basic, fetchRaw} from '../../../../entities/fetchEntities';
-import {getItem} from '../../../common/selector';
+import { basic, fetchRaw } from '../../../../entities/fetchEntities';
+import { getItem } from '../../../common/selector';
 
 function* fetchList(request) {
     const state = yield select();
@@ -27,12 +27,12 @@ function* manageTabs(tabIndex) {
 
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
-            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
+            yield put(actions.item.description.request({ pkhash: item.key, url: item.description.storageAddress }));
         }
     }
 }
 
-function* fetchItem({payload}) {
+function* fetchItem({ payload }) {
     yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
@@ -53,25 +53,25 @@ function* fetchDetail(request) {
     }
 }
 
-function* setTabIndexSaga({payload}) {
+function* setTabIndexSaga({ payload }) {
     yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    const {res, status} = yield call(fetchRaw, url);
+function* fetchItemDescriptionSaga({ payload: { pkhash, url } }) {
+    const { res, status } = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({pkhash, desc: res}));
+        yield put(actions.item.description.success({ pkhash, desc: res }));
     }
 }
 
-function* downloadItemSaga({payload: {url}}) {
+function* downloadItemSaga({ payload: { url } }) {
     let status;
     let filename;
 
     yield fetch(url, {
         headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
+            ...(SUBSTRABACKEND_AUTH_ENABLED ? { Authorization: `Basic ${basic()}` } : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',
@@ -86,7 +86,7 @@ function* downloadItemSaga({payload: {url}}) {
         return response.blob();
     }).then((res) => {
         saveAs(res, filename);
-    }, error => ({error, status}));
+    }, error => ({ error, status }));
 }
 
 

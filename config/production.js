@@ -20,7 +20,7 @@ module.exports = {
         name,
         pass,
     },
-    // if we need to send credentials to connect to substrabac API
+    // if we need to send credentials to connect to substra-backend API
     credentials: {
         enabled: true,
     },

@@ -63,7 +63,7 @@ If you want to update the docker images, execute:
 $> docker-compose up -d --force-recreate --build
 ```
 
-If your substrabac instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
+If your substra-backend instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
 
 
 ## Substra-UI
