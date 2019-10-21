@@ -1,10 +1,6 @@
 apiVersion: skaffold/v1beta13
 kind: Config
 build:
-  tagPolicy:
-    envTemplate:
-      template: "{{ .IMAGE_NAME}}:latest"
-
   artifacts:
     - image: eu.gcr.io/substra-208412/substra-frontend
       context: .
@@ -22,8 +18,6 @@ deploy:
         values:
           frontend.image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
-          image:
-            tag: latest
           api:
             url: http://substrabac.node-1
             auth:
@@ -33,7 +27,7 @@ deploy:
           ingress:
             enabled: true
             hosts:
-              - { host: substrafront.node-1, paths: ["/"] }
+              - { host: substra-frontend.node-1, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
 
@@ -45,17 +39,15 @@ deploy:
         values:
           frontend.image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
-          image:
-            tag: latest
           api:
             url: http://substrabac.node-2
             auth:
               user: node-2
-              password:  node-2pwd
+              password: node-2pwd
               header: "Basic bm9kZS0yOm5vZGUtMnB3ZA=="
           ingress:
             enabled: true
             hosts:
-              - { host: substrafront.node-2, paths: ["/"] }
+              - { host: substra-frontend.node-2, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
