@@ -1,7 +1,7 @@
 /* globals fetch API_URL */
 
 export function fetchSignIn(username, password) {
-    return fetch(`${API_URL}/user/login/`, {
+    return fetch(`${API_URL}/user/login/?format=json`, {
         method: 'POST',
         headers: {
             Accept: 'application/json;version=0.0',
