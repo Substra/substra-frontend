@@ -8,7 +8,7 @@ import {actionTypes} from './actions';
 
 export default function () {
     const now = new Date();
-    let exp = null;
+    let exp = now;
     if (typeof window !== 'undefined') {
         const cookies = cookie.parse(window.document.cookie);
         if (cookies['header.payload']) {
