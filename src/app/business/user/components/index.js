@@ -67,7 +67,7 @@ class Index extends Component {
                 {signInError && (
                     <div className={errorWrapper}>
                         <div className={errorTitle}>{signInError}</div>
-                        </div>
+                    </div>
                 )}
                 <div className={form}>
                     <FormTemplate
