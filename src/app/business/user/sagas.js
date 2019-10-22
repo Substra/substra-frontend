@@ -38,7 +38,6 @@ export const signIn = fetchSignIn => function* signInSaga({payload: {username, p
 };
 
 export const refresh = fetchRefresh => function* signInSaga() {
-
     if (typeof window !== 'undefined') {
         const {error, res} = yield call(fetchRefresh);
 
