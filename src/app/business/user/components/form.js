@@ -3,57 +3,87 @@ import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import {css} from 'emotion';
 
+import {RoundedButton} from '@substrafoundation/substra-ui';
+
 import {reduxForm, Field} from 'redux-form';
-import {slate} from '../../../../../assets/css/variables/colors';
+import {
+ice, red, slate, tealish, white,
+} from '../../../../../assets/css/variables/colors';
+import {spacingExtraSmall, spacingNormal} from '../../../../../assets/css/variables/spacing';
 
 
 const form = css`
-    margin: 10px;
+    display: flex;
+    flex-direction: column;
 `;
 
 const wrapper = css`
     position: relative;
+    margin-bottom: ${spacingNormal};
 `;
 
 const inputCss = css`
-    border: 1px solid ${slate};
-    background-color: transparent;
-    padding: 12px 10px;
-    margin: 2px;
     width: 100%;
-    font-size: 16px;
+    background-color: transparent;
+    color: inherit;
+    text-overflow: ellipsis;
+    border: 1px solid ${ice};
+    height: 30px;
+    border-radius: 15px;
+    line-height: 28px;
+    padding: 0 8px;
+`;
+
+const labelCss = css`
+    margin-bottom: ${spacingExtraSmall};
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 9px;
 `;
 
 const errorCss = css`
     position: absolute;
-    top: 4px;
-    right: 2px;
-    color: red;
+    top: 0;
+    right: 9px;
+    color: ${red};
 `;
 
 const submit = css`
-    font-size: 16px;
-    margin: 30px auto 0;
-    display: block;
-    width: 50%;
-    border: 1px solid ${slate};
-    outline: none;
-    color: ${slate};
-    background-color: white;
-    padding: 10px;
-    cursor: pointer;
+    background-color: ${tealish};
+    color: ${white};
+    font-weight: bold;
+    border-color: ${tealish};
+    
+    &:not(:disabled):hover {
+        background-color: ${slate};
+        border-color: ${slate};
+    }
 `;
 
 const RenderField = ({
-input, placeholder, type, autoComplete, meta: {touched, error},
+label, input, placeholder, type, autoComplete, meta: {touched, error},
 }) => (
     <div className={wrapper}>
-        <input {...input} placeholder={placeholder} type={type} className={inputCss} autoComplete={autoComplete} />
+        <label
+            className={labelCss}
+            htmlFor={input.name}
+        >
+            {label}
+        </label>
+        <input
+            {...input}
+            id={input.name}
+            placeholder={placeholder}
+            type={type}
+            className={inputCss}
+            autoComplete={autoComplete}
+        />
         {touched && error && <span className={errorCss}>{error}</span>}
     </div>
 );
 
 RenderField.propTypes = {
+    label: PropTypes.string.isRequired,
     input: PropTypes.shape({}).isRequired,
     placeholder: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -63,15 +93,29 @@ RenderField.propTypes = {
 
 const SignInForm = ({signIn, handleSubmit}) => (
     <form onSubmit={handleSubmit(signIn)} className={form}>
-        <Field name="username" component={RenderField} type="text" placeholder="username" autoComplete="username" />
-        <Field name="password" component={RenderField} type="password" placeholder="password" autoComplete="current-password" />
-        <button
+        <Field
+            name="username"
+            component={RenderField}
+            type="text"
+            placeholder="username"
+            label="Username"
+            autoComplete="username"
+        />
+        <Field
+            name="password"
+            component={RenderField}
+            type="password"
+            placeholder="password"
+            label="Password"
+            autoComplete="current-password"
+        />
+        <RoundedButton
             type="submit"
             className={submit}
             onClick={handleSubmit(signIn)}
         >
-            Log in
-        </button>
+            Sign in
+        </RoundedButton>
     </form>
 );
 

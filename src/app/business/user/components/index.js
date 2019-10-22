@@ -3,28 +3,52 @@ import {connect} from 'react-redux';
 import {css} from 'emotion';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
+import {SubstraLogo} from '@substrafoundation/substra-ui';
 
 import {signIn as signInActions} from '../actions';
 import FormTemplate from './form';
 import {getError} from '../selector';
+import {spacingLarge, spacingNormal} from '../../../../../assets/css/variables/spacing';
+import {
+ice, iceRed, red, white,
+} from '../../../../../assets/css/variables/colors';
+import {fontLarge} from '../../../../../assets/css/variables/font';
+import {alertTitle, alertWrapper} from '../../../../../../substra-ui/src';
 
 const main = css`
-    margin: 0 auto;
-    padding: 10% 0 0;
+    padding: ${spacingNormal};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: ${fontLarge};
+`;
+
+const title = css`
+  margin-bottom: ${spacingLarge};
 `;
 
 const form = css`
-    width: 380px;
-    margin: 0 auto;;
-    background-color: #fff;
-    padding: 50px 30px 10px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
+    width: 290px;
+    background-color: ${white};
+    border: 1px solid ${ice};
+    border-radius: 3px;
+    padding: ${spacingNormal};
 `;
 
-const error = css`
-    color: red;
+const errorWrapper = css`
+    ${alertWrapper};
+    width: 290px;
+    margin-bottom: ${spacingNormal};
+    border-color: ${red};
+    background-color: ${iceRed};
+`;
+
+const errorTitle = css`
+    ${alertTitle};
+    color: ${red};
+    font-weight: normal;
 `;
 
 class Index extends Component {
@@ -37,13 +61,15 @@ class Index extends Component {
 
         return (
             <div className={main}>
+                <h1 className={title}>
+                    <SubstraLogo width={240} />
+                </h1>
+                {signInError && (
+                    <div className={errorWrapper}>
+                        <div className={errorTitle}>{signInError}</div>
+                        </div>
+                )}
                 <div className={form}>
-                    <h1>Substra</h1>
-                    {signInError && (
-                        <span className={error}>
-                            {signInError}
-                        </span>
-                    )}
                     <FormTemplate
                         signIn={this.signIn}
                     />
