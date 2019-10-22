@@ -42,6 +42,7 @@ export default function () {
                 payload: null,
             };
         case actionTypes.signIn.SUCCESS:
+        case actionTypes.refresh.SUCCESS:
             return {
                 ...state,
                 authenticated: true,
@@ -51,6 +52,7 @@ export default function () {
                 payload,
             };
         case actionTypes.signIn.FAILURE:
+        case actionTypes.refresh.FAILURE:
             return {
                 ...state,
                 authenticated: false,

@@ -9,7 +9,6 @@ import Nav from '../../nav/redux';
 import Route from '../../routes';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
 
-
 // export needed reducers and sagas needed for Search
 // this is not directly put in seach for not having race condition between react-hot-loader and reducer injection
 export objectiveReducer from '../../routes/objective/reducers/index';

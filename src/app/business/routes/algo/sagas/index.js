@@ -14,7 +14,10 @@ fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
-import {signOut} from '../../../user/actions';
+
+// user
+import {refresh as refreshActions, signOut} from '../../../user/actions';
+import {fetchRefresh} from '../../../user/api';
 
 function* fetchList(request) {
     const state = yield select();
@@ -27,9 +30,35 @@ function* fetchList(request) {
         }
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.list.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.list.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.list.failure());
+                yield put(signOut.success());
+            }
+            else {
+                const f = () => fetchListApi(state.location.query, jwt);
+                yield call(fetchListSaga(actions, f), request);
+            }
+        }
     }
     else {
         const f = () => fetchListApi(state.location.query, jwt);
@@ -57,9 +86,40 @@ function* fetchItem({payload}) {
             jwt = cookies['header.payload'];
         }
     }
-    if (!jwt) { // redirect to login page
-        yield put(actions.item.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.item.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.item.failure());
+                yield put(signOut.success());
+            }
+            else {
+                yield call(fetchItemSaga(actions, fetchItemApi), {
+                    payload: {
+                        id: payload.key,
+                        get_parameters: {},
+                        jwt,
+                    },
+                });
+            }
+        }
     }
     else {
         yield call(fetchItemSaga(actions, fetchItemApi), {
@@ -98,9 +158,38 @@ function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
         }
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.item.description.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.item.description.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.item.description.failure());
+                yield put(signOut.success());
+            }
+            else {
+                const {res, status} = yield call(fetchRaw, url, jwt);
+
+                if (res && status === 200) {
+                    yield put(actions.item.description.success({pkhash, desc: res}));
+                }
+            }
+        }
     }
     else {
         const {res, status} = yield call(fetchRaw, url, jwt);
@@ -124,9 +213,52 @@ function* downloadItemSaga({payload: {url}}) {
         }
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.item.download.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.item.download.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.item.download.failure());
+                yield put(signOut.success());
+            }
+            else {
+                yield fetch(url, {
+                    headers: {
+                        Accept: 'application/json;version=0.0',
+                        ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
+                    },
+                    credentials: 'include',
+                    mode: 'cors',
+                }).then((response) => {
+                    status = response.status;
+                    if (!response.ok) {
+                        return response.text().then(result => Promise.reject(new Error(result)));
+                    }
+
+                    filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
+
+                    return response.blob();
+                }).then((res) => {
+                    saveAs(res, filename);
+                }, error => ({error, status}));
+            }
+        }
     }
     else {
         yield fetch(url, {
