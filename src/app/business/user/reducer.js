@@ -22,43 +22,70 @@ export default function () {
         }
     }
 
+    const authenticated = isBefore(new Date(exp), now);
+
     const initialState = {
-        authenticated: isBefore(new Date(exp), now),
+        authenticated,
         error: false,
         loading: false,
+        refreshLoading: false,
+        init: authenticated,
         exp,
         payload: null,
     };
 
     return (state = initialState, {type, payload}) => {
         switch (type) {
-            case actionTypes.signIn.REQUEST:
+        case actionTypes.signIn.REQUEST:
             return {
                 ...state,
                 authenticated: false,
-                error: false,
                 loading: true,
-                exp: null,
-                payload: null,
             };
         case actionTypes.signIn.SUCCESS:
-        case actionTypes.refresh.SUCCESS:
             return {
                 ...state,
                 authenticated: true,
+                init: true,
                 error: false,
                 loading: false,
                 exp: new Date(payload.exp * 1000),
                 payload,
             };
         case actionTypes.signIn.FAILURE:
+            return {
+                ...state,
+                authenticated: false,
+                init: true,
+                error: payload,
+                loading: false,
+                exp: new Date(),
+                payload: null,
+            };
+        case actionTypes.refresh.REQUEST:
+            return {
+                ...state,
+                authenticated: false,
+                refreshLoading: true,
+            };
+        case actionTypes.refresh.SUCCESS:
+            return {
+                ...state,
+                authenticated: true,
+                init: true,
+                error: false,
+                refreshLoading: false,
+                exp: new Date(payload.exp * 1000),
+                payload,
+            };
         case actionTypes.refresh.FAILURE:
             return {
                 ...state,
                 authenticated: false,
+                init: true,
                 error: payload,
-                loading: false,
-                exp: null,
+                refreshLoading: false,
+                exp: new Date(),
                 payload: null,
             };
         case actionTypes.signOut.SUCCESS:
@@ -66,9 +93,8 @@ export default function () {
                 ...state,
                 authenticated: false,
                 error: null,
-                loading: false,
                 payload: null,
-                exp: null,
+                exp: new Date(),
             };
         default:
             return state;

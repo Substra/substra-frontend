@@ -2,7 +2,7 @@
 
 import {replace} from 'redux-first-router';
 import {
-    call, put, takeLatest, all,
+    call, put, takeLatest, all, select,
 } from 'redux-saga/effects';
 
 import {
@@ -47,6 +47,11 @@ export const refresh = fetchRefresh => function* signInSaga() {
         }
         else {
             yield put(refreshActions.success(res));
+
+            const state = yield select();
+            if (state.location.type === 'LOGIN') {
+                replace('/');
+            }
         }
     }
 };
