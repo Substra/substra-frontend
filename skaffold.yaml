@@ -16,7 +16,7 @@ deploy:
         imageStrategy:
           helm: {}
         values:
-          frontend.image: eu.gcr.io/substra-208412/substra-frontend
+          image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
             url: http://substra-backend.node-1
@@ -37,7 +37,7 @@ deploy:
         imageStrategy:
           helm: {}
         values:
-          frontend.image: eu.gcr.io/substra-208412/substra-frontend
+          image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
             url: http://substra-backend.node-2
