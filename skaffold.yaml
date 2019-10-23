@@ -11,7 +11,7 @@ deploy:
   helm:
     releases:
       - name: substra-frontend-peer-1
-        chartPath: charts/substrafront
+        chartPath: charts/substra-frontend
         namespace: peer-1
         imageStrategy:
           helm: {}
@@ -32,7 +32,7 @@ deploy:
               kubernetes.io/ingress.class: nginx
 
       - name: substra-frontend-peer-2
-        chartPath: charts/substrafront
+        chartPath: charts/substra-frontend
         namespace: peer-2
         imageStrategy:
           helm: {}

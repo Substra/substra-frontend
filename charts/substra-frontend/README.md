@@ -13,10 +13,10 @@ You will also need a postgresql instance on the cluster, it should already be th
 ## Install the package
 ```
 helm install --name hlf-k8s substra/hlf-k8s
-helm install --name substra substra/substrafront
+helm install --name substra substra/substra-frontend
 ```
 
 ### Cleanup
 ```
-helm delete --purge hlf-k8s substrafront
+helm delete --purge hlf-k8s substra-frontend
 ```
