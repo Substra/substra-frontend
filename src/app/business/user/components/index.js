@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {css} from 'emotion';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
-import {SubstraLogo} from '@substrafoundation/substra-ui';
+import {SubstraLogo, alertTitle, alertWrapper} from '@substrafoundation/substra-ui';
 
 import {signIn as signInActions} from '../actions';
 import FormTemplate from './form';
@@ -13,7 +13,6 @@ import {
 ice, iceRed, red, white,
 } from '../../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../../assets/css/variables/font';
-import {alertTitle, alertWrapper} from '../../../../../../substra-ui/src';
 
 const main = css`
     padding: ${spacingNormal};
