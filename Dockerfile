@@ -1,5 +1,7 @@
 FROM node:alpine AS build
 
+RUN apk add python2 make g++
+
 WORKDIR /workspace
 
 COPY package.json /workspace/package.json
