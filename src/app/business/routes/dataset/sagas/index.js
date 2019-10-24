@@ -77,7 +77,7 @@ function* fetchItemOpenerSaga({ payload: {pkhash, url} }) {
     }
 }
 
-function* downloadItemSaga({ payload: { url } }) {
+function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
