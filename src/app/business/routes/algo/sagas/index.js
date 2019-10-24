@@ -8,7 +8,7 @@ import {saveAs} from 'file-saver';
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-    fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {basic, fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
