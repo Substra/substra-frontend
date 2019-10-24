@@ -4,15 +4,15 @@ import {
     all, call, put, select, takeEvery, takeLatest,
 } from 'redux-saga/effects';
 
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
-import actions, { actionTypes } from '../actions';
-import { fetchItemApi, fetchListApi } from '../api';
+import actions, {actionTypes} from '../actions';
+import {fetchItemApi, fetchListApi} from '../api';
 import {
     fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import { basic, fetchRaw } from '../../../../entities/fetchEntities';
-import { getItem } from '../../../common/selector';
+import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {getItem} from '../../../common/selector';
 
 
 function* fetchList(request) {
@@ -32,12 +32,12 @@ function* manageTabs(tabIndex) {
             yield put(actions.item.description.request({ pkhash: item.key, url: item.description.storageAddress }));
         }
         else if (item.opener && !item.opener.content && tabIndex === 1) {
-            yield put(actions.item.opener.request({ pkhash: item.key, url: item.opener.storageAddress }));
+            yield put(actions.item.opener.request({pkhash: item.key, url: item.opener.storageAddress}));
         }
     }
 }
 
-function* fetchItem({ payload }) {
+function* fetchItem({payload}) {
     yield call(fetchItemSaga(actions, fetchItemApi), {
         payload: {
             id: payload.key,
@@ -58,22 +58,22 @@ function* fetchDetail(request) {
     }
 }
 
-function* setTabIndexSaga({ payload }) {
+function* setTabIndexSaga({payload}) {
     yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({ payload: { pkhash, url } }) {
-    const { res, status } = yield call(fetchRaw, url);
+function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
+    const {res, status} = yield call(fetchRaw, url);
 
     if (res && status === 200) {
-        yield put(actions.item.description.success({ pkhash, desc: res }));
+        yield put(actions.item.description.success({pkhash, desc: res}));
     }
 }
 
-function* fetchItemOpenerSaga({ payload: { pkhash, url } }) {
-    const { res, status } = yield call(fetchRaw, url);
+function* fetchItemOpenerSaga({ payload: {pkhash, url} }) {
+    const {res, status} = yield call(fetchRaw, url);
     if (res && status === 200) {
-        yield put(actions.item.opener.success({ pkhash, openerContent: res }));
+        yield put(actions.item.opener.success({pkhash, openerContent: res}));
     }
 }
 
@@ -83,7 +83,7 @@ function* downloadItemSaga({ payload: { url } }) {
 
     yield fetch(url, {
         headers: {
-            ...(SUBSTRABACKEND_AUTH_ENABLED ? { Authorization: `Basic ${basic()}` } : {}),
+            ...(SUBSTRABACKEND_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',
@@ -98,7 +98,7 @@ function* downloadItemSaga({ payload: { url } }) {
         return response.blob();
     }).then((res) => {
         saveAs(res, filename);
-    }, error => ({ error, status }));
+    }, error => ({error, status}));
 }
 
 
