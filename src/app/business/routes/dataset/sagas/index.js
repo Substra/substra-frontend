@@ -29,7 +29,7 @@ function* manageTabs(tabIndex) {
 
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
-            yield put(actions.item.description.request({ pkhash: item.key, url: item.description.storageAddress }));
+            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
         }
         else if (item.opener && !item.opener.content && tabIndex === 1) {
             yield put(actions.item.opener.request({pkhash: item.key, url: item.opener.storageAddress}));
@@ -70,7 +70,7 @@ function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
     }
 }
 
-function* fetchItemOpenerSaga({ payload: {pkhash, url} }) {
+function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
     const {res, status} = yield call(fetchRaw, url);
     if (res && status === 200) {
         yield put(actions.item.opener.success({pkhash, openerContent: res}));
