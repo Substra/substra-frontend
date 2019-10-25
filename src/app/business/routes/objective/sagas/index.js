@@ -1,4 +1,4 @@
-/* globals fetch SUBSTRABAC_AUTH_ENABLED */
+/* globals fetch SUBSTRABACKEND_AUTH_ENABLED */
 
 import {
     takeLatest, takeEvery, all, select, call, put,
@@ -72,7 +72,7 @@ function* downloadItemSaga({payload: {url}}) {
 
     yield fetch(url, {
         headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
+            ...(SUBSTRABACKEND_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
             Accept: 'application/json;version=0.0',
         },
         mode: 'cors',

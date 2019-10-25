@@ -1,4 +1,4 @@
-# SubstraFront
+# Substra Frontend
 
 ## Installation
 
@@ -51,8 +51,8 @@ More information in the cache part below.
 
 ## Docker launch
 
-The `docker-compose.yaml` file will launch substrafront and redis docker instances.
-Substrafront will be launch with prod settings, which is a bit different from the settings.
+The `docker-compose.yaml` file will launch substra-frontend and redis docker instances.
+substra-frontend will be launch with prod settings, which is a bit different from the settings.
 Launch it with:
 ```bash
 $> docker-compose up -d --force-recreate
@@ -63,7 +63,7 @@ If you want to update the docker images, execute:
 $> docker-compose up -d --force-recreate --build
 ```
 
-If your substrabac instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
+If your substra-backend instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
 
 
 ## Substra-UI
@@ -71,8 +71,8 @@ If your substrabac instance use basicauth settings, you need to pass the `BACK_A
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
 
 Normal install relies on a private npm registry (see the [installation instructions](#Installation)).
-If you need to add/move a component to substra-ui and need to test its integration within 
-substrafront, you'll need to "link" substra-ui:
+If you need to add/move a component to substra-ui and need to test its integration within
+substra-frontend, you'll need to "link" substra-ui:
 
 In the substra-ui directory:
 
@@ -80,21 +80,21 @@ In the substra-ui directory:
 yarn link
 ```
 
-In the substrafront directory:
+In the substra-frontend directory:
 
 ```sh
 yarn link @substrafoundation/substra-ui
 ```
 
-Your local built version of substra-ui will be the one used by your 
-local substrafront. In order to automatically rebuild substra-ui at each 
+Your local built version of substra-ui will be the one used by your
+local substra-frontend. In order to automatically rebuild substra-ui at each
 change, do:
 
 In the substra-ui directory:
 
 ```sh
 yarn build --watch
-```  
+```
 
 ## Generate static for github pages
 
@@ -182,4 +182,4 @@ In order to debug your code within a JetBrains editor you'll need to:
 
 This will open a new browser window that will respond to your breakpoints.
 
-*Taken from https://blog.jetbrains.com/webstorm/2017/01/debugging-react-apps/* 
+*Taken from https://blog.jetbrains.com/webstorm/2017/01/debugging-react-apps/*

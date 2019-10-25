@@ -1,10 +1,6 @@
 apiVersion: skaffold/v1beta13
 kind: Config
 build:
-  tagPolicy:
-    envTemplate:
-      template: "{{ .IMAGE_NAME}}:latest"
-
   artifacts:
     - image: eu.gcr.io/substra-208412/substra-frontend
       context: .
@@ -15,17 +11,15 @@ deploy:
   helm:
     releases:
       - name: substra-frontend-peer-1
-        chartPath: charts/substrafront
+        chartPath: charts/substra-frontend
         namespace: peer-1
         imageStrategy:
           helm: {}
         values:
-          frontend.image: eu.gcr.io/substra-208412/substra-frontend
+          image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
-          image:
-            tag: latest
           api:
-            url: http://substrabac.node-1
+            url: http://substra-backend.node-1
             auth:
               user: node-1
               password: node-1pwd
@@ -33,29 +27,27 @@ deploy:
           ingress:
             enabled: true
             hosts:
-              - { host: substrafront.node-1, paths: ["/"] }
+              - { host: substra-frontend.node-1, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
 
       - name: substra-frontend-peer-2
-        chartPath: charts/substrafront
+        chartPath: charts/substra-frontend
         namespace: peer-2
         imageStrategy:
           helm: {}
         values:
-          frontend.image: eu.gcr.io/substra-208412/substra-frontend
+          image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
-          image:
-            tag: latest
           api:
-            url: http://substrabac.node-2
+            url: http://substra-backend.node-2
             auth:
               user: node-2
-              password:  node-2pwd
+              password: node-2pwd
               header: "Basic bm9kZS0yOm5vZGUtMnB3ZA=="
           ingress:
             enabled: true
             hosts:
-              - { host: substrafront.node-2, paths: ["/"] }
+              - { host: substra-frontend.node-2, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
