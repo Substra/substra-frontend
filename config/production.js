@@ -1,5 +1,5 @@
-const encryption_privkey = '/etc/letsencrypt/live/substrafront.com/privkey.pem';
-const encryption_fullchain = '/etc/letsencrypt/live/substrafront.com/fullchain.pem';
+const encryption_privkey = '/etc/letsencrypt/live/substra-frontend.com/privkey.pem';
+const encryption_fullchain = '/etc/letsencrypt/live/substra-frontend.com/fullchain.pem';
 
 const name = process.env.FRONT_AUTH_USER;
 const pass = process.env.FRONT_AUTH_PASSWORD;
