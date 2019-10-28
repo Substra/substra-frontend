@@ -1,0 +1,19 @@
+FROM node:alpine
+
+RUN apk add python2 make g++
+
+WORKDIR /workspace
+
+COPY package.json /workspace/package.json
+COPY packages /workspace/packages
+COPY .npmrc .npmrc
+COPY .yarnrc .yarnrc
+
+RUN yarn config set workspaces-experimental true
+RUN yarn install
+
+COPY . /workspace/
+
+ENV NODE_ENV=development
+
+CMD ["yarn", "start"]

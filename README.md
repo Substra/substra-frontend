@@ -66,6 +66,19 @@ $> docker-compose up -d --force-recreate --build
 
 If your substra-backend instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
 
+## Skaffold launch
+
+Launch in production mode:
+
+```bash
+$> skaffold dev --no-prune
+```
+
+Launch in development mode:
+
+```bash
+$> skaffold dev --no-prune -p dev
+```
 
 ## Substra-UI
 

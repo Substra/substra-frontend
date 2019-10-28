@@ -43,3 +43,18 @@ deploy:
               - { host: substra-frontend.node-2.com, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
+profiles:
+  - name: dev
+    patches:
+      - op: add
+        path: /build/artifacts/0/docker/dockerfile
+        value: Dockerfile_dev
+      - op: remove
+        path: /build/artifacts/0/docker/target
+      - op: add
+        path: /build/artifacts/0/sync
+        value:
+            manual:
+              - src: 'src/**/*'
+                strip: 'src/'
+                dest: /workspace/src
