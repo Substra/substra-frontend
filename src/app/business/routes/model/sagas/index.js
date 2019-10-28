@@ -9,9 +9,12 @@ import cookie from 'cookie-parse';
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-fetchListSaga, fetchPersistentSaga, setOrderSaga,
+    fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {signOut} from '../../../user/actions';
+
+// user
+import {refresh as refreshActions, signOut} from '../../../user/actions';
+import {fetchRefresh} from '../../../user/api';
 import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
@@ -25,9 +28,35 @@ function* fetchList(request) {
         }
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.list.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.list.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.list.failure());
+                yield put(signOut.success());
+            }
+            else {
+                const f = () => fetchListApi(state.location.query, jwt);
+                yield call(fetchListSaga(actions, f), request);
+            }
+        }
     }
     else {
         const f = () => fetchListApi(state.location.query, jwt);
@@ -94,9 +123,44 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
         }
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.item.failure());
-        yield put(signOut.success());
+    if (!jwt) {
+        // try to refresh token
+        const {res, error} = yield call(fetchRefresh);
+
+        // refresh token does not exist
+        if (error) { // redirect to login page
+            yield put(refreshActions.failure(error));
+            yield put(actions.item.failure());
+            yield put(signOut.success());
+        }
+        else {
+            yield put(refreshActions.success(res));
+
+            if (typeof window !== 'undefined') {
+                const cookies = cookie.parse(window.document.cookie);
+                if (cookies['header.payload']) {
+                    jwt = cookies['header.payload'];
+                }
+            }
+
+            if (!jwt) {
+                yield put(actions.item.failure());
+                yield put(signOut.success());
+            }
+            else {
+                const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
+
+                if (error) {
+                    console.error(error, status);
+                    yield put(actions.item.failure(error));
+                }
+                else {
+                    yield put(actions.item.success(list));
+                }
+
+                return list;
+            }
+        }
     }
     else {
         const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);

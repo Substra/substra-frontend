@@ -3,6 +3,7 @@ import createRequestActionTypes from '../../actions/createRequestActionTypes';
 
 export const actionTypes = {
     signIn: createRequestActionTypes('SIGN_IN'),
+    refresh: createRequestActionTypes('REFRESH'),
     signOut: createRequestActionTypes('SIGN_OUT'),
 };
 
@@ -10,6 +11,12 @@ export const signIn = {
     request: createAction(actionTypes.signIn.REQUEST),
     success: createAction(actionTypes.signIn.SUCCESS),
     failure: createAction(actionTypes.signIn.FAILURE),
+};
+
+export const refresh = {
+    request: createAction(actionTypes.refresh.REQUEST),
+    success: createAction(actionTypes.refresh.SUCCESS),
+    failure: createAction(actionTypes.refresh.FAILURE),
 };
 
 export const signOut = {
@@ -20,5 +27,6 @@ export const signOut = {
 
 export default {
     signIn,
+    refresh,
     signOut,
 };
