@@ -5,7 +5,7 @@ import Search, {
     datasetSagas, datasetReducer,
     algoSagas, algoReducer,
     modelSagas, modelReducer,
-} from '../components/index';
+} from '../components';
 
 class C extends Component {
     constructor(props) {

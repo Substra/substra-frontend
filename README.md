@@ -20,7 +20,7 @@ And make sure the redis server is running by executing:<br/>
 
 For testing and developing on the projet with true hot module replacement, run
 `yarn start`
-Then head to `http://substrafront.owkin.xyz:3000/` `substrabac.owkin.xyz` is important for working with same site cookie policy
+Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
 
 For testing with prod config:<br/>
 `yarn start:prod`
@@ -134,8 +134,8 @@ $> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ -
 
 You'll notice I also bind the let's encrypt folder, more information in the next part.
 
-Then head to `https://substrabac.owkin.xyz:3000/`
-:warning: Be sure to use `substrabac.owkin.xyz` and not `localhost` or `127.0.0.1` for being able to work with cookies.
+Then head to `https://substra-backend.owkin.xyz:3000/`
+:warning: Be sure to use `substra-backend.owkin.xyz` and not `localhost` or `127.0.0.1` for being able to work with cookies.
 
 Do not forget to `redis-cli flushall` when testing multiple times.
 

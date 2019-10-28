@@ -1,4 +1,4 @@
-const apiUrl = process.env.API_URL || 'http://substrabac.owkin.xyz:8000';
+const apiUrl = process.env.API_URL || 'http://substra-backend.owkin.xyz:8000';
 
 module.exports = {
     apps: {
