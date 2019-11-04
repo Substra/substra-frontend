@@ -23,6 +23,7 @@ script:
   - helm lint charts/substra-frontend
   - yarn eslint
   - yarn test
+  - yarn build:main
 
 after_script:
   - 'if ! git diff --quiet --exit-code $TRAVIS_COMMIT_RANGE charts; then CHART_CHANGED="true"; else CHART_CHANGED="false"; fi'
