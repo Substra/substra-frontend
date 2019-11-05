@@ -1432,10 +1432,10 @@
   resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.2.tgz#8013f2af54a2b7d735f71560ff360d3a8176a87b"
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
-"@substrafoundation/substra-ui@1.1.2":
-  version "1.1.2"
-  resolved "https://substra-npm.owkin.com/@substrafoundation%2fsubstra-ui/-/substra-ui-1.1.2.tgz#8e370e65416c30acaadb383f90fae931b3492155"
-  integrity sha512-4mdwIcytWWKSnwEmMfjKQRVsC2eXROcWqKq7lA87M+UbK3UaOZ+0G20FhpPLrE3HtrvjmYb/RndHc32mYT8vtg==
+"@substrafoundation/substra-ui@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@substrafoundation/substra-ui/-/substra-ui-1.1.4.tgz#9314be49a8d9a9c8ea373c8f23998b2655f4a9c2"
+  integrity sha512-zdO+98Z4DADvSk8uNE7Wtb/ZcsDDwfXxpDX1U9k1qzTWmRsb62iTVU1CDjtB1Fow1bYaIaEkENyov0VWbdolqQ==
   dependencies:
     "@emotion/core" "10.0.15"
     "@emotion/styled" "10.0.15"

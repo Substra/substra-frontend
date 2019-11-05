@@ -70,8 +70,6 @@ If your substra-backend instance use basicauth settings, you need to pass the `B
 ## Substra-UI
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
-
-Normal install relies on a private npm registry (see the [installation instructions](#Installation)).
 If you need to add/move a component to substra-ui and need to test its integration within
 substra-frontend, you'll need to "link" substra-ui:
 

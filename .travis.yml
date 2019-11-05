@@ -1,0 +1,40 @@
+language: node_js
+
+node_js:
+  - lts/*
+
+branches:
+  only:
+    - master
+    - dev
+
+cache: yarn
+
+addons:
+  snaps:
+    - name: helm
+      confinement: classic
+      channel: stable
+
+before_script:
+  - helm init --client-only
+
+script:
+  - helm lint charts/substra-frontend
+  - yarn eslint
+  - yarn test
+  - yarn build:main
+
+after_script:
+  - 'if ! git diff --quiet --exit-code $TRAVIS_COMMIT_RANGE charts; then CHART_CHANGED="true"; else CHART_CHANGED="false"; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then helm dep update charts/substra-frontend; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then helm package charts/substra-frontend; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git config --global user.email "travis@travis-ci.org"; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git config --global user.name "Travis CI"; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git clone https://${GH_TOKEN}@github.com/SubstraFoundation/charts.git substra-charts; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then mv substra-frontend-* substra-charts/; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then cd substra-charts; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then helm repo index .; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git add .; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"; fi'
+  - 'if [ "$CHART_CHANGED" == "true" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then git push --quiet --set-upstream origin master; fi'
