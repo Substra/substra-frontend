@@ -26,6 +26,7 @@ const main = css`
 
 const title = css`
   margin-bottom: ${spacingLarge};
+  margin-top: -110px;
 `;
 
 const form = css`
