@@ -21,7 +21,7 @@
         "jss": "9.8.7",
         "jss-preset-default": "4.5.0",
         "keycode": "2.2.0",
-        "lodash": "4.17.11",
+        "lodash": "4.17.15",
         "prop-types": "15.7.2",
         "raven-for-redux": "1.4.0",
         "raven-js": "3.27.0",
