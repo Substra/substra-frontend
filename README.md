@@ -71,13 +71,13 @@ If your substra-backend instance use basicauth settings, you need to pass the `B
 Launch in production mode:
 
 ```bash
-$> skaffold dev --no-prune
+$> skaffold dev
 ```
 
 Launch in development mode:
 
 ```bash
-$> skaffold dev --no-prune -p dev
+$> skaffold dev -p dev
 ```
 
 ## Substra-UI
