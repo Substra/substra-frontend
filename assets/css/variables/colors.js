@@ -9,6 +9,8 @@ export const
     tealish = '#1dbcc0',
     darkSkyBlue = '#4ba5d2',
     iceBlueTwo = '#edf6fa',
+    red = '#ed1111',
+    iceRed = '#fde7e7',
     // accent colors
     primaryAccent = tealish,
     secondaryAccent = gold,

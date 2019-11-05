@@ -14,9 +14,6 @@ import flushChunks from 'webpack-flush-chunks';
 
 import {GlobalStyles} from '@substrafoundation/substra-ui';
 
-import {JssProvider, SheetsRegistry} from 'react-jss';
-import {MuiThemeProvider, createGenerateClassName} from '@material-ui/core/styles';
-
 import {promisify} from 'util';
 
 import routesMap from '../app/routesMap';
@@ -25,8 +22,6 @@ import vendors from '../../webpack/ssr/vendors';
 import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
-
-import theme from '../common/theme/index';
 
 
 const cache = redis.createClient({
@@ -37,8 +32,6 @@ const cache = redis.createClient({
 // override variables between same built app, but not remote API
 // There are not present in the webpack definePlugin
 const API_URL = config.apps.frontend.apiUrl;
-const SUBSTRABAC_USER = config.credentials.SUBSTRABAC_USER;
-const SUBSTRABAC_PASSWORD = config.credentials.SUBSTRABAC_PASSWORD;
 
 const exists = promisify(cache.exists).bind(cache);
 const get = promisify(cache.get).bind(cache);
@@ -75,24 +68,11 @@ const createCacheStream = (key) => {
     });
 };
 
-// Create a sheetsRegistry instance.
-const sheetsRegistry = new SheetsRegistry();
-
-// Create a sheetsManager instance.
-const sheetsManager = new Map();
-
-// Create a new class name generator.
-const generateClassName = createGenerateClassName();
-
 const createApp = (App, store, chunkNames) => (
     <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
         <Provider store={store}>
-            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-                    <GlobalStyles />
-                    <App />
-                </MuiThemeProvider>
-            </JssProvider>
+            <GlobalStyles />
+            <App />
         </Provider>
     </ReportChunks>
 );
@@ -116,7 +96,7 @@ const earlyChunk = (styles, stateJson) => `
           <meta name="theme-color" content="#000">
           <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
           <link rel="icon" sizes="192x192" href="launcher-icon-high-res.png">
-          ${styles}          
+          ${styles}
         </head>
       <body>
           <noscript>
@@ -124,14 +104,11 @@ const earlyChunk = (styles, stateJson) => `
           </noscript>
           <script>
             window.API_URL="${API_URL}";
-            window.SUBSTRABAC_USER="${SUBSTRABAC_USER}";
-            window.SUBSTRABAC_PASSWORD="${SUBSTRABAC_PASSWORD}";
           </script>
           <script>window.REDUX_STATE = ${stateJson}</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
-    lateChunk = (cssHash, materialUiCss, js, dll) => `</div>
-          <style id="jss-server-side" type="text/css">${materialUiCss}</style>
+    lateChunk = (cssHash, js, dll) => `</div>
           ${process.env.NODE_ENV === 'development' ? '<div id="devTools"></div>' : ''}
           ${cssHash}
           ${dll}
@@ -192,8 +169,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
 
         console.log('CHUNK NAMES', chunkNames);
 
-        const materialUiCss = sheetsRegistry.toString();
-        const late = lateChunk(cssHash, materialUiCss, js, dll);
+        const late = lateChunk(cssHash, js, dll);
         mainStream.end(late);
     });
 };
@@ -223,23 +199,30 @@ export default ({clientStats, outputPath}) => async (ctx) => {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
     else {
-        const reply = await exists(path);
-
-        if (reply === 1) {
-            const reply = await get(path);
-
-            if (reply) {
-                console.log('CACHE KEY EXISTS: ', path);
-                // handle status 404
-                if (path === '/404') {
-                    ctx.status = 404;
-                }
-                ctx.body.end(reply);
-            }
-        }
-        else {
-            console.log('CACHE KEY DOES NOT EXIST: ', path);
+        if (paths.filter(o => !['/404'].includes(o)).includes(path)) {
+            console.log('UNCACHABLE ROUTE', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
+        }
+        // only cache 404 route
+        else {
+            const reply = await exists(path);
+
+            if (reply === 1) {
+                const reply = await get(path);
+
+                if (reply) {
+                    console.log('CACHE KEY EXISTS: ', path);
+                    // handle status 404
+                    if (path === '/404') {
+                        ctx.status = 404;
+                    }
+                    ctx.body.end(reply);
+                }
+            }
+            else {
+                console.log('CACHE KEY DOES NOT EXIST: ', path);
+                await renderStreamed(ctx, path, clientStats, outputPath);
+            }
         }
     }
 };

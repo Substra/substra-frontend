@@ -1,15 +1,11 @@
 import React from 'react';
 import Actions, {
     actions,
-    DownloadAction,
     FilterAction,
 } from '../../../../../common/components/detail/components/actions';
 
-const ModelActions = ({
-filterUp, downloadFile, model, item,
-}) => (
+const ModelActions = ({filterUp}) => (
     <div className={actions}>
-        {item && item.traintuple.outModel && <DownloadAction downloadFile={downloadFile} model={model} />}
         <FilterAction filterUp={filterUp} />
     </div>
 );

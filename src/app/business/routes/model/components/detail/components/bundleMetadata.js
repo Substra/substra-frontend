@@ -35,7 +35,7 @@ class Metadata extends Component {
                 </SingleMetadata>
                 <SingleMetadata label="Status">
                     {capitalize(item.traintuple.status)}
-                    <InlinePulseLoader loading={['todo', 'doing'].includes(item.traintuple.status)} />
+                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.traintuple.status)} />
                 </SingleMetadata>
                 <ScoreMetadata
                     label="Validation Score"

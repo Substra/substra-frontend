@@ -6,7 +6,6 @@ import http from 'http';
 import webpack from 'webpack';
 
 import Koa from 'koa';
-import auth from 'koa-basic-auth';
 import serve from 'koa-static';
 import mount from 'koa-mount';
 import cookie from 'koa-cookie';
@@ -107,11 +106,6 @@ if (DEVELOPMENT) {
 else {
     const clientStats = require('../../build/ssr/client/stats.json'); // eslint-disable-line import/no-unresolved
     const serverRender = require('../../build/ssr/server/main.js').default; // eslint-disable-line import/no-unresolved
-
-    // look if require basic auth
-    if (typeof config.auth.name !== 'undefined' && typeof config.auth.pass !== 'undefined' && config.auth.name !== '' && config.auth.pass !== '') {
-        app.use(auth(config.auth));
-    }
 
     app.use(mount(publicPath, serve(outputPath)));
     app.use(serverRender({clientStats, outputPath}));

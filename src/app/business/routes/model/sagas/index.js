@@ -1,24 +1,37 @@
-/* global fetch SUBSTRABAC_AUTH_ENABLED */
+/* global window */
 
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
-import {saveAs} from 'file-saver';
+import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {basic} from '../../../../entities/fetchEntities';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
+    let jwt;
 
-    const f = () => fetchListApi(state.location.query);
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
 
-    yield call(fetchListSaga(actions, f), request);
+    if (!jwt) { // redirect to login page
+        yield put(actions.list.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchListSaga(actions, f), request);
+    }
 }
 
 function* fetchDetail({payload}) {
@@ -46,45 +59,35 @@ function* fetchBundleDetail() {
 }
 
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
-    const {id, get_parameters, jwt} = payload;
+    const {id, get_parameters} = payload;
 
-    const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
+    let jwt;
 
-    if (error) {
-        console.error(error, status);
-        yield put(actions.item.failure(error));
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.failure());
+        yield put(signOut.success());
     }
     else {
-        yield put(actions.item.success(list));
-    }
+        const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
 
-    return list;
-};
-
-function* downloadItemSaga({payload: {url}}) {
-    let status;
-    let filename;
-
-    yield fetch(url, {
-        headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
-            Accept: 'application/json;version=0.0',
-        },
-        mode: 'cors',
-    }).then((response) => {
-        status = response.status;
-        if (!response.ok) {
-            return response.text().then(result => Promise.reject(new Error(result)));
+        if (error) {
+            console.error(error, status);
+            yield put(actions.item.failure(error));
+        }
+        else {
+            yield put(actions.item.success(list));
         }
 
-        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
-
-        return response.blob();
-    }).then((res) => {
-        saveAs(res, filename);
-    }, error => ({error, status}));
-}
-
+        return list;
+    }
+};
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
@@ -95,8 +98,6 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
-
-        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

@@ -6,12 +6,11 @@ import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
 import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
-import Popover from './components/popover';
-import PopoverItems from './components/popoverItems';
+
 import Title from './components/title';
 import Sort from './components/sort/redux';
 import Item from './components/item';
-import Actions from './components/actions';
+import Actions from './components/actions/analytics';
 
 import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
@@ -23,11 +22,6 @@ const PulseLoaderWrapper = styled('div')`
 
 class List extends Component {
     state = {
-        popover: {
-            open: false,
-            anchorEl: null,
-            item: null,
-        },
         hoverItem: null,
     };
 
@@ -109,78 +103,14 @@ class List extends Component {
         `;
     };
 
-    filterUp = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const {filterUp, logFilterFromList} = this.props;
-        const {popover: {item: {name, key}}} = this.state;
-
-        filterUp(name);
-        logFilterFromList(key);
-
-        this.popoverHandleClose();
-    };
-
-    downloadFile = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const {downloadFile, logDownloadFromList} = this.props;
-        const {popover: {item: {key}}} = this.state;
-
-        downloadFile(key);
-        logDownloadFromList(key);
-
-        this.popoverHandleClose();
-    };
-
-    addNotification = text => (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const {addNotification, logCopyFromList} = this.props;
-        const {popover: {item: {key}}} = this.state;
-
-        addNotification(key, text);
-        logCopyFromList(key);
-
-        this.popoverHandleClose();
-    };
-
-    more = o => (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // display menu
-        this.setState({
-            popover: {
-                open: true,
-                anchorEl: e.currentTarget,
-                item: o,
-            },
-        });
-        e.persist();
-    };
-
-    popoverHandleClose = () => {
-        this.setState(state => ({
-            popover: {
-                open: false,
-                anchorEl: null,
-                item: null,
-            },
-        }));
-    };
 
     render() {
         const {
             results, init, loading, model, download,
-            Title, Popover, Metadata, PopoverItems, Sort, setOrder,
-            Actions,
+            Title, Metadata, Sort, setOrder,
+            Actions, addNotification, filterUp, downloadFile,
         } = this.props;
 
-        const {open, anchorEl, item} = this.state.popover;
 
         return (
             <Fragment>
@@ -210,11 +140,15 @@ class List extends Component {
                                             onMouseLeave={this.out(o)}
                                             className={this.itemWrapper(o.key)}
                                         >
-                                            <Actions
-                                                openPopover={this.more(o)}
-                                                item={o}
-                                            />
                                             <Title o={o} />
+                                            <Actions
+                                                model={model}
+                                                download={download}
+                                                item={o}
+                                                addNotification={addNotification}
+                                                filterUp={filterUp}
+                                                downloadFile={downloadFile}
+                                            />
                                             {Metadata && <Metadata o={o} />}
                                         </Item>
                                         ))
@@ -225,21 +159,6 @@ class List extends Component {
                         )}
                     </PanelContent>
                 </PanelWrapper>
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    popoverHandleClose={this.popoverHandleClose}
-                >
-                    <PopoverItems
-                        {...this.props}
-                        model={model}
-                        download={download}
-                        filterUp={this.filterUp}
-                        downloadFile={this.downloadFile}
-                        addNotification={this.addNotification}
-                        item={item}
-                    />
-                </Popover>
             </Fragment>
         );
     }
@@ -265,15 +184,10 @@ List.defaultProps = {
     out: noop,
     Title,
     Actions,
-    Popover,
-    PopoverItems,
     Metadata: null,
     Sort,
     logList: noop,
     logDetail: noop,
-    logFilterFromList: noop,
-    logDownloadFromList: noop,
-    logCopyFromList: noop,
 };
 
 List.propTypes = {
@@ -296,15 +210,10 @@ List.propTypes = {
     hover: PropTypes.func,
     out: PropTypes.func,
     Title: PropTypes.func,
-    Popover: PropTypes.func,
-    PopoverItems: PropTypes.func,
     Metadata: PropTypes.func,
     Sort: PropTypes.elementType,
     logList: PropTypes.func,
     logDetail: PropTypes.func,
-    logFilterFromList: PropTypes.func,
-    logDownloadFromList: PropTypes.func,
-    logCopyFromList: PropTypes.func,
     Actions: PropTypes.elementType,
 };
 

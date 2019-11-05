@@ -1,4 +1,4 @@
-# SubstraFront
+# Substra Frontend
 
 ## Installation
 
@@ -6,14 +6,6 @@ This project use yarn and the experimental yarn workspaces for package.json spli
 
 Please install the last version of yarn and run:<br/>
 `yarn config set workspaces-experimental true`
-
-Configure yarn/npm to use our private registry (use the credentials that we provided to you):
-
-```bash
-npm config set registry https://substra-npm.owkin.com
-npm login
-npm config set always-auth true
-```
 
 Then run:<br/>
 `yarn install`
@@ -28,6 +20,7 @@ And make sure the redis server is running by executing:<br/>
 
 For testing and developing on the projet with true hot module replacement, run
 `yarn start`
+Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
 
 For testing with prod config:<br/>
 `yarn start:prod`
@@ -57,24 +50,28 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.Co
 Then run `flushall`. You should automatize this part.
 More information in the cache part below.
 
-## Building the docker container
+## Docker launch
 
-You'll need to update the `.npmrc` file in this repository with your credentials for the private substra npm registry.
-
-Assuming the auth token for the registry is in the `VERDACCIO_TOKEN` env variable, you can do:
-
+The `docker-compose.yaml` file will launch substra-frontend and redis docker instances.
+substra-frontend will be launch with prod settings, which is a bit different from the settings.
+Launch it with:
 ```bash
-echo "//substra-npm.owkin.com/:_authToken=\"${VERDACCIO_TOKEN}\"" >> .npmrc
-``` 
+$> docker-compose up -d --force-recreate
+```
 
-Alternatively, you can `npm login` into our private repository and copy/paste the credentials from `~/.npmrc` in the local `.npmrc`.
+If you want to update the docker images, execute:
+```bash
+$> docker-compose up -d --force-recreate --build
+```
+
+If your substra-backend instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
+
+
 ## Substra-UI
 
 This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
-
-Normal install relies on a private npm registry (see the [installation instructions](#Installation)).
-If you need to add/move a component to substra-ui and need to test its integration within 
-substrafront, you'll need to "link" substra-ui:
+If you need to add/move a component to substra-ui and need to test its integration within
+substra-frontend, you'll need to "link" substra-ui:
 
 In the substra-ui directory:
 
@@ -82,21 +79,21 @@ In the substra-ui directory:
 yarn link
 ```
 
-In the substrafront directory:
+In the substra-frontend directory:
 
 ```sh
 yarn link @substrafoundation/substra-ui
 ```
 
-Your local built version of substra-ui will be the one used by your 
-local substrafront. In order to automatically rebuild substra-ui at each 
+Your local built version of substra-ui will be the one used by your
+local substra-frontend. In order to automatically rebuild substra-ui at each
 change, do:
 
 In the substra-ui directory:
 
 ```sh
 yarn build --watch
-```  
+```
 
 ## Generate static for github pages
 
@@ -130,12 +127,13 @@ Don't forget to create a isolated security group for opening port 6379 as descri
 ### test
 For testing your generated docker with your localhosted redis, update your `deploy.js` file and do not forget to comment the part that push to your registry, then:
 ```shell
-$> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ --net="host" -p 8000:8000 docker_image_name:latest
+$> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ --net="host" -p 8000:3000 docker_image_name:latest
 ```
 
 You'll notice I also bind the let's encrypt folder, more information in the next part.
 
-Then head to https://localhost:8001/
+Then head to `https://substra-backend.owkin.xyz:3000/`
+:warning: Be sure to use `substra-backend.owkin.xyz` and not `localhost` or `127.0.0.1` for being able to work with cookies.
 
 Do not forget to `redis-cli flushall` when testing multiple times.
 
@@ -184,4 +182,4 @@ In order to debug your code within a JetBrains editor you'll need to:
 
 This will open a new browser window that will respond to your breakpoints.
 
-*Taken from https://blog.jetbrains.com/webstorm/2017/01/debugging-react-apps/* 
+*Taken from https://blog.jetbrains.com/webstorm/2017/01/debugging-react-apps/*

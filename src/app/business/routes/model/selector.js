@@ -54,14 +54,16 @@ const modelOrder = order => (o) => {
                 4. failed
             - we do not have a testtutple:
                 5. null
-         - else traintutple status:
+         - else traintuple status:
                 6. doing
                 7. todo
-                8. failed
+                8. waiting
+                9. failed
     */
 
     const scoreByStatus = {
-        failed: {null: -7},
+        failed: {null: -8},
+        waiting: {null: -7},
         todo: {null: -6},
         doing: {null: -5},
         done: {

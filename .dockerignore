@@ -12,6 +12,7 @@ build
 .dockerignore
 Dockerfile
 docker-compose*.yml
+skaffold.yaml
 
  # NPM dependencies
 node_modules/
@@ -21,6 +22,7 @@ package-lock.json
  # Other
 .cicd/
 coverage/
+charts/
 test/
 tools/
 .csslintrc

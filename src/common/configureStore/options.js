@@ -4,11 +4,17 @@ import {endsWith} from 'lodash';
 
 export default {
     onAfterChange: (dispatch, getState) => {
-        const {location} = getState();
+        const {user, location} = getState();
 
         // for handling electron
         if (endsWith(location.pathname, '/dist/index.html')) {
             dispatch(redirect({type: 'HOME'}));
+        }
+        else if (location.type === 'LOGIN' && user && user.authenticated) {
+            dispatch(redirect({type: 'HOME'}));
+        }
+        else if (location.type !== 'LOGIN' && user && !user.authenticated) {
+            dispatch(redirect({type: 'LOGIN'}));
         }
     },
     querySerializer: queryString,

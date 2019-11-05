@@ -130,6 +130,49 @@ export const BrowseRelatedMetadata = ({children}) => (
 BrowseRelatedMetadata.propTypes = MetadataInterface.propTypes;
 BrowseRelatedMetadata.defaultProps = MetadataInterface.defaultProps;
 
+export const PermissionsMetadata = ({permissions}) => {
+    const isPublic = permissions && permissions.process && permissions.process.public;
+    const authorizedIds = permissions && permissions.process && permissions.process.authorizedIDs;
+    let message;
+
+    if (isPublic) {
+        message = 'Processable by anyone';
+    }
+    else if (!authorizedIds) {
+        message = 'Processable by its owner only';
+    }
+    else {
+        message = 'Restricted';
+    }
+
+    return <SingleMetadata label="Permissions" value={message} />;
+};
+
+export const OwnerMetadata = ({owner}) => (
+    <SingleMetadata label="Owner" value={owner} />
+);
+
+OwnerMetadata.propTypes = {
+    owner: PropTypes.string,
+};
+
+OwnerMetadata.defaultProps = {
+    owner: '',
+};
+
+PermissionsMetadata.propTypes = {
+    permissions: PropTypes.shape({
+        request: PropTypes.shape({
+            isPublic: PropTypes.bool,
+            authorizedIDs: PropTypes.array,
+        }),
+    }),
+};
+
+PermissionsMetadata.defaultProps = {
+    permissions: null,
+};
+
 
 const Metadata = ({item, addNotification, model}) => (
     <MetadataWrapper>

@@ -1,15 +1,11 @@
-/* global API_URL fetch SUBSTRABAC_USER SUBSTRABAC_PASSWORD SUBSTRABAC_AUTH_ENABLED */
+/* global API_URL fetch */
 
 import queryString from 'query-string';
 import {isEmpty} from 'lodash';
-import btoa from 'btoa';
-
-export const basic = () => btoa(`${SUBSTRABAC_USER}:${SUBSTRABAC_PASSWORD}`);
 
 export const getHeaders = jwt => ({
     Accept: 'application/json;version=0.0',
     'Content-Type': 'application/json;',
-    ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
     ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
 });
 
@@ -30,7 +26,7 @@ export const fetchList = (url, jwt) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
     })
         .then((response) => {
@@ -63,7 +59,7 @@ export const fetchRaw = (url, jwt) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
     })
         .then((response) => {
@@ -89,7 +85,7 @@ export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
     })
         .then((response) => {
@@ -110,7 +106,7 @@ export const deleteEntityFactory = path => (id, jwt) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
     })
         .then((response) => {
@@ -132,7 +128,7 @@ export const updateEntityFactory = path => (id, jwt, payload) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
         body: JSON.stringify(payload),
     })
@@ -154,7 +150,7 @@ export const updateFormEntityFactory = path => (id, jwt, payload) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
         body: payload,
     })
@@ -173,7 +169,7 @@ export const createEntityFactory = path => (jwt, payload) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
         body: JSON.stringify(payload),
     })
@@ -204,7 +200,7 @@ export const createFormEntityFactory = path => (jwt, payload) => {
         headers,
         // Allows API to set http-only cookies with AJAX calls
         // @see http://www.redotheweb.com/2015/11/09/api-security.html
-        // credentials: 'include',
+        credentials: 'include',
         mode: 'cors',
         body: payload,
     })

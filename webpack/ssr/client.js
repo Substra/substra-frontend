@@ -50,7 +50,7 @@ export default {
         publicPath: DEBUG ? DEBUG_BASE_NAME : PRODUCTION_BASE_NAME,
     },
     plugins: plugins('client'),
-    resolve: resolve(),
+    resolve: resolve(DEVELOPMENT),
     ...(DEVELOPMENT ? {
         optimization: {
             sideEffects: true,

@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "substrafront",
+    "name": "substra-frontend",
     "productName": "Substra",
     "author": "Guillaume Cisco <guillaume.cisco@owkin.com>",
     "version": "0.0.1",
@@ -8,7 +8,7 @@
     "description": "Substra",
     "repository": {
         "type": "git",
-        "url": "https://github.com/SubstraFoundation/substrafront"
+        "url": "https://github.com/SubstraFoundation/substra-frontend"
     },
     "engines": {
         "node": ">=8.4.0",
@@ -51,7 +51,7 @@
     "browserslist": "electron 1.6",
     "main": "./build/electron/index.js",
     "build": {
-        "appId": "org.substrafront.website",
+        "appId": "org.substra-frontend.website",
         "productName": "Substra",
         "directories": {
             "buildResources": "resources",

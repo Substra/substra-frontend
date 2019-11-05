@@ -1,4 +1,4 @@
-const DEFAULT = 'Owkestra';
+const DEFAULT = 'Substra';
 
 export default (state = DEFAULT, action = {}) => {
     switch (action.type) {

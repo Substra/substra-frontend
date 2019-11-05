@@ -1,26 +1,40 @@
-/* globals fetch SUBSTRABAC_AUTH_ENABLED */
+/* globals fetch window */
 
 import {
     all, call, put, select, takeEvery, takeLatest,
 } from 'redux-saga/effects';
 
 import {saveAs} from 'file-saver';
+import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
 import {fetchItemApi, fetchListApi} from '../api';
 import {
     fetchItemSaga, fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
-import {basic, fetchRaw} from '../../../../entities/fetchEntities';
+import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
-
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
+    let jwt;
 
-    const f = () => fetchListApi(state.location.query);
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
 
-    yield call(fetchListSaga(actions, f), request);
+    if (!jwt) { // redirect to login page
+        yield put(actions.list.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchListSaga(actions, f), request);
+    }
 }
 
 function* manageTabs(tabIndex) {
@@ -38,12 +52,28 @@ function* manageTabs(tabIndex) {
 }
 
 function* fetchItem({payload}) {
-    yield call(fetchItemSaga(actions, fetchItemApi), {
-        payload: {
-            id: payload.key,
-            get_parameters: {},
-        },
-    });
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.failure());
+        yield put(signOut.success());
+    }
+    else {
+        yield call(fetchItemSaga(actions, fetchItemApi), {
+            payload: {
+                id: payload.key,
+                get_parameters: {},
+                jwt,
+            },
+        });
+    }
 }
 
 function* fetchDetail(request) {
@@ -63,17 +93,46 @@ function* setTabIndexSaga({payload}) {
 }
 
 function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    const {res, status} = yield call(fetchRaw, url);
+    let jwt;
 
-    if (res && status === 200) {
-        yield put(actions.item.description.success({pkhash, desc: res}));
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.description.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const {res, status} = yield call(fetchRaw, url, jwt);
+        if (res && status === 200) {
+            yield put(actions.item.description.success({pkhash, desc: res}));
+        }
     }
 }
 
 function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
-    const {res, status} = yield call(fetchRaw, url);
-    if (res && status === 200) {
-        yield put(actions.item.opener.success({pkhash, openerContent: res}));
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.opener.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const {res, status} = yield call(fetchRaw, url, jwt);
+        if (res && status === 200) {
+            yield put(actions.item.opener.success({pkhash, openerContent: res}));
+        }
     }
 }
 
@@ -81,24 +140,40 @@ function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
 
-    yield fetch(url, {
-        headers: {
-            ...(SUBSTRABAC_AUTH_ENABLED ? {Authorization: `Basic ${basic()}`} : {}),
-            Accept: 'application/json;version=0.0',
-        },
-        mode: 'cors',
-    }).then((response) => {
-        status = response.status;
-        if (!response.ok) {
-            return response.text().then(result => Promise.reject(new Error(result)));
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
         }
+    }
 
-        filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.download.failure());
+        yield put(signOut.success());
+    }
+    else {
+        yield fetch(url, {
+            headers: {
+                Accept: 'application/json;version=0.0',
+                ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
+            },
+            credentials: 'include',
+            mode: 'cors',
+        }).then((response) => {
+            status = response.status;
+            if (!response.ok) {
+                return response.text().then(result => Promise.reject(new Error(result)));
+            }
 
-        return response.blob();
-    }).then((res) => {
-        saveAs(res, filename);
-    }, error => ({error, status}));
+            filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
+
+            return response.blob();
+        }).then((res) => {
+            saveAs(res, filename);
+        }, error => ({error, status}));
+    }
 }
 
 

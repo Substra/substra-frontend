@@ -1,13 +1,13 @@
 FROM node:alpine AS build
 
+RUN apk add python2 make g++
+
 WORKDIR /workspace
 
-COPY package-build.json /workspace/package.json
+COPY package.json /workspace/package.json
 COPY packages/ssr /workspace/packages/ssr
 COPY packages/base /workspace/packages/base
 COPY packages/plugins  /workspace/packages/plugins
-COPY .npmrc .npmrc
-COPY .yarnrc .yarnrc
 
 RUN yarn config list
 RUN yarn install
@@ -23,9 +23,8 @@ FROM node:alpine
 
 WORKDIR /workspace
 
-COPY --from=build /workspace/packages/ssr/package.json /workspace/package.json
-COPY .npmrc .npmrc
-COPY .yarnrc .yarnrc
+COPY --from=build /workspace/package.json /workspace/package.json
+COPY --from=build /workspace/packages/ssr /workspace/packages/ssr
 
 RUN yarn install
 

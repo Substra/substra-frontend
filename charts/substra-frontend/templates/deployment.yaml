@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "substra-frontend.fullname" . }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/name: {{ template "substra-frontend.name" . }}
+    app.kubernetes.io/part-of: {{ template "substra-frontend.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ template "substra-frontend.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "substra-frontend.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if or .Values.image.pullSecretsInline .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range $index, $value := .Values.image.pullSecretsInline }}
+        - name: {{ template "substra-frontend.fullname" $ }}-pull-secret-{{ $index }}
+      {{- end }}
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: substra-frontend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if .Values.image.pullPolicy }}
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          {{- end }}
+          command: ["./node_modules/.bin/babel-node", "./build/ssr/index.js"]
+          env:
+            - name: REDIS_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-{{ .Values.redis.host }}"
+            - name: API_URL
+              value: {{ .Values.api.url | quote }}
+            - name: NODE_PORT
+              value: "80"
+            - name: SECURE_NODE_PORT
+              value: "443"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- with .Values.auth }}
+              httpHeaders:
+                - name: Authorization
+                  value: {{ .header | quote }}
+              {{- end }}
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- with .Values.auth }}
+              httpHeaders:
+                - name: Authorization
+                  value: {{ .header | quote }}
+              {{- end }}
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

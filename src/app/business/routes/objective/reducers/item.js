@@ -1,9 +1,4 @@
-import baseReducerBuilder, {initialState as baseInitialState} from '../../../common/reducers/item';
-
-const initialState = {
-    ...baseInitialState,
-    metricsLoading: false,
-};
+import baseReducerBuilder, {initialState} from '../../../common/reducers/item';
 
 export default (actionTypes) => {
     const baseReducer = baseReducerBuilder(actionTypes);
@@ -54,34 +49,6 @@ export default (actionTypes) => {
                         }] : [c]),
                     ], []),
                     descLoading: false,
-                };
-            case actionTypes.item.metrics.REQUEST:
-                return {
-                    ...reducedState,
-                    metricsLoading: true,
-                };
-            case actionTypes.item.metrics.SUCCESS:
-                return {
-                    ...state,
-                    results: !exists ? [...state.results, {
-                        pkhash: payload.pkhash,
-                        metrics: {content: payload.metricsContent},
-                    }] : state.results.reduce((p, c) => [
-                        ...p,
-                        ...(c.pkhash === payload.pkhash ? [{
-                            ...c,
-                            metrics: {
-                                ...c.metrics,
-                                content: payload.metricsContent,
-                            },
-                        }] : [c]),
-                    ], []),
-                    metricsLoading: false,
-                };
-            case actionTypes.item.metrics.FAILURE:
-                return {
-                    ...reducedState,
-                    metricsLoading: false,
                 };
             default:
                 return reducedState;

@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import {withStyles} from '@material-ui/core';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import {css} from 'emotion';
 import {isEqual, omit, noop} from 'lodash';
+import {Select} from '@substrafoundation/substra-ui';
 
-import {ice, slate} from '../../../../../../../../assets/css/variables/colors';
-import {spacingExtraSmall, spacingLarge, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
+import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 import {fontNormal} from '../../../../../../../../assets/css/variables/font';
 
 const Wrapper = styled('div')`
@@ -19,29 +16,6 @@ const Label = styled('label')`
     margin-right: ${spacingExtraSmall};
 `;
 
-const Select = withStyles({
-    root: {
-        border: `1px solid ${ice}`,
-        borderRadius: '20px',
-        color: slate,
-        overflow: 'hidden',
-        fontSize: fontNormal,
-    },
-    select: {
-        padding: `${spacingExtraSmall} ${spacingLarge} ${spacingExtraSmall} ${spacingSmall}`,
-        height: '20px',
-    },
-    outlined: {
-        display: 'none',
-    },
-})(NativeSelect);
-
-const select = css`
-    &:after,
-    &:before {
-        display: none;
-    }
-`;
 
 class Sort extends Component {
     componentDidMount() {
@@ -81,8 +55,7 @@ class Sort extends Component {
                 <Select
                     value={currentOption ? currentOption.label : ''}
                     onChange={this.handleChange}
-                    className={select}
-                    inputProps={{'data-testid': 'select'}}
+                    data-testid="select"
                 >
                     {options.map(option => (
                         <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>

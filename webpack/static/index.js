@@ -68,5 +68,5 @@ export default {
             }),
         ],
     ],
-    resolve: resolve(),
+    resolve: resolve(DEVELOPMENT),
 };

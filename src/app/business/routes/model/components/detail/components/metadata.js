@@ -7,6 +7,7 @@ import BaseMetadata, {
     keyLabelClassName,
     keyValueClassName,
     BrowseRelatedMetadata,
+    PermissionsMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
@@ -50,7 +51,7 @@ class Metadata extends Component {
                 )}
                 <SingleMetadata label="Status">
                     {capitalize(item.traintuple.status)}
-                    <InlinePulseLoader loading={['todo', 'doing'].includes(item.traintuple.status)} />
+                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.traintuple.status)} />
                 </SingleMetadata>
                 <SingleMetadata label="Score">
                     {!item.testtuple && 'N/A'}
@@ -58,10 +59,13 @@ class Metadata extends Component {
                     {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
                         <Fragment>
                             {capitalize(item.testtuple.status)}
-                            <InlinePulseLoader loading={['todo', 'doing'].includes(item.testtuple.status)} />
+                            <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.testtuple.status)} />
                         </Fragment>
                     )}
                 </SingleMetadata>
+                <SingleMetadata label="Creator" value={item.traintuple.creator} />
+                <SingleMetadata label="Worker" value={item.traintuple.dataset.worker} />
+                <PermissionsMetadata permissions={item.traintuple.permissions} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
                 </BrowseRelatedMetadata>
