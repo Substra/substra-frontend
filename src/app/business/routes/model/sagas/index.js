@@ -1,20 +1,37 @@
+/* global window */
+
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
+import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
+    let jwt;
 
-    const f = () => fetchListApi(state.location.query);
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
 
-    yield call(fetchListSaga(actions, f), request);
+    if (!jwt) { // redirect to login page
+        yield put(actions.list.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchListSaga(actions, f), request);
+    }
 }
 
 function* fetchDetail({payload}) {
@@ -42,21 +59,35 @@ function* fetchBundleDetail() {
 }
 
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
-    const {id, get_parameters, jwt} = payload;
+    const {id, get_parameters} = payload;
 
-    const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
+    let jwt;
 
-    if (error) {
-        console.error(error, status);
-        yield put(actions.item.failure(error));
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.item.failure());
+        yield put(signOut.success());
     }
     else {
-        yield put(actions.item.success(list));
+        const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
+
+        if (error) {
+            console.error(error, status);
+            yield put(actions.item.failure(error));
+        }
+        else {
+            yield put(actions.item.success(list));
+        }
+
+        return list;
     }
-
-    return list;
 };
-
 
 /* istanbul ignore next */
 const sagas = function* sagas() {

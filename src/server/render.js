@@ -32,8 +32,6 @@ const cache = redis.createClient({
 // override variables between same built app, but not remote API
 // There are not present in the webpack definePlugin
 const API_URL = config.apps.frontend.apiUrl;
-const SUBSTRABACKEND_USER = config.credentials.SUBSTRABACKEND_USER;
-const SUBSTRABACKEND_PASSWORD = config.credentials.SUBSTRABACKEND_PASSWORD;
 
 const exists = promisify(cache.exists).bind(cache);
 const get = promisify(cache.get).bind(cache);
@@ -106,8 +104,6 @@ const earlyChunk = (styles, stateJson) => `
           </noscript>
           <script>
             window.API_URL="${API_URL}";
-            window.SUBSTRABACKEND_USER="${SUBSTRABACKEND_USER}";
-            window.SUBSTRABACKEND_PASSWORD="${SUBSTRABACKEND_PASSWORD}";
           </script>
           <script>window.REDUX_STATE = ${stateJson}</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
@@ -203,23 +199,30 @@ export default ({clientStats, outputPath}) => async (ctx) => {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
     else {
-        const reply = await exists(path);
-
-        if (reply === 1) {
-            const reply = await get(path);
-
-            if (reply) {
-                console.log('CACHE KEY EXISTS: ', path);
-                // handle status 404
-                if (path === '/404') {
-                    ctx.status = 404;
-                }
-                ctx.body.end(reply);
-            }
-        }
-        else {
-            console.log('CACHE KEY DOES NOT EXIST: ', path);
+        if (paths.filter(o => !['/404'].includes(o)).includes(path)) {
+            console.log('UNCACHABLE ROUTE', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
+        }
+        // only cache 404 route
+        else {
+            const reply = await exists(path);
+
+            if (reply === 1) {
+                const reply = await get(path);
+
+                if (reply) {
+                    console.log('CACHE KEY EXISTS: ', path);
+                    // handle status 404
+                    if (path === '/404') {
+                        ctx.status = 404;
+                    }
+                    ctx.body.end(reply);
+                }
+            }
+            else {
+                console.log('CACHE KEY DOES NOT EXIST: ', path);
+                await renderStreamed(ctx, path, clientStats, outputPath);
+            }
         }
     }
 };

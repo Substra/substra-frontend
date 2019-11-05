@@ -45,7 +45,7 @@ class ServiceWorker extends Component {
         status: undefined,
     };
 
-    componentWillMount() {
+    componentDidMount() {
         if (typeof window !== 'undefined') {
             window.addEventListener('online', this.update);
             window.addEventListener('offline', this.update);

@@ -6,7 +6,6 @@ import {NOT_FOUND} from 'redux-first-router';
 import Component from '../common/routes';
 import NotFoundRoutes from './notFound/routes';
 
-
 const Route = ({page}) => {
     switch (page) {
         case 'HOME':

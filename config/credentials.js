@@ -1,2 +1,0 @@
-export const SUBSTRABACKEND_USER = process.env.BACK_AUTH_USER;
-export const SUBSTRABACKEND_PASSWORD = process.env.BACK_AUTH_PASSWORD;

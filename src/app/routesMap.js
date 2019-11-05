@@ -6,5 +6,6 @@ export default {
     DATASET: {path: '/dataset'},
     ALGORITHM: {path: '/algorithm'},
     MODEL: {path: '/model'},
+    LOGIN: {path: '/login'},
     [NOT_FOUND]: {path: '/404'},
 };

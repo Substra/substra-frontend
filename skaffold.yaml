@@ -19,15 +19,11 @@ deploy:
           image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
-            url: http://substra-backend.node-1
-            auth:
-              user: node-1
-              password: node-1pwd
-              header: "Basic bm9kZS0xOm5vZGUtMXB3ZA=="
+            url: http://substra-backend.node-1.com
           ingress:
             enabled: true
             hosts:
-              - { host: substra-frontend.node-1, paths: ["/"] }
+              - { host: substra-frontend.node-1.com, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
 
@@ -40,14 +36,10 @@ deploy:
           image: eu.gcr.io/substra-208412/substra-frontend
         overrides:
           api:
-            url: http://substra-backend.node-2
-            auth:
-              user: node-2
-              password: node-2pwd
-              header: "Basic bm9kZS0yOm5vZGUtMnB3ZA=="
+            url: http://substra-backend.node-2.com
           ingress:
             enabled: true
             hosts:
-              - { host: substra-frontend.node-2, paths: ["/"] }
+              - { host: substra-frontend.node-2.com, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx

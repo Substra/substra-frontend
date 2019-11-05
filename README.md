@@ -20,6 +20,7 @@ And make sure the redis server is running by executing:<br/>
 
 For testing and developing on the projet with true hot module replacement, run
 `yarn start`
+Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
 
 For testing with prod config:<br/>
 `yarn start:prod`
@@ -128,12 +129,13 @@ Don't forget to create a isolated security group for opening port 6379 as descri
 ### test
 For testing your generated docker with your localhosted redis, update your `deploy.js` file and do not forget to comment the part that push to your registry, then:
 ```shell
-$> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ --net="host" -p 8000:8000 docker_image_name:latest
+$> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ --net="host" -p 8000:3000 docker_image_name:latest
 ```
 
 You'll notice I also bind the let's encrypt folder, more information in the next part.
 
-Then head to https://localhost:8001/
+Then head to `https://substra-backend.owkin.xyz:3000/`
+:warning: Be sure to use `substra-backend.owkin.xyz` and not `localhost` or `127.0.0.1` for being able to work with cookies.
 
 Do not forget to `redis-cli flushall` when testing multiple times.
 

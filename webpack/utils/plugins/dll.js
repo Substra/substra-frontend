@@ -1,6 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
 
 import vendors from '../../ssr/vendors';
@@ -12,10 +12,9 @@ export default new AutoDllPlugin({
     context: path.join(__dirname, '../../..'),
     filename: `[name]${DEVELOPMENT ? '' : '_[hash]'}.dll.js`,
     plugins: !DEVELOPMENT ? [
-        new UglifyJsPlugin({
+        new TerserPlugin({
             cache: true,
             parallel: true,
-            sourceMap: true,
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
