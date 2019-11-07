@@ -73,6 +73,27 @@ function* fetchItem({payload}) {
     }
 }
 
+function* fetchPersistent(request) {
+    const state = yield select();
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.persistent.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchPersistentSaga(actions, f), request);
+    }
+}
+
 function* fetchDetail(request) {
     const state = yield select();
 
@@ -156,7 +177,7 @@ const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchList),
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
-        takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
+        takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
         takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
