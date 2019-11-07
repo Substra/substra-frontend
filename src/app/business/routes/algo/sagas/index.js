@@ -10,11 +10,41 @@ import cookie from 'cookie-parse';
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 import {signOut} from '../../../user/actions';
+
+const withAlgoType = (list, type) => list.map(group => group.map(algo => ({...algo, type})));
+
+
+const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
+    const [resStandardAlgos, resCompositeAlgos] = yield call(fetchListApi, payload);
+    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
+    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
+
+    let list;
+
+    if (errorStandardAlgos) {
+        console.error(errorStandardAlgos, statusStandardAlgos);
+        yield put(actions.list.failure(errorStandardAlgos));
+    }
+    else if (errorCompositeAlgos) {
+        console.error(errorCompositeAlgos, statusCompositeAlgos);
+        yield put(actions.list.failure(errorCompositeAlgos));
+    }
+    else {
+        list = [].concat(
+            withAlgoType(listStandardAlgos, 'standard'),
+            withAlgoType(listCompositeAlgos, 'composite'),
+        );
+        yield put(actions.list.success(list));
+    }
+
+    return list;
+};
+
 
 function* fetchList(request) {
     const state = yield select();

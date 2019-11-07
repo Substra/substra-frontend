@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {capitalize} from 'lodash';
 
-import {metadata, SingleMetadata} from '../../../../../common/components/list/components/metadata';
-import {iceBlue, slate} from '../../../../../../../../assets/css/variables/colors';
+import {metadata, SingleMetadata, MetadataTag} from '../../../../../common/components/list/components/metadata';
+import {iceBlue} from '../../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
 import InlinePulseLoader from '../../inlinePulseLoader';
-import {fontNormal} from '../../../../../../../../assets/css/variables/font';
 
 const ScoreWrapper = styled('div')`
     background-color: ${iceBlue};
@@ -16,13 +15,6 @@ const ScoreWrapper = styled('div')`
     margin: ${spacingExtraSmall} -${spacingNormal} -${spacingSmall} -${spacingNormal};
 `;
 
-const Tag = styled('div')`
-    display: inline-block;
-    font-size: ${fontNormal};
-    border-radius: ${spacingSmall};
-    padding: 0 ${spacingExtraSmall};
-    border: 1px solid ${slate};
-`;
 
 const ScoreMetadata = ({label, testtuple}) => (
     <SingleMetadata label={label}>
@@ -51,7 +43,7 @@ const Metadata = ({o}) => (
     <Fragment>
         {o && o.tag && (
             <div className={metadata}>
-                <Tag>Model bundle</Tag>
+                <MetadataTag>Model bundle</MetadataTag>
             </div>
         )}
         <div className={metadata}>
