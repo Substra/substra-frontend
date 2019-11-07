@@ -8,7 +8,7 @@ import {saveAs} from 'file-saver';
 import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
-import {fetchListApi, fetchItemApi} from '../api';
+import {fetchListApi, fetchStandardAlgoApi, fetchCompositeAlgoApi} from '../api';
 import {
 fetchPersistentSaga, fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
@@ -92,6 +92,7 @@ function* fetchItem({payload}) {
         yield put(signOut.success());
     }
     else {
+        const fetchItemApi = payload.type === 'composite' ? fetchCompositeAlgoApi : fetchStandardAlgoApi;
         yield call(fetchItemSaga(actions, fetchItemApi), {
             payload: {
                 id: payload.key,

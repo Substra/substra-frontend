@@ -11,15 +11,11 @@ export function fetchListApi(...args) {
     return Promise.all(promises);
 }
 
-const fetchStandardAlgoApi = fetchEntityFactory('algo');
-const fetchCompositeAlgoApi = fetchEntityFactory('composite_algo');
-
-export function fetchItemApi(...args) {
-    fetchStandardAlgoApi(...args);
-    fetchCompositeAlgoApi(...args);
-}
+export const fetchStandardAlgoApi = fetchEntityFactory('algo');
+export const fetchCompositeAlgoApi = fetchEntityFactory('composite_algo');
 
 export default {
     fetchListApi,
-    fetchItemApi,
+    fetchStandardAlgoApi,
+    fetchCompositeAlgoApi,
 };
