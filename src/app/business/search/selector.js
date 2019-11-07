@@ -9,15 +9,36 @@ const datasetResults = state => state.dataset ? state.dataset.persistent.results
 const algoResults = state => state.algo ? state.algo.persistent.results : null;
 const modelResults = state => state.model ? state.model.persistent.results : null;
 
+const removeProp = (o, prop) => {
+    const copy = {...o};
+    delete copy[prop];
+    return copy;
+};
+const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
+    (allAlgosOfType, group) => [
+            ...allAlgosOfType,
+            ...group.filter(algo => algo.type === type).map(algo => removeProp(algo, 'type')),
+        ],
+    [],
+);
+
+const standardAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'standard'),
+);
+const compositeAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'composite'),
+);
+
 export const outModelsHashes = createDeepEqualSelector([modelResults],
     modelResults => modelResults && modelResults.length ? modelResults[0].filter(o => o.traintuple.outModel).map(o => ({hash: `hash:${o.traintuple.outModel.hash}`})) : modelResults,
 );
 
-export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, algoResults, outModelsHashes],
-    (location, objective, dataset, algo, outModelsHashes) => ({
+export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, outModelsHashes],
+    (location, objective, dataset, standardAlgo, compositeAlgo, outModelsHashes) => ({
         objective: objective && objective.length ? objective[0] : objective,
         dataset: dataset && dataset.length ? dataset[0] : dataset,
-        algo: algo && algo.length ? algo[0] : algo,
+        algo: standardAlgo,
+        composite_algo: compositeAlgo,
         model: outModelsHashes, // output model i.e trained model (updated)
         ...(location.type === 'MODEL' ? {
             model_parents: outModelsHashes,

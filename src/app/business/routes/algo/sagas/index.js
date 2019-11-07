@@ -10,7 +10,7 @@ import cookie from 'cookie-parse';
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchStandardAlgoApi, fetchCompositeAlgoApi} from '../api';
 import {
-fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
@@ -40,6 +40,33 @@ const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) 
             withAlgoType(listCompositeAlgos, 'composite'),
         );
         yield put(actions.list.success(list));
+    }
+
+    return list;
+};
+
+
+const fetchPersistentSaga = (actions, fetchListApi) => function* fetchList({payload}) {
+    const [resStandardAlgos, resCompositeAlgos] = yield call(fetchListApi, payload);
+    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
+    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
+
+    let list;
+
+    if (errorStandardAlgos) {
+        console.error(errorStandardAlgos, statusStandardAlgos);
+        yield put(actions.persistent.failure(errorStandardAlgos));
+    }
+    else if (errorCompositeAlgos) {
+        console.error(errorCompositeAlgos, statusCompositeAlgos);
+        yield put(actions.persistent.failure(errorCompositeAlgos));
+    }
+    else {
+        list = [].concat(
+            withAlgoType(listStandardAlgos, 'standard'),
+            withAlgoType(listCompositeAlgos, 'composite'),
+        );
+        yield put(actions.persistent.success(list));
     }
 
     return list;

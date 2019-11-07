@@ -70,7 +70,7 @@ function* setFilters(request) {
         else if (item === 'dataset' && !dataset.persistent.init && !dataset.persistent.loading) {
             yield put(datasetActions.persistent.request());
         }
-        else if (item === 'algo' && !algo.persistent.init && !algo.persistent.loading) {
+        else if (['algo', 'composite_algo'].includes(item) && !algo.persistent.init && !algo.persistent.loading) {
             yield put(algoActions.persistent.request());
         }
         else if (item === 'model' && !model.persistent.init && !model.persistent.loading) {
