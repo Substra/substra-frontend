@@ -16,6 +16,17 @@ class SingleModelActions extends BaseActions {
 
         this.togglePopover();
     };
+
+    addNotification = (value, message) => (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const {addNotification, logCopyFromList} = this.props;
+
+        addNotification(value, message);
+        logCopyFromList(value);
+        this.togglePopover();
+    };
 }
 
 const Actions = ({item, ...props}) => (!item.tag && (

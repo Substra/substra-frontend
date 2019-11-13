@@ -39,35 +39,40 @@ ScoreMetadata.defaultProps = {
     testtuple: null,
 };
 
-const Metadata = ({o}) => (
-    <Fragment>
-        {o && o.tag && (
+const Metadata = ({o}) => {
+    const hasTags = o && (o.tag || (o.traintuple && o.traintuple.type === 'composite'));
+
+    return (
+        <Fragment>
+            {hasTags && (
+                <div className={metadata}>
+                    {o && o.tag && <MetadataTag>Model bundle</MetadataTag>}
+                    {o && o.traintuple && o.traintuple.type === 'composite' && <MetadataTag>Composite</MetadataTag>}
+                </div>
+            )}
             <div className={metadata}>
-                <MetadataTag>Model bundle</MetadataTag>
-            </div>
-        )}
-        <div className={metadata}>
-            <SingleMetadata label="Status">
-                {capitalize(o.traintuple.status)}
-                <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
-            </SingleMetadata>
-            {o && o.tag && o.nonCertifiedTesttuple && (
-                <ScoreMetadata
-                    label="Validation score"
-                    testtuple={o.nonCertifiedTesttuple}
-                />
-            )}
-            {o && o.testtuple && (
-                <ScoreWrapper>
+                <SingleMetadata label="Status">
+                    {capitalize(o.traintuple.status)}
+                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
+                </SingleMetadata>
+                {o && o.tag && o.nonCertifiedTesttuple && (
                     <ScoreMetadata
-                        label="Score"
-                        testtuple={o.testtuple}
+                        label="Validation score"
+                        testtuple={o.nonCertifiedTesttuple}
                     />
-                </ScoreWrapper>
-            )}
-        </div>
-    </Fragment>
-);
+                )}
+                {o && o.testtuple && (
+                    <ScoreWrapper>
+                        <ScoreMetadata
+                            label="Score"
+                            testtuple={o.testtuple}
+                        />
+                    </ScoreWrapper>
+                )}
+            </div>
+        </Fragment>
+    );
+};
 
 Metadata.propTypes = {
     o: PropTypes.shape({

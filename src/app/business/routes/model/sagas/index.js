@@ -71,7 +71,7 @@ function* fetchBundleDetail() {
     const state = yield select();
 
     for (const group of state.model.list.results) {
-        const models = group.filter(model => model.traintuple.tag);
+        const models = group.filter(model => (model.traintuple && model.traintuple.tag) || (model.compositeTraintuple && model.compositeTraintuple.tag));
         for (const model of models) {
             const modelDetail = state.model.item.results.find(o => o.traintuple.key === model.traintuple.key);
             if (!modelDetail) {
