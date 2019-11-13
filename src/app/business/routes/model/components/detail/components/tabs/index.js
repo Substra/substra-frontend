@@ -34,6 +34,13 @@ class ModelTabs extends Component {
     render() {
         const {item, addNotification} = this.props;
         const {tabIndex} = this.state;
+        const isComposite = item && item.traintuple && item.traintuple.type === 'composite';
+
+        // do not display the "type" key in the traintuple that's been inserted for the fronten's internal use
+        const cleanTraintuple = item && item.traintuple && {...item.traintuple};
+        if (cleanTraintuple) {
+            delete cleanTraintuple.type;
+        }
 
         return (
             <Fragment>
@@ -50,7 +57,7 @@ class ModelTabs extends Component {
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
-                        <Tab>Traintuple/Model</Tab>
+                        <Tab>{isComposite ? 'Composite traintuple / Head model / Trunk model' : 'Traintuple/Model'}</Tab>
                         <Tab>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
@@ -64,9 +71,9 @@ class ModelTabs extends Component {
                         </p>
                     )}
                         <CodeSample
-                            filename="traintuple.json"
+                            filename={isComposite ? 'composite_traintuple.json' : 'traintuple.json'}
                             language="json"
-                            codeString={JSON.stringify(item.traintuple, null, 2)}
+                            codeString={JSON.stringify(cleanTraintuple, null, 2)}
                         />
                     </TabPanel>
                     <TabPanel>

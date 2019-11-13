@@ -22,7 +22,7 @@ const BrowseRelatedLinks = ({
         algoFilter = objectiveFilter = datasetFilter = `model:hash:${modelHash}`;
     }
     else {
-        algoFilter = `algo:name:${item && item.traintuple && item.traintuple.algo ? encodeURIComponent(item.traintuple.algo.name) : ''}`;
+        algoFilter = `${item && item.traintuple && item.traintuple.type === 'composite' ? 'composite_algo' : 'algo'}:name:${item && item.traintuple && item.traintuple.algo ? encodeURIComponent(item.traintuple.algo.name) : ''}`;
         objectiveFilter = item && item.traintuple && item.traintuple.objective && `objective:key:${item.traintuple.objective.hash}`;
         datasetFilter = [
             item.traintuple,
@@ -41,7 +41,7 @@ const BrowseRelatedLinks = ({
 
     return (
         <Fragment>
-            <BrowseRelatedLink model="algo" label="algorithm" filter={algoFilter} unselect={unselectAlgo} />
+            <BrowseRelatedLink model="algo" label={item && item.traintuple && item.traintuple.type === 'composite' ? 'composite algorithm' : 'algorithm'} filter={algoFilter} unselect={unselectAlgo} />
             {objectiveFilter && <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />}
             {datasetFilter && <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />}
         </Fragment>

@@ -6,7 +6,7 @@ import Actions, {
 
 const ModelActions = ({filterUp}) => (
     <div className={actions}>
-        <FilterAction filterUp={filterUp} />
+        {/* <FilterAction filterUp={filterUp} /> */}
     </div>
 );
 
