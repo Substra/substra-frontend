@@ -9,10 +9,10 @@ class SingleModelActions extends BaseActions {
         e.preventDefault();
         e.stopPropagation();
 
-        const {filterUp, logFilterFromList, item: {traintuple: {outModel: {hash}}}} = this.props;
+        const {filterUp, logFilterFromList, item: {traintuple: {key}}} = this.props;
 
-        filterUp(hash);
-        logFilterFromList(hash);
+        filterUp(key);
+        logFilterFromList(key);
 
         this.togglePopover();
     };

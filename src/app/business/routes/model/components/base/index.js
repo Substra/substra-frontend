@@ -1,8 +1,10 @@
 import uuidv4 from 'uuid/v4';
-import Base from '../../../../common/components/base';
+import {Check, withAddNotification} from '@substrafoundation/substra-ui';
+
+import {BaseComponent} from '../../../../common/components/base';
 
 
-class ModelBase extends Base {
+class ModelBase extends BaseComponent {
     filterUp = (o) => {
         const {
             setSearchState, selectedItem, model,
@@ -10,15 +12,9 @@ class ModelBase extends Base {
 
         const newSelectedItem = [
             ...selectedItem,
-            // This is the -OR- case
-            // ...(selectedItem.length && !last(selectedItem).isLogic ? [{
-            //     parent: '-OR-',
-            //     isLogic: true,
-            //     uuid: uuidv4(),
-            // }] : []),
             {
                 parent: model,
-                child: `hash:${o}`,
+                child: `key:${o}`,
                 isLogic: false,
                 uuid: uuidv4(),
             }];
@@ -33,4 +29,6 @@ class ModelBase extends Base {
     };
 }
 
-export default ModelBase;
+const ModelBaseWithAddNotification = withAddNotification(ModelBase, Check);
+
+export default ModelBaseWithAddNotification;

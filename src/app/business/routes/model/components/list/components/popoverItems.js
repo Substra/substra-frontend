@@ -27,7 +27,7 @@ const StandardModelPopoverItems = ({item, filterUp, addNotification}) => {
     return (
         <React.Fragment>
             <PopList>
-                {/* <FilterUpPopItem filterUp={filterUp} modelKey={modelKey} /> */}
+                <FilterUpPopItem filterUp={filterUp} />
                 {modelKey && <CopyPopItem addNotification={addNotification} assetKey={modelKey} assetName="model" />}
                 <CopyPopItem addNotification={addNotification} assetKey={traintupleKey} assetName="traintuple" />
             </PopList>
@@ -43,7 +43,7 @@ const CompositeModelPopoverItems = ({item, filterUp, addNotification}) => {
 
     return (
         <PopList>
-            {/* <FilterUpPopItem filterUp={filterUp} /> */}
+            <FilterUpPopItem filterUp={filterUp} />
             <CopyPopItem addNotification={addNotification} assetKey={traintupleKey} assetName="composite traintuple" />
             {headModelKey && <CopyPopItem addNotification={addNotification} assetKey={headModelKey} assetName="head model" />}
             {trunkModelKey && <CopyPopItem addNotification={addNotification} assetKey={trunkModelKey} assetName="trunk model" />}
