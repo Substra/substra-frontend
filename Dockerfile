@@ -8,6 +8,7 @@ COPY package.json /workspace/package.json
 COPY packages/ssr /workspace/packages/ssr
 COPY packages/base /workspace/packages/base
 COPY packages/plugins  /workspace/packages/plugins
+COPY .yarnrc /workspace
 
 RUN yarn config list
 RUN yarn install
