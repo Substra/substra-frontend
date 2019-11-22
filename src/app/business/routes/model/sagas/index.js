@@ -75,6 +75,9 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
         if (error) {
             console.error(error, status);
             yield put(actions.item.failure(error));
+            if (status === 401) {
+                yield put(signOut.success());
+            }
         }
         else {
             yield put(actions.item.success(list));

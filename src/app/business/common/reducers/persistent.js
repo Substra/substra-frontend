@@ -30,6 +30,8 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 error: payload,
                 loading: false,
             };
+        case actionTypes.signOut.SUCCESS:
+            return {...initialState};
         default:
             return state;
     }

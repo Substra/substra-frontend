@@ -12,6 +12,8 @@ export default (actionTypes, initialState = defaultInitialState) => (state = ini
                 ...payload,
                 pristine: false,
             };
+        case actionTypes.signOut.SUCCESS:
+            return {...initialState};
         default:
             return state;
     }

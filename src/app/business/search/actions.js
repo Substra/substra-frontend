@@ -12,6 +12,9 @@ export const actionTypes = {
     updated: {
         SET: `${prefix}_UPDATED_SET`,
     },
+    signOut: {
+        SUCCESS: 'SIGN_OUT_SUCCESS',
+    },
 };
 
 

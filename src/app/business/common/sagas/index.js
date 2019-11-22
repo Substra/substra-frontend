@@ -9,6 +9,8 @@ import cookie from 'cookie-parse';
 import {fetchRefresh} from '../../user/api';
 import {refresh as refreshActions, signOut} from '../../user/actions';
 
+import {signOut} from '../../user/actions';
+
 
 export const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
     const {error, status, list} = yield call(fetchListApi, payload);
@@ -16,6 +18,9 @@ export const fetchListSaga = (actions, fetchListApi) => function* fetchList({pay
     if (error) {
         console.error(error, status);
         yield put(actions.list.failure(error));
+        if (status === 401) {
+            yield put(signOut.success());
+        }
     }
     else {
         yield put(actions.list.success(list));
@@ -30,6 +35,9 @@ export const fetchPersistentSaga = (actions, fetchPersistentApi) => function* fe
     if (error) {
         console.error(error, status);
         yield put(actions.persistent.failure(error));
+        if (status === 401) {
+            yield put(signOut.success());
+        }
     }
     else {
         yield put(actions.persistent.success(list));
@@ -46,6 +54,9 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
     if (error) {
         console.error(error, status);
         yield put(actions.item.failure(error));
+        if (status === 401) {
+            yield put(signOut.success());
+        }
     }
     else {
         yield put(actions.item.success(item));
