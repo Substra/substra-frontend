@@ -10,6 +10,11 @@ const Metadata = ({o}) => (
                 <MetadataTag>Composite</MetadataTag>
             </div>
         )}
+        {o && o.type === 'aggregate' && (
+            <div className={metadata}>
+                <MetadataTag>Aggregate</MetadataTag>
+            </div>
+        )}
     </Fragment>
 );
 

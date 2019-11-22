@@ -28,17 +28,21 @@ const standardAlgoResults = createDeepEqualSelector([algoResults],
 const compositeAlgoResults = createDeepEqualSelector([algoResults],
     algoGroups => algoGroups && getAlgoByType(algoGroups, 'composite'),
 );
+const aggregateAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'aggregate'),
+);
 
 const traintupleKeys = createDeepEqualSelector([modelResults],
     modelResults => modelResults && modelResults.length ? modelResults[0].map(o => ({key: (o.traintuple && o.traintuple.key) || (o.compositeTraintuple && o.compositeTraintuple.key)})) : modelResults,
 );
 
-export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, traintupleKeys],
-    (location, objective, dataset, standardAlgo, compositeAlgo, traintupleKeys) => ({
+export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, aggregateAlgoResults, traintupleKeys],
+    (location, objective, dataset, standardAlgo, compositeAlgo, aggregateAlgo, traintupleKeys) => ({
         objective: objective && objective.length ? objective[0] : objective,
         dataset: dataset && dataset.length ? dataset[0] : dataset,
         algo: standardAlgo,
         composite_algo: compositeAlgo,
+        aggregate_algo: aggregateAlgo,
         model: traintupleKeys, // output model i.e trained model (updated)
         ...(location.type === 'MODEL' ? {
             model_parents: traintupleKeys,
