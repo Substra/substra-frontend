@@ -9,6 +9,7 @@ import {
     Tabs,
     TabPanel,
     TabList,
+    RoundedButton,
 } from '@substrafoundation/substra-ui';
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
@@ -18,8 +19,10 @@ import CopyInput from '../../../../../../common/components/detail/components/cop
 
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';
+import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import Description from '../../../../../../common/components/detail/components/description';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
+import ForbiddenDescription from '../../../../../../common/components/detail/components/forbiddenDescription';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -29,8 +32,12 @@ const Code = styled('code')`
     padding: 1px 3px;
 `;
 
+const Span = styled('span')`
+    margin-right: ${spacingNormal};
+`;
+
 const DatasetTabs = ({
-descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
+    loading, descLoading, descForbidden, item, tabIndex, openerLoading, openerForbidden, setTabIndex, addNotification,
 }) => (
     <Tabs
         selectedIndex={tabIndex}
@@ -45,11 +52,26 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
-            {!descLoading && <Description item={item} />}
+            {!descLoading && descForbidden && (
+                <ForbiddenDescription
+                    model="dataset"
+                    permissionsTabIndex={4}
+                    setTabIndex={setTabIndex}
+                />
+            )}
+            {!descLoading && !descForbidden && <Description item={item} />}
         </TabPanel>
         <TabPanel>
             {openerLoading && <PulseLoader size={6} />}
-            {!openerLoading && item && item.opener && item.opener.content && (
+            {!openerLoading && openerForbidden && (
+                <>
+                    <Span>You do not have enough permissions to see this dataset's opener.</Span>
+                    <RoundedButton onClick={() => setTabIndex(4)}>
+                        Learn more
+                    </RoundedButton>
+                </>
+            )}
+            {!openerLoading && !openerForbidden && item && item.opener && item.opener.content && (
                 <CodeSample
                     filename="opener.py"
                     language="python"
@@ -58,11 +80,11 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
             )}
         </TabPanel>
         <TabPanel>
-            {descLoading && <PulseLoader size={6} />}
-            {!descLoading && item && item.trainDataSampleKeys && !!item.trainDataSampleKeys.length && (
+            {loading && <PulseLoader size={6} />}
+            {!loading && item && item.trainDataSampleKeys && !!item.trainDataSampleKeys.length && (
                 <DataKeysTable dataKeys={item.trainDataSampleKeys} addNotification={addNotification} />
             )}
-            {!descLoading && item && item.trainDataSampleKeys && !item.trainDataSampleKeys.length && (
+            {!loading && item && (!item.trainDataSampleKeys || (item.trainDataSampleKeys && !item.trainDataSampleKeys.length)) && (
                 <>
                     <p>
                         No train data samples setup yet.
@@ -83,11 +105,11 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
             )}
         </TabPanel>
         <TabPanel>
-            {descLoading && <PulseLoader size={6} />}
-            {!descLoading && item && item.testDataSampleKeys && !!item.testDataSampleKeys.length && (
+            {loading && <PulseLoader size={6} />}
+            {!loading && item && item.testDataSampleKeys && !!item.testDataSampleKeys.length && (
                 <DataKeysTable dataKeys={item.testDataSampleKeys} addNotification={addNotification} />
             )}
-            {!descLoading && item && item.testDataSampleKeys && !item.testDataSampleKeys.length && (
+            {!loading && item && (!item.testDataSampleKeys || (item.testDataSampleKeys && !item.testDataSampleKeys.length)) && (
                 <>
                     <p>
                         No test data samples setup yet.
@@ -120,18 +142,24 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
 
 DatasetTabs.propTypes = {
     item: PropTypes.shape(),
+    loading: PropTypes.bool,
     descLoading: PropTypes.bool,
+    descForbidden: PropTypes.bool,
     tabIndex: PropTypes.number,
     openerLoading: PropTypes.bool,
+    openerForbidden: PropTypes.bool,
     setTabIndex: PropTypes.func,
     addNotification: PropTypes.func.isRequired,
 };
 
 DatasetTabs.defaultProps = {
     item: null,
+    loading: false,
     descLoading: false,
+    descForbidden: false,
     tabIndex: 0,
     openerLoading: false,
+    openerForbidden: false,
     setTabIndex: noop,
 };
 

@@ -6,6 +6,7 @@ import {replace} from 'redux-first-router';
 import {omit} from 'lodash';
 import cookie from 'cookie-parse';
 
+import {fetchRaw} from '../../../entities/fetchEntities';
 import {fetchRefresh} from '../../user/api';
 import {refresh as refreshActions, signOut} from '../../user/actions';
 
@@ -114,6 +115,24 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
     replace(newUrl);
 };
 
+export const fetchItemDescriptionSaga = (actions) => function* fetchItemDescription({payload: {pkhash, url}}) {
+    let jwt = getJWTFromCookie();
+    if (!jwt) {
+        jwt = yield tryRefreshToken(actions.description.failure);
+    }
+
+    if (jwt) {
+        const {res, error, status} = yield call(fetchRaw, url, jwt);
+        if (res && status === 200) {
+            yield put(actions.item.description.success({pkhash, desc: res}));
+        }
+        else {
+            console.error(error, status);
+            yield put(actions.item.description.failure({pkhash, status}));
+        }
+    }
+};
+
 export default {
     fetchListSaga,
     fetchPersistentSaga,
@@ -121,4 +140,5 @@ export default {
     setOrderSaga,
     getJWTFromCookie,
     tryRefreshToken,
+    fetchItemDescriptionSaga,
 };

@@ -11,9 +11,8 @@ import {
     fetchListApi, fetchStandardAlgoApi, fetchCompositeAlgoApi, fetchAggregateAlgoApi,
 } from '../api';
 import {
-    fetchItemSaga, setOrderSaga, tryRefreshToken, getJWTFromCookie,
+    fetchItemSaga, setOrderSaga, tryRefreshToken, getJWTFromCookie, fetchItemDescriptionSaga,
 } from '../../../common/sagas';
-import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 
 import {signOut} from '../../../user/actions';
@@ -176,21 +175,6 @@ function* setTabIndexSaga({payload}) {
     yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.description.failure);
-    }
-
-    if (jwt) {
-        const {res, status} = yield call(fetchRaw, url, jwt);
-
-        if (res && status === 200) {
-            yield put(actions.item.description.success({pkhash, desc: res}));
-        }
-    }
-}
-
 function* downloadItemSaga({payload: {url}}) {
     let status;
     let filename;
@@ -232,7 +216,7 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
-        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga(actions)),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 

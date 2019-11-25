@@ -10,8 +10,8 @@ import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
     fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga, getJWTFromCookie, tryRefreshToken,
+    fetchItemDescriptionSaga,
 } from '../../../common/sagas';
-import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 
 function* fetchList(request) {
@@ -84,18 +84,6 @@ function* setTabIndexSaga({payload}) {
     yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.description.failure);
-    }
-    if (jwt) {
-        const {res, status} = yield call(fetchRaw, url, jwt);
-        if (res && status === 200) {
-            yield put(actions.item.description.success({pkhash, desc: res}));
-        }
-    }
-}
 
 function* downloadItemSaga({payload: {url}}) {
     let status;
@@ -136,7 +124,7 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
-        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga(actions)),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
 

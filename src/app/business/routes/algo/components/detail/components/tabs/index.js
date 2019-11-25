@@ -16,13 +16,14 @@ import Tab from '../../../../../../common/components/detail/components/tabs';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
+import ForbiddenDescription from '../../../../../../common/components/detail/components/forbiddenDescription';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
 `;
 
 const AlgoTabs = ({
-descLoading, item, tabIndex, setTabIndex, downloadFile,
+descLoading, descForbidden, item, tabIndex, setTabIndex, downloadFile,
 }) => (
     <Tabs
         selectedIndex={tabIndex}
@@ -35,7 +36,14 @@ descLoading, item, tabIndex, setTabIndex, downloadFile,
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
-            {!descLoading && <Description item={item} />}
+            {!descLoading && descForbidden && (
+                <ForbiddenDescription
+                    model="algo"
+                    permissionsTabIndex={2}
+                    setTabIndex={setTabIndex}
+                />
+            )}
+            {!descLoading && !descForbidden && <Description item={item} />}
         </TabPanel>
         <TabPanel>
             <Span>The algorithm's source code and Dockerfile are packaged within a zip or tar.gz file.</Span>
@@ -57,6 +65,7 @@ descLoading, item, tabIndex, setTabIndex, downloadFile,
 AlgoTabs.propTypes = {
     item: PropTypes.shape(),
     descLoading: PropTypes.bool,
+    descForbidden: PropTypes.bool,
     tabIndex: PropTypes.number,
     setTabIndex: PropTypes.func,
     downloadFile: PropTypes.func.isRequired,
@@ -65,6 +74,7 @@ AlgoTabs.propTypes = {
 AlgoTabs.defaultProps = {
     item: null,
     descLoading: false,
+    descForbidden: false,
     tabIndex: 0,
     setTabIndex: noop,
 };
