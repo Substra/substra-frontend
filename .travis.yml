@@ -17,7 +17,7 @@ addons:
       channel: stable
 
 before_script:
-  - helm init --client-only
+  - helm init
 
 script:
   - helm lint charts/substra-frontend
