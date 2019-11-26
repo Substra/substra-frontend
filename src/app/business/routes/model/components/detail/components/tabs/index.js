@@ -34,13 +34,24 @@ class ModelTabs extends Component {
     render() {
         const {item, addNotification} = this.props;
         const {tabIndex} = this.state;
-        const isComposite = item && item.traintuple && item.traintuple.type === 'composite';
 
         // do not display the "type" key in the traintuple that's been inserted for the fronten's internal use
         const cleanTraintuple = item && item.traintuple && {...item.traintuple};
         if (cleanTraintuple) {
             delete cleanTraintuple.type;
         }
+
+        const tupleType = item && item.traintuple && item.traintuple.type;
+        const tupleFilename = {
+            standard: 'traintuple.json',
+            composite: 'composite_traintuple.json',
+            aggregate: 'aggregatetuple.json',
+        };
+        const tupleTabTitle = {
+            standard: 'Traintuple/Model',
+            composite: 'Composite traintuple/Head model/Trunk model',
+            aggregate: 'Aggregatetuple/Model',
+        };
 
         return (
             <Fragment>
@@ -57,11 +68,11 @@ class ModelTabs extends Component {
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
-                        <Tab>{isComposite ? 'Composite traintuple / Head model / Trunk model' : 'Traintuple/Model'}</Tab>
+                        <Tab>{tupleTabTitle[tupleType]}</Tab>
                         <Tab>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
-                        {item && item.traintuple && item.traintuple.status === 'done' && (
+                        {['standard', 'composite'].includes(tupleType) && item && item.traintuple && item.traintuple.status === 'done' && (
                         <p>
                             {'Model successfully trained with a score of '}
                             <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
@@ -71,7 +82,7 @@ class ModelTabs extends Component {
                         </p>
                     )}
                         <CodeSample
-                            filename={isComposite ? 'composite_traintuple.json' : 'traintuple.json'}
+                            filename={tupleFilename[tupleType]}
                             language="json"
                             codeString={JSON.stringify(cleanTraintuple, null, 2)}
                         />

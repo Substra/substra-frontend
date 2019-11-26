@@ -40,7 +40,7 @@ ScoreMetadata.defaultProps = {
 };
 
 const Metadata = ({o}) => {
-    const hasTags = o && (o.tag || (o.traintuple && o.traintuple.type === 'composite'));
+    const hasTags = o && (o.tag || o.traintuple && ['composite', 'aggregate'].includes(o.traintuple.type));
 
     return (
         <Fragment>
@@ -48,6 +48,7 @@ const Metadata = ({o}) => {
                 <div className={metadata}>
                     {o && o.tag && <MetadataTag>Model bundle</MetadataTag>}
                     {o && o.traintuple && o.traintuple.type === 'composite' && <MetadataTag>Composite</MetadataTag>}
+                    {o && o.traintuple && o.traintuple.type === 'aggregate' && <MetadataTag>Aggregate</MetadataTag>}
                 </div>
             )}
             <div className={metadata}>

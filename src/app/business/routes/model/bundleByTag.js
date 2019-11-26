@@ -140,15 +140,7 @@ const bundleByTag = (groups, modelsDetailsByKey) => groups.map((models) => {
             // these models have no tag, they shouldn't be bundled
             return [
                 ...groupedModels,
-                ...tagModels.map(model => ({
-                    traintuple: {
-                        ...(model.traintuple || model.compositeTraintuple),
-                        type: model.compositeTraintuple ? 'composite' : 'standard',
-                    },
-                    testtuple: {
-                        ...model.testtuple,
-                    },
-                })),
+                ...tagModels,
             ];
         }
 

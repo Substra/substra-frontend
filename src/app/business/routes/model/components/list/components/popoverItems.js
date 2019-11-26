@@ -51,7 +51,20 @@ const CompositeModelPopoverItems = ({item, filterUp, addNotification}) => {
     );
 };
 
-StandardModelPopoverItems.propTypes = CompositeModelPopoverItems.propTypes = {
+const AggregateModelPopoverItems = ({item, filterUp, addNotification}) => {
+    const modelKey = deepGet('traintuple.outModel.hash')(item);
+    const traintupleKey = deepGet('traintuple.key')(item);
+
+    return (
+        <PopList>
+            <FilterUpPopItem filterUp={filterUp} />
+            {modelKey && <CopyPopItem addNotification={addNotification} assetKey={modelKey} assetName="model" />}
+            <CopyPopItem addNotification={addNotification} assetKey={traintupleKey} assetName="aggregatetuple" />
+        </PopList>
+    );
+};
+
+StandardModelPopoverItems.propTypes = CompositeModelPopoverItems.propTypes = AggregateModelPopoverItems.propTypes = {
     item: PropTypes.shape().isRequired,
     filterUp: PropTypes.func.isRequired,
     addNotification: PropTypes.func.isRequired,
@@ -65,6 +78,7 @@ const ModelPopoverItems = (props) => {
         <React.Fragment>
             {type === 'standard' && <StandardModelPopoverItems {...props} />}
             {type === 'composite' && <CompositeModelPopoverItems {...props} />}
+            {type === 'aggregate' && <AggregateModelPopoverItems {...props} />}
         </React.Fragment>
     );
 };

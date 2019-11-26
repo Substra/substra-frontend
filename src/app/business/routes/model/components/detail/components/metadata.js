@@ -58,6 +58,12 @@ class Metadata extends Component {
                         <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.outTrunkModel ? item.traintuple.outTrunkModel.outModel.hash : 'N/A'} />
                     </React.Fragment>
                 )}
+                {type === 'aggregate' && (
+                    <React.Fragment>
+                        <KeyMetadata addNotification={this.addNotification} assetName="aggregatetuple" assetKey={item.traintuple.key} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
+                    </React.Fragment>
+                )}
                 <SingleMetadata label="Status">
                     {capitalize(item.traintuple.status)}
                     <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.traintuple.status)} />
@@ -73,7 +79,7 @@ class Metadata extends Component {
                     )}
                 </SingleMetadata>
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
-                <SingleMetadata label="Worker" value={item.traintuple.dataset.worker} />
+                <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />

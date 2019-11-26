@@ -12,6 +12,7 @@ import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {signOut} from '../../../user/actions';
+import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
     const state = yield select();
@@ -36,8 +37,9 @@ function* fetchList(request) {
 
 function* fetchDetail({payload}) {
     const state = yield select();
+    const modelDetailList = itemResults(state, 'model');
 
-    const item = state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key);
+    const item = modelDetailList.find(o => o.traintuple.key === payload.traintuple.key);
 
     if (!item) {
         yield put(actions.item.success(payload));
@@ -66,14 +68,15 @@ function* fetchPersistent(request) {
     }
 }
 
-
 function* fetchBundleDetail() {
     const state = yield select();
+    const modelGroups = listResults(state, 'model');
+    const modelDetailList = itemResults(state, 'model');
 
-    for (const group of state.model.list.results) {
-        const models = group.filter(model => (model.traintuple && model.traintuple.tag) || (model.compositeTraintuple && model.compositeTraintuple.tag));
+    for (const group of modelGroups) {
+        const models = group.filter(model => model.traintuple && model.traintuple.tag);
         for (const model of models) {
-            const modelDetail = state.model.item.results.find(o => o.traintuple.key === model.traintuple.key);
+            const modelDetail = modelDetailList.find(o => o.traintuple.key === model.traintuple.key);
             if (!modelDetail) {
                 yield put(actions.item.request({id: model.traintuple.key}));
             }
