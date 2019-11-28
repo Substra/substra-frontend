@@ -47,8 +47,11 @@ const Metadata = ({o}) => {
             {hasTags && (
                 <div className={metadata}>
                     {o && o.tag && <MetadataTag>Model bundle</MetadataTag>}
-                    {o && o.traintuple && o.traintuple.type === 'composite' && <MetadataTag>Composite</MetadataTag>}
-                    {o && o.traintuple && o.traintuple.type === 'aggregate' && <MetadataTag>Aggregate</MetadataTag>}
+                    {o && o.traintuple && ['composite', 'aggregate'].includes(o.traintuple.type) && (
+                        <MetadataTag>
+                            {capitalize(o.traintuple.type)}
+                        </MetadataTag>
+                    )}
                 </div>
             )}
             <div className={metadata}>

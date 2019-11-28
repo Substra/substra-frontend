@@ -16,13 +16,16 @@ const BrowseRelatedLinks = ({
                             }) => {
     const modelHash = item && item.traintuple && item.traintuple.outModel && item.traintuple.outModel.hash;
     let algoFilter,
+        hasPrefix = false,
         objectiveFilter,
         datasetFilter;
     if (modelHash) {
         algoFilter = objectiveFilter = datasetFilter = `model:hash:${modelHash}`;
     }
     else {
-        algoFilter = `${item && item.traintuple && item.traintuple.type === 'composite' ? 'composite_algo' : 'algo'}:name:${item && item.traintuple && item.traintuple.algo ? encodeURIComponent(item.traintuple.algo.name) : ''}`;
+        hasPrefix = item && item.traintuple && ['composite', 'aggregate'].includes(item.traintuple.type);
+        const algoPrefix = hasPrefix ? `${item.traintuple.type}_algo` : 'algo';
+        algoFilter = `${algoPrefix}:name:${item && item.traintuple && item.traintuple.algo ? encodeURIComponent(item.traintuple.algo.name) : ''}`;
         objectiveFilter = item && item.traintuple && item.traintuple.objective && `objective:key:${item.traintuple.objective.hash}`;
         datasetFilter = [
             item.traintuple,
@@ -41,7 +44,12 @@ const BrowseRelatedLinks = ({
 
     return (
         <Fragment>
-            <BrowseRelatedLink model="algo" label={item && item.traintuple && item.traintuple.type === 'composite' ? 'composite algorithm' : 'algorithm'} filter={algoFilter} unselect={unselectAlgo} />
+            <BrowseRelatedLink
+                model="algo"
+                label={hasPrefix ? `${item.traintuple.type} algorithm` : 'algorithm'}
+                filter={algoFilter}
+                unselect={unselectAlgo}
+            />
             {objectiveFilter && <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />}
             {datasetFilter && <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />}
         </Fragment>

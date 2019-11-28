@@ -15,13 +15,7 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 const BrowseRelatedLinks = ({
                                 item, unselectObjective, unselectDataset, unselectModel,
                             }) => {
-    let asset = 'algo';
-    if (item && item.type === 'composite') {
-        asset = 'composite_algo';
-    }
-    else if (item && item.type === 'aggregate') {
-        asset = 'aggregate_algo';
-    }
+    const asset = item && ['composite', 'aggregate'].includes(item.type) ? `${item.type}_algo` : 'algo';
     const filter = `${asset}:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (

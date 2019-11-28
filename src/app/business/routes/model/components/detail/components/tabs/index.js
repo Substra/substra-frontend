@@ -17,6 +17,17 @@ import {
     AlertWrapper, AlertTitle, AlertInlineButton,
 } from '../../../../../../common/components/alert';
 
+const tupleFilename = {
+    standard: 'traintuple.json',
+    composite: 'composite_traintuple.json',
+    aggregate: 'aggregatetuple.json',
+};
+
+const tupleTabTitle = {
+    standard: 'Traintuple/Model',
+    composite: 'Composite traintuple/Head model/Trunk model',
+    aggregate: 'Aggregatetuple/Model',
+};
 
 class ModelTabs extends Component {
     state = {
@@ -42,16 +53,6 @@ class ModelTabs extends Component {
         }
 
         const tupleType = item && item.traintuple && item.traintuple.type;
-        const tupleFilename = {
-            standard: 'traintuple.json',
-            composite: 'composite_traintuple.json',
-            aggregate: 'aggregatetuple.json',
-        };
-        const tupleTabTitle = {
-            standard: 'Traintuple/Model',
-            composite: 'Composite traintuple/Head model/Trunk model',
-            aggregate: 'Aggregatetuple/Model',
-        };
 
         return (
             <Fragment>

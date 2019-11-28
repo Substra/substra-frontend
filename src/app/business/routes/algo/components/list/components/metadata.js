@@ -1,18 +1,14 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
+import {capitalize} from 'lodash';
 
 import {metadata, MetadataTag} from '../../../../../common/components/list/components/metadata';
 
 const Metadata = ({o}) => (
     <Fragment>
-        {o && o.type === 'composite' && (
+        {o && ['composite', 'aggregate'].includes(o.type) && (
             <div className={metadata}>
-                <MetadataTag>Composite</MetadataTag>
-            </div>
-        )}
-        {o && o.type === 'aggregate' && (
-            <div className={metadata}>
-                <MetadataTag>Aggregate</MetadataTag>
+                <MetadataTag>{capitalize(o.type)}</MetadataTag>
             </div>
         )}
     </Fragment>

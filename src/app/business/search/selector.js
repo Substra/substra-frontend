@@ -1,3 +1,4 @@
+import {omit} from 'lodash';
 import {createDeepEqualSelector} from '../../utils/selector';
 
 const location = state => state.location;
@@ -9,15 +10,13 @@ const datasetResults = state => state.dataset ? state.dataset.persistent.results
 const algoResults = state => state.algo ? state.algo.persistent.results : null;
 const modelResults = state => state.model ? state.model.persistent.results : null;
 
-const removeProp = (o, prop) => {
-    const copy = {...o};
-    delete copy[prop];
-    return copy;
-};
 const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
     (allAlgosOfType, group) => [
             ...allAlgosOfType,
-            ...group.filter(algo => algo.type === type).map(algo => removeProp(algo, 'type')),
+            ...group.reduce((algos, algo) => [
+                ...algos,
+                ...(algo.type === type ? [omit(algo, 'type')] : []),
+            ]),
         ],
     [],
 );
