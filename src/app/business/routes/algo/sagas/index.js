@@ -35,17 +35,19 @@ const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) 
 
     let list;
 
-    if (errorStandardAlgos) {
-        console.error(errorStandardAlgos, statusStandardAlgos);
-        yield put(actions.list.failure(errorStandardAlgos));
-    }
-    else if (errorCompositeAlgos) {
-        console.error(errorCompositeAlgos, statusCompositeAlgos);
-        yield put(actions.list.failure(errorCompositeAlgos));
-    }
-    else if (errorAggregateAlgos) {
-        console.error(errorAggregateAlgos, statusAggregateAlgos);
-        yield put(actions.list.failure(errorAggregateAlgos));
+    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
+        if (errorStandardAlgos) {
+            console.error(errorStandardAlgos, statusStandardAlgos);
+            yield put(actions.list.failure(errorStandardAlgos));
+        }
+        if (errorCompositeAlgos) {
+            console.error(errorCompositeAlgos, statusCompositeAlgos);
+            yield put(actions.list.failure(errorCompositeAlgos));
+        }
+        if (errorAggregateAlgos) {
+            console.error(errorAggregateAlgos, statusAggregateAlgos);
+            yield put(actions.list.failure(errorAggregateAlgos));
+        }
     }
     else {
         list = [].concat(
@@ -68,17 +70,19 @@ const fetchPersistentSaga = (actions, fetchListApi) => function* fetchList({payl
 
     let list;
 
-    if (errorStandardAlgos) {
-        console.error(errorStandardAlgos, statusStandardAlgos);
-        yield put(actions.persistent.failure(errorStandardAlgos));
-    }
-    else if (errorCompositeAlgos) {
-        console.error(errorCompositeAlgos, statusCompositeAlgos);
-        yield put(actions.persistent.failure(errorCompositeAlgos));
-    }
-    else if (errorAggregateAlgos) {
-        console.error(errorAggregateAlgos, statusAggregateAlgos);
-        yield put(actions.persistent.failure(errorAggregateAlgos));
+    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
+        if (errorStandardAlgos) {
+            console.error(errorStandardAlgos, statusStandardAlgos);
+            yield put(actions.persistent.failure(errorStandardAlgos));
+        }
+        if (errorCompositeAlgos) {
+            console.error(errorCompositeAlgos, statusCompositeAlgos);
+            yield put(actions.persistent.failure(errorCompositeAlgos));
+        }
+        if (errorAggregateAlgos) {
+            console.error(errorAggregateAlgos, statusAggregateAlgos);
+            yield put(actions.persistent.failure(errorAggregateAlgos));
+        }
     }
     else {
         list = [].concat(

@@ -36,8 +36,7 @@ function* fetchList(request) {
 }
 
 function* fetchDetail({payload}) {
-    const state = yield select();
-    const modelDetailList = itemResults(state, 'model');
+    const modelDetailList = yield select(itemResults, 'model');
 
     const item = modelDetailList.find(o => o.traintuple.key === payload.traintuple.key);
 
@@ -69,9 +68,8 @@ function* fetchPersistent(request) {
 }
 
 function* fetchBundleDetail() {
-    const state = yield select();
-    const modelGroups = listResults(state, 'model');
-    const modelDetailList = itemResults(state, 'model');
+    const modelGroups = yield select(listResults, 'model');
+    const modelDetailList = yield select(itemResults, 'model');
 
     for (const group of modelGroups) {
         const models = group.filter(model => model.traintuple && model.traintuple.tag);
