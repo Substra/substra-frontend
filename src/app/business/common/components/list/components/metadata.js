@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
+import styled from '@emotion/styled';
 
-import {spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
-import {blueGrey} from '../../../../../../../assets/css/variables/colors';
+import {spacingNormal, spacingSmall, spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
+import {blueGrey, slate} from '../../../../../../../assets/css/variables/colors';
+import {fontNormal} from '../../../../../../../assets/css/variables/font';
 
 const singleMetadata = css`
     margin-right: ${spacingNormal};
@@ -39,4 +41,12 @@ export const metadata = css`
     vertical-align: top;
     margin-top: ${spacingSmall};
     color: ${blueGrey};
+`;
+
+export const MetadataTag = styled('div')`
+    display: inline-block;
+    font-size: ${fontNormal};
+    border-radius: ${spacingSmall};
+    padding: 0 ${spacingExtraSmall};
+    border: 1px solid ${slate};
 `;

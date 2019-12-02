@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {capitalize} from 'lodash';
 
-import {metadata, SingleMetadata} from '../../../../../common/components/list/components/metadata';
-import {iceBlue, slate} from '../../../../../../../../assets/css/variables/colors';
+import {metadata, SingleMetadata, MetadataTag} from '../../../../../common/components/list/components/metadata';
+import {iceBlue} from '../../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
 import InlinePulseLoader from '../../inlinePulseLoader';
-import {fontNormal} from '../../../../../../../../assets/css/variables/font';
 
 const ScoreWrapper = styled('div')`
     background-color: ${iceBlue};
@@ -16,13 +15,6 @@ const ScoreWrapper = styled('div')`
     margin: ${spacingExtraSmall} -${spacingNormal} -${spacingSmall} -${spacingNormal};
 `;
 
-const Tag = styled('div')`
-    display: inline-block;
-    font-size: ${fontNormal};
-    border-radius: ${spacingSmall};
-    padding: 0 ${spacingExtraSmall};
-    border: 1px solid ${slate};
-`;
 
 const ScoreMetadata = ({label, testtuple}) => (
     <SingleMetadata label={label}>
@@ -47,35 +39,44 @@ ScoreMetadata.defaultProps = {
     testtuple: null,
 };
 
-const Metadata = ({o}) => (
-    <Fragment>
-        {o && o.tag && (
+const Metadata = ({o}) => {
+    const hasTags = o && (o.tag || o.traintuple && ['composite', 'aggregate'].includes(o.traintuple.type));
+
+    return (
+        <Fragment>
+            {hasTags && (
+                <div className={metadata}>
+                    {o && o.tag && <MetadataTag>Model bundle</MetadataTag>}
+                    {o && o.traintuple && ['composite', 'aggregate'].includes(o.traintuple.type) && (
+                        <MetadataTag>
+                            {capitalize(o.traintuple.type)}
+                        </MetadataTag>
+                    )}
+                </div>
+            )}
             <div className={metadata}>
-                <Tag>Model bundle</Tag>
-            </div>
-        )}
-        <div className={metadata}>
-            <SingleMetadata label="Status">
-                {capitalize(o.traintuple.status)}
-                <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
-            </SingleMetadata>
-            {o && o.tag && o.nonCertifiedTesttuple && (
-                <ScoreMetadata
-                    label="Validation score"
-                    testtuple={o.nonCertifiedTesttuple}
-                />
-            )}
-            {o && o.testtuple && (
-                <ScoreWrapper>
+                <SingleMetadata label="Status">
+                    {capitalize(o.traintuple.status)}
+                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
+                </SingleMetadata>
+                {o && o.tag && o.nonCertifiedTesttuple && (
                     <ScoreMetadata
-                        label="Score"
-                        testtuple={o.testtuple}
+                        label="Validation score"
+                        testtuple={o.nonCertifiedTesttuple}
                     />
-                </ScoreWrapper>
-            )}
-        </div>
-    </Fragment>
-);
+                )}
+                {o && o.testtuple && (
+                    <ScoreWrapper>
+                        <ScoreMetadata
+                            label="Score"
+                            testtuple={o.testtuple}
+                        />
+                    </ScoreWrapper>
+                )}
+            </div>
+        </Fragment>
+    );
+};
 
 Metadata.propTypes = {
     o: PropTypes.shape({

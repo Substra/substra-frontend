@@ -12,11 +12,47 @@ export const flattenUniq = xs => Array.from(xs.reduce(
     new Set(),
 ));
 
-const listResults = (state, model) => state[model].list.results;
+
+const buildTypedTraintuple = (model) => {
+    let traintuple,
+        type;
+    if (model.compositeTraintuple) {
+        traintuple = model.compositeTraintuple;
+        type = 'composite';
+    }
+    else if (model.aggregatetuple) {
+        traintuple = model.aggregatetuple;
+        type = 'aggregate';
+    }
+    // it's necessary to put the "if (model.traintuple)" clause in last position
+    else if (model.traintuple) {
+        traintuple = model.traintuple;
+        type = 'standard';
+    }
+
+    return {
+        ...model,
+        traintuple: {
+            ...traintuple,
+            type,
+        },
+    };
+};
+
+
+const rawListResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
-const itemResults = (state, model) => state[model].item.results;
+const rawItemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
 const isComplex = state => state.search.isComplex;
+
+export const listResults = createDeepEqualSelector([rawListResults],
+    results => results.map(models => models.map(buildTypedTraintuple)),
+);
+
+export const itemResults = createDeepEqualSelector([rawItemResults],
+    models => models.map(buildTypedTraintuple),
+);
 
 const itemResultsByKey = createDeepEqualSelector([itemResults],
     results => results.reduce((resultsByKey, result) => ({

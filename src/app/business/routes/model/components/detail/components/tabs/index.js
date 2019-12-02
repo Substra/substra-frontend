@@ -17,6 +17,17 @@ import {
     AlertWrapper, AlertTitle, AlertInlineButton,
 } from '../../../../../../common/components/alert';
 
+const tupleFilename = {
+    standard: 'traintuple.json',
+    composite: 'composite_traintuple.json',
+    aggregate: 'aggregatetuple.json',
+};
+
+const tupleTabTitle = {
+    standard: 'Traintuple/Model',
+    composite: 'Composite traintuple/Head model/Trunk model',
+    aggregate: 'Aggregatetuple/Model',
+};
 
 class ModelTabs extends Component {
     state = {
@@ -35,6 +46,14 @@ class ModelTabs extends Component {
         const {item, addNotification} = this.props;
         const {tabIndex} = this.state;
 
+        // do not display the "type" key in the traintuple that's been inserted for the fronten's internal use
+        const cleanTraintuple = item && item.traintuple && {...item.traintuple};
+        if (cleanTraintuple) {
+            delete cleanTraintuple.type;
+        }
+
+        const tupleType = item && item.traintuple && item.traintuple.type;
+
         return (
             <Fragment>
                 {item && item.traintuple && item.traintuple.status === 'done' && !item.testtuple && (
@@ -50,11 +69,11 @@ class ModelTabs extends Component {
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
-                        <Tab>Traintuple/Model</Tab>
+                        <Tab>{tupleTabTitle[tupleType]}</Tab>
                         <Tab>Testtuple</Tab>
                     </TabList>
                     <TabPanel>
-                        {item && item.traintuple && item.traintuple.status === 'done' && (
+                        {['standard', 'composite'].includes(tupleType) && item && item.traintuple && item.traintuple.status === 'done' && (
                         <p>
                             {'Model successfully trained with a score of '}
                             <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
@@ -64,9 +83,9 @@ class ModelTabs extends Component {
                         </p>
                     )}
                         <CodeSample
-                            filename="traintuple.json"
+                            filename={tupleFilename[tupleType]}
                             language="json"
-                            codeString={JSON.stringify(item.traintuple, null, 2)}
+                            codeString={JSON.stringify(cleanTraintuple, null, 2)}
                         />
                     </TabPanel>
                     <TabPanel>
