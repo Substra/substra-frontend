@@ -8,13 +8,94 @@ import {saveAs} from 'file-saver';
 import cookie from 'cookie-parse';
 
 import actions, {actionTypes} from '../actions';
-import {fetchListApi, fetchItemApi} from '../api';
 import {
-fetchListSaga, fetchPersistentSaga, fetchItemSaga, setOrderSaga,
+    fetchListApi, fetchStandardAlgoApi, fetchCompositeAlgoApi, fetchAggregateAlgoApi,
+} from '../api';
+import {
+fetchItemSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
 import {signOut} from '../../../user/actions';
+
+const fetchItemApiByType = {
+    composite: fetchCompositeAlgoApi,
+    aggregate: fetchAggregateAlgoApi,
+    standard: fetchStandardAlgoApi,
+};
+
+const withAlgoType = (list, type) => list.map(group => group.map(algo => ({...algo, type})));
+
+
+const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
+    const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
+    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
+    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
+    const {error: errorAggregateAlgos, status: statusAggregateAlgos, list: listAggregateAlgos} = resAggregateAlgos;
+
+    let list;
+
+    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
+        if (errorStandardAlgos) {
+            console.error(errorStandardAlgos, statusStandardAlgos);
+            yield put(actions.list.failure(errorStandardAlgos));
+        }
+        if (errorCompositeAlgos) {
+            console.error(errorCompositeAlgos, statusCompositeAlgos);
+            yield put(actions.list.failure(errorCompositeAlgos));
+        }
+        if (errorAggregateAlgos) {
+            console.error(errorAggregateAlgos, statusAggregateAlgos);
+            yield put(actions.list.failure(errorAggregateAlgos));
+        }
+    }
+    else {
+        list = [].concat(
+            withAlgoType(listStandardAlgos, 'standard'),
+            withAlgoType(listCompositeAlgos, 'composite'),
+            withAlgoType(listAggregateAlgos, 'aggregate'),
+        );
+        yield put(actions.list.success(list));
+    }
+
+    return list;
+};
+
+
+const fetchPersistentSaga = (actions, fetchListApi) => function* fetchList({payload}) {
+    const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
+    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
+    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
+    const {error: errorAggregateAlgos, status: statusAggregateAlgos, list: listAggregateAlgos} = resAggregateAlgos;
+
+    let list;
+
+    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
+        if (errorStandardAlgos) {
+            console.error(errorStandardAlgos, statusStandardAlgos);
+            yield put(actions.persistent.failure(errorStandardAlgos));
+        }
+        if (errorCompositeAlgos) {
+            console.error(errorCompositeAlgos, statusCompositeAlgos);
+            yield put(actions.persistent.failure(errorCompositeAlgos));
+        }
+        if (errorAggregateAlgos) {
+            console.error(errorAggregateAlgos, statusAggregateAlgos);
+            yield put(actions.persistent.failure(errorAggregateAlgos));
+        }
+    }
+    else {
+        list = [].concat(
+            withAlgoType(listStandardAlgos, 'standard'),
+            withAlgoType(listCompositeAlgos, 'composite'),
+            withAlgoType(listAggregateAlgos, 'aggregate'),
+        );
+        yield put(actions.persistent.success(list));
+    }
+
+    return list;
+};
+
 
 function* fetchList(request) {
     const state = yield select();
@@ -62,6 +143,7 @@ function* fetchItem({payload}) {
         yield put(signOut.success());
     }
     else {
+        const fetchItemApi = fetchItemApiByType[payload.type];
         yield call(fetchItemSaga(actions, fetchItemApi), {
             payload: {
                 id: payload.key,
@@ -71,6 +153,29 @@ function* fetchItem({payload}) {
         });
     }
 }
+
+
+function* fetchPersistent(request) {
+    const state = yield select();
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.persistent.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchPersistentSaga(actions, f), request);
+    }
+}
+
 
 function* fetchDetail(request) {
     const state = yield select();
@@ -157,7 +262,7 @@ const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchList),
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
-        takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
+        takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 

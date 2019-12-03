@@ -10,7 +10,7 @@ import Detail from '../detail/redux';
 export const margin = 40;
 
 
-class Base extends Component {
+export class BaseComponent extends Component {
     filterUp = (o) => {
         const {
             setSearchState, selectedItem, model,
@@ -94,7 +94,7 @@ class Base extends Component {
     }
 }
 
-Base.defaultProps = {
+BaseComponent.defaultProps = {
     selected: null,
     selectedItem: [],
     item: null,
@@ -107,7 +107,7 @@ Base.defaultProps = {
     Detail,
 };
 
-Base.propTypes = {
+BaseComponent.propTypes = {
     selected: PropTypes.string,
     actions: PropTypes.shape({}).isRequired,
     model: PropTypes.string.isRequired,
@@ -128,6 +128,6 @@ Base.propTypes = {
     Detail: PropTypes.elementType,
 };
 
-const BaseWithAddNotification = withAddNotification(Base, Check);
+const BaseWithAddNotification = withAddNotification(BaseComponent, Check);
 
 export default BaseWithAddNotification;

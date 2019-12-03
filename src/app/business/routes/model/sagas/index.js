@@ -12,6 +12,7 @@ import {
 fetchListSaga, fetchPersistentSaga, setOrderSaga,
 } from '../../../common/sagas';
 import {signOut} from '../../../user/actions';
+import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
     const state = yield select();
@@ -35,22 +36,45 @@ function* fetchList(request) {
 }
 
 function* fetchDetail({payload}) {
-    const state = yield select();
+    const modelDetailList = yield select(itemResults, 'model');
 
-    const item = state.model.item.results.find(o => o.traintuple.key === payload.traintuple.key);
+    const item = modelDetailList.find(o => o.traintuple.key === payload.traintuple.key);
 
     if (!item) {
         yield put(actions.item.success(payload));
     }
 }
 
-function* fetchBundleDetail() {
-    const state = yield select();
 
-    for (const group of state.model.list.results) {
-        const models = group.filter(model => model.traintuple.tag);
+function* fetchPersistent(request) {
+    const state = yield select();
+    let jwt;
+
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+
+    if (!jwt) { // redirect to login page
+        yield put(actions.persistent.failure());
+        yield put(signOut.success());
+    }
+    else {
+        const f = () => fetchListApi(state.location.query, jwt);
+        yield call(fetchPersistentSaga(actions, f), request);
+    }
+}
+
+function* fetchBundleDetail() {
+    const modelGroups = yield select(listResults, 'model');
+    const modelDetailList = yield select(itemResults, 'model');
+
+    for (const group of modelGroups) {
+        const models = group.filter(model => model.traintuple && model.traintuple.tag);
         for (const model of models) {
-            const modelDetail = state.model.item.results.find(o => o.traintuple.key === model.traintuple.key);
+            const modelDetail = modelDetailList.find(o => o.traintuple.key === model.traintuple.key);
             if (!modelDetail) {
                 yield put(actions.item.request({id: model.traintuple.key}));
             }
@@ -95,7 +119,7 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.list.REQUEST, fetchList),
         takeLatest(actionTypes.list.SUCCESS, fetchBundleDetail),
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
-        takeLatest(actionTypes.persistent.REQUEST, fetchPersistentSaga(actions, fetchListApi)),
+        takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
 

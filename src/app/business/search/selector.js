@@ -1,3 +1,4 @@
+import {omit} from 'lodash';
 import {createDeepEqualSelector} from '../../utils/selector';
 
 const location = state => state.location;
@@ -9,20 +10,43 @@ const datasetResults = state => state.dataset ? state.dataset.persistent.results
 const algoResults = state => state.algo ? state.algo.persistent.results : null;
 const modelResults = state => state.model ? state.model.persistent.results : null;
 
-export const outModelsHashes = createDeepEqualSelector([modelResults],
-    modelResults => modelResults && modelResults.length ? modelResults[0].filter(o => o.traintuple.outModel).map(o => ({hash: `hash:${o.traintuple.outModel.hash}`})) : modelResults,
+const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
+    (allAlgosOfType, group) => [
+            ...allAlgosOfType,
+            ...group.reduce((algos, algo) => [
+                ...algos,
+                ...(algo.type === type ? [omit(algo, 'type')] : []),
+            ]),
+        ],
+    [],
 );
 
-export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, algoResults, outModelsHashes],
-    (location, objective, dataset, algo, outModelsHashes) => ({
+const standardAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'standard'),
+);
+const compositeAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'composite'),
+);
+const aggregateAlgoResults = createDeepEqualSelector([algoResults],
+    algoGroups => algoGroups && getAlgoByType(algoGroups, 'aggregate'),
+);
+
+const traintupleKeys = createDeepEqualSelector([modelResults],
+    modelResults => modelResults && modelResults.length ? modelResults[0].map(o => ({key: (o.traintuple && o.traintuple.key) || (o.compositeTraintuple && o.compositeTraintuple.key)})) : modelResults,
+);
+
+export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, aggregateAlgoResults, traintupleKeys],
+    (location, objective, dataset, standardAlgo, compositeAlgo, aggregateAlgo, traintupleKeys) => ({
         objective: objective && objective.length ? objective[0] : objective,
         dataset: dataset && dataset.length ? dataset[0] : dataset,
-        algo: algo && algo.length ? algo[0] : algo,
-        model: outModelsHashes, // output model i.e trained model (updated)
+        algo: standardAlgo,
+        composite_algo: compositeAlgo,
+        aggregate_algo: aggregateAlgo,
+        model: traintupleKeys, // output model i.e trained model (updated)
         ...(location.type === 'MODEL' ? {
-            model_parents: outModelsHashes,
-            model_children: outModelsHashes,
-            model_family: outModelsHashes,
+            model_parents: traintupleKeys,
+            model_children: traintupleKeys,
+            model_family: traintupleKeys,
         } : {}),
     }),
 );

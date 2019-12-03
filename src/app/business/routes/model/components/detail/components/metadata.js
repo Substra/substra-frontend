@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 
 import BaseMetadata, {
@@ -14,6 +15,25 @@ import BrowseRelatedLinks from './browseRelatedLinks';
 import InlinePulseLoader from '../../inlinePulseLoader';
 
 
+const KeyMetadata = ({addNotification, assetName, assetKey}) => (
+    <SingleMetadata
+        label={`${capitalize(assetName)} key`}
+        labelClassName={keyLabelClassName}
+        valueClassName={keyValueClassName}
+    >
+        <CopyInput
+            value={assetKey}
+            addNotification={addNotification(assetKey, `${capitalize(assetName)}'s key successfully copied to clipboard!`)}
+        />
+    </SingleMetadata>
+);
+
+KeyMetadata.propTypes = {
+    addNotification: PropTypes.func.isRequired,
+    assetName: PropTypes.string.isRequired,
+    assetKey: PropTypes.string.isRequired,
+};
+
 class Metadata extends Component {
     addNotification = (value, message) => () => {
         const {addNotification} = this.props;
@@ -22,32 +42,27 @@ class Metadata extends Component {
 
     render() {
         const {item} = this.props;
+        const {traintuple: {type}} = item;
         return (
             <MetadataWrapper>
-                <SingleMetadata
-                    label="Traintuple key"
-                    labelClassName={keyLabelClassName}
-                    valueClassName={keyValueClassName}
-                >
-                    <CopyInput
-                        value={item.traintuple.key}
-                        addNotification={this.addNotification(item.traintuple.key, 'Traintuple\'s key successfully copied to clipboard!')}
-                    />
-                </SingleMetadata>
-                {item.traintuple.outModel && (
-                    <SingleMetadata
-                        label="Model key"
-                        labelClassName={keyLabelClassName}
-                        valueClassName={keyValueClassName}
-                    >
-                        <CopyInput
-                            value={item.traintuple.outModel.hash}
-                            addNotification={this.addNotification(item.traintuple.outModel.hash, 'Model\'s key successfully copied to clipboard!')}
-                        />
-                    </SingleMetadata>
+                {type === 'standard' && (
+                    <React.Fragment>
+                        <KeyMetadata addNotification={this.addNotification} assetName="traintuple" assetKey={item.traintuple.key} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
+                    </React.Fragment>
                 )}
-                {!item.traintuple.outModel && (
-                    <SingleMetadata label="Model key" value="N/A" />
+                {type === 'composite' && (
+                    <React.Fragment>
+                        <KeyMetadata addNotification={this.addNotification} assetName="composite traintuple" assetKey={item.traintuple.key} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.outHeadModel ? item.traintuple.outHeadModel.outModel.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.outTrunkModel ? item.traintuple.outTrunkModel.outModel.hash : 'N/A'} />
+                    </React.Fragment>
+                )}
+                {type === 'aggregate' && (
+                    <React.Fragment>
+                        <KeyMetadata addNotification={this.addNotification} assetName="aggregatetuple" assetKey={item.traintuple.key} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
+                    </React.Fragment>
                 )}
                 <SingleMetadata label="Status">
                     {capitalize(item.traintuple.status)}
@@ -64,7 +79,7 @@ class Metadata extends Component {
                     )}
                 </SingleMetadata>
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
-                <SingleMetadata label="Worker" value={item.traintuple.dataset.worker} />
+                <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
