@@ -65,6 +65,7 @@ const ModelSummary = ({model, addNotification}) => (
             (model.traintuple.status === 'todo' && <p>Preparing training.</p>)
             || (model.traintuple.status === 'doing' && <p>Undergoing training.</p>)
             || (model.traintuple.status === 'failed' && <p>Training failed.</p>)
+            || (model.traintuple.status === 'canceled' && <p>Training canceled.</p>)
             || (model.traintuple.status === 'done' && (
                 <Fragment>
                     {!model.testtuple && (
@@ -86,6 +87,8 @@ const ModelSummary = ({model, addNotification}) => (
                             && <p>Training successful. Undergoing testing.</p>)
                         || (model.testtuple.status === 'failed'
                             && <p>Training successful. Failed testing.</p>)
+                        || (model.testtuple.status === 'canceled'
+                            && <p>Training successful. Canceled testing.</p>)
                         || (model.testtuple.status === 'done' && (
                             <p>
                                 {'Model successfully trained with a score of '}

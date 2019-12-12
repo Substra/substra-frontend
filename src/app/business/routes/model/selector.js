@@ -87,24 +87,28 @@ const modelOrder = order => (o) => {
                 1. done
                 2. doing
                 3. todo
-                4. failed
+                4. canceled
+                5. failed
             - we do not have a testtutple:
-                5. null
+                6. null
          - else traintuple status:
-                6. doing
-                7. todo
-                8. waiting
-                9. failed
+                7. doing
+                8. todo
+                9. waiting
+                10. canceled
+                11. failed
     */
 
     const scoreByStatus = {
-        failed: {null: -8},
-        waiting: {null: -7},
-        todo: {null: -6},
-        doing: {null: -5},
+        failed: {null: -10},
+        canceled: {null: -9},
+        waiting: {null: -8},
+        todo: {null: -7},
+        doing: {null: -6},
         done: {
-            null: -4,
-            failed: -3,
+            null: -5,
+            failed: -4,
+            canceled: -3,
             todo: -2,
             doing: -1,
             done: deepOrder(order),

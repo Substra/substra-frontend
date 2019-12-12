@@ -12,7 +12,7 @@ const calcVariance = (arr) => {
 const calcStandardDeviation = arr => Math.sqrt(calcVariance(arr));
 
 function minStatus(models, getStatus) {
-    const statuses = ['failed', 'waiting', 'todo', 'doing', 'done'];
+    const statuses = ['failed', 'canceled', 'waiting', 'todo', 'doing', 'done'];
     const modelStatuses = uniqBy(models.map(m => getStatus(m)));
     for (const status of statuses) {
         if (modelStatuses.includes(status)) {
