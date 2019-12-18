@@ -116,6 +116,9 @@ class ModelTabs extends Component {
                         || (item.traintuple.status === 'failed' && (
                             <p>This model could not complete its training (no testing possible).</p>
                         ))
+                        || (item.traintuple.status === 'canceled' && (
+                            <p>This model got canceled (no testing possible).</p>
+                        ))
                         || (['waiting', 'todo', 'doing'].includes(item.traintuple.status) && (
                             <Fragment>
                                 <p>

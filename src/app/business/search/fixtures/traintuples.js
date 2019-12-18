@@ -4,7 +4,7 @@ export const traintuples = [
         algo: {hash: '34563735737'},
         inModel: {hash: '34563735737'},
         outModel: {hash: '34563735737'},
-        status: 'done', // todo, done, training, trained, testing, failed
+        status: 'done', // todo, done, training, trained, testing, failed, canceled
         rank: 0,
         perf: 0.99,
         permissions: 'all',
@@ -15,7 +15,7 @@ export const traintuples = [
         algo: {hash: '34563735737'},
         inModel: {hash: '34563735737'},
         outModel: {hash: '34563735737'},
-        status: 'done', // todo, done, training, trained, testing, failed
+        status: 'done', // todo, done, training, trained, testing, failed, canceled
         rank: 0,
         perf: 0.99,
         permissions: 'all',
