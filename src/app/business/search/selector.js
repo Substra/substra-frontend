@@ -16,7 +16,7 @@ const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
             ...group.reduce((algos, algo) => [
                 ...algos,
                 ...(algo.type === type ? [omit(algo, 'type')] : []),
-            ]),
+            ], []),
         ],
     [],
 );
