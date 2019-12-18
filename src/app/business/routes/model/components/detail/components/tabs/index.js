@@ -1,4 +1,3 @@
-/* global SCORE_PRECISION */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {noop} from 'lodash';
@@ -75,11 +74,7 @@ class ModelTabs extends Component {
                     <TabPanel>
                         {['standard', 'composite'].includes(tupleType) && item && item.traintuple && item.traintuple.status === 'done' && (
                         <p>
-                            {'Model successfully trained with a score of '}
-                            <b>{item.traintuple.dataset.perf.toFixed(SCORE_PRECISION)}</b>
-                            {' on '}
-                            <b>train data samples</b>
-                            .
+                            {'Model successfully trained.'}
                         </p>
                     )}
                         <CodeSample
