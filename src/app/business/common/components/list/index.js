@@ -10,7 +10,7 @@ import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-u
 import Title from './components/title';
 import Sort from './components/sort/redux';
 import Item from './components/item';
-import Actions from './components/actions/analytics';
+import Actions from './components/actions';
 
 import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
@@ -27,21 +27,17 @@ class List extends Component {
 
     componentDidMount(prevProps, prevState, snapshot) {
         const {
-            loading, fetchList, logList,
+            loading, fetchList,
         } = this.props;
 
         if (!loading) {
             fetchList();
         }
-
-        logList();
     }
 
     setSelected = item => () => {
-        const {setSelected, logDetail} = this.props;
-
+        const {setSelected} = this.props;
         setSelected(item);
-        logDetail(item.key);
     };
 
     hover = item => (e) => {
@@ -89,7 +85,7 @@ class List extends Component {
         return css`
             position: relative;
             background-color: ${hovered || selected ? iceSecondaryAccent : 'transparent'};
-            
+
             &:before {
                 display: block;
                 content: '';
@@ -186,8 +182,6 @@ List.defaultProps = {
     Actions,
     Metadata: null,
     Sort,
-    logList: noop,
-    logDetail: noop,
 };
 
 List.propTypes = {
@@ -212,8 +206,6 @@ List.propTypes = {
     Title: PropTypes.func,
     Metadata: PropTypes.func,
     Sort: PropTypes.elementType,
-    logList: PropTypes.func,
-    logDetail: PropTypes.func,
     Actions: PropTypes.elementType,
 };
 

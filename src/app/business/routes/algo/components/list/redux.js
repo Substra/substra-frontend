@@ -3,10 +3,7 @@ import {connect} from 'react-redux';
 
 import {getItem, getSelected, getOrderedResults} from '../../../../common/selector';
 
-import {withListAnalytics} from '../../../../common/components/list/analytics';
 import List from './index';
-
-const ListWithAnalytics = withListAnalytics(List);
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, download, addNotification, more,
@@ -36,4 +33,4 @@ const mapDispatchToProps = (dispatch, {actions}) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListWithAnalytics);
+export default connect(mapStateToProps, mapDispatchToProps)(List);

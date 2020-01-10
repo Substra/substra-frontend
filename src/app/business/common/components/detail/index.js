@@ -11,26 +11,21 @@ import Actions from './components/actions';
 
 class Detail extends Component {
     downloadFile = (e) => {
-        const {downloadFile, item, logDownloadFromDetail} = this.props;
-
+        const {downloadFile} = this.props;
         downloadFile();
-        logDownloadFromDetail(item.key);
     };
 
     addNotification = (key, text) => {
-        const {addNotification, item, logCopyFromDetail} = this.props;
-
+        const {addNotification} = this.props;
         addNotification(key, text);
-        logCopyFromDetail(item.key);
     };
 
     filterUp = o => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const {item, filterUp, logFilterFromDetail} = this.props;
+        const {filterUp} = this.props;
         filterUp(o);
-        logFilterFromDetail(item.key);
     };
 
     render() {
@@ -82,9 +77,6 @@ Detail.defaultProps = {
     downloadFile: noop,
     addNotification: noop,
     model: '',
-    logFilterFromDetail: noop,
-    logDownloadFromDetail: noop,
-    logCopyFromDetail: noop,
     Title,
     Tabs: noop,
     children: null,
@@ -101,9 +93,6 @@ Detail.propTypes = {
     filterUp: PropTypes.func,
     addNotification: PropTypes.func,
     model: PropTypes.string,
-    logFilterFromDetail: PropTypes.func,
-    logDownloadFromDetail: PropTypes.func,
-    logCopyFromDetail: PropTypes.func,
     Title: PropTypes.elementType,
     Tabs: PropTypes.elementType,
     children: PropTypes.node,

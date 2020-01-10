@@ -2,17 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BaseActions from '../../../../../common/components/list/components/actions';
 import PopoverItems from './popoverItems';
-import {withActionsAnalytics} from '../../../../../common/components/list/components/actions/analytics';
 
 class SingleModelActions extends BaseActions {
     filterUp = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const {filterUp, logFilterFromList, item: {traintuple: {key}}} = this.props;
+        const {filterUp, item: {traintuple: {key}}} = this.props;
 
         filterUp(key);
-        logFilterFromList(key);
 
         this.togglePopover();
     };
@@ -21,10 +19,9 @@ class SingleModelActions extends BaseActions {
         e.preventDefault();
         e.stopPropagation();
 
-        const {addNotification, logCopyFromList} = this.props;
+        const {addNotification} = this.props;
 
         addNotification(value, message);
-        logCopyFromList(value);
         this.togglePopover();
     };
 }
@@ -45,4 +42,4 @@ Actions.defaultProps = {
     item: null,
 };
 
-export default withActionsAnalytics(Actions);
+export default Actions;

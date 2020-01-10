@@ -2,7 +2,6 @@ import {connect} from 'react-redux';
 import {onlyUpdateForKeys} from 'recompose';
 
 import DatasetDetail from './index';
-import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import {getItem} from '../../../../common/selector';
 
 
@@ -16,6 +15,5 @@ const mapStateToProps = (state, {
     addNotification,
 });
 
-const DatasetDetailWithAnalytics = withDetailAnalytics(DatasetDetail);
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(DatasetDetailWithAnalytics));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(DatasetDetail));

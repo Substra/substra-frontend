@@ -6,14 +6,14 @@ import {noop} from 'lodash';
 import PropTypes from 'prop-types';
 import {MoreVertical, IconButton} from '@substrafoundation/substra-ui';
 
-import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
-import PopoverItems from '../popoverItems';
+import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
+import PopoverItems from './popoverItems';
 
 const actions = css`
     position: absolute;
     right: ${spacingExtraSmall};
     top: ${spacingExtraSmall};
-    
+
     svg {
         cursor: pointer;
         display: inline-block;
@@ -44,10 +44,9 @@ class Actions extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {filterUp, logFilterFromList, item: {name, key}} = this.props;
+        const {filterUp, item: {name}} = this.props;
 
         filterUp(name);
-        logFilterFromList(key);
         this.togglePopover();
     };
 
@@ -55,10 +54,9 @@ class Actions extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {downloadFile, logDownloadFromList, item: {key}} = this.props;
+        const {downloadFile, item: {key}} = this.props;
 
         downloadFile(key);
-        logDownloadFromList(key);
         this.togglePopover();
     };
 
@@ -66,10 +64,9 @@ class Actions extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        const {addNotification, logCopyFromList, item: {key}} = this.props;
+        const {addNotification, item: {key}} = this.props;
 
         addNotification(key, text);
-        logCopyFromList(key);
         this.togglePopover();
     };
 
@@ -118,9 +115,6 @@ Actions.propTypes = {
     item: PropTypes.shape().isRequired,
     model: PropTypes.string.isRequired,
     PopoverItems: PropTypes.func,
-    logFilterFromList: PropTypes.func,
-    logDownloadFromList: PropTypes.func,
-    logCopyFromList: PropTypes.func,
     addNotification: PropTypes.func,
     filterUp: PropTypes.func,
     downloadFile: PropTypes.func,
@@ -129,9 +123,6 @@ Actions.propTypes = {
 
 Actions.defaultProps = {
     PopoverItems,
-    logFilterFromList: noop,
-    logDownloadFromList: noop,
-    logCopyFromList: noop,
     addNotification: noop,
     filterUp: noop,
     downloadFile: noop,
