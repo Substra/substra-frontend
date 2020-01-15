@@ -1,64 +1,25 @@
-/* global window */
-
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
-import cookie from 'cookie-parse';
-
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-    fetchListSaga, fetchPersistentSaga, setOrderSaga,
+    fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
 } from '../../../common/sagas';
 
 // user
-import {refresh as refreshActions, signOut} from '../../../user/actions';
-import {fetchRefresh} from '../../../user/api';
+import {signOut} from '../../../user/actions';
 import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
-    }
-
+    let jwt = getJWTFromCookie();
     if (!jwt) {
-        // try to refresh token
-        const {res, error} = yield call(fetchRefresh);
-
-        // refresh token does not exist
-        if (error) { // redirect to login page
-            yield put(refreshActions.failure(error));
-            yield put(actions.list.failure());
-            yield put(signOut.success());
-        }
-        else {
-            yield put(refreshActions.success(res));
-
-            if (typeof window !== 'undefined') {
-                const cookies = cookie.parse(window.document.cookie);
-                if (cookies['header.payload']) {
-                    jwt = cookies['header.payload'];
-                }
-            }
-
-            if (!jwt) {
-                yield put(actions.list.failure());
-                yield put(signOut.success());
-            }
-            else {
-                const f = () => fetchListApi(state.location.query, jwt);
-                yield call(fetchListSaga(actions, f), request);
-            }
-        }
+        jwt = yield tryRefreshToken(actions.list.failure);
     }
-    else {
+
+    if (jwt) {
         const f = () => fetchListApi(state.location.query, jwt);
         yield call(fetchListSaga(actions, f), request);
     }
@@ -114,55 +75,12 @@ function* fetchBundleDetail() {
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
     const {id, get_parameters} = payload;
 
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
-    }
-
+    let jwt = getJWTFromCookie();
     if (!jwt) {
-        // try to refresh token
-        const {res, error} = yield call(fetchRefresh);
-
-        // refresh token does not exist
-        if (error) { // redirect to login page
-            yield put(refreshActions.failure(error));
-            yield put(actions.item.failure());
-            yield put(signOut.success());
-        }
-        else {
-            yield put(refreshActions.success(res));
-
-            if (typeof window !== 'undefined') {
-                const cookies = cookie.parse(window.document.cookie);
-                if (cookies['header.payload']) {
-                    jwt = cookies['header.payload'];
-                }
-            }
-
-            if (!jwt) {
-                yield put(actions.item.failure());
-                yield put(signOut.success());
-            }
-            else {
-                const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
-
-                if (error) {
-                    console.error(error, status);
-                    yield put(actions.item.failure(error));
-                }
-                else {
-                    yield put(actions.item.success(list));
-                }
-
-                return list;
-            }
-        }
+        jwt = yield tryRefreshToken(actions.item.failure);
     }
-    else {
+
+    if (jwt) {
         const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
 
         if (error) {

@@ -1,7 +1,13 @@
+/* globals window */
+
 import {call, put, select} from 'redux-saga/effects';
 import url from 'url';
 import {replace} from 'redux-first-router';
 import {omit} from 'lodash';
+import cookie from 'cookie-parse';
+
+import {fetchRefresh} from '../../user/api';
+import {refresh as refreshActions, signOut} from '../../user/actions';
 
 
 export const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
@@ -64,9 +70,47 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
     replace(newUrl);
 };
 
+
+export const getJWTFromCookie = () => {
+    let jwt;
+    if (typeof window !== 'undefined') {
+        const cookies = cookie.parse(window.document.cookie);
+        if (cookies['header.payload']) {
+            jwt = cookies['header.payload'];
+        }
+    }
+    return jwt;
+};
+
+export const tryRefreshToken = function* tryRefreshToken(action_error) {
+    // try to refresh token
+    const {res, error} = yield call(fetchRefresh);
+
+    // refresh token does not exist
+    if (error) { // redirect to login page
+        yield put(refreshActions.failure(error));
+        yield put(action_error(error));
+        yield put(signOut.success());
+    }
+    else {
+        yield put(refreshActions.success(res));
+
+        const jwt = getJWTFromCookie();
+
+        if (!jwt) {
+            yield put(action_error(error));
+            yield put(signOut.success());
+        }
+
+        return jwt;
+    }
+};
+
 export default {
     fetchListSaga,
     fetchPersistentSaga,
     fetchItemSaga,
     setOrderSaga,
+    getJWTFromCookie,
+    tryRefreshToken,
 };

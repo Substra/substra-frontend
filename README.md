@@ -18,7 +18,7 @@ And make sure the redis server is running by executing:<br/>
 `redis-cli`
 
 
-For testing and developing on the projet with true hot module replacement, run
+For testing and developing on the project with true hot module replacement, run
 `yarn start`
 Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
 
