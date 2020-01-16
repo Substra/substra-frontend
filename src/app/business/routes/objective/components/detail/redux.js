@@ -2,7 +2,6 @@ import {connect} from 'react-redux';
 import {onlyUpdateForKeys} from 'recompose';
 
 import {getItem} from '../../../../common/selector';
-import {withDetailAnalytics} from '../../../../common/components/detail/analytics';
 import ObjectiveDetail from './index';
 
 
@@ -16,5 +15,4 @@ const mapStateToProps = (state, {
     addNotification,
 });
 
-const ObjectiveDetailWithAnalytics = withDetailAnalytics(ObjectiveDetail);
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(ObjectiveDetailWithAnalytics));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(ObjectiveDetail));

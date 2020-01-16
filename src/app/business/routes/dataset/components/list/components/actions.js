@@ -6,7 +6,6 @@ import {isArray} from 'lodash';
 
 import BaseActions from '../../../../../common/components/list/components/actions';
 import PopoverItems from './popoverItems';
-import {withActionsAnalytics} from '../../../../../common/components/list/components/actions/analytics';
 import actions from '../../../actions';
 
 class DatasetActions extends BaseActions {
@@ -15,15 +14,14 @@ class DatasetActions extends BaseActions {
         e.stopPropagation();
 
         const {
-addNotification, itemResults, logCopyFromList, item,
-} = this.props;
+            addNotification, itemResults, item,
+        } = this.props;
 
         const itemDetails = itemResults.find(x => x.key === item.key);
 
         if (itemDetails) {
             const inputValue = isArray(itemDetails[key]) ? JSON.stringify(itemDetails[key]) : itemDetails[key];
             addNotification(inputValue, text);
-            logCopyFromList(item.key);
         }
 
         this.togglePopover();
@@ -88,4 +86,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchItem: actions.item.request,
 }, dispatch);
 
-export default withActionsAnalytics(connect(mapStateToProps, mapDispatchToProps)(DatasetActions));
+export default connect(mapStateToProps, mapDispatchToProps)(DatasetActions);

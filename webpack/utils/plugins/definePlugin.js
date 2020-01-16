@@ -10,6 +10,5 @@ export default () => new webpack.DefinePlugin({
     META_DESCRIPTION: JSON.stringify(config.apps.frontend.meta.description),
     PRODUCTION_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.production),
     DEBUG_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.debug),
-    GOOGLE_ANALYTICS_TRACKER_ID: JSON.stringify(config.googleAnalytics.trackerID),
     SCORE_PRECISION: JSON.stringify(config.apps.frontend.scorePrecision),
 });

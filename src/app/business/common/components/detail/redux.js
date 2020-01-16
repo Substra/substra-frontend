@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {onlyUpdateForKeys} from 'recompose';
 
 import {getItem} from '../../selector';
-import DetailWithAnalytics from './analytics';
+import Detail from './index';
 
 const mapStateToProps = (state, {
     model, filterUp, downloadFile, addNotification,
@@ -17,4 +17,4 @@ const mapStateToProps = (state, {
 
 export const withDetailRedux = Component => connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(Component));
 
-export default withDetailRedux(DetailWithAnalytics);
+export default withDetailRedux(Detail);
