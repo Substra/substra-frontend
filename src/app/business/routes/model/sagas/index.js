@@ -35,17 +35,9 @@ function* fetchDetail({payload}) {
     }
 }
 
-
 function* fetchPersistent(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
-    }
+    const jwt = getJWTFromCookie();
 
     if (!jwt) { // redirect to login page
         yield put(actions.persistent.failure());
@@ -108,6 +100,5 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);
 };
-
 
 export default sagas;

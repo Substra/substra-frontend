@@ -15,7 +15,7 @@ import {
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
-
+import {signOut} from '../../../user/actions';
 
 const fetchItemApiByType = {
     composite: fetchCompositeAlgoApi,
@@ -126,13 +126,9 @@ function* fetchItem({payload}) {
     if (!jwt) {
         jwt = yield tryRefreshToken(actions.item.failure);
     }
-<<<<<<< HEAD
-    else {
-        const fetchItemApi = fetchItemApiByType[payload.type];
-=======
 
     if (jwt) {
->>>>>>> Refacto
+        const fetchItemApi = fetchItemApiByType[payload.type];
         yield call(fetchItemSaga(actions, fetchItemApi), {
             payload: {
                 id: payload.key,
@@ -143,17 +139,9 @@ function* fetchItem({payload}) {
     }
 }
 
-
 function* fetchPersistent(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
-    }
+    const jwt = getJWTFromCookie();
 
     if (!jwt) { // redirect to login page
         yield put(actions.persistent.failure());
@@ -164,7 +152,6 @@ function* fetchPersistent(request) {
         yield call(fetchPersistentSaga(actions, f), request);
     }
 }
-
 
 function* fetchDetail(request) {
     const state = yield select();
@@ -247,6 +234,5 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
     ]);
 };
-
 
 export default sagas;

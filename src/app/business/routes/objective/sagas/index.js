@@ -13,6 +13,7 @@ import {
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
@@ -57,14 +58,7 @@ function* fetchItem({payload}) {
 
 function* fetchPersistent(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
-    }
+    const jwt = getJWTFromCookie();
 
     if (!jwt) { // redirect to login page
         yield put(actions.persistent.failure());
