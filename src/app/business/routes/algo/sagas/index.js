@@ -15,7 +15,6 @@ import {
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
-import {signOut} from '../../../user/actions';
 
 const fetchItemApiByType = {
     composite: fetchCompositeAlgoApi,
@@ -24,7 +23,6 @@ const fetchItemApiByType = {
 };
 
 const withAlgoType = (list, type) => list.map(group => group.map(algo => ({...algo, type})));
-
 
 const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
     const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
@@ -59,7 +57,6 @@ const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) 
 
     return list;
 };
-
 
 const fetchPersistentSaga = (actions, fetchListApi) => function* fetchList({payload}) {
     const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
@@ -141,13 +138,12 @@ function* fetchItem({payload}) {
 
 function* fetchPersistent(request) {
     const state = yield select();
-    const jwt = getJWTFromCookie();
-
-    if (!jwt) { // redirect to login page
-        yield put(actions.persistent.failure());
-        yield put(signOut.success());
+    let jwt = getJWTFromCookie();
+    if (!jwt) {
+        jwt = yield tryRefreshToken(actions.persistent.failure);
     }
-    else {
+
+    if (jwt) {
         const f = () => fetchListApi(state.location.query, jwt);
         yield call(fetchPersistentSaga(actions, f), request);
     }
@@ -215,7 +211,6 @@ function* downloadItemSaga({payload: {url}}) {
         }, error => ({error, status}));
     }
 }
-
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
