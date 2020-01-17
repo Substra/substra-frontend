@@ -1,35 +1,23 @@
-/* global window */
-
 import {
     takeLatest, takeEvery, all, put, select, call,
 } from 'redux-saga/effects';
 
-import cookie from 'cookie-parse';
-
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-fetchListSaga, fetchPersistentSaga, setOrderSaga,
+    fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
 } from '../../../common/sagas';
-import {signOut} from '../../../user/actions';
+
 import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
+    let jwt = getJWTFromCookie();
+    if (!jwt) {
+        jwt = yield tryRefreshToken(actions.list.failure);
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.list.failure());
-        yield put(signOut.success());
-    }
-    else {
+    if (jwt) {
         const f = () => fetchListApi(state.location.query, jwt);
         yield call(fetchListSaga(actions, f), request);
     }
@@ -45,23 +33,14 @@ function* fetchDetail({payload}) {
     }
 }
 
-
 function* fetchPersistent(request) {
     const state = yield select();
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
+    let jwt = getJWTFromCookie();
+    if (!jwt) {
+        jwt = yield tryRefreshToken(actions.persistent.failure);
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.persistent.failure());
-        yield put(signOut.success());
-    }
-    else {
+    if (jwt) {
         const f = () => fetchListApi(state.location.query, jwt);
         yield call(fetchPersistentSaga(actions, f), request);
     }
@@ -85,20 +64,12 @@ function* fetchBundleDetail() {
 export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
     const {id, get_parameters} = payload;
 
-    let jwt;
-
-    if (typeof window !== 'undefined') {
-        const cookies = cookie.parse(window.document.cookie);
-        if (cookies['header.payload']) {
-            jwt = cookies['header.payload'];
-        }
+    let jwt = getJWTFromCookie();
+    if (!jwt) {
+        jwt = yield tryRefreshToken(actions.item.failure);
     }
 
-    if (!jwt) { // redirect to login page
-        yield put(actions.item.failure());
-        yield put(signOut.success());
-    }
-    else {
+    if (jwt) {
         const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
 
         if (error) {
@@ -126,6 +97,5 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);
 };
-
 
 export default sagas;

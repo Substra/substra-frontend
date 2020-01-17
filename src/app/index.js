@@ -13,20 +13,19 @@ const Container = styled('div')`
     flex-direction: column;
 `;
 
-const Routes = ({page, user}) => (
+const Routes = ({page}) => (
     <Container>
         <ServiceWorker />
         {page === 'LOGIN'
-            ? <UserRoute user={user} />
+            ? <UserRoute />
             : <Content />}
     </Container>
 );
 
 Routes.propTypes = {
     page: PropTypes.string.isRequired,
-    user: PropTypes.shape().isRequired,
 };
 
-const mapStateToProps = ({location, user}) => ({page: location.type, user});
+const mapStateToProps = ({location}) => ({page: location.type});
 
 export default connect(mapStateToProps)(Routes);
