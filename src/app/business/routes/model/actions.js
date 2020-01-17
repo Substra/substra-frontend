@@ -23,10 +23,6 @@ export const actionTypes = {
     order: {
         SET: `${prefix}_ORDER_SET`,
     },
-
-    signOut: {
-        SUCCESS: 'SIGN_OUT_SUCCESS',
-    },
 };
 
 export default {

@@ -41,8 +41,6 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 ...state,
                 selected: '',
             };
-        case actionTypes.signOut.SUCCESS:
-            return {...initialState};
         default:
             return state;
     }

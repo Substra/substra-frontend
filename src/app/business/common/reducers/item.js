@@ -57,8 +57,6 @@ export default actionTypes => (state = initialState, {type, payload}) => {
                 ...state,
                 tabIndex: payload,
             };
-        case actionTypes.signOut.SUCCESS:
-            return {...initialState};
         default:
             return state;
     }
