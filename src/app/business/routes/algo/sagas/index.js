@@ -15,7 +15,6 @@ import {
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
-import {signOut} from '../../../user/actions';
 
 const fetchItemApiByType = {
     composite: fetchCompositeAlgoApi,
@@ -38,21 +37,21 @@ const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) 
             console.error(errorStandardAlgos, statusStandardAlgos);
             yield put(actions.list.failure(errorStandardAlgos));
             if (statusStandardAlgos === 401) {
-                yield put(signOut.success());
+                yield tryRefreshToken(actions.list.failure);
             }
         }
         if (errorCompositeAlgos) {
             console.error(errorCompositeAlgos, statusCompositeAlgos);
             yield put(actions.list.failure(errorCompositeAlgos));
             if (statusCompositeAlgos === 401) {
-                yield put(signOut.success());
+                yield tryRefreshToken(actions.list.failure);
             }
         }
         if (errorAggregateAlgos) {
             console.error(errorAggregateAlgos, statusAggregateAlgos);
             yield put(actions.list.failure(errorAggregateAlgos));
             if (statusAggregateAlgos === 401) {
-                yield put(signOut.success());
+                yield tryRefreshToken(actions.list.failure);
             }
         }
     }

@@ -8,8 +8,6 @@ import {
     fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
 } from '../../../common/sagas';
 
-import {signOut} from '../../../user/actions';
-
 import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {
@@ -78,7 +76,7 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
             console.error(error, status);
             yield put(actions.item.failure(error));
             if (status === 401) {
-                yield put(signOut.success());
+                yield tryRefreshToken(actions.item.failure);
             }
         }
         else {
