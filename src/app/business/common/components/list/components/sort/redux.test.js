@@ -38,9 +38,6 @@ const reduxSetup = () => {
         order: {
             SET: 'DUMMY_MODEL_ORDER',
         },
-        signOut: {
-            SUCCESS: 'SIGN_OUT_SUCCESS',
-        },
     };
 
     const actions = {
