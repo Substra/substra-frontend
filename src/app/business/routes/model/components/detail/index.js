@@ -13,9 +13,8 @@ class ModelDetail extends Detail {
         e.preventDefault();
         e.stopPropagation();
 
-        const {item, filterUp, logFilterFromDetail} = this.props;
+        const {item, filterUp} = this.props;
         filterUp(item.traintuple.key);
-        logFilterFromDetail(item.traintuple.key);
     };
 }
 
