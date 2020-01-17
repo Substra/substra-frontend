@@ -8,6 +8,8 @@ import {
     fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
 } from '../../../common/sagas';
 
+import {signOut} from '../../../user/actions';
+
 import {listResults, itemResults} from '../selector';
 
 function* fetchList(request) {

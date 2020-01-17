@@ -9,8 +9,6 @@ import cookie from 'cookie-parse';
 import {fetchRefresh} from '../../user/api';
 import {refresh as refreshActions, signOut} from '../../user/actions';
 
-import {signOut} from '../../user/actions';
-
 
 export const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
     const {error, status, list} = yield call(fetchListApi, payload);
