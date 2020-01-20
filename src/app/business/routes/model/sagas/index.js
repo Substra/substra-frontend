@@ -9,6 +9,7 @@ import {
 } from '../../../common/sagas';
 
 import {listResults, itemResults} from '../selector';
+import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
@@ -76,7 +77,7 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
             console.error(error, status);
             yield put(actions.item.failure(error));
             if (status === 401) {
-                yield tryRefreshToken(actions.item.failure);
+                yield put(signOut.success());
             }
         }
         else {

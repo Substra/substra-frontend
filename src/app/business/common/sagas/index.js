@@ -52,7 +52,7 @@ export const fetchListSaga = (actions, fetchListApi) => function* fetchList({pay
         console.error(error, status);
         yield put(actions.list.failure(error));
         if (status === 401) {
-            yield tryRefreshToken(actions.list.failure);
+            yield put(signOut.success());
         }
     }
     else {
@@ -69,7 +69,7 @@ export const fetchPersistentSaga = (actions, fetchPersistentApi) => function* fe
         console.error(error, status);
         yield put(actions.persistent.failure(error));
         if (status === 401) {
-            yield tryRefreshToken(actions.persistent.failure);
+            yield put(signOut.success());
         }
     }
     else {
@@ -88,7 +88,7 @@ export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({pay
         console.error(error, status);
         yield put(actions.item.failure(error));
         if (status === 401) {
-            yield tryRefreshToken(actions.item.failure);
+            yield put(signOut.success());
         }
     }
     else {
