@@ -29,9 +29,16 @@ export default async (ctx) => {
                 payload = {};
             }
 
+            const authenticated = isBefore(new Date(payload.exp), new Date());
             preLoadedState = {
                 user: {
-                    authenticated: isBefore(new Date(payload.exp), new Date()),
+                    authenticated,
+                    error: false,
+                    loading: false,
+                    refreshLoading: false,
+                    init: authenticated,
+                    exp: payload.exp,
+                    payload: null,
                 },
             };
         }
