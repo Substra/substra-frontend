@@ -102,10 +102,8 @@ const earlyChunk = (styles, stateJson) => `
           <noscript>
               <div>Please enable javascript in your browser for displaying this website.</div>
           </noscript>
-          <script>
-            window.API_URL="${API_URL}";
-          </script>
-          <script>window.REDUX_STATE = ${stateJson}</script>
+          <script>window.API_URL="${API_URL}";</script>
+          <script>window.REDUX_STATE = ${stateJson};</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
     lateChunk = (cssHash, js, dll) => `</div>
