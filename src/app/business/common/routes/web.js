@@ -32,7 +32,7 @@ class UniversalRoute extends Component {
             this.firstRender = false;
             return (
                 <ReactReduxContext.Consumer>
-                    {reduxContext => <U model={model} reduxcontext={reduxContext} />}
+                    {(reduxContext) => <U model={model} reduxcontext={reduxContext} />}
                 </ReactReduxContext.Consumer>
             );
         }

@@ -11,7 +11,7 @@ const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
     const authorizedIDs = permissions && permissions.process && permissions.process.authorizedIDs;
 
     return (
-        <React.Fragment>
+        <>
             {isPublic && (
                 <p>
                     {`This ${asset} is processable by anyone.`}
@@ -23,7 +23,7 @@ const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
                 </p>
             )}
             {!isPublic && authorizedIDs && (
-                <React.Fragment>
+                <>
                     <p>
                         {`This ${asset} is processable by the following nodes only:`}
                     </p>
@@ -32,14 +32,14 @@ const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
                             <Tr>
                                 <Th>Node ID</Th>
                             </Tr>
-                            {authorizedIDs.map(nodeID => (
+                            {authorizedIDs.map((nodeID) => (
                                 <Tr key={nodeID}>
                                     <Td>{nodeID}</Td>
                                 </Tr>
                             ))}
                         </tbody>
                     </Table>
-                </React.Fragment>
+                </>
             )}
             <p>Permissions object details:</p>
             <CodeSample
@@ -47,7 +47,7 @@ const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
                 language="json"
                 codeString={JSON.stringify(permissions, null, 2)}
             />
-        </React.Fragment>
+        </>
     );
 };
 

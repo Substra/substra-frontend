@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -53,10 +53,10 @@ export const SingleMetadata = ({
         ${valueClassName}
     `;
     return (
-        <Fragment>
+        <>
             <dt className={dt}>{label}</dt>
             <dd className={dd}>{value || children}</dd>
-        </Fragment>
+        </>
     );
 };
 
@@ -164,6 +164,10 @@ PermissionsMetadata.propTypes = {
     permissions: PropTypes.shape({
         request: PropTypes.shape({
             isPublic: PropTypes.bool,
+            authorizedIDs: PropTypes.array,
+        }),
+        process: PropTypes.shape({
+            public: PropTypes.bool,
             authorizedIDs: PropTypes.array,
         }),
     }),

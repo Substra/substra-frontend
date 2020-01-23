@@ -53,7 +53,7 @@ const submit = css`
     color: ${white};
     font-weight: bold;
     border-color: ${tealish};
-    
+
     &:not(:disabled):hover {
         background-color: ${slate};
         border-color: ${slate};
@@ -84,11 +84,16 @@ label, input, placeholder, type, autoComplete, meta: {touched, error},
 
 RenderField.propTypes = {
     label: PropTypes.string.isRequired,
-    input: PropTypes.shape({}).isRequired,
+    input: PropTypes.shape({
+        name: PropTypes.string,
+    }).isRequired,
     placeholder: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     autoComplete: PropTypes.string.isRequired,
-    meta: PropTypes.shape({}).isRequired,
+    meta: PropTypes.shape({
+        touched: PropTypes.bool,
+        error: PropTypes.string,
+    }).isRequired,
 };
 
 const SignInForm = ({signIn, handleSubmit}) => (

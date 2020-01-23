@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {noop} from 'lodash';
@@ -11,16 +11,16 @@ function BundleModelTabs(props) {
     const {item: {models}, addNotification} = props;
 
     return (
-        <Fragment>
+        <>
             <BundleSummary models={models} />
-            {models.map(model => (
+            {models.map((model) => (
                 <ModelSummary
                     key={model.traintuple.key}
                     model={model}
                     addNotification={addNotification}
                 />
             ))}
-        </Fragment>
+        </>
     );
 }
 

@@ -1,5 +1,5 @@
 /* global SCORE_PRECISION */
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {capitalize} from 'lodash';
@@ -19,10 +19,10 @@ const ScoreWrapper = styled('div')`
 const ScoreMetadata = ({label, testtuple}) => (
     <SingleMetadata label={label}>
         {testtuple.status !== 'done' && (
-            <Fragment>
+            <>
                 {capitalize(testtuple.status)}
                 <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(testtuple.status)} />
-            </Fragment>
+            </>
         )}
         {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.perf === 'number' && testtuple.dataset.perf.toFixed(SCORE_PRECISION)}
         {testtuple.status === 'done' && testtuple.dataset && typeof testtuple.dataset.standardDeviation === 'number' && ` ±${testtuple.dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
@@ -43,7 +43,7 @@ const Metadata = ({o}) => {
     const hasTags = o && (o.tag || o.traintuple && ['composite', 'aggregate'].includes(o.traintuple.type));
 
     return (
-        <Fragment>
+        <>
             {hasTags && (
                 <div className={metadata}>
                     {o && o.tag && <MetadataTag>Model bundle</MetadataTag>}
@@ -74,13 +74,20 @@ const Metadata = ({o}) => {
                     </ScoreWrapper>
                 )}
             </div>
-        </Fragment>
+        </>
     );
 };
 
 Metadata.propTypes = {
     o: PropTypes.shape({
         testData: PropTypes.shape(),
+        tag: PropTypes.string,
+        traintuple: PropTypes.shape({
+            type: PropTypes.string,
+            status: PropTypes.string,
+        }),
+        nonCertifiedTesttuple: PropTypes.shape({}),
+        testtuple: PropTypes.shape({}),
     }),
 };
 

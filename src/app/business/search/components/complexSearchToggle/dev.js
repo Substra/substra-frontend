@@ -37,11 +37,11 @@ ComplexSearchToggle.propTypes = {
     setIsComplex: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isComplex: state.search.isComplex,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     setIsComplex: actions.isComplex.set,
 }, dispatch);
 

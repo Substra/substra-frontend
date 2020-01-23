@@ -60,7 +60,7 @@ class Actions extends Component {
         this.togglePopover();
     };
 
-    addNotification = text => (e) => {
+    addNotification = (text) => (e) => {
         e.preventDefault();
         e.stopPropagation();
 

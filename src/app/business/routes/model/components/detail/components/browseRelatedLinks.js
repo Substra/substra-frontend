@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
@@ -43,7 +43,7 @@ const BrowseRelatedLinks = ({
     }
 
     return (
-        <Fragment>
+        <>
             <BrowseRelatedLink
                 model="algo"
                 label={hasPrefix ? `${item.traintuple.type} algorithm` : 'algorithm'}
@@ -52,7 +52,7 @@ const BrowseRelatedLinks = ({
             />
             {objectiveFilter && <BrowseRelatedLink model="objective" label="objective" filter={objectiveFilter} unselect={unselectObjective} />}
             {datasetFilter && <BrowseRelatedLink model="dataset" label="dataset(s)" filter={datasetFilter} unselect={unselectDataset} />}
-        </Fragment>
+        </>
     );
 };
 
@@ -70,7 +70,7 @@ BrowseRelatedLinks.defaultProps = {
     unselectDataset: noop,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     unselectAlgo: algoActions.list.unselect,
     unselectObjective: objectiveActions.list.unselect,
     unselectDataset: datasetActions.list.unselect,

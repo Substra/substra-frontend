@@ -11,14 +11,14 @@ import datasetActions from '../routes/dataset/actions';
 import modelActions from '../routes/model/actions';
 import searchActions from '../search/actions';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     routes: getRoutes(state),
     location: state.location,
     orders: getOrders(state),
     searchUpdated: state.search.updated,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     unselect: bindActionCreators({
         algorithm: algoActions.list.unselect,
         objective: objectiveActions.list.unselect,

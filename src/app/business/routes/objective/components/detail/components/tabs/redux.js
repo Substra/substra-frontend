@@ -13,7 +13,7 @@ const mapStateToProps = (state, {model}) => ({
     tabIndex: state[model].item.tabIndex,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     setTabIndex: actions.item.tabIndex.set,
 }, dispatch);
 

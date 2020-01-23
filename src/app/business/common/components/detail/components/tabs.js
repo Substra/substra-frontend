@@ -13,7 +13,7 @@ const colorOverride = css`
     }
 `;
 
-const Tab = props => (
+const Tab = (props) => (
     <TabSUI
         className={colorOverride}
         {...props}

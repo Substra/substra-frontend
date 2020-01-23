@@ -67,13 +67,13 @@ class Nav extends Component {
         return type === route || (route === 'OBJECTIVE' && type === 'HOME');
     };
 
-    isHovered = route => this.state.hoveredRoute === route;
+    isHovered = (route) => this.state.hoveredRoute === route;
 
-    onMouseEnter = route => () => {
+    onMouseEnter = (route) => () => {
         this.setState({hoveredRoute: route});
     };
 
-    onMouseLeave = route => () => {
+    onMouseLeave = (route) => () => {
         if (this.isHovered(route)) {
             this.setState({hoveredRoute: null});
         }
@@ -96,7 +96,7 @@ class Nav extends Component {
         };
     };
 
-    handleClick = menu => (e) => {
+    handleClick = (menu) => (e) => {
         const {unselect, searchUpdated, setSearchUpdated} = this.props;
 
         if (searchUpdated && unselect && unselect[menu]) {
@@ -149,7 +149,10 @@ Nav.defaultProps = {
 
 Nav.propTypes = {
     routes: PropTypes.arrayOf(PropTypes.string),
-    location: PropTypes.shape({}),
+    location: PropTypes.shape({
+        query: PropTypes.shape({}),
+        type: PropTypes.string,
+    }),
     orders: PropTypes.shape({}),
     unselect: PropTypes.shape(),
     searchUpdated: PropTypes.bool,

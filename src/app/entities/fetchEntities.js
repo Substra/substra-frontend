@@ -3,7 +3,7 @@
 import queryString from 'query-string';
 import {isEmpty} from 'lodash';
 
-export const getHeaders = jwt => ({
+export const getHeaders = (jwt) => ({
     Accept: 'application/json;version=0.0',
     'Content-Type': 'application/json;',
     ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
@@ -11,7 +11,7 @@ export const getHeaders = jwt => ({
 
 export const handleResponse = (response) => {
     if (!response.ok) {
-        return response.text().then(result => Promise.reject(new Error(result)));
+        return response.text().then((result) => Promise.reject(new Error(result)));
     }
 
     return response.json();
@@ -33,12 +33,12 @@ export const fetchList = (url, jwt) => {
             status = response.status;
             return handleResponse(response);
         })
-        .then(json => ({list: json, status}), error => ({error, status}));
+        .then((json) => ({list: json, status}), (error) => ({error, status}));
 };
 
 export const fetchByUrl = (urlToFetch, jwt) => fetchList(urlToFetch, jwt);
 
-export const fetchEntitiesFactory = path => (get_parameters, jwt) => {
+export const fetchEntitiesFactory = (path) => (get_parameters, jwt) => {
     const url = `${API_URL}/${path}/${!isEmpty(get_parameters) ? `?${queryString.stringify(get_parameters)}` : ''}`;
     return fetchList(url, jwt);
 };
@@ -65,15 +65,15 @@ export const fetchRaw = (url, jwt) => {
         .then((response) => {
             status = response.status;
             if (!response.ok) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             return response.text(); // /!\ Note the text, not json
         })
-        .then(res => ({res, status}), error => ({error, status}));
+        .then((res) => ({res, status}), (error) => ({error, status}));
 };
 
-export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
+export const fetchEntityFactory = (path) => (get_parameters, id, jwt) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/${id}/${!isEmpty(get_parameters)
         ? `?${queryString.stringify(get_parameters)}`
@@ -92,10 +92,10 @@ export const fetchEntityFactory = path => (get_parameters, id, jwt) => {
             status = response.status;
             return handleResponse(response);
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then((json) => ({item: json, status}), (error) => ({error, status}));
 };
 
-export const deleteEntityFactory = path => (id, jwt) => {
+export const deleteEntityFactory = (path) => (id, jwt) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/${id}/`;
 
@@ -112,14 +112,14 @@ export const deleteEntityFactory = path => (id, jwt) => {
         .then((response) => {
             status = response.status;
             if (status !== 204) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             return response;
-        }).then(() => true, error => ({error, status}));
+        }).then(() => true, (error) => ({error, status}));
 };
 
-export const updateEntityFactory = path => (id, jwt, payload) => {
+export const updateEntityFactory = (path) => (id, jwt, payload) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/${id}/`;
 
@@ -132,11 +132,11 @@ export const updateEntityFactory = path => (id, jwt, payload) => {
         mode: 'cors',
         body: JSON.stringify(payload),
     })
-        .then(response => handleResponse(response))
-        .then(json => ({item: json}), error => ({error}));
+        .then((response) => handleResponse(response))
+        .then((json) => ({item: json}), (error) => ({error}));
 };
 
-export const updateFormEntityFactory = path => (id, jwt, payload) => {
+export const updateFormEntityFactory = (path) => (id, jwt, payload) => {
     const headers = {};
 
     if (jwt) {
@@ -154,11 +154,11 @@ export const updateFormEntityFactory = path => (id, jwt, payload) => {
         mode: 'cors',
         body: payload,
     })
-        .then(response => handleResponse(response))
-        .then(json => ({item: json}), error => ({error}));
+        .then((response) => handleResponse(response))
+        .then((json) => ({item: json}), (error) => ({error}));
 };
 
-export const createEntityFactory = path => (jwt, payload) => {
+export const createEntityFactory = (path) => (jwt, payload) => {
     const headers = getHeaders(jwt);
     const url = `${API_URL}/${path}/`;
 
@@ -176,15 +176,15 @@ export const createEntityFactory = path => (jwt, payload) => {
         .then((response) => {
             status = response.status;
             if (status !== 201) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             return response.json();
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then((json) => ({item: json, status}), (error) => ({error, status}));
 };
 
-export const createFormEntityFactory = path => (jwt, payload) => {
+export const createFormEntityFactory = (path) => (jwt, payload) => {
     const headers = {};
 
     if (jwt) {
@@ -207,10 +207,10 @@ export const createFormEntityFactory = path => (jwt, payload) => {
         .then((response) => {
             status = response.status;
             if (status !== 201) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             return response.json();
         })
-        .then(json => ({item: json, status}), error => ({error, status}));
+        .then((json) => ({item: json, status}), (error) => ({error, status}));
 };

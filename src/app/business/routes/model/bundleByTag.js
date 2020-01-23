@@ -3,17 +3,17 @@ import {deepGet} from '../../../utils/selector';
 
 // math functions
 
-const sum = arr => arr.reduce((total, current) => total + current, 0);
-const avg = arr => sum(arr) / arr.length;
+const sum = (arr) => arr.reduce((total, current) => total + current, 0);
+const avg = (arr) => sum(arr) / arr.length;
 const calcVariance = (arr) => {
     const m = avg(arr);
-    return avg(arr.map(n => (n - m) ** 2));
+    return avg(arr.map((n) => (n - m) ** 2));
 };
-const calcStandardDeviation = arr => Math.sqrt(calcVariance(arr));
+const calcStandardDeviation = (arr) => Math.sqrt(calcVariance(arr));
 
 function minStatus(models, getStatus) {
     const statuses = ['failed', 'canceled', 'waiting', 'todo', 'doing', 'done'];
-    const modelStatuses = uniqBy(models.map(m => getStatus(m)));
+    const modelStatuses = uniqBy(models.map((m) => getStatus(m)));
     for (const status of statuses) {
         if (modelStatuses.includes(status)) {
             return status;
@@ -22,9 +22,9 @@ function minStatus(models, getStatus) {
     return undefined;
 }
 
-const minTraintupleStatus = models => minStatus(models, model => model.traintuple.status);
-const minTesttupleStatus = models => minStatus(models, model => model.testtuple && model.testtuple.status);
-const minNonCertifiedTesttupleStatus = nonCertifiedTesttuples => minStatus(nonCertifiedTesttuples, t => t.status);
+const minTraintupleStatus = (models) => minStatus(models, (model) => model.traintuple.status);
+const minTesttupleStatus = (models) => minStatus(models, (model) => model.testtuple && model.testtuple.status);
+const minNonCertifiedTesttupleStatus = (nonCertifiedTesttuples) => minStatus(nonCertifiedTesttuples, (t) => t.status);
 
 
 const calcPerf = (testtuples, status) => {
@@ -49,7 +49,7 @@ const calcPerf = (testtuples, status) => {
     };
 };
 
-const getFakeTraintuple = models => ({
+const getFakeTraintuple = (models) => ({
     traintuple: {
         key: models[0].traintuple.key,
         status: minTraintupleStatus(models),
@@ -78,7 +78,7 @@ const buildTesttuple = (name, testtuples, status) => {
 
 const getFakeTesttuple = (models) => {
     const status = minTesttupleStatus(models);
-    return buildTesttuple('testtuple', models.map(m => m.testtuple), status);
+    return buildTesttuple('testtuple', models.map((m) => m.testtuple), status);
 };
 
 const getFakeNonCertifiedTesttuple = (models) => {

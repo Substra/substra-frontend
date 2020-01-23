@@ -20,7 +20,7 @@ class Detail extends Component {
         addNotification(key, text);
     };
 
-    filterUp = o => (e) => {
+    filterUp = (o) => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -88,6 +88,7 @@ Detail.propTypes = {
     item: PropTypes.shape({
         key: PropTypes.string,
         description: PropTypes.shape(),
+        name: PropTypes.string,
     }),
     downloadFile: PropTypes.func,
     filterUp: PropTypes.func,

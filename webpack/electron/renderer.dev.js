@@ -14,7 +14,7 @@ import definePlugin from '../utils/plugins/definePlugin';
 
 
 const port = process.env.PORT || 1212;
-const publicPath = `http://localhost:${port}/dist`;
+const publicPath = `http://electron.owkin.xyz:${port}/`;
 
 export default merge.smart(baseConfig, {
     devtool: 'inline-source-map',
@@ -23,13 +23,13 @@ export default merge.smart(baseConfig, {
 
     entry: [
         '@babel/polyfill',
-        `webpack-dev-server/client?http://localhost:${port}/`,
+        `webpack-dev-server/client?${publicPath}/`,
         'webpack/hot/only-dev-server',
         path.join(__dirname, '../../src/client/index.js'),
     ],
 
     output: {
-        publicPath: `http://localhost:${port}/dist/`,
+        publicPath,
     },
 
     module: {
@@ -114,6 +114,7 @@ export default merge.smart(baseConfig, {
         port,
         publicPath,
         compress: true,
+        disableHostCheck: true,
         noInfo: true,
         stats: 'errors-only',
         inline: true,
@@ -138,8 +139,8 @@ export default merge.smart(baseConfig, {
                     ['run', 'start-main-dev'],
                     {shell: true, env: process.env, stdio: 'inherit'},
                 )
-                    .on('close', code => process.exit(code))
-                    .on('error', spawnError => console.error(spawnError));
+                    .on('close', (code) => process.exit(code))
+                    .on('error', (spawnError) => console.error(spawnError));
             }
         },
     },

@@ -17,7 +17,7 @@ class DatasetActions extends BaseActions {
             addNotification, itemResults, item,
         } = this.props;
 
-        const itemDetails = itemResults.find(x => x.key === item.key);
+        const itemDetails = itemResults.find((x) => x.key === item.key);
 
         if (itemDetails) {
             const inputValue = isArray(itemDetails[key]) ? JSON.stringify(itemDetails[key]) : itemDetails[key];
@@ -36,7 +36,7 @@ class DatasetActions extends BaseActions {
         const {isOpen} = this.state;
         const {fetchItem, itemResults, item} = this.props;
 
-        const itemDetails = itemResults.find(x => x.key === item.key);
+        const itemDetails = itemResults.find((x) => x.key === item.key);
 
         // load item for getting data keys
         if (!itemDetails) {
@@ -82,7 +82,7 @@ const mapStateToProps = (state, {model}) => ({
     PopoverItems,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     fetchItem: actions.item.request,
 }, dispatch);
 

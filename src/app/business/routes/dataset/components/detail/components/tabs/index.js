@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
@@ -63,9 +63,9 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
                 <DataKeysTable dataKeys={item.trainDataSampleKeys} addNotification={addNotification} />
             )}
             {!descLoading && item && item.trainDataSampleKeys && !item.trainDataSampleKeys.length && (
-                <Fragment>
+                <>
                     <p>
-                        {'No train data samples setup yet.'}
+                        No train data samples setup yet.
                         <br />
                     </p>
                     <p>
@@ -79,7 +79,7 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
                         addNotificationMessage="Command copied to clipboard!"
                         isPrompt
                     />
-                </Fragment>
+                </>
             )}
         </TabPanel>
         <TabPanel>
@@ -88,9 +88,9 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
                 <DataKeysTable dataKeys={item.testDataSampleKeys} addNotification={addNotification} />
             )}
             {!descLoading && item && item.testDataSampleKeys && !item.testDataSampleKeys.length && (
-                <Fragment>
+                <>
                     <p>
-                        {'No test data samples setup yet.'}
+                        No test data samples setup yet.
                         <br />
                     </p>
                     <p>
@@ -104,7 +104,7 @@ descLoading, item, tabIndex, openerLoading, setTabIndex, addNotification,
                         addNotificationMessage="Command copied to clipboard!"
                         isPrompt
                     />
-                </Fragment>
+                </>
             )}
         </TabPanel>
         <TabPanel>

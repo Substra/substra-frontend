@@ -7,6 +7,6 @@ export const createDeepEqualSelector = createSelectorCreator(
 );
 
 // will get deep attribute from object, example if 'testData.perf' is passed as a string, it will get o.testData.perf
-export const deepGet = path => o => path.split('.').reduce((p, c) => p ? p[c] : null, o);
+export const deepGet = (path) => (o) => path.split('.').reduce((p, c) => p ? p[c] : null, o);
 
-export const deepOrder = order => o => order && order.by ? deepGet(order.by)(o) : null;
+export const deepOrder = (order) => (o) => order && order.by ? deepGet(order.by)(o) : null;

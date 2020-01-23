@@ -2,17 +2,18 @@
     "name": "electron-package",
     "version": "0.0.1",
     "dependencies": {
+        "browser-window": "^0.4.0",
         "html-webpack-plugin": "3.2.0"
     },
     "devDependencies": {
-        "@babel/register": "7.4.0",
+        "@babel/register": "7.8.3",
         "devtron": "1.4.0",
-        "electron": "4.1.4",
-        "electron-builder": "20.39.0",
-        "electron-debug": "2.2.0",
+        "electron": "7.1.10",
+        "electron-builder": "22.2.0",
+        "electron-debug": "3.0.1",
         "electron-devtools-installer": "2.2.4"
     },
-    "browserslist": "electron 1.6",
+    "browserslist": ["electron 1.6"],
     "main": "../../build/electron/index.js",
     "build": {
         "appId": "SubstraFoundation.github.io",

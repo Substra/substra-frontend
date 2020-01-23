@@ -39,7 +39,7 @@ BrowseRelatedLinks.defaultProps = {
     unselectModel: noop,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     unselectAlgo: algoActions.list.unselect,
     unselectDataset: datasetActions.list.unselect,
     unselectModel: modelActions.list.unselect,

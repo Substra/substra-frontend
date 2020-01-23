@@ -1,5 +1,5 @@
 /* global SCORE_PRECISION */
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 
@@ -10,16 +10,16 @@ const ScoreMetadata = ({item, label, tupleName}) => (
     <SingleMetadata label={label}>
         {!item[tupleName] && 'N/A'}
         {item[tupleName] && item[tupleName].status && item[tupleName].status === 'done' && item[tupleName].dataset && (
-            <Fragment>
+            <>
                 {item[tupleName].dataset.perf.toFixed(SCORE_PRECISION)}
                 {typeof item[tupleName].dataset.standardDeviation === 'number' && ` ±${item[tupleName].dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
-            </Fragment>
+            </>
         )}
         {item[tupleName] && item[tupleName].status && item[tupleName].status !== 'done' && (
-            <Fragment>
+            <>
                 {capitalize(item[tupleName].status)}
                 <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item[tupleName].status)} />
-            </Fragment>
+            </>
         )}
     </SingleMetadata>
 );

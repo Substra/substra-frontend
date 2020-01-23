@@ -9,7 +9,7 @@ export const Table = styled('table')`
     border-collapse: collapse;
     
     td, th {
-        text-align: ${props => props.centered ? 'center' : 'left'};
+        text-align: ${(props) => props.centered ? 'center' : 'left'};
     }
 `;
 

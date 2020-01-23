@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {noop} from 'lodash';
 import {
@@ -54,7 +54,7 @@ class ModelTabs extends Component {
         const tupleType = item && item.traintuple && item.traintuple.type;
 
         return (
-            <Fragment>
+            <>
                 {item && item.traintuple && item.traintuple.status === 'done' && !item.testtuple && (
                 <AlertWrapper>
                     <AlertTitle>This model has not been tested yet</AlertTitle>
@@ -74,7 +74,7 @@ class ModelTabs extends Component {
                     <TabPanel>
                         {['standard', 'composite'].includes(tupleType) && item && item.traintuple && item.traintuple.status === 'done' && (
                         <p>
-                            {'Model successfully trained.'}
+                            Model successfully trained.
                         </p>
                     )}
                         <CodeSample
@@ -85,19 +85,17 @@ class ModelTabs extends Component {
                     </TabPanel>
                     <TabPanel>
                         {item.testtuple && (
-                        <Fragment>
-                            <CodeSample
-                                filename="testtuple.json"
-                                language="json"
-                                codeString={JSON.stringify(item.testtuple, null, 2)}
-                            />
-                        </Fragment>
+                        <CodeSample
+                            filename="testtuple.json"
+                            language="json"
+                            codeString={JSON.stringify(item.testtuple, null, 2)}
+                        />
                     )}
                         {item.traintuple && !item.testtuple && (
                         (item.traintuple.status === 'done' && (
-                            <Fragment>
+                            <>
                                 <p>
-                                    {'In order to test this model, execute the following command:'}
+                                    In order to test this model, execute the following command:
                                 </p>
                                 <CopyInput
                                     value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
@@ -105,7 +103,7 @@ class ModelTabs extends Component {
                                     addNotificationMessage="Command copied to clipboard!"
                                     isPrompt
                                 />
-                            </Fragment>
+                            </>
 
                         ))
                         || (item.traintuple.status === 'failed' && (
@@ -115,7 +113,7 @@ class ModelTabs extends Component {
                             <p>This model got canceled (no testing possible).</p>
                         ))
                         || (['waiting', 'todo', 'doing'].includes(item.traintuple.status) && (
-                            <Fragment>
+                            <>
                                 <p>
                                     You can execute the code below to launch a testing task as soon as the training is over.
                                 </p>
@@ -125,13 +123,13 @@ class ModelTabs extends Component {
                                     addNotificationMessage="Command copied to clipboard!"
                                     isPrompt
                                 />
-                            </Fragment>
+                            </>
                         ))
                     )}
                     </TabPanel>
                 </Tabs>
-            </Fragment>
-);
+            </>
+        );
     }
 }
 

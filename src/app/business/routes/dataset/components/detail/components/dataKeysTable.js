@@ -55,19 +55,19 @@ class DataKeysTable extends Component {
         });
     };
 
-    handleCheckboxChange = key => (event) => {
+    handleCheckboxChange = (key) => (event) => {
         const checked = event.target.checked;
         const {dataKeys} = this.props;
         const {allSelected} = this.state;
         if (allSelected && !checked) {
             this.setState({
                 allSelected: false,
-                selectedKeys: dataKeys.filter(x => x !== key),
+                selectedKeys: dataKeys.filter((x) => x !== key),
             });
         }
         else if (!checked) {
             this.setState((previousState) => {
-                const selectedKeys = previousState.selectedKeys.filter(x => x !== key);
+                const selectedKeys = previousState.selectedKeys.filter((x) => x !== key);
                 return {
                     selectedKeys,
                 };
@@ -108,14 +108,14 @@ class DataKeysTable extends Component {
                                     Icon={CopySimple}
                                     className={buttonPosition}
                                 >
-                                    {'Copy as JSON array'}
+                                    Copy as JSON array
                                 </RoundedButton>
                             </SpaceBetween>
                         </Th>
                     </Tr>
                 </thead>
                 <tbody>
-                    {dataKeys.map(key => (
+                    {dataKeys.map((key) => (
                         <Tr key={key}>
                             <Td className={small}>
                                 <input

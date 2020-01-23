@@ -1,4 +1,4 @@
-import {app, BrowserWindow} from 'electron';
+import {app, BrowserWindow, globalShortcut} from 'electron';
 
 import MenuBuilder from './menu';
 
@@ -25,7 +25,7 @@ const installExtensions = async () => {
     ];
 
     return Promise
-        .all(extensions.map(name => installer.default(installer[name], forceDownload)))
+        .all(extensions.map((name) => installer.default(installer[name], forceDownload)))
         .catch(console.log);
 };
 
@@ -52,12 +52,15 @@ app.on('ready', async () => {
         show: false,
         width: 1024,
         height: 728,
+        webPreferences: {
+            nodeIntegration: true,
+        },
     });
 
     const port = process.env.PORT || 1212;
 
     mainWindow.loadURL(process.env.NODE_ENV === 'development'
-        ? `http://localhost:${port}/dist/index.html`
+        ? `http://electron.owkin.xyz:${port}/`
         : `file://${__dirname}/dist/index.html`);
 
     // @TODO: Use 'ready-to-show' event
@@ -68,6 +71,11 @@ app.on('ready', async () => {
         }
         mainWindow.show();
         mainWindow.focus();
+    });
+
+    globalShortcut.register('f5', () => {
+        console.log('f5 is pressed');
+        mainWindow.reload();
     });
 
     mainWindow.on('closed', () => {

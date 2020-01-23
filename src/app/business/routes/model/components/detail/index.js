@@ -9,7 +9,7 @@ import BundleTabs from './components/bundleTabs/redux';
 import Actions from './components/actions';
 
 class ModelDetail extends Detail {
-    filterUp = o => (e) => {
+    filterUp = (o) => (e) => {
         e.preventDefault();
         e.stopPropagation();
 
