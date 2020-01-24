@@ -42,7 +42,7 @@ export class BaseComponent extends Component {
         } = this.props;
 
         // item can be empty if we download from list with no expand on item
-        const object = item && !isEmpty(item) ? item : flatten(results).find(x => x.key === o);
+        const object = item && !isEmpty(item) ? item : flatten(results).find((x) => x.key === o);
 
         const url = object ? address.reduce((p, c) => p[c], object) : '';
 

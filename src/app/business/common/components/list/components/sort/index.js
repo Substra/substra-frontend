@@ -33,14 +33,14 @@ class Sort extends Component {
     getCurrentOption = () => {
         const {options, order} = this.props;
 
-        return options.find(option => isEqual(option.value, omit(order, ['pristine']))) || options[0];
+        return options.find((option) => isEqual(option.value, omit(order, ['pristine']))) || options[0];
     };
 
 
     handleChange = (event) => {
         const {setOrder, options} = this.props;
 
-        const {value: {by, direction}} = options.find(o => o.label === event.target.value);
+        const {value: {by, direction}} = options.find((o) => o.label === event.target.value);
 
         setOrder({by, direction});
     };
@@ -57,7 +57,7 @@ class Sort extends Component {
                     onChange={this.handleChange}
                     data-testid="select"
                 >
-                    {options.map(option => (
+                    {options.map((option) => (
                         <option key={option.label.replace(/ /g, '_')} value={option.label}>{option.label}</option>
                     ))}
                 </Select>

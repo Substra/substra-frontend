@@ -61,7 +61,7 @@ class CodeSample extends Component {
 
     toggleCollapsed = (e) => {
         e.stopPropagation();
-        this.setState(state => ({collapsed: !state.collapsed}));
+        this.setState((state) => ({collapsed: !state.collapsed}));
     };
 
     render() {

@@ -7,7 +7,7 @@ import {createDeepEqualSelector, deepOrder} from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
 
-export const flattenUniq = xs => Array.from(xs.reduce(
+export const flattenUniq = (xs) => Array.from(xs.reduce(
     (s, x) => addAll(s, isArray(x) ? flattenUniq(x) : [x]),
     new Set(),
 ));
@@ -44,18 +44,18 @@ const rawListResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
 const rawItemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
-const isComplex = state => state.search.isComplex;
+const isComplex = (state) => state.search.isComplex;
 
 export const listResults = createDeepEqualSelector([rawListResults],
-    results => results.map(models => models.map(buildTypedTraintuple)),
+    (results) => results.map((models) => models.map(buildTypedTraintuple)),
 );
 
 export const itemResults = createDeepEqualSelector([rawItemResults],
-    models => models.map(buildTypedTraintuple),
+    (models) => models.map(buildTypedTraintuple),
 );
 
 const itemResultsByKey = createDeepEqualSelector([itemResults],
-    results => results.reduce((resultsByKey, result) => ({
+    (results) => results.reduce((resultsByKey, result) => ({
             ...resultsByKey,
             [result.traintuple.key]: result,
         }), {}),
@@ -66,17 +66,17 @@ const results = createDeepEqualSelector([listResults, itemResultsByKey],
 );
 
 const enhancedResults = createDeepEqualSelector([results],
-    results => results.map(o => o.map(o => ({...o, key: o.traintuple.key}))),
+    (results) => results.map((o) => o.map((o) => ({...o, key: o.traintuple.key}))),
 );
 
 export const getSelectedResult = createDeepEqualSelector([enhancedResults, selected],
-    (results, selected) => uniqBy(flatten(results), o => o.traintuple.key).find(o => o.traintuple.key === selected),
+    (results, selected) => uniqBy(flatten(results), (o) => o.traintuple.key).find((o) => o.traintuple.key === selected),
 );
 
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
-export const getSelected = createDeepEqualSelector([getSelectedResult], result => result && result.traintuple.key);
+export const getSelected = createDeepEqualSelector([getSelectedResult], (result) => result && result.traintuple.key);
 
-const modelOrder = order => (o) => {
+const modelOrder = (order) => (o) => {
     /*
         We want to order by highest/lowest score on the testtuple score if available.
         For getting a testtuple score, we need a traintuple with done status.
@@ -124,16 +124,16 @@ const modelOrder = order => (o) => {
 
 export const getOrderedResults = createDeepEqualSelector([enhancedResults, order, isComplex],
     (results, order, isComplex) => {
-        const res = results && results.length ? results.map(o => !isEmpty(o) ? orderBy(o, [modelOrder(order)], [order.direction]) : o) : [];
+        const res = results && results.length ? results.map((o) => !isEmpty(o) ? orderBy(o, [modelOrder(order)], [order.direction]) : o) : [];
 
-        return isComplex ? res : [uniqBy(flatten(res), o => o.traintuple.key)];
+        return isComplex ? res : [uniqBy(flatten(res), (o) => o.traintuple.key)];
     },
 );
 
 export const getItem = createDeepEqualSelector([itemResults, getSelectedResult, selected],
     (itemResults, selectedResult, selected) => ({
         ...selectedResult,
-        ...(selected && selectedResult && selectedResult.tag ? {} : itemResults.find(o => o.traintuple.key === selected)),
+        ...(selected && selectedResult && selectedResult.tag ? {} : itemResults.find((o) => o.traintuple.key === selected)),
     }),
 );
 

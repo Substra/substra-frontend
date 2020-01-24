@@ -36,7 +36,7 @@ app.use(cookie());
 app.use(compress());
 
 // let's encrypt config
-const resolve = p => path.resolve(__dirname, p);
+const resolve = (p) => path.resolve(__dirname, p);
 app.use(mount('/.well-known', serve(resolve('../../.well-known'))));
 
 // UNIVERSAL HMR + STATS HANDLING GOODNESS:

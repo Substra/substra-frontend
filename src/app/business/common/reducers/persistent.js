@@ -5,7 +5,7 @@ const initialState = {
     results: [],
 };
 
-export default actionTypes => (state = initialState, {type, payload}) => {
+export default (actionTypes) => (state = initialState, {type, payload}) => {
     switch (type) {
         case actionTypes.persistent.REQUEST:
             return {

@@ -13,7 +13,7 @@ export default function withInjectedReducers(WrappedComponent) {
                 this.firstRender = false;
                 return (
                     <ReactReduxContext.Consumer>
-                        {reduxContext => (
+                        {(reduxContext) => (
                             <ReactReduxContext.Provider
                                 value={{
                                     ...reduxContext,

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 
@@ -46,23 +46,23 @@ class Metadata extends Component {
         return (
             <MetadataWrapper>
                 {type === 'standard' && (
-                    <React.Fragment>
+                    <>
                         <KeyMetadata addNotification={this.addNotification} assetName="traintuple" assetKey={item.traintuple.key} />
                         <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
-                    </React.Fragment>
+                    </>
                 )}
                 {type === 'composite' && (
-                    <React.Fragment>
+                    <>
                         <KeyMetadata addNotification={this.addNotification} assetName="composite traintuple" assetKey={item.traintuple.key} />
                         <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.outHeadModel ? item.traintuple.outHeadModel.outModel.hash : 'N/A'} />
                         <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.outTrunkModel ? item.traintuple.outTrunkModel.outModel.hash : 'N/A'} />
-                    </React.Fragment>
+                    </>
                 )}
                 {type === 'aggregate' && (
-                    <React.Fragment>
+                    <>
                         <KeyMetadata addNotification={this.addNotification} assetName="aggregatetuple" assetKey={item.traintuple.key} />
                         <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
-                    </React.Fragment>
+                    </>
                 )}
                 <SingleMetadata label="Status">
                     {capitalize(item.traintuple.status)}
@@ -72,10 +72,10 @@ class Metadata extends Component {
                     {!item.testtuple && 'N/A'}
                     {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
                     {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
-                        <Fragment>
+                        <>
                             {capitalize(item.testtuple.status)}
                             <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.testtuple.status)} />
-                        </Fragment>
+                        </>
                     )}
                 </SingleMetadata>
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />

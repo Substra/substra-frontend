@@ -36,13 +36,13 @@ User.propTypes = {
     refresh: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     authenticated: state.user.authenticated,
     refreshLoading: state.user.refreshLoading,
     init: state.user.init,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     refresh: refresh.request,
 }, dispatch);
 

@@ -6,4 +6,4 @@ const section = css`
     margin: ${spacingNormal};
 `;
 
-export default props => <div className={section} {...props} />;
+export default (props) => <div className={section} {...props} />;

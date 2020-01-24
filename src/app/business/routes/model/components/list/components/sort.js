@@ -9,4 +9,4 @@ const options = [
     {value: {by: 'nonCertifiedTesttuple.dataset.perf', direction: 'desc'}, label: 'HIGHEST VALIDATION SCORE'},
 ];
 
-export default props => <Sort {...props} options={options} />;
+export default (props) => <Sort {...props} options={options} />;

@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import Top from './index';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     location: state.location,
 });
 

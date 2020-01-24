@@ -1,14 +1,14 @@
 import {omit} from 'lodash';
 import {createDeepEqualSelector} from '../../utils/selector';
 
-const location = state => state.location;
-const item = state => state.search.item;
-const filters = state => state.search.filters;
+const location = (state) => state.location;
+const item = (state) => state.search.item;
+const filters = (state) => state.search.filters;
 
-const objectiveResults = state => state.objective ? state.objective.persistent.results : null;
-const datasetResults = state => state.dataset ? state.dataset.persistent.results : null;
-const algoResults = state => state.algo ? state.algo.persistent.results : null;
-const modelResults = state => state.model ? state.model.persistent.results : null;
+const objectiveResults = (state) => state.objective ? state.objective.persistent.results : null;
+const datasetResults = (state) => state.dataset ? state.dataset.persistent.results : null;
+const algoResults = (state) => state.algo ? state.algo.persistent.results : null;
+const modelResults = (state) => state.model ? state.model.persistent.results : null;
 
 const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
     (allAlgosOfType, group) => [
@@ -22,17 +22,17 @@ const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
 );
 
 const standardAlgoResults = createDeepEqualSelector([algoResults],
-    algoGroups => algoGroups && getAlgoByType(algoGroups, 'standard'),
+    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'standard'),
 );
 const compositeAlgoResults = createDeepEqualSelector([algoResults],
-    algoGroups => algoGroups && getAlgoByType(algoGroups, 'composite'),
+    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'composite'),
 );
 const aggregateAlgoResults = createDeepEqualSelector([algoResults],
-    algoGroups => algoGroups && getAlgoByType(algoGroups, 'aggregate'),
+    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'aggregate'),
 );
 
 const traintupleKeys = createDeepEqualSelector([modelResults],
-    modelResults => modelResults && modelResults.length ? modelResults[0].map(o => ({key: (o.traintuple && o.traintuple.key) || (o.compositeTraintuple && o.compositeTraintuple.key)})) : modelResults,
+    (modelResults) => modelResults && modelResults.length ? modelResults[0].map((o) => ({key: (o.traintuple && o.traintuple.key) || (o.compositeTraintuple && o.compositeTraintuple.key)})) : modelResults,
 );
 
 export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, aggregateAlgoResults, traintupleKeys],
@@ -54,7 +54,7 @@ export const getSearchFilters = createDeepEqualSelector([location, objectiveResu
 export const getParentSuggestions = createDeepEqualSelector([filters, item, getSearchFilters],
     (filters, item, searchFilters) => [
             ...(Object.keys(filters).length && item !== '-OR-' ? [{label: '-OR-', isLogic: true}] : []),
-            ...Object.keys(searchFilters).map(o => ({label: o})),
+            ...Object.keys(searchFilters).map((o) => ({label: o})),
         ]);
 
 export const getIsInParentMode = createDeepEqualSelector([getSearchFilters, item],

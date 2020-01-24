@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {replace} from 'redux-first-router';
@@ -28,12 +28,12 @@ const Content = ({page, user}) => {
     }
 
     return (
-        <Fragment>
+        <>
             <Top />
             <Search />
             <Nav />
             <Route page={page} />
-        </Fragment>
+        </>
 );
 };
 

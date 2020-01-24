@@ -75,7 +75,7 @@ const reduxSetup = () => {
 
     // mount component
 
-    const mapDispatchToProps = dispatch => bindActionCreators({
+    const mapDispatchToProps = (dispatch) => bindActionCreators({
         setOrder: actions.order.set,
     }, dispatch);
 

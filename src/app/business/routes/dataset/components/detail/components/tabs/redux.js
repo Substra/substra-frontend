@@ -15,7 +15,7 @@ const mapStateToProps = (state, {model, addNotification}) => ({
     addNotification,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     setTabIndex: actions.item.tabIndex.set,
 }, dispatch);
 

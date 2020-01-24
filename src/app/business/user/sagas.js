@@ -18,7 +18,7 @@ import {
     fetchSignOut as fetchSignOutApi,
 } from './api';
 
-export const signIn = fetchSignIn => function* signInSaga({payload: {username, password, previousRoute}}) {
+export const signIn = (fetchSignIn) => function* signInSaga({payload: {username, password, previousRoute}}) {
     const {error, res} = yield call(fetchSignIn, username, password);
 
     if (error) {
@@ -37,7 +37,7 @@ export const signIn = fetchSignIn => function* signInSaga({payload: {username, p
     }
 };
 
-export const refresh = fetchRefresh => function* signInSaga() {
+export const refresh = (fetchRefresh) => function* signInSaga() {
     if (typeof window !== 'undefined') {
         const {error, res} = yield call(fetchRefresh);
 
@@ -56,7 +56,7 @@ export const refresh = fetchRefresh => function* signInSaga() {
     }
 };
 
-export const signOut = fetchSignOut => function* signOutSaga() {
+export const signOut = (fetchSignOut) => function* signOutSaga() {
     const {error} = yield call(fetchSignOut);
     if (error) {
         console.error(error);

@@ -42,7 +42,7 @@ class UniversalContent extends Component {
             this.firstRender = false;
             return (
                 <ReactReduxContext.Consumer>
-                    {reduxContext => <U reduxcontext={reduxContext} />}
+                    {(reduxContext) => <U reduxcontext={reduxContext} />}
                 </ReactReduxContext.Consumer>
             );
         }

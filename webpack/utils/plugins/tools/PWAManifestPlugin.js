@@ -21,9 +21,9 @@ class PWAManifestPlugin {
             // create icon files
             const path = this.options.iconsPath;
             let filesPath = await readdir(path);
-            filesPath = filesPath.filter(o => o.endsWith(this.options.extension));
+            filesPath = filesPath.filter((o) => o.endsWith(this.options.extension));
 
-            const promises = filesPath.map(o => readFile(`${path}/${o}`));
+            const promises = filesPath.map((o) => readFile(`${path}/${o}`));
 
             const filesContent = await Promise.all(promises);
             filesContent.forEach((source, i) => {

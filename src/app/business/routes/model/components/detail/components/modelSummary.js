@@ -1,5 +1,5 @@
 /* global SCORE_PRECISION */
-import React, {Fragment} from 'react';
+import React from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
@@ -67,9 +67,9 @@ const ModelSummary = ({model, addNotification}) => (
             || (model.traintuple.status === 'failed' && <p>Training failed.</p>)
             || (model.traintuple.status === 'canceled' && <p>Training canceled.</p>)
             || (model.traintuple.status === 'done' && (
-                <Fragment>
+                <>
                     {!model.testtuple && (
-                        <Fragment>
+                        <>
                             <p>
                                 {'Training successful. In order to test this model against the objective\'s test data samples, execute the following command:'}
                             </p>
@@ -79,7 +79,7 @@ const ModelSummary = ({model, addNotification}) => (
                                 value={`substra add testtuple '{"traintuple_key": "${model.traintuple.key}"}'`}
                                 isPrompt
                             />
-                        </Fragment>
+                        </>
                     )}
                     {model.testtuple && (
                         (model.testtuple.status === 'todo' && <p>Training successful. Preparing testing.</p>)
@@ -97,7 +97,7 @@ const ModelSummary = ({model, addNotification}) => (
                             </p>
                         ))
                     )}
-                </Fragment>
+                </>
             ))
         )}
         <CodeSample
@@ -116,7 +116,7 @@ const ModelSummary = ({model, addNotification}) => (
                 codeString={JSON.stringify(model.testtuple, null, 2)}
             />
         )}
-        {model && model.nonCertifiedTesttuples && model.nonCertifiedTesttuples.map(nonCertifiedTesttuple => (
+        {model && model.nonCertifiedTesttuples && model.nonCertifiedTesttuples.map((nonCertifiedTesttuple) => (
             <CodeSample
                 key={nonCertifiedTesttuple.key}
                 className={margins}

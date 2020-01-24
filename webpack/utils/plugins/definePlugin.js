@@ -7,6 +7,7 @@ export default () => new webpack.DefinePlugin({
     'process.env.IS_ELECTRON': JSON.stringify(process.env.IS_ELECTRON || 'false'),
     'process.env.IS_STATIC': JSON.stringify(process.env.IS_STATIC || 'false'),
     APP_NAME: JSON.stringify(config.appName),
+    API_URL: JSON.stringify(config.apps.frontend.apiUrl), // needed for electron
     META_DESCRIPTION: JSON.stringify(config.apps.frontend.meta.description),
     PRODUCTION_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.production),
     DEBUG_BASE_NAME: JSON.stringify(config.apps.frontend.baseName.debug),

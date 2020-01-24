@@ -10,8 +10,8 @@ class Route extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.model !== prevState.model) {
-            const {model} = nextProps;
+        if (nextProps.model !== prevState.model) { // eslint-disable-line react/prop-types
+            const {model} = nextProps; // eslint-disable-line react/prop-types
 
             const Module = require(`../../routes/${model}/preload/index`).default,
                 sagas = require(`../../routes/${model}/sagas/index`).default,

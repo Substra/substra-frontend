@@ -46,7 +46,9 @@ Top.defaultProps = {
 };
 
 Top.propTypes = {
-    location: PropTypes.shape({}),
+    location: PropTypes.shape({
+        query: PropTypes.shape({}),
+    }),
 };
 
 export default Top;

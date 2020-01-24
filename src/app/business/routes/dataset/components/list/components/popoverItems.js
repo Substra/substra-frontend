@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 import {css} from 'emotion';
@@ -26,7 +26,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             </Action>
             {itemLoading && <Action><PulseLoader size={6} /></Action>}
             {!itemLoading && (
-                <Fragment>
+                <>
                     <Action
                         onClick={addNotification('trainDataSampleKeys', 'Train data samples keys successfully copied to clipboard!')}
                     >
@@ -37,7 +37,7 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
                     >
                         Copy all test data samples keys to clipboard
                     </Action>
-                </Fragment>
+                </>
             )}
         </PopItem>
         <DownloadPopItem downloadFile={downloadFile} download={download} />

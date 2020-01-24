@@ -25,13 +25,13 @@ const StandardModelPopoverItems = ({item, filterUp, addNotification}) => {
     const modelKey = deepGet('traintuple.outModel.hash')(item);
     const traintupleKey = deepGet('traintuple.key')(item);
     return (
-        <React.Fragment>
+        <>
             <PopList>
                 <FilterUpPopItem filterUp={filterUp} />
                 {modelKey && <CopyPopItem addNotification={addNotification} assetKey={modelKey} assetName="model" />}
                 <CopyPopItem addNotification={addNotification} assetKey={traintupleKey} assetName="traintuple" />
             </PopList>
-        </React.Fragment>
+        </>
     );
 };
 
@@ -75,11 +75,11 @@ const ModelPopoverItems = (props) => {
     const type = item && item.traintuple && item.traintuple.type;
 
     return (
-        <React.Fragment>
+        <>
             {type === 'standard' && <StandardModelPopoverItems {...props} />}
             {type === 'composite' && <CompositeModelPopoverItems {...props} />}
             {type === 'aggregate' && <AggregateModelPopoverItems {...props} />}
-        </React.Fragment>
+        </>
     );
 };
 

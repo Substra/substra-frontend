@@ -6,7 +6,7 @@ import Metadata from './components/metadata';
 import Sort from './components/sort';
 import Actions from './components/actions';
 
-const ModelListWithLocalComponents = props => (
+const ModelListWithLocalComponents = (props) => (
     <List
         Title={Title}
         Metadata={Metadata}

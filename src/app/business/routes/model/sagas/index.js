@@ -27,7 +27,7 @@ function* fetchList(request) {
 function* fetchDetail({payload}) {
     const modelDetailList = yield select(itemResults, 'model');
 
-    const item = modelDetailList.find(o => o.traintuple.key === payload.traintuple.key);
+    const item = modelDetailList.find((o) => o.traintuple.key === payload.traintuple.key);
 
     if (!item) {
         yield put(actions.item.success(payload));
@@ -52,9 +52,9 @@ function* fetchBundleDetail() {
     const modelDetailList = yield select(itemResults, 'model');
 
     for (const group of modelGroups) {
-        const models = group.filter(model => model.traintuple && model.traintuple.tag);
+        const models = group.filter((model) => model.traintuple && model.traintuple.tag);
         for (const model of models) {
-            const modelDetail = modelDetailList.find(o => o.traintuple.key === model.traintuple.key);
+            const modelDetail = modelDetailList.find((o) => o.traintuple.key === model.traintuple.key);
             if (!modelDetail) {
                 yield put(actions.item.request({id: model.traintuple.key}));
             }

@@ -20,7 +20,7 @@ export function fetchSignIn(username, password) {
             if (!response.ok) {
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.indexOf('application/json') !== -1) {
-                    return response.text().then(result => Promise.reject(new Error(result)));
+                    return response.text().then((result) => Promise.reject(new Error(result)));
                 }
 
                 return response.text().then(() => Promise.reject(new Error('Error, Please dial in json with the api server (Make sure you have deactivated mod header)')));
@@ -28,7 +28,7 @@ export function fetchSignIn(username, password) {
 
             return response.json();
         })
-        .then(json => ({res: json}), error => ({
+        .then((json) => ({res: json}), (error) => ({
             error,
         }));
 }
@@ -50,7 +50,7 @@ export function fetchRefresh(refresh) {
             if (!response.ok) {
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.indexOf('application/json') !== -1) {
-                    return response.text().then(result => Promise.reject(new Error(result)));
+                    return response.text().then((result) => Promise.reject(new Error(result)));
                 }
 
                 return response.text().then(() => Promise.reject(new Error('Error, Please dial in json with the api server (Make sure you have deactivated mod header)')));
@@ -58,7 +58,7 @@ export function fetchRefresh(refresh) {
 
             return response.json();
         })
-        .then(json => ({res: json}), error => ({
+        .then((json) => ({res: json}), (error) => ({
             error,
         }));
 }
@@ -77,12 +77,12 @@ export function fetchSignOut() {
     })
         .then((response) => {
             if (!response.ok) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             return response.json();
         })
-        .then(json => ({res: json}), error => ({
+        .then((json) => ({res: json}), (error) => ({
             error,
         }));
 }

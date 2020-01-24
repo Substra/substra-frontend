@@ -7,7 +7,7 @@ export const initialState = {
     tabIndex: 0,
 };
 
-export default actionTypes => (state = initialState, {type, payload}) => {
+export default (actionTypes) => (state = initialState, {type, payload}) => {
     switch (type) {
         case actionTypes.item.REQUEST:
             return {

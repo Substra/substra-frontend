@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {bindActionCreators} from 'redux';
@@ -19,9 +19,9 @@ const BrowseRelatedLinks = ({
     const filter = `${asset}:name:${item ? encodeURIComponent(item.name) : ''}`;
 
     return (
-        <Fragment>
+        <>
             <BrowseRelatedLink model="model" label="models" filter={filter} unselect={unselectModel} />
-        </Fragment>
+        </>
     );
 };
 
@@ -40,7 +40,7 @@ BrowseRelatedLinks.defaultProps = {
     unselectModel: noop,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     unselectObjective: objectiveActions.list.unselect,
     unselectDataset: datasetActions.list.unselect,
     unselectModel: modelActions.list.unselect,

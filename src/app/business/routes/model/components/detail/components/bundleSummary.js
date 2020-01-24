@@ -1,5 +1,5 @@
 /* global SCORE_PRECISION */
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {capitalize} from 'lodash';
@@ -19,7 +19,7 @@ const BundleSummary = ({models}) => (
             </Tr>
         </thead>
         <tbody>
-            {models.map(model => (
+            {models.map((model) => (
                 <Tr key={model.traintuple.key}>
                     <Td>
                         <a href={`#${model.traintuple.key}`}>{model.traintuple.key.slice(0, 4)}</a>
@@ -29,10 +29,10 @@ const BundleSummary = ({models}) => (
                     </Td>
                     <Td>
                         {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status === 'done' && (
-                            <Fragment>
+                            <>
                                 {model.nonCertifiedTesttuple.dataset.perf.toFixed(SCORE_PRECISION)}
                                 {typeof model.nonCertifiedTesttuple.dataset.standardDeviation === 'number' && ` ±${model.nonCertifiedTesttuple.dataset.standardDeviation.toFixed(SCORE_PRECISION)}`}
-                            </Fragment>
+                            </>
                         )}
                         {model.nonCertifiedTesttuple && model.nonCertifiedTesttuple.status !== 'done' && capitalize(model.nonCertifiedTesttuple.status)}
                         {!model.nonCertifiedTesttuple && 'N/A'}

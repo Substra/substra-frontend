@@ -24,6 +24,6 @@ export const traintuples = [
 ];
 
 
-export const outModelsHashes = traintuples.filter(o => o.outModel).map(o => o.outModel.hash);
+export const outModelsHashes = traintuples.filter((o) => o.outModel).map((o) => o.outModel.hash);
 
 export default traintuples;

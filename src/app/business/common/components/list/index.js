@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
@@ -35,18 +35,18 @@ class List extends Component {
         }
     }
 
-    setSelected = item => () => {
+    setSelected = (item) => () => {
         const {setSelected} = this.props;
         setSelected(item);
     };
 
-    hover = item => (e) => {
+    hover = (item) => (e) => {
         e.stopPropagation();
 
         const {hover} = this.props;
 
         if (!this.isSelected(item.key)) {
-            this.setState(state => ({
+            this.setState((state) => ({
                 ...state,
                 hoverItem: item.key,
             }));
@@ -57,12 +57,12 @@ class List extends Component {
         }
     };
 
-    out = item => (e) => {
+    out = (item) => (e) => {
         const {out} = this.props;
 
         e.stopPropagation();
 
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
             hoverItem: null,
         }));
@@ -109,7 +109,7 @@ class List extends Component {
 
 
         return (
-            <Fragment>
+            <>
                 <PanelWrapper>
                     <PanelTop>
                         <Sort model={model} setOrder={setOrder} />
@@ -128,7 +128,7 @@ class List extends Component {
                         {init && !loading && !!results.length
                             && (results.map((o, i) => (
                                 <div key={i}>
-                                    {!!o.length && o.map(o => (
+                                    {!!o.length && o.map((o) => (
                                         <Item
                                             key={o.key}
                                             onClick={this.setSelected(o)}
@@ -147,15 +147,14 @@ class List extends Component {
                                             />
                                             {Metadata && <Metadata o={o} />}
                                         </Item>
-                                        ))
-                                    }
+                                        ))}
                                     {!o.length && <NoItemFound model={model} />}
                                 </div>
                             ))
                         )}
                     </PanelContent>
                 </PanelWrapper>
-            </Fragment>
+            </>
         );
     }
 }

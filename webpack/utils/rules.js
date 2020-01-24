@@ -1,6 +1,6 @@
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 
-export default env => [
+export default (env) => [
     {
         test: /\.jsx?$/,
         exclude: /node_modules/,

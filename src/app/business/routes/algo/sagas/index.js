@@ -24,7 +24,7 @@ const fetchItemApiByType = {
     standard: fetchStandardAlgoApi,
 };
 
-const withAlgoType = (list, type) => list.map(group => group.map(algo => ({...algo, type})));
+const withAlgoType = (list, type) => list.map((group) => group.map((algo) => ({...algo, type})));
 
 const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
     const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
@@ -166,7 +166,7 @@ function* fetchDetail(request) {
     // fetch current tab content if needed
     yield manageTabs(state.algo.item.tabIndex);
 
-    const exists = state.algo.item.results.find(o => o.pkhash === request.payload.key);
+    const exists = state.algo.item.results.find((o) => o.pkhash === request.payload.key);
     if (!exists) {
         yield put(actions.item.request(request.payload));
     }
@@ -211,7 +211,7 @@ function* downloadItemSaga({payload: {url}}) {
         }).then((response) => {
             status = response.status;
             if (!response.ok) {
-                return response.text().then(result => Promise.reject(new Error(result)));
+                return response.text().then((result) => Promise.reject(new Error(result)));
             }
 
             filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
@@ -219,7 +219,7 @@ function* downloadItemSaga({payload: {url}}) {
             return response.blob();
         }).then((res) => {
             saveAs(res, filename);
-        }, error => ({error, status}));
+        }, (error) => ({error, status}));
     }
 }
 

@@ -24,7 +24,7 @@ const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV)),
     PRODUCTION = (['production'].includes(process.env.NODE_ENV)),
     DEBUG = !(['production', 'development', 'staging'].includes(process.env.NODE_ENV));
 
-export default env => [
+export default (env) => [
     ...(env === 'client' ? [
         pwaManifest,
         new RavenPlugin(config.apps.frontend.raven_url),

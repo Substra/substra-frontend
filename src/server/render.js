@@ -40,7 +40,7 @@ cache.on('connect', () => {
     console.log('CACHE CONNECTED');
 });
 
-const paths = Object.keys(routesMap).map(o => routesMap[o].path);
+const paths = Object.keys(routesMap).map((o) => routesMap[o].path);
 
 const createCacheStream = (key) => {
     const bufferedChunks = [];
@@ -69,7 +69,7 @@ const createCacheStream = (key) => {
 };
 
 const createApp = (App, store, chunkNames) => (
-    <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
+    <ReportChunks report={(chunkName) => chunkNames.push(chunkName)}>
         <Provider store={store}>
             <GlobalStyles />
             <App />
@@ -77,7 +77,7 @@ const createApp = (App, store, chunkNames) => (
     </ReportChunks>
 );
 
-const flushDll = clientStats => clientStats.assets.reduce((p, c) => [
+const flushDll = (clientStats) => clientStats.assets.reduce((p, c) => [
     ...p,
     ...(c.name.endsWith('dll.js') ? [`<script type="text/javascript" src="/${c.name}" defer></script>`] : []),
 ], []).join('\n');
@@ -102,10 +102,8 @@ const earlyChunk = (styles, stateJson) => `
           <noscript>
               <div>Please enable javascript in your browser for displaying this website.</div>
           </noscript>
-          <script>
-            window.API_URL="${API_URL}";
-          </script>
-          <script>window.REDUX_STATE = ${stateJson}</script>
+          <script>window.API_URL="${API_URL}";</script>
+          <script>window.REDUX_STATE = ${stateJson};</script>
           ${process.env.NODE_ENV === 'production' ? '<script src="/raven.min.js" type="text/javascript" defer></script>' : ''}
           <div id="root">`,
     lateChunk = (cssHash, js, dll) => `</div>
@@ -199,7 +197,7 @@ export default ({clientStats, outputPath}) => async (ctx) => {
         renderStreamed(ctx, path, clientStats, outputPath);
     }
     else {
-        if (paths.filter(o => !['/404'].includes(o)).includes(path)) {
+        if (paths.filter((o) => !['/404'].includes(o)).includes(path)) {
             console.log('UNCACHABLE ROUTE', path);
             await renderStreamed(ctx, path, clientStats, outputPath);
         }

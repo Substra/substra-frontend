@@ -96,13 +96,13 @@ Index.defaultProps = {
     signIn: null,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
         // get previousRoute from state
         location: state.location,
         signInError: getError(state),
     });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
         signIn: signInActions.request,
     }, dispatch);
 

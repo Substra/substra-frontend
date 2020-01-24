@@ -14,7 +14,7 @@ import actions from '../actions';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
 import {spacingLarge} from '../../../../../assets/css/variables/spacing';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     inputValue: state.search.inputValue,
     selectedItem: state.search.selectedItem,
     isParent: state.search.isParent,
@@ -27,7 +27,7 @@ const mapStateToProps = state => ({
     placeholder: 'Add item filters. Ex: "objective: objective1", "dataset: dataset2"',
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     setState: actions.state.set,
 }, dispatch);
 

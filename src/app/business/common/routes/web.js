@@ -20,6 +20,7 @@ class UniversalRoute extends Component {
         const U = universal(import(`../../routes/${model}/preload/index`), {
             loading: <PulseLoader />,
             ignoreBabelRename: true,
+            chunkName: () => `routes/${model}/preload/index`.replace(/(?<=\/.*)\//g, '-'),
             onLoad: (module, info, {reduxcontext}) => {
                 if (reduxcontext && reduxcontext.store) {
                     injectSaga(model, module.sagas, false, reduxcontext.store);
@@ -32,7 +33,7 @@ class UniversalRoute extends Component {
             this.firstRender = false;
             return (
                 <ReactReduxContext.Consumer>
-                    {reduxContext => <U model={model} reduxcontext={reduxContext} />}
+                    {(reduxContext) => <U model={model} reduxcontext={reduxContext} />}
                 </ReactReduxContext.Consumer>
             );
         }

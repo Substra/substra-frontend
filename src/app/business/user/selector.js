@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 
-const error = state => state.user.error;
+const error = (state) => state.user.error;
 
 export const getError = createSelector([error],
     (error) => {
