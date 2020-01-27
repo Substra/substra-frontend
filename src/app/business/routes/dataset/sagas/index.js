@@ -10,6 +10,7 @@ import actions, {actionTypes} from '../actions';
 import {fetchItemApi, fetchListApi} from '../api';
 import {
     fetchItemSaga, fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
+    fetchItemDescriptionSaga,
 } from '../../../common/sagas';
 import {fetchRaw} from '../../../../entities/fetchEntities';
 import {getItem} from '../../../common/selector';
@@ -90,20 +91,6 @@ function* setTabIndexSaga({payload}) {
     yield manageTabs(payload);
 }
 
-function* fetchItemDescriptionSaga({payload: {pkhash, url}}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.description.failure);
-    }
-
-    if (jwt) {
-        const {res, status} = yield call(fetchRaw, url, jwt);
-        if (res && status === 200) {
-            yield put(actions.item.description.success({pkhash, desc: res}));
-        }
-    }
-}
-
 function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
     let jwt = getJWTFromCookie();
     if (!jwt) {
@@ -111,9 +98,13 @@ function* fetchItemOpenerSaga({payload: {pkhash, url}}) {
     }
 
     if (jwt) {
-        const {res, status} = yield call(fetchRaw, url, jwt);
+        const {res, error, status} = yield call(fetchRaw, url, jwt);
         if (res && status === 200) {
             yield put(actions.item.opener.success({pkhash, openerContent: res}));
+        }
+        else {
+            console.error(error, status);
+            yield put(actions.item.opener.failure({pkhash, status}));
         }
     }
 }
@@ -160,7 +151,7 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItem),
 
-        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga(actions)),
         takeLatest(actionTypes.item.opener.REQUEST, fetchItemOpenerSaga),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),

@@ -2,6 +2,7 @@ export const initialState = {
     init: false,
     loading: false,
     descLoading: false,
+    descForbidden: false,
     error: null,
     results: [],
     tabIndex: 0,
@@ -36,6 +37,7 @@ export default (actionTypes) => (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 descLoading: true,
+                descForbidden: false,
             };
         case actionTypes.item.description.SUCCESS:
             return {
@@ -46,11 +48,13 @@ export default (actionTypes) => (state = initialState, {type, payload}) => {
                     ...(c.pkhash === payload.id ? [{...c, description: {...c.description, content: payload.desc}}] : [c]),
                 ], []),
                 descLoading: false,
+                descForbidden: false,
             };
         case actionTypes.item.description.FAILURE:
             return {
                 ...state,
                 descLoading: false,
+                descForbidden: payload.status === 403,
             };
         case actionTypes.item.tabIndex.SET:
             return {

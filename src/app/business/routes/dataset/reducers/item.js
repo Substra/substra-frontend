@@ -3,6 +3,7 @@ import baseReducerBuilder, {initialState as baseInitialState} from '../../../com
 const initialState = {
     ...baseInitialState,
     openerLoading: false,
+    openerForbidden: false,
 };
 
 export default (actionTypes) => {
@@ -59,6 +60,7 @@ export default (actionTypes) => {
                 return {
                     ...state,
                     openerLoading: true,
+                    openerForbidden: false,
                 };
             case actionTypes.item.opener.SUCCESS:
                 return {
@@ -77,11 +79,13 @@ export default (actionTypes) => {
                         }] : [c]),
                     ], []),
                     openerLoading: false,
+                    openerForbidden: false,
                 };
             case actionTypes.item.opener.FAILURE:
                 return {
                     ...state,
                     openerLoading: false,
+                    openerForbidden: payload.status === 403,
                 };
             default:
                 return reducedState;

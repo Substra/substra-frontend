@@ -13,6 +13,7 @@ import {
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
+import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 
@@ -21,7 +22,7 @@ const Span = styled('span')`
 `;
 
 const ObjectiveTabs = ({
-descLoading, item, downloadFile, tabIndex, setTabIndex,
+descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex,
 }) => (
     <Tabs
         selectedIndex={tabIndex}
@@ -34,7 +35,15 @@ descLoading, item, downloadFile, tabIndex, setTabIndex,
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
-            {!descLoading && <Description item={item} />}
+            {!descLoading && descForbidden && (
+                <ForbiddenResource
+                    resource="description"
+                    model="objective"
+                    permissionsTabIndex={2}
+                    setTabIndex={setTabIndex}
+                />
+            )}
+            {!descLoading && !descForbidden && <Description item={item} />}
         </TabPanel>
         <TabPanel>
             <Span>The objective's metrics code and Dockerfile are packaged within a zip or tar.gz file.</Span>
@@ -56,6 +65,7 @@ descLoading, item, downloadFile, tabIndex, setTabIndex,
 ObjectiveTabs.propTypes = {
     item: PropTypes.shape(),
     descLoading: PropTypes.bool,
+    descForbidden: PropTypes.bool,
     tabIndex: PropTypes.number,
     downloadFile: PropTypes.func,
     setTabIndex: PropTypes.func,
@@ -64,6 +74,7 @@ ObjectiveTabs.propTypes = {
 ObjectiveTabs.defaultProps = {
     item: null,
     descLoading: false,
+    descForbidden: false,
     tabIndex: 0,
     downloadFile: noop,
     setTabIndex: noop,
