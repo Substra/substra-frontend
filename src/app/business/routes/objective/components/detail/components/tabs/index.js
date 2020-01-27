@@ -13,7 +13,7 @@ import {
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
-import ForbiddenDescription from '../../../../../../common/components/detail/components/forbiddenDescription';
+import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 
@@ -36,7 +36,8 @@ descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex,
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
             {!descLoading && descForbidden && (
-                <ForbiddenDescription
+                <ForbiddenResource
+                    resource="description"
                     model="objective"
                     permissionsTabIndex={2}
                     setTabIndex={setTabIndex}

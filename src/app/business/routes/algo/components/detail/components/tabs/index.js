@@ -16,7 +16,7 @@ import Tab from '../../../../../../common/components/detail/components/tabs';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
-import ForbiddenDescription from '../../../../../../common/components/detail/components/forbiddenDescription';
+import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
@@ -37,7 +37,8 @@ descLoading, descForbidden, item, tabIndex, setTabIndex, downloadFile,
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
             {!descLoading && descForbidden && (
-                <ForbiddenDescription
+                <ForbiddenResource
+                    resource="description"
                     model="algo"
                     permissionsTabIndex={2}
                     setTabIndex={setTabIndex}

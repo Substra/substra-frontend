@@ -9,7 +9,6 @@ import {
     Tabs,
     TabPanel,
     TabList,
-    RoundedButton,
 } from '@substrafoundation/substra-ui';
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
@@ -19,10 +18,9 @@ import CopyInput from '../../../../../../common/components/detail/components/cop
 
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';
-import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
 import Description from '../../../../../../common/components/detail/components/description';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
-import ForbiddenDescription from '../../../../../../common/components/detail/components/forbiddenDescription';
+import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};
@@ -30,10 +28,6 @@ const Code = styled('code')`
     border: 1px solid ${ice};
     border-radius: 3px;
     padding: 1px 3px;
-`;
-
-const Span = styled('span')`
-    margin-right: ${spacingNormal};
 `;
 
 const DatasetTabs = ({
@@ -53,7 +47,8 @@ const DatasetTabs = ({
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
             {!descLoading && descForbidden && (
-                <ForbiddenDescription
+                <ForbiddenResource
+                    resource="description"
                     model="dataset"
                     permissionsTabIndex={4}
                     setTabIndex={setTabIndex}
@@ -64,12 +59,12 @@ const DatasetTabs = ({
         <TabPanel>
             {openerLoading && <PulseLoader size={6} />}
             {!openerLoading && openerForbidden && (
-                <>
-                    <Span>You do not have enough permissions to see this dataset's opener.</Span>
-                    <RoundedButton onClick={() => setTabIndex(4)}>
-                        Learn more
-                    </RoundedButton>
-                </>
+                <ForbiddenResource
+                    resource="opener"
+                    model="dataset"
+                    permissionsTabIndex={4}
+                    setTabIndex={setTabIndex}
+                />
             )}
             {!openerLoading && !openerForbidden && item && item.opener && item.opener.content && (
                 <CodeSample
