@@ -6,10 +6,10 @@ import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
     fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
+    fetchItemSaga,
 } from '../../../common/sagas';
 
 import {listResults, itemResults} from '../selector';
-import {signOut} from '../../../user/actions';
 
 function* fetchList(request) {
     const state = yield select();
@@ -62,31 +62,22 @@ function* fetchBundleDetail() {
     }
 }
 
-export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
-    const {id, get_parameters} = payload;
-
+function* fetchItem({payload}) {
     let jwt = getJWTFromCookie();
     if (!jwt) {
         jwt = yield tryRefreshToken(actions.item.failure);
     }
 
     if (jwt) {
-        const {error, status, list} = yield call(fetchItemApi, get_parameters, id, jwt);
-
-        if (error) {
-            console.error(error, status);
-            yield put(actions.item.failure(error));
-            if (status === 401) {
-                yield put(signOut.success());
-            }
-        }
-        else {
-            yield put(actions.item.success(list));
-        }
-
-        return list;
+        yield call(fetchItemSaga(actions, fetchItemApi), {
+            payload: {
+                id: payload.id,
+                get_parameters: {},
+                jwt,
+            },
+        });
     }
-};
+}
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
@@ -96,7 +87,7 @@ const sagas = function* sagas() {
         takeLatest(actionTypes.list.SELECTED, fetchDetail),
         takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
 
-        takeEvery(actionTypes.item.REQUEST, fetchItemSaga(actions, fetchItemApi)),
+        takeEvery(actionTypes.item.REQUEST, fetchItem),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);
