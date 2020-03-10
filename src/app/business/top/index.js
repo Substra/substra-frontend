@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {css} from 'emotion';
 import Link from 'redux-first-router-link';
+import {noop} from 'lodash';
 
-import DocLinkWithAnalytics from './components/docLink';
+import {SubstraLogo} from '@substrafoundation/substra-ui';
+import {DocLink} from './components/docLink';
+import {SignOutButton} from './components/signOutButton';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';
 import {spacingLarge, spacingNormal} from '../../../../assets/css/variables/spacing';
-import SubstraLogo from '../common/components/icons/substraLogo';
 
 
 const Wrapper = styled('div')`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     background-color: ${white};
     padding: ${spacingLarge};
@@ -22,7 +24,7 @@ const Wrapper = styled('div')`
 `;
 
 
-const link = css`
+const item = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,23 +34,40 @@ const link = css`
     font-weight: normal;
 `;
 
-const Top = ({location}) => (
+const logo = css`
+    ${item}
+    margin-right: auto;
+`;
+
+const button = css`
+    ${item}
+    margin-left: ${spacingNormal};
+`;
+
+const Top = ({location, signOut}) => (
     <Wrapper>
-        <Link to={{type: 'HOME', meta: {query: location.query}}} className={link} data-testid="homelink">
+        <Link
+            to={{type: 'HOME', meta: {query: location.query}}}
+            className={logo}
+            data-testid="homelink"
+        >
             <SubstraLogo alt="Substra" height={50} width={266} />
         </Link>
-        <DocLinkWithAnalytics className={link} />
+        <DocLink className={button} />
+        <SignOutButton className={button} onClick={signOut} />
     </Wrapper>
 );
 
 Top.defaultProps = {
     location: {},
+    signOut: noop,
 };
 
 Top.propTypes = {
     location: PropTypes.shape({
         query: PropTypes.shape({}),
     }),
+    signOut: PropTypes.func,
 };
 
 export default Top;
