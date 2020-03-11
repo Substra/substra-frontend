@@ -1,30 +1,17 @@
 import {
-    takeLatest, takeEvery, all, put, select, call,
+    takeLatest, takeEvery, all, put, select,
 } from 'redux-saga/effects';
 
 import actions, {actionTypes} from '../actions';
 import {fetchListApi, fetchItemApi} from '../api';
 import {
-    fetchListSaga, fetchPersistentSaga, getJWTFromCookie, setOrderSaga, tryRefreshToken,
-    fetchItemSaga,
+    setOrderSaga, fetchItemSagaFactory, fetchListSagaFactory,
 } from '../../../common/sagas';
 
 import {listResults, itemResults} from '../selector';
 
-function* fetchList(request) {
-    const state = yield select();
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.list.failure);
-    }
 
-    if (jwt) {
-        const f = () => fetchListApi(state.location.query, jwt);
-        yield call(fetchListSaga(actions, f), request);
-    }
-}
-
-function* fetchDetail({payload}) {
+function* fetchDetailSaga({payload}) {
     const modelDetailList = yield select(itemResults, 'model');
 
     const item = modelDetailList.find((o) => o.traintuple.key === payload.traintuple.key);
@@ -34,20 +21,7 @@ function* fetchDetail({payload}) {
     }
 }
 
-function* fetchPersistent(request) {
-    const state = yield select();
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.persistent.failure);
-    }
-
-    if (jwt) {
-        const f = () => fetchListApi(state.location.query, jwt);
-        yield call(fetchPersistentSaga(actions, f), request);
-    }
-}
-
-function* fetchBundleDetail() {
+function* fetchBundleDetailSaga() {
     const modelGroups = yield select(listResults, 'model');
     const modelDetailList = yield select(itemResults, 'model');
 
@@ -56,38 +30,21 @@ function* fetchBundleDetail() {
         for (const model of models) {
             const modelDetail = modelDetailList.find((o) => o.traintuple.key === model.traintuple.key);
             if (!modelDetail) {
-                yield put(actions.item.request({id: model.traintuple.key}));
+                yield put(actions.item.request({key: model.traintuple.key}));
             }
         }
-    }
-}
-
-function* fetchItem({payload}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.item.failure);
-    }
-
-    if (jwt) {
-        yield call(fetchItemSaga(actions, fetchItemApi), {
-            payload: {
-                id: payload.id,
-                get_parameters: {},
-                jwt,
-            },
-        });
     }
 }
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
     yield all([
-        takeLatest(actionTypes.list.REQUEST, fetchList),
-        takeLatest(actionTypes.list.SUCCESS, fetchBundleDetail),
-        takeLatest(actionTypes.list.SELECTED, fetchDetail),
-        takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
+        takeLatest(actionTypes.list.REQUEST, fetchListSagaFactory(actions.list, fetchListApi)),
+        takeLatest(actionTypes.list.SUCCESS, fetchBundleDetailSaga),
+        takeLatest(actionTypes.list.SELECTED, fetchDetailSaga),
+        takeLatest(actionTypes.persistent.REQUEST, fetchListSagaFactory(actions.persistent, fetchListApi)),
 
-        takeEvery(actionTypes.item.REQUEST, fetchItem),
+        takeEvery(actionTypes.item.REQUEST, fetchItemSagaFactory(actions.item, fetchItemApi)),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
     ]);

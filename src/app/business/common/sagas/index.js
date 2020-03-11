@@ -1,16 +1,17 @@
-/* globals window */
+/* globals fetch, window */
 
 import {call, put, select} from 'redux-saga/effects';
 import url from 'url';
 import {replace} from 'redux-first-router';
 import {omit} from 'lodash';
+import {saveAs} from 'file-saver';
 import cookie from 'cookie-parse';
 
 import {fetchRaw} from '../../../entities/fetchEntities';
 import {fetchRefresh} from '../../user/api';
 import {refresh as refreshActions, signOut} from '../../user/actions';
 
-export const getJWTFromCookie = () => {
+const getJWTFromCookie = () => {
     let jwt;
     if (typeof window !== 'undefined') {
         const cookies = cookie.parse(window.document.cookie);
@@ -22,7 +23,7 @@ export const getJWTFromCookie = () => {
 };
 
 
-export const tryRefreshToken = function* tryRefreshToken(action_error) {
+const tryRefreshToken = function* tryRefreshToken(action_error) {
     // try to refresh token
     const {res, error} = yield call(fetchRefresh);
 
@@ -46,58 +47,21 @@ export const tryRefreshToken = function* tryRefreshToken(action_error) {
     }
 };
 
-export const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
-    const {error, status, list} = yield call(fetchListApi, payload);
 
-    if (error) {
-        console.error(error, status);
-        yield put(actions.list.failure(error));
-        if (status === 401) {
-            yield put(signOut.success());
+export function withJWT(f, onErrorAction) {
+    function* wrapper(...args) {
+        let jwt = getJWTFromCookie();
+        if (!jwt) {
+            jwt = yield tryRefreshToken(onErrorAction);
+        }
+
+        if (jwt) {
+            yield f(jwt, ...args);
         }
     }
-    else {
-        yield put(actions.list.success(list));
-    }
 
-    return list;
-};
-
-export const fetchPersistentSaga = (actions, fetchPersistentApi) => function* fetchPersistent({payload}) {
-    const {error, status, list} = yield call(fetchPersistentApi, payload);
-
-    if (error) {
-        console.error(error, status);
-        yield put(actions.persistent.failure(error));
-        if (status === 401) {
-            yield put(signOut.success());
-        }
-    }
-    else {
-        yield put(actions.persistent.success(list));
-    }
-
-    return list;
-};
-
-export const fetchItemSaga = (actions, fetchItemApi) => function* fetchItem({payload}) {
-    const {id, get_parameters, jwt} = payload;
-
-    const {error, status, item} = yield call(fetchItemApi, get_parameters, id, jwt);
-
-    if (error) {
-        console.error(error, status);
-        yield put(actions.item.failure(error));
-        if (status === 401) {
-            yield put(signOut.success());
-        }
-    }
-    else {
-        yield put(actions.item.success(item));
-    }
-
-    return item;
-};
+    return wrapper;
+}
 
 export const setOrderSaga = function* setOrderSaga({payload}) {
     const state = yield select();
@@ -115,30 +79,86 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
     replace(newUrl);
 };
 
-export const fetchItemDescriptionSaga = (actions) => function* fetchItemDescription({payload: {pkhash, url}}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.description.failure);
-    }
-
-    if (jwt) {
+export const fetchItemDescriptionSagaFactory = (actions) => {
+    function* fetchItemDescriptionSaga(jwt, {payload: {pkhash, url}}) {
         const {res, error, status} = yield call(fetchRaw, url, jwt);
         if (res && status === 200) {
-            yield put(actions.item.description.success({pkhash, desc: res}));
+            yield put(actions.success({pkhash, desc: res}));
         }
         else {
             console.error(error, status);
-            yield put(actions.item.description.failure({pkhash, status}));
+            yield put(actions.failure({pkhash, status}));
         }
     }
+
+    return withJWT(fetchItemDescriptionSaga, actions.failure);
 };
 
-export default {
-    fetchListSaga,
-    fetchPersistentSaga,
-    fetchItemSaga,
-    setOrderSaga,
-    getJWTFromCookie,
-    tryRefreshToken,
-    fetchItemDescriptionSaga,
+export const fetchItemSagaFactory = (actions, fetchItemApi) => {
+    function* fetchItemSaga(jwt, {payload: {key}}) {
+        const {error, status, item} = yield call(fetchItemApi, {}, key, jwt);
+
+        if (error) {
+            console.error(error, status);
+            yield put(actions.failure(error));
+            if (status === 401) {
+                yield put(signOut.success());
+            }
+        }
+        else {
+            yield put(actions.success(item));
+        }
+
+        return item;
+    }
+
+    return withJWT(fetchItemSaga, actions.failure);
+};
+
+export const downloadItemSagaFactory = (actions) => {
+    function* downloadItemSaga(jwt, {payload: {url}}) {
+        let status;
+        let filename;
+
+        yield fetch(url, {
+            headers: {
+                Accept: 'application/json;version=0.0',
+                ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
+            },
+            credentials: 'include',
+            mode: 'cors',
+        }).then((response) => {
+            status = response.status;
+            if (!response.ok) {
+                return response.text().then((result) => Promise.reject(new Error(result)));
+            }
+
+            filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
+
+            return response.blob();
+        }).then((res) => {
+            saveAs(res, filename);
+        }, (error) => ({error, status}));
+    }
+    return withJWT(downloadItemSaga, actions.failure);
+};
+
+export const fetchListSagaFactory = (actions, fetchListApi) => {
+    function* fetchListSaga(jwt) {
+        const state = yield select();
+        const {error, status, list} = yield call(fetchListApi, state.location.query, jwt);
+
+        if (error) {
+            console.error(error, status);
+            yield put(actions.failure(error));
+            if (status === 401) {
+                yield put(signOut.success());
+            }
+        }
+        else {
+            yield put(actions.success(list));
+        }
+    }
+
+    return withJWT(fetchListSaga, actions.failure);
 };
