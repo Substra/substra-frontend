@@ -11,7 +11,7 @@
         "url": "https://github.com/SubstraFoundation/substra-frontend"
     },
     "engines": {
-        "node": ">=8.4.0",
+        "node": "~12.16.1",
         "npm": ">=5.3.0"
     },
     "workspaces": [
