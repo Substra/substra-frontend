@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import config from 'config';
 
-const IS_ELECTRON = JSON.stringify(process.env.IS_ELECTRON || 'false');
+const IS_ELECTRON = JSON.stringify(process.env.IS_ELECTRON || false);
 
 export default () => new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
