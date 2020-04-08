@@ -2,7 +2,9 @@
 
 ## Installation
 
-This project use yarn and the experimental yarn workspaces for package.json splitting and convenience.
+This project is guaranteed to work with Node.JS version `12.16.1 LTS` but should also work with newer versions.
+
+It uses yarn and the experimental yarn workspaces for package.json splitting and convenience.
 
 Please install the last version of yarn and run:<br/>
 `yarn config set workspaces-experimental true`

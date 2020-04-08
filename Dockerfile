@@ -1,4 +1,4 @@
-FROM node:alpine AS build
+FROM node:12.16.1-alpine AS build
 
 RUN apk add python2 make g++
 
@@ -9,6 +9,7 @@ COPY packages/ssr /workspace/packages/ssr
 COPY packages/base /workspace/packages/base
 COPY packages/plugins  /workspace/packages/plugins
 COPY .yarnrc /workspace
+COPY yarn.lock  /workspace
 
 RUN yarn config list
 RUN yarn install
@@ -20,7 +21,7 @@ ENV NODE_ENV=production
 
 RUN yarn build:main
 
-FROM node:alpine
+FROM node:12.16.1-alpine
 
 WORKDIR /workspace
 
