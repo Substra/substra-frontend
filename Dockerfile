@@ -27,6 +27,8 @@ WORKDIR /workspace
 
 COPY --from=build /workspace/package.json /workspace/package.json
 COPY --from=build /workspace/packages/ssr /workspace/packages/ssr
+COPY --from=build /workspace/.yarnrc /workspace/.yarnrc
+COPY --from=build /workspace/yarn.lock /workspace/yarn.lock
 
 RUN yarn install
 
