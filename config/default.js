@@ -5,8 +5,6 @@ const apiUrl = 'http://substra-backend.owkin.xyz:8000';
 const ravenUrl = process.env.FRONT_RAVEN_URL || '';
 const encryption_privkey = './encryption/ca.key';
 const encryption_fullchain = './encryption/ca.crt';
-const redis_host = process.env.REDIS_HOST || 'localhost';
-const redis_port = process.env.REDIS_PORT || 6379;
 
 module.exports = {
     appName: 'Substra',
@@ -29,9 +27,5 @@ module.exports = {
     encryption: {
         privkey: encryption_privkey,
         fullchain: encryption_fullchain,
-    },
-    redis: {
-        host: redis_host,
-        redis: redis_port,
     },
 };

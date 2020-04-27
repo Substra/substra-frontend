@@ -52,15 +52,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-redis:
-  port: 6379
-  host: redis-master
-  enabled: true
-  usePassword: false
-  cluster:
-    enabled: false
-  master:
-    disableCommands: []
-    persistence:
-      enabled: false

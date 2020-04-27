@@ -3,8 +3,7 @@
 import React from 'react';
 import config from 'config';
 import {parse} from 'url';
-import {Transform, PassThrough} from 'stream';
-import redis from 'redis';
+import {PassThrough} from 'stream';
 import {Provider} from 'react-redux';
 import {renderToNodeStream} from 'react-dom/server';
 import {renderStylesToNodeStream} from 'emotion-server';
@@ -14,8 +13,6 @@ import flushChunks from 'webpack-flush-chunks';
 
 import {GlobalStyles} from '@substrafoundation/substra-ui';
 
-import {promisify} from 'util';
-
 import routesMap from '../app/routesMap';
 import vendors from '../../webpack/ssr/vendors';
 
@@ -24,49 +21,11 @@ import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
 
 
-const cache = redis.createClient({
-    host: config.redis.host,
-    port: config.redis.port,
-});
-
 // override variables between same built app, but not remote API
 // There are not present in the webpack definePlugin
 const API_URL = config.apps.frontend.apiUrl;
 
-const exists = promisify(cache.exists).bind(cache);
-const get = promisify(cache.get).bind(cache);
-
-cache.on('connect', () => {
-    console.log('CACHE CONNECTED');
-});
-
 const paths = Object.keys(routesMap).map((o) => routesMap[o].path);
-
-const createCacheStream = (key) => {
-    const bufferedChunks = [];
-    return new Transform({
-        // transform() is called with each chunk of data
-        transform(data, enc, cb) {
-            // We store the chunk of data (which is a Buffer) in memory
-            bufferedChunks.push(data);
-            // Then pass the data unchanged onwards to the next stream
-            cb(null, data);
-        },
-
-        // flush() is called when everything is done
-        flush(cb) {
-            // We concatenate all the buffered chunks of HTML to get the full HTML
-            // then cache it at "key"
-
-            // only cache paths
-            if (paths.includes(key) && !(key.endsWith('.js.map') || key.endsWith('.ico')) || key === 'service-worker.js') {
-                console.log('CACHING: ', key);
-                cache.set(key, Buffer.concat(bufferedChunks));
-            }
-            cb();
-        },
-    });
-};
 
 const createApp = (App, store, chunkNames) => (
     <ReportChunks report={(chunkName) => chunkNames.push(chunkName)}>
@@ -136,15 +95,7 @@ const renderStreamed = async (ctx, path, clientStats, outputPath) => {
     const early = earlyChunk(css, stateJson);
 
 
-    // DO not use redis cache on dev
-    let mainStream;
-    if (process.env.NODE_ENV === 'development') {
-        mainStream = ctx.body;
-    }
-    else {
-        mainStream = createCacheStream(path);
-        mainStream.pipe(ctx.body);
-    }
+    const mainStream = ctx.body;
 
     mainStream.write(early);
 
@@ -192,35 +143,5 @@ export default ({clientStats, outputPath}) => async (ctx) => {
 
     console.log('REQUESTED PARSED PATH:', path);
 
-    // DO not use redis cache on dev
-    if (process.env.NODE_ENV === 'development') {
-        renderStreamed(ctx, path, clientStats, outputPath);
-    }
-    else {
-        if (paths.filter((o) => !['/404'].includes(o)).includes(path)) {
-            console.log('UNCACHABLE ROUTE', path);
-            await renderStreamed(ctx, path, clientStats, outputPath);
-        }
-        // only cache 404 route
-        else {
-            const reply = await exists(path);
-
-            if (reply === 1) {
-                const reply = await get(path);
-
-                if (reply) {
-                    console.log('CACHE KEY EXISTS: ', path);
-                    // handle status 404
-                    if (path === '/404') {
-                        ctx.status = 404;
-                    }
-                    ctx.body.end(reply);
-                }
-            }
-            else {
-                console.log('CACHE KEY DOES NOT EXIST: ', path);
-                await renderStreamed(ctx, path, clientStats, outputPath);
-            }
-        }
-    }
+    renderStreamed(ctx, path, clientStats, outputPath);
 };

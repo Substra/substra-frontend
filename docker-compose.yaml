@@ -11,19 +11,10 @@ services:
       context: ./
     container_name: substra-frontend
     hostname: substra-frontend
-    depends_on:
-      - redis
     ports:
       - "3000:8000"
     restart: unless-stopped
     environment:
       - API_URL=$API_URL
-      - REDIS_HOST=$REDIS_HOST
-      - REDIS_PORT=$REDIS_PORT
       - NODE_PORT=$NODE_PORT
       - SECURE_NODE_PORT=$SECURE_NODE_PORT
-  redis:
-    container_name: redis
-    hostname: redis
-    image: redis:4.0.11-alpine
-    restart: unless-stopped

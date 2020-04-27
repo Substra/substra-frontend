@@ -12,14 +12,6 @@ Please install the last version of yarn and run:<br/>
 Then run:<br/>
 `yarn install`
 
-You also need a redis server on your machine.<br/>
-On linux, simple run:<br/>
-`sudo apt install redis`
-
-And make sure the redis server is running by executing:<br/>
-`redis-cli`
-
-
 For testing and developing on the project with true hot module replacement, run
 `yarn start`
 Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
@@ -46,16 +38,10 @@ yarn deploy
 
 You can now stop the task on aws ECS, it will restart automatically, if you did not define an autoscaling policy.
 
-Do no forget to invalidate the cache on your aws redis instance.
-Connect with ssh to your ec2 instance, then connect to your redis instance as explain in elasticache documentation.
-https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.ConnectToCacheNode.html#GettingStarted.ConnectToCacheNode.Redis.NoEncrypt
-Then run `flushall`. You should automatize this part.
-More information in the cache part below.
-
 ## Docker launch
 
-The `docker-compose.yaml` file will launch substra-frontend and redis docker instances.
-substra-frontend will be launch with prod settings, which is a bit different from the settings.
+The `docker-compose.yaml` file will launch a substra-frontend docker instance.
+It will be launch with prod settings, which is a bit different from the settings.
 Launch it with:
 ```bash
 $> docker-compose up -d --force-recreate
@@ -65,9 +51,6 @@ If you want to update the docker images, execute:
 ```bash
 $> docker-compose up -d --force-recreate --build
 ```
-
-If your substra-backend instance use basicauth settings, you need to pass the `BACK_AUTH_USER` and `BACK_AUTH_PASSWORD` variables to your current environment for not triggering 403 responses.
-
 
 ## Substra-UI
 
@@ -118,28 +101,6 @@ If you are using Webstorm, you can use the jest configuration for easily debuggi
 
 For displaying lint errors:
 `yarn eslint`
-
-## Cache
-
-This project use a redis cache manager for the server routes. Allowing us not to rerender the same html production by route.
-For deploying with amazon, please create a redis cluster by following this documentation:
-https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.CreateCluster.html
-Don't forget to create a isolated security group for opening port 6379 as described in the documentation.
-
-### test
-For testing your generated docker with your localhosted redis, update your `deploy.js` file and do not forget to comment the part that push to your registry, then:
-```shell
-$> redis-cli flushall && docker run -it -v /etc/letsencrypt/:/etc/letsencrypt/ --net="host" -p 8000:3000 docker_image_name:latest
-```
-
-You'll notice I also bind the let's encrypt folder, more information in the next part.
-
-Then head to `https://substra-backend.owkin.xyz:3000/`
-:warning: Be sure to use `substra-backend.owkin.xyz` and not `localhost` or `127.0.0.1` for being able to work with cookies.
-
-Do not forget to `redis-cli flushall` when testing multiple times.
-
-Disable redis for testing this project in ssl with `-p 8001:8443`.
 
 ## Encryption files creation
 
