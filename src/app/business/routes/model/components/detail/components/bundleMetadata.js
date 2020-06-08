@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {capitalize} from 'lodash';
 
 import BaseMetadata, {
     SingleMetadata,
@@ -8,9 +7,9 @@ import BaseMetadata, {
     keyValueClassName, BrowseRelatedMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
-import InlinePulseLoader from '../../inlinePulseLoader';
 import ScoreMetadata from './scoreMetadata';
 import BrowseRelatedLinks from './browseRelatedLinks';
+import StatusMetadata from './statusMetadata';
 
 
 class Metadata extends Component {
@@ -33,10 +32,7 @@ class Metadata extends Component {
                         addNotification={this.copy}
                     />
                 </SingleMetadata>
-                <SingleMetadata label="Status">
-                    {capitalize(item.traintuple.status)}
-                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.traintuple.status)} />
-                </SingleMetadata>
+                <StatusMetadata status={item.traintuple.status} />
                 <ScoreMetadata
                     label="Validation Score"
                     tupleName="nonCertifiedTesttuple"

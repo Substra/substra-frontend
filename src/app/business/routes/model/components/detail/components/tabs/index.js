@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {noop} from 'lodash';
 import {
-    AlertActions,
     CodeSample,
     Tabs,
     TabPanel,
@@ -11,10 +10,7 @@ import {
 
 import Tab from '../../../../../../common/components/detail/components/tabs';
 
-import CopyInput from '../../../../../../common/components/detail/components/copyInput';
-import {
-    AlertWrapper, AlertTitle, AlertInlineButton,
-} from '../../../../../../common/components/alert';
+import TesttupleSummary from '../testtupleSummary';
 
 const tupleFilename = {
     standard: 'traintuple.json',
@@ -37,39 +33,33 @@ class ModelTabs extends Component {
         this.setState({tabIndex});
     };
 
-    gotoTesttuple = () => {
-        this.setTabIndex(1);
-    };
-
     render() {
         const {item, addNotification} = this.props;
         const {tabIndex} = this.state;
 
-        // do not display the "type" key in the traintuple that's been inserted for the fronten's internal use
+        // do not display the "type" key in the traintuple that's been inserted for the frontend's internal use
         const cleanTraintuple = item && item.traintuple && {...item.traintuple};
         if (cleanTraintuple) {
             delete cleanTraintuple.type;
         }
 
         const tupleType = item && item.traintuple && item.traintuple.type;
+        const testtuples = [
+            // The API returns an empty testtuple if there is no "certified" testtuple.
+            // We therefore have to check for a key to know if there is an actual testtuple.
+            ...(item.testtuple && item.testtuple.key ? [item.testtuple] : []),
+            ...(item.nonCertifiedTesttuples ? item.nonCertifiedTesttuples : []),
+        ];
 
         return (
             <>
-                {item && item.traintuple && item.traintuple.status === 'done' && !item.testtuple && (
-                <AlertWrapper>
-                    <AlertTitle>This model has not been tested yet</AlertTitle>
-                    <AlertActions>
-                        <AlertInlineButton onClick={this.gotoTesttuple}>learn more</AlertInlineButton>
-                    </AlertActions>
-                </AlertWrapper>
-            )}
                 <Tabs
                     selectedIndex={tabIndex}
                     onSelect={this.setTabIndex}
                 >
                     <TabList>
                         <Tab>{tupleTabTitle[tupleType]}</Tab>
-                        <Tab>Testtuple</Tab>
+                        <Tab>Testtuple(s)</Tab>
                     </TabList>
                     <TabPanel>
                         {['standard', 'composite'].includes(tupleType) && item && item.traintuple && item.traintuple.status === 'done' && (
@@ -84,48 +74,18 @@ class ModelTabs extends Component {
                         />
                     </TabPanel>
                     <TabPanel>
-                        {item.testtuple && (
-                        <CodeSample
-                            filename="testtuple.json"
-                            language="json"
-                            codeString={JSON.stringify(item.testtuple, null, 2)}
-                        />
-                    )}
-                        {item.traintuple && !item.testtuple && (
-                        (item.traintuple.status === 'done' && (
-                            <>
-                                <p>
-                                    In order to test this model, execute the following command:
-                                </p>
-                                <CopyInput
-                                    value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
-                                    addNotification={addNotification}
-                                    addNotificationMessage="Command copied to clipboard!"
-                                    isPrompt
-                                />
-                            </>
-
-                        ))
-                        || (item.traintuple.status === 'failed' && (
-                            <p>This model could not complete its training (no testing possible).</p>
-                        ))
-                        || (item.traintuple.status === 'canceled' && (
-                            <p>This model got canceled (no testing possible).</p>
-                        ))
-                        || (['waiting', 'todo', 'doing'].includes(item.traintuple.status) && (
-                            <>
-                                <p>
-                                    You can execute the code below to launch a testing task as soon as the training is over.
-                                </p>
-                                <CopyInput
-                                    value={`substra add testtuple '{"traintuple_key": "${item.traintuple.key}"}'`}
-                                    addNotification={addNotification}
-                                    addNotificationMessage="Command copied to clipboard!"
-                                    isPrompt
-                                />
-                            </>
-                        ))
-                    )}
+                        {!testtuples.length && (
+                            <p>
+                                This model has not been tested.
+                            </p>
+                        )}
+                        {testtuples.map((testtuple) => (
+                            <TesttupleSummary
+                                key={testtuple.key}
+                                testtuple={testtuple}
+                                addNotification={addNotification}
+                            />
+                        ))}
                     </TabPanel>
                 </Tabs>
             </>

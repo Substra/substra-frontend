@@ -8,6 +8,7 @@ import {metadata, SingleMetadata, MetadataTag} from '../../../../../common/compo
 import {iceBlue} from '../../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../../assets/css/variables/spacing';
 import InlinePulseLoader from '../../inlinePulseLoader';
+import StatusMetadata from '../../detail/components/statusMetadata';
 
 const ScoreWrapper = styled('div')`
     background-color: ${iceBlue};
@@ -55,10 +56,7 @@ const Metadata = ({o}) => {
                 </div>
             )}
             <div className={metadata}>
-                <SingleMetadata label="Status">
-                    {capitalize(o.traintuple.status)}
-                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(o.traintuple.status)} />
-                </SingleMetadata>
+                <StatusMetadata status={o.traintuple.status} />
                 {o && o.tag && o.nonCertifiedTesttuple && (
                     <ScoreMetadata
                         label="Validation score"

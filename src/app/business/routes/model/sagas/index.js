@@ -17,7 +17,7 @@ function* fetchDetailSaga({payload}) {
     const item = modelDetailList.find((o) => o.traintuple.key === payload.traintuple.key);
 
     if (!item) {
-        yield put(actions.item.success(payload));
+        yield put(actions.item.request({key: payload.traintuple.key}));
     }
 }
 
