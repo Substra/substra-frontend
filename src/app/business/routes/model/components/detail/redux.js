@@ -8,12 +8,11 @@ const mapStateToProps = (state, {
     model, filterUp, addNotification,
 }) => ({
     item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
     filterUp,
     addNotification,
 });
 
 
-export const withDetailRedux = (Component) => connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(Component));
+export const withDetailRedux = (Component) => connect(mapStateToProps)(onlyUpdateForKeys(['item'])(Component));
 
 export default withDetailRedux(Detail);

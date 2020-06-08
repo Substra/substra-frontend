@@ -6,8 +6,8 @@ import Tabs from './index';
 
 const mapStateToProps = (state, {model}) => ({
     item: getItem(state, model),
-    descLoading: state[model].item.descLoading,
+    loading: state[model].item.loading,
 });
 
 
-export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'descLoading'])(Tabs));
+export default connect(mapStateToProps)(onlyUpdateForKeys(['item', 'loading'])(Tabs));

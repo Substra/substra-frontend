@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {noop} from 'lodash';
+import {PulseLoader} from 'react-spinners';
 import {
     CodeSample,
     Tabs,
@@ -34,7 +35,7 @@ class ModelTabs extends Component {
     };
 
     render() {
-        const {item, addNotification} = this.props;
+        const {item, addNotification, loading} = this.props;
         const {tabIndex} = this.state;
 
         // do not display the "type" key in the traintuple that's been inserted for the frontend's internal use
@@ -68,12 +69,13 @@ class ModelTabs extends Component {
                         />
                     </TabPanel>
                     <TabPanel>
-                        {!item.testtuples.length && (
+                        {loading && <PulseLoader size={6} />}
+                        {!loading && !item.testtuples.length && (
                             <p>
                                 This model has not been tested.
                             </p>
                         )}
-                        {item.testtuples.map((testtuple) => (
+                        {!loading && item.testtuples.map((testtuple) => (
                             <TesttupleSummary
                                 key={testtuple.key}
                                 testtuple={testtuple}
@@ -90,11 +92,13 @@ class ModelTabs extends Component {
 ModelTabs.propTypes = {
     item: PropTypes.shape(),
     addNotification: PropTypes.func,
+    loading: PropTypes.bool,
 };
 
 ModelTabs.defaultProps = {
     item: null,
     addNotification: noop,
+    loading: PropTypes.true,
 };
 
 export default ModelTabs;
