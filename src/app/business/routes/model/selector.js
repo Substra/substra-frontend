@@ -2,7 +2,6 @@ import {
     orderBy, isArray, flatten, uniqBy, isEmpty,
 } from 'lodash';
 
-import bundleByTag from './bundleByTag';
 import {createDeepEqualSelector, deepOrder} from '../../../utils/selector';
 
 const addAll = (set, xs) => xs.reduce((s, x) => s.add(x), set);
@@ -67,22 +66,11 @@ export const itemResults = createDeepEqualSelector([rawItemResults],
     (models) => models.map(buildTypedTraintuple).map(buildTesttuples),
 );
 
-const itemResultsByKey = createDeepEqualSelector([itemResults],
-    (results) => results.reduce((resultsByKey, result) => ({
-            ...resultsByKey,
-            [result.traintuple.key]: result,
-        }), {}),
-);
-
-const results = createDeepEqualSelector([listResults, itemResultsByKey],
-    (listResults, itemResultsByKey) => bundleByTag(listResults, itemResultsByKey),
-);
-
-const enhancedResults = createDeepEqualSelector([results],
+const results = createDeepEqualSelector([listResults],
     (results) => results.map((o) => o.map((o) => ({...o, key: o.traintuple.key}))),
 );
 
-export const getSelectedResult = createDeepEqualSelector([enhancedResults, selected],
+export const getSelectedResult = createDeepEqualSelector([results, selected],
     (results, selected) => uniqBy(flatten(results), (o) => o.traintuple.key).find((o) => o.traintuple.key === selected),
 );
 
@@ -135,7 +123,7 @@ const modelOrder = (order) => (o) => {
     return score;
 };
 
-export const getOrderedResults = createDeepEqualSelector([enhancedResults, order, isComplex],
+export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
     (results, order, isComplex) => {
         const res = results && results.length ? results.map((o) => !isEmpty(o) ? orderBy(o, [modelOrder(order)], [order.direction]) : o) : [];
 
@@ -146,7 +134,7 @@ export const getOrderedResults = createDeepEqualSelector([enhancedResults, order
 export const getItem = createDeepEqualSelector([itemResults, getSelectedResult, selected],
     (itemResults, selectedResult, selected) => ({
         ...selectedResult,
-        ...(selected && selectedResult && selectedResult.tag ? {} : itemResults.find((o) => o.traintuple.key === selected)),
+        ...itemResults.find((o) => o.traintuple.key === selected),
     }),
 );
 

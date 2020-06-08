@@ -65,6 +65,7 @@ class Metadata extends Component {
                     </>
                 )}
                 <StatusMetadata status={item.traintuple.status} />
+                {item.traintuple.tag && <SingleMetadata label="Tag" value={item.traintuple.tag} />}
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
                 <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
