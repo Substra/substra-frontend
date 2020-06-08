@@ -1,17 +1,13 @@
-/* globals fetch */
-
 import {
     takeLatest, takeEvery, all, select, call, put,
 } from 'redux-saga/effects';
-
-import {saveAs} from 'file-saver';
 
 import actions, {actionTypes} from '../actions';
 import {
     fetchListApi, fetchStandardAlgoApi, fetchCompositeAlgoApi, fetchAggregateAlgoApi,
 } from '../api';
 import {
-    fetchItemSaga, setOrderSaga, tryRefreshToken, getJWTFromCookie, fetchItemDescriptionSaga,
+    setOrderSaga, fetchItemDescriptionSagaFactory, downloadItemSagaFactory, withJWT,
 } from '../../../common/sagas';
 import {getItem} from '../../../common/selector';
 
@@ -25,99 +21,73 @@ const fetchItemApiByType = {
 
 const withAlgoType = (list, type) => list.map((group) => group.map((algo) => ({...algo, type})));
 
-const fetchListSaga = (actions, fetchListApi) => function* fetchList({payload}) {
-    const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
-    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
-    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
-    const {error: errorAggregateAlgos, status: statusAggregateAlgos, list: listAggregateAlgos} = resAggregateAlgos;
+function* innerFetchItemSaga(jwt, {payload: {key, type}}) {
+    const {error, status, item} = yield call(fetchItemApiByType[type], {}, key, jwt);
 
-    let list;
-
-    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
-        if (errorStandardAlgos) {
-            console.error(errorStandardAlgos, statusStandardAlgos);
-            yield put(actions.list.failure(errorStandardAlgos));
-            if (statusStandardAlgos === 401) {
-                yield put(signOut.success());
-            }
-        }
-        if (errorCompositeAlgos) {
-            console.error(errorCompositeAlgos, statusCompositeAlgos);
-            yield put(actions.list.failure(errorCompositeAlgos));
-            if (statusCompositeAlgos === 401) {
-                yield put(signOut.success());
-            }
-        }
-        if (errorAggregateAlgos) {
-            console.error(errorAggregateAlgos, statusAggregateAlgos);
-            yield put(actions.list.failure(errorAggregateAlgos));
-            if (statusAggregateAlgos === 401) {
-                yield put(signOut.success());
-            }
+    if (error) {
+        console.error(error, status);
+        yield put(actions.item.failure(error));
+        if (status === 401) {
+            yield put(signOut.success());
         }
     }
     else {
-        list = [].concat(
-            withAlgoType(listStandardAlgos, 'standard'),
-            withAlgoType(listCompositeAlgos, 'composite'),
-            withAlgoType(listAggregateAlgos, 'aggregate'),
-        );
-        yield put(actions.list.success(list));
+        yield put(actions.item.success(item));
     }
 
-    return list;
-};
-
-const fetchPersistentSaga = (actions, fetchListApi) => function* fetchList({payload}) {
-    const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, payload);
-    const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
-    const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
-    const {error: errorAggregateAlgos, status: statusAggregateAlgos, list: listAggregateAlgos} = resAggregateAlgos;
-
-    let list;
-
-    if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
-        if (errorStandardAlgos) {
-            console.error(errorStandardAlgos, statusStandardAlgos);
-            yield put(actions.persistent.failure(errorStandardAlgos));
-        }
-        if (errorCompositeAlgos) {
-            console.error(errorCompositeAlgos, statusCompositeAlgos);
-            yield put(actions.persistent.failure(errorCompositeAlgos));
-        }
-        if (errorAggregateAlgos) {
-            console.error(errorAggregateAlgos, statusAggregateAlgos);
-            yield put(actions.persistent.failure(errorAggregateAlgos));
-        }
-    }
-    else {
-        list = [].concat(
-            withAlgoType(listStandardAlgos, 'standard'),
-            withAlgoType(listCompositeAlgos, 'composite'),
-            withAlgoType(listAggregateAlgos, 'aggregate'),
-        );
-        yield put(actions.persistent.success(list));
-    }
-
-    return list;
-};
-
-
-function* fetchList(request) {
-    const state = yield select();
-
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.list.failure);
-    }
-
-    if (jwt) {
-        const f = () => fetchListApi(state.location.query, jwt);
-        yield call(fetchListSaga(actions, f), request);
-    }
+    return item;
 }
 
-function* manageTabs(tabIndex) {
+const fetchItemSaga = withJWT(innerFetchItemSaga, actions.item.failure);
+
+const fetchListSagaFactory = (actions) => {
+    function* innerFetchListSaga(jwt) {
+        const state = yield select();
+        const [resStandardAlgos, resCompositeAlgos, resAggregateAlgos] = yield call(fetchListApi, state.location.query, jwt);
+        const {error: errorStandardAlgos, status: statusStandardAlgos, list: listStandardAlgos} = resStandardAlgos;
+        const {error: errorCompositeAlgos, status: statusCompositeAlgos, list: listCompositeAlgos} = resCompositeAlgos;
+        const {error: errorAggregateAlgos, status: statusAggregateAlgos, list: listAggregateAlgos} = resAggregateAlgos;
+
+        let list;
+
+        if (errorStandardAlgos || errorCompositeAlgos || errorAggregateAlgos) {
+            if (errorStandardAlgos) {
+                console.error(errorStandardAlgos, statusStandardAlgos);
+                yield put(actions.failure(errorStandardAlgos));
+                if (statusStandardAlgos === 401) {
+                    yield put(signOut.success());
+                }
+            }
+            if (errorCompositeAlgos) {
+                console.error(errorCompositeAlgos, statusCompositeAlgos);
+                yield put(actions.failure(errorCompositeAlgos));
+                if (statusCompositeAlgos === 401) {
+                    yield put(signOut.success());
+                }
+            }
+            if (errorAggregateAlgos) {
+                console.error(errorAggregateAlgos, statusAggregateAlgos);
+                yield put(actions.failure(errorAggregateAlgos));
+                if (statusAggregateAlgos === 401) {
+                    yield put(signOut.success());
+                }
+            }
+        }
+        else {
+            list = [].concat(
+                withAlgoType(listStandardAlgos, 'standard'),
+                withAlgoType(listCompositeAlgos, 'composite'),
+                withAlgoType(listAggregateAlgos, 'aggregate'),
+            );
+            yield put(actions.success(list));
+        }
+
+        return list;
+    }
+    return withJWT(innerFetchListSaga, actions.failure);
+};
+
+function* fetchTabContentSaga({payload: tabIndex}) {
     const state = yield select();
     const item = getItem(state, 'algo');
 
@@ -128,100 +98,33 @@ function* manageTabs(tabIndex) {
     }
 }
 
-function* fetchItem({payload}) {
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.item.failure);
-    }
-
-    if (jwt) {
-        const fetchItemApi = fetchItemApiByType[payload.type];
-        yield call(fetchItemSaga(actions, fetchItemApi), {
-            payload: {
-                id: payload.key,
-                get_parameters: {},
-                jwt,
-            },
-        });
-    }
-}
-
-function* fetchPersistent(request) {
-    const state = yield select();
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.persistent.failure);
-    }
-
-    if (jwt) {
-        const f = () => fetchListApi(state.location.query, jwt);
-        yield call(fetchPersistentSaga(actions, f), request);
-    }
-}
-
-function* fetchDetail(request) {
+function* fetchDetailSaga({payload}) {
     const state = yield select();
 
     // fetch current tab content if needed
-    yield manageTabs(state.algo.item.tabIndex);
+    yield put(actions.item.tabIndex.set(state.algo.item.tabIndex));
 
-    const exists = state.algo.item.results.find((o) => o.pkhash === request.payload.key);
+    const exists = state.algo.item.results.find((o) => o.pkhash === payload.key);
     if (!exists) {
-        yield put(actions.item.request(request.payload));
-    }
-}
-
-function* setTabIndexSaga({payload}) {
-    yield manageTabs(payload);
-}
-
-function* downloadItemSaga({payload: {url}}) {
-    let status;
-    let filename;
-
-    let jwt = getJWTFromCookie();
-    if (!jwt) {
-        jwt = yield tryRefreshToken(actions.download.failure);
-    }
-
-    if (jwt) {
-        yield fetch(url, {
-            headers: {
-                Accept: 'application/json;version=0.0',
-                ...(jwt ? {Authorization: `JWT ${jwt}`} : {}),
-            },
-            credentials: 'include',
-            mode: 'cors',
-        }).then((response) => {
-            status = response.status;
-            if (!response.ok) {
-                return response.text().then((result) => Promise.reject(new Error(result)));
-            }
-
-            filename = response.headers.get('Content-Disposition').split('filename=')[1].replace(/"/g, '');
-
-            return response.blob();
-        }).then((res) => {
-            saveAs(res, filename);
-        }, (error) => ({error, status}));
+        yield put(actions.item.request(payload));
     }
 }
 
 /* istanbul ignore next */
 const sagas = function* sagas() {
     yield all([
-        takeLatest(actionTypes.list.REQUEST, fetchList),
-        takeLatest(actionTypes.list.SELECTED, fetchDetail),
-        takeLatest(actionTypes.persistent.REQUEST, fetchPersistent),
+        takeLatest(actionTypes.list.REQUEST, fetchListSagaFactory(actions.list)),
+        takeLatest(actionTypes.list.SELECTED, fetchDetailSaga),
+        takeLatest(actionTypes.persistent.REQUEST, fetchListSagaFactory(actions.persistent)),
 
-        takeEvery(actionTypes.item.REQUEST, fetchItem),
+        takeEvery(actionTypes.item.REQUEST, fetchItemSaga),
 
-        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSaga(actions)),
+        takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSagaFactory(actions.item.description)),
 
-        takeEvery(actionTypes.item.download.REQUEST, downloadItemSaga),
+        takeEvery(actionTypes.item.download.REQUEST, downloadItemSagaFactory(actions.item.download)),
 
         takeLatest(actionTypes.order.SET, setOrderSaga),
-        takeLatest(actionTypes.item.tabIndex.SET, setTabIndexSaga),
+        takeLatest(actionTypes.item.tabIndex.SET, fetchTabContentSaga),
     ]);
 };
 
