@@ -18,11 +18,9 @@ import ScoreMetadata from './scoreMetadata';
 import StatusMetadata from './statusMetadata';
 
 const PseudoSection = styled('div')`
-    &:not(:first-child) {
-        padding-top: ${spacingNormal};
-        border-top: 1px solid ${ice};
-        margin-top: ${spacingNormal};
-    }
+    padding-bottom: ${spacingNormal};
+    border-bottom: 1px solid ${ice};
+    margin-bottom: ${spacingNormal};
 `;
 
 const margins = css`

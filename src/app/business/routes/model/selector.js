@@ -87,7 +87,7 @@ const scoreByStatus = {
 };
 
 const modelOrder = (order) => (o) => {
-    if (order.by ===  'traintuple.status') {
+    if (order.by === 'traintuple.status') {
         const score = scoreByStatus[o.traintuple.status];
         if (typeof score === 'function') {
             return score(o);
