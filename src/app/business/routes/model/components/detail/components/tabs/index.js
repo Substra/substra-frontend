@@ -44,12 +44,6 @@ class ModelTabs extends Component {
         }
 
         const tupleType = item && item.traintuple && item.traintuple.type;
-        const testtuples = [
-            // The API returns an empty testtuple if there is no "certified" testtuple.
-            // We therefore have to check for a key to know if there is an actual testtuple.
-            ...(item.testtuple && item.testtuple.key ? [item.testtuple] : []),
-            ...(item.nonCertifiedTesttuples ? item.nonCertifiedTesttuples : []),
-        ];
 
         return (
             <>
@@ -74,12 +68,12 @@ class ModelTabs extends Component {
                         />
                     </TabPanel>
                     <TabPanel>
-                        {!testtuples.length && (
+                        {!item.testtuples.length && (
                             <p>
                                 This model has not been tested.
                             </p>
                         )}
-                        {testtuples.map((testtuple) => (
+                        {item.testtuples.map((testtuple) => (
                             <TesttupleSummary
                                 key={testtuple.key}
                                 testtuple={testtuple}

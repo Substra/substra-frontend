@@ -39,6 +39,19 @@ const buildTypedTraintuple = (model) => {
     };
 };
 
+const buildTesttuples = (model) => {
+    const testtuples = [
+        // The API returns an empty testtuple if there is no "certified" testtuple.
+        // We therefore have to check for a key to know if there is an actual testtuple.
+        ...(model.testtuple && model.testtuple.key ? [model.testtuple] : []),
+        ...(model.nonCertifiedTesttuples ? model.nonCertifiedTesttuples : []),
+    ];
+    return {
+        ...model,
+        testtuples,
+    };
+};
+
 
 const rawListResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
@@ -47,11 +60,11 @@ const order = (state, model) => state[model].order;
 const isComplex = (state) => state.search.isComplex;
 
 export const listResults = createDeepEqualSelector([rawListResults],
-    (results) => results.map((models) => models.map(buildTypedTraintuple)),
+    (results) => results.map((models) => models.map(buildTypedTraintuple).map(buildTesttuples)),
 );
 
 export const itemResults = createDeepEqualSelector([rawItemResults],
-    (models) => models.map(buildTypedTraintuple),
+    (models) => models.map(buildTypedTraintuple).map(buildTesttuples),
 );
 
 const itemResultsByKey = createDeepEqualSelector([itemResults],

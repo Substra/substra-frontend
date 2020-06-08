@@ -12,7 +12,6 @@ import BaseMetadata, {
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
-import InlinePulseLoader from '../../inlinePulseLoader';
 import StatusMetadata from './statusMetadata';
 
 
@@ -66,16 +65,6 @@ class Metadata extends Component {
                     </>
                 )}
                 <StatusMetadata status={item.traintuple.status} />
-                <SingleMetadata label="Score">
-                    {!item.testtuple && 'N/A'}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
-                        <>
-                            {capitalize(item.testtuple.status)}
-                            <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.testtuple.status)} />
-                        </>
-                    )}
-                </SingleMetadata>
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
                 <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
