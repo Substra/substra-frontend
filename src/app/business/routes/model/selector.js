@@ -77,50 +77,24 @@ export const getSelectedResult = createDeepEqualSelector([results, selected],
 // if the result referenced by the "selected" selector is not in results anymore, return undefined
 export const getSelected = createDeepEqualSelector([getSelectedResult], (result) => result && result.traintuple.key);
 
+const scoreByStatus = {
+    failed: -5,
+    canceled: -4,
+    waiting: -3,
+    todo: -2,
+    doing: -1,
+    done: deepOrder('traintuple.algo.name'),
+};
+
 const modelOrder = (order) => (o) => {
-    /*
-        We want to order by highest/lowest score on the testtuple score if available.
-        For getting a testtuple score, we need a traintuple with done status.
-
-        Rules can be divided in two groupe:
-        - If traintuple status is set to done:
-            - we have a testtutple, order by its status:
-                1. done
-                2. doing
-                3. todo
-                4. canceled
-                5. failed
-            - we do not have a testtutple:
-                6. null
-         - else traintuple status:
-                7. doing
-                8. todo
-                9. waiting
-                10. canceled
-                11. failed
-    */
-
-    const scoreByStatus = {
-        failed: {null: -10},
-        canceled: {null: -9},
-        waiting: {null: -8},
-        todo: {null: -7},
-        doing: {null: -6},
-        done: {
-            null: -5,
-            failed: -4,
-            canceled: -3,
-            todo: -2,
-            doing: -1,
-            done: deepOrder(order),
-        },
-    };
-    const score = scoreByStatus[o.traintuple.status][o.traintuple.status === 'done' && o.testtuple ? o.testtuple.status : 'null'];
-
-    if (typeof score === 'function') {
-        return score(o);
+    if (order.by ===  'traintuple.status') {
+        const score = scoreByStatus[o.traintuple.status];
+        if (typeof score === 'function') {
+            return score(o);
+        }
+        return score;
     }
-    return score;
+    return deepOrder(order)(o);
 };
 
 export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
