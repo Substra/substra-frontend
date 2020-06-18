@@ -26,7 +26,7 @@ class SingleModelActions extends BaseActions {
     };
 }
 
-const Actions = ({item, ...props}) => (!item.tag && (
+const Actions = ({item, ...props}) => (!item.traintuple.tag && (
     <SingleModelActions
         item={item}
         PopoverItems={PopoverItems}

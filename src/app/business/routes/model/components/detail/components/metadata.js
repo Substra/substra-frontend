@@ -12,7 +12,7 @@ import BaseMetadata, {
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
-import InlinePulseLoader from '../../inlinePulseLoader';
+import StatusMetadata from './statusMetadata';
 
 
 const KeyMetadata = ({addNotification, assetName, assetKey}) => (
@@ -64,20 +64,8 @@ class Metadata extends Component {
                         <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.outModel ? item.traintuple.outModel.hash : 'N/A'} />
                     </>
                 )}
-                <SingleMetadata label="Status">
-                    {capitalize(item.traintuple.status)}
-                    <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.traintuple.status)} />
-                </SingleMetadata>
-                <SingleMetadata label="Score">
-                    {!item.testtuple && 'N/A'}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status === 'done' && item.testtuple.dataset.perf}
-                    {item.testtuple && item.testtuple.status && item.testtuple.status !== 'done' && (
-                        <>
-                            {capitalize(item.testtuple.status)}
-                            <InlinePulseLoader loading={['waiting', 'todo', 'doing'].includes(item.testtuple.status)} />
-                        </>
-                    )}
-                </SingleMetadata>
+                <StatusMetadata status={item.traintuple.status} />
+                {item.traintuple.tag && <SingleMetadata label="Tag" value={item.traintuple.tag} />}
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
                 <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />

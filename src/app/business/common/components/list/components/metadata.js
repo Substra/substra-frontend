@@ -41,6 +41,7 @@ export const metadata = css`
     vertical-align: top;
     margin-top: ${spacingSmall};
     color: ${blueGrey};
+    overflow: hidden;
 `;
 
 export const MetadataTag = styled('div')`
