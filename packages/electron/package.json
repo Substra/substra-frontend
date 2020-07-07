@@ -8,7 +8,7 @@
     "devDependencies": {
         "@babel/register": "7.8.3",
         "devtron": "1.4.0",
-        "electron": "7.1.10",
+        "electron": "9.1.0",
         "electron-builder": "22.2.0",
         "electron-debug": "3.0.1",
         "electron-devtools-installer": "2.2.4"
