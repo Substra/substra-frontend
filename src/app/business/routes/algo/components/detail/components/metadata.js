@@ -4,7 +4,11 @@ import {capitalize} from 'lodash';
 import BaseMetadata, {
     MetadataWrapper,
     KeyMetadata,
-    BrowseRelatedMetadata, PermissionsMetadata, OwnerMetadata, SingleMetadata,
+    BrowseRelatedMetadata,
+    PermissionsMetadata,
+    OwnerMetadata,
+    SingleMetadata,
+    MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import BrowseRelatedLinks from './browseRelatedLinks';
 
@@ -15,6 +19,7 @@ const Metadata = ({item, addNotification, model}) => (
         <SingleMetadata label="Type" value={capitalize(item.type)} />
         <OwnerMetadata owner={item.owner} />
         <PermissionsMetadata permissions={item.permissions} />
+        <MetadataMetadata metadata={item.metadata} />
         <BrowseRelatedMetadata>
             <BrowseRelatedLinks item={item} />
         </BrowseRelatedMetadata>

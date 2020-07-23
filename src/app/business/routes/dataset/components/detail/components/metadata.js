@@ -5,7 +5,10 @@ import {
     KeyMetadata,
     BrowseRelatedMetadata,
     MetadataInterface,
-    MetadataWrapper, PermissionsMetadata, OwnerMetadata,
+    MetadataWrapper,
+    PermissionsMetadata,
+    OwnerMetadata,
+    MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 
 const Metadata = ({item, addNotification, model}) => (
@@ -13,6 +16,7 @@ const Metadata = ({item, addNotification, model}) => (
         <KeyMetadata item_key={item.key} addNotification={addNotification} model={model} />
         <OwnerMetadata owner={item.owner} />
         <PermissionsMetadata permissions={item.permissions} />
+        <MetadataMetadata metadata={item.metadata} />
         <BrowseRelatedMetadata>
             <BrowseRelatedLinks item={item} />
         </BrowseRelatedMetadata>

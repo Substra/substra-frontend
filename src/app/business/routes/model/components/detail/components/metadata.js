@@ -9,6 +9,7 @@ import BaseMetadata, {
     keyValueClassName,
     BrowseRelatedMetadata,
     PermissionsMetadata,
+    MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
@@ -69,6 +70,7 @@ class Metadata extends Component {
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
                 <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
+                <MetadataMetadata metadata={item.metadata} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
                 </BrowseRelatedMetadata>

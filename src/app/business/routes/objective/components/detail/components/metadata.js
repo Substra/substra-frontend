@@ -5,7 +5,10 @@ import {
     BrowseRelatedMetadata,
     MetadataInterface,
     MetadataWrapper,
-    SingleMetadata, PermissionsMetadata, OwnerMetadata, MetadataMetadata,
+    SingleMetadata,
+    PermissionsMetadata,
+    OwnerMetadata,
+    MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import BrowseRelatedLinks from './browseRelatedLinks';
 
