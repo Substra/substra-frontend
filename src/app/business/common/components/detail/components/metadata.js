@@ -6,6 +6,7 @@ import {capitalize, noop} from 'lodash';
 
 import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
+import {monospaceFamily} from '../../../../../../../assets/css//variables/font';
 import CopyInput from './copyInput';
 
 const LABEL_WIDTH = '200';
@@ -30,6 +31,14 @@ const baseDd = css`
     margin-left: 0;
     width: calc(100% - ${LABEL_WIDTH}px);
     margin-bottom: ${spacingExtraSmall};
+`;
+
+const metadataDt = css`
+    text-transform: initial;
+`;
+
+const metadataDd = css`
+    font-family: ${monospaceFamily};
 `;
 
 export const clipboard = css`
@@ -163,24 +172,13 @@ OwnerMetadata.defaultProps = {
 export const MetadataMetadata = ({metadata}) => {
     const keys = Object.keys(metadata);
 
-    const li = css`
-        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace
-    `;
-
-    return (
-        <SingleMetadata label="Metadata">
-            {keys.length ? (
-                <ul>
-                    {keys.sort().map((key) => (
-                        <li className={li} key={key}>
-                            {key}
-                            :
-                            {metadata[key]}
-                        </li>
-                    ))}
-                </ul>
-            ) : 'N/A'}
-        </SingleMetadata>
+    return (keys.length ? (
+        <>
+            <SingleMetadata label="Metadata" />
+            {keys.sort().map((key) => (
+                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={key} value={metadata[key]} />))}
+        </>
+        ) : <SingleMetadata label="Metadata">N/A</SingleMetadata>
     );
 };
 
