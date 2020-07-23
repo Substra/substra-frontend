@@ -5,7 +5,7 @@ import {
     BrowseRelatedMetadata,
     MetadataInterface,
     MetadataWrapper,
-    SingleMetadata, PermissionsMetadata, OwnerMetadata,
+    SingleMetadata, PermissionsMetadata, OwnerMetadata, MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import BrowseRelatedLinks from './browseRelatedLinks';
 
@@ -15,6 +15,7 @@ const Metadata = ({item, addNotification, model}) => (
         <SingleMetadata label="Metric" value={item.metrics.name} />
         <OwnerMetadata owner={item.owner} />
         <PermissionsMetadata permissions={item.permissions} />
+        <MetadataMetadata metadata={item.metadata} />
         <BrowseRelatedMetadata>
             <BrowseRelatedLinks item={item} />
         </BrowseRelatedMetadata>

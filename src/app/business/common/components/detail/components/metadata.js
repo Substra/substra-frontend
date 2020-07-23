@@ -160,6 +160,38 @@ OwnerMetadata.defaultProps = {
     owner: '',
 };
 
+export const MetadataMetadata = ({metadata}) => {
+    const keys = Object.keys(metadata);
+
+    const li = css`
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace
+    `;
+
+    return (
+        <SingleMetadata label="Metadata">
+            {keys.length ? (
+                <ul>
+                    {keys.sort().map((key) => (
+                        <li className={li} key={key}>
+                            {key}
+                            :
+                            {metadata[key]}
+                        </li>
+                    ))}
+                </ul>
+            ) : 'N/A'}
+        </SingleMetadata>
+    );
+};
+
+MetadataMetadata.propTypes = {
+    metadata: PropTypes.shape(),
+};
+
+MetadataMetadata.defaultProps = {
+    metadata: {},
+};
+
 PermissionsMetadata.propTypes = {
     permissions: PropTypes.shape({
         request: PropTypes.shape({
