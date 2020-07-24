@@ -36,13 +36,14 @@ const baseDd = css`
 const metadataDt = css`
     text-transform: initial;
     font-family: ${monospaceFamily};
-    margin-left: ${spacingSmall};
+    padding-left: ${spacingSmall};
+    &:before {
+        content: '- ';
+    }
 `;
 
 const metadataDd = css`
-    font-family: ${monospaceFamily};
-    margin-left: -${spacingSmall};
-`;
+    font-family: ${monospaceFamily};`;
 
 export const clipboard = css`
     position: absolute;
@@ -179,7 +180,7 @@ export const MetadataMetadata = ({metadata}) => {
         <>
             <SingleMetadata label="Metadata" />
             {keys.map((key) => (
-                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={`- ${key}`} value={metadata[key]} />))}
+                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={key} value={metadata[key]} />))}
         </>
         ) : <SingleMetadata label="Metadata" value="N/A" />
     );
