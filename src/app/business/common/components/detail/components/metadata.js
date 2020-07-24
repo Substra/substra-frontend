@@ -35,10 +35,13 @@ const baseDd = css`
 
 const metadataDt = css`
     text-transform: initial;
+    font-family: ${monospaceFamily};
+    margin-left: ${spacingSmall};
 `;
 
 const metadataDd = css`
     font-family: ${monospaceFamily};
+    margin-left: -${spacingSmall};
 `;
 
 export const clipboard = css`
@@ -170,15 +173,15 @@ OwnerMetadata.defaultProps = {
 };
 
 export const MetadataMetadata = ({metadata}) => {
-    const keys = Object.keys(metadata);
+    const keys = Object.keys(metadata).sort();
 
     return (keys.length ? (
         <>
             <SingleMetadata label="Metadata" />
-            {keys.sort().map((key) => (
-                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={key} value={metadata[key]} />))}
+            {keys.map((key) => (
+                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={`- ${key}`} value={metadata[key]} />))}
         </>
-        ) : <SingleMetadata label="Metadata">N/A</SingleMetadata>
+        ) : <SingleMetadata label="Metadata" value="N/A" />
     );
 };
 
