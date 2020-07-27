@@ -55,8 +55,8 @@ class Metadata extends Component {
                 {type === 'composite' && (
                     <>
                         <KeyMetadata addNotification={this.addNotification} assetName="composite traintuple" assetKey={item.traintuple.key} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.outHeadModel ? item.traintuple.outHeadModel.outModel.hash : 'N/A'} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.outTrunkModel ? item.traintuple.outTrunkModel.outModel.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.outHeadModel.outModel ? item.traintuple.outHeadModel.outModel.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.outTrunkModel.outModel ? item.traintuple.outTrunkModel.outModel.hash : 'N/A'} />
                     </>
                 )}
                 {type === 'aggregate' && (
@@ -70,7 +70,7 @@ class Metadata extends Component {
                 <SingleMetadata label="Creator" value={item.traintuple.creator} />
                 <SingleMetadata label="Worker" value={type === 'aggregate' ? item.traintuple.worker : item.traintuple.dataset.worker} />
                 <PermissionsMetadata permissions={item.traintuple.permissions} />
-                <MetadataMetadata metadata={item.metadata} />
+                <MetadataMetadata metadata={item.traintuple.metadata} />
                 <BrowseRelatedMetadata>
                     <BrowseRelatedLinks item={item} />
                 </BrowseRelatedMetadata>
