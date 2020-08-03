@@ -6,6 +6,7 @@ import {capitalize, noop} from 'lodash';
 
 import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
+import {monospaceFamily} from '../../../../../../../assets/css//variables/font';
 import CopyInput from './copyInput';
 
 const LABEL_WIDTH = '200';
@@ -31,6 +32,18 @@ const baseDd = css`
     width: calc(100% - ${LABEL_WIDTH}px);
     margin-bottom: ${spacingExtraSmall};
 `;
+
+const metadataDt = css`
+    text-transform: initial;
+    font-family: ${monospaceFamily};
+    padding-left: ${spacingSmall};
+    &:before {
+        content: '- ';
+    }
+`;
+
+const metadataDd = css`
+    font-family: ${monospaceFamily};`;
 
 export const clipboard = css`
     position: absolute;
@@ -158,6 +171,27 @@ OwnerMetadata.propTypes = {
 
 OwnerMetadata.defaultProps = {
     owner: '',
+};
+
+export const MetadataMetadata = ({metadata}) => {
+    const keys = Object.keys(metadata).sort();
+
+    return (keys.length ? (
+        <>
+            <SingleMetadata label="Metadata" />
+            {keys.map((key) => (
+                <SingleMetadata labelClassName={metadataDt} valueClassName={metadataDd} key={key} label={key} value={metadata[key]} />))}
+        </>
+        ) : <SingleMetadata label="Metadata" value="N/A" />
+    );
+};
+
+MetadataMetadata.propTypes = {
+    metadata: PropTypes.shape(),
+};
+
+MetadataMetadata.defaultProps = {
+    metadata: {},
 };
 
 PermissionsMetadata.propTypes = {

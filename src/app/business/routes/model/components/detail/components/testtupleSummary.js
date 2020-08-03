@@ -12,6 +12,7 @@ import {
     MetadataWrapper,
     keyLabelClassName,
     keyValueClassName,
+    MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import ScoreMetadata from './scoreMetadata';
@@ -47,6 +48,7 @@ const TesttupleSummary = ({testtuple, addNotification}) => (
                 tupleName="testtuple"
                 item={{testtuple}}
             />
+            <MetadataMetadata metadata={testtuple.metadata} />
         </MetadataWrapper>
 
         <CodeSample
