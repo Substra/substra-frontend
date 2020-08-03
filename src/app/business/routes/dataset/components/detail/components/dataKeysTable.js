@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {RoundedButton, CopySimple} from '@substrafoundation/substra-ui';
+import {CopySimple} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Td, Th,
 } from '../../../../../common/components/detail/components/table';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
+import {RoundedButton} from '../../../../../common/components/roundedButton';
 
 const SpaceBetween = styled('div')`
     display: flex;
