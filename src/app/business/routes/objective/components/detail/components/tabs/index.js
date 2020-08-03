@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import {PulseLoader} from 'react-spinners';
 import {noop} from 'lodash';
 import styled from '@emotion/styled';
-import {
-    TabList,
-    Tabs,
-    TabPanel,
-    RoundedButton,
-    DownloadSimple,
-} from '@substrafoundation/substra-ui';
 
-import Tab from '../../../../../../common/components/detail/components/tabs';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
 import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
 import Description from '../../../../../../common/components/detail/components/description';
 import {spacingNormal} from '../../../../../../../../../assets/css/variables/spacing';
+import {
+    TabList,
+    Tab,
+    Tabs,
+    TabPanel,
+} from '../../../../../../common/components/tabs';
+import {RoundedButton} from '../../../../../../common/components/roundedButton';
+import {DownloadSimple} from '../../../../../../common/components/icons/';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};

@@ -7,12 +7,11 @@ import mime from 'mime-types';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {ghcolors} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {saveAs} from 'file-saver';
-import {
-    DownloadSimple, Expand, Collapse, IconButton,
-} from '@substrafoundation/substra-ui';
 import {ice, iceBlue} from '../../../../../../../assets/css/variables/colors';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {monospaceFamily, fontNormalMonospace} from '../../../../../../../assets/css/variables/font';
+import {IconButton} from '../../iconButton';
+import {Collapse, DownloadSimple, Expand} from '../../icons';
 
 const customStyle = {
     ...ghcolors,

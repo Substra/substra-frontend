@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
-import PropTypes from '../../../utils/propTypes';
+import PropTypes from '../../../../../../utils/propTypes';
 
 import {match, parse} from './utils/autosuggest-highlight';
 
-import {ice} from '../../../variables/colors';
-import {fontNormal} from '../../../variables/font';
+import {ice} from '../../../../../../../assets/css/variables/colors';
+import {fontNormal} from '../../../../../../../assets/css/variables/font';
 
 const Logic = styled('span')`
     color: #1935a7;

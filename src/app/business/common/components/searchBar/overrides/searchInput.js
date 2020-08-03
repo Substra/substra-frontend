@@ -8,13 +8,13 @@ import {
     ChipTitle,
     ChipWrapper,
 } from '../../chip';
-import PropTypes from '../../../utils/propTypes';
-import {spacingExtraSmall, spacingSmall} from '../../../variables/spacing';
-import {fontLarge} from '../../../variables/font';
+import PropTypes from '../../../../../../utils/propTypes';
+import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
+import {fontLarge} from '../../../../../../../assets/css/variables/font';
 
 // modified textField for our needs
 import TextField from './textField';
-import Clear from '../../../icons/clear';
+import Clear from '../../icons';
 
 const parentChip = (isLogic) => css`
     padding: ${spacingExtraSmall} ${spacingSmall};

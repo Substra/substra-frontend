@@ -19,21 +19,21 @@ const fontFaceNormal = `
             font-family: 'Lato';
             font-style: normal;
             font-weight: 700;
-            src: url(${require('./lato/LatoLatin-Bold.eot')}); /* IE9 Compat Modes */
-            src: url('${require('./lato/LatoLatin-Bold.eot')}?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-                 url(${require('./lato/LatoLatin-Bold.woff2')}) format('woff2'), /* Super Modern Browsers */
-                 url(${require('./lato/LatoLatin-Bold.woff')}) format('woff'), /* Pretty Modern Browsers */
-                 url(${require('./lato/LatoLatin-Bold.ttf')}) format('truetype'); /* Safari, Android, iOS */
+            src: url(${require('../../../../../assets/lato/LatoLatin-Bold.eot')}); /* IE9 Compat Modes */
+            src: url('${require('../../../../../assets/lato/LatoLatin-Bold.eot')}?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+                 url(${require('../../../../../assets/lato/LatoLatin-Bold.woff2')}) format('woff2'), /* Super Modern Browsers */
+                 url(${require('../../../../../assets/lato/LatoLatin-Bold.woff')}) format('woff'), /* Pretty Modern Browsers */
+                 url(${require('../../../../../assets/lato/LatoLatin-Bold.ttf')}) format('truetype'); /* Safari, Android, iOS */
         };
         @font-face {
             font-family: 'Lato';
             font-style: normal;
             font-weight: 400;
-            src: url(${require('./lato/LatoLatin-Regular.eot')}); /* IE9 Compat Modes */
-            src: url('${require('./lato/LatoLatin-Regular.eot')}?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-                 url(${require('./lato/LatoLatin-Regular.woff2')}) format('woff2'), /* Super Modern Browsers */
-                 url(${require('./lato/LatoLatin-Regular.woff')}) format('woff'), /* Pretty Modern Browsers */
-                 url(${require('./lato/LatoLatin-Regular.ttf')}) format('truetype'); /* Safari, Android, iOS */
+            src: url(${require('../../../../../assets/lato/LatoLatin-Regular.eot')}); /* IE9 Compat Modes */
+            src: url('${require('../../../../../assets/lato/LatoLatin-Regular.eot')}?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+                 url(${require('../../../../../assets/lato/LatoLatin-Regular.woff2')}) format('woff2'), /* Super Modern Browsers */
+                 url(${require('../../../../../assets/lato/LatoLatin-Regular.woff')}) format('woff'), /* Pretty Modern Browsers */
+                 url(${require('../../../../../assets/lato/LatoLatin-Regular.ttf')}) format('truetype'); /* Safari, Android, iOS */
         };
     `;
 

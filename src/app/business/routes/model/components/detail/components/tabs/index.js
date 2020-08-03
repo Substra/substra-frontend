@@ -2,16 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {noop} from 'lodash';
 import {PulseLoader} from 'react-spinners';
-import {
-    CodeSample,
-    Tabs,
-    TabPanel,
-    TabList,
-} from '@substrafoundation/substra-ui';
-
-import Tab from '../../../../../../common/components/detail/components/tabs';
 
 import TesttupleSummary from '../testtupleSummary';
+import {
+    TabList,
+    TabPanel,
+    Tab,
+    Tabs,
+} from '../../../../../../common/components/tabs';
+import CodeSample from '../../../../../../common/components/codeSample';
 
 const tupleFilename = {
     standard: 'traintuple.json',

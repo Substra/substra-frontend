@@ -1,6 +1,6 @@
 import React from 'react';
 import {noop} from 'lodash';
-import PropTypes from '../../../utils/propTypes';
+import PropTypes from '../../../../../../utils/propTypes';
 import Input from './input';
 
 function TextField(props) {

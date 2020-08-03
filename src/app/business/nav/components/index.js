@@ -5,15 +5,17 @@ import styled from '@emotion/styled';
 import {omit, noop} from 'lodash';
 import Link from 'redux-first-router-link';
 
-import {
-Algo, Dataset, Folder, Model,
-} from '@substrafoundation/substra-ui';
-
 import {spacingLarge, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 import {
 primaryAccent, slate, ice, white,
 } from '../../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../../assets/css/variables/font';
+import {
+    Dataset,
+    Folder,
+    Algo,
+    Model,
+} from '../../common/components/icons';
 
 
 const Ul = styled('ul')`

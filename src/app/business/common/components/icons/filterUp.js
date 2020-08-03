@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {slate, tealish} from '../variables/colors';
+import {slate, tealish} from '../../../../../../assets/css/variables/colors';
 
 const FilterUp = ({
                       className, width, height, color, secondaryColor, ...props

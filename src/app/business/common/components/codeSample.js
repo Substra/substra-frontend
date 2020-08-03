@@ -6,7 +6,7 @@ import mime from 'mime-types';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {ghcolors} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {saveAs} from 'file-saver';
-import {Collapse, DownloadSimple, Expand} from 'icons';
+import {Collapse, DownloadSimple, Expand} from './icons';
 import PropTypes from '../../../../utils/propTypes';
 import {fontNormalMonospace, monospaceFamily} from '../../../../../assets/css/variables/font';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';

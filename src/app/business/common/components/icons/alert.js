@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {gold} from '../variables/colors';
+import {gold} from '../../../../../../assets/css/variables/colors';
 
 const Alert = ({
                    className, width, height, color, ...props

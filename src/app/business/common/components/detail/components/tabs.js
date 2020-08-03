@@ -1,9 +1,9 @@
 import React from 'react';
 import {css} from 'emotion';
 import {
-    Tab as TabSUI,
     cssTabTemplate,
-} from '@substrafoundation/substra-ui';
+    Tab as TabSUI,
+} from '../../tabs';
 import {primaryAccent} from '../../../../../../../assets/css/variables/colors';
 
 const colorOverride = css`

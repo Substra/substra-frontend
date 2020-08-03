@@ -4,10 +4,11 @@ import {css} from 'emotion';
 import {noop} from 'lodash';
 
 import PropTypes from 'prop-types';
-import {MoreVertical, IconButton} from '@substrafoundation/substra-ui';
 
 import {spacingExtraSmall} from '../../../../../../../assets/css/variables/spacing';
 import PopoverItems from './popoverItems';
+import {IconButton} from '../../iconButton';
+import {MoreVertical} from '../../icons';
 
 const actions = css`
     position: absolute;

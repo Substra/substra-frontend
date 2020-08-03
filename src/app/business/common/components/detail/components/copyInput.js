@@ -1,7 +1,8 @@
 import React from 'react';
 
-import {CopyInput, Check} from '@substrafoundation/substra-ui';
 import {primaryAccent} from '../../../../../../../assets/css/variables/colors';
+import Check from '../../icons/check';
+import CopyInput from '../../copyInput';
 
 const SuccessIcon = (props) => <Check color={primaryAccent} {...props} />;
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {slate} from '../variables/colors';
+import {slate} from '../../../../../../assets/css/variables/colors';
 
-const ClearIcon = ({
+const Clear = ({
                        className, width, height, color, ...props
                    }) => (
                        <svg
@@ -26,18 +26,18 @@ const ClearIcon = ({
                        </svg>
 );
 
-ClearIcon.defaultProps = {
+Clear.defaultProps = {
     className: '',
     width: 24,
     height: 24,
     color: slate,
 };
 
-ClearIcon.propTypes = {
+Clear.propTypes = {
     className: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
     color: PropTypes.string,
 };
 
-export default ClearIcon;
+export default Clear;

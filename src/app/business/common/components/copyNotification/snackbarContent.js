@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
-import {white} from '../../variables/colors';
-import {fontNormal} from '../../variables/font';
+import {white} from '../../../../../../assets/css/variables/colors';
+import {fontNormal} from '../../../../../../assets/css/variables/font';
 
 const paper = css`
     display: flex;

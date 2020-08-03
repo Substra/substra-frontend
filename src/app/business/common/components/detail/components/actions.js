@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
-import {DownloadSimple, FilterUp, IconButton} from '@substrafoundation/substra-ui';
 import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
+import {IconButton} from '../../iconButton';
+import {DownloadSimple, FilterUp} from '../../icons';
 
 export const actions = css`
     margin-right: -${spacingNormal};

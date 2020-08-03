@@ -4,15 +4,6 @@ import {PulseLoader} from 'react-spinners';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
-import {
-    CodeSample,
-    Tabs,
-    TabPanel,
-    TabList,
-} from '@substrafoundation/substra-ui';
-
-import Tab from '../../../../../../common/components/detail/components/tabs';
-
 import DataKeysTable from '../dataKeysTable';
 import CopyInput from '../../../../../../common/components/detail/components/copyInput';
 
@@ -21,6 +12,13 @@ import {ice} from '../../../../../../../../../assets/css/variables/colors';
 import Description from '../../../../../../common/components/detail/components/description';
 import PermissionsTabPanelContent from '../../../../../../common/components/detail/components/permissionsTabPanelContent';
 import ForbiddenResource from '../../../../../../common/components/detail/components/forbiddenResource';
+import {
+    Tabs,
+    Tab,
+    TabList,
+    TabPanel,
+} from '../../../../../../common/components/tabs';
+import CodeSample from '../../../../../../common/components/codeSample';
 
 const Code = styled('code')`
     font-family: ${monospaceFamily};

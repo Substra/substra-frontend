@@ -2,7 +2,6 @@ import React from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import {noop} from 'lodash';
-import {CodeSample} from '@substrafoundation/substra-ui';
 
 import PropTypes from 'prop-types';
 import {spacingNormal} from '../../../../../../../../assets/css/variables/spacing';
@@ -17,6 +16,7 @@ import {
 import CopyInput from '../../../../../common/components/detail/components/copyInput';
 import ScoreMetadata from './scoreMetadata';
 import StatusMetadata from './statusMetadata';
+import CodeSample from '../../../../../common/components/codeSample';
 
 const PseudoSection = styled('div')`
     padding-bottom: ${spacingNormal};

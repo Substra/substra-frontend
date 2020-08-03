@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 
-import {Book} from '@substrafoundation/substra-ui';
 import {slate} from '../../../../../assets/css/variables/colors';
+import Book from '../../common/components/icons/book';
 
 const picto = css`
     display: block;

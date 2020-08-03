@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
-import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
+import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 
 import Title from './components/title';
 import Sort from './components/sort/redux';

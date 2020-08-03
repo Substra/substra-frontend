@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {slate} from '../variables/colors';
+import {slate} from '../../../../../../assets/css/variables/colors';
 
 const Book = ({
                   className, width, height, color, ...props

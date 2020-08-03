@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import {RoundedButton} from '@substrafoundation/substra-ui';
 import {spacingNormal} from '../../../../../../../assets/css/variables/spacing';
+import {RoundedButton} from '../../roundedButton';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};

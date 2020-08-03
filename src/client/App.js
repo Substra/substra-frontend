@@ -1,10 +1,9 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 
-import {GlobalStyles} from '@substrafoundation/substra-ui';
-
 import Root from './root';
 import store from './store';
+import GlobalStyles from '../app/business/common/components/globalStyles';
 
 
 const App = () => (

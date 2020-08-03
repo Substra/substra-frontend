@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {flatten, isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
-import {Check, TwoPanelLayout, withAddNotification} from '@substrafoundation/substra-ui';
 
 import List from '../list/redux';
 import Detail from '../detail/redux';
+import TwoPanelLayout from '../twoPanelLayout';
+import withAddNotification from '../copyNotification/copyNotification';
+import {Check} from '../icons';
 
 export const margin = 40;
 

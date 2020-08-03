@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
-import {CopySimple} from '@substrafoundation/substra-ui';
 
 import {
     Table, Tr, Td, Th,
@@ -10,6 +9,7 @@ import {
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../assets/css/variables/font';
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 import {RoundedButton} from '../../../../../common/components/roundedButton';
+import {CopySimple} from '../../../../../common/components/icons';
 
 const SpaceBetween = styled('div')`
     display: flex;

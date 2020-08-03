@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
-import {CopySimple, Check} from 'icons';
+import {CopySimple, Check} from './icons';
 import PropTypes from '../../../../utils/propTypes';
 import {IconButton} from './iconButton';
 import {ice, tealish} from '../../../../../assets/css/variables/colors';

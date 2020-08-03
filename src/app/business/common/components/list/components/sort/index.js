@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {isEqual, omit, noop} from 'lodash';
-import {Select} from '@substrafoundation/substra-ui';
 
 import {spacingExtraSmall} from '../../../../../../../../assets/css/variables/spacing';
 import {fontNormal} from '../../../../../../../../assets/css/variables/font';
+import Select from '../../../select';
 
 const Wrapper = styled('div')`
     font-size: ${fontNormal};
