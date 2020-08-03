@@ -5,20 +5,20 @@ import {slate} from '../variables/colors';
 const MoreVertical = ({
                           className, width, height, color, ...props
                       }) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={width}
-        height={height}
-        viewBox="0 0 24 24"
-        className={className}
-        {...props}
-    >
-        <g fill={color} fillRule="evenodd">
-            <circle cx="12" cy="5" r="2" />
-            <circle cx="12" cy="13" r="2" />
-            <circle cx="12" cy="21" r="2" />
-        </g>
-    </svg>
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width={width}
+                              height={height}
+                              viewBox="0 0 24 24"
+                              className={className}
+                              {...props}
+                          >
+                              <g fill={color} fillRule="evenodd">
+                                  <circle cx="12" cy="5" r="2" />
+                                  <circle cx="12" cy="13" r="2" />
+                                  <circle cx="12" cy="21" r="2" />
+                              </g>
+                          </svg>
 );
 
 MoreVertical.defaultProps = {
