@@ -90,5 +90,10 @@
                 }
             ]
         }
+    },
+    "dependencies": {
+        "cross-env": "^7.0.2",
+        "emotion-normalize": "^10.1.0",
+        "rimraf": "^3.0.2"
     }
 }
