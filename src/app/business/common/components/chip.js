@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {Clear} from './icons';
+import {ClearIcon} from './icons';
 import {spacingSmall} from '../../../../../assets/css/variables/spacing';
 import PropTypes from '../../../../utils/propTypes';
 import {fontLarge} from '../../../../../assets/css/variables/font';
@@ -49,7 +49,7 @@ export const ChipButtonStyle = styled.button`
         box-shadow: 0 0 3pt 3pt ${darkSkyBlue};
     }
 `;
-const DefaultIcon = (props) => <Clear color={chipBackgroundColor} {...props} />;
+const DefaultIcon = (props) => <ClearIcon color={chipBackgroundColor} {...props} />;
 
 export const ChipButton = ({
 Icon, iconSize, ...props

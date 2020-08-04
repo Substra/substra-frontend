@@ -2,7 +2,7 @@ export {default as Alert} from './alert';
 export {default as Algo} from './algo';
 export {default as Book} from './book';
 export {default as Check} from './check';
-export {default as Clear} from './clear';
+export {default as ClearIcon} from './clear';
 export {default as Clipboard} from './clipboard';
 export {default as Collapse} from './collapse';
 export {default as CopyDrop} from './copyDrop';

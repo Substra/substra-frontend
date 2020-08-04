@@ -1,8 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
-import {
-    Tab as ReactTab, TabList as ReactTabList,
-} from 'react-tabs';
+import {Tab as ReactTab, TabList as ReactTabList} from 'react-tabs';
 import {
     blueGrey, ice, tealish, white,
 } from '../../../../../assets/css/variables/colors';

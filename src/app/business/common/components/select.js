@@ -3,7 +3,10 @@ import {css} from 'emotion';
 
 import {ice, white} from '../../../../../assets/css/variables/colors';
 import {
-spacingExtraSmall, spacingLarge, spacingNormal, spacingSmall,
+    spacingExtraSmall,
+    spacingLarge,
+    spacingNormal,
+    spacingSmall,
 } from '../../../../../assets/css/variables/spacing';
 
 
