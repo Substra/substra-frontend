@@ -25,7 +25,7 @@ storiesOf('CopyInput', module)
 );
     })
     .add('color override', () => {
-        const CopyIcon = props => <Model color="yellow" {...props} />;
-        const SuccessIcon = props => <Book color="red" {...props} />;
+        const CopyIcon = (props) => <Model color="yellow" {...props} />;
+        const SuccessIcon = (props) => <Book color="red" {...props} />;
         return <CopyInput SuccessIcon={SuccessIcon} CopyIcon={CopyIcon} />;
     });

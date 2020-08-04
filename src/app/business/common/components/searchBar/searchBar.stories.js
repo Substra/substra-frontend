@@ -11,13 +11,13 @@ const store = new Store(defaultState);
 
 let previousState = {...defaultState};
 
-const setState = state => {
+const setState = (state) => {
     store.set(state);
 };
 
 setState({...defaultState, ...getSuggestions(defaultState.isParent, [])});
 
-store.subscribe(state => {
+store.subscribe((state) => {
     if (previousState.isParent !== state.isParent || state.item === '-OR-' || (
         !state.selectedItem.length && state.suggestions[0].label === '-OR-'
     )) {

@@ -54,8 +54,8 @@ inputValue, suggestions, parentSuggestions, isParent, location, selectedItem,
         placeholder: 'Custom placeholder',
     });
 
-    const mapDispatchToProps = dispatch => ({
-        setState: payload => dispatch({type: 'SET', payload}),
+    const mapDispatchToProps = (dispatch) => ({
+        setState: (payload) => dispatch({type: 'SET', payload}),
     });
 
     const ReduxSearchBar = connect(mapStateToProps, mapDispatchToProps)(SearchBar);

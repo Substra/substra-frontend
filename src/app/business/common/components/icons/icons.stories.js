@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs, color, number} from '@storybook/addon-knobs/react';
 
@@ -52,7 +52,7 @@ storiesOf('Icons', module)
         const heightKnob = number('height', 24);
         const widthKnob = number('width', 24);
         return (
-            <Fragment>
+            <>
                 <Dl>
                     <Dt>
                         <Alert color={colorKnob} height={heightKnob} width={widthKnob} />
@@ -169,16 +169,13 @@ storiesOf('Icons', module)
                         Search
                     </Dd>
                 </Dl>
-            </Fragment>
+            </>
         );
     })
     .add('logos', () => (
-        <Fragment>
-            <div>
-                <OwkestraLogo width={200} />
-            </div>
+        <>
             <div>
                 <SubstraLogo width={200} />
             </div>
-        </Fragment>
+        </>
     ));

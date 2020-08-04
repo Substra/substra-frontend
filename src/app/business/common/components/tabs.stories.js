@@ -35,7 +35,7 @@ storiesOf('Tabs', module)
                 color: ${checkColor};
             }
         `;
-        const MyTab = props => <Tab className={tabStyle} {...props} />;
+        const MyTab = (props) => <Tab className={tabStyle} {...props} />;
         MyTab.tabsRole = 'Tab';
         return (
             <Tabs>
