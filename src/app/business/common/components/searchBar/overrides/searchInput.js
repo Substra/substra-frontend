@@ -14,7 +14,7 @@ import {fontLarge} from '../../../../../../../assets/css/variables/font';
 
 // modified textField for our needs
 import TextField from './textField';
-import Clear from '../../icons';
+import ClearIcon from '../../icons/clear';
 
 const parentChip = (isLogic) => css`
     padding: ${spacingExtraSmall} ${spacingSmall};
@@ -57,7 +57,7 @@ class SearchInput extends Component {
                     <ChipWrapper key={o.uuid} data-testid={`chip-${o.uuid}`}>
                         <ChipTitle>{`${o.parent}:${decodeURIComponent(o.child)}`}</ChipTitle>
                         <ChipActions onClick={handleDelete(o)}>
-                            <ChipButton Icon={Clear} iconSize={14} iconColor="#E0E0E0" />
+                            <ChipButton Icon={ClearIcon} iconSize={14} iconColor="#E0E0E0" />
                         </ChipActions>
                     </ChipWrapper>
                 )

@@ -282,7 +282,6 @@ class SearchBar extends Component {
                     onOuterClick={this.handleOuterClick}
                     selectedItem={selectedItem}
                     itemToString={this.itemToString}
-                    key={this.itemToString}
                 >
                     {this.searchInput}
                 </Downshift>

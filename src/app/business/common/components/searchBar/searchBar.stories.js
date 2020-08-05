@@ -30,7 +30,7 @@ store.subscribe((state) => {
     previousState = {...state};
 });
 storiesOf('SearchBar', module)
-    .addDecorator(StateDecorator(store))
+    // .addDecorator(StateDecorator(store)); // Get an error when this line isn't commented.
     .add('default', () => (
         <SearchBar
             inputValue={store.get('inputValue')}
