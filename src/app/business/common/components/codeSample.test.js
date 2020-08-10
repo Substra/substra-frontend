@@ -1,3 +1,4 @@
+/* global Blob */
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react';
 import {saveAs} from 'file-saver';
@@ -28,7 +29,7 @@ test('Download on click', () => {
     const button = getByTestId('download');
     fireEvent.click(button); // simulate a click
     expect(saveAs).toHaveBeenCalledTimes(1); // then we verify that the saveAs function was correctly called one time only
-    expect(saveAs).toHaveBeenCalledWith({content: [codeString], options: {type: 'text/plain'}}, filename); // check the params the download was called with
+    expect(saveAs).toHaveBeenCalledWith(new Blob([codeString], {type: 'text/plain'}), filename); // check the params the download was called with
 });
 
 test('Has a collapse/expand button', () => {
