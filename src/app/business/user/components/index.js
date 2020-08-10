@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 import {css} from 'emotion';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
-import {SubstraLogo, alertTitle, alertWrapper} from '@substrafoundation/substra-ui';
+
+import SubstraLogo from '../../common/components/icons/substraLogo';
+import {alertTitle, alertWrapper} from '../../common/components/alert';
 
 import {signIn as signInActions} from '../actions';
 import FormTemplate from './form';

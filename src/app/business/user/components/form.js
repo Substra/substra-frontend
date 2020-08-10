@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import {css} from 'emotion';
 
-import {RoundedButton} from '@substrafoundation/substra-ui';
-
 import {reduxForm, Field} from 'redux-form';
+import {RoundedButton} from '../../common/components/roundedButton';
+
 import {
 ice, red, slate, tealish, white,
 } from '../../../../../assets/css/variables/colors';

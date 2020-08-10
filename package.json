@@ -42,7 +42,8 @@
         "build-electron": "build --publish never",
         "deploy": "tools/deploy.js",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
-        "storybook": "start-storybook"
+        "storybook": "cd packages/ssr && npm run storybook",
+        "build-storybook": "cd packages/ssr && npm run build-storybook"
     },
     "pre-commit": [
         "precommit-msg",
