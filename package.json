@@ -92,7 +92,8 @@
             ]
         }
     },
-    "dependencies": {
-        "jest-emotion": "^10.0.32"
+    "devDependencies": {
+        "jest-emotion": "^10.0.32",
+        "@testing-library/jest-dom": "4.0.0"
     }
 }

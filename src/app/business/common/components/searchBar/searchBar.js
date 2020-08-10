@@ -48,6 +48,7 @@ const SearchInputWrapper = ({innerRef, ...rest}) => (
     <div
         className={searchInputWrapper}
         ref={innerRef}
+        key={this}
         {...rest}
     />
 );
@@ -258,6 +259,7 @@ class SearchBar extends Component {
                     clickInput={this.clickInput}
                     input={this.input}
                     placeholder={placeholder}
+                    key={this.input}
                     {...props}
                 />
             </SearchInputWrapper>

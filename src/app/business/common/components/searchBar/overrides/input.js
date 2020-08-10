@@ -245,6 +245,7 @@ class Input extends Component {
                         onKeyDown={onKeyDown}
                         placeholder={placeholder}
                         value={value}
+                        key={value}
                         {...inputProps}
                     />
                     <div
