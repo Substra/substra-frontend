@@ -21,6 +21,7 @@ import {
     Folder,
     Model,
     MoreVertical,
+    OwkestraLogo,
     Permission,
     Search,
     SubstraLogo,
@@ -176,6 +177,9 @@ storiesOf('Icons', module)
         <>
             <div>
                 <SubstraLogo width={200} />
+            </div>
+            <div>
+                <OwkestraLogo width={200} />
             </div>
         </>
     ));

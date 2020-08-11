@@ -15,6 +15,7 @@ export {default as FilterUp} from './filterUp';
 export {default as Folder} from './folder';
 export {default as Model} from './model';
 export {default as MoreVertical} from './moreVertical';
+export {default as OwkestraLogo} from './owkestraLogo';
 export {default as Permission} from './permission';
 export {default as Search} from './search';
 export {default as SubstraLogo} from './substraLogo';
