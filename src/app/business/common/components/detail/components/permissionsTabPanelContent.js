@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     Table, Td, Th, Tr,
 } from './table';
-import CodeSample from './codeSample';
+import CodeSample from '../../codeSample';
 
 const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
     const isPublic = permissions && permissions.process && permissions.process.public;
