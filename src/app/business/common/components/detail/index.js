@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import {noop} from 'lodash';
 
-import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
 import Title from './components/title';
 import Section from './components/section';
 import Metadata from './components/metadata';
 import Actions from './components/actions';
+import {PanelContent, PanelTop, PanelWrapper} from '../panel';
 
 class Detail extends Component {
     downloadFile = (e) => {

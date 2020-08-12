@@ -1,7 +1,8 @@
 import uuidv4 from 'uuid/v4';
-import {Check, withAddNotification} from '@substrafoundation/substra-ui';
 
 import {BaseComponent} from '../../../../common/components/base';
+import withAddNotification from '../../../../common/components/copyNotification/copyNotification';
+import {Check} from '../../../../common/components/icons';
 
 
 class ModelBase extends BaseComponent {

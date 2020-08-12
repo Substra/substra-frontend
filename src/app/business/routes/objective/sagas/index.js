@@ -39,7 +39,7 @@ const sagas = function* sagas() {
     yield all([
         takeLatest(actionTypes.list.REQUEST, fetchListSagaFactory(actions.list, fetchListApi)),
         takeLatest(actionTypes.list.SELECTED, fetchDetailSaga),
-        takeLatest(actionTypes.persistent.REQUEST, fetchListSagaFactory(actions, fetchListApi)),
+        takeLatest(actionTypes.persistent.REQUEST, fetchListSagaFactory(actions.persistent, fetchListApi)),
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSagaFactory(actions.item, fetchItemApi)),
         takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSagaFactory(actions.item.description)),

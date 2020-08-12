@@ -5,14 +5,14 @@ import styled from '@emotion/styled';
 import PulseLoader from 'react-spinners/PulseLoader';
 import {noop} from 'lodash';
 
-import {PanelWrapper, PanelTop, PanelContent} from '@substrafoundation/substra-ui';
+import {PanelWrapper, PanelTop, PanelContent} from '../panel';
 
 import Title from './components/title';
 import Sort from './components/sort/redux';
 import Item from './components/item';
 import Actions from './components/actions';
 
-import {secondaryAccent, iceSecondaryAccent} from '../../../../../../assets/css/variables/colors';
+import {gold, iceGold} from '../../../../../../assets/css/variables/colors';
 import {spacingNormal} from '../../../../../../assets/css/variables/spacing';
 import NoItemFound from './components/noItemFound';
 
@@ -84,7 +84,7 @@ class List extends Component {
 
         return css`
             position: relative;
-            background-color: ${hovered || selected ? iceSecondaryAccent : 'transparent'};
+            background-color: ${hovered || selected ? iceGold : 'transparent'};
 
             &:before {
                 display: block;
@@ -94,7 +94,7 @@ class List extends Component {
                 bottom: 0;
                 left: 0;
                 width: 4px;
-                background-color: ${selected ? secondaryAccent : 'transparent'};
+                background-color: ${selected ? gold : 'transparent'};
             }
         `;
     };

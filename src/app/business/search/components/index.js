@@ -2,7 +2,6 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
-import {SearchBar} from '@substrafoundation/substra-ui';
 
 import ComplexSearchToggle from './complexSearchToggle';
 
@@ -13,6 +12,7 @@ import {
 import actions from '../actions';
 import withInjectedReducers from '../../common/components/withInjectedReducers';
 import {spacingLarge} from '../../../../../assets/css/variables/spacing';
+import SearchBar from '../../common/components/searchBar/searchBar';
 
 const mapStateToProps = (state) => ({
     inputValue: state.search.inputValue,

@@ -11,14 +11,13 @@ import {ReportChunks} from 'react-universal-component';
 import {clearChunks} from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
-import {GlobalStyles} from '@substrafoundation/substra-ui';
-
 import routesMap from '../app/routesMap';
 import vendors from '../../webpack/ssr/vendors';
 
 import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
+import GlobalStyles from '../app/business/common/components/globalStyles';
 
 
 // override variables between same built app, but not remote API

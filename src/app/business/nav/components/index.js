@@ -5,15 +5,17 @@ import styled from '@emotion/styled';
 import {omit, noop} from 'lodash';
 import Link from 'redux-first-router-link';
 
-import {
-Algo, Dataset, Folder, Model,
-} from '@substrafoundation/substra-ui';
-
 import {spacingLarge, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
 import {
-primaryAccent, slate, ice, white,
+tealish, slate, ice, white,
 } from '../../../../../assets/css/variables/colors';
 import {fontLarge} from '../../../../../assets/css/variables/font';
+import {
+    Dataset,
+    Folder,
+    Algo,
+    Model,
+} from '../../common/components/icons';
 
 
 const Ul = styled('ul')`
@@ -33,14 +35,14 @@ const link = (active, hovered) => css`
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: ${active || hovered ? primaryAccent : slate};
+    color: ${active || hovered ? tealish : slate};
     font-size: ${fontLarge};
     font-weight: bold;
     text-transform: capitalize;
     padding: ${spacingSmall} ${spacingNormal};
     border-width: 3px 1px 1px 1px;
     border-style: solid;
-    border-color: ${active ? `${primaryAccent} ${ice} ${white} ${ice}` : 'transparent'};
+    border-color: ${active ? `${tealish} ${ice} ${white} ${ice}` : 'transparent'};
     background-color: ${active ? white : 'transparent'};
 `;
 
@@ -112,7 +114,7 @@ class Nav extends Component {
                 {routes.map((route) => {
                         const active = this.isActive(route);
                         const hovered = this.isHovered(route);
-                        const color = active || hovered ? primaryAccent : slate;
+                        const color = active || hovered ? tealish : slate;
 
                         const menu = route.toLowerCase();
                         const Picto = pictos[menu];

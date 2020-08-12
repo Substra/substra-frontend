@@ -1,18 +1,17 @@
 /* global Blob */
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import mime from 'mime-types';
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import {ghcolors} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism';
+import {ghcolors} from 'react-syntax-highlighter/dist/styles/prism';
 import {saveAs} from 'file-saver';
-import {
-    DownloadSimple, Expand, Collapse, IconButton,
-} from '@substrafoundation/substra-ui';
-import {ice, iceBlue} from '../../../../../../../assets/css/variables/colors';
-import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
-import {monospaceFamily, fontNormalMonospace} from '../../../../../../../assets/css/variables/font';
+import {Collapse, DownloadSimple, Expand} from './icons';
+import PropTypes from '../../../../utils/propTypes';
+import {fontNormalMonospace, monospaceFamily} from '../../../../../assets/css/variables/font';
+import {spacingExtraSmall, spacingNormal, spacingSmall} from '../../../../../assets/css/variables/spacing';
+import {ice, iceBlue} from '../../../../../assets/css/variables/colors';
+import {IconButton} from './iconButton';
 
 const customStyle = {
     ...ghcolors,
@@ -55,7 +54,7 @@ class CodeSample extends Component {
     downloadCode = (e) => {
         e.stopPropagation();
         const {codeString, filename} = this.props;
-        const jsonBlob = new Blob([codeString], {type: mime.lookup(filename)});
+        const jsonBlob = new Blob([codeString], {type: mime.lookup(filename) || 'text/plain'});
         saveAs(jsonBlob, filename);
     };
 
@@ -91,19 +90,21 @@ class CodeSample extends Component {
         `;
 
         return (
-            <Wrapper className={className}>
+            <Wrapper className={className} data-testid="wrapper">
                 <Header onClick={this.toggleCollapsed}>
                     <FilenameWrapper>
                         {filename}
                     </FilenameWrapper>
                     <ActionsWrapper>
                         <IconButton
+                            data-testid="download"
                             Icon={DownloadSimple}
                             onClick={this.downloadCode}
                             title={`Download ${filename}`}
                         />
                         {collapsible && (
                             <IconButton
+                                data-testid="toggle"
                                 Icon={collapsed ? Expand : Collapse}
                                 className={marginLeft}
                                 onClick={this.toggleCollapsed}

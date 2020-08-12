@@ -38,6 +38,14 @@ yarn deploy
 
 You can now stop the task on aws ECS, it will restart automatically, if you did not define an autoscaling policy.
 
+## Storybook
+
+We use [Storybook](https://storybook.js.org/) for component development and testing:
+
+```sh
+$ yarn storybook
+```
+
 ## Docker launch
 
 The `docker-compose.yaml` file will launch a substra-frontend docker instance.
@@ -50,34 +58,6 @@ $> docker-compose up -d --force-recreate
 If you want to update the docker images, execute:
 ```bash
 $> docker-compose up -d --force-recreate --build
-```
-
-## Substra-UI
-
-This project depends on [https://github.com/SubstraFoundation/substra-ui](substra-ui) for some of its components.
-If you need to add/move a component to substra-ui and need to test its integration within
-substra-frontend, you'll need to "link" substra-ui:
-
-In the substra-ui directory:
-
-```sh
-yarn link
-```
-
-In the substra-frontend directory:
-
-```sh
-yarn link @substrafoundation/substra-ui
-```
-
-Your local built version of substra-ui will be the one used by your
-local substra-frontend. In order to automatically rebuild substra-ui at each
-change, do:
-
-In the substra-ui directory:
-
-```sh
-yarn build --watch
 ```
 
 ## Generate static for github pages
