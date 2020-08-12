@@ -24,6 +24,7 @@ import {
     OwkestraLogo,
     Permission,
     Search,
+    SignOut,
     SubstraLogo,
 } from './index';
 import {slate, tealish} from '../../../../../../assets/css/variables/colors';
@@ -168,6 +169,12 @@ storiesOf('Icons', module)
                     </Dt>
                     <Dd>
                         Search
+                    </Dd>
+                    <Dt>
+                        <SignOut color={colorKnob} height={heightKnob} width={widthKnob} />
+                    </Dt>
+                    <Dd>
+                        SignOut
                     </Dd>
                 </Dl>
             </>
