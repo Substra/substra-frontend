@@ -18,4 +18,5 @@ export {default as MoreVertical} from './moreVertical';
 export {default as OwkestraLogo} from './owkestraLogo';
 export {default as Permission} from './permission';
 export {default as Search} from './search';
+export {default as SignOut} from './signOut';
 export {default as SubstraLogo} from './substraLogo';
