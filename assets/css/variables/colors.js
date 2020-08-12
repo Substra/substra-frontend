@@ -10,8 +10,4 @@ export const
     darkSkyBlue = '#4ba5d2',
     iceBlueTwo = '#edf6fa',
     red = '#ed1111',
-    iceRed = '#fde7e7',
-    // accent colors
-    primaryAccent = tealish,
-    secondaryAccent = gold,
-    iceSecondaryAccent = iceGold;
+    iceRed = '#fde7e7';

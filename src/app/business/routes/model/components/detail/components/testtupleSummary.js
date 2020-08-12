@@ -13,7 +13,7 @@ import {
     keyValueClassName,
     MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
-import CopyInput from '../../../../../common/components/detail/components/copyInput';
+import CopyInput from '../../../../../common/components/copyInput';
 import ScoreMetadata from './scoreMetadata';
 import StatusMetadata from './statusMetadata';
 import CodeSample from '../../../../../common/components/codeSample';

@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import {noop} from 'lodash';
 
 import DataKeysTable from '../dataKeysTable';
-import CopyInput from '../../../../../../common/components/detail/components/copyInput';
+import CopyInput from '../../../../../../common/components/copyInput';
 
 import {fontNormalMonospace, monospaceFamily} from '../../../../../../../../../assets/css/variables/font';
 import {ice} from '../../../../../../../../../assets/css/variables/colors';

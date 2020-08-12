@@ -7,7 +7,7 @@ import {capitalize, noop} from 'lodash';
 import {spacingExtraSmall, spacingSmall} from '../../../../../../../assets/css/variables/spacing';
 import {blueGrey} from '../../../../../../../assets/css/variables/colors';
 import {monospaceFamily} from '../../../../../../../assets/css//variables/font';
-import CopyInput from './copyInput';
+import CopyInput from '../../copyInput';
 
 const LABEL_WIDTH = '200';
 

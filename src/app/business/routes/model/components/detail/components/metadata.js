@@ -11,7 +11,7 @@ import BaseMetadata, {
     PermissionsMetadata,
     MetadataMetadata,
 } from '../../../../../common/components/detail/components/metadata';
-import CopyInput from '../../../../../common/components/detail/components/copyInput';
+import CopyInput from '../../../../../common/components/copyInput';
 import BrowseRelatedLinks from './browseRelatedLinks';
 import StatusMetadata from './statusMetadata';
 
