@@ -1,7 +1,7 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import userActions from '../user/actions';
+import {signOut} from '../user/actions';
 
 import Top from './index';
 
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-    signOut: userActions.signOut.request,
+    signOut: signOut.request,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Top);

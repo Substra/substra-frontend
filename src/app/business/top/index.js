@@ -5,7 +5,7 @@ import {css} from 'emotion';
 import Link from 'redux-first-router-link';
 import {noop} from 'lodash';
 
-import {SubstraLogo} from '@substrafoundation/substra-ui';
+import {SubstraLogo} from '../common/components/icons';
 import {DocLink} from './components/docLink';
 import {SignOutButton} from './components/signOutButton';
 import {white, ice, slate} from '../../../../assets/css/variables/colors';

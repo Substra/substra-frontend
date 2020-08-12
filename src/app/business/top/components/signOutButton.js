@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {css} from 'emotion';
 
-import {SignOut} from '@substrafoundation/substra-ui';
+import {SignOut} from '../../common/components/icons';
 import {slate} from '../../../../../assets/css/variables/colors';
 
 const picto = css`
@@ -13,6 +13,7 @@ const button = css`
     cursor: pointer;
     border: none;
     padding: 0;
+    background-color: transparent;
 `;
 
 export const SignOutButton = ({className, ...props}) => (
