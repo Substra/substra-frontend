@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {css} from 'emotion';
 import styled from '@emotion/styled';
 import mime from 'mime-types';
-import SyntaxHighlighter from 'react-syntax-highlighter/light';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism';
 import {ghcolors} from 'react-syntax-highlighter/dist/styles/prism';
 import {saveAs} from 'file-saver';
 import {Collapse, DownloadSimple, Expand} from './icons';
