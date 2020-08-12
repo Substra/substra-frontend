@@ -37,7 +37,7 @@ const clearButton = css`
     z-index: 1;
     outline: none;
     margin-right: 2px;
-    
+
     &:focus {
         box-shadow: 0 0 3pt 3pt ${darkSkyBlue};
     }
@@ -48,7 +48,6 @@ const SearchInputWrapper = ({innerRef, ...rest}) => (
     <div
         className={searchInputWrapper}
         ref={innerRef}
-        key={this}
         {...rest}
     />
 );
@@ -259,7 +258,6 @@ class SearchBar extends Component {
                     clickInput={this.clickInput}
                     input={this.input}
                     placeholder={placeholder}
-                    key={this.input}
                     {...props}
                 />
             </SearchInputWrapper>

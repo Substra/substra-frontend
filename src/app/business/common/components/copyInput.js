@@ -127,7 +127,6 @@ class CopyInput extends Component {
                     onClick={this.select}
                     ref={this.inputRef}
                     data-testid="input"
-                    key={value} // TODO find a cleaner way to add a key
                 />
                 <IconButton
                     Icon={this.icon()}
