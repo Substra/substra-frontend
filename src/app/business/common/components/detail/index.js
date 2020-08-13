@@ -37,7 +37,7 @@ class Detail extends Component {
         return (
             <PanelWrapper>
                 <PanelTop className={css`justify-content: space-between;`}>
-                    <Title item={item} />
+                    <Title item={item} className={css`text-overflow: ellipsis; overflow: hidden;`} />
                     <Actions
                         downloadFile={this.downloadFile}
                         filterUp={this.filterUp(item.name)}
