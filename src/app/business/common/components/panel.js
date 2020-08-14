@@ -19,6 +19,7 @@ export const PanelTop = styled('div')`
     align-items: center;
     flex-shrink: 0;
     flex-grow: 0;
+    white-space: nowrap;
 `;
 
 export const PanelContent = styled('div')`
