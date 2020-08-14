@@ -60,7 +60,7 @@ app.on('ready', async () => {
     const port = process.env.PORT || 1212;
 
     mainWindow.loadURL(process.env.NODE_ENV === 'development'
-        ? `http://electron.owkin.xyz:${port}/`
+        ? `http://electron.node-1.com:${port}/`
         : `file://${__dirname}/dist/index.html`);
 
     // @TODO: Use 'ready-to-show' event

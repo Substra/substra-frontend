@@ -11,7 +11,6 @@ build
  # Docker configuration
 .dockerignore
 Dockerfile
-docker-compose*.yml
 skaffold.yaml
 
  # NPM dependencies

@@ -14,7 +14,7 @@ import definePlugin from '../utils/plugins/definePlugin';
 
 
 const port = process.env.PORT || 1212;
-const publicPath = `http://electron.owkin.xyz:${port}/`;
+const publicPath = `http://electron.node-1.com:${port}/`;
 
 export default merge.smart(baseConfig, {
     devtool: 'inline-source-map',

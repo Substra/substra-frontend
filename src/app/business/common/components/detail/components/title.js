@@ -8,6 +8,8 @@ export const title = css`
     color: ${gold};
     font-weight: bold;
     font-size: ${fontLarge};
+    text-overflow: ellipsis; 
+    overflow: hidden;
 `;
 
 
