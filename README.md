@@ -14,7 +14,34 @@ Then run:<br/>
 
 For testing and developing on the project with true hot module replacement, run
 `yarn start`
-Then head to `http://substra-frontend.owkin.xyz:3000/` `substra-backend.owkin.xyz` is important for working with same site cookie policy
+Then head to `http://substra-frontend.node-1.com:3000/` `substra-backend.node-1.com` is important for working with same site cookie policy. 
+
+If you're using a backend deployed to k8s, make sure to include `substra-frontend.node-1.com:3000` in the CORS_ORIGIN_WHITELIST. If you're using skaffold to deploy the backend, apply the following diff to the backend's skaffold.yaml:
+
+```diff
+diff --git a/skaffold.yaml b/skaffold.yaml
+index 8ee9a09a..5e777a1d 100644
+--- a/skaffold.yaml
++++ b/skaffold.yaml
+@@ -150,7 +150,7 @@ deploy:
+           extraEnv:
+             # Should be a json list
+             - name: CORS_ORIGIN_WHITELIST
+-              value: '["http://substra-frontend.node-1.com/"]'
++              value: '["http://substra-frontend.node-1.com:3001/"]'
+             - name: CORS_ALLOW_CREDENTIALS
+               value: "true"
+             - name: DEFAULT_THROTTLE_RATES
+@@ -203,7 +203,7 @@ deploy:
+           extraEnv:
+             # Should be a json list
+             - name: CORS_ORIGIN_WHITELIST
+-              value: '["http://substra-frontend.node-2.com/"]'
++              value: '["http://substra-frontend.node-2.com:3001/"]'
+             - name: CORS_ALLOW_CREDENTIALS
+               value: "true"
+             - name: DEFAULT_THROTTLE_RATES
+```
 
 For testing with prod config:<br/>
 `yarn start:prod`
@@ -44,20 +71,6 @@ We use [Storybook](https://storybook.js.org/) for component development and test
 
 ```sh
 $ yarn storybook
-```
-
-## Docker launch
-
-The `docker-compose.yaml` file will launch a substra-frontend docker instance.
-It will be launch with prod settings, which is a bit different from the settings.
-Launch it with:
-```bash
-$> docker-compose up -d --force-recreate
-```
-
-If you want to update the docker images, execute:
-```bash
-$> docker-compose up -d --force-recreate --build
 ```
 
 ## Generate static for github pages
