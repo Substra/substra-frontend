@@ -46,16 +46,6 @@ index 8ee9a09a..5e777a1d 100644
 For testing with prod config:<br/>
 `yarn start:prod`
 
-For testing in electron, run:<br/>
-`yarn dev`
-
-For packaging for electron:
-```
-yarn build:electron
-yarn build-electron
-yarn package-all
-```
-
 For building the production website and deploy it, run:
 Before deploying, create a file deploy.js in the tools folder with your param:
 ```

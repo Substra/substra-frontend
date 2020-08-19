@@ -31,15 +31,6 @@
         "coverage": "cd packages/test && npm run coverage",
         "cover": "cd packages/test && npm run cover",
         "eslint": "cd packages/eslint && npm run eslint",
-        "dev": "cd packages/electron && npm run dev",
-        "start-main-dev": "cd packages/electron && npm run start-main-dev",
-        "start:electron": "cd packages/electron && npm run start:electron",
-        "build:electron": "cd packages/electron && npm run build:electron",
-        "package": "cd packages/electron && npm run package",
-        "package-all": "cd packages/electron && npm run package-all",
-        "package-linux": "cd packages/electron && npm run package-linux",
-        "package-win": "cd packages/electron && npm run package-win",
-        "build-electron": "build --publish never",
         "deploy": "tools/deploy.js",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
         "storybook": "cd packages/ssr && npm run storybook",
@@ -49,48 +40,5 @@
         "precommit-msg",
         "test",
         "eslint"
-    ],
-    "browserslist": "electron 1.6",
-    "main": "./build/electron/index.js",
-    "build": {
-        "appId": "org.substra-frontend.website",
-        "productName": "Substra",
-        "directories": {
-            "buildResources": "resources",
-            "output": "release"
-        },
-        "files": [
-            "build/electron/**/*"
-        ],
-        "linux": {
-            "target": [
-                "deb",
-                "AppImage"
-            ]
-        },
-        "mac": {
-            "target": "dmg"
-        },
-        "win": {
-            "target": "nsis"
-        },
-        "nsis": {
-            "artifactName": "${productName}_${version}_win.${ext}"
-        },
-        "dmg": {
-            "artifactName": "${productName}_${version}_mac.${ext}",
-            "contents": [
-                {
-                    "x": 130,
-                    "y": 220
-                },
-                {
-                    "x": 410,
-                    "y": 220,
-                    "type": "link",
-                    "path": "/Applications"
-                }
-            ]
-        }
-    }
+    ]
 }
