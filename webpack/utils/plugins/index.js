@@ -12,8 +12,6 @@ import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import WriteFilePlugin from 'write-file-webpack-plugin';
 
 
-import RavenPlugin from './tools/ravenPlugin';
-
 import definePlugin from './definePlugin';
 // import dll from './dll';
 import pwaManifest from './pwaManifest';
@@ -27,7 +25,6 @@ const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV)),
 export default (env) => [
     ...(env === 'client' ? [
         pwaManifest,
-        new RavenPlugin(config.apps.frontend.raven_url),
         ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
             new StatsPlugin('stats.json'),
             new SWPrecacheWebpackPlugin({

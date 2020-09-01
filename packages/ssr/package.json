@@ -23,8 +23,6 @@
         "lodash": "4.17.15",
         "mime-types": "2.1.24",
         "prop-types": "15.7.2",
-        "raven-for-redux": "1.4.0",
-        "raven-js": "3.27.2",
         "react": "16.12.0",
         "react-dom": "16.12.0",
         "react-highcharts": "16.1.0",
