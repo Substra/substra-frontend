@@ -7,7 +7,7 @@ const script = `
                     window.navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
                       reg.onupdatefound = function() {
                         var installingWorker = reg.installing;
-                
+
                         installingWorker.onstatechange = function() {
                           switch (installingWorker.state) {
                             case 'installed':
@@ -17,7 +17,7 @@ const script = `
                                 console.log('Content is now available offline!');
                               }
                               break;
-                
+
                             case 'redundant':
                               console.error('The installing service worker became redundant.');
                               break;
@@ -27,15 +27,15 @@ const script = `
                     }).catch(function(e) {
                       console.error('Error during service worker registration:', e);
                     });
-                }   
+                }
             }
-                        
+
             window.addEventListener('online', registerServiceWorker);
             registerServiceWorker();
         });
     </script>
 `;
 
-const serviceWorker = process.env.NODE_ENV === 'production' || process.env.IS_STATIC === 'true' ? `${script}` : '';
+const serviceWorker = process.env.NODE_ENV === 'production' ? `${script}` : '';
 
 export default serviceWorker;

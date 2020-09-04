@@ -59,12 +59,6 @@ We use [Storybook](https://storybook.js.org/) for component development and test
 $ yarn storybook
 ```
 
-## Generate static for github pages
-
-Simply run `npm run static` for generating a `static` folder and an `index.html` file a the root of the project.
-
-You can also run `npm run static-debug` for debugging it in localhost with Webstorm.
-
 ## Test and Cover
 
 For running the test suite:

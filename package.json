@@ -25,8 +25,6 @@
         "build:client": "cd packages/ssr && npm run build:client",
         "build:node": "cd packages/ssr && npm run build:node",
         "serve": "cd packages/ssr && npm run serve",
-        "static": "cd packages/static && npm run static",
-        "static-debug": "cd packages/static && npm run static-debug",
         "test": "cd packages/test && npm run test",
         "coverage": "cd packages/test && npm run coverage",
         "cover": "cd packages/test && npm run cover",
