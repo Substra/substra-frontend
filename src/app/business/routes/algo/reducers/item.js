@@ -8,7 +8,7 @@ export default (actionTypes) => {
         const reducedState = baseReducer(state, {type, payload});
 
         // know if item exists
-        const exists = payload && state.results.find((x) => x.pkhash === payload.pkhash);
+        const exists = payload && state.results.find((x) => x.key === payload.key);
 
         switch (type) {
             // override for updating if necessary
@@ -18,7 +18,7 @@ export default (actionTypes) => {
                     init: true,
                     results: !exists ? [...state.results, payload] : state.results.reduce((p, c) => [
                         ...p,
-                        ...(c.pkhash === payload.pkhash ? [{
+                        ...(c.key === payload.key ? [{
                             ...c,
                             ...payload,
                             description: {
@@ -34,11 +34,11 @@ export default (actionTypes) => {
                 return {
                     ...state,
                     results: !exists ? [...state.results, {
-                        pkhash: payload.pkhash,
+                        key: payload.key,
                         description: {content: payload.desc},
                     }] : state.results.reduce((p, c) => [
                         ...p,
-                        ...(c.pkhash === payload.pkhash ? [{
+                        ...(c.key === payload.key ? [{
                             ...c,
                             description: {
                                 ...c.description,
