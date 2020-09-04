@@ -46,14 +46,10 @@ index 8ee9a09a..5e777a1d 100644
 For testing with prod config:<br/>
 `yarn start:prod`
 
-For building the production website and deploy it, run:
-Before deploying, create a file deploy.js in the tools folder with your param:
+For building the production website, run:
 ```
 yarn build:main
-yarn deploy
 ```
-
-You can now stop the task on aws ECS, it will restart automatically, if you did not define an autoscaling policy.
 
 ## Storybook
 
