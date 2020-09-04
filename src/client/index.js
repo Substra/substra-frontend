@@ -13,8 +13,8 @@ FastClick.attach(document.body);
 
 const root = document.getElementById('root');
 
-// render for electron and static, hydrate for SSR
-if (process.env.IS_ELECTRON !== 'false' || process.env.IS_STATIC === 'true') {
+// render for static, hydrate for SSR
+if (process.env.IS_STATIC === 'true') {
     render(<App />, root);
 }
 else {

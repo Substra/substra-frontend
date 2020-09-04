@@ -12,7 +12,7 @@ class UniversalContent extends Component {
     }
 
     render() {
-        const U = universal(import('../../content/components/index'), {
+        const U = universal(import('./components/index'), {
             loading: <PulseLoader size={6} />,
             onLoad: (module, info, {reduxcontext, ...props}) => {
                 // need all models reducers

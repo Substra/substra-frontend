@@ -26,8 +26,6 @@ chrome-user-data
 .happypack
 release
 
-src/electron/main.prod.js*
-
 # Secrets used in dev
 devsecret.js
 encryption/*

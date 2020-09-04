@@ -12,7 +12,7 @@ import {refresh} from './actions';
 
 // need to pass different path for generating different chunks
 // https://github.com/faceyspacey/babel-plugin-universal-import#caveat
-const UniversalUser = universal(import('../user/components/index'), {
+const UniversalUser = universal(import('./components/index'), {
     loading: <PulseLoader />,
     ignoreBabelRename: true,
 });
