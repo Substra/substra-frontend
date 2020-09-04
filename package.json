@@ -31,7 +31,6 @@
         "coverage": "cd packages/test && npm run coverage",
         "cover": "cd packages/test && npm run cover",
         "eslint": "cd packages/eslint && npm run eslint",
-        "deploy": "tools/deploy.js",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
         "storybook": "cd packages/ssr && npm run storybook",
         "build-storybook": "cd packages/ssr && npm run build-storybook"

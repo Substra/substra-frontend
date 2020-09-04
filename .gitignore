@@ -30,8 +30,3 @@ release
 devsecret.js
 encryption/*
 .well-known
-
-# custom deploy script
-tools/deploy.js
-
-
