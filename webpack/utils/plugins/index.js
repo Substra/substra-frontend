@@ -25,7 +25,7 @@ const DEVELOPMENT = (['development', 'staging'].includes(process.env.NODE_ENV)),
 export default (env) => [
     ...(env === 'client' ? [
         pwaManifest,
-        ...(PRODUCTION || process.env.IS_STATIC === 'true' ? [
+        ...(PRODUCTION ? [
             new StatsPlugin('stats.json'),
             new SWPrecacheWebpackPlugin({
                 cacheId: config.appName,
