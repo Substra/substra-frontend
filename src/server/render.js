@@ -17,7 +17,7 @@ import vendors from '../../webpack/ssr/vendors';
 import App from '../app';
 import configureStore from './configureStore';
 import serviceWorker from './serviceWorker';
-import GlobalStyles from '../app/business/common/components/globalStyles';
+import GlobalStyles from '../app/common/components/globalStyles';
 
 
 // override variables between same built app, but not remote API
