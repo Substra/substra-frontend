@@ -45,7 +45,7 @@ export default (actionTypes) => (state = initialState, {type, payload}) => {
                 init: true,
                 results: state.results.reduce((p, c) => [
                     ...p,
-                    ...(c.pkhash === payload.id ? [{...c, description: {...c.description, content: payload.desc}}] : [c]),
+                    ...(c.key === payload.id ? [{...c, description: {...c.description, content: payload.desc}}] : [c]),
                 ], []),
                 descLoading: false,
                 descForbidden: false,

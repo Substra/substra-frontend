@@ -80,14 +80,14 @@ export const setOrderSaga = function* setOrderSaga({payload}) {
 };
 
 export const fetchItemDescriptionSagaFactory = (actions) => {
-    function* fetchItemDescriptionSaga(jwt, {payload: {pkhash, url}}) {
+    function* fetchItemDescriptionSaga(jwt, {payload: {key, url}}) {
         const {res, error, status} = yield call(fetchRaw, url, jwt);
         if (res && status === 200) {
-            yield put(actions.success({pkhash, desc: res}));
+            yield put(actions.success({key, desc: res}));
         }
         else {
             console.error(error, status);
-            yield put(actions.failure({pkhash, status}));
+            yield put(actions.failure({key, status}));
         }
     }
 

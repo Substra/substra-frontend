@@ -35,7 +35,7 @@ export const getOrderedResults = createDeepEqualSelector([results, order, isComp
 export const getItem = createDeepEqualSelector([itemResults, getSelectedResult, selected],
     (itemResults, selectedResult, selected) => ({
         ...selectedResult,
-        ...itemResults.find((o) => o.pkhash === selected),
+        ...itemResults.find((o) => o.key === selected),
     }),
 );
 

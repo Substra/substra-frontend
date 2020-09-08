@@ -17,7 +17,7 @@ function* fetchTabContentSaga({payload: tabIndex}) {
 
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
-            yield put(actions.item.description.request({pkhash: item.key, url: item.description.storageAddress}));
+            yield put(actions.item.description.request({key: item.key, url: item.description.storageAddress}));
         }
     }
 }
@@ -28,7 +28,7 @@ function* fetchDetailSaga({payload: {key}}) {
     // fetch current tab content if needed
     yield put(actions.item.tabIndex.set(state.objective.item.tabIndex));
 
-    const exists = state.objective.item.results.find((o) => o.pkhash === key);
+    const exists = state.objective.item.results.find((o) => o.key === key);
     if (!exists) {
         yield put(actions.item.request({key}));
     }
