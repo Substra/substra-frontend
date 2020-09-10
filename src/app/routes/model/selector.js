@@ -56,7 +56,6 @@ const rawListResults = (state, model) => state[model].list.results;
 const selected = (state, model) => state[model].list.selected;
 const rawItemResults = (state, model) => state[model].item.results;
 const order = (state, model) => state[model].order;
-const isComplex = (state) => state.search.isComplex;
 
 export const listResults = createDeepEqualSelector([rawListResults],
     (results) => results.map((models) => models.map(buildTypedTraintuple).map(buildTesttuples)),
@@ -97,11 +96,11 @@ const modelOrder = (order) => (o) => {
     return deepOrder(order)(o);
 };
 
-export const getOrderedResults = createDeepEqualSelector([results, order, isComplex],
-    (results, order, isComplex) => {
+export const getOrderedResults = createDeepEqualSelector([results, order],
+    (results, order) => {
         const res = results && results.length ? results.map((o) => !isEmpty(o) ? orderBy(o, [modelOrder(order)], [order.direction]) : o) : [];
 
-        return isComplex ? res : [uniqBy(flatten(res), (o) => o.traintuple.key)];
+        return [uniqBy(flatten(res), (o) => o.traintuple.key)];
     },
 );
 

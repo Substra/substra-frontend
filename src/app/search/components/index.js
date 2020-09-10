@@ -3,8 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 
-import ComplexSearchToggle from './complexSearchToggle';
-
 import {
     getSearchFilters, getSuggestions, getParentSuggestions, getIsInParentMode,
 } from '../selector';
@@ -40,6 +38,5 @@ const Wrapper = styled('div')`
 export default () => (
     <Wrapper>
         <ReduxSearchBar />
-        <ComplexSearchToggle />
     </Wrapper>
 );
