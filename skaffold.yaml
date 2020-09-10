@@ -43,3 +43,5 @@ deploy:
               - { host: substra-frontend.node-2.com, paths: ["/"] }
             annotations:
               kubernetes.io/ingress.class: nginx
+    flags:
+      install: ["--create-namespace"]
