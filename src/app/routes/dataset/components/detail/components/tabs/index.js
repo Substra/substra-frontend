@@ -74,10 +74,10 @@ const DatasetTabs = ({
         </TabPanel>
         <TabPanel>
             {loading && <PulseLoader size={6} />}
-            {!loading && item && item.trainDataSampleKeys && !!item.trainDataSampleKeys.length && (
-                <DataKeysTable dataKeys={item.trainDataSampleKeys} addNotification={addNotification} />
+            {!loading && item && item.train_data_sample_keys && !!item.train_data_sample_keys.length && (
+                <DataKeysTable dataKeys={item.train_data_sample_keys} addNotification={addNotification} />
             )}
-            {!loading && item && (!item.trainDataSampleKeys || (item.trainDataSampleKeys && !item.trainDataSampleKeys.length)) && (
+            {!loading && item && (!item.train_data_sample_keys || (item.train_data_sample_keys && !item.train_data_sample_keys.length)) && (
                 <>
                     <p>
                         No train data samples setup yet.
@@ -99,10 +99,10 @@ const DatasetTabs = ({
         </TabPanel>
         <TabPanel>
             {loading && <PulseLoader size={6} />}
-            {!loading && item && item.testDataSampleKeys && !!item.testDataSampleKeys.length && (
-                <DataKeysTable dataKeys={item.testDataSampleKeys} addNotification={addNotification} />
+            {!loading && item && item.test_data_sample_keys && !!item.test_data_sample_keys.length && (
+                <DataKeysTable dataKeys={item.test_data_sample_keys} addNotification={addNotification} />
             )}
-            {!loading && item && (!item.testDataSampleKeys || (item.testDataSampleKeys && !item.testDataSampleKeys.length)) && (
+            {!loading && item && (!item.test_data_sample_keys || (item.test_data_sample_keys && !item.test_data_sample_keys.length)) && (
                 <>
                     <p>
                         No test data samples setup yet.

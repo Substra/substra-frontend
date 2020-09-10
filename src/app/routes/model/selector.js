@@ -15,8 +15,8 @@ export const flattenUniq = (xs) => Array.from(xs.reduce(
 const buildTypedTraintuple = (model) => {
     let traintuple,
         type;
-    if (model.compositeTraintuple) {
-        traintuple = model.compositeTraintuple;
+    if (model.composite_traintuple) {
+        traintuple = model.composite_traintuple;
         type = 'composite';
     }
     else if (model.aggregatetuple) {

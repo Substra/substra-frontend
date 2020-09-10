@@ -8,7 +8,7 @@ const ObjectiveBase = ReduxBase();
 
 const download = {
     filename: 'metrics.py',
-    address: ['metrics', 'storageAddress'],
+    address: ['metrics', 'storage_address'],
     text: 'Download metrics',
 };
 

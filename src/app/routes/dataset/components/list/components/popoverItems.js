@@ -28,12 +28,12 @@ model, filterUp, addNotification, downloadFile, download, itemLoading,
             {!itemLoading && (
                 <>
                     <Action
-                        onClick={addNotification('trainDataSampleKeys', 'Train data samples keys successfully copied to clipboard!')}
+                        onClick={addNotification('train_data_sample_keys', 'Train data samples keys successfully copied to clipboard!')}
                     >
                         Copy all train data samples keys to clipboard
                     </Action>
                     <Action
-                        onClick={addNotification('testDataSampleKeys', 'Test data samples keys successfully copied to clipboard!')}
+                        onClick={addNotification('test_data_sample_keys', 'Test data samples keys successfully copied to clipboard!')}
                     >
                         Copy all test data samples keys to clipboard
                     </Action>
