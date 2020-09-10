@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 
-import ServiceWorker from './business/common/components/serviceWorker';
-import Content from './business/content/routes';
-import UserRoute from './business/user/routes';
+import ServiceWorker from './common/components/serviceWorker';
+import Content from './content/routes';
+import UserRoute from './user/routes';
 
 const Container = styled('div')`
     height: 100%;

@@ -3,7 +3,7 @@ import {hot} from 'react-hot-loader';
 
 import Root from './root';
 import store from './store';
-import GlobalStyles from '../app/business/common/components/globalStyles';
+import GlobalStyles from '../app/common/components/globalStyles';
 
 
 const App = () => (
