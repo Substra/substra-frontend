@@ -10,35 +10,32 @@ const datasetResults = (state) => state.dataset ? state.dataset.persistent.resul
 const algoResults = (state) => state.algo ? state.algo.persistent.results : null;
 const modelResults = (state) => state.model ? state.model.persistent.results : null;
 
-const getAlgoByType = (algoGroups, type) => algoGroups.reduce(
-    (allAlgosOfType, group) => [
+const getAlgoByType = (algos, type) => algos.reduce(
+    (allAlgosOfType, algo) => [
             ...allAlgosOfType,
-            ...group.reduce((algos, algo) => [
-                ...algos,
-                ...(algo.type === type ? [omit(algo, 'type')] : []),
-            ], []),
+            ...(algo.type === type ? [omit(algo, 'type')] : []),
         ],
     [],
 );
 
 const standardAlgoResults = createDeepEqualSelector([algoResults],
-    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'standard'),
+    (algoResults) => algoResults && getAlgoByType(algoResults, 'standard'),
 );
 const compositeAlgoResults = createDeepEqualSelector([algoResults],
-    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'composite'),
+    (algoResults) => algoResults && getAlgoByType(algoResults, 'composite'),
 );
 const aggregateAlgoResults = createDeepEqualSelector([algoResults],
-    (algoGroups) => algoGroups && getAlgoByType(algoGroups, 'aggregate'),
+    (algoResults) => algoResults && getAlgoByType(algoResults, 'aggregate'),
 );
 
 const traintupleKeys = createDeepEqualSelector([modelResults],
-    (modelResults) => modelResults && modelResults.length ? modelResults[0].map((o) => ({key: (o.traintuple && o.traintuple.key) || (o.composite_traintuple && o.composite_traintuple.key)})) : modelResults,
+    (modelResults) => modelResults && modelResults.length ? modelResults.map((o) => ({key: (o.traintuple && o.traintuple.key) || (o.composite_traintuple && o.composite_traintuple.key)})) : modelResults,
 );
 
 export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, aggregateAlgoResults, traintupleKeys],
     (location, objective, dataset, standardAlgo, compositeAlgo, aggregateAlgo, traintupleKeys) => ({
-        objective: objective && objective.length ? objective[0] : objective,
-        dataset: dataset && dataset.length ? dataset[0] : dataset,
+        objective,
+        dataset,
         algo: standardAlgo,
         composite_algo: compositeAlgo,
         aggregate_algo: aggregateAlgo,

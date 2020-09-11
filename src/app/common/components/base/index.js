@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {flatten, isEmpty, noop} from 'lodash';
+import {isEmpty, noop} from 'lodash';
 import uuidv4 from 'uuid/v4';
 
 import List from '../list/redux';
@@ -43,8 +43,7 @@ export class BaseComponent extends Component {
             downloadItem, item, results, download: {address, filename},
         } = this.props;
 
-        // item can be empty if we download from list with no expand on item
-        const object = item && !isEmpty(item) ? item : flatten(results).find((x) => x.key === o);
+        const object = item && !isEmpty(item) ? item : results.find((x) => x.key === o);
 
         const url = object ? address.reduce((p, c) => p[c], object) : '';
 
@@ -121,7 +120,7 @@ BaseComponent.propTypes = {
         address: PropTypes.arrayOf(PropTypes.string),
         filename: PropTypes.string,
     }),
-    results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
+    results: PropTypes.arrayOf(PropTypes.shape({})),
     selectedItem: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
     addNotification: PropTypes.func,
     setSearchState: PropTypes.func,

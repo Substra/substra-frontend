@@ -121,37 +121,28 @@ class List extends Component {
                             </PulseLoaderWrapper>
                         )}
                         {init && !loading && !results.length && (
-                            <p>
-                                There is no items
-                            </p>
+                            <NoItemFound model={model} />
                         )}
-                        {init && !loading && !!results.length
-                            && (results.map((o, i) => (
-                                <div key={i}>
-                                    {!!o.length && o.map((o) => (
-                                        <Item
-                                            key={o.key}
-                                            onClick={this.setSelected(o)}
-                                            onMouseEnter={this.hover(o)}
-                                            onMouseLeave={this.out(o)}
-                                            className={this.itemWrapper(o.key)}
-                                        >
-                                            <Title o={o} />
-                                            <Actions
-                                                model={model}
-                                                download={download}
-                                                item={o}
-                                                addNotification={addNotification}
-                                                filterUp={filterUp}
-                                                downloadFile={downloadFile}
-                                            />
-                                            {Metadata && <Metadata o={o} />}
-                                        </Item>
-                                        ))}
-                                    {!o.length && <NoItemFound model={model} />}
-                                </div>
-                            ))
-                        )}
+                        {init && !loading && !!results.length && results.map((o) => (
+                            <Item
+                                key={o.key}
+                                onClick={this.setSelected(o)}
+                                onMouseEnter={this.hover(o)}
+                                onMouseLeave={this.out(o)}
+                                className={this.itemWrapper(o.key)}
+                            >
+                                <Title o={o} />
+                                <Actions
+                                    model={model}
+                                    download={download}
+                                    item={o}
+                                    addNotification={addNotification}
+                                    filterUp={filterUp}
+                                    downloadFile={downloadFile}
+                                />
+                                {Metadata && <Metadata o={o} />}
+                            </Item>
+                        ))}
                     </PanelContent>
                 </PanelWrapper>
             </>
@@ -186,7 +177,7 @@ List.defaultProps = {
 List.propTypes = {
     init: PropTypes.bool,
     loading: PropTypes.bool,
-    results: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
+    results: PropTypes.arrayOf(PropTypes.shape({})),
     selected: PropTypes.string,
     order: PropTypes.shape({}),
     model: PropTypes.string,
