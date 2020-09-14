@@ -93,7 +93,7 @@ function* fetchTabContentSaga({payload: tabIndex}) {
 
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
-            yield put(actions.item.description.request({key: item.key, url: item.description.storageAddress}));
+            yield put(actions.item.description.request({key: item.key, url: item.description.storage_address}));
         }
     }
 }

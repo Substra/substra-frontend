@@ -145,7 +145,7 @@ BrowseRelatedMetadata.defaultProps = MetadataInterface.defaultProps;
 
 export const PermissionsMetadata = ({permissions}) => {
     const isPublic = permissions && permissions.process && permissions.process.public;
-    const authorizedIds = permissions && permissions.process && permissions.process.authorizedIDs;
+    const authorizedIds = permissions && permissions.process && permissions.process.authorized_ids;
     let message;
 
     if (isPublic) {
@@ -198,11 +198,11 @@ PermissionsMetadata.propTypes = {
     permissions: PropTypes.shape({
         request: PropTypes.shape({
             isPublic: PropTypes.bool,
-            authorizedIDs: PropTypes.array,
+            authorized_ids: PropTypes.array,
         }),
         process: PropTypes.shape({
             public: PropTypes.bool,
-            authorizedIDs: PropTypes.array,
+            authorized_ids: PropTypes.array,
         }),
     }),
 };

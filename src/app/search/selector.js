@@ -32,7 +32,7 @@ const aggregateAlgoResults = createDeepEqualSelector([algoResults],
 );
 
 const traintupleKeys = createDeepEqualSelector([modelResults],
-    (modelResults) => modelResults && modelResults.length ? modelResults[0].map((o) => ({key: (o.traintuple && o.traintuple.key) || (o.compositeTraintuple && o.compositeTraintuple.key)})) : modelResults,
+    (modelResults) => modelResults && modelResults.length ? modelResults[0].map((o) => ({key: (o.traintuple && o.traintuple.key) || (o.composite_traintuple && o.composite_traintuple.key)})) : modelResults,
 );
 
 export const getSearchFilters = createDeepEqualSelector([location, objectiveResults, datasetResults, standardAlgoResults, compositeAlgoResults, aggregateAlgoResults, traintupleKeys],

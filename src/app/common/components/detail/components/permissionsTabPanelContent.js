@@ -8,7 +8,7 @@ import CodeSample from '../../codeSample';
 
 const PermissionsTabPanelContent = ({permissions, owner, asset}) => {
     const isPublic = permissions && permissions.process && permissions.process.public;
-    const authorizedIDs = permissions && permissions.process && permissions.process.authorizedIDs;
+    const authorizedIDs = permissions && permissions.process && permissions.process.authorized_ids;
 
     return (
         <>
