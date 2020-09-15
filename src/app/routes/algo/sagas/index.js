@@ -19,7 +19,7 @@ const fetchItemApiByType = {
     standard: fetchStandardAlgoApi,
 };
 
-const withAlgoType = (list, type) => list.map((group) => group.map((algo) => ({...algo, type})));
+const withAlgoType = (list, type) => list.map((algo) => ({...algo, type}));
 
 function* innerFetchItemSaga(jwt, {payload: {key, type}}) {
     const {error, status, item} = yield call(fetchItemApiByType[type], {}, key, jwt);
