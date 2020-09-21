@@ -1,4 +1,9 @@
-import baseReducerBuilder, {initialState} from '../../../common/reducers/item';
+import baseReducerBuilder, {initialState as baseInitialState} from '../../../common/reducers/item';
+
+const initialState = {
+    ...baseInitialState,
+    leaderboardLoading: false,
+};
 
 export default (actionTypes) => {
     const baseReducer = baseReducerBuilder(actionTypes);
@@ -49,6 +54,31 @@ export default (actionTypes) => {
                         }] : [c]),
                     ], []),
                     descLoading: false,
+                };
+            case actionTypes.item.leaderboard.REQUEST:
+                return {
+                    ...state,
+                    leaderboardLoading: true,
+                };
+            case actionTypes.item.leaderboard.SUCCESS:
+                return {
+                    ...state,
+                    results: !exists ? [...state.results, {
+                        key: payload.key,
+                        leaderboard: payload.leaderboard,
+                    }] : state.results.reduce((p, c) => [
+                        ...p,
+                        ...(c.key === payload.key ? [{
+                            ...c,
+                            leaderboard: payload.leaderboard,
+                        }] : [c]),
+                    ], []),
+                    leaderboardLoading: false,
+                };
+            case actionTypes.item.leaderboard.FAILURE:
+                return {
+                    ...state,
+                    leaderboardLoading: false,
                 };
             default:
                 return reducedState;

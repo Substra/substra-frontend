@@ -13,6 +13,7 @@ export const actionTypes = {
     item: {
         ...createRequestActionTypes(`${prefix}_ITEM`),
         description: createRequestActionTypes(`${prefix}_ITEM_DESCRIPTION`),
+        leaderboard: createRequestActionTypes(`${prefix}_ITEM_LEADERBOARD`),
         download: createRequestActionTypes(`${prefix}_ITEM_DOWNLOAD`),
         tabIndex: {
             SET: `${prefix}_TAB_INDEX`,
@@ -48,6 +49,11 @@ export default {
             request: createAction(actionTypes.item.download.REQUEST),
             success: createAction(actionTypes.item.download.SUCCESS),
             failure: createAction(actionTypes.item.download.FAILURE),
+        },
+        leaderboard: {
+            request: createAction(actionTypes.item.leaderboard.REQUEST),
+            success: createAction(actionTypes.item.leaderboard.SUCCESS),
+            failure: createAction(actionTypes.item.leaderboard.FAILURE),
         },
         tabIndex: {
             set: createAction(actionTypes.item.tabIndex.SET),

@@ -12,6 +12,7 @@ const mapStateToProps = (state, {model}) => ({
     descLoading: state[model].item.descLoading,
     descForbidden: state[model].item.descLoading,
     tabIndex: state[model].item.tabIndex,
+    leaderboardLoading: state[model].item.leaderboardLoading,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
