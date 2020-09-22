@@ -16,13 +16,14 @@ import {
 } from '../../../../../../common/components/tabs';
 import {RoundedButton} from '../../../../../../common/components/roundedButton';
 import {DownloadSimple} from '../../../../../../common/components/icons/';
+import Leaderboard from '../leaderboard';
 
 const Span = styled('span')`
     margin-right: ${spacingNormal};
 `;
 
 const ObjectiveTabs = ({
-descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex,
+descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex, leaderboardLoading,
 }) => (
     <Tabs
         selectedIndex={tabIndex}
@@ -32,6 +33,7 @@ descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex,
             <Tab>Description</Tab>
             <Tab>Metrics</Tab>
             <Tab>Permissions</Tab>
+            <Tab>Leaderboard</Tab>
         </TabList>
         <TabPanel>
             {descLoading && <PulseLoader size={6} />}
@@ -58,6 +60,10 @@ descLoading, descForbidden, item, downloadFile, tabIndex, setTabIndex,
                 asset="objective"
             />
         </TabPanel>
+        <TabPanel>
+            {leaderboardLoading && <PulseLoader size={6} />}
+            {!leaderboardLoading && <Leaderboard item={item} />}
+        </TabPanel>
     </Tabs>
 );
 
@@ -69,6 +75,7 @@ ObjectiveTabs.propTypes = {
     tabIndex: PropTypes.number,
     downloadFile: PropTypes.func,
     setTabIndex: PropTypes.func,
+    leaderboardLoading: PropTypes.bool,
 };
 
 ObjectiveTabs.defaultProps = {
@@ -78,6 +85,7 @@ ObjectiveTabs.defaultProps = {
     tabIndex: 0,
     downloadFile: noop,
     setTabIndex: noop,
+    leaderboardLoading: true,
 };
 
 export default ObjectiveTabs;

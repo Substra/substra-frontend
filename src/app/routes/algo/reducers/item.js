@@ -1,6 +1,4 @@
-import baseReducerBuilder, {initialState as baseInitialState} from '../../../common/reducers/item';
-
-const initialState = baseInitialState;
+import baseReducerBuilder, {initialState} from '../../../common/reducers/item';
 
 export default (actionTypes) => {
     const baseReducer = baseReducerBuilder(actionTypes);

@@ -1,12 +1,12 @@
 import {
-    takeLatest, takeEvery, all, select, put,
+    takeLatest, takeEvery, all, select, put, call,
 } from 'redux-saga/effects';
 
 import actions, {actionTypes} from '../actions';
-import {fetchListApi, fetchItemApi} from '../api';
+import {fetchListApi, fetchItemApi, fetchItemLeaderboardApi} from '../api';
 import {
     setOrderSaga,
-    fetchItemDescriptionSagaFactory, fetchListSagaFactory, fetchItemSagaFactory, downloadItemSagaFactory,
+    fetchItemDescriptionSagaFactory, fetchListSagaFactory, fetchItemSagaFactory, downloadItemSagaFactory, withJWT,
 } from '../../../common/sagas';
 import {getItem} from '../../../common/selector';
 
@@ -18,6 +18,9 @@ function* fetchTabContentSaga({payload: tabIndex}) {
     if (item) {
         if (item.description && !item.description.content && tabIndex === 0) {
             yield put(actions.item.description.request({key: item.key, url: item.description.storage_address}));
+        }
+        if (!item.leaderboard && tabIndex === 3) {
+            yield put(actions.item.leaderboard.request({key: item.key}));
         }
     }
 }
@@ -34,6 +37,19 @@ function* fetchDetailSaga({payload: {key}}) {
     }
 }
 
+function* innerFetchItemLeaderboardSaga(jwt, {payload: {key}}) {
+    const {res, error, status} = yield call(fetchItemLeaderboardApi, key, jwt);
+    if (res && status === 200) {
+        yield put(actions.item.leaderboard.success({key, leaderboard: res.testtuples}));
+    }
+    else {
+        console.error(error, status);
+        yield put(actions.item.leaderboard.failure({key, status}));
+    }
+}
+
+const fetchItemLeaderboardSaga = withJWT(innerFetchItemLeaderboardSaga, actions.item.leaderboard.failure);
+
 /* istanbul ignore next */
 const sagas = function* sagas() {
     yield all([
@@ -43,6 +59,8 @@ const sagas = function* sagas() {
 
         takeEvery(actionTypes.item.REQUEST, fetchItemSagaFactory(actions.item, fetchItemApi)),
         takeLatest(actionTypes.item.description.REQUEST, fetchItemDescriptionSagaFactory(actions.item.description)),
+
+        takeLatest(actionTypes.item.leaderboard.REQUEST, fetchItemLeaderboardSaga),
 
         takeEvery(actionTypes.item.download.REQUEST, downloadItemSagaFactory(actions.item.download)),
 
