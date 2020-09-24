@@ -20,7 +20,7 @@
         "file-saver": "2.0.2",
         "history": "4.10.1",
         "keycode": "2.2.0",
-        "lodash": "4.17.15",
+        "lodash": "4.17.20",
         "mime-types": "2.1.24",
         "prop-types": "15.7.2",
         "react": "16.12.0",
