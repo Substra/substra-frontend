@@ -93,6 +93,7 @@
         "browser-sync-webpack-plugin": "2.2.2",
         "btoa": "1.2.1",
         "compression": "1.7.4",
+        "concurrently": "5.0.2",
         "config": "3.2.5",
         "cookie-parser": "1.4.4",
         "cross-env": "6.0.3",
@@ -130,10 +131,10 @@
         "start:prod": "npm run clean && npm run build:main && npm run serve",
         "serve": "cd ../../ && cross-env NODE_ENV=production babel-node build/ssr/index.js",
         "build:main": "concurrently \"npm run build:client\" \"npm run build:server\" && npm run build:node",
-        "build:client": "cd ../../ && rimraf build/client && cross-env NODE_ENV=production babel-node ./node_modules/webpack/bin/webpack --progress --config webpack/ssr/client.js && cd -",
-        "build:server": "cd ../../ && rimraf build/server && cross-env NODE_ENV=production babel-node ./node_modules/webpack/bin/webpack --progress --config webpack/ssr/server.js && cd -",
+        "build:client": "cd ../../ && rm -rf build/client && cross-env NODE_ENV=production babel-node ./node_modules/webpack/bin/webpack --progress --config webpack/ssr/client.js && cd -",
+        "build:server": "cd ../../ && rm -rf build/server && cross-env NODE_ENV=production babel-node ./node_modules/webpack/bin/webpack --progress --config webpack/ssr/server.js && cd -",
         "build:node": "cd ../../ && cross-env NODE_ENV=production babel src/server/index.js -o build/ssr/index.js && ./node_modules/.bin/terser build/ssr/index.js -o build/ssr/index.js && cd -",
-        "clean": "cd ../../ && rimraf build && cd -",
+        "clean": "cd ../../ && rm -rf build && cd -",
         "storybook": "cd ../../ && start-storybook -p 6006 && cd -",
         "build-storybook": "cd ../../ && build-storybook && cd -"
     }
