@@ -14,12 +14,12 @@ import BrowseRelatedLink from '../../../../../common/components/detail/component
 const BrowseRelatedLinks = ({
                                 item, unselectAlgo, unselectObjective, unselectDataset,
                             }) => {
-    const modelHash = item && item.traintuple && item.traintuple.out_model && item.traintuple.out_model.hash;
+    const modelKey = item && item.traintuple && item.traintuple.out_model && item.traintuple.out_model.key;
     const hasPrefix = item && item.traintuple && ['composite', 'aggregate'].includes(item.traintuple.type);
     let algoFilter,
         datasetFilter;
-    if (modelHash) {
-        algoFilter = datasetFilter = `model:hash:${modelHash}`;
+    if (modelKey) {
+        algoFilter = datasetFilter = `model:key:${modelKey}`;
     }
     else {
         const algoPrefix = hasPrefix ? `${item.traintuple.type}_algo` : 'algo';
@@ -29,7 +29,7 @@ const BrowseRelatedLinks = ({
             ...item.testtuples,
         ]
             .reduce((keys, tuple) => {
-                const key = tuple && tuple.dataset && tuple.dataset.opener_hash;
+                const key = tuple && tuple.dataset && tuple.dataset.key;
                 return [
                     ...keys,
                     ...(key ? [`dataset:key:${key}`] : []),

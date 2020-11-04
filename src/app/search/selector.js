@@ -65,7 +65,7 @@ export const getSuggestions = createDeepEqualSelector([getSearchFilters, item, g
                     ...p,
                     ...(c.name ? [{label: `name:${encodeURIComponent(c.name)}`, uuid: `${c.key}_name`}] : []),
                     ...(c.key ? [{label: `key:${c.key}`, uuid: `${c.key}_key`}] : []),
-                    ...(c.hash ? [{label: c.hash, uuid: `${c.hash}_hash`}] : []),
+                    ...(c.checksum ? [{label: c.checksum, uuid: `${c.checksum}_checksum`}] : []),
 
                     // add metrics name if exists for objective
                     ...(c.metrics && c.metrics.name ? [{

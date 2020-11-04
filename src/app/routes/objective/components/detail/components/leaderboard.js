@@ -35,7 +35,7 @@ const Leaderboard = ({item}) => (
                                 <BrowseRelatedLink
                                     model="algo"
                                     label={testtuple.algo.name}
-                                    filter={`algo:key:${testtuple.algo.hash}-OR-composite_algo:key:${testtuple.algo.hash}`}
+                                    filter={`algo:key:${testtuple.algo.key}-OR-composite_algo:key:${testtuple.algo.key}`}
                                 />
                             </Td>
                             <Td className={largeColumn}>
