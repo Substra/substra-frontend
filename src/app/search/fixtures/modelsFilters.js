@@ -1,14 +1,14 @@
 import objective from './objective';
 import dataset from './dataset';
 import algo from './algo';
-import {outModelsHashes} from './traintuples';
+import {outModelsKeys} from './traintuples';
 
 export default {
     objective,
     dataset,
     algo,
-    model: outModelsHashes, // output model i.e trained model (updated)
-    model_parents: outModelsHashes,
-    model_children: outModelsHashes,
-    model_family: outModelsHashes,
+    model: outModelsKeys, // output model i.e trained model (updated)
+    model_parents: outModelsKeys,
+    model_children: outModelsKeys,
+    model_family: outModelsKeys,
 };

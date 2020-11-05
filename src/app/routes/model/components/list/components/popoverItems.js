@@ -22,7 +22,7 @@ CopyPopItem.propTypes = {
 
 
 const StandardModelPopoverItems = ({item, filterUp, addNotification}) => {
-    const modelKey = deepGet('traintuple.out_model.hash')(item);
+    const modelKey = deepGet('traintuple.out_model.key')(item);
     const traintupleKey = deepGet('traintuple.key')(item);
     return (
         <>
@@ -37,8 +37,8 @@ const StandardModelPopoverItems = ({item, filterUp, addNotification}) => {
 
 
 const CompositeModelPopoverItems = ({item, filterUp, addNotification}) => {
-    const headModelKey = deepGet('traintuple.out_head_model.out_model.hash')(item);
-    const trunkModelKey = deepGet('traintuple.out_trunk_model.out_model.hash')(item);
+    const headModelKey = deepGet('traintuple.out_head_model.out_model.key')(item);
+    const trunkModelKey = deepGet('traintuple.out_trunk_model.out_model.key')(item);
     const traintupleKey = deepGet('traintuple.key')(item);
 
     return (
@@ -52,7 +52,7 @@ const CompositeModelPopoverItems = ({item, filterUp, addNotification}) => {
 };
 
 const AggregateModelPopoverItems = ({item, filterUp, addNotification}) => {
-    const modelKey = deepGet('traintuple.out_model.hash')(item);
+    const modelKey = deepGet('traintuple.out_model.key')(item);
     const traintupleKey = deepGet('traintuple.key')(item);
 
     return (

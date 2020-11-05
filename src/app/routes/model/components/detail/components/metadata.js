@@ -49,20 +49,20 @@ class Metadata extends Component {
                 {type === 'standard' && (
                     <>
                         <KeyMetadata addNotification={this.addNotification} assetName="traintuple" assetKey={item.traintuple.key} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.out_model ? item.traintuple.out_model.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.out_model ? item.traintuple.out_model.key : 'N/A'} />
                     </>
                 )}
                 {type === 'composite' && (
                     <>
                         <KeyMetadata addNotification={this.addNotification} assetName="composite traintuple" assetKey={item.traintuple.key} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.out_head_model.out_model ? item.traintuple.out_head_model.out_model.hash : 'N/A'} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.out_trunk_model.out_model ? item.traintuple.out_trunk_model.out_model.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="head model" assetKey={item.traintuple.out_head_model.out_model ? item.traintuple.out_head_model.out_model.key : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="trunk model" assetKey={item.traintuple.out_trunk_model.out_model ? item.traintuple.out_trunk_model.out_model.key : 'N/A'} />
                     </>
                 )}
                 {type === 'aggregate' && (
                     <>
                         <KeyMetadata addNotification={this.addNotification} assetName="aggregatetuple" assetKey={item.traintuple.key} />
-                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.out_model ? item.traintuple.out_model.hash : 'N/A'} />
+                        <KeyMetadata addNotification={this.addNotification} assetName="model" assetKey={item.traintuple.out_model ? item.traintuple.out_model.key : 'N/A'} />
                     </>
                 )}
                 <StatusMetadata status={item.traintuple.status} />
