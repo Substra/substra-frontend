@@ -1,0 +1,57 @@
+name: Helm
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+    - 'charts/**'
+  pull_request:
+    branches:
+      - "master"
+    paths:
+    - 'charts/**'
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/setup-helm@v1
+        with:
+            version: 'v3.2.3'
+        id: install
+      - name: Lint Chart
+        run: helm lint charts/substra-frontend
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/setup-helm@v1
+        with:
+            version: 'v3.2.3'
+        id: install
+      - name: Package chart
+        run: |
+          helm dep update charts/substra-frontend
+          helm package charts/substra-frontend
+      - name: Setup key
+        run: |
+          mkdir $HOME/.ssh
+          echo "${{ secrets.CHARTS_ACCESS_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+      - name: Publish chart
+        run: |
+          git config --global user.email "gh-actions@github.com"
+          git config --global user.name "GitHub Action"
+          git clone git@github.com:SubstraFoundation/charts.git substra-charts
+          mv substra-frontend-* substra-charts/
+          cd substra-charts
+          helm repo index .
+          git add .
+          git commit --message "GitHub Action: ${{ github.repository }}@${{ github.sha }}"
+          git push --quiet --set-upstream origin master
