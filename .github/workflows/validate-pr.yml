@@ -1,0 +1,19 @@
+name: Validate PR
+on:
+    - pull_request
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+            - name: Install node modules
+              run: npm install
+            - name: ESLint
+              run: npm run eslint
+            - name: Prettier
+              run: npm run prettier
+              # run this step even if the previous one failed
+              if: always()

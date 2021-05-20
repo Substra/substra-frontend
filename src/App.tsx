@@ -1,9 +1,26 @@
-import React from 'react'
+import React from 'react';
+import { Route, Switch } from 'wouter';
 
-const App = () => (
-  <div>
-    <h1>New Connect frontend</h1>
-  </div>
-);
+import AppLayout from '@/components/layout/applayout/AppLayoutContainer';
+import { ROUTES } from '@/routes';
 
-export default App
+const App = (): JSX.Element => {
+    return (
+        <AppLayout>
+            <Switch>
+                {Object.values(ROUTES).map((route) => {
+                    return (
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            component={route.component}
+                        />
+                    );
+                })}
+                <Route>404 NOT FOUND</Route>
+            </Switch>
+        </AppLayout>
+    );
+};
+
+export default App;

@@ -1,20 +1,26 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client"],
-    "allowJs": false,
-    "skipLibCheck": false,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
-  },
-  "include": ["./src"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "target": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "types": ["vite/client", "@emotion/react/types/css-prop"],
+        "typeRoots": ["node_modules/@types"],
+        "allowJs": false,
+        "skipLibCheck": false,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "@emotion/react"
+    },
+    "include": ["./src"]
 }
