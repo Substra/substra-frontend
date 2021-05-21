@@ -6,7 +6,8 @@
         "build": "tsc && vite build",
         "serve": "vite preview",
         "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0",
-        "prettier": "npx prettier --check ."
+        "prettier": "npx prettier --check .",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@emotion/react": "11.1.5",
@@ -34,7 +35,8 @@
         "prettier": "2.2.1",
         "typescript": "4.1.2",
         "vite": "2.2.3",
-        "vite-plugin-react-svg": "0.2.0"
+        "vite-plugin-react-svg": "0.2.0",
+        "husky": "^6.0.0"
     },
     "engines": {
         "node": ">= 14.14.0"
