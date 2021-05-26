@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+.gitattributes
+.github
+
+# Build step outputs
+dist/
+
+# Docker configuration
+.dockerignore
+Dockerfile
+skaffold.yaml
+
+# Helm configuration
+charts/
+skaffold-values/
+
+# NPM dependencies
+node_modules/
+package-lock.json

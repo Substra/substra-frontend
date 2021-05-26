@@ -7,3 +7,5 @@ dist
 dist-ssr
 *.local
 package-lock.json
+charts/
+.vscode
