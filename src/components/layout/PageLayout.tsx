@@ -20,10 +20,7 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div<PageLayoutProps>`
-    display: flex;
-    padding: O 50px;
-    justify-content: flex-start;
-    align-items: stretch;
+    padding: 0 120px;
     margin: ${Spaces.medium} auto;
     max-width: ${(props) =>
         props.sider ? `calc(~'100vw - ${SIDER_WIDTH})` : ''};
@@ -31,7 +28,7 @@ const ContentContainer = styled.div<PageLayoutProps>`
 
 const NavigationContainer = styled.div`
     position: fixed;
-    top: 120px;
+    top: 96px;
     left: 32px;
     z-index: 1;
 `;

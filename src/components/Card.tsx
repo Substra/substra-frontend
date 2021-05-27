@@ -8,6 +8,7 @@ const Card = styled.div`
     border: 1px solid ${Colors.border};
     box-shadow: 0 0 8px -2px ${Colors.veryLightContent};
     justify-content: start;
+    background-color: white;
 `;
 
 export default Card;

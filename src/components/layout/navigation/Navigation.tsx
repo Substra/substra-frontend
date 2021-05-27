@@ -1,14 +1,16 @@
+/** @jsx jsx */
 import React from 'react';
-import styled from '@emotion/styled';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
+import { useRoute, Link } from 'wouter';
 
-import TeamIcon from '@/assets/svg/illustrations/icon-blue-team';
+import AlgorithmIcon from '@/assets/svg/algorithm-icon';
+import ComputePlanIcon from '@/assets/svg/compute-plan-icon';
+import DatasetIcon from '@/assets/svg/dataset-icon';
 import { Colors, Mixins, Spaces } from '@/assets/theme';
+import { ROUTES } from '@/routes';
 
-type LinkProps = {
-    isActive: boolean;
-};
-
-const Link = styled.a<LinkProps>`
+const linkStyle = css`
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -18,55 +20,70 @@ const Link = styled.a<LinkProps>`
     border: 1px solid ${Colors.border};
     background-color: white;
     box-shadow: 0 0 8px 0 ${Colors.veryLightContent};
-    padding-left: ${Spaces.medium};
-    padding-right: 12px;
-    margin-bottom: 8px;
-    font-weight: 900;
-    text-decoration: underline;
-    &:hover {
-        max-width: 160px;
-        background-color: white;
-        & span {
-            opacity: 1;
-        }
+    padding: 0 ${Spaces.extraLarge} 0 11px;
+    margin-bottom: ${Spaces.small};
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all ${Mixins.transitionStyle};
+    color: ${Colors.primary};
+
+    & > .icon {
+        display: inline-flex;
+        margin-right: ${Spaces.medium};
+        width: 24px;
+        height: 24px;
     }
-    & span {
+
+    & > .label {
         opacity: 0;
         white-space: nowrap;
         transition: all ${Mixins.transitionStyle};
     }
-    transition: all ${Mixins.transitionStyle};
-    border-color: ${(props) =>
-        props.isActive ? Colors.primary : Colors.border};
+
+    &:hover {
+        max-width: 190px;
+
+        & > .label {
+            opacity: 1;
+        }
+    }
 `;
 
-const Title = styled.span`
-    opacity: 0;
-    white-space: nowrap;
-    transition: all ${Mixins.transitionStyle};
+const activeLinkStyle = css`
+    border: 1px solid ${Colors.primary};
+    background-color: ${Colors.darkerBackground};
 `;
 
 const Navigation = (): JSX.Element => {
-    const renderLink = (
-        label: string,
-        url: string,
-        icon: JSX.Element,
-        isActive: boolean
-    ) => {
+    const renderLink = (label: string, url: string, icon: JSX.Element) => {
+        const [isActive] = useRoute(url);
+
         return (
-            <Link isActive={isActive} href={url}>
-                <TeamIcon width={32} height={32} />
-                <Title>{label}</Title>
+            <Link css={[linkStyle, isActive && activeLinkStyle]} href={url}>
+                <span className="icon">{icon}</span>
+                <span className="label">{label}</span>
             </Link>
         );
     };
 
     return (
         <div>
-            {renderLink('login', '/login', 'u', true)}
-            {renderLink('dashboard', '/dashboard', 'u', false)}
-            {renderLink('Compute plan', '/computePlan', 'u', false)}
-            {renderLink('Something else', 'url', 'u', true)}
+            {renderLink(
+                'Datasets',
+                ROUTES.DATASETS.path,
+                <DatasetIcon
+                    css={css`
+                        margin-left: 2px;
+                    `}
+                />
+            )}
+            {renderLink('Algos and Metrics', '/algorithms', <AlgorithmIcon />)}
+            {renderLink(
+                'Compute Plans',
+                ROUTES.COMPUTE_PLAN.path,
+                <ComputePlanIcon />
+            )}
         </div>
     );
 };

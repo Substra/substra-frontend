@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 
 import {
     postLogIn,
     loginPayload,
-    postLogOut,
     loginData,
+    refreshToken as getRefreshToken,
+    getLogOut,
 } from '@/modules/user/UserApi';
 
 interface UserState {
@@ -13,8 +14,7 @@ interface UserState {
     error: string;
     loading: boolean;
     refreshLoading: boolean;
-    init: boolean;
-    expiration: Date | null;
+    expiration: number | null;
     payload: loginData;
 }
 
@@ -33,7 +33,14 @@ const initialState: UserState = {
     error: '',
     loading: false,
     refreshLoading: false,
-    init: false,
+    /**
+     * expiration is a timestamp, it can be fetched as a date using the following selector:
+     *
+     * const expiration = useSelector((state: RootState) => new Date(state.user.expiration * 1000);
+     *
+     * It cannot be stored in the state as a Date object because Date objects are mutable and non
+     * serializable.
+     */
     expiration: null,
     payload: defaultPayload,
 };
@@ -46,7 +53,7 @@ export const logIn = createAsyncThunk<
     }
 >('USERS_LOGIN', async (payload, thunkAPI) => {
     try {
-        const response: AxiosResponse<loginData> = await postLogIn(payload);
+        const response = await postLogIn(payload);
         return response.data;
     } catch (err) {
         const error: AxiosError<loginError> = err;
@@ -57,9 +64,34 @@ export const logIn = createAsyncThunk<
     }
 });
 
-export const logOut = createAsyncThunk('USERS_LOGOUT', async () => {
-    const response = await postLogOut();
-    return response;
+export const logOut = createAsyncThunk('USERS_LOGOUT', async (_, thunkAPI) => {
+    try {
+        const response = await getLogOut();
+        return response.data;
+    } catch (err) {
+        if (err.isAxiosError) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
+
+        return thunkAPI.rejectWithValue(err);
+    }
+});
+
+export const refreshToken = createAsyncThunk<
+    loginData,
+    void,
+    { rejectValue: loginError }
+>('USERS_REFRESH_TOKEN', async (_, thunkAPI) => {
+    try {
+        const response = await getRefreshToken();
+        return response.data;
+    } catch (err) {
+        if (err.isAxiosError) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
+
+        return thunkAPI.rejectWithValue(err);
+    }
 });
 
 export const userSlice = createSlice({
@@ -75,10 +107,9 @@ export const userSlice = createSlice({
             })
             .addCase(logIn.fulfilled, (state, { payload }) => {
                 state.authenticated = true;
-                state.init = true;
                 state.error = '';
                 state.loading = false;
-                state.expiration = new Date(payload.exp * 1000);
+                state.expiration = payload.exp;
                 state.payload = payload;
             })
             .addCase(logIn.rejected, (state, action) => {
@@ -86,12 +117,24 @@ export const userSlice = createSlice({
                     state.error = action.payload.detail;
                 }
                 state.authenticated = false;
-                state.init = true;
                 state.loading = false;
-                state.expiration = new Date();
+                state.expiration = null;
                 state.payload = defaultPayload;
             })
             .addCase(logOut.fulfilled, (state) => {
+                state.authenticated = false;
+            })
+            .addCase(refreshToken.pending, (state) => {
+                state.refreshLoading = true;
+            })
+            .addCase(refreshToken.fulfilled, (state, { payload }) => {
+                state.refreshLoading = false;
+                state.authenticated = true;
+                state.expiration = payload.exp;
+                state.payload = payload;
+            })
+            .addCase(refreshToken.rejected, (state) => {
+                state.refreshLoading = false;
                 state.authenticated = false;
             });
     },

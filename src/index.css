@@ -152,3 +152,9 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+/* Custom default behavior */
+a,
+button {
+    cursor: pointer;
+}

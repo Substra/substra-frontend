@@ -1,31 +1,33 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
+import { Colors } from '@/assets/theme';
 import Header from '@/components/layout/header/Header';
 
 type AppLayoutProps = {
     children: React.ReactNode;
-    authenticated: boolean;
 };
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    background-color: ${Colors.background};
+    height: 100vh;
+    width: 100vw;
 `;
 
 const Content = styled.div`
-    width: 100%;
+    flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    padding: 0 120px;
+    overflow-x: auto;
+    overflow-y: auto;
 `;
 
-const AppLayout = ({
-    children,
-    authenticated,
-}: AppLayoutProps): JSX.Element => {
+const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
     return (
         <Container>
-            {authenticated && <Header title={'Janssen'} />}
+            <Header title={'Janssen'} />
             <Content>{children}</Content>
         </Container>
     );

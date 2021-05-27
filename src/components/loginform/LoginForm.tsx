@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React, { Fragment, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { jsx } from '@emotion/react';
+import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Card from '@/components/Card';
@@ -24,11 +24,11 @@ const ErrorContainer = styled.div`
     }
 `;
 
-const cardStyle = {
-    width: '50%',
-    maxWidth: '420px',
-    padding: '48px 32px',
-};
+const cardStyle = css`
+    width: 50%;
+    max-width: 420px;
+    padding: 48px 32px;
+`;
 
 const LoginForm = ({ submitLogin, error }: LoginFormProps): JSX.Element => {
     const [username, setUsername] = useState<string>('');

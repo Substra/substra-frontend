@@ -1,8 +1,11 @@
+import { AxiosPromise } from 'axios';
+
 import API from '@/libs/request';
 
 const USERS_URL = {
     LOGIN: `/user/login/?format=json`,
     LOGOUT: `/user/logout/`,
+    REFRESH: '/user/refresh/',
 };
 
 export type loginPayload = {
@@ -17,11 +20,14 @@ export type loginData = {
     user_id: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const postLogIn = (payload: loginPayload) => {
+export const postLogIn = (payload: loginPayload): AxiosPromise<loginData> => {
     return API.post(USERS_URL.LOGIN, payload);
 };
 
-export const postLogOut = (): Promise<void> => {
+export const getLogOut = (): AxiosPromise<void> => {
     return API.get(USERS_URL.LOGOUT);
+};
+
+export const refreshToken = (): AxiosPromise<loginData> => {
+    return API.post(USERS_URL.REFRESH);
 };
