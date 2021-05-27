@@ -23,6 +23,7 @@ export const Spaces = {
     medium: '16px',
     large: '24px',
     extraLarge: '32px',
+    xxl: '48px',
 };
 
 export const Fonts = {
@@ -34,6 +35,7 @@ export const Fonts = {
         label: '0.75em',
         input: '0.875em',
         button: '0.875em',
+        tableContent: '12px',
     },
     weights: {
         heavy: 900,
