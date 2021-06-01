@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Colors, Spaces } from '@/assets/theme';
+import { Spaces } from '@/assets/theme';
 
 type PageLayoutProps = {
     children: React.ReactNode;
@@ -33,12 +33,6 @@ const NavigationContainer = styled.div`
     z-index: 1;
 `;
 
-const Sider = styled.div`
-    width: ${SIDER_WIDTH}px;
-    overflow: auto;
-    border-left: 1px solid ${Colors.border};
-`;
-
 const PageLayout = ({
     children,
     navigation,
@@ -51,9 +45,7 @@ const PageLayout = ({
     };
 
     const renderSider = () => {
-        if (sider) {
-            return <Sider>{sider}</Sider>;
-        }
+        return sider;
     };
 
     const renderContent = () => {

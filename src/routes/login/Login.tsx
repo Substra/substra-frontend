@@ -10,7 +10,7 @@ import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
 import { useLocation } from 'wouter';
 import { useAppDispatch, RootState } from '@/store';
-import { ROUTES } from '@/routes';
+import { PATHS } from '@/routes';
 
 const LeftSideContainer = styled.div`
     width: 50%;
@@ -24,7 +24,7 @@ const LoginPageContainer = styled.div`
     display: flex;
     justify-content: center;
     max-width: 1280px;
-    margin-top: 120px;
+    margin: 120px auto;
     align-items: flex-start;
 `;
 
@@ -40,7 +40,7 @@ const Login = (): JSX.Element => {
 
         dispatch(logIn(payload))
             .then(unwrapResult)
-            .then(() => setLocation(ROUTES.DATASETS.path));
+            .then(() => setLocation(PATHS.DATASETS));
     };
 
     const error = useSelector((state: RootState) => state.user.error);

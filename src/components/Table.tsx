@@ -10,6 +10,7 @@ export const Table = styled.table`
     border-collapse: collapse;
     border-spacing: 0 ${Spaces.extraSmall};
     font-size: ${Fonts.sizes.tableContent};
+    table-layout: fixed;
 `;
 
 export const Thead = styled.thead``;

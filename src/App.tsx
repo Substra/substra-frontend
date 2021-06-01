@@ -4,7 +4,7 @@ import { Route, Switch, useLocation } from 'wouter';
 
 import AppLayout from '@/components/layout/applayout/AppLayout';
 import { refreshToken } from '@/modules/user/UserSlice';
-import { ROUTES } from '@/routes';
+import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 import { useAppDispatch } from '@/store';
 
@@ -21,7 +21,7 @@ const App = (): JSX.Element => {
             .then(unwrapResult)
             .catch(() => {
                 // TODO: make sure we are redirected to the current location after login
-                setLocation('/login');
+                setLocation(PATHS.LOGIN);
             });
     }, [dispatch]);
 
@@ -29,9 +29,9 @@ const App = (): JSX.Element => {
         <AppLayout>
             <Switch>
                 <>
-                    {Object.values(ROUTES).map((route) => (
+                    {Object.entries(ROUTES).map(([routeName, route]) => (
                         <Route
-                            key={route.path}
+                            key={routeName}
                             path={route.path}
                             component={route.component}
                         />

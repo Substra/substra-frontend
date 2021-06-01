@@ -1,8 +1,15 @@
+/** @jsx jsx */
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { useLocation } from 'wouter';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 
-import { DatasetType, PermissionType } from '@/modules/datasets/DatasetsTypes';
+import {
+    DatasetStubType,
+    PermissionType,
+} from '@/modules/datasets/DatasetsTypes';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
@@ -17,6 +24,8 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
+import DatasetSider from './components/DatasetSider';
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 
 const PageTitle = styled.div`
     display: inline-block;
@@ -31,6 +40,21 @@ const PageTitle = styled.div`
     margin-bottom: -1px;
 `;
 
+const highlightedTrStyles = css`
+    & > td > div {
+        background-color: ${Colors.darkerBackground};
+        border-color: ${Colors.primary} transparent;
+    }
+
+    & > td:first-of-type > div {
+        border-left-color: ${Colors.primary};
+    }
+
+    & > td:last-of-type > div {
+        border-right-color: ${Colors.primary};
+    }
+`;
+
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
@@ -38,7 +62,7 @@ const Datasets = (): JSX.Element => {
         dispatch(listDatasets());
     }, [dispatch]);
 
-    const datasets: DatasetType[] = useSelector(
+    const datasets: DatasetStubType[] = useSelector(
         (state: RootState) => state.datasets.datasets
     );
     const permissionFormatter = (permission: PermissionType): string => {
@@ -53,8 +77,11 @@ const Datasets = (): JSX.Element => {
         return 'restricted';
     };
 
+    const [, setLocation] = useLocation();
+    const key = useKeyFromPath(PATHS.DATASET);
+
     return (
-        <PageLayout navigation={<Navigation />}>
+        <PageLayout navigation={<Navigation />} sider={<DatasetSider />}>
             <PageTitle>Datasets</PageTitle>
             <Table>
                 <Thead>
@@ -68,7 +95,17 @@ const Datasets = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {datasets.map((dataset) => (
-                        <Tr key={dataset.key}>
+                        <Tr
+                            key={dataset.key}
+                            css={[dataset.key === key && highlightedTrStyles]}
+                            onClick={() =>
+                                setLocation(
+                                    compilePath(PATHS.DATASET, {
+                                        key: dataset.key,
+                                    })
+                                )
+                            }
+                        >
                             <Td>{dataset.name}</Td>
                             <Td>{dataset.owner}</Td>
                             <Td>

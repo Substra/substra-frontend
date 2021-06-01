@@ -7,7 +7,7 @@ import { useLocation } from 'wouter';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import { logOut } from '@/modules/user/UserSlice';
-import { ROUTES } from '@/routes';
+import { PATHS } from '@/routes';
 import { useAppDispatch } from '@/store';
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -79,7 +79,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
     const handleLogOut = () => {
         dispatch(logOut())
             .then(unwrapResult)
-            .then(() => setLocation(ROUTES.LOGIN.path));
+            .then(() => setLocation(PATHS.LOGIN));
     };
 
     // prevent clicks in the component from bubbling up

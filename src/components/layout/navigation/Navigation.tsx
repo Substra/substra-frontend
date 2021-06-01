@@ -8,7 +8,7 @@ import AlgorithmIcon from '@/assets/svg/algorithm-icon';
 import ComputePlanIcon from '@/assets/svg/compute-plan-icon';
 import DatasetIcon from '@/assets/svg/dataset-icon';
 import { Colors, Mixins, Spaces } from '@/assets/theme';
-import { ROUTES } from '@/routes';
+import { PATHS } from '@/routes';
 
 const linkStyle = css`
     display: flex;
@@ -71,7 +71,7 @@ const Navigation = (): JSX.Element => {
         <div>
             {renderLink(
                 'Datasets',
-                ROUTES.DATASETS.path,
+                PATHS.DATASETS,
                 <DatasetIcon
                     css={css`
                         margin-left: 2px;
@@ -81,7 +81,7 @@ const Navigation = (): JSX.Element => {
             {renderLink('Algos and Metrics', '/algorithms', <AlgorithmIcon />)}
             {renderLink(
                 'Compute Plans',
-                ROUTES.COMPUTE_PLAN.path,
+                PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}
         </div>

@@ -4,7 +4,7 @@ import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
 import { H1 } from '@/components/utils/Typography';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { ROUTES } from '@/routes';
+import { PATHS } from '@/routes';
 import { Spaces } from '@/assets/theme';
 import { Link } from 'wouter';
 
@@ -37,9 +37,9 @@ const NotFound = (): JSX.Element => {
             <OwkinConnectLogo />
             <H1>Page not found</H1>
             {authenticated ? (
-                <Link href={ROUTES.DATASETS.path}>Go to datasets page</Link>
+                <Link href={PATHS.DATASETS}>Go to datasets page</Link>
             ) : (
-                <Link href={ROUTES.LOGIN.path}>Go to login page</Link>
+                <Link href={PATHS.LOGIN}>Go to login page</Link>
             )}
         </Container>
     );

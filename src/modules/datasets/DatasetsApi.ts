@@ -1,20 +1,28 @@
 import API from '@/libs/request';
 import { AxiosPromise } from 'axios';
 
-import { DatasetType } from './DatasetsTypes';
+import { DatasetType, DatasetStubType } from './DatasetsTypes';
 
 const URLS = {
     LIST: '/data_manager/',
-    RETRIEVE: '/data_manager/__KEY__',
+    RETRIEVE: '/data_manager/__KEY__/',
 };
 
-export const listDatasets = (): AxiosPromise<DatasetType[]> =>
+export const listDatasets = (): AxiosPromise<DatasetStubType[]> =>
     API.get(URLS.LIST);
 
-export const getDataset = (key: string): AxiosPromise<DatasetType> =>
+export const retrieveDataset = (key: string): AxiosPromise<DatasetType> =>
     API.get(URLS.RETRIEVE.replace('__KEY__', key));
+
+export const retrieveDescription = (url: string): AxiosPromise<string> =>
+    API.get(url);
+
+export const retrieveOpener = (url: string): AxiosPromise<string> =>
+    API.get(url);
 
 export default {
     listDatasets,
-    getDataset,
+    retrieveDataset,
+    retrieveDescription,
+    retrieveOpener,
 };

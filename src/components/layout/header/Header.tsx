@@ -20,6 +20,7 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     padding: ${Spaces.medium} 0;
+    z-index: 1;
 `;
 
 const IconContainer = styled.div`
