@@ -10,7 +10,9 @@ export const Colors = {
     content: 'rgba(0, 0, 0, 0.87)',
     lightContent: 'rgba(0, 0, 0, 0.56)',
     veryLightContent: 'rgba(0, 0, 0, 0.23)',
-    error: '#F5222B',
+    error: '#f5222b',
+    success: '#52c41a',
+    running: '#ffbf00',
 };
 
 export const Mixins = {

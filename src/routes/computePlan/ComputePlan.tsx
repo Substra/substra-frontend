@@ -1,73 +1,100 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { jsx } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css, jsx } from '@emotion/react';
 
+import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
+import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
+import { RootState, useAppDispatch } from '@/store';
+import { useSelector } from 'react-redux';
 import Navigation from '@/components/layout/navigation/Navigation';
-import Card from '@/components/Card';
 import PageLayout from '@/components/layout/PageLayout';
-import ProgressBar from '@/components/ProgressBar';
-import { Spaces } from '@/assets/theme';
-
-const Content = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const Sider = styled.div`
-    display: flex;
-`;
-
-const SiderHeader = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: ${Spaces.medium};
-    flex: 1;
-`;
-
-const SiderTitle = styled.h2`
-    font-weight: 700;
-`;
-
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const Title = styled.h2`
-    font-weight: 600;
-`;
-
-const cardCss = {
-    margin: '40px',
-    padding: Spaces.medium,
-};
+// import ProgressBar from '@/components/ProgressBar';
+import { Colors, Spaces } from '@/assets/theme';
+import {
+    FirstTabTh,
+    Table,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+} from '@/components/Table';
+import PageTitle from '@/components/PageTitle';
 
 const ComputePlan = (): JSX.Element => {
-    const renderSider = () => {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(listComputePlans());
+    }, [dispatch]);
+
+    const computePlans: ComputePlanType[] = useSelector(
+        (state: RootState) => state.computePlans.computePlans
+    );
+
+    interface StatusProps {
+        status: string;
+    }
+    const Status = ({ status }: StatusProps): JSX.Element => {
+        let color;
+
+        switch (status) {
+            case 'doing':
+                color = Colors.running;
+                break;
+            case 'done':
+                color = Colors.success;
+                break;
+            case 'failed':
+                color = Colors.error;
+                break;
+            case 'canceled':
+                color = Colors.lightContent;
+        }
+
+        const StatusStyle = css`
+            display: flex;
+            flex-direction: flex-row;
+            align-items: center;
+
+            & > span {
+                color: ${color};
+                margin-left: ${Spaces.extraSmall};
+            }
+        `;
+
         return (
-            <Sider>
-                <SiderHeader>
-                    <SiderTitle>CP-CLB-Curie-test-2332</SiderTitle>
-                    <ProgressBar percentage={70} />
-                </SiderHeader>
-            </Sider>
+            <div css={StatusStyle}>
+                <span>{status.toUpperCase()}</span>
+            </div>
         );
     };
 
     return (
-        <PageLayout navigation={<Navigation />} sider={renderSider()}>
-            <Content>
-                <Row>
-                    <Card css={cardCss}>
-                        <Title>Compute Plan</Title>
-                    </Card>
-                    <Card css={cardCss}>
-                        <Title>Details</Title>
-                    </Card>
-                </Row>
-            </Content>
+        <PageLayout navigation={<Navigation />}>
+            <PageTitle>Compute Plan</PageTitle>
+            <Table>
+                <Thead>
+                    <Tr>
+                        <FirstTabTh>Status</FirstTabTh>
+                        <Th>Tasks</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {computePlans.map((computePlan) => (
+                        <Tr key={computePlan.key}>
+                            <Td>
+                                <Status status={computePlan.status} />
+                            </Td>
+                            <Td>
+                                {computePlan.done_count}/
+                                {computePlan.tuple_count}
+                            </Td>
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
         </PageLayout>
     );
 };

@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div<PageLayoutProps>`
     padding: 0 120px;
-    margin: ${Spaces.medium} auto;
+    margin: ${Spaces.medium} 0;
     max-width: ${(props) =>
         props.sider ? `calc(~'100vw - ${SIDER_WIDTH})` : ''};
 `;

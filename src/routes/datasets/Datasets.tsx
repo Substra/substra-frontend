@@ -1,11 +1,9 @@
 /** @jsx jsx */
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled from '@emotion/styled';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-
 import {
     DatasetStubType,
     PermissionType,
@@ -14,7 +12,6 @@ import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 import { RootState, useAppDispatch } from '@/store';
-import { Colors, Spaces } from '@/assets/theme';
 import {
     FirstTabTh,
     Table,
@@ -24,21 +21,10 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
+import { Colors } from '@/assets/theme';
 import DatasetSider from './components/DatasetSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-
-const PageTitle = styled.div`
-    display: inline-block;
-    color: ${Colors.primary};
-    font-weight: bold;
-    font-size: 14px;
-    border: 1px solid ${Colors.border};
-    border-bottom-color: white;
-    border-radius: ${Spaces.medium} ${Spaces.medium} 0 0;
-    padding: ${Spaces.medium} ${Spaces.xxl} ${Spaces.small} ${Spaces.xxl};
-    background-color: white;
-    margin-bottom: -1px;
-`;
+import PageTitle from '@/components/PageTitle';
 
 const highlightedTrStyles = css`
     & > td > div {

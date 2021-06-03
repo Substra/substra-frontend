@@ -7,15 +7,20 @@ import { css, jsx } from '@emotion/react';
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 export const Table = styled.table`
+    width: 100%;
     border-collapse: collapse;
     border-spacing: 0 ${Spaces.extraSmall};
     font-size: ${Fonts.sizes.tableContent};
     table-layout: fixed;
 `;
 
-export const Thead = styled.thead``;
+export const Thead = styled.thead`
+    width: 100%;
+`;
 
-export const Tbody = styled.tbody``;
+export const Tbody = styled.tbody`
+    width: 100%;
+`;
 
 export const Tr = styled.tr`
     &:hover > td > div {
