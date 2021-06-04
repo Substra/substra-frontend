@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'wouter';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,7 +17,7 @@ import {
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
-import { RootState, useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import DataSamplesTabs from './DataSamplesTabs';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -127,11 +126,9 @@ const DatasetSider = (): JSX.Element => {
         }
     }, [key]);
 
-    const dataset = useSelector((state: RootState) => state.datasets.dataset);
-    const description = useSelector(
-        (state: RootState) => state.datasets.description
-    );
-    const opener = useSelector((state: RootState) => state.datasets.opener);
+    const dataset = useAppSelector((state) => state.datasets.dataset);
+    const description = useAppSelector((state) => state.datasets.description);
+    const opener = useAppSelector((state) => state.datasets.opener);
 
     return (
         <Container

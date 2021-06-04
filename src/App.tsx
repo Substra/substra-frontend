@@ -6,7 +6,7 @@ import AppLayout from '@/components/layout/applayout/AppLayout';
 import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch } from '@/hooks';
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();

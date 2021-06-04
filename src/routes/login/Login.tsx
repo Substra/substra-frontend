@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 
@@ -9,7 +8,7 @@ import LoginPageSvg from '@/assets/svg/illustrations/illustration-login-page.svg
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
 import { useLocation } from 'wouter';
-import { useAppDispatch, RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { PATHS } from '@/routes';
 
 const LeftSideContainer = styled.div`
@@ -43,7 +42,7 @@ const Login = (): JSX.Element => {
             .then(() => setLocation(PATHS.DATASETS));
     };
 
-    const error = useSelector((state: RootState) => state.user.error);
+    const error = useAppSelector((state) => state.user.error);
 
     return (
         <LoginPageContainer>

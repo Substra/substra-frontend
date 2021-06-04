@@ -5,8 +5,7 @@ import { css, jsx } from '@emotion/react';
 
 import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { RootState, useAppDispatch } from '@/store';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import Navigation from '@/components/layout/navigation/Navigation';
 import PageLayout from '@/components/layout/PageLayout';
 // import ProgressBar from '@/components/ProgressBar';
@@ -29,8 +28,8 @@ const ComputePlan = (): JSX.Element => {
         dispatch(listComputePlans());
     }, [dispatch]);
 
-    const computePlans: ComputePlanType[] = useSelector(
-        (state: RootState) => state.computePlans.computePlans
+    const computePlans: ComputePlanType[] = useAppSelector(
+        (state) => state.computePlans.computePlans
     );
 
     interface StatusProps {

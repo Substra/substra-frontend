@@ -36,7 +36,7 @@ const initialState: UserState = {
     /**
      * expiration is a timestamp, it can be fetched as a date using the following selector:
      *
-     * const expiration = useSelector((state: RootState) => new Date(state.user.expiration * 1000);
+     * const expiration = useAppSelector((state) => new Date(state.user.expiration * 1000);
      *
      * It cannot be stored in the state as a Date object because Date objects are mutable and non
      * serializable.

@@ -2,8 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
 import { H1 } from '@/components/utils/Typography';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppSelector } from '@/hooks';
 import { PATHS } from '@/routes';
 import { Spaces } from '@/assets/theme';
 import { Link } from 'wouter';
@@ -28,9 +27,7 @@ const Container = styled.div`
 `;
 
 const NotFound = (): JSX.Element => {
-    const authenticated = useSelector(
-        (state: RootState) => state.user.authenticated
-    );
+    const authenticated = useAppSelector((state) => state.user.authenticated);
 
     return (
         <Container>

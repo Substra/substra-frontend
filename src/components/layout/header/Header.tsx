@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import { RiUserLine } from 'react-icons/ri';
 
 import { Colors, Spaces } from '@/assets/theme';
 import OwkinConnectIcon from '@/assets/svg/OwkinConnectIcon';
-import { RootState } from '@/store';
+import { useAppSelector } from '@/hooks';
 
 import SubMenu from './SubMenu';
 
@@ -56,9 +55,7 @@ const UserMenuButton = styled.button`
 const Header = ({ title }: HeaderProps): JSX.Element => {
     const [showSubMenu, setSubMenu] = useState(false);
 
-    const authenticated = useSelector(
-        (state: RootState) => state.user.authenticated
-    );
+    const authenticated = useAppSelector((state) => state.user.authenticated);
 
     const hideSubMenu = () => setSubMenu(false);
 

@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -11,7 +10,7 @@ import {
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
-import { RootState, useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
     FirstTabTh,
     Table,
@@ -48,8 +47,8 @@ const Datasets = (): JSX.Element => {
         dispatch(listDatasets());
     }, [dispatch]);
 
-    const datasets: DatasetStubType[] = useSelector(
-        (state: RootState) => state.datasets.datasets
+    const datasets: DatasetStubType[] = useAppSelector(
+        (state) => state.datasets.datasets
     );
     const permissionFormatter = (permission: PermissionType): string => {
         if (permission.public) {

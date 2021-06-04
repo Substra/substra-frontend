@@ -9,7 +9,7 @@ import { RiLogoutCircleRLine } from 'react-icons/ri';
 
 import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch } from '@/hooks';
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const Container = styled.ul`
