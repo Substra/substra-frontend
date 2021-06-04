@@ -13,6 +13,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: stretch;
     background-color: ${Colors.background};
+    color: ${Colors.content};
     height: 100vh;
     width: 100vw;
 `;

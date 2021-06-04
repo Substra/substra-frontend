@@ -3,14 +3,13 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import {
-    DatasetStubType,
-    PermissionType,
-} from '@/modules/datasets/DatasetsTypes';
+
+import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     FirstTabTh,
     Table,
@@ -50,18 +49,6 @@ const Datasets = (): JSX.Element => {
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
     );
-    const permissionFormatter = (permission: PermissionType): string => {
-        if (permission.public) {
-            return 'Processable by anyone';
-        }
-
-        if (!permission.authorized_ids.length) {
-            return 'Processable by its owner only';
-        }
-
-        return 'restricted';
-    };
-
     const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.DATASET);
 
@@ -94,9 +81,9 @@ const Datasets = (): JSX.Element => {
                             <Td>{dataset.name}</Td>
                             <Td>{dataset.owner}</Td>
                             <Td>
-                                {permissionFormatter(
-                                    dataset.permissions.process
-                                )}
+                                <PermissionCellContent
+                                    permission={dataset.permissions.process}
+                                />
                             </Td>
                             <Td>N/A</Td>
                             <Td>N/A</Td>

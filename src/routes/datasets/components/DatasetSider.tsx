@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import React, { useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -10,7 +11,10 @@ import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
+import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import KeySiderSection from '@/components/KeySiderSection';
+import PermissionSiderSection from '@/components/PermissionSiderSection';
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import {
     retrieveDataset,
     retrieveDescription,
@@ -18,10 +22,7 @@ import {
 } from '@/modules/datasets/DatasetsSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import DataSamplesTabs from './DataSamplesTabs';
-import { unwrapResult } from '@reduxjs/toolkit';
-import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 
 const Container = styled.div`
     position: fixed;
@@ -155,9 +156,9 @@ const DatasetSider = (): JSX.Element => {
                     </ExpandableSiderSection>
                 )}
                 {dataset && (
-                    <ExpandableSiderSection title="Permissions">
-                        Lorem ipsum dolor sit amet
-                    </ExpandableSiderSection>
+                    <PermissionSiderSection
+                        permission={dataset.permissions.process}
+                    />
                 )}
                 {opener && (
                     <ExpandableSiderSection title="Opener">
