@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { RiUserLine } from 'react-icons/ri';
 
 import { Colors, Spaces } from '@/assets/theme';
-import OwkinConnectIcon from '@/assets/svg/OwkinConnectIcon';
+import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
 import { useAppSelector } from '@/hooks';
 
 import SubMenu from './SubMenu';
@@ -26,6 +26,11 @@ const Container = styled.div`
 const IconContainer = styled.div`
     width: 120px;
     text-align: center;
+
+    & > svg {
+        width: 38px;
+        height: 35px;
+    }
 `;
 
 const Title = styled.h1`
@@ -75,7 +80,7 @@ const Header = ({ title }: HeaderProps): JSX.Element => {
     return (
         <Container>
             <IconContainer>
-                <OwkinConnectIcon />
+                <OwkinConnectIconSvg />
             </IconContainer>
             <Title>{title}</Title>
             {authenticated && (
