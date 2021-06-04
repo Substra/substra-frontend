@@ -8,6 +8,7 @@ import { css, jsx } from '@emotion/react';
 import ReactMarkdown from 'react-markdown';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { RiCloseLine } from 'react-icons/ri';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 import KeySiderSection from '@/components/KeySiderSection';
@@ -60,18 +61,28 @@ const CloseButton = styled.button`
     position: absolute;
     top: 0;
     right: 0;
+    opacity: 1;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    & > svg {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const TitleType = styled.div`
     font-size: ${Fonts.sizes.smallBody};
     color: ${Colors.lightContent};
+    margin-bottom: ${Spaces.extraSmall};
 `;
 
 const Title = styled.div`
     font-size: ${Fonts.sizes.h2};
     font-weight: bold;
     color: ${Colors.content};
-    margin-bottom: ${Spaces.extraSmall};
     word-break: break-all;
 `;
 
@@ -129,7 +140,7 @@ const DatasetSider = (): JSX.Element => {
         >
             <TitleContainer>
                 <CloseButton onClick={() => setLocation(PATHS.DATASETS)}>
-                    X
+                    <RiCloseLine />
                 </CloseButton>
                 <TitleType>Dataset details</TitleType>
                 <Title>

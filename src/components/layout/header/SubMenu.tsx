@@ -5,6 +5,7 @@ import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLocation } from 'wouter';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { RiLogoutCircleRLine } from 'react-icons/ri';
 
 import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
@@ -56,9 +57,15 @@ const LogOutButton = styled.button`
     background: none;
     font: inherit;
     padding: 0;
+    display: inline-flex;
+    align-items: center;
 
     &:hover {
         opacity: 0.8;
+    }
+
+    & > svg {
+        margin-right: ${Spaces.small};
     }
 `;
 
@@ -92,7 +99,10 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
             onClick={stopPropagation}
         >
             <Li>
-                <LogOutButton onClick={handleLogOut}>Logout</LogOutButton>
+                <LogOutButton onClick={handleLogOut}>
+                    <RiLogoutCircleRLine />
+                    Logout
+                </LogOutButton>
             </Li>
             {/* TODO: use proper build version */}
             <Version>{`Owkin Connect build nº lorem ipsum`}</Version>

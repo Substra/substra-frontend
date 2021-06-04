@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { RiUserLine } from 'react-icons/ri';
 
 import { Colors, Spaces } from '@/assets/theme';
 import OwkinConnectIcon from '@/assets/svg/OwkinConnectIcon';
@@ -45,6 +46,11 @@ const UserMenuButton = styled.button`
     border-radius: 50%;
     border: 1px solid ${Colors.border};
     background-color: white;
+
+    & > svg {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const Header = ({ title }: HeaderProps): JSX.Element => {
@@ -81,7 +87,7 @@ const Header = ({ title }: HeaderProps): JSX.Element => {
                         type="button"
                         onClick={() => setSubMenu(!showSubMenu)}
                     >
-                        {/* TODO: use user icon */}F
+                        <RiUserLine />
                     </UserMenuButton>
                     <SubMenu visible={showSubMenu} />
                 </>
