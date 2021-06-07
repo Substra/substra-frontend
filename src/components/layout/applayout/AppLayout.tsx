@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { Colors } from '@/assets/theme';
 import Header from '@/components/layout/header/Header';
+import { useAppSelector } from '@/hooks';
 
 type AppLayoutProps = {
     children: React.ReactNode;
@@ -26,9 +27,11 @@ const Content = styled.div`
 `;
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
+    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+
     return (
         <Container>
-            <Header title={'Janssen'} />
+            <Header title={currentNodeID} />
             <Content>{children}</Content>
         </Container>
     );

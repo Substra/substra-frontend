@@ -10,6 +10,7 @@ import { logIn } from '@/modules/user/UserSlice';
 import { useLocation } from 'wouter';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { PATHS } from '@/routes';
+import { listNodes } from '@/modules/nodes/NodesSlice';
 
 const LeftSideContainer = styled.div`
     width: 50%;
@@ -39,7 +40,12 @@ const Login = (): JSX.Element => {
 
         dispatch(logIn(payload))
             .then(unwrapResult)
-            .then(() => setLocation(PATHS.DATASETS));
+            .then(() => {
+                // Fetch current node name to update the page's header
+                dispatch(listNodes());
+                // Redirect to datasets page
+                setLocation(PATHS.DATASETS);
+            });
     };
 
     const error = useAppSelector((state) => state.user.error);
