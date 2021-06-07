@@ -1,62 +1,122 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-import { Spaces } from '@/assets/theme';
-
-type PageLayoutProps = {
-    children: React.ReactNode;
-    navigation?: React.ReactNode;
-    sider?: React.ReactNode;
-};
+import { Colors, Mixins, Spaces, zIndexes } from '@/assets/theme';
 
 const SIDER_WIDTH = 420;
 
 const Container = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-grow: 1;
     position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 `;
 
-const ContentContainer = styled.div<PageLayoutProps>`
-    padding: 0 120px;
-    margin: ${Spaces.medium} 0;
-    max-width: ${(props) =>
-        props.sider ? `calc(~'100vw - ${SIDER_WIDTH})` : ''};
+const HorizontalScrollContainer = styled.div`
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+`;
+
+interface VerticalScrollContainerProps {
+    siderVisible: boolean;
+}
+
+const VerticalScrollContainer = styled.div<VerticalScrollContainerProps>`
+    height: 100%;
+    width: fit-content;
+    min-width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // right padding grows when the sider is visible
+    padding: ${Spaces.large}
+        ${({ siderVisible }) =>
+            siderVisible ? `${SIDER_WIDTH + 120}px` : '120px'}
+        ${Spaces.large} 120px;
+    // transition has to be the same as for the sider sliding in and out of view so that both sider and table move together
+    transition: all 0.2s ease-out;
 `;
 
 const NavigationContainer = styled.div`
     position: fixed;
     top: 96px;
     left: 32px;
-    z-index: 1;
+    z-index: ${zIndexes.navigation};
 `;
+
+interface StickyHeaderContainerProps {
+    scrolled: boolean;
+}
+const StickyHeaderContainer = styled.div<StickyHeaderContainerProps>`
+    position: absolute;
+    top: 0;
+    left: 120px;
+    z-index: ${zIndexes.stickyHeader};
+    padding-top: ${Spaces.large};
+    background-image: linear-gradient(
+        ${Colors.background} 0% calc(100% - 20px),
+        transparent calc(100% - 20px) 100%
+    );
+
+    &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        box-shadow: 0 0 8px 0 ${Colors.border};
+        left: 0;
+        right: 0;
+        bottom: ${Spaces.extraSmall};
+        height: ${Spaces.medium};
+        border-radius: 0 0 ${Spaces.medium} ${Spaces.medium};
+        z-index: -1;
+        opacity: ${({ scrolled }) => (scrolled ? 1 : 0)};
+        transition: ${Mixins.transitionStyle};
+    }
+`;
+
+type PageLayoutProps = {
+    children: React.ReactNode;
+    navigation?: React.ReactNode;
+    sider?: React.ReactNode;
+    siderVisible: boolean;
+    stickyHeader?: React.ReactNode;
+};
 
 const PageLayout = ({
     children,
     navigation,
     sider,
+    siderVisible,
+    stickyHeader,
 }: PageLayoutProps): JSX.Element => {
-    const renderNavigation = () => {
-        if (navigation) {
-            return <NavigationContainer>{navigation}</NavigationContainer>;
-        }
-    };
+    const [scrolled, setScrolled] = useState(false);
 
-    const renderSider = () => {
-        return sider;
-    };
-
-    const renderContent = () => {
-        return <ContentContainer>{children}</ContentContainer>;
+    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        setScrolled(e.target.scrollTop > 0);
     };
 
     return (
-        <Container>
-            {renderNavigation()}
-            {renderContent()}
-            {renderSider()}
+        <Container onScroll={onScroll}>
+            {navigation && (
+                <NavigationContainer>{navigation}</NavigationContainer>
+            )}
+            <HorizontalScrollContainer>
+                {stickyHeader && (
+                    <StickyHeaderContainer scrolled={scrolled}>
+                        {stickyHeader}
+                    </StickyHeaderContainer>
+                )}
+                <VerticalScrollContainer
+                    siderVisible={siderVisible}
+                    onScroll={onScroll}
+                >
+                    {children}
+                </VerticalScrollContainer>
+            </HorizontalScrollContainer>
+            {sider}
         </Container>
     );
 };

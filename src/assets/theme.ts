@@ -45,3 +45,10 @@ export const Fonts = {
         light: 400,
     },
 };
+
+export const zIndexes = {
+    appHeader: 1000,
+    sider: 100,
+    navigation: 100,
+    stickyHeader: 10,
+};

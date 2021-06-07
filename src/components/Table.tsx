@@ -7,20 +7,17 @@ import { css, jsx } from '@emotion/react';
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 export const Table = styled.table`
-    width: 100%;
+    // the table won't be 1px wide, it'll instead be the cumulated width of all of its columns
+    width: 1px;
     border-collapse: collapse;
     border-spacing: 0 ${Spaces.extraSmall};
     font-size: ${Fonts.sizes.tableContent};
     table-layout: fixed;
 `;
 
-export const Thead = styled.thead`
-    width: 100%;
-`;
+export const Thead = styled.thead``;
 
-export const Tbody = styled.tbody`
-    width: 100%;
-`;
+export const Tbody = styled.tbody``;
 
 export const Tr = styled.tr`
     &:hover > td > div {
@@ -41,6 +38,8 @@ interface CellProps {
 }
 
 const thStyles = css`
+    padding-bottom: ${Spaces.extraSmall};
+
     & > div {
         border-width: 1px 0;
         border-style: solid;
@@ -50,7 +49,6 @@ const thStyles = css`
         white-space: nowrap;
         font-weight: bold;
         text-align: left;
-        margin-bottom: ${Spaces.extraSmall};
     }
 
     &:first-of-type > div {
@@ -83,6 +81,7 @@ export const FirstTabTh = (props): JSX.Element => (
 
 const tdStyle = css`
     cursor: pointer;
+    padding-bottom: ${Spaces.extraSmall};
 
     & > div {
         border-width: 1px 0;
@@ -92,7 +91,8 @@ const tdStyle = css`
         padding: ${Spaces.medium};
         white-space: nowrap;
         text-align: left;
-        margin-bottom: ${Spaces.extraSmall};
+        overflow-x: hidden;
+        text-overflow: ellipsis;
     }
 
     &:first-of-type > div {
@@ -111,3 +111,13 @@ export const Td = ({ children, ...rest }: CellProps): JSX.Element => (
         <div>{children}</div>
     </td>
 );
+
+export const nameColWidth = css`
+    width: 600px;
+`;
+export const ownerColWidth = css`
+    width: 110px;
+`;
+export const permissionsColWidth = css`
+    width: 210px;
+`;

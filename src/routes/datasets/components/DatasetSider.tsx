@@ -10,7 +10,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { RiCloseLine } from 'react-icons/ri';
 
-import { Colors, Fonts, Spaces } from '@/assets/theme';
+import { Colors, Fonts, Spaces, zIndexes } from '@/assets/theme';
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import KeySiderSection from '@/components/KeySiderSection';
 import PermissionSiderSection from '@/components/PermissionSiderSection';
@@ -37,6 +37,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: flex-start;
     overflow: hidden;
+    z-index: ${zIndexes.sider};
 `;
 
 const hiddenContainerStyles = css`

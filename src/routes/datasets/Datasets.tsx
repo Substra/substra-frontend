@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -12,6 +12,9 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     FirstTabTh,
+    nameColWidth,
+    ownerColWidth,
+    permissionsColWidth,
     Table,
     Tbody,
     Td,
@@ -38,7 +41,6 @@ const highlightedTrStyles = css`
         border-right-color: ${Colors.primary};
     }
 `;
-
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
@@ -53,16 +55,44 @@ const Datasets = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.DATASET);
 
     return (
-        <PageLayout navigation={<Navigation />} sider={<DatasetSider />}>
-            <PageTitle>Datasets</PageTitle>
+        <PageLayout
+            navigation={<Navigation />}
+            sider={<DatasetSider />}
+            siderVisible={!!key}
+            stickyHeader={
+                <Fragment>
+                    <PageTitle>Datasets</PageTitle>
+                    <Table>
+                        <Thead>
+                            <Tr>
+                                <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                                <Th css={ownerColWidth}>Owner</Th>
+                                <Th css={permissionsColWidth}>Permissions</Th>
+                            </Tr>
+                        </Thead>
+                    </Table>
+                </Fragment>
+            }
+        >
+            <PageTitle
+                css={css`
+                    opacity: 0;
+                    pointer-events: none;
+                `}
+            >
+                Datasets
+            </PageTitle>
             <Table>
-                <Thead>
+                <Thead
+                    css={css`
+                        opacity: 0;
+                        pointer-events: none;
+                    `}
+                >
                     <Tr>
-                        <FirstTabTh>Name</FirstTabTh>
-                        <Th>Owner</Th>
-                        <Th>Permissions</Th>
-                        <Th>Train data samples</Th>
-                        <Th>Test data samples</Th>
+                        <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                        <Th css={ownerColWidth}>Owner</Th>
+                        <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -85,8 +115,6 @@ const Datasets = (): JSX.Element => {
                                     permission={dataset.permissions.process}
                                 />
                             </Td>
-                            <Td>N/A</Td>
-                            <Td>N/A</Td>
                         </Tr>
                     ))}
                 </Tbody>

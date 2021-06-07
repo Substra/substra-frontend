@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { RiUserLine } from 'react-icons/ri';
 
-import { Colors, Spaces } from '@/assets/theme';
-import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
 import { useAppSelector } from '@/hooks';
+import { Colors, Spaces, zIndexes } from '@/assets/theme';
+import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
 
 import SubMenu from './SubMenu';
 
@@ -20,7 +20,7 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     padding: ${Spaces.medium} 0;
-    z-index: 1;
+    z-index: ${zIndexes.appHeader};
 `;
 
 const IconContainer = styled.div`
