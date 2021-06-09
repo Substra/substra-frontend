@@ -104,8 +104,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
                     Logout
                 </LogOutButton>
             </Li>
-            {/* TODO: use proper build version */}
-            <Version>{`Owkin Connect build nº lorem ipsum`}</Version>
+            <Version>{`Owkin Connect build nº${__APP_VERSION__}`}</Version>
         </Container>
     );
 };
