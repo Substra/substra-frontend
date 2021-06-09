@@ -41,8 +41,9 @@ const DataSamplesList = ({
     return (
         <Container>
             <Title>{title}</Title>
-            {/* TODO: pass value to be copied */}
-            <CopyButton css={copyButtonStyles}>copy as json array</CopyButton>
+            <CopyButton css={copyButtonStyles} value={JSON.stringify(keys)}>
+                copy as json array
+            </CopyButton>
             <ul>
                 {keys.map((key) => (
                     <Li key={key}>{key}</Li>

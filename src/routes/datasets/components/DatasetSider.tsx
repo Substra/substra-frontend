@@ -177,7 +177,7 @@ const DatasetSider = (): JSX.Element => {
                     <SiderSection>
                         <SiderSectionTitle>Data samples</SiderSectionTitle>
                         <DataSamplesTabs
-                            trainDataSamples={dataset.test_data_sample_keys}
+                            trainDataSamples={dataset.train_data_sample_keys}
                             testDataSamples={dataset.test_data_sample_keys}
                         />
                     </SiderSection>

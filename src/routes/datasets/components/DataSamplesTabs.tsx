@@ -72,7 +72,7 @@ const DataSamplesTabs = ({
             </TabPanel>
             <TabPanel>
                 <DataSamplesList
-                    title={`${testDataSamples.length} train data samples`}
+                    title={`${testDataSamples.length} test data samples`}
                     keys={testDataSamples}
                 />
             </TabPanel>
