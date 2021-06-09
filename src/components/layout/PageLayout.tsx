@@ -43,8 +43,15 @@ const VerticalScrollContainer = styled.div<VerticalScrollContainerProps>`
 const NavigationContainer = styled.div`
     position: fixed;
     top: 96px;
-    left: 32px;
     z-index: ${zIndexes.navigation};
+    min-width: 150px;
+    height: 100vh;
+    padding-left: ${Spaces.extraLarge};
+    background-image: linear-gradient(
+        to right,
+        rgba(247, 249, 248, 1) 40%,
+        rgba(247, 249, 248, 0)
+    );
 `;
 
 interface StickyHeaderContainerProps {

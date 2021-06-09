@@ -66,7 +66,6 @@ const Navigation = (): JSX.Element => {
             </Link>
         );
     };
-
     return (
         <div>
             {renderLink(
