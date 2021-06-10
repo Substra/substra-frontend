@@ -11,7 +11,7 @@ const CollapsibleArea = styled.div<CollapsibleAreaProps>`
     max-height: ${({ expanded }) => (expanded ? 'none' : '150px')};
     margin-left: -${Spaces.large};
     margin-right: -${Spaces.large};
-    overflow-x: visible;
+    overflow-x: ${({ expanded }) => (expanded ? 'visible' : 'hidden')};
     overflow-y: ${({ expanded }) => (expanded ? 'visible' : 'hidden')};
     position: relative;
 

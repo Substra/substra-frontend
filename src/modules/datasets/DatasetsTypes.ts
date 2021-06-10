@@ -13,12 +13,6 @@ export interface DatasetStubType {
     name: string;
     owner: string;
     permissions: PermissionsType;
-}
-
-// DatasetType is returned when fetching a single dataset
-export interface DatasetType extends DatasetStubType {
-    train_data_sample_keys: string[];
-    test_data_sample_keys: string[];
     description: {
         checksum: string;
         storage_address: string;
@@ -27,4 +21,10 @@ export interface DatasetType extends DatasetStubType {
         checksum: string;
         storage_address: string;
     };
+}
+
+// DatasetType is returned when fetching a single dataset
+export interface DatasetType extends DatasetStubType {
+    train_data_sample_keys: string[];
+    test_data_sample_keys: string[];
 }

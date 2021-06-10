@@ -5,16 +5,18 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import ReactMarkdown from 'react-markdown';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { Colors, Fonts, Spaces, zIndexes } from '@/assets/theme';
-import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import KeySiderSection from '@/components/KeySiderSection';
-import PermissionSiderSection from '@/components/PermissionSiderSection';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import PermissionSiderSection, {
+    LoadingPermissionSiderSection,
+} from '@/components/PermissionSiderSection';
+import {
+    SiderSection,
+    SiderSectionTitle,
+    SimpleSiderSection,
+} from '@/components/SiderSection';
 import {
     retrieveDataset,
     retrieveDescription,
@@ -23,6 +25,13 @@ import {
 import { PATHS, useKeyFromPath } from '@/routes';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import DataSamplesTabs from './DataSamplesTabs';
+import Skeleton from '@/components/Skeleton';
+import DescriptionSiderSection, {
+    LoadingDescriptionSiderSection,
+} from '@/components/DescriptionSiderSection';
+import OpenerSiderSection, {
+    LoadingOpenerSiderSection,
+} from './OpenerSiderSection';
 
 const Container = styled.div`
     position: fixed;
@@ -47,6 +56,7 @@ const hiddenContainerStyles = css`
 `;
 
 const TitleContainer = styled.div`
+    width: 100%;
     border-bottom: 1px solid ${Colors.border};
     padding: ${Spaces.medium} ${Spaces.large} ${Spaces.large} ${Spaces.large};
 `;
@@ -95,19 +105,6 @@ const ContentContainer = styled.div`
     width: 100%;
 `;
 
-const DescriptionContainer = styled.div`
-    padding-left: ${Spaces.large};
-    padding-right: ${Spaces.large};
-`;
-
-const syntaxHighlighterStyles = css`
-    background-color: ${Colors.background} !important;
-
-    & * {
-        font-family: monospace;
-    }
-`;
-
 const DatasetSider = (): JSX.Element => {
     const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.DATASET);
@@ -129,8 +126,19 @@ const DatasetSider = (): JSX.Element => {
     }, [key]);
 
     const dataset = useAppSelector((state) => state.datasets.dataset);
+    const datasetLoading = useAppSelector(
+        (state) => state.datasets.datasetLoading
+    );
+
     const description = useAppSelector((state) => state.datasets.description);
+    const descriptionLoading = useAppSelector(
+        (state) => state.datasets.descriptionLoading
+    );
+
     const opener = useAppSelector((state) => state.datasets.opener);
+    const openerLoading = useAppSelector(
+        (state) => state.datasets.openerLoading
+    );
 
     return (
         <Container
@@ -143,36 +151,41 @@ const DatasetSider = (): JSX.Element => {
                 </CloseButton>
                 <TitleType>Dataset details</TitleType>
                 <Title>
-                    {/* TODO: insert spinner instead of dataset name */}
-                    {dataset ? dataset.name : 'Dataset name'}
+                    {datasetLoading || !dataset ? (
+                        <Skeleton width={370} height={30} />
+                    ) : (
+                        dataset.name
+                    )}
                 </Title>
             </TitleContainer>
             <ContentContainer>
                 <KeySiderSection assetKey={key || ''} />
-                {description && (
-                    <ExpandableSiderSection title="Description">
-                        <DescriptionContainer>
-                            <ReactMarkdown children={description} />
-                        </DescriptionContainer>
-                    </ExpandableSiderSection>
+                {descriptionLoading && <LoadingDescriptionSiderSection />}
+                {!descriptionLoading && !description && (
+                    <SimpleSiderSection title="Description" content="N/A" />
                 )}
-                {dataset && (
+                {!descriptionLoading && description && (
+                    <DescriptionSiderSection description={description} />
+                )}
+
+                {datasetLoading && <LoadingPermissionSiderSection />}
+                {!datasetLoading && !dataset && (
+                    <SimpleSiderSection title="Permissions" content="N/A" />
+                )}
+                {!datasetLoading && dataset && (
                     <PermissionSiderSection
                         permission={dataset.permissions.process}
                     />
                 )}
-                {opener && (
-                    <ExpandableSiderSection title="Opener">
-                        <SyntaxHighlighter
-                            language="python"
-                            style={githubGist}
-                            css={syntaxHighlighterStyles}
-                            showLineNumbers={true}
-                        >
-                            {opener}
-                        </SyntaxHighlighter>
-                    </ExpandableSiderSection>
+
+                {openerLoading && <LoadingOpenerSiderSection />}
+                {!openerLoading && !opener && (
+                    <SimpleSiderSection title="Opener" content="N/A" />
                 )}
+                {!openerLoading && opener && (
+                    <OpenerSiderSection opener={opener} />
+                )}
+
                 {dataset && (
                     <SiderSection>
                         <SiderSectionTitle>Data samples</SiderSectionTitle>

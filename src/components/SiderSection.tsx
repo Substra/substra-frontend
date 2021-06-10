@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from '@emotion/styled';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
@@ -17,3 +18,18 @@ export const SiderSectionTitle = styled.div`
     margin-bottom: ${Spaces.small};
     font-size: ${Fonts.sizes.button};
 `;
+
+interface SimpleSiderSectionProps {
+    title: string;
+    content: string;
+}
+
+export const SimpleSiderSection = ({
+    title,
+    content,
+}: SimpleSiderSectionProps): JSX.Element => (
+    <SiderSection>
+        <SiderSectionTitle>{title}</SiderSectionTitle>
+        {content}
+    </SiderSection>
+);

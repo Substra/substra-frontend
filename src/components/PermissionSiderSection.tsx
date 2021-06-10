@@ -4,6 +4,7 @@ import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import { PermissionType } from '@/modules/datasets/DatasetsTypes';
 import styled from '@emotion/styled';
 import { Colors, Spaces } from '@/assets/theme';
+import Skeleton from './Skeleton';
 
 const Ul = styled.ul`
     list-style-type: initial;
@@ -21,6 +22,13 @@ const Code = styled.code`
     display: inline-block;
     border-radius: 4px;
 `;
+
+export const LoadingPermissionSiderSection = (): JSX.Element => (
+    <SiderSection>
+        <SiderSectionTitle>Permissions</SiderSectionTitle>
+        <Skeleton height={16} width={300} />
+    </SiderSection>
+);
 
 type PermissionSiderSectionProps = {
     permission: PermissionType;
