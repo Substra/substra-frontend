@@ -1,7 +1,6 @@
 import { PermissionsType } from '@/modules/common/PermissionsType';
 
-// DatasetStubType is returned when fetching a list of datasets
-export interface DatasetStubType {
+export interface APIAlgoType {
     key: string;
     name: string;
     owner: string;
@@ -10,14 +9,13 @@ export interface DatasetStubType {
         checksum: string;
         storage_address: string;
     };
-    opener: {
+    content: {
         checksum: string;
         storage_address: string;
     };
+    metadata: { [key: string]: string };
 }
 
-// DatasetType is returned when fetching a single dataset
-export interface DatasetType extends DatasetStubType {
-    train_data_sample_keys: string[];
-    test_data_sample_keys: string[];
+export interface AlgoType extends APIAlgoType {
+    type: 'standard' | 'aggregate' | 'composite';
 }

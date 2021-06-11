@@ -3,6 +3,7 @@ import userSlice from '@/modules/user/UserSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import nodesSlice from '@/modules/nodes/NodesSlice';
+import algosSlice from '@/modules/algos/AlgosSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         datasets: datasetsSlice,
         computePlans: computePlansSlice,
         nodes: nodesSlice,
+        algos: algosSlice,
     },
 });
 

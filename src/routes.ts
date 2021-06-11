@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import Algos from '@/routes/algos/Algos';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
 import Datasets from '@/routes/datasets/Datasets';
 import Login from '@/routes/login/Login';
@@ -14,6 +15,8 @@ export const PATHS = {
     COMPUTE_PLANS: '/compute_plans/',
     DATASETS: '/datasets/',
     DATASET: '/datasets/:key/',
+    ALGOS: '/algorithms/',
+    ALGO: '/algorithms/:key/',
 };
 
 export const ROUTES: { [key: string]: IRoute } = {
@@ -29,6 +32,10 @@ export const ROUTES: { [key: string]: IRoute } = {
         // the following path matches both PATHS.DATASETS and PATHS.DATASET
         path: '/datasets/:key?',
         component: Datasets,
+    },
+    ALGOS: {
+        path: '/algorithms/:key?',
+        component: Algos,
     },
 };
 
