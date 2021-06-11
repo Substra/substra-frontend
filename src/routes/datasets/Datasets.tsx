@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -7,7 +7,12 @@ import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFilters,
+    useSearchFiltersEffect,
+} from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     FirstTabTh,
@@ -26,6 +31,7 @@ import DatasetSider from './components/DatasetSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
+import OwnerTableFilter from './components/OwnerTableFilter';
 
 const highlightedTrStyles = css`
     & > td > div {
@@ -43,10 +49,11 @@ const highlightedTrStyles = css`
 `;
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
+    const [searchFilters] = useSearchFilters();
 
-    useEffect(() => {
-        dispatch(listDatasets());
-    }, [dispatch]);
+    useSearchFiltersEffect(() => {
+        dispatch(listDatasets(searchFilters));
+    }, [searchFilters]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
@@ -69,7 +76,10 @@ const Datasets = (): JSX.Element => {
                         <Thead>
                             <Tr>
                                 <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
-                                <Th css={ownerColWidth}>Owner</Th>
+                                <Th css={ownerColWidth}>
+                                    Owner
+                                    <OwnerTableFilter />
+                                </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
                             </Tr>
                         </Thead>
@@ -121,6 +131,7 @@ const Datasets = (): JSX.Element => {
                                           highlightedTrStyles,
                                   ]}
                                   onClick={() =>
+                                      // TODO: keep search filters on this redirect
                                       setLocation(
                                           compilePath(PATHS.DATASET, {
                                               key: dataset.key,

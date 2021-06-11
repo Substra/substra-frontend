@@ -5,7 +5,6 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import { RiCloseLine } from 'react-icons/ri';
 
 import { Colors, Fonts, Spaces, zIndexes } from '@/assets/theme';
 import KeySiderSection from '@/components/KeySiderSection';
@@ -32,6 +31,7 @@ import DescriptionSiderSection, {
 import OpenerSiderSection, {
     LoadingOpenerSiderSection,
 } from './OpenerSiderSection';
+import CloseButton from '@/components/CloseButton';
 
 const Container = styled.div`
     position: fixed;
@@ -61,27 +61,10 @@ const TitleContainer = styled.div`
     padding: ${Spaces.medium} ${Spaces.large} ${Spaces.large} ${Spaces.large};
 `;
 
-const CloseButton = styled.button`
-    width: 40px;
-    height: 40px;
-    background: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+const closeButtonPosition = css`
     position: absolute;
     top: 0;
     right: 0;
-    opacity: 1;
-
-    &:hover {
-        opacity: 0.6;
-    }
-
-    & > svg {
-        width: 20px;
-        height: 20px;
-    }
 `;
 
 const TitleType = styled.div`
@@ -146,9 +129,10 @@ const DatasetSider = (): JSX.Element => {
             aria-hidden={!visible}
         >
             <TitleContainer>
-                <CloseButton onClick={() => setLocation(PATHS.DATASETS)}>
-                    <RiCloseLine />
-                </CloseButton>
+                <CloseButton
+                    css={closeButtonPosition}
+                    onClick={() => setLocation(PATHS.DATASETS)}
+                />
                 <TitleType>Dataset details</TitleType>
                 <Title>
                     {datasetLoading || !dataset ? (

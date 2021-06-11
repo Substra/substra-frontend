@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import DatasetAPI from './DatasetsApi';
+import { SearchFilterType } from '@/libs/filterParser';
 
 interface DatasetState {
     datasets: DatasetStubType[];
@@ -41,9 +42,9 @@ const initialState: DatasetState = {
 
 export const listDatasets = createAsyncThunk(
     'datasets/list',
-    async (_, thunkAPI) => {
+    async (filters: SearchFilterType[], thunkAPI) => {
         try {
-            const response = await DatasetAPI.listDatasets();
+            const response = await DatasetAPI.listDatasets(filters);
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);

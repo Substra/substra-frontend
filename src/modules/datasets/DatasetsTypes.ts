@@ -21,3 +21,9 @@ export interface DatasetType extends DatasetStubType {
     train_data_sample_keys: string[];
     test_data_sample_keys: string[];
 }
+
+export interface FilterType {
+    asset: 'dataset';
+    key: string;
+    value: string;
+}

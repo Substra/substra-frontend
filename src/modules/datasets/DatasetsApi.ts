@@ -1,5 +1,10 @@
-import API from '@/libs/request';
 import { AxiosPromise } from 'axios';
+
+import {
+    buildSearchFiltersString,
+    SearchFilterType,
+} from '@/libs/searchFilter';
+import API from '@/libs/request';
 
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 
@@ -8,8 +13,18 @@ const URLS = {
     RETRIEVE: '/data_manager/__KEY__/',
 };
 
-export const listDatasets = (): AxiosPromise<DatasetStubType[]> =>
-    API.get(URLS.LIST);
+export const listDatasets = (
+    filters: SearchFilterType[]
+): AxiosPromise<DatasetStubType[]> => {
+    const search = buildSearchFiltersString(filters);
+
+    let options = {};
+    if (search) {
+        options = { params: { search } };
+    }
+
+    return API.get(URLS.LIST, options);
+};
 
 export const retrieveDataset = (key: string): AxiosPromise<DatasetType> =>
     API.get(URLS.RETRIEVE.replace('__KEY__', key));

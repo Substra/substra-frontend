@@ -49,6 +49,9 @@ const thStyles = css`
         white-space: nowrap;
         font-weight: bold;
         text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     &:first-of-type > div {
