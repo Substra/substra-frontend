@@ -26,27 +26,12 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
-import { Colors } from '@/assets/theme';
 import DatasetSider from './components/DatasetSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from './components/OwnerTableFilter';
 
-const highlightedTrStyles = css`
-    & > td > div {
-        background-color: ${Colors.darkerBackground};
-        border-color: ${Colors.primary} transparent;
-    }
-
-    & > td:first-of-type > div {
-        border-left-color: ${Colors.primary};
-    }
-
-    & > td:last-of-type > div {
-        border-right-color: ${Colors.primary};
-    }
-`;
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [searchFilters] = useSearchFilters();
@@ -126,10 +111,7 @@ const Datasets = (): JSX.Element => {
                         : datasets.map((dataset) => (
                               <Tr
                                   key={dataset.key}
-                                  css={[
-                                      dataset.key === key &&
-                                          highlightedTrStyles,
-                                  ]}
+                                  highlighted={dataset.key === key}
                                   onClick={() =>
                                       // TODO: keep search filters on this redirect
                                       setLocation(

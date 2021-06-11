@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import Navigation from '@/components/layout/navigation/Navigation';
 import PageLayout from '@/components/layout/PageLayout';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import { Colors } from '@/assets/theme';
 import {
     FirstTabTh,
     Table,
@@ -23,21 +22,6 @@ import {
 import PageTitle from '@/components/PageTitle';
 import ComputePlanSider from './components/ComputePlanSider';
 import Status from '@/components/Status';
-
-const highlightedTrStyles = css`
-    & > td > div {
-        background-color: ${Colors.darkerBackground};
-        border-color: ${Colors.primary} transparent;
-    }
-
-    & > td:first-of-type > div {
-        border-left-color: ${Colors.primary};
-    }
-
-    & > td:last-of-type > div {
-        border-right-color: ${Colors.primary};
-    }
-`;
 
 const statusColWidth = css`
     width: 200px;
@@ -93,9 +77,7 @@ const ComputePlan = (): JSX.Element => {
                     {computePlans.map((computePlan) => (
                         <Tr
                             key={computePlan.key}
-                            css={[
-                                computePlan.key === key && highlightedTrStyles,
-                            ]}
+                            highlighted={computePlan.key === key}
                             onClick={() =>
                                 setLocation(
                                     compilePath(PATHS.COMPUTE_PLAN, {

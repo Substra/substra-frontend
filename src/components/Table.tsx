@@ -19,16 +19,38 @@ export const Thead = styled.thead``;
 
 export const Tbody = styled.tbody``;
 
-export const Tr = styled.tr`
-    &:hover > td > div {
+interface TrProps {
+    highlighted?: boolean;
+}
+export const Tr = styled.tr<TrProps>`
+    & > td:before {
+        border-color: ${({ highlighted }) =>
+            highlighted
+                ? `${Colors.primary} transparent`
+                : 'white transparent'};
+        background-color: ${({ highlighted }) =>
+            highlighted ? Colors.darkerBackground : 'white'};
+    }
+
+    & > td:first-of-type:before {
+        border-left-color: ${({ highlighted }) =>
+            highlighted ? Colors.primary : 'transparent'};
+    }
+
+    & > td:last-of-type:before {
+        border-right-color: ${({ highlighted }) =>
+            highlighted ? Colors.primary : 'transparent'};
+    }
+
+    &:hover > td:before {
         border-color: ${Colors.primary} transparent;
     }
 
-    &:hover > td:first-of-type > div {
+    &:hover > td:first-of-type:before {
         border-left-color: ${Colors.primary};
     }
 
-    &:hover > td:last-of-type > div {
+    &:hover > td:last-of-type:before {
         border-right-color: ${Colors.primary};
     }
 `;
@@ -85,27 +107,39 @@ export const FirstTabTh = (props): JSX.Element => (
 const tdStyle = css`
     cursor: pointer;
     padding-bottom: ${Spaces.extraSmall};
+    position: relative;
 
-    & > div {
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: ${Spaces.extraSmall};
         border-width: 1px 0;
         border-style: solid;
         border-color: white transparent;
         background-color: white;
+    }
+
+    &:first-of-type:before {
+        border-radius: ${Spaces.medium} 0 0 ${Spaces.medium};
+        border-left: 1px solid white;
+    }
+
+    &:last-of-type:before {
+        border-radius: 0 ${Spaces.medium} ${Spaces.medium} 0;
+        border-right: 1px solid white;
+    }
+
+    & > div {
+        position: relative;
+        z-index: 1;
         padding: ${Spaces.medium};
         white-space: nowrap;
         text-align: left;
         overflow-x: hidden;
         text-overflow: ellipsis;
-    }
-
-    &:first-of-type > div {
-        border-radius: ${Spaces.medium} 0 0 ${Spaces.medium};
-        border-left: 1px solid white;
-    }
-
-    &:last-of-type > div {
-        border-radius: 0 ${Spaces.medium} ${Spaces.medium} 0;
-        border-right: 1px solid white;
     }
 `;
 

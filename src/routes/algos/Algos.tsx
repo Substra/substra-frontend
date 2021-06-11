@@ -10,7 +10,6 @@ import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 import { RootState } from '@/store';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { Colors } from '@/assets/theme';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     FirstTabTh,
@@ -27,21 +26,6 @@ import {
 import AlgoSider from './components/AlgoSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
-
-const highlightedTrStyles = css`
-    & > td > div {
-        background-color: ${Colors.darkerBackground};
-        border-color: ${Colors.primary} transparent;
-    }
-
-    & > td:first-of-type > div {
-        border-left-color: ${Colors.primary};
-    }
-
-    & > td:last-of-type > div {
-        border-right-color: ${Colors.primary};
-    }
-`;
 
 const typeColWidth = css`
     width: 110px;
@@ -77,7 +61,7 @@ const Algos = (): JSX.Element => {
                     {algos.map((algo) => (
                         <Tr
                             key={algo.key}
-                            css={[algo.key === key && highlightedTrStyles]}
+                            highlighted={algo.key === key}
                             onClick={() =>
                                 setLocation(
                                     compilePath(PATHS.ALGO, {
