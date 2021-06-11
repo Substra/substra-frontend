@@ -11,10 +11,12 @@ const URLS = {
 export const listComputePlans = (): AxiosPromise<ComputePlanType[]> =>
     API.get(URLS.LIST);
 
-export const getComputePlan = (key: string): AxiosPromise<ComputePlanType> =>
+export const retrieveComputePlan = (
+    key: string
+): AxiosPromise<ComputePlanType> =>
     API.get(URLS.RETRIEVE.replace('__KEY__', key));
 
 export default {
     listComputePlans,
-    getComputePlan,
+    retrieveComputePlan,
 };

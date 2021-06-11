@@ -13,6 +13,7 @@ export interface IRoute {
 export const PATHS = {
     LOGIN: '/login/',
     COMPUTE_PLANS: '/compute_plans/',
+    COMPUTE_PLAN: '/compute_plans/:key',
     DATASETS: '/datasets/',
     DATASET: '/datasets/:key/',
     ALGOS: '/algorithms/',
@@ -25,7 +26,8 @@ export const ROUTES: { [key: string]: IRoute } = {
         component: Login,
     },
     COMPUTE_PLANS: {
-        path: PATHS.COMPUTE_PLANS,
+        // the following path matches both PATHS.COMPUTE_PLANS and PATHS.COMPUTE_PLAN
+        path: '/compute_plans/:key?',
         component: ComputePlan,
     },
     DATASETS: {
