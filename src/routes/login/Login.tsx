@@ -2,8 +2,7 @@ import React from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 
-import LoginForm from '@/components/loginform/LoginForm';
-import { H1 } from '@/components/utils/Typography';
+import { H1 } from '@/components/Typography';
 import LoginPageSvg from '@/assets/svg/illustrations/illustration-login-page.svg';
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
@@ -11,6 +10,8 @@ import { useLocation } from 'wouter';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { PATHS } from '@/routes';
 import { listNodes } from '@/modules/nodes/NodesSlice';
+
+import LoginForm from './components/LoginForm';
 
 const LeftSideContainer = styled.div`
     width: 50%;

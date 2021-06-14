@@ -1,5 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'universal-cookie';
+
+import {
+    buildSearchFiltersString,
+    SearchFilterType,
+} from '@/libs/searchFilter';
 
 const API = axios.create({
     baseURL: `${import.meta.env.VITE_API_URL}`,
@@ -27,5 +32,18 @@ API.interceptors.request.use((config) => {
         },
     };
 });
+
+export const getApiOptions = (
+    searchFilters: SearchFilterType[]
+): AxiosRequestConfig => {
+    const search = buildSearchFiltersString(searchFilters);
+
+    let options = {};
+    if (search) {
+        options = { params: { search } };
+    }
+
+    return options;
+};
 
 export default API;

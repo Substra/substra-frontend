@@ -33,3 +33,9 @@ export const SimpleSiderSection = ({
         {content}
     </SiderSection>
 );
+
+export default {
+    SiderSection,
+    SiderSectionTitle,
+    SimpleSiderSection,
+};

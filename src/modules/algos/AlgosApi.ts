@@ -31,9 +31,6 @@ export const listCompositeAlgos = (): AxiosPromise<APIAlgoType[]> =>
 export const retrieveCompositeAlgo = (key: string): AxiosPromise<APIAlgoType> =>
     API.get(URLS.RETRIEVE_COMPOSITE.replace('__KEY__', key));
 
-export const retrieveDescription = (url: string): AxiosPromise<string> =>
-    API.get(url);
-
 export default {
     listAggregateAlgos,
     retrieveAggregateAlgo,
@@ -41,5 +38,4 @@ export default {
     retrieveStandardAlgo,
     listCompositeAlgos,
     retrieveCompositeAlgo,
-    retrieveDescription,
 };

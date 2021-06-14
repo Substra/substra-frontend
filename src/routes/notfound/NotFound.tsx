@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
-import { H1 } from '@/components/utils/Typography';
+import { H1 } from '@/components/Typography';
 import { useAppSelector } from '@/hooks';
 import { PATHS } from '@/routes';
 import { Spaces } from '@/assets/theme';

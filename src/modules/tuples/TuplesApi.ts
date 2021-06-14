@@ -1,4 +1,5 @@
-import API from '@/libs/request';
+import API, { getApiOptions } from '@/libs/request';
+import { SearchFilterType } from '@/libs/searchFilter';
 import { AxiosPromise } from 'axios';
 import {
     AggregateTupleType,
@@ -15,43 +16,27 @@ const URLS = {
 };
 
 export const listAggregateTuples = (
-    computePlanKey?: string
+    searchFilters: SearchFilterType[]
 ): AxiosPromise<AggregateTupleType[]> => {
-    let formattedStringRequest = '';
-    if (computePlanKey) {
-        formattedStringRequest = `?search=aggregatetuple:compute_plan_key:${computePlanKey}`;
-    }
-    return API.get(`${URLS.AGGREGATE_LIST}${formattedStringRequest}`);
+    return API.get(URLS.AGGREGATE_LIST, getApiOptions(searchFilters));
 };
 
 export const listCompositeTuples = (
-    computePlanKey?: string
+    searchFilters: SearchFilterType[]
 ): AxiosPromise<CompositeTrainTupleType[]> => {
-    let formattedStringRequest = '';
-    if (computePlanKey) {
-        formattedStringRequest = `?search=composite_traintuple:compute_plan_key:${computePlanKey}`;
-    }
-    return API.get(`${URLS.COMPOSITE_LIST}${formattedStringRequest}`);
+    return API.get(URLS.COMPOSITE_LIST, getApiOptions(searchFilters));
 };
 
 export const listTestTuples = (
-    computePlanKey?: string
+    searchFilters: SearchFilterType[]
 ): AxiosPromise<TestTupleType[]> => {
-    let formattedStringRequest = '';
-    if (computePlanKey) {
-        formattedStringRequest = `?search=testtuple:compute_plan_key:${computePlanKey}`;
-    }
-    return API.get(`${URLS.TEST_LIST}${formattedStringRequest}`);
+    return API.get(URLS.TEST_LIST, getApiOptions(searchFilters));
 };
 
 export const listTrainTuples = (
-    computePlanKey?: string
+    searchFilters: SearchFilterType[]
 ): AxiosPromise<TrainTupleType[]> => {
-    let formattedStringRequest = '';
-    if (computePlanKey) {
-        formattedStringRequest = `?search=traintuple:compute_plan_key:${computePlanKey}`;
-    }
-    return API.get(`${URLS.TRAIN_LIST}${formattedStringRequest}`);
+    return API.get(URLS.TRAIN_LIST, getApiOptions(searchFilters));
 };
 
 export default {

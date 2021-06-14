@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import CommonApi from '@/modules/common/CommonApi';
+
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import DatasetAPI from './DatasetsApi';
 import { SearchFilterType } from '@/libs/filterParser';
@@ -68,7 +70,7 @@ export const retrieveDescription = createAsyncThunk(
     'datasets/description',
     async (descriptionURL: string, thunkAPI) => {
         try {
-            const response = await DatasetAPI.retrieveDescription(
+            const response = await CommonApi.retrieveDescription(
                 descriptionURL
             );
             return response.data;

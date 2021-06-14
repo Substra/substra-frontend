@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import CommonApi from '@/modules/common/CommonApi';
+
 import { APIAlgoType, AlgoType } from './AlgosTypes';
 import AlgosApi from './AlgosApi';
 
@@ -97,7 +99,9 @@ export const retrieveDescription = createAsyncThunk(
     'algos/description',
     async (descriptionURL: string, thunkAPI) => {
         try {
-            const response = await AlgosApi.retrieveDescription(descriptionURL);
+            const response = await CommonApi.retrieveDescription(
+                descriptionURL
+            );
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);

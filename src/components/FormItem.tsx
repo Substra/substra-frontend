@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Label } from '@/components/utils/Typography';
+import { Label } from '@/components/Typography';
 import { Colors, Fonts } from '@/assets/theme';
 
 type FormProps = {

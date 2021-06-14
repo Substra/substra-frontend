@@ -80,7 +80,14 @@ export const retrieveComputePlanTrainTuples = createAsyncThunk(
     'computePlans/getTrainTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const response = await TuplesApi.listTrainTuples(computePlanKey);
+            const searchFilters = [
+                {
+                    asset: 'traintuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ];
+            const response = await TuplesApi.listTrainTuples(searchFilters);
 
             return response.data;
         } catch (err) {
@@ -93,7 +100,14 @@ export const retrieveComputePlanTestTuples = createAsyncThunk(
     'computePlans/getTestTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const response = await TuplesApi.listTestTuples(computePlanKey);
+            const searchFilters = [
+                {
+                    asset: 'testtuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ];
+            const response = await TuplesApi.listTestTuples(searchFilters);
 
             return response.data;
         } catch (err) {
@@ -106,9 +120,14 @@ export const retrieveComputePlanAggregateTuples = createAsyncThunk(
     'computePlans/getAggregateTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const response = await TuplesApi.listAggregateTuples(
-                computePlanKey
-            );
+            const searchFilters = [
+                {
+                    asset: 'aggregatetuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ];
+            const response = await TuplesApi.listAggregateTuples(searchFilters);
 
             return response.data;
         } catch (err) {
@@ -121,9 +140,14 @@ export const retrieveComputePlanCompositeTuples = createAsyncThunk(
     'computePlans/getCompositeTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const response = await TuplesApi.listCompositeTuples(
-                computePlanKey
-            );
+            const searchFilters = [
+                {
+                    asset: 'composite_traintuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ];
+            const response = await TuplesApi.listCompositeTuples(searchFilters);
 
             return response.data;
         } catch (err) {

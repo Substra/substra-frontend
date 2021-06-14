@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import Card from '@/components/Card';
 import FormItem from '@/components/FormItem';
 import Button from '@/components/Button';
-import { H2, BodySmall } from '@/components/utils/Typography';
+import { H2, BodySmall } from '@/components/Typography';
 import { Colors, Spaces } from '@/assets/theme';
 
 type LoginFormProps = {
