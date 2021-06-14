@@ -15,6 +15,7 @@ import {
 } from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
+    EmptyTr,
     FirstTabTh,
     nameColWidth,
     ownerColWidth,
@@ -94,6 +95,9 @@ const Datasets = (): JSX.Element => {
                     </Tr>
                 </Thead>
                 <Tbody>
+                    {!datasetsLoading && datasets.length === 0 && (
+                        <EmptyTr nbColumns={3} />
+                    )}
                     {datasetsLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>

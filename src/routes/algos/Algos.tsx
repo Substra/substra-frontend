@@ -12,6 +12,7 @@ import { RootState } from '@/store';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
+    EmptyTr,
     FirstTabTh,
     nameColWidth,
     ownerColWidth,
@@ -26,6 +27,7 @@ import {
 import AlgoSider from './components/AlgoSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
+import Skeleton from '@/components/Skeleton';
 
 const typeColWidth = css`
     width: 110px;
@@ -42,11 +44,19 @@ const Algos = (): JSX.Element => {
         (state: RootState) => state.algos.algos
     );
 
+    const algosLoading = useAppSelector(
+        (state: RootState) => state.algos.algosLoading
+    );
+
     const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.ALGO);
 
     return (
-        <PageLayout navigation={<Navigation />} sider={<AlgoSider />}>
+        <PageLayout
+            siderVisible={!!key}
+            navigation={<Navigation />}
+            sider={<AlgoSider />}
+        >
             <PageTitle>Algorithms</PageTitle>
             <Table>
                 <Thead>
@@ -58,28 +68,48 @@ const Algos = (): JSX.Element => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {algos.map((algo) => (
-                        <Tr
-                            key={algo.key}
-                            highlighted={algo.key === key}
-                            onClick={() =>
-                                setLocation(
-                                    compilePath(PATHS.ALGO, {
-                                        key: algo.key,
-                                    })
-                                )
-                            }
-                        >
-                            <Td>{algo.name}</Td>
-                            <Td>{algo.owner}</Td>
-                            <Td>
-                                <PermissionCellContent
-                                    permission={algo.permissions.process}
-                                />
-                            </Td>
-                            <Td>{algo.type ? algo.type : 'NaN'}</Td>
-                        </Tr>
-                    ))}
+                    {!algosLoading && algos.length === 0 && (
+                        <EmptyTr nbColumns={4} />
+                    )}
+                    {algosLoading
+                        ? [1, 2, 3].map((index) => (
+                              <Tr key={index}>
+                                  <Td>
+                                      <Skeleton width={500} height={12} />
+                                  </Td>
+                                  <Td>
+                                      <Skeleton width={80} height={12} />
+                                  </Td>
+                                  <Td>
+                                      <Skeleton width={150} height={12} />
+                                  </Td>
+                                  <Td>
+                                      <Skeleton width={60} height={12} />
+                                  </Td>
+                              </Tr>
+                          ))
+                        : algos.map((algo) => (
+                              <Tr
+                                  key={algo.key}
+                                  highlighted={algo.key === key}
+                                  onClick={() =>
+                                      setLocation(
+                                          compilePath(PATHS.ALGO, {
+                                              key: algo.key,
+                                          })
+                                      )
+                                  }
+                              >
+                                  <Td>{algo.name}</Td>
+                                  <Td>{algo.owner}</Td>
+                                  <Td>
+                                      <PermissionCellContent
+                                          permission={algo.permissions.process}
+                                      />
+                                  </Td>
+                                  <Td>{algo.type}</Td>
+                              </Tr>
+                          ))}
                 </Tbody>
             </Table>
         </PageLayout>

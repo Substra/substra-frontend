@@ -55,6 +55,32 @@ export const Tr = styled.tr<TrProps>`
     }
 `;
 
+const emptyTdStyle = css`
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: white transparent;
+    background-color: white;
+    padding: ${Spaces.medium};
+    white-space: nowrap;
+    text-align: left;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    border-radius: ${Spaces.medium};
+    text-align: center;
+`;
+
+interface EmptyTrProps {
+    nbColumns: number;
+}
+
+export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
+    <tr>
+        <td colSpan={nbColumns} css={emptyTdStyle}>
+            No data to display
+        </td>
+    </tr>
+);
+
 interface CellProps {
     children: React.ReactNode;
 }
