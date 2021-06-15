@@ -48,34 +48,33 @@ export const listAlgos = createAsyncThunk(
     'algos/list',
     async (filters: SearchFilterType[], thunkAPI) => {
         try {
-            // TODO: make all 3 calls in parallel
             const standardFilters = filters.filter(
                 (sf) => sf.asset === AssetType.algo
             );
-            const standardResponse = await AlgosApi.listStandardAlgos(
-                standardFilters
-            );
-            const standardAlgos = standardResponse.data.map(
-                addAlgoType('standard')
-            );
-
             const compositeFilters = filters.filter(
                 (sf) => sf.asset === AssetType.composite_algo
             );
-            const compositeResponse = await AlgosApi.listCompositeAlgos(
-                compositeFilters
-            );
-            const compositeAlgos = compositeResponse.data.map(
-                addAlgoType('composite')
-            );
-
             const aggregateFilters = filters.filter(
                 (sf) => sf.asset === AssetType.aggregate_algo
             );
-            const aggregateResponse = await AlgosApi.listAggregateAlgos(
-                aggregateFilters
+
+            const promises = [
+                AlgosApi.listStandardAlgos(standardFilters),
+                AlgosApi.listCompositeAlgos(compositeFilters),
+                AlgosApi.listAggregateAlgos(aggregateFilters),
+            ];
+
+            const responses = await Promise.all(promises);
+
+            const standardAlgos = responses[0].data.map(
+                addAlgoType('standard')
             );
-            const aggregateAlgos = aggregateResponse.data.map(
+
+            const compositeAlgos = responses[1].data.map(
+                addAlgoType('composite')
+            );
+
+            const aggregateAlgos = responses[2].data.map(
                 addAlgoType('aggregate')
             );
 
