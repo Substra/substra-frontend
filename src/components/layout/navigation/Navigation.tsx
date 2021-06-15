@@ -2,13 +2,21 @@
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useRoute, Link } from 'wouter';
 
 import AlgorithmIcon from '@/assets/svg/algorithm-icon';
 import ComputePlanIcon from '@/assets/svg/compute-plan-icon';
 import DatasetIcon from '@/assets/svg/dataset-icon';
-import { Colors, Mixins, Spaces } from '@/assets/theme';
 import { PATHS, ROUTES } from '@/routes';
+import { Colors, Mixins, Spaces, zIndexes } from '@/assets/theme';
+
+const Container = styled.div`
+    position: fixed;
+    top: 96px;
+    left: ${Spaces.extraLarge};
+    z-index: ${zIndexes.navigation};
+`;
 
 const linkStyle = css`
     display: flex;
@@ -72,7 +80,7 @@ const Navigation = (): JSX.Element => {
         );
     };
     return (
-        <div>
+        <Container>
             {renderLink(
                 'Datasets',
                 ROUTES.DATASETS.path,
@@ -95,7 +103,7 @@ const Navigation = (): JSX.Element => {
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}
-        </div>
+        </Container>
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import { Colors, Mixins, Spaces, zIndexes } from '@/assets/theme';
@@ -20,6 +20,29 @@ const HorizontalScrollContainer = styled.div`
     overflow-y: hidden;
 `;
 
+const HorizontalScrollShadow = styled.div`
+    content: '';
+    display: block;
+    width: 120px;
+
+    // position
+    position: absolute;
+    z-index: ${zIndexes.stickyHeader + 1};
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(0);
+
+    // background
+    background-image: linear-gradient(
+        to right,
+        rgba(247, 249, 248, 1) 40%,
+        rgba(247, 249, 248, 0)
+    );
+    background-size: 120px;
+    background-repeat: repeat-y;
+`;
+
 interface VerticalScrollContainerProps {
     siderVisible: boolean;
 }
@@ -38,20 +61,6 @@ const VerticalScrollContainer = styled.div<VerticalScrollContainerProps>`
         ${Spaces.large} 120px;
     // transition has to be the same as for the sider sliding in and out of view so that both sider and table move together
     transition: all 0.2s ease-out;
-`;
-
-const NavigationContainer = styled.div`
-    position: fixed;
-    top: 96px;
-    z-index: ${zIndexes.navigation};
-    min-width: 150px;
-    height: 100vh;
-    padding-left: ${Spaces.extraLarge};
-    background-image: linear-gradient(
-        to right,
-        rgba(247, 249, 248, 1) 40%,
-        rgba(247, 249, 248, 0)
-    );
 `;
 
 interface StickyHeaderContainerProps {
@@ -99,26 +108,53 @@ const PageLayout = ({
     siderVisible,
     stickyHeader,
 }: PageLayoutProps): JSX.Element => {
-    const [scrolled, setScrolled] = useState(false);
-
-    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        setScrolled(e.target.scrollTop > 0);
+    // add/remove box shadow on header when sticky
+    const [verticallyScrolled, setVerticallyScrolled] = useState(false);
+    const onVerticalScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        setVerticallyScrolled(e.target.scrollTop > 0);
     };
 
+    // make sure left-side shadow is always positioned to the left of the viewport but still
+    // within the HorizontalScrollContainer.
+    const horizontalScrollContainerRef = useRef<HTMLDivElement>();
+    const horizontalScrollShadowRef = useRef<HTMLDivElement>();
+    const rafRef = useRef<number>(); // raf stands for requestAnimationFrame
+    useEffect(() => {
+        const repositionShadow = () => {
+            if (
+                horizontalScrollContainerRef.current &&
+                horizontalScrollShadowRef.current
+            ) {
+                const offset = horizontalScrollContainerRef.current.scrollLeft;
+                horizontalScrollShadowRef.current.style.transform = `translateX(${offset}px)`;
+                rafRef.current = requestAnimationFrame(repositionShadow);
+            }
+        };
+
+        requestAnimationFrame(() => {
+            rafRef.current = requestAnimationFrame(repositionShadow);
+
+            return () => {
+                if (rafRef.current) {
+                    cancelAnimationFrame(rafRef.current);
+                }
+            };
+        });
+    }, [horizontalScrollContainerRef, horizontalScrollShadowRef]);
+
     return (
-        <Container onScroll={onScroll}>
-            {navigation && (
-                <NavigationContainer>{navigation}</NavigationContainer>
-            )}
-            <HorizontalScrollContainer>
+        <Container>
+            {navigation}
+            <HorizontalScrollContainer ref={horizontalScrollContainerRef}>
+                <HorizontalScrollShadow ref={horizontalScrollShadowRef} />
                 {stickyHeader && (
-                    <StickyHeaderContainer scrolled={scrolled}>
+                    <StickyHeaderContainer scrolled={verticallyScrolled}>
                         {stickyHeader}
                     </StickyHeaderContainer>
                 )}
                 <VerticalScrollContainer
                     siderVisible={siderVisible}
-                    onScroll={onScroll}
+                    onScroll={onVerticalScroll}
                 >
                     {children}
                 </VerticalScrollContainer>
