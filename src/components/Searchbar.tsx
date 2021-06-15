@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import { Colors, Spaces } from '@/assets/theme';
+import { Colors, Fonts, Spaces } from '@/assets/theme';
 import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
 import Select from '@/components/Select';
 import { SearchFilterType } from '@/libs/searchFilter';
@@ -55,7 +55,7 @@ const Input = styled.input`
     padding-right: ${Spaces.medium};
     width: 100%;
     color: ${Colors.lightContent};
-    font-size: 14px;
+    font-size: ${Fonts.sizes.input};
 `;
 
 const clearButton = css`
