@@ -6,3 +6,10 @@ export interface PermissionType {
 export interface PermissionsType {
     process: PermissionType;
 }
+
+export enum AssetType {
+    dataset = 'dataset',
+    algo = 'algo',
+    composite_algo = 'composite_algo',
+    aggregate_algo = 'aggregate_algo',
+}

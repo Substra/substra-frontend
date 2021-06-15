@@ -1,5 +1,7 @@
+import { AssetType } from '@/modules/common/CommonTypes';
+
 export interface SearchFilterType {
-    asset: string;
+    asset: AssetType;
     key: string;
     value: string;
 }

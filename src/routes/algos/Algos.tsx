@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -9,7 +9,12 @@ import { listAlgos } from '@/modules/algos/AlgosSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 import { RootState } from '@/store';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFilters,
+    useSearchFiltersEffect,
+} from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     EmptyTr,
@@ -28,6 +33,8 @@ import AlgoSider from './components/AlgoSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
+import OwnerTableFilter from '@/components/OwnerTableFilter';
+import { AssetType } from '@/modules/common/CommonTypes';
 
 const typeColWidth = css`
     width: 110px;
@@ -35,10 +42,11 @@ const typeColWidth = css`
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
+    const [searchFilters] = useSearchFilters();
 
-    useEffect(() => {
-        dispatch(listAlgos());
-    }, [dispatch]);
+    useSearchFiltersEffect(() => {
+        dispatch(listAlgos(searchFilters));
+    }, [searchFilters]);
 
     const algos: AlgoType[] = useAppSelector(
         (state: RootState) => state.algos.algos
@@ -56,10 +64,46 @@ const Algos = (): JSX.Element => {
             siderVisible={!!key}
             navigation={<Navigation />}
             sider={<AlgoSider />}
+            stickyHeader={
+                <Fragment>
+                    <PageTitle>Algorithms</PageTitle>
+                    <Table>
+                        <Thead>
+                            <Tr>
+                                <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                                <Th css={ownerColWidth}>
+                                    Owner
+                                    <OwnerTableFilter
+                                        assets={[
+                                            AssetType.algo,
+                                            AssetType.composite_algo,
+                                            AssetType.aggregate_algo,
+                                        ]}
+                                    />
+                                </Th>
+                                <Th css={permissionsColWidth}>Permissions</Th>
+                                <Th css={typeColWidth}>Type</Th>
+                            </Tr>
+                        </Thead>
+                    </Table>
+                </Fragment>
+            }
         >
-            <PageTitle>Algorithms</PageTitle>
+            <PageTitle
+                css={css`
+                    opacity: 0;
+                    pointer-events: none;
+                `}
+            >
+                Algorithms
+            </PageTitle>
             <Table>
-                <Thead>
+                <Thead
+                    css={css`
+                        opacity: 0;
+                        pointer-events: none;
+                    `}
+                >
                     <Tr>
                         <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
                         <Th css={ownerColWidth}>Owner</Th>

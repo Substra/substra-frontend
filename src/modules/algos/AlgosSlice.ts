@@ -4,6 +4,8 @@ import CommonApi from '@/modules/common/CommonApi';
 
 import { APIAlgoType, AlgoType } from './AlgosTypes';
 import AlgosApi from './AlgosApi';
+import { SearchFilterType } from '@/libs/searchFilter';
+import { AssetType } from '@/modules/common/CommonTypes';
 
 interface AlgoState {
     algos: AlgoType[];
@@ -42,29 +44,47 @@ const addAlgoType = (type: 'standard' | 'aggregate' | 'composite') => (
     };
 };
 
-export const listAlgos = createAsyncThunk('algos/list', async (_, thunkAPI) => {
-    try {
-        // TODO: make all 3 calls in parallel
-        const standardResponse = await AlgosApi.listStandardAlgos();
-        const standardAlgos = standardResponse.data.map(
-            addAlgoType('standard')
-        );
+export const listAlgos = createAsyncThunk(
+    'algos/list',
+    async (filters: SearchFilterType[], thunkAPI) => {
+        try {
+            // TODO: make all 3 calls in parallel
+            const standardFilters = filters.filter(
+                (sf) => sf.asset === AssetType.algo
+            );
+            const standardResponse = await AlgosApi.listStandardAlgos(
+                standardFilters
+            );
+            const standardAlgos = standardResponse.data.map(
+                addAlgoType('standard')
+            );
 
-        const compositeResponse = await AlgosApi.listCompositeAlgos();
-        const compositeAlgos = compositeResponse.data.map(
-            addAlgoType('composite')
-        );
+            const compositeFilters = filters.filter(
+                (sf) => sf.asset === AssetType.composite_algo
+            );
+            const compositeResponse = await AlgosApi.listCompositeAlgos(
+                compositeFilters
+            );
+            const compositeAlgos = compositeResponse.data.map(
+                addAlgoType('composite')
+            );
 
-        const aggregateResponse = await AlgosApi.listAggregateAlgos();
-        const aggregateAlgos = aggregateResponse.data.map(
-            addAlgoType('aggregate')
-        );
+            const aggregateFilters = filters.filter(
+                (sf) => sf.asset === AssetType.aggregate_algo
+            );
+            const aggregateResponse = await AlgosApi.listAggregateAlgos(
+                aggregateFilters
+            );
+            const aggregateAlgos = aggregateResponse.data.map(
+                addAlgoType('aggregate')
+            );
 
-        return [...standardAlgos, ...compositeAlgos, ...aggregateAlgos];
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+            return [...standardAlgos, ...compositeAlgos, ...aggregateAlgos];
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const retrieveAlgo = createAsyncThunk(
     'algos/get',

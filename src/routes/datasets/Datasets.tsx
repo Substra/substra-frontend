@@ -30,8 +30,9 @@ import DatasetSider from './components/DatasetSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
-import OwnerTableFilter from './components/OwnerTableFilter';
 import SearchBar from '@/components/Searchbar';
+import OwnerTableFilter from '@/components/OwnerTableFilter';
+import { AssetType } from '@/modules/common/CommonTypes';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -62,7 +63,9 @@ const Datasets = (): JSX.Element => {
                 <Fragment>
                     <PageTitle>Datasets</PageTitle>
                     <SearchBar
-                        assetOptions={[{ label: 'Dataset', value: 'dataset' }]}
+                        assetOptions={[
+                            { label: 'Dataset', value: AssetType.dataset },
+                        ]}
                     />
                     <Table>
                         <Thead>
@@ -70,7 +73,9 @@ const Datasets = (): JSX.Element => {
                                 <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
                                 <Th css={ownerColWidth}>
                                     Owner
-                                    <OwnerTableFilter />
+                                    <OwnerTableFilter
+                                        assets={[AssetType.dataset]}
+                                    />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
                             </Tr>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import { PermissionType } from '@/modules/datasets/DatasetsTypes';
+import { PermissionType } from '@/modules/common/CommonTypes';
 import styled from '@emotion/styled';
 import { Colors, Spaces } from '@/assets/theme';
 import Skeleton from './Skeleton';

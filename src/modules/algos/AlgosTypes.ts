@@ -1,4 +1,4 @@
-import { PermissionsType } from '@/modules/common/PermissionsType';
+import { PermissionsType } from '@/modules/common/CommonTypes';
 
 export interface APIAlgoType {
     key: string;

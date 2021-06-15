@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PermissionType } from '@/modules/datasets/DatasetsTypes';
+import { PermissionType } from '@/modules/common/CommonTypes';
 
 type PermissionCellContentProps = {
     permission: PermissionType;
