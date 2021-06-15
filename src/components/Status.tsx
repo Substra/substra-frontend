@@ -2,7 +2,7 @@
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { css, jsx, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
@@ -27,6 +27,19 @@ const StatusIcon = styled.div`
     margin-right: ${Spaces.small};
 `;
 
+const rotate = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
+const rotation = css`
+    animation: ${rotate} 2s linear infinite;
+`;
+
 const Status = ({ status }: StatusProps): JSX.Element => {
     let type = '';
     let icon: JSX.Element | null = null;
@@ -38,11 +51,11 @@ const Status = ({ status }: StatusProps): JSX.Element => {
             break;
         case TaskStatus.waiting:
         case TaskStatus.todo:
-            icon = <RiLoader4Line color={Colors.running} />;
+            icon = <RiLoader4Line css={rotation} color={Colors.running} />;
             type = Colors.running;
             break;
         case TaskStatus.doing:
-            icon = <RiLoader4Line color={Colors.success} />;
+            icon = <RiLoader4Line css={rotation} color={Colors.success} />;
             type = Colors.success;
             break;
         case TaskStatus.failed:
