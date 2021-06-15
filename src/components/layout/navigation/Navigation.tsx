@@ -8,7 +8,7 @@ import AlgorithmIcon from '@/assets/svg/algorithm-icon';
 import ComputePlanIcon from '@/assets/svg/compute-plan-icon';
 import DatasetIcon from '@/assets/svg/dataset-icon';
 import { Colors, Mixins, Spaces } from '@/assets/theme';
-import { PATHS } from '@/routes';
+import { PATHS, ROUTES } from '@/routes';
 
 const linkStyle = css`
     display: flex;
@@ -56,11 +56,16 @@ const activeLinkStyle = css`
 `;
 
 const Navigation = (): JSX.Element => {
-    const renderLink = (label: string, url: string, icon: JSX.Element) => {
-        const [isActive] = useRoute(url);
+    const renderLink = (
+        label: string,
+        route: string,
+        path: string,
+        icon: JSX.Element
+    ) => {
+        const [isActive] = useRoute(route);
 
         return (
-            <Link css={[linkStyle, isActive && activeLinkStyle]} href={url}>
+            <Link css={[linkStyle, isActive && activeLinkStyle]} href={path}>
                 <span className="icon">{icon}</span>
                 <span className="label">{label}</span>
             </Link>
@@ -70,6 +75,7 @@ const Navigation = (): JSX.Element => {
         <div>
             {renderLink(
                 'Datasets',
+                ROUTES.DATASETS.path,
                 PATHS.DATASETS,
                 <DatasetIcon
                     css={css`
@@ -77,9 +83,15 @@ const Navigation = (): JSX.Element => {
                     `}
                 />
             )}
-            {renderLink('Algos and Metrics', '/algorithms', <AlgorithmIcon />)}
+            {renderLink(
+                'Algos and Metrics',
+                ROUTES.ALGOS.path,
+                PATHS.ALGOS,
+                <AlgorithmIcon />
+            )}
             {renderLink(
                 'Compute Plans',
+                ROUTES.COMPUTE_PLANS.path,
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}
