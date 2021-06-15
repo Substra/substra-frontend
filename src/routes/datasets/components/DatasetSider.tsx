@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'wouter';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import KeySiderSection from '@/components/KeySiderSection';
@@ -17,7 +16,11 @@ import {
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersLocation,
+} from '@/hooks';
 import Skeleton from '@/components/Skeleton';
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
@@ -30,7 +33,11 @@ import OpenerSiderSection, {
 import DataSamplesTabs from './DataSamplesTabs';
 
 const DatasetSider = (): JSX.Element => {
-    const [, setLocation] = useLocation();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
     const key = useKeyFromPath(PATHS.DATASET);
 
     const visible = !!key;
@@ -67,7 +74,9 @@ const DatasetSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() => setLocation(PATHS.DATASETS)}
+            onCloseButtonClick={() =>
+                setSearchFiltersLocation(PATHS.DATASETS, searchFilters)
+            }
             titleType="Dataset details"
             title={
                 datasetLoading || !dataset ? (

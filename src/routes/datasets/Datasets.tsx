@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { Fragment } from 'react';
-import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
@@ -10,7 +9,7 @@ import Navigation from '@/components/layout/navigation/Navigation';
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFilters,
+    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
@@ -32,10 +31,15 @@ import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from './components/OwnerTableFilter';
+import SearchBar from '@/components/Searchbar';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [searchFilters] = useSearchFilters();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
 
     useSearchFiltersEffect(() => {
         dispatch(listDatasets(searchFilters));
@@ -47,7 +51,6 @@ const Datasets = (): JSX.Element => {
     const datasetsLoading = useAppSelector(
         (state) => state.datasets.datasetsLoading
     );
-    const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.DATASET);
 
     return (
@@ -58,6 +61,9 @@ const Datasets = (): JSX.Element => {
             stickyHeader={
                 <Fragment>
                     <PageTitle>Datasets</PageTitle>
+                    <SearchBar
+                        assetOptions={[{ label: 'Dataset', value: 'dataset' }]}
+                    />
                     <Table>
                         <Thead>
                             <Tr>
@@ -117,11 +123,11 @@ const Datasets = (): JSX.Element => {
                                   key={dataset.key}
                                   highlighted={dataset.key === key}
                                   onClick={() =>
-                                      // TODO: keep search filters on this redirect
-                                      setLocation(
+                                      setSearchFiltersLocation(
                                           compilePath(PATHS.DATASET, {
                                               key: dataset.key,
-                                          })
+                                          }),
+                                          searchFilters
                                       )
                                   }
                               >

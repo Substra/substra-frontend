@@ -1,12 +1,16 @@
 import React from 'react';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { useAppSelector, useSearchFilters } from '@/hooks';
+import { useAppSelector, useSearchFiltersLocation } from '@/hooks';
 import TableFilter from '@/components/TableFilter';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 const OwnerTableFilter = (): JSX.Element => {
-    const [searchFilters, setSearchFilters] = useSearchFilters();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
@@ -34,7 +38,7 @@ const OwnerTableFilter = (): JSX.Element => {
             key: 'owner',
             value: v,
         }));
-        setSearchFilters(filters);
+        setSearchFiltersLocation(filters);
     };
 
     return (

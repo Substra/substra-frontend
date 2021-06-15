@@ -12,7 +12,7 @@ const Button = styled.button`
     justify-content: center;
     opacity: 1;
 
-    &:hover {
+    &:not(:disabled):hover {
         opacity: 0.6;
     }
 

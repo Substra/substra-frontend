@@ -16,26 +16,54 @@ import type { RootState, AppDispatch } from './store';
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const useSearchFilters = (): [
+export const useSearchFiltersLocation = (): [
+    string,
     SearchFilterType[],
-    (filters: SearchFilterType[]) => void
+    (
+        searchFiltersOrLocation: SearchFilterType[] | string,
+        searchFilters?: SearchFilterType[]
+    ) => void
 ] => {
-    const [, setLocation] = useLocation();
+    const [wouterLocation, setWouterLocation] = useLocation();
 
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const filters = parseSearchFiltersString(
+    const searchFilters = parseSearchFiltersString(
         urlSearchParams.get('search') || ''
     );
 
-    const setSearchFilters = (filters: SearchFilterType[]) => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        urlSearchParams.set('search', buildSearchFiltersString(filters));
-        setLocation(
-            `${window.location.pathname}?${urlSearchParams.toString()}`
-        );
-    };
+    // public signatures
+    function setSearchFiltersLocation(searchFilters: SearchFilterType[]): void;
+    function setSearchFiltersLocation(location: string): void;
+    function setSearchFiltersLocation(
+        location: string,
+        searchFilters: SearchFilterType[]
+    ): void;
+    // implementation signature
+    function setSearchFiltersLocation(
+        searchFiltersOrLocation: SearchFilterType[] | string,
+        searchFilters?: SearchFilterType[]
+    ) {
+        // handle the different signatures
+        let newLocation = window.location.pathname;
+        let newSearchFilters = [];
+        if (typeof searchFiltersOrLocation === 'string') {
+            newLocation = searchFiltersOrLocation;
+            newSearchFilters = searchFilters || [];
+        } else {
+            newSearchFilters = searchFiltersOrLocation;
+        }
 
-    return [filters, setSearchFilters];
+        // build new URL
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.set(
+            'search',
+            buildSearchFiltersString(newSearchFilters)
+        );
+        // apply new location
+        setWouterLocation(`${newLocation}?${urlSearchParams.toString()}`);
+    }
+
+    return [wouterLocation, searchFilters, setSearchFiltersLocation];
 };
 
 export const useSearchFiltersEffect = (
