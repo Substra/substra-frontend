@@ -60,6 +60,10 @@ const ContentContainer = styled.div`
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
 `;
 
 interface SiderProps {

@@ -34,8 +34,13 @@ export const SimpleSiderSection = ({
     </SiderSection>
 );
 
+export const SiderBottomSection = styled(SiderSection)`
+    margin-top: auto;
+`;
+
 export default {
     SiderSection,
     SiderSectionTitle,
     SimpleSiderSection,
+    SiderBottomSection,
 };

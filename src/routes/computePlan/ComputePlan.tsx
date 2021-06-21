@@ -9,7 +9,7 @@ import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import Navigation from '@/components/layout/navigation/Navigation';
 import PageLayout from '@/components/layout/PageLayout';
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS, ROUTES, useKeyFromPath } from '@/routes';
 import {
     EmptyTr,
     FirstTabTh,
@@ -48,7 +48,7 @@ const ComputePlan = (): JSX.Element => {
     );
 
     const [, setLocation] = useLocation();
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
+    const key = useKeyFromPath(ROUTES.COMPUTE_PLAN.path);
 
     return (
         <PageLayout

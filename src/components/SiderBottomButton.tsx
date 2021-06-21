@@ -1,25 +1,27 @@
+/** @jsx jsx */
 import React from 'react';
 
-import { Colors, Spaces } from '@/assets/theme';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const Button = styled.a`
-    position: absolute;
+import { SiderBottomSection } from '@/components/SiderSection';
+import { Colors } from '@/assets/theme';
+import { downloadFromApi } from '@/libs/request';
+
+const Button = styled.button`
     color: ${Colors.primary};
-    padding: ${Spaces.medium} 112px ${Spaces.medium};
+    height: 40px;
+    min-width: 80%;
     background: none;
     border: 1px solid ${Colors.border};
     border-radius: 20px;
     text-decoration: none;
-    bottom: 15px;
-    text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-transform: uppercase;
-    height: 40px;
-    transform: translateY(-50%);
-    margin: 0;
+    margin: 0 auto;
 
     &:hover {
         background-color: ${Colors.darkerBackground};
@@ -38,12 +40,20 @@ interface SiderBottomButtonProps {
 const SiderBottomButton = ({
     target,
     children,
-    ...props
 }: SiderBottomButtonProps): JSX.Element => {
     return (
-        <Button href={target} type="button" {...props}>
-            {children}
-        </Button>
+        <SiderBottomSection
+            css={css`
+                text-align: center;
+            `}
+        >
+            <Button
+                onClick={() => downloadFromApi(target, 'algo.zip')}
+                type="button"
+            >
+                {children}
+            </Button>
+        </SiderBottomSection>
     );
 };
 
