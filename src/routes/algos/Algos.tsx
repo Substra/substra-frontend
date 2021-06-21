@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { Fragment } from 'react';
-import { useLocation } from 'wouter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -12,7 +11,7 @@ import { RootState } from '@/store';
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFilters,
+    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import PermissionCellContent from '@/components/PermissionCellContent';
@@ -42,7 +41,11 @@ const typeColWidth = css`
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [searchFilters] = useSearchFilters();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
 
     useSearchFiltersEffect(() => {
         dispatch(listAlgos(searchFilters));
@@ -56,7 +59,6 @@ const Algos = (): JSX.Element => {
         (state: RootState) => state.algos.algosLoading
     );
 
-    const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.ALGO);
 
     return (
@@ -137,10 +139,11 @@ const Algos = (): JSX.Element => {
                                   key={algo.key}
                                   highlighted={algo.key === key}
                                   onClick={() =>
-                                      setLocation(
+                                      setSearchFiltersLocation(
                                           compilePath(PATHS.ALGO, {
                                               key: algo.key,
-                                          })
+                                          }),
+                                          searchFilters
                                       )
                                   }
                               >

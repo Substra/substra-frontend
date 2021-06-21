@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'wouter';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersLocation,
+} from '@/hooks';
 
 import KeySiderSection from '@/components/KeySiderSection';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
@@ -16,7 +19,11 @@ import DescriptionSiderSection, {
 import { SimpleSiderSection } from '@/components/SiderSection';
 
 const AlgoSider = (): JSX.Element => {
-    const [, setLocation] = useLocation();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
     const key = useKeyFromPath(PATHS.ALGO);
 
     const visible = !!key;
@@ -43,7 +50,9 @@ const AlgoSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() => setLocation(PATHS.ALGOS)}
+            onCloseButtonClick={() =>
+                setSearchFiltersLocation(PATHS.ALGOS, searchFilters)
+            }
             titleType="Algorithm details"
             title={algo ? algo.name : 'Algorithm name'}
         >
