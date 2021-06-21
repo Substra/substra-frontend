@@ -9,4 +9,5 @@ export interface ComputePlanType {
     aggregatetuple_keys: string[];
     composite_traintuple_keys: string[];
     tuple_count: number;
+    metadata: { [key: string]: string };
 }

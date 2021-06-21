@@ -19,6 +19,9 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import TupleSiderSection from '@/components/TupleSiderSection';
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import Sider from '@/components/Sider';
+import MetadataSiderSection, {
+    LoadingMetadataSiderSection,
+} from '@/components/MetadataSiderSection';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};
@@ -58,6 +61,9 @@ const ComputePlanSider = (): JSX.Element => {
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
+    const computePlanLoading = useAppSelector(
+        (state) => state.computePlans.computePlanLoading
+    );
 
     const computePlanTrainTuples = useAppSelector(
         (state) => state.computePlans.computePlanTrainTuples
@@ -88,11 +94,18 @@ const ComputePlanSider = (): JSX.Element => {
             title=""
         >
             <KeySiderSection assetKey={key || ''} />
+
+            {computePlanLoading && <LoadingMetadataSiderSection />}
+            {!computePlanLoading && computePlan && (
+                <MetadataSiderSection metadata={computePlan.metadata} />
+            )}
+
             <SiderSection>
                 <SiderSectionTitle>Completion</SiderSectionTitle>
                 <PercentageNumber>{percentage}%</PercentageNumber>
                 <ProgressBar percentage={percentage} />
             </SiderSection>
+
             <ExpandableSiderSection title="Train tuples">
                 {computePlanTrainTuples.length === 0 && (
                     <TupleText>
