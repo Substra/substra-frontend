@@ -126,7 +126,7 @@ const firstTabThStyles = css`
 `;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const FirstTabTh = (props): JSX.Element => (
+export const FirstTabTh = (props: CellProps): JSX.Element => (
     <Th css={firstTabThStyles} {...props} />
 );
 

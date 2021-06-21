@@ -16,7 +16,11 @@ export const parseSearchFiltersString = (
         .filter((v) => !!v) // exclude empty values
         .map((filter) => {
             const [asset, key, value] = filter.split(':');
-            return { asset, key, value };
+            return {
+                asset: AssetType[asset as keyof typeof AssetType],
+                key,
+                value,
+            };
         });
 };
 

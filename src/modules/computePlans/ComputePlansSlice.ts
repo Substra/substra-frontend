@@ -9,6 +9,7 @@ import {
     CompositeTrainTupleType,
     AggregateTupleType,
 } from '@/modules/tuples/TuplesTypes';
+import { AssetType } from '@/modules/common/CommonTypes';
 
 interface ComputePlansState {
     computePlans: ComputePlanType[];
@@ -52,77 +53,85 @@ const initialState: ComputePlansState = {
     computePlanCompositeTuplesError: '',
 };
 
-export const listComputePlans = createAsyncThunk(
-    'computePlans/list',
-    async (_, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.listComputePlans();
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const listComputePlans = createAsyncThunk<
+    ComputePlanType[],
+    void,
+    { rejectValue: string }
+>('computePlans/list', async (_, thunkAPI) => {
+    try {
+        const response = await ComputePlansApi.listComputePlans();
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveComputePlan = createAsyncThunk(
-    'computePlans/get',
-    async (key: string, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.retrieveComputePlan(key);
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const retrieveComputePlan = createAsyncThunk<
+    ComputePlanType,
+    string,
+    { rejectValue: string }
+>('computePlans/get', async (key: string, thunkAPI) => {
+    try {
+        const response = await ComputePlansApi.retrieveComputePlan(key);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveComputePlanTrainTuples = createAsyncThunk(
-    'computePlans/getTrainTuples',
-    async (computePlanKey: string, thunkAPI) => {
-        try {
-            const searchFilters = [
-                {
-                    asset: 'traintuple',
-                    key: 'compute_plan_key',
-                    value: computePlanKey,
-                },
-            ];
-            const response = await TuplesApi.listTrainTuples(searchFilters);
+export const retrieveComputePlanTrainTuples = createAsyncThunk<
+    TrainTupleType[],
+    string,
+    { rejectValue: string }
+>('computePlans/getTrainTuples', async (computePlanKey: string, thunkAPI) => {
+    try {
+        const searchFilters = [
+            {
+                asset: AssetType.traintuple,
+                key: 'compute_plan_key',
+                value: computePlanKey,
+            },
+        ];
+        const response = await TuplesApi.listTrainTuples(searchFilters);
 
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveComputePlanTestTuples = createAsyncThunk(
-    'computePlans/getTestTuples',
-    async (computePlanKey: string, thunkAPI) => {
-        try {
-            const searchFilters = [
-                {
-                    asset: 'testtuple',
-                    key: 'compute_plan_key',
-                    value: computePlanKey,
-                },
-            ];
-            const response = await TuplesApi.listTestTuples(searchFilters);
+export const retrieveComputePlanTestTuples = createAsyncThunk<
+    TestTupleType[],
+    string,
+    { rejectValue: string }
+>('computePlans/getTestTuples', async (computePlanKey: string, thunkAPI) => {
+    try {
+        const searchFilters = [
+            {
+                asset: AssetType.testtuple,
+                key: 'compute_plan_key',
+                value: computePlanKey,
+            },
+        ];
+        const response = await TuplesApi.listTestTuples(searchFilters);
 
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveComputePlanAggregateTuples = createAsyncThunk(
+export const retrieveComputePlanAggregateTuples = createAsyncThunk<
+    AggregateTupleType[],
+    string,
+    { rejectValue: string }
+>(
     'computePlans/getAggregateTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
             const searchFilters = [
                 {
-                    asset: 'aggregatetuple',
+                    asset: AssetType.aggregatetuple,
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },
@@ -136,13 +145,17 @@ export const retrieveComputePlanAggregateTuples = createAsyncThunk(
     }
 );
 
-export const retrieveComputePlanCompositeTuples = createAsyncThunk(
+export const retrieveComputePlanCompositeTuples = createAsyncThunk<
+    CompositeTrainTupleType[],
+    string,
+    { rejectValue: string }
+>(
     'computePlans/getCompositeTuples',
     async (computePlanKey: string, thunkAPI) => {
         try {
             const searchFilters = [
                 {
-                    asset: 'composite_traintuple',
+                    asset: AssetType.composite_traintuple,
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },
@@ -173,7 +186,7 @@ export const computePlansSlice = createSlice({
             })
             .addCase(listComputePlans.rejected, (state, { payload }) => {
                 state.computePlansLoading = false;
-                state.computePlansError = payload;
+                state.computePlansError = payload || 'Unknown error';
             })
             .addCase(retrieveComputePlan.pending, (state) => {
                 state.computePlanLoading = true;
@@ -186,7 +199,7 @@ export const computePlansSlice = createSlice({
             })
             .addCase(retrieveComputePlan.rejected, (state, { payload }) => {
                 state.computePlanLoading = false;
-                state.computePlanError = payload;
+                state.computePlanError = payload || 'Unknown error';
             })
             .addCase(retrieveComputePlanTrainTuples.pending, (state) => {
                 state.computePlanTrainTuplesLoading = true;
@@ -205,7 +218,8 @@ export const computePlansSlice = createSlice({
                 retrieveComputePlanTrainTuples.rejected,
                 (state, { payload }) => {
                     state.computePlanTrainTuplesLoading = false;
-                    state.computePlanTrainTuplesError = payload;
+                    state.computePlanTrainTuplesError =
+                        payload || 'Unknown error';
                 }
             )
             .addCase(retrieveComputePlanTestTuples.pending, (state) => {
@@ -225,7 +239,8 @@ export const computePlansSlice = createSlice({
                 retrieveComputePlanTestTuples.rejected,
                 (state, { payload }) => {
                     state.computePlanTestTuplesLoading = false;
-                    state.computePlanTestTuplesError = payload;
+                    state.computePlanTestTuplesError =
+                        payload || 'Unknown error';
                 }
             )
             .addCase(retrieveComputePlanAggregateTuples.pending, (state) => {
@@ -245,27 +260,29 @@ export const computePlansSlice = createSlice({
                 retrieveComputePlanAggregateTuples.rejected,
                 (state, { payload }) => {
                     state.computePlanAggregateTuplesLoading = false;
-                    state.computePlanAggregateTuplesError = payload;
+                    state.computePlanAggregateTuplesError =
+                        payload || 'Unknown error';
                 }
             )
             .addCase(retrieveComputePlanCompositeTuples.pending, (state) => {
-                state.computePlanAggregateTuplesLoading = true;
-                state.computePlanAggregateTuplesError = '';
-                state.computePlanAggregateTuples = [];
+                state.computePlanCompositeTuplesLoading = true;
+                state.computePlanCompositeTuplesError = '';
+                state.computePlanCompositeTuples = [];
             })
             .addCase(
                 retrieveComputePlanCompositeTuples.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanAggregateTuples = payload;
-                    state.computePlanAggregateTuplesLoading = false;
-                    state.computePlanAggregateTuplesError = '';
+                    state.computePlanCompositeTuples = payload;
+                    state.computePlanCompositeTuplesLoading = false;
+                    state.computePlanCompositeTuplesError = '';
                 }
             )
             .addCase(
                 retrieveComputePlanCompositeTuples.rejected,
                 (state, { payload }) => {
-                    state.computePlanAggregateTuplesLoading = false;
-                    state.computePlanAggregateTuplesError = payload;
+                    state.computePlanCompositeTuplesLoading = false;
+                    state.computePlanCompositeTuplesError =
+                        payload || 'Unknown error';
                 }
             );
     },

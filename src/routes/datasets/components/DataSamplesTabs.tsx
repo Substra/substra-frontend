@@ -1,4 +1,3 @@
-/** @jsx jsx */
 import React, { useState } from 'react';
 import {
     Tabs as ReactTabs,
@@ -6,8 +5,6 @@ import {
     Tab as ReactTab,
     TabPanel,
 } from 'react-tabs';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -25,6 +22,8 @@ const TabList = styled(ReactTabList)`
     margin-bottom: ${Spaces.medium};
 `;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 TabList.tabsRole = 'TabList';
 
 interface TabProps {
@@ -42,6 +41,8 @@ const Tab = styled(ReactTab)<TabProps>`
     color: ${({ active }) => (active ? Colors.primary : Colors.content)};
 `;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 Tab.tabsRole = 'Tab';
 
 interface DataSamplesTabsProps {

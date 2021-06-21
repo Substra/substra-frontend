@@ -79,6 +79,9 @@ interface SubMenuProps {
     visible: boolean;
 }
 
+// Declaration of type for global variable injected at build.
+declare const __APP_VERSION__: string;
+
 const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();

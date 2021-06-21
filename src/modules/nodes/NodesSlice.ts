@@ -17,7 +17,11 @@ const initialState: NodesState = {
     currentNodeID: 'Owkin Connect',
 };
 
-export const listNodes = createAsyncThunk('nodes/list', async (_, thunkAPI) => {
+export const listNodes = createAsyncThunk<
+    NodeType[],
+    void,
+    { rejectValue: string }
+>('nodes/list', async (_, thunkAPI) => {
     try {
         const response = await NodesAPI.listNodes();
         return response.data;
@@ -47,7 +51,7 @@ export const nodesSlice = createSlice({
             })
             .addCase(listNodes.rejected, (state, { payload }) => {
                 state.nodesLoading = false;
-                state.nodesError = payload;
+                state.nodesError = payload || 'Unknown error';
             });
     },
 });

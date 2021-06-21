@@ -9,7 +9,7 @@
         "types": ["vite/client", "@emotion/react/types/css-prop"],
         "typeRoots": ["node_modules/@types"],
         "allowJs": false,
-        "skipLibCheck": false,
+        "skipLibCheck": true,
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": true,
         "strict": true,

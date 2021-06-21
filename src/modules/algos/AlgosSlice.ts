@@ -44,89 +44,84 @@ const addAlgoType = (type: 'standard' | 'aggregate' | 'composite') => (
     };
 };
 
-export const listAlgos = createAsyncThunk(
-    'algos/list',
-    async (filters: SearchFilterType[], thunkAPI) => {
-        try {
-            const standardFilters = filters.filter(
-                (sf) => sf.asset === AssetType.algo
-            );
-            const compositeFilters = filters.filter(
-                (sf) => sf.asset === AssetType.composite_algo
-            );
-            const aggregateFilters = filters.filter(
-                (sf) => sf.asset === AssetType.aggregate_algo
-            );
+export const listAlgos = createAsyncThunk<
+    AlgoType[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('algos/list', async (filters: SearchFilterType[], thunkAPI) => {
+    try {
+        const standardFilters = filters.filter(
+            (sf) => sf.asset === AssetType.algo
+        );
+        const compositeFilters = filters.filter(
+            (sf) => sf.asset === AssetType.composite_algo
+        );
+        const aggregateFilters = filters.filter(
+            (sf) => sf.asset === AssetType.aggregate_algo
+        );
 
-            const promises = [
-                AlgosApi.listStandardAlgos(standardFilters),
-                AlgosApi.listCompositeAlgos(compositeFilters),
-                AlgosApi.listAggregateAlgos(aggregateFilters),
-            ];
+        const promises = [
+            AlgosApi.listStandardAlgos(standardFilters),
+            AlgosApi.listCompositeAlgos(compositeFilters),
+            AlgosApi.listAggregateAlgos(aggregateFilters),
+        ];
 
-            const responses = await Promise.all(promises);
+        const responses = await Promise.all(promises);
 
-            const standardAlgos = responses[0].data.map(
-                addAlgoType('standard')
-            );
+        const standardAlgos = responses[0].data.map(addAlgoType('standard'));
 
-            const compositeAlgos = responses[1].data.map(
-                addAlgoType('composite')
-            );
+        const compositeAlgos = responses[1].data.map(addAlgoType('composite'));
 
-            const aggregateAlgos = responses[2].data.map(
-                addAlgoType('aggregate')
-            );
+        const aggregateAlgos = responses[2].data.map(addAlgoType('aggregate'));
 
-            return [...standardAlgos, ...compositeAlgos, ...aggregateAlgos];
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+        return [...standardAlgos, ...compositeAlgos, ...aggregateAlgos];
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveAlgo = createAsyncThunk(
-    'algos/get',
-    async (key: string, thunkAPI) => {
-        const errors = [];
-        try {
-            const response = await AlgosApi.retrieveStandardAlgo(key);
-            return addAlgoType('standard')(response.data);
-        } catch (err) {
-            errors.push(err);
-        }
-
-        try {
-            const response = await AlgosApi.retrieveCompositeAlgo(key);
-            return addAlgoType('composite')(response.data);
-        } catch (err) {
-            errors.push(err);
-        }
-
-        try {
-            const response = await AlgosApi.retrieveAggregateAlgo(key);
-            return addAlgoType('aggregate')(response.data);
-        } catch (err) {
-            errors.push(err);
-        }
-
-        return thunkAPI.rejectWithValue(errors);
+export const retrieveAlgo = createAsyncThunk<
+    AlgoType,
+    string,
+    { rejectValue: string }
+>('algos/get', async (key: string, thunkAPI) => {
+    const errors = [];
+    try {
+        const response = await AlgosApi.retrieveStandardAlgo(key);
+        return addAlgoType('standard')(response.data);
+    } catch (err) {
+        errors.push(err);
     }
-);
 
-export const retrieveDescription = createAsyncThunk(
-    'algos/description',
-    async (descriptionURL: string, thunkAPI) => {
-        try {
-            const response = await CommonApi.retrieveDescription(
-                descriptionURL
-            );
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+    try {
+        const response = await AlgosApi.retrieveCompositeAlgo(key);
+        return addAlgoType('composite')(response.data);
+    } catch (err) {
+        errors.push(err);
     }
-);
+
+    try {
+        const response = await AlgosApi.retrieveAggregateAlgo(key);
+        return addAlgoType('aggregate')(response.data);
+    } catch (err) {
+        errors.push(err);
+    }
+
+    return thunkAPI.rejectWithValue(errors.join(', '));
+});
+
+export const retrieveDescription = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string }
+>('algos/description', async (descriptionURL: string, thunkAPI) => {
+    try {
+        const response = await CommonApi.retrieveDescription(descriptionURL);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
 
 export const algosSlice = createSlice({
     name: 'algo',
@@ -145,7 +140,7 @@ export const algosSlice = createSlice({
             })
             .addCase(listAlgos.rejected, (state, { payload }) => {
                 state.algosLoading = false;
-                state.algosError = payload;
+                state.algosError = payload || 'Unknown error';
             })
             .addCase(retrieveAlgo.pending, (state) => {
                 state.algoLoading = true;
@@ -158,7 +153,7 @@ export const algosSlice = createSlice({
             })
             .addCase(retrieveAlgo.rejected, (state, { payload }) => {
                 state.algoLoading = false;
-                state.algoError = payload;
+                state.algoError = payload || 'Unknown error';
             })
             .addCase(retrieveDescription.pending, (state) => {
                 state.descriptionLoading = true;
@@ -171,7 +166,7 @@ export const algosSlice = createSlice({
             })
             .addCase(retrieveDescription.rejected, (state, { payload }) => {
                 state.descriptionLoading = false;
-                state.descriptionError = payload;
+                state.descriptionError = payload || 'Unknown error';
             });
     },
 });

@@ -110,14 +110,15 @@ const PageLayout = ({
 }: PageLayoutProps): JSX.Element => {
     // add/remove box shadow on header when sticky
     const [verticallyScrolled, setVerticallyScrolled] = useState(false);
-    const onVerticalScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        setVerticallyScrolled(e.target.scrollTop > 0);
+    const onVerticalScroll = (e: React.UIEvent) => {
+        const target = e.target as HTMLDivElement;
+        setVerticallyScrolled(target.scrollTop > 0);
     };
 
     // make sure left-side shadow is always positioned to the left of the viewport but still
     // within the HorizontalScrollContainer.
-    const horizontalScrollContainerRef = useRef<HTMLDivElement>();
-    const horizontalScrollShadowRef = useRef<HTMLDivElement>();
+    const horizontalScrollContainerRef = useRef<HTMLDivElement>(null);
+    const horizontalScrollShadowRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number>(); // raf stands for requestAnimationFrame
     useEffect(() => {
         const repositionShadow = () => {

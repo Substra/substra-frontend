@@ -4,7 +4,7 @@ import CommonApi from '@/modules/common/CommonApi';
 
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import DatasetAPI from './DatasetsApi';
-import { SearchFilterType } from '@/libs/filterParser';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 interface DatasetState {
     datasets: DatasetStubType[];
@@ -42,55 +42,57 @@ const initialState: DatasetState = {
     openerError: '',
 };
 
-export const listDatasets = createAsyncThunk(
-    'datasets/list',
-    async (filters: SearchFilterType[], thunkAPI) => {
-        try {
-            const response = await DatasetAPI.listDatasets(filters);
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const listDatasets = createAsyncThunk<
+    DatasetStubType[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('datasets/list', async (filters: SearchFilterType[], thunkAPI) => {
+    try {
+        const response = await DatasetAPI.listDatasets(filters);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveDataset = createAsyncThunk(
-    'datasets/get',
-    async (key: string, thunkAPI) => {
-        try {
-            const response = await DatasetAPI.retrieveDataset(key);
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const retrieveDataset = createAsyncThunk<
+    DatasetType,
+    string,
+    { rejectValue: string }
+>('datasets/get', async (key: string, thunkAPI) => {
+    try {
+        const response = await DatasetAPI.retrieveDataset(key);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveDescription = createAsyncThunk(
-    'datasets/description',
-    async (descriptionURL: string, thunkAPI) => {
-        try {
-            const response = await CommonApi.retrieveDescription(
-                descriptionURL
-            );
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const retrieveDescription = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string }
+>('datasets/description', async (descriptionURL: string, thunkAPI) => {
+    try {
+        const response = await CommonApi.retrieveDescription(descriptionURL);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
-export const retrieveOpener = createAsyncThunk(
-    'datasets/opener',
-    async (openerURL: string, thunkAPI) => {
-        try {
-            const response = await DatasetAPI.retrieveOpener(openerURL);
-            return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
-        }
+export const retrieveOpener = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string }
+>('datasets/opener', async (openerURL: string, thunkAPI) => {
+    try {
+        const response = await DatasetAPI.retrieveOpener(openerURL);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-);
+});
 
 export const datasetsSlice = createSlice({
     name: 'dataset',
@@ -109,7 +111,7 @@ export const datasetsSlice = createSlice({
             })
             .addCase(listDatasets.rejected, (state, { payload }) => {
                 state.datasetsLoading = false;
-                state.datasetsError = payload;
+                state.datasetsError = payload || 'Unknown error';
             })
             .addCase(retrieveDataset.pending, (state) => {
                 state.datasetLoading = true;
@@ -122,7 +124,7 @@ export const datasetsSlice = createSlice({
             })
             .addCase(retrieveDataset.rejected, (state, { payload }) => {
                 state.datasetLoading = false;
-                state.datasetError = payload;
+                state.datasetError = payload || 'Unknown error';
             })
             .addCase(retrieveDescription.pending, (state) => {
                 state.descriptionLoading = true;
@@ -135,7 +137,7 @@ export const datasetsSlice = createSlice({
             })
             .addCase(retrieveDescription.rejected, (state, { payload }) => {
                 state.descriptionLoading = false;
-                state.descriptionError = payload;
+                state.descriptionError = payload || 'Unknown error';
             })
             .addCase(retrieveOpener.pending, (state) => {
                 state.openerLoading = true;
@@ -148,7 +150,7 @@ export const datasetsSlice = createSlice({
             })
             .addCase(retrieveOpener.rejected, (state, { payload }) => {
                 state.openerLoading = false;
-                state.openerError = payload;
+                state.openerError = payload || 'Unknown error';
             });
     },
 });

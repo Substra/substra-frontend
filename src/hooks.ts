@@ -31,14 +31,10 @@ export const useSearchFiltersLocation = (): [
         urlSearchParams.get('search') || ''
     );
 
-    // public signatures
-    function setSearchFiltersLocation(searchFilters: SearchFilterType[]): void;
-    function setSearchFiltersLocation(location: string): void;
-    function setSearchFiltersLocation(
-        location: string,
-        searchFilters: SearchFilterType[]
-    ): void;
-    // implementation signature
+    // This function is meant to be called 3 ways:
+    // 1. setSearchFiltersLocation(location)
+    // 2. setSearchFiltersLocation(searchFilters)
+    // 3. setSearchFiltersLocation(location, searchFilters)
     function setSearchFiltersLocation(
         searchFiltersOrLocation: SearchFilterType[] | string,
         searchFilters?: SearchFilterType[]

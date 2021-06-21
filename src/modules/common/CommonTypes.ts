@@ -12,4 +12,8 @@ export enum AssetType {
     algo = 'algo',
     composite_algo = 'composite_algo',
     aggregate_algo = 'aggregate_algo',
+    testtuple = 'testtuple',
+    traintuple = 'traintuple',
+    composite_traintuple = 'composite_traintuple',
+    aggregatetuple = 'aggregatetuple',
 }

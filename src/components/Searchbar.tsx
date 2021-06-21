@@ -9,6 +9,7 @@ import { Colors, Fonts, Spaces } from '@/assets/theme';
 import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
 import Select from '@/components/Select';
 import { SearchFilterType } from '@/libs/searchFilter';
+import { AssetType } from '@/modules/common/CommonTypes';
 import CloseButton from './CloseButton';
 
 const selectWidth = css`
@@ -116,7 +117,7 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
         );
         if (value) {
             newSearchFilters.push({
-                asset,
+                asset: AssetType[asset as keyof typeof AssetType],
                 key: 'key',
                 value,
             });

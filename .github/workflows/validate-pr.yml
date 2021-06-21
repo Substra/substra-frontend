@@ -17,3 +17,5 @@ jobs:
               run: npm run prettier
               # run this step even if the previous one failed
               if: always()
+            - name: Typescript
+              run: npx tsc

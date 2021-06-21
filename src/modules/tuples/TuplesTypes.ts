@@ -1,4 +1,4 @@
-import { PermissionsType } from '../datasets/DatasetsTypes';
+import { PermissionsType } from '@/modules/common/CommonTypes';
 
 export enum TaskStatus {
     doing = 'doing',
