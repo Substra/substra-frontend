@@ -25,6 +25,9 @@ import ComputePlanSider from './components/ComputePlanSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
 
+const tagColWidth = css`
+    width: 200px;
+`;
 const statusColWidth = css`
     width: 200px;
 `;
@@ -61,9 +64,8 @@ const ComputePlan = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
-                                <FirstTabTh css={statusColWidth}>
-                                    Status
-                                </FirstTabTh>
+                                <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
+                                <Th css={statusColWidth}>Status</Th>
                                 <Th css={taskColWidth}>Tasks</Th>
                             </Tr>
                         </Thead>
@@ -75,7 +77,8 @@ const ComputePlan = (): JSX.Element => {
             <Table>
                 <Thead>
                     <Tr>
-                        <FirstTabTh css={statusColWidth}>Status</FirstTabTh>
+                        <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
+                        <Th css={statusColWidth}>Status</Th>
                         <Th css={taskColWidth}>Tasks</Th>
                     </Tr>
                 </Thead>
@@ -86,6 +89,9 @@ const ComputePlan = (): JSX.Element => {
                     {computePlansLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
+                                  <Td>
+                                      <Skeleton width={150} height={12} />
+                                  </Td>
                                   <Td>
                                       <Skeleton width={150} height={12} />
                                   </Td>
@@ -106,6 +112,7 @@ const ComputePlan = (): JSX.Element => {
                                       )
                                   }
                               >
+                                  <Td>{computePlan.tag}</Td>
                                   <Td>
                                       <Status status={computePlan.status} />
                                   </Td>
