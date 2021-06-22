@@ -12,9 +12,9 @@ export enum AssetType {
     algo = 'algo',
     composite_algo = 'composite_algo',
     aggregate_algo = 'aggregate_algo',
-    testtuple = 'testtuple',
-    traintuple = 'traintuple',
-    composite_traintuple = 'composite_traintuple',
-    aggregatetuple = 'aggregatetuple',
+    testtask = 'testtuple',
+    traintask = 'traintuple',
+    composite_traintask = 'composite_traintuple',
+    aggregatetask = 'aggregatetuple',
     metric = 'objective',
 }

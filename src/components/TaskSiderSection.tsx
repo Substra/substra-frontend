@@ -5,11 +5,11 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/react';
 import { Fonts, Spaces } from '@/assets/theme';
 import Status from './Status';
-import { TupleType } from '@/modules/tuples/TuplesTypes';
+import { TaskType } from '@/modules/tasks/TasksTypes';
 import Skeleton from '@/components/Skeleton';
 
-export const LoadingTupleSiderSection = (): JSX.Element => (
-    <TupleSiderSectionContainer>
+export const LoadingTaskSiderSection = (): JSX.Element => (
+    <TaskSiderSectionContainer>
         <Skeleton
             width={200}
             height={16}
@@ -31,10 +31,10 @@ export const LoadingTupleSiderSection = (): JSX.Element => (
                 margin-bottom: ${Spaces.small};
             `}
         />
-    </TupleSiderSectionContainer>
+    </TaskSiderSectionContainer>
 );
 
-const TupleSiderSectionContainer = styled.div`
+const TaskSiderSectionContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: ${Spaces.small} ${Spaces.large};
@@ -56,21 +56,21 @@ const Worker = styled.span`
     margin-left: ${Spaces.extraSmall};
 `;
 
-type TupleSiderSectionProps = {
-    tuple: TupleType;
+type TaskSiderSectionProps = {
+    task: TaskType;
 };
 
-const TupleSiderSection = ({ tuple }: TupleSiderSectionProps): JSX.Element => {
+const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {
     return (
-        <TupleSiderSectionContainer>
-            <Status status={tuple.status} />
-            <Key>{tuple.key}</Key>
+        <TaskSiderSectionContainer>
+            <Status status={task.status} />
+            <Key>{task.key}</Key>
             <WorkerSection>
                 worker:
-                <Worker>{tuple.creator}</Worker>
+                <Worker>{task.creator}</Worker>
             </WorkerSection>
-        </TupleSiderSectionContainer>
+        </TaskSiderSectionContainer>
     );
 };
 
-export default TupleSiderSection;
+export default TaskSiderSection;

@@ -40,13 +40,13 @@ interface OutCompositeTrunkModel {
 }
 
 enum Type {
-    Testtuple = 'testtuple',
-    Traintuple = 'traintuple',
-    Aggregatetuple = 'aggregatetuple',
-    CompositeTraintuple = 'composite_traintuple',
+    Testtask = 'testtuple',
+    Traintask = 'traintuple',
+    Aggregatetask = 'aggregatetuple',
+    CompositeTraintask = 'composite_traintuple',
 }
 
-interface TestTupleDataset {
+interface TestTaskDataset {
     key: string;
     opener_checksum: string;
     data_sample_keys: string[];
@@ -60,19 +60,19 @@ interface Metric {
     storage_address: string;
 }
 
-interface TestTupleObjective {
+interface TestTaskObjective {
     key: string;
     metrics: Metric;
 }
 
-export interface TrainTupleAlgoType {
+export interface TrainTaskAlgoType {
     key: string;
     checksum: string;
     storage_address: string;
     name: string;
 }
 
-interface TrainTupleDatasetType {
+interface TrainTaskDatasetType {
     key: string;
     worker: string;
     data_sample_keys: string[];
@@ -86,8 +86,8 @@ export interface OutModelType {
     storage_address: string;
 }
 
-export interface TupleType {
-    algo: TrainTupleAlgoType;
+export interface TaskType {
+    algo: TrainTaskAlgoType;
     compute_plan_key: string;
     creator: string;
     key: string;
@@ -96,7 +96,7 @@ export interface TupleType {
     status: TaskStatus;
 }
 
-export interface CompositeTrainTupleType extends TupleType {
+export interface CompositeTrainTaskType extends TaskType {
     in_head_model?: InHeadModel;
     in_trunk_model?: InModel;
     out_head_model: OutCompositeHeadModel;
@@ -105,7 +105,7 @@ export interface CompositeTrainTupleType extends TupleType {
     tag: string;
 }
 
-export interface AggregateTupleType extends TupleType {
+export interface AggregateTaskType extends TaskType {
     in_models: string[];
     out_model?: OutModelType;
     permissions: PermissionsType;
@@ -114,18 +114,18 @@ export interface AggregateTupleType extends TupleType {
     worker: string;
 }
 
-export interface TestTupleType extends TupleType {
+export interface TestTaskType extends TaskType {
     certified: boolean;
-    dataset: TestTupleDataset;
-    objective: TestTupleObjective;
+    dataset: TestTaskDataset;
+    objective: TestTaskObjective;
     rank: number;
     tag?: string;
     traintuple_key: string;
     traintuple_type: Type;
 }
 
-export interface TrainTupleType extends TupleType {
-    dataset: TrainTupleDatasetType;
+export interface TrainTaskType extends TaskType {
+    dataset: TrainTaskDatasetType;
     in_models: string[];
     out_model: OutModelType;
     permissions: PermissionsType;

@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { ComputePlanType } from './ComputePlansTypes';
 import ComputePlansApi from './ComputePlansApi';
-import TuplesApi from '@/modules/tuples/TuplesApi';
+import TasksApi from '@/modules/tasks/TasksApi';
 import {
-    TestTupleType,
-    TrainTupleType,
-    CompositeTrainTupleType,
-    AggregateTupleType,
-} from '@/modules/tuples/TuplesTypes';
+    TestTaskType,
+    TrainTaskType,
+    CompositeTrainTaskType,
+    AggregateTaskType,
+} from '@/modules/tasks/TasksTypes';
 import { AssetType } from '@/modules/common/CommonTypes';
 
 interface ComputePlansState {
@@ -18,18 +18,18 @@ interface ComputePlansState {
     computePlan: ComputePlanType | null;
     computePlanLoading: boolean;
     computePlanError: string;
-    computePlanTrainTuples: TrainTupleType[];
-    computePlanTrainTuplesLoading: boolean;
-    computePlanTrainTuplesError: string;
-    computePlanTestTuples: TestTupleType[];
-    computePlanTestTuplesLoading: boolean;
-    computePlanTestTuplesError: string;
-    computePlanAggregateTuples: AggregateTupleType[];
-    computePlanAggregateTuplesLoading: boolean;
-    computePlanAggregateTuplesError: string;
-    computePlanCompositeTuples: CompositeTrainTupleType[];
-    computePlanCompositeTuplesLoading: boolean;
-    computePlanCompositeTuplesError: string;
+    computePlanTrainTasks: TrainTaskType[];
+    computePlanTrainTasksLoading: boolean;
+    computePlanTrainTasksError: string;
+    computePlanTestTasks: TestTaskType[];
+    computePlanTestTasksLoading: boolean;
+    computePlanTestTasksError: string;
+    computePlanAggregateTasks: AggregateTaskType[];
+    computePlanAggregateTasksLoading: boolean;
+    computePlanAggregateTasksError: string;
+    computePlanCompositeTasks: CompositeTrainTaskType[];
+    computePlanCompositeTasksLoading: boolean;
+    computePlanCompositeTasksError: string;
 }
 
 const initialState: ComputePlansState = {
@@ -39,18 +39,18 @@ const initialState: ComputePlansState = {
     computePlanLoading: true,
     computePlanError: '',
     computePlan: null,
-    computePlanTrainTuples: [],
-    computePlanTrainTuplesLoading: true,
-    computePlanTrainTuplesError: '',
-    computePlanTestTuples: [],
-    computePlanTestTuplesLoading: true,
-    computePlanTestTuplesError: '',
-    computePlanAggregateTuples: [],
-    computePlanAggregateTuplesLoading: true,
-    computePlanAggregateTuplesError: '',
-    computePlanCompositeTuples: [],
-    computePlanCompositeTuplesLoading: true,
-    computePlanCompositeTuplesError: '',
+    computePlanTrainTasks: [],
+    computePlanTrainTasksLoading: true,
+    computePlanTrainTasksError: '',
+    computePlanTestTasks: [],
+    computePlanTestTasksLoading: true,
+    computePlanTestTasksError: '',
+    computePlanAggregateTasks: [],
+    computePlanAggregateTasksLoading: true,
+    computePlanAggregateTasksError: '',
+    computePlanCompositeTasks: [],
+    computePlanCompositeTasksLoading: true,
+    computePlanCompositeTasksError: '',
 };
 
 export const listComputePlans = createAsyncThunk<
@@ -79,20 +79,20 @@ export const retrieveComputePlan = createAsyncThunk<
     }
 });
 
-export const retrieveComputePlanTrainTuples = createAsyncThunk<
-    TrainTupleType[],
+export const retrieveComputePlanTrainTasks = createAsyncThunk<
+    TrainTaskType[],
     string,
     { rejectValue: string }
->('computePlans/getTrainTuples', async (computePlanKey: string, thunkAPI) => {
+>('computePlans/getTrainTasks', async (computePlanKey: string, thunkAPI) => {
     try {
         const searchFilters = [
             {
-                asset: AssetType.traintuple,
+                asset: AssetType.traintask,
                 key: 'compute_plan_key',
                 value: computePlanKey,
             },
         ];
-        const response = await TuplesApi.listTrainTuples(searchFilters);
+        const response = await TasksApi.listTrainTasks(searchFilters);
 
         return response.data;
     } catch (err) {
@@ -100,20 +100,20 @@ export const retrieveComputePlanTrainTuples = createAsyncThunk<
     }
 });
 
-export const retrieveComputePlanTestTuples = createAsyncThunk<
-    TestTupleType[],
+export const retrieveComputePlanTestTasks = createAsyncThunk<
+    TestTaskType[],
     string,
     { rejectValue: string }
->('computePlans/getTestTuples', async (computePlanKey: string, thunkAPI) => {
+>('computePlans/getTestTasks', async (computePlanKey: string, thunkAPI) => {
     try {
         const searchFilters = [
             {
-                asset: AssetType.testtuple,
+                asset: AssetType.testtask,
                 key: 'compute_plan_key',
                 value: computePlanKey,
             },
         ];
-        const response = await TuplesApi.listTestTuples(searchFilters);
+        const response = await TasksApi.listTestTasks(searchFilters);
 
         return response.data;
     } catch (err) {
@@ -121,22 +121,22 @@ export const retrieveComputePlanTestTuples = createAsyncThunk<
     }
 });
 
-export const retrieveComputePlanAggregateTuples = createAsyncThunk<
-    AggregateTupleType[],
+export const retrieveComputePlanAggregateTasks = createAsyncThunk<
+    AggregateTaskType[],
     string,
     { rejectValue: string }
 >(
-    'computePlans/getAggregateTuples',
+    'computePlans/getAggregateTasks',
     async (computePlanKey: string, thunkAPI) => {
         try {
             const searchFilters = [
                 {
-                    asset: AssetType.aggregatetuple,
+                    asset: AssetType.aggregatetask,
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },
             ];
-            const response = await TuplesApi.listAggregateTuples(searchFilters);
+            const response = await TasksApi.listAggregateTasks(searchFilters);
 
             return response.data;
         } catch (err) {
@@ -145,22 +145,22 @@ export const retrieveComputePlanAggregateTuples = createAsyncThunk<
     }
 );
 
-export const retrieveComputePlanCompositeTuples = createAsyncThunk<
-    CompositeTrainTupleType[],
+export const retrieveComputePlanCompositeTasks = createAsyncThunk<
+    CompositeTrainTaskType[],
     string,
     { rejectValue: string }
 >(
-    'computePlans/getCompositeTuples',
+    'computePlans/getCompositeTasks',
     async (computePlanKey: string, thunkAPI) => {
         try {
             const searchFilters = [
                 {
-                    asset: AssetType.composite_traintuple,
+                    asset: AssetType.composite_traintask,
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },
             ];
-            const response = await TuplesApi.listCompositeTuples(searchFilters);
+            const response = await TasksApi.listCompositeTasks(searchFilters);
 
             return response.data;
         } catch (err) {
@@ -192,10 +192,10 @@ export const computePlansSlice = createSlice({
                 state.computePlanLoading = true;
                 state.computePlanError = '';
                 state.computePlan = null;
-                state.computePlanTrainTuples = [];
-                state.computePlanTestTuples = [];
-                state.computePlanAggregateTuples = [];
-                state.computePlanAggregateTuples = [];
+                state.computePlanTrainTasks = [];
+                state.computePlanTestTasks = [];
+                state.computePlanAggregateTasks = [];
+                state.computePlanAggregateTasks = [];
             })
             .addCase(retrieveComputePlan.fulfilled, (state, { payload }) => {
                 state.computePlan = payload;
@@ -206,87 +206,87 @@ export const computePlansSlice = createSlice({
                 state.computePlanLoading = false;
                 state.computePlanError = payload || 'Unknown error';
             })
-            .addCase(retrieveComputePlanTrainTuples.pending, (state) => {
-                state.computePlanTrainTuplesLoading = true;
-                state.computePlanTrainTuplesError = '';
-                state.computePlanTrainTuples = [];
+            .addCase(retrieveComputePlanTrainTasks.pending, (state) => {
+                state.computePlanTrainTasksLoading = true;
+                state.computePlanTrainTasksError = '';
+                state.computePlanTrainTasks = [];
             })
             .addCase(
-                retrieveComputePlanTrainTuples.fulfilled,
+                retrieveComputePlanTrainTasks.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanTrainTuples = payload;
-                    state.computePlanTrainTuplesLoading = false;
-                    state.computePlanTrainTuplesError = '';
+                    state.computePlanTrainTasks = payload;
+                    state.computePlanTrainTasksLoading = false;
+                    state.computePlanTrainTasksError = '';
                 }
             )
             .addCase(
-                retrieveComputePlanTrainTuples.rejected,
+                retrieveComputePlanTrainTasks.rejected,
                 (state, { payload }) => {
-                    state.computePlanTrainTuplesLoading = false;
-                    state.computePlanTrainTuplesError =
+                    state.computePlanTrainTasksLoading = false;
+                    state.computePlanTrainTasksError =
                         payload || 'Unknown error';
                 }
             )
-            .addCase(retrieveComputePlanTestTuples.pending, (state) => {
-                state.computePlanTestTuplesLoading = true;
-                state.computePlanTestTuplesError = '';
-                state.computePlanTestTuples = [];
+            .addCase(retrieveComputePlanTestTasks.pending, (state) => {
+                state.computePlanTestTasksLoading = true;
+                state.computePlanTestTasksError = '';
+                state.computePlanTestTasks = [];
             })
             .addCase(
-                retrieveComputePlanTestTuples.fulfilled,
+                retrieveComputePlanTestTasks.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanTestTuples = payload;
-                    state.computePlanTestTuplesLoading = false;
-                    state.computePlanTestTuplesError = '';
+                    state.computePlanTestTasks = payload;
+                    state.computePlanTestTasksLoading = false;
+                    state.computePlanTestTasksError = '';
                 }
             )
             .addCase(
-                retrieveComputePlanTestTuples.rejected,
+                retrieveComputePlanTestTasks.rejected,
                 (state, { payload }) => {
-                    state.computePlanTestTuplesLoading = false;
-                    state.computePlanTestTuplesError =
+                    state.computePlanTestTasksLoading = false;
+                    state.computePlanTestTasksError =
                         payload || 'Unknown error';
                 }
             )
-            .addCase(retrieveComputePlanAggregateTuples.pending, (state) => {
-                state.computePlanAggregateTuplesLoading = true;
-                state.computePlanAggregateTuplesError = '';
-                state.computePlanAggregateTuples = [];
+            .addCase(retrieveComputePlanAggregateTasks.pending, (state) => {
+                state.computePlanAggregateTasksLoading = true;
+                state.computePlanAggregateTasksError = '';
+                state.computePlanAggregateTasks = [];
             })
             .addCase(
-                retrieveComputePlanAggregateTuples.fulfilled,
+                retrieveComputePlanAggregateTasks.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanAggregateTuples = payload;
-                    state.computePlanAggregateTuplesLoading = false;
-                    state.computePlanAggregateTuplesError = '';
+                    state.computePlanAggregateTasks = payload;
+                    state.computePlanAggregateTasksLoading = false;
+                    state.computePlanAggregateTasksError = '';
                 }
             )
             .addCase(
-                retrieveComputePlanAggregateTuples.rejected,
+                retrieveComputePlanAggregateTasks.rejected,
                 (state, { payload }) => {
-                    state.computePlanAggregateTuplesLoading = false;
-                    state.computePlanAggregateTuplesError =
+                    state.computePlanAggregateTasksLoading = false;
+                    state.computePlanAggregateTasksError =
                         payload || 'Unknown error';
                 }
             )
-            .addCase(retrieveComputePlanCompositeTuples.pending, (state) => {
-                state.computePlanCompositeTuplesLoading = true;
-                state.computePlanCompositeTuplesError = '';
-                state.computePlanCompositeTuples = [];
+            .addCase(retrieveComputePlanCompositeTasks.pending, (state) => {
+                state.computePlanCompositeTasksLoading = true;
+                state.computePlanCompositeTasksError = '';
+                state.computePlanCompositeTasks = [];
             })
             .addCase(
-                retrieveComputePlanCompositeTuples.fulfilled,
+                retrieveComputePlanCompositeTasks.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanCompositeTuples = payload;
-                    state.computePlanCompositeTuplesLoading = false;
-                    state.computePlanCompositeTuplesError = '';
+                    state.computePlanCompositeTasks = payload;
+                    state.computePlanCompositeTasksLoading = false;
+                    state.computePlanCompositeTasksError = '';
                 }
             )
             .addCase(
-                retrieveComputePlanCompositeTuples.rejected,
+                retrieveComputePlanCompositeTasks.rejected,
                 (state, { payload }) => {
-                    state.computePlanCompositeTuplesLoading = false;
-                    state.computePlanCompositeTuplesError =
+                    state.computePlanCompositeTasksLoading = false;
+                    state.computePlanCompositeTasksError =
                         payload || 'Unknown error';
                 }
             );

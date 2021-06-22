@@ -6,7 +6,7 @@ import { css, jsx, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
-import { TaskStatus } from '@/modules/tuples/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 import { RiCheckLine, RiCloseLine, RiLoader4Line } from 'react-icons/ri';
 
 interface StatusProps {

@@ -2,11 +2,11 @@ import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 import { AxiosPromise } from 'axios';
 import {
-    AggregateTupleType,
-    CompositeTrainTupleType,
-    TestTupleType,
-    TrainTupleType,
-} from './TuplesTypes';
+    AggregateTaskType,
+    CompositeTrainTaskType,
+    TestTaskType,
+    TrainTaskType,
+} from './TasksTypes';
 
 const URLS = {
     AGGREGATE_LIST: '/aggregatetuple/',
@@ -15,33 +15,33 @@ const URLS = {
     TRAIN_LIST: '/traintuple/',
 };
 
-export const listAggregateTuples = (
+export const listAggregateTasks = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<AggregateTupleType[]> => {
+): AxiosPromise<AggregateTaskType[]> => {
     return API.get(URLS.AGGREGATE_LIST, getApiOptions(searchFilters));
 };
 
-export const listCompositeTuples = (
+export const listCompositeTasks = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<CompositeTrainTupleType[]> => {
+): AxiosPromise<CompositeTrainTaskType[]> => {
     return API.get(URLS.COMPOSITE_LIST, getApiOptions(searchFilters));
 };
 
-export const listTestTuples = (
+export const listTestTasks = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<TestTupleType[]> => {
+): AxiosPromise<TestTaskType[]> => {
     return API.get(URLS.TEST_LIST, getApiOptions(searchFilters));
 };
 
-export const listTrainTuples = (
+export const listTrainTasks = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<TrainTupleType[]> => {
+): AxiosPromise<TrainTaskType[]> => {
     return API.get(URLS.TRAIN_LIST, getApiOptions(searchFilters));
 };
 
 export default {
-    listAggregateTuples,
-    listCompositeTuples,
-    listTestTuples,
-    listTrainTuples,
+    listAggregateTasks,
+    listCompositeTasks,
+    listTestTasks,
+    listTrainTasks,
 };
