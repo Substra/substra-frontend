@@ -70,7 +70,10 @@ const AlgoSider = (): JSX.Element => {
                 <PermissionSiderSection permission={algo.permissions.process} />
             )}
             {algo && (
-                <SiderBottomButton target={algo.content.storage_address}>
+                <SiderBottomButton
+                    target={algo.content.storage_address}
+                    filename="algo.zip"
+                >
                     Download algo
                 </SiderBottomButton>
             )}

@@ -34,11 +34,13 @@ const Button = styled.button`
 
 interface SiderBottomButtonProps {
     target: string;
+    filename: string;
     children: React.ReactNode;
 }
 
 const SiderBottomButton = ({
     target,
+    filename,
     children,
 }: SiderBottomButtonProps): JSX.Element => {
     return (
@@ -48,7 +50,7 @@ const SiderBottomButton = ({
             `}
         >
             <Button
-                onClick={() => downloadFromApi(target, 'algo.zip')}
+                onClick={() => downloadFromApi(target, filename)}
                 type="button"
             >
                 {children}
