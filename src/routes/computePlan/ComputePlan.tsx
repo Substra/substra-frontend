@@ -1,12 +1,16 @@
 /** @jsx jsx */
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import { useLocation } from 'wouter';
 
 import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersLocation,
+    useSearchFiltersEffect,
+} from '@/hooks';
 import Navigation from '@/components/layout/navigation/Navigation';
 import PageLayout from '@/components/layout/PageLayout';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
@@ -24,6 +28,7 @@ import PageTitle from '@/components/PageTitle';
 import ComputePlanSider from './components/ComputePlanSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
+import SearchBar from '@/components/Searchbar';
 
 const tagColWidth = css`
     width: 200px;
@@ -37,10 +42,15 @@ const taskColWidth = css`
 
 const ComputePlan = (): JSX.Element => {
     const dispatch = useAppDispatch();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
 
-    useEffect(() => {
-        dispatch(listComputePlans());
-    }, [dispatch]);
+    useSearchFiltersEffect(() => {
+        dispatch(listComputePlans(searchFilters));
+    }, [searchFilters]);
 
     const computePlans: ComputePlanType[] = useAppSelector(
         (state) => state.computePlans.computePlans
@@ -50,7 +60,6 @@ const ComputePlan = (): JSX.Element => {
         (state) => state.computePlans.computePlansLoading
     );
 
-    const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
 
     const pageTitleLinks = [
@@ -69,6 +78,14 @@ const ComputePlan = (): JSX.Element => {
             stickyHeader={
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
+                    <SearchBar
+                        assetOptions={[
+                            {
+                                label: 'Compute Plan',
+                                value: 'compute_plan',
+                            },
+                        ]}
+                    />
                     <Table>
                         <Thead>
                             <Tr>
@@ -119,10 +136,11 @@ const ComputePlan = (): JSX.Element => {
                                   key={computePlan.key}
                                   highlighted={computePlan.key === key}
                                   onClick={() =>
-                                      setLocation(
+                                      setSearchFiltersLocation(
                                           compilePath(PATHS.COMPUTE_PLAN, {
                                               key: computePlan.key,
-                                          })
+                                          }),
+                                          searchFilters
                                       )
                                   }
                               >

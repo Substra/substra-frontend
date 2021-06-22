@@ -33,7 +33,7 @@ import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import { AssetType } from '@/modules/common/CommonTypes';
+import SearchBar from '@/components/Searchbar';
 
 const typeColWidth = css`
     width: 110px;
@@ -73,6 +73,19 @@ const Algos = (): JSX.Element => {
             stickyHeader={
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
+                    <SearchBar
+                        assetOptions={[
+                            { label: 'Standard Algo', value: 'algo' },
+                            {
+                                label: 'Composite Algo',
+                                value: 'composite_algo',
+                            },
+                            {
+                                label: 'Aggregate Algo',
+                                value: 'aggregate_algo',
+                            },
+                        ]}
+                    />
                     <Table>
                         <Thead>
                             <Tr>
@@ -81,9 +94,9 @@ const Algos = (): JSX.Element => {
                                     Owner
                                     <OwnerTableFilter
                                         assets={[
-                                            AssetType.algo,
-                                            AssetType.composite_algo,
-                                            AssetType.aggregate_algo,
+                                            'algo',
+                                            'composite_algo',
+                                            'aggregate_algo',
                                         ]}
                                     />
                                 </Th>

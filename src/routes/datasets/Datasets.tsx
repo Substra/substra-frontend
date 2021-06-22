@@ -32,7 +32,6 @@ import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import SearchBar from '@/components/Searchbar';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import { AssetType } from '@/modules/common/CommonTypes';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -67,9 +66,7 @@ const Datasets = (): JSX.Element => {
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
                     <SearchBar
-                        assetOptions={[
-                            { label: 'Dataset', value: AssetType.dataset },
-                        ]}
+                        assetOptions={[{ label: 'Dataset', value: 'dataset' }]}
                     />
                     <Table>
                         <Thead>
@@ -77,9 +74,7 @@ const Datasets = (): JSX.Element => {
                                 <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
                                 <Th css={ownerColWidth}>
                                     Owner
-                                    <OwnerTableFilter
-                                        assets={[AssetType.dataset]}
-                                    />
+                                    <OwnerTableFilter assets={['dataset']} />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
                             </Tr>

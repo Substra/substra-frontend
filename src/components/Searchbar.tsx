@@ -13,11 +13,11 @@ import { AssetType } from '@/modules/common/CommonTypes';
 import CloseButton from './CloseButton';
 
 const selectWidth = css`
-    width: 120px;
+    width: 150px;
 `;
 
 const SearchForm = styled.form`
-    width: 450px;
+    width: 500px;
     height: ${Spaces.extraLarge};
     border: 1px solid ${Colors.border};
     border-radius: 16px;
@@ -74,7 +74,7 @@ const clearButton = css`
 
 interface SearchBarProps {
     assetOptions: {
-        value: string;
+        value: AssetType;
         label: string;
     }[];
 }
@@ -105,24 +105,29 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
         }
     }, [searchFilters]);
 
-    const onAssetChange = (asset: string) => {
-        setAsset(asset);
-    };
-
-    const onSubmit = (e: React.SyntheticEvent) => {
-        e.preventDefault();
+    const applySearchFilters = (asset: string) => {
         // preserve all filters that are not on asset key
         const newSearchFilters: SearchFilterType[] = searchFilters.filter(
             (sf) => sf.key !== 'key'
         );
         if (value) {
             newSearchFilters.push({
-                asset: AssetType[asset as keyof typeof AssetType],
+                asset: asset as AssetType,
                 key: 'key',
                 value,
             });
         }
         setSearchFiltersLocation(newSearchFilters);
+    };
+
+    const onAssetChange = (asset: string) => {
+        setAsset(asset);
+        applySearchFilters(asset);
+    };
+
+    const onSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        applySearchFilters(asset);
     };
 
     const onClear = () => {

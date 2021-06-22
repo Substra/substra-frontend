@@ -17,7 +17,7 @@ export const parseSearchFiltersString = (
         .map((filter) => {
             const [asset, key, value] = filter.split(':');
             return {
-                asset: AssetType[asset as keyof typeof AssetType],
+                asset: asset as AssetType,
                 key,
                 value,
             };

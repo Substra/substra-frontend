@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { useEffect, Fragment } from 'react';
-import { useLocation } from 'wouter';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -16,7 +15,11 @@ import {
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersLocation,
+} from '@/hooks';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import ProgressBar from '@/components/ProgressBar';
 import TaskSiderSection, {
@@ -44,7 +47,11 @@ const skeletonCss = css`
 `;
 
 const ComputePlanSider = (): JSX.Element => {
-    const [, setLocation] = useLocation();
+    const [
+        ,
+        searchFilters,
+        setSearchFiltersLocation,
+    ] = useSearchFiltersLocation();
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
 
     const visible = !!key;
@@ -112,7 +119,9 @@ const ComputePlanSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() => setLocation(PATHS.COMPUTE_PLANS)}
+            onCloseButtonClick={() =>
+                setSearchFiltersLocation(PATHS.COMPUTE_PLANS, searchFilters)
+            }
             titleType="Compute plan details"
             title=""
         >

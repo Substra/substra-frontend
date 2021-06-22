@@ -9,7 +9,7 @@ import {
     CompositeTrainTaskType,
     AggregateTaskType,
 } from '@/modules/tasks/TasksTypes';
-import { AssetType } from '@/modules/common/CommonTypes';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 interface ComputePlansState {
     computePlans: ComputePlanType[];
@@ -55,11 +55,11 @@ const initialState: ComputePlansState = {
 
 export const listComputePlans = createAsyncThunk<
     ComputePlanType[],
-    void,
+    SearchFilterType[],
     { rejectValue: string }
->('computePlans/list', async (_, thunkAPI) => {
+>('computePlans/list', async (searchFilters: SearchFilterType[], thunkAPI) => {
     try {
-        const response = await ComputePlansApi.listComputePlans();
+        const response = await ComputePlansApi.listComputePlans(searchFilters);
         return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
@@ -85,9 +85,9 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTrainTasks', async (computePlanKey: string, thunkAPI) => {
     try {
-        const searchFilters = [
+        const searchFilters: SearchFilterType[] = [
             {
-                asset: AssetType.traintask,
+                asset: 'traintuple',
                 key: 'compute_plan_key',
                 value: computePlanKey,
             },
@@ -106,9 +106,9 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTestTasks', async (computePlanKey: string, thunkAPI) => {
     try {
-        const searchFilters = [
+        const searchFilters: SearchFilterType[] = [
             {
-                asset: AssetType.testtask,
+                asset: 'testtuple',
                 key: 'compute_plan_key',
                 value: computePlanKey,
             },
@@ -129,9 +129,9 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     'computePlans/getAggregateTasks',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const searchFilters = [
+            const searchFilters: SearchFilterType[] = [
                 {
-                    asset: AssetType.aggregatetask,
+                    asset: 'aggregatetuple',
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },
@@ -153,9 +153,9 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     'computePlans/getCompositeTasks',
     async (computePlanKey: string, thunkAPI) => {
         try {
-            const searchFilters = [
+            const searchFilters: SearchFilterType[] = [
                 {
-                    asset: AssetType.composite_traintask,
+                    asset: 'composite_traintuple',
                     key: 'compute_plan_key',
                     value: computePlanKey,
                 },

@@ -62,12 +62,14 @@ const MetadataSiderSection = ({
     return (
         <ExpandableSiderSection title="Metadata">
             <Table>
-                {sortedKeys.map((key) => (
-                    <tr key={key}>
-                        <KeyTd>{key}</KeyTd>
-                        <ValueTd>{metadata[key]}</ValueTd>
-                    </tr>
-                ))}
+                <tbody>
+                    {sortedKeys.map((key) => (
+                        <tr key={key}>
+                            <KeyTd>{key}</KeyTd>
+                            <ValueTd>{metadata[key]}</ValueTd>
+                        </tr>
+                    ))}
+                </tbody>
             </Table>
         </ExpandableSiderSection>
     );

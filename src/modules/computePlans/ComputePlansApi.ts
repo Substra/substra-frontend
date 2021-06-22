@@ -1,4 +1,5 @@
-import API from '@/libs/request';
+import API, { getApiOptions } from '@/libs/request';
+import { SearchFilterType } from '@/libs/searchFilter';
 import { AxiosPromise } from 'axios';
 
 import { ComputePlanType } from './ComputePlansTypes';
@@ -8,8 +9,10 @@ const URLS = {
     RETRIEVE: '/compute_plan/__KEY__',
 };
 
-export const listComputePlans = (): AxiosPromise<ComputePlanType[]> =>
-    API.get(URLS.LIST);
+export const listComputePlans = (
+    searchFilters: SearchFilterType[]
+): AxiosPromise<ComputePlanType[]> =>
+    API.get(URLS.LIST, getApiOptions(searchFilters));
 
 export const retrieveComputePlan = (
     key: string

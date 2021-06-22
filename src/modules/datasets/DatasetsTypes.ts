@@ -1,4 +1,4 @@
-import { AssetType, PermissionsType } from '@/modules/common/CommonTypes';
+import { PermissionsType } from '@/modules/common/CommonTypes';
 
 // DatasetStubType is returned when fetching a list of datasets
 export interface DatasetStubType {
@@ -23,7 +23,7 @@ export interface DatasetType extends DatasetStubType {
 }
 
 export interface FilterType {
-    asset: AssetType.dataset;
+    asset: 'dataset';
     key: string;
     value: string;
 }

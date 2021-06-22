@@ -32,7 +32,7 @@ import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import { AssetType } from '@/modules/common/CommonTypes';
+import SearchBar from '@/components/Searchbar';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -69,15 +69,16 @@ const Metrics = (): JSX.Element => {
             stickyHeader={
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
+                    <SearchBar
+                        assetOptions={[{ label: 'Metric', value: 'objective' }]}
+                    />
                     <Table>
                         <Thead>
                             <Tr>
                                 <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
-                                    <OwnerTableFilter
-                                        assets={[AssetType.metric]}
-                                    />
+                                    <OwnerTableFilter assets={['objective']} />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
                             </Tr>

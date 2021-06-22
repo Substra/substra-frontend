@@ -5,7 +5,6 @@ import CommonApi from '@/modules/common/CommonApi';
 import { APIAlgoType, AlgoType } from './AlgosTypes';
 import AlgosApi from './AlgosApi';
 import { SearchFilterType } from '@/libs/searchFilter';
-import { AssetType } from '@/modules/common/CommonTypes';
 
 interface AlgoState {
     algos: AlgoType[];
@@ -50,14 +49,12 @@ export const listAlgos = createAsyncThunk<
     { rejectValue: string }
 >('algos/list', async (filters: SearchFilterType[], thunkAPI) => {
     try {
-        const standardFilters = filters.filter(
-            (sf) => sf.asset === AssetType.algo
-        );
+        const standardFilters = filters.filter((sf) => sf.asset === 'algo');
         const compositeFilters = filters.filter(
-            (sf) => sf.asset === AssetType.composite_algo
+            (sf) => sf.asset === 'composite_algo'
         );
         const aggregateFilters = filters.filter(
-            (sf) => sf.asset === AssetType.aggregate_algo
+            (sf) => sf.asset === 'aggregate_algo'
         );
 
         const promises = [
