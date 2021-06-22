@@ -54,6 +54,10 @@ const Datasets = (): JSX.Element => {
     );
     const key = useKeyFromPath(PATHS.DATASET);
 
+    const pageTitleLinks = [
+        { location: PATHS.DATASETS, title: 'Datasets', active: true },
+    ];
+
     return (
         <PageLayout
             navigation={<Navigation />}
@@ -61,7 +65,7 @@ const Datasets = (): JSX.Element => {
             siderVisible={!!key}
             stickyHeader={
                 <Fragment>
-                    <PageTitle>Datasets</PageTitle>
+                    <PageTitle links={pageTitleLinks} />
                     <SearchBar
                         assetOptions={[
                             { label: 'Dataset', value: AssetType.dataset },
@@ -85,13 +89,12 @@ const Datasets = (): JSX.Element => {
             }
         >
             <PageTitle
+                links={pageTitleLinks}
                 css={css`
                     opacity: 0;
                     pointer-events: none;
                 `}
-            >
-                Datasets
-            </PageTitle>
+            />
             <Table>
                 <Thead
                     css={css`

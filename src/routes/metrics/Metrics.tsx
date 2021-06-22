@@ -3,8 +3,8 @@ import React, { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
-import { AlgoType } from '@/modules/algos/AlgosTypes';
-import { listAlgos } from '@/modules/algos/AlgosSlice';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
+import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 import { RootState } from '@/store';
@@ -17,7 +17,6 @@ import {
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     EmptyTr,
-    FirstTabTh,
     nameColWidth,
     ownerColWidth,
     permissionsColWidth,
@@ -28,18 +27,14 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
-import AlgoSider from './components/AlgoSider';
+import MetricSider from './components/MetricSider';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
 import { AssetType } from '@/modules/common/CommonTypes';
 
-const typeColWidth = css`
-    width: 110px;
-`;
-
-const Algos = (): JSX.Element => {
+const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [
         ,
@@ -48,47 +43,43 @@ const Algos = (): JSX.Element => {
     ] = useSearchFiltersLocation();
 
     useSearchFiltersEffect(() => {
-        dispatch(listAlgos(searchFilters));
+        dispatch(listMetrics(searchFilters));
     }, [searchFilters]);
 
-    const algos: AlgoType[] = useAppSelector(
-        (state: RootState) => state.algos.algos
+    const metrics: MetricType[] = useAppSelector(
+        (state: RootState) => state.metrics.metrics
     );
 
-    const algosLoading = useAppSelector(
-        (state: RootState) => state.algos.algosLoading
+    const metricsLoading = useAppSelector(
+        (state: RootState) => state.metrics.metricsLoading
     );
 
-    const key = useKeyFromPath(PATHS.ALGO);
+    const key = useKeyFromPath(PATHS.METRIC);
 
     const pageTitleLinks = [
-        { location: PATHS.ALGOS, title: 'Algorithms', active: true },
-        { location: PATHS.METRICS, title: 'Metrics', active: false },
+        { location: PATHS.ALGOS, title: 'Algorithms', active: false },
+        { location: PATHS.METRICS, title: 'Metrics', active: true },
     ];
+
     return (
         <PageLayout
             siderVisible={!!key}
             navigation={<Navigation />}
-            sider={<AlgoSider />}
+            sider={<MetricSider />}
             stickyHeader={
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
                     <Table>
                         <Thead>
                             <Tr>
-                                <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                                <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
                                     <OwnerTableFilter
-                                        assets={[
-                                            AssetType.algo,
-                                            AssetType.composite_algo,
-                                            AssetType.aggregate_algo,
-                                        ]}
+                                        assets={[AssetType.metric]}
                                     />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
-                                <Th css={typeColWidth}>Type</Th>
                             </Tr>
                         </Thead>
                     </Table>
@@ -96,11 +87,11 @@ const Algos = (): JSX.Element => {
             }
         >
             <PageTitle
-                links={pageTitleLinks}
                 css={css`
                     opacity: 0;
                     pointer-events: none;
                 `}
+                links={pageTitleLinks}
             />
             <Table>
                 <Thead
@@ -110,17 +101,16 @@ const Algos = (): JSX.Element => {
                     `}
                 >
                     <Tr>
-                        <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                        <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
-                        <Th css={typeColWidth}>Type</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {!algosLoading && algos.length === 0 && (
+                    {!metricsLoading && metrics.length === 0 && (
                         <EmptyTr nbColumns={4} />
                     )}
-                    {algosLoading
+                    {metricsLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
                                   <Td>
@@ -132,32 +122,30 @@ const Algos = (): JSX.Element => {
                                   <Td>
                                       <Skeleton width={150} height={12} />
                                   </Td>
-                                  <Td>
-                                      <Skeleton width={60} height={12} />
-                                  </Td>
                               </Tr>
                           ))
-                        : algos.map((algo) => (
+                        : metrics.map((metric) => (
                               <Tr
-                                  key={algo.key}
-                                  highlighted={algo.key === key}
+                                  key={metric.key}
+                                  highlighted={metric.key === key}
                                   onClick={() =>
                                       setSearchFiltersLocation(
-                                          compilePath(PATHS.ALGO, {
-                                              key: algo.key,
+                                          compilePath(PATHS.METRIC, {
+                                              key: metric.key,
                                           }),
                                           searchFilters
                                       )
                                   }
                               >
-                                  <Td>{algo.name}</Td>
-                                  <Td>{algo.owner}</Td>
+                                  <Td>{metric.name}</Td>
+                                  <Td>{metric.owner}</Td>
                                   <Td>
                                       <PermissionCellContent
-                                          permission={algo.permissions.process}
+                                          permission={
+                                              metric.permissions.process
+                                          }
                                       />
                                   </Td>
-                                  <Td>{algo.type}</Td>
                               </Tr>
                           ))}
                 </Tbody>
@@ -166,4 +154,4 @@ const Algos = (): JSX.Element => {
     );
 };
 
-export default Algos;
+export default Metrics;

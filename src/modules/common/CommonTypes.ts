@@ -16,4 +16,5 @@ export enum AssetType {
     traintuple = 'traintuple',
     composite_traintuple = 'composite_traintuple',
     aggregatetuple = 'aggregatetuple',
+    metric = 'objective',
 }

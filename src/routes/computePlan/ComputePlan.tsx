@@ -53,6 +53,14 @@ const ComputePlan = (): JSX.Element => {
     const [, setLocation] = useLocation();
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
 
+    const pageTitleLinks = [
+        {
+            location: PATHS.COMPUTE_PLANS,
+            title: 'Compute Plans',
+            active: true,
+        },
+    ];
+
     return (
         <PageLayout
             navigation={<Navigation />}
@@ -60,7 +68,7 @@ const ComputePlan = (): JSX.Element => {
             siderVisible={!!key}
             stickyHeader={
                 <Fragment>
-                    <PageTitle>Compute Plans</PageTitle>
+                    <PageTitle links={pageTitleLinks} />
                     <Table>
                         <Thead>
                             <Tr>
@@ -73,7 +81,13 @@ const ComputePlan = (): JSX.Element => {
                 </Fragment>
             }
         >
-            <PageTitle>Compute Plan</PageTitle>
+            <PageTitle
+                links={pageTitleLinks}
+                css={css`
+                    opacity: 0;
+                    pointer-events: none;
+                `}
+            />
             <Table>
                 <Thead>
                     <Tr>

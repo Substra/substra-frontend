@@ -66,11 +66,17 @@ const activeLinkStyle = css`
 const Navigation = (): JSX.Element => {
     const renderLink = (
         label: string,
-        route: string,
+        routes: string[],
         path: string,
         icon: JSX.Element
     ) => {
-        const [isActive] = useRoute(route);
+        const isActive = routes.reduce((isActive, route) => {
+            if (isActive) {
+                return true;
+            }
+            const [isRouteActive] = useRoute(route);
+            return isRouteActive;
+        }, false);
 
         return (
             <Link css={[linkStyle, isActive && activeLinkStyle]} href={path}>
@@ -83,7 +89,7 @@ const Navigation = (): JSX.Element => {
         <Container>
             {renderLink(
                 'Datasets',
-                ROUTES.DATASETS.path,
+                [ROUTES.DATASETS.path],
                 PATHS.DATASETS,
                 <DatasetIcon
                     css={css`
@@ -93,13 +99,13 @@ const Navigation = (): JSX.Element => {
             )}
             {renderLink(
                 'Algos and Metrics',
-                ROUTES.ALGOS.path,
+                [ROUTES.ALGOS.path, ROUTES.METRICS.path],
                 PATHS.ALGOS,
                 <AlgorithmIcon />
             )}
             {renderLink(
                 'Compute Plans',
-                ROUTES.COMPUTE_PLANS.path,
+                [ROUTES.COMPUTE_PLANS.path],
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}

@@ -3,6 +3,7 @@ import Algos from '@/routes/algos/Algos';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
 import Datasets from '@/routes/datasets/Datasets';
 import Login from '@/routes/login/Login';
+import Metrics from '@/routes/metrics/Metrics';
 import { useRoute } from 'wouter';
 
 export interface IRoute {
@@ -18,6 +19,8 @@ export const PATHS = {
     DATASET: '/datasets/:key/',
     ALGOS: '/algorithms/',
     ALGO: '/algorithms/:key/',
+    METRICS: '/metrics/',
+    METRIC: '/metrics/:key/',
 };
 
 export const ROUTES: { [key: string]: IRoute } = {
@@ -38,6 +41,10 @@ export const ROUTES: { [key: string]: IRoute } = {
     ALGOS: {
         path: '/algorithms/:key?',
         component: Algos,
+    },
+    METRICS: {
+        path: '/metrics/:key?',
+        component: Metrics,
     },
 };
 
