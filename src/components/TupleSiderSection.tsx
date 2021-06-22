@@ -1,8 +1,38 @@
+/** @jsx jsx */
 import React from 'react';
 import styled from '@emotion/styled';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 import { Fonts, Spaces } from '@/assets/theme';
 import Status from './Status';
 import { TupleType } from '@/modules/tuples/TuplesTypes';
+import Skeleton from '@/components/Skeleton';
+
+export const LoadingTupleSiderSection = (): JSX.Element => (
+    <TupleSiderSectionContainer>
+        <Skeleton
+            width={200}
+            height={16}
+            css={css`
+                margin-bottom: ${Spaces.extraSmall};
+            `}
+        />
+        <Skeleton
+            width={300}
+            height={16}
+            css={css`
+                margin-bottom: ${Spaces.small};
+            `}
+        />
+        <Skeleton
+            width={200}
+            height={12}
+            css={css`
+                margin-bottom: ${Spaces.small};
+            `}
+        />
+    </TupleSiderSectionContainer>
+);
 
 const TupleSiderSectionContainer = styled.div`
     display: flex;

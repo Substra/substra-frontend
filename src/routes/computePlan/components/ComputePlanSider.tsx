@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+/** @jsx jsx */
+import React, { useEffect, Fragment } from 'react';
 import { useLocation } from 'wouter';
 import styled from '@emotion/styled';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Fonts, Spaces } from '@/assets/theme';
 import KeySiderSection from '@/components/KeySiderSection';
@@ -15,13 +19,15 @@ import { PATHS, useKeyFromPath } from '@/routes';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import ProgressBar from '@/components/ProgressBar';
-import { unwrapResult } from '@reduxjs/toolkit';
-import TupleSiderSection from '@/components/TupleSiderSection';
+import TupleSiderSection, {
+    LoadingTupleSiderSection,
+} from '@/components/TupleSiderSection';
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import Sider from '@/components/Sider';
 import MetadataSiderSection, {
     LoadingMetadataSiderSection,
 } from '@/components/MetadataSiderSection';
+import Skeleton from '@/components/Skeleton';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};
@@ -31,6 +37,10 @@ const PercentageNumber = styled.div`
 
 const TupleText = styled.div`
     padding: ${Spaces.medium} ${Spaces.large};
+`;
+
+const skeletonCss = css`
+    margin: ${Spaces.small} 0;
 `;
 
 const ComputePlanSider = (): JSX.Element => {
@@ -69,6 +79,19 @@ const ComputePlanSider = (): JSX.Element => {
         (state) => state.computePlans.computePlanTrainTuples
     );
 
+    const computePlanTrainTuplesLoading = useAppSelector(
+        (state) => state.computePlans.computePlanTrainTuplesLoading
+    );
+    const computePlanTestTuplesLoading = useAppSelector(
+        (state) => state.computePlans.computePlanTestTuplesLoading
+    );
+    const computePlanCompositeTuplesLoading = useAppSelector(
+        (state) => state.computePlans.computePlanCompositeTuplesLoading
+    );
+    const computePlanAggregateTuplesLoading = useAppSelector(
+        (state) => state.computePlans.computePlanAggregateTuplesLoading
+    );
+
     const computePlanTestTuples = useAppSelector(
         (state) => state.computePlans.computePlanTestTuples
     );
@@ -102,16 +125,29 @@ const ComputePlanSider = (): JSX.Element => {
 
             <SiderSection>
                 <SiderSectionTitle>Completion</SiderSectionTitle>
-                <PercentageNumber>{percentage}%</PercentageNumber>
-                <ProgressBar percentage={percentage} />
+                {computePlanLoading && !computePlan && (
+                    <Fragment>
+                        <Skeleton css={skeletonCss} width={50} height={16} />
+                        <Skeleton css={skeletonCss} width={200} height={16} />
+                    </Fragment>
+                )}
+                {!computePlanLoading && computePlan && (
+                    <Fragment>
+                        <PercentageNumber>{percentage}%</PercentageNumber>
+                        <ProgressBar percentage={percentage} />
+                    </Fragment>
+                )}
             </SiderSection>
 
             <ExpandableSiderSection title="Train tuples">
-                {computePlanTrainTuples.length === 0 && (
-                    <TupleText>
-                        This compute plan doesn't have any traintuples attached
-                    </TupleText>
-                )}
+                {computePlanTrainTuplesLoading && <LoadingTupleSiderSection />}
+                {!computePlanTrainTuplesLoading &&
+                    computePlanTrainTuples.length === 0 && (
+                        <TupleText>
+                            This compute plan doesn't have any traintuples
+                            attached
+                        </TupleText>
+                    )}
                 {computePlanTrainTuples.map((trainTuple) => (
                     <TupleSiderSection
                         key={trainTuple.key}
@@ -120,22 +156,29 @@ const ComputePlanSider = (): JSX.Element => {
                 ))}
             </ExpandableSiderSection>
             <ExpandableSiderSection title="Test tuples">
-                {computePlanTestTuples.length === 0 && (
-                    <TupleText>
-                        This compute plan doesn't have any testtuples attached
-                    </TupleText>
-                )}
+                {computePlanTestTuplesLoading && <LoadingTupleSiderSection />}
+                {!computePlanTestTuplesLoading &&
+                    computePlanTestTuples.length === 0 && (
+                        <TupleText>
+                            This compute plan doesn't have any testtuples
+                            attached
+                        </TupleText>
+                    )}
                 {computePlanTestTuples.map((testTuple) => (
                     <TupleSiderSection key={testTuple.key} tuple={testTuple} />
                 ))}
             </ExpandableSiderSection>
             <ExpandableSiderSection title="Composite tuples">
-                {computePlanCompositeTuples.length === 0 && (
-                    <TupleText>
-                        This compute plan doesn't have any composite tuples
-                        attached
-                    </TupleText>
+                {computePlanCompositeTuplesLoading && (
+                    <LoadingTupleSiderSection />
                 )}
+                {!computePlanCompositeTuplesLoading &&
+                    computePlanCompositeTuples.length === 0 && (
+                        <TupleText>
+                            This compute plan doesn't have any composite tuples
+                            attached
+                        </TupleText>
+                    )}
                 {computePlanCompositeTuples.map((compositeTuple) => (
                     <TupleSiderSection
                         key={compositeTuple.key}
@@ -144,12 +187,16 @@ const ComputePlanSider = (): JSX.Element => {
                 ))}
             </ExpandableSiderSection>
             <ExpandableSiderSection title="Aggregate tuples">
-                {computePlanAggregateTuples.length === 0 && (
-                    <TupleText>
-                        This compute plan doesn't have any aggregate tuples
-                        attached
-                    </TupleText>
+                {computePlanAggregateTuplesLoading && (
+                    <LoadingTupleSiderSection />
                 )}
+                {!computePlanAggregateTuplesLoading &&
+                    computePlanAggregateTuples.length === 0 && (
+                        <TupleText>
+                            This compute plan doesn't have any aggregate tuples
+                            attached
+                        </TupleText>
+                    )}
                 {computePlanAggregateTuples.map((aggregateTuple) => (
                     <TupleSiderSection
                         key={aggregateTuple.key}

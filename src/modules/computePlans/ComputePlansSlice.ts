@@ -191,6 +191,11 @@ export const computePlansSlice = createSlice({
             .addCase(retrieveComputePlan.pending, (state) => {
                 state.computePlanLoading = true;
                 state.computePlanError = '';
+                state.computePlan = null;
+                state.computePlanTrainTuples = [];
+                state.computePlanTestTuples = [];
+                state.computePlanAggregateTuples = [];
+                state.computePlanAggregateTuples = [];
             })
             .addCase(retrieveComputePlan.fulfilled, (state, { payload }) => {
                 state.computePlan = payload;
