@@ -29,6 +29,7 @@ import ComputePlanSider from './components/ComputePlanSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
 import SearchBar from '@/components/Searchbar';
+import StatusTableFilter from './components/StatusTableFilter';
 
 const tagColWidth = css`
     width: 200px;
@@ -90,7 +91,9 @@ const ComputePlan = (): JSX.Element => {
                         <Thead>
                             <Tr>
                                 <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
-                                <Th css={statusColWidth}>Status</Th>
+                                <Th css={statusColWidth}>
+                                    Status <StatusTableFilter />
+                                </Th>
                                 <Th css={taskColWidth}>Tasks</Th>
                             </Tr>
                         </Thead>
