@@ -29,14 +29,14 @@ export const Spaces = {
 };
 
 export const Fonts = {
-    // Base font size (1em) is 16px
     sizes: {
-        h1: '2em',
-        h2: '1.25em',
-        smallBody: '0.75em',
-        label: '0.75em',
-        input: '0.875em',
-        button: '0.875em',
+        h1: '32px',
+        h2: '20px',
+        h3: '16px',
+        smallBody: '12px',
+        label: '12px',
+        input: '14px',
+        button: '14px',
         tableContent: '12px',
     },
     weights: {

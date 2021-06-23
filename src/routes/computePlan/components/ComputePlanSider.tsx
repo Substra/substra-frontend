@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useMemo } from 'react';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -31,6 +31,11 @@ import MetadataSiderSection, {
     LoadingMetadataSiderSection,
 } from '@/components/MetadataSiderSection';
 import Skeleton from '@/components/Skeleton';
+import NodeSiderElement, {
+    LoadingNodeSiderSection,
+} from '@/components/NodeSiderElement';
+import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import { isAggregateTask } from '@/libs/tasks';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};
@@ -111,6 +116,59 @@ const ComputePlanSider = (): JSX.Element => {
         (state) => state.computePlans.computePlanAggregateTasks
     );
 
+    const incrementNodeWaitingTasks = (count: number, status: TaskStatus) => {
+        if (status === TaskStatus.waiting) {
+            if (count === undefined) {
+                return 1;
+            } else {
+                return ++count;
+            }
+        } else if (count === undefined) {
+            return 0;
+        }
+        return count;
+    };
+
+    const getTasksNodes = (tasks: TaskT[]) => {
+        const nodes: Record<string, number> = {};
+        let index;
+        tasks.forEach((task) => {
+            if (isAggregateTask(task)) {
+                index = task.worker;
+            } else {
+                index = task.dataset.worker;
+            }
+
+            return (nodes[index] = incrementNodeWaitingTasks(
+                nodes[index],
+                task.status
+            ));
+        });
+
+        return nodes;
+    };
+
+    const nodesList = useMemo(
+        () =>
+            getTasksNodes([
+                ...computePlanTrainTasks,
+                ...computePlanTestTasks,
+                ...computePlanAggregateTasks,
+                ...computePlanCompositeTasks,
+            ]),
+        [
+            computePlanTrainTasks,
+            computePlanTestTasks,
+            computePlanAggregateTasks,
+            computePlanCompositeTasks,
+        ]
+    );
+    const nodesListLoading =
+        computePlanTrainTasksLoading ||
+        computePlanTestTasksLoading ||
+        computePlanAggregateTasksLoading ||
+        computePlanCompositeTasksLoading;
+
     let percentage = 0;
     if (computePlan) {
         percentage = (computePlan.done_count / computePlan.tuple_count) * 100;
@@ -147,7 +205,22 @@ const ComputePlanSider = (): JSX.Element => {
                     </Fragment>
                 )}
             </SiderSection>
-
+            <SiderSection>
+                <SiderSectionTitle>
+                    Nodes running on compute plan
+                </SiderSectionTitle>
+                {nodesListLoading && <LoadingNodeSiderSection />}
+                {!nodesListLoading &&
+                    Object.entries(nodesList).map(([node, waitingTasks]) => {
+                        return (
+                            <NodeSiderElement
+                                key={node}
+                                title={node}
+                                waitingTasks={waitingTasks}
+                            />
+                        );
+                    })}
+            </SiderSection>
             <ExpandableSiderSection title="Train tasks">
                 {computePlanTrainTasksLoading && <LoadingTaskSiderSection />}
                 {!computePlanTrainTasksLoading &&

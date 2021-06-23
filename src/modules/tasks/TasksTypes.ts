@@ -97,6 +97,7 @@ export interface TaskType {
 }
 
 export interface CompositeTrainTaskType extends TaskType {
+    dataset: TrainTaskDatasetType;
     in_head_model?: InHeadModel;
     in_trunk_model?: InModel;
     out_head_model: OutCompositeHeadModel;
@@ -132,3 +133,9 @@ export interface TrainTaskType extends TaskType {
     rank: number;
     tags: string;
 }
+
+export type TaskT =
+    | TrainTaskType
+    | TestTaskType
+    | AggregateTaskType
+    | CompositeTrainTaskType;
