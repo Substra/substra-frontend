@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 
@@ -32,6 +32,14 @@ const LoginPageContainer = styled.div`
 const Login = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
+
+    const authenticated = useAppSelector((state) => state.user.authenticated);
+
+    useEffect(() => {
+        if (authenticated) {
+            setLocation(PATHS.DATASETS);
+        }
+    });
 
     const submitLogin = async (username: string, password: string) => {
         const payload: loginPayload = {
