@@ -27,6 +27,9 @@ export const LoadingDescriptionSiderSection = (): JSX.Element => (
 const DescriptionContainer = styled.div`
     padding-left: ${Spaces.large};
     padding-right: ${Spaces.large};
+    max-width: 100%;
+    overflow: auto;
+    height: 100%;
 `;
 
 interface DescriptionSiderSectionProps {

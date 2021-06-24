@@ -9,6 +9,7 @@ import {
     areSearchFiltersListsEqual,
     isSearchFiltersList,
 } from './libs/searchFilter';
+import { setExpandedSection } from './modules/ui/UISlice';
 import type { RootState, AppDispatch } from './store';
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
@@ -80,4 +81,22 @@ export const useSearchFiltersEffect = (
     };
 
     useCustomCompareEffect(effect, deps, customCompare);
+};
+
+export const useExpandedSection = (
+    sectionName: string
+): [boolean, (expanded: boolean) => void] => {
+    const expandedSectionName = useAppSelector(
+        (state) => state.ui.expandedSection
+    );
+    const dispatch = useAppDispatch();
+    const expanded = expandedSectionName === sectionName;
+    const setExpanded = (expanded: boolean) => {
+        if (expanded) {
+            dispatch(setExpandedSection(sectionName));
+        } else {
+            dispatch(setExpandedSection(''));
+        }
+    };
+    return [expanded, setExpanded];
 };

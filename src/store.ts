@@ -5,6 +5,7 @@ import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import nodesSlice from '@/modules/nodes/NodesSlice';
 import algosSlice from '@/modules/algos/AlgosSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
+import uiSlice from '@/modules/ui/UISlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         nodes: nodesSlice,
         algos: algosSlice,
         metrics: metricsSlice,
+        ui: uiSlice,
     },
 });
 
