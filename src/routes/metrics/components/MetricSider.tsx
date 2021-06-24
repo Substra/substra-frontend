@@ -77,7 +77,7 @@ const MetricSider = (): JSX.Element => {
             {metric && (
                 <SiderBottomButton
                     target={metric.metrics.storage_address}
-                    filename="metric.zip"
+                    filename={`metric-${key}.zip`}
                 >
                     Download metric
                 </SiderBottomButton>

@@ -72,7 +72,7 @@ const AlgoSider = (): JSX.Element => {
             {algo && (
                 <SiderBottomButton
                     target={algo.content.storage_address}
-                    filename="algo.zip"
+                    filename={`algo-${key}.zip`}
                 >
                     Download algo
                 </SiderBottomButton>
