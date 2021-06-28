@@ -1,17 +1,19 @@
+/** @jsx jsx */
 import React from 'react';
+import { RiArrowRightLine } from 'react-icons/ri';
 import styled from '@emotion/styled';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import { Colors, Spaces, zIndexes } from '@/assets/theme';
-import { RiArrowRightLine } from 'react-icons/ri';
+import { Colors, Fonts, Spaces } from '@/assets/theme';
 import { useExpandedSection } from '@/hooks';
 
-const CollapsibleArea = styled.div`
+const CroppedContent = styled.div`
     max-height: 150px;
-    margin-left: -${Spaces.large};
-    margin-right: -${Spaces.large};
-    overflow-x: visible;
-    overflow-y: hidden;
+    margin: 0 -${Spaces.large};
+    padding: 0 ${Spaces.large};
+    overflow: hidden;
     position: relative;
 
     &:after {
@@ -27,32 +29,52 @@ const CollapsibleArea = styled.div`
     }
 `;
 
-interface ExpandedAreaProps {
-    expanded: boolean;
-}
-const ExpandedArea = styled.div<ExpandedAreaProps>`
+const ExpandedArea = styled.div`
     position: fixed;
     top: 72px;
     right: 420px;
     bottom: 0;
-    width: calc(100% - 420px);
-    padding: ${Spaces.large};
+    width: calc(100vw - 420px);
     background-color: white;
     box-shadow: 0 0 8px 0 ${Colors.border};
     transition: all 0.2s ease-out;
-    display: ${({ expanded }) => (expanded ? 'flex' : 'none')};
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     overflow-x: hidden;
-    z-index: ${zIndexes.sider};
+    transition: all 0.2s ease-out;
+`;
+
+const hiddenExpandedArea = css`
+    overflow: hidden;
+    pointer-events: none;
+    width: 0;
+`;
+
+const ExpandedAreaTitle = styled.div`
+    display: flex;
+    width: calc(100vw - 420px);
+    align-items: center;
+    justify-content: space-between;
+    padding: ${Spaces.large};
+    border-bottom: 1px solid ${Colors.border};
+    color: ${Colors.lightContent};
+    font-size: ${Fonts.sizes.button};
+    position: relative;
+`;
+
+const ExpandedAreaContent = styled.div`
+    overflow: auto;
+    width: calc(100vw - 420px);
+    flex-grow: 1;
+    padding: ${Spaces.large};
 `;
 
 const CloseAreaButton = styled.button`
-    width: 68px;
-    height: 68px;
     position: absolute;
-    top: 0;
-    right: 0;
+    right: ${Spaces.medium};
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,13 +112,15 @@ const ExpandableSiderSection = ({ title, children }: Props): JSX.Element => {
     return (
         <SiderSection>
             <SiderSectionTitle>{title}</SiderSectionTitle>
-            <CollapsibleArea>{children}</CollapsibleArea>
-            <ExpandedArea expanded={expanded}>
-                <CloseAreaButton onClick={() => setExpanded(false)}>
-                    <RiArrowRightLine />
-                </CloseAreaButton>
-                <SiderSectionTitle>{title}</SiderSectionTitle>
-                {children}
+            <CroppedContent>{children}</CroppedContent>
+            <ExpandedArea css={[!expanded && hiddenExpandedArea]}>
+                <ExpandedAreaTitle>
+                    {title}
+                    <CloseAreaButton onClick={() => setExpanded(false)}>
+                        <RiArrowRightLine />
+                    </CloseAreaButton>
+                </ExpandedAreaTitle>
+                <ExpandedAreaContent>{children}</ExpandedAreaContent>
             </ExpandedArea>
             <ReadMoreButton onClick={() => setExpanded(!expanded)}>
                 {expanded ? 'read less' : 'read more'}

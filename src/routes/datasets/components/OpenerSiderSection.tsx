@@ -34,6 +34,7 @@ export const LoadingOpenerSiderSection = (): JSX.Element => (
 
 const syntaxHighlighterStyles = css`
     background-color: ${Colors.background} !important;
+    margin: -${Spaces.large};
 
     & * {
         font-family: monospace;

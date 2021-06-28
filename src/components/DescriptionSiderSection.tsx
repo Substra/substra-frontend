@@ -2,7 +2,6 @@
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import styled from '@emotion/styled';
 import ReactMarkdown from 'react-markdown';
 
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
@@ -24,14 +23,6 @@ export const LoadingDescriptionSiderSection = (): JSX.Element => (
     </SiderSection>
 );
 
-const DescriptionContainer = styled.div`
-    padding-left: ${Spaces.large};
-    padding-right: ${Spaces.large};
-    max-width: 100%;
-    overflow: auto;
-    height: 100%;
-`;
-
 interface DescriptionSiderSectionProps {
     description: string;
 }
@@ -40,9 +31,7 @@ const DescriptionSiderSection = ({
     description,
 }: DescriptionSiderSectionProps): JSX.Element => (
     <ExpandableSiderSection title="Description">
-        <DescriptionContainer>
-            <ReactMarkdown children={description} />
-        </DescriptionContainer>
+        <ReactMarkdown children={description} />
     </ExpandableSiderSection>
 );
 
