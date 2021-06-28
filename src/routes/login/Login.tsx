@@ -35,9 +35,12 @@ const Login = (): JSX.Element => {
 
     const authenticated = useAppSelector((state) => state.user.authenticated);
 
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const nextLocation = urlSearchParams.get('next') || PATHS.DATASETS;
+
     useEffect(() => {
         if (authenticated) {
-            setLocation(PATHS.DATASETS);
+            setLocation(nextLocation);
         }
     });
 
@@ -52,8 +55,7 @@ const Login = (): JSX.Element => {
             .then(() => {
                 // Fetch current node name to update the page's header
                 dispatch(listNodes());
-                // Redirect to datasets page
-                setLocation(PATHS.DATASETS);
+                setLocation(nextLocation);
             });
     };
 

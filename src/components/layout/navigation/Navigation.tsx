@@ -71,11 +71,11 @@ const Navigation = (): JSX.Element => {
         icon: JSX.Element
     ) => {
         const isActive = routes.reduce((isActive, route) => {
-            if (isActive) {
-                return true;
-            }
+            // We could add a test returning true if isActive is true before calling useRoute for
+            // maximum efficiency but this would change the number of times the useRoute hook is
+            // called and therefore make react break.
             const [isRouteActive] = useRoute(route);
-            return isRouteActive;
+            return isActive || isRouteActive;
         }, false);
 
         return (

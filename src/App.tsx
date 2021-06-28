@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Route, Switch, useLocation } from 'wouter';
+import { Route, Switch, useLocation, useRoute } from 'wouter';
 
 import AppLayout from '@/components/layout/applayout/AppLayout';
 import { listNodes } from '@/modules/nodes/NodesSlice';
@@ -12,6 +12,7 @@ import { useAppDispatch } from '@/hooks';
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
+    const [onLoginPage] = useRoute(PATHS.LOGIN);
 
     useEffect(() => {
         /**
@@ -25,8 +26,12 @@ const App = (): JSX.Element => {
                     dispatch(listNodes());
                 },
                 () => {
-                    // TODO: make sure we are redirected to the current location after login
-                    setLocation(PATHS.LOGIN);
+                    if (!onLoginPage) {
+                        const url = encodeURI(
+                            `${PATHS.LOGIN}?next=${window.location.pathname}${window.location.search}`
+                        );
+                        setLocation(url);
+                    }
                 }
             );
     }, [dispatch]);

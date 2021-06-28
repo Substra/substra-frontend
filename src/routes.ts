@@ -12,15 +12,15 @@ export interface IRoute {
 }
 
 export const PATHS = {
-    LOGIN: '/login/',
-    COMPUTE_PLANS: '/compute_plans/',
+    LOGIN: '/login',
+    COMPUTE_PLANS: '/compute_plans',
     COMPUTE_PLAN: '/compute_plans/:key',
-    DATASETS: '/datasets/',
-    DATASET: '/datasets/:key/',
-    ALGOS: '/algorithms/',
-    ALGO: '/algorithms/:key/',
-    METRICS: '/metrics/',
-    METRIC: '/metrics/:key/',
+    DATASETS: '/datasets',
+    DATASET: '/datasets/:key',
+    ALGOS: '/algorithms',
+    ALGO: '/algorithms/:key',
+    METRICS: '/metrics',
+    METRIC: '/metrics/:key',
 };
 
 export const ROUTES: { [key: string]: IRoute } = {
