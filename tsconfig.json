@@ -6,7 +6,12 @@
         },
         "target": "ESNext",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "types": ["vite/client", "@emotion/react/types/css-prop"],
+        "types": [
+            "vite/client",
+            "@emotion/react/types/css-prop",
+            "@types/testing-library__jest-dom",
+            "@types/react"
+        ],
         "typeRoots": ["node_modules/@types"],
         "allowJs": false,
         "skipLibCheck": true,
@@ -22,5 +27,6 @@
         "jsx": "react-jsx",
         "jsxImportSource": "@emotion/react"
     },
-    "include": ["./src"]
+    "include": ["./src"],
+    "exclude": ["node_modules", "**/*.test.tsx?"]
 }

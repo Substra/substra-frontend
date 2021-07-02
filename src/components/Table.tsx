@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React from 'react';
+import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -82,7 +82,7 @@ export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
 );
 
 interface CellProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 const thStyles = css`

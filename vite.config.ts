@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import reactSvgPlugin from 'vite-plugin-react-svg';
+import reactJsx from 'vite-react-jsx';
 import { version } from './package.json';
 import path from 'path';
 
@@ -13,7 +14,9 @@ export default defineConfig({
         __APP_VERSION__: `'${version} - ${GIT_COMMIT}'`,
     },
     plugins: [
-        reactRefresh(),
+        reactJsx(),
+        // Do not include reactRefresh in test mode
+        ...(process.env.NODE_ENV === 'test' ? [] : [reactRefresh()]),
         reactSvgPlugin({
             defaultExport: 'component',
         }),
