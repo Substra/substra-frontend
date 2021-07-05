@@ -24,6 +24,7 @@ const HorizontalScrollShadow = styled.div`
     content: '';
     display: block;
     width: 120px;
+    pointer-events: none;
 
     // position
     position: absolute;

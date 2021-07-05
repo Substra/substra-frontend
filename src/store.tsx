@@ -9,6 +9,7 @@ import nodesSlice from '@/modules/nodes/NodesSlice';
 import algosSlice from '@/modules/algos/AlgosSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
 import uiSlice from '@/modules/ui/UISlice';
+import tasksSlice from '@/modules/tasks/TasksSlice';
 
 const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
         algos: algosSlice,
         metrics: metricsSlice,
         ui: uiSlice,
+        tasks: tasksSlice,
     },
 });
 

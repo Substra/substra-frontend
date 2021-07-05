@@ -13,11 +13,11 @@ import { AssetType } from '@/modules/common/CommonTypes';
 import CloseButton from './CloseButton';
 
 const selectWidth = css`
-    width: 150px;
+    width: 180px;
 `;
 
 const SearchForm = styled.form`
-    width: 500px;
+    width: 530px;
     height: ${Spaces.extraLarge};
     border: 1px solid ${Colors.border};
     border-radius: 16px;

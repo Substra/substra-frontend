@@ -50,7 +50,7 @@ const linkStyle = css`
     }
 
     &:hover {
-        max-width: 190px;
+        max-width: 245px;
 
         & > .label {
             opacity: 1;
@@ -104,8 +104,8 @@ const Navigation = (): JSX.Element => {
                 <AlgorithmIcon />
             )}
             {renderLink(
-                'Compute Plans',
-                [ROUTES.COMPUTE_PLANS.path],
+                'Compute Plans and Tasks',
+                [ROUTES.COMPUTE_PLANS.path, ROUTES.TASKS.path],
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}

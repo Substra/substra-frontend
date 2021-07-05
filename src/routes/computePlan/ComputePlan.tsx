@@ -29,7 +29,7 @@ import ComputePlanSider from './components/ComputePlanSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
 import SearchBar from '@/components/Searchbar';
-import StatusTableFilter from './components/StatusTableFilter';
+import StatusTableFilter from '@/components/StatusTableFilter';
 
 const tagColWidth = css`
     width: 200px;
@@ -38,7 +38,7 @@ const statusColWidth = css`
     width: 200px;
 `;
 const taskColWidth = css`
-    width: 400px;
+    width: 600px;
 `;
 
 const ComputePlan = (): JSX.Element => {
@@ -69,6 +69,11 @@ const ComputePlan = (): JSX.Element => {
             title: 'Compute Plans',
             active: true,
         },
+        {
+            location: PATHS.TASKS,
+            title: 'Tasks',
+            active: false,
+        },
     ];
 
     return (
@@ -92,7 +97,10 @@ const ComputePlan = (): JSX.Element => {
                             <Tr>
                                 <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
                                 <Th css={statusColWidth}>
-                                    Status <StatusTableFilter />
+                                    Status
+                                    <StatusTableFilter
+                                        assets={['compute_plan']}
+                                    />
                                 </Th>
                                 <Th css={taskColWidth}>Tasks</Th>
                             </Tr>
@@ -118,7 +126,7 @@ const ComputePlan = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {!computePlansLoading && computePlans.length === 0 && (
-                        <EmptyTr nbColumns={2} />
+                        <EmptyTr nbColumns={3} />
                     )}
                     {computePlansLoading
                         ? [1, 2, 3].map((index) => (

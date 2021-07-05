@@ -21,7 +21,7 @@ export const SiderSectionTitle = styled.div`
 
 interface SimpleSiderSectionProps {
     title: string;
-    content: string;
+    content: React.ReactNode;
 }
 
 export const SimpleSiderSection = ({

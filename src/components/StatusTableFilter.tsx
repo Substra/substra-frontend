@@ -4,8 +4,23 @@ import { useSearchFiltersLocation } from '@/hooks';
 import TableFilter from '@/components/TableFilter';
 import { SearchFilterType } from '@/libs/searchFilter';
 import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { AssetType } from '@/modules/common/CommonTypes';
 
-const StatusTableFilter = (): JSX.Element => {
+const buildAssetFilters = (
+    asset: AssetType,
+    value: string[]
+): SearchFilterType[] => {
+    return value.map((v) => ({
+        asset: asset,
+        key: 'status',
+        value: v,
+    }));
+};
+
+interface StatusTableFilterProps {
+    assets: AssetType[];
+}
+const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
     const [
         ,
         searchFilters,
@@ -23,17 +38,17 @@ const StatusTableFilter = (): JSX.Element => {
 
     const value: string[] = searchFilters
         .filter(
-            (filter) =>
-                filter.asset === 'compute_plan' && filter.key === 'status'
+            (filter) => assets.includes(filter.asset) && filter.key === 'status'
         )
         .map((filter) => filter.value);
 
     const setValue = (value: string[]) => {
-        const filters: SearchFilterType[] = value.map((v) => ({
-            asset: 'compute_plan',
-            key: 'status',
-            value: v,
-        }));
+        const filters = assets.reduce(
+            (filters: SearchFilterType[], asset: AssetType) => {
+                return [...filters, ...buildAssetFilters(asset, value)];
+            },
+            []
+        );
         setSearchFiltersLocation(filters);
     };
 

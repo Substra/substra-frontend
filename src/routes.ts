@@ -4,6 +4,7 @@ import ComputePlan from '@/routes/computePlan/ComputePlan';
 import Datasets from '@/routes/datasets/Datasets';
 import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
+import Tasks from '@/routes/tasks/Tasks';
 import { useRoute } from 'wouter';
 
 export interface IRoute {
@@ -21,6 +22,8 @@ export const PATHS = {
     ALGO: '/algorithms/:key',
     METRICS: '/metrics',
     METRIC: '/metrics/:key',
+    TASKS: '/tasks',
+    TASK: '/tasks/:key',
 };
 
 export const ROUTES: { [key: string]: IRoute } = {
@@ -45,6 +48,10 @@ export const ROUTES: { [key: string]: IRoute } = {
     METRICS: {
         path: '/metrics/:key?',
         component: Metrics,
+    },
+    TASKS: {
+        path: '/tasks/:key?',
+        component: Tasks,
     },
 };
 

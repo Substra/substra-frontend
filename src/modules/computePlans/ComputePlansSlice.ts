@@ -4,10 +4,10 @@ import { ComputePlanType } from './ComputePlansTypes';
 import ComputePlansApi from './ComputePlansApi';
 import TasksApi from '@/modules/tasks/TasksApi';
 import {
-    TestTaskType,
-    TrainTaskType,
-    CompositeTrainTaskType,
-    AggregateTaskType,
+    TestTaskT,
+    TrainTaskT,
+    CompositeTrainTaskT,
+    AggregateTaskT,
 } from '@/modules/tasks/TasksTypes';
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -18,16 +18,16 @@ interface ComputePlansState {
     computePlan: ComputePlanType | null;
     computePlanLoading: boolean;
     computePlanError: string;
-    computePlanTrainTasks: TrainTaskType[];
+    computePlanTrainTasks: TrainTaskT[];
     computePlanTrainTasksLoading: boolean;
     computePlanTrainTasksError: string;
-    computePlanTestTasks: TestTaskType[];
+    computePlanTestTasks: TestTaskT[];
     computePlanTestTasksLoading: boolean;
     computePlanTestTasksError: string;
-    computePlanAggregateTasks: AggregateTaskType[];
+    computePlanAggregateTasks: AggregateTaskT[];
     computePlanAggregateTasksLoading: boolean;
     computePlanAggregateTasksError: string;
-    computePlanCompositeTasks: CompositeTrainTaskType[];
+    computePlanCompositeTasks: CompositeTrainTaskT[];
     computePlanCompositeTasksLoading: boolean;
     computePlanCompositeTasksError: string;
 }
@@ -80,7 +80,7 @@ export const retrieveComputePlan = createAsyncThunk<
 });
 
 export const retrieveComputePlanTrainTasks = createAsyncThunk<
-    TrainTaskType[],
+    TrainTaskT[],
     string,
     { rejectValue: string }
 >('computePlans/getTrainTasks', async (computePlanKey: string, thunkAPI) => {
@@ -92,16 +92,16 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
                 value: computePlanKey,
             },
         ];
-        const response = await TasksApi.listTrainTasks(searchFilters);
+        const response = await TasksApi.listTraintuples(searchFilters);
 
-        return response.data;
+        return response.data.map((task) => ({ ...task, type: 'traintuple' }));
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveComputePlanTestTasks = createAsyncThunk<
-    TestTaskType[],
+    TestTaskT[],
     string,
     { rejectValue: string }
 >('computePlans/getTestTasks', async (computePlanKey: string, thunkAPI) => {
@@ -113,16 +113,16 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
                 value: computePlanKey,
             },
         ];
-        const response = await TasksApi.listTestTasks(searchFilters);
+        const response = await TasksApi.listTesttuples(searchFilters);
 
-        return response.data;
+        return response.data.map((task) => ({ ...task, type: 'testtuple' }));
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveComputePlanAggregateTasks = createAsyncThunk<
-    AggregateTaskType[],
+    AggregateTaskT[],
     string,
     { rejectValue: string }
 >(
@@ -136,9 +136,12 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
                     value: computePlanKey,
                 },
             ];
-            const response = await TasksApi.listAggregateTasks(searchFilters);
+            const response = await TasksApi.listAggregatetuples(searchFilters);
 
-            return response.data;
+            return response.data.map((task) => ({
+                ...task,
+                type: 'aggregatetuple',
+            }));
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);
         }
@@ -146,7 +149,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanCompositeTasks = createAsyncThunk<
-    CompositeTrainTaskType[],
+    CompositeTrainTaskT[],
     string,
     { rejectValue: string }
 >(
@@ -160,9 +163,14 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
                     value: computePlanKey,
                 },
             ];
-            const response = await TasksApi.listCompositeTasks(searchFilters);
+            const response = await TasksApi.listCompositeTraintuples(
+                searchFilters
+            );
 
-            return response.data;
+            return response.data.map((task) => ({
+                ...task,
+                type: 'composite_traintuple',
+            }));
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);
         }

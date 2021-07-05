@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/react';
 import { Fonts, Spaces } from '@/assets/theme';
 import Status from './Status';
-import { TaskType } from '@/modules/tasks/TasksTypes';
+import { AnyTaskT } from '@/modules/tasks/TasksTypes';
 import Skeleton from '@/components/Skeleton';
 
 export const LoadingTaskSiderSection = (): JSX.Element => (
@@ -57,7 +57,7 @@ const Worker = styled.span`
 `;
 
 type TaskSiderSectionProps = {
-    task: TaskType;
+    task: AnyTaskT;
 };
 
 const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {

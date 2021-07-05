@@ -34,8 +34,8 @@ import Skeleton from '@/components/Skeleton';
 import NodeSiderElement, {
     LoadingNodeSiderSection,
 } from '@/components/NodeSiderElement';
-import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
-import { isAggregateTask } from '@/libs/tasks';
+import { AnyTaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};
@@ -129,18 +129,12 @@ const ComputePlanSider = (): JSX.Element => {
         return count;
     };
 
-    const getTasksNodes = (tasks: TaskT[]) => {
+    const getTasksNodes = (tasks: AnyTaskT[]) => {
         const nodes: Record<string, number> = {};
-        let index;
         tasks.forEach((task) => {
-            if (isAggregateTask(task)) {
-                index = task.worker;
-            } else {
-                index = task.dataset.worker;
-            }
-
-            return (nodes[index] = incrementNodeWaitingTasks(
-                nodes[index],
+            const node = getTaskWorker(task);
+            return (nodes[node] = incrementNodeWaitingTasks(
+                nodes[node],
                 task.status
             ));
         });

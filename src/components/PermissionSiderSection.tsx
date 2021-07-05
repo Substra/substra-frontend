@@ -31,15 +31,17 @@ export const LoadingPermissionSiderSection = (): JSX.Element => (
 );
 
 type PermissionSiderSectionProps = {
+    title?: string;
     permission: PermissionType;
 };
 
 const PermissionSiderSection = ({
     permission,
+    title,
 }: PermissionSiderSectionProps): JSX.Element => {
     return (
         <SiderSection>
-            <SiderSectionTitle>Permissions</SiderSectionTitle>
+            <SiderSectionTitle>{title || 'Permissions'}</SiderSectionTitle>
             {permission.public && <p>Processable by anyone.</p>}
             {!permission.public && permission.authorized_ids.length === 1 && (
                 <p>
