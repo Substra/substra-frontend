@@ -25,7 +25,7 @@ const ComputePlanSiderSection = (): JSX.Element => {
                 (task.compute_plan_key ? (
                     <Fragment>
                         <Link
-                            href={PATHS.COMPUTE_PLAN.replace(
+                            href={PATHS.COMPUTE_PLANS_DETAILS.replace(
                                 ':key',
                                 task.compute_plan_key
                             )}

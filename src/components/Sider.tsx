@@ -66,12 +66,18 @@ const ContentContainer = styled.div`
     align-items: stretch;
 `;
 
+const FooterContainer = styled.div`
+    width: 100%;
+    border-top: 1px solid ${Colors.border};
+`;
+
 interface SiderProps {
     visible: boolean;
     onCloseButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     title: React.ReactNode;
     titleType: string;
     children: React.ReactNode;
+    footer?: React.ReactNode;
 }
 
 const Sider = ({
@@ -80,6 +86,7 @@ const Sider = ({
     title,
     titleType,
     children,
+    footer,
 }: SiderProps): JSX.Element => {
     return (
         <Container
@@ -95,6 +102,7 @@ const Sider = ({
                 <Title>{title}</Title>
             </TitleContainer>
             <ContentContainer>{children}</ContentContainer>
+            {footer && <FooterContainer>{footer}</FooterContainer>}
         </Container>
     );
 };

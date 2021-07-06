@@ -6,6 +6,6 @@ dist-ssr
 
 package-lock.json
 
-.vscode
-
 *.pyc
+.idea
+.vscode

@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { useLocation } from 'wouter';
 
 import { Fonts, Spaces } from '@/assets/theme';
 import KeySiderSection from '@/components/KeySiderSection';
@@ -14,7 +15,7 @@ import {
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import {
     useAppDispatch,
     useAppSelector,
@@ -36,6 +37,7 @@ import NodeSiderElement, {
 } from '@/components/NodeSiderElement';
 import { AnyTaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
+import Button from '@/components/Button';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};
@@ -51,13 +53,23 @@ const skeletonCss = css`
     margin: ${Spaces.small} 0;
 `;
 
+const FooterSection = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: ${Spaces.medium};
+`;
+
 const ComputePlanSider = (): JSX.Element => {
     const [
         ,
         searchFilters,
         setSearchFiltersLocation,
     ] = useSearchFiltersLocation();
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
+
+    const [, setLocation] = useLocation();
+
+    const key = useKeyFromPath(PATHS.COMPUTE_PLANS_DETAILS);
 
     const visible = !!key;
 
@@ -176,6 +188,24 @@ const ComputePlanSider = (): JSX.Element => {
             }
             titleType="Compute plan details"
             title=""
+            footer={
+                computePlan && (
+                    <FooterSection>
+                        <Button
+                            fullWidth
+                            onClick={() =>
+                                setLocation(
+                                    compilePath(PATHS.COMPUTE_PLAN_DETAILS, {
+                                        key: computePlan.key,
+                                    })
+                                )
+                            }
+                        >
+                            Explore compute plan
+                        </Button>
+                    </FooterSection>
+                )
+            }
         >
             <KeySiderSection assetKey={key || ''} />
 

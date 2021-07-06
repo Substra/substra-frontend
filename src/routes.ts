@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import Algos from '@/routes/algos/Algos';
+import ComputePlans from '@/routes/computePlans/ComputePlans';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
+import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
 import Datasets from '@/routes/datasets/Datasets';
 import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
@@ -15,7 +17,9 @@ export interface IRoute {
 export const PATHS = {
     LOGIN: '/login',
     COMPUTE_PLANS: '/compute_plans',
-    COMPUTE_PLAN: '/compute_plans/:key',
+    COMPUTE_PLANS_DETAILS: '/compute_plans/:key',
+    COMPUTE_PLAN: '/compute_plan',
+    COMPUTE_PLAN_DETAILS: '/compute_plan/:key',
     DATASETS: '/datasets',
     DATASET: '/datasets/:key',
     ALGOS: '/algorithms',
@@ -34,6 +38,14 @@ export const ROUTES: { [key: string]: IRoute } = {
     COMPUTE_PLANS: {
         // the following path matches both PATHS.COMPUTE_PLANS and PATHS.COMPUTE_PLAN
         path: '/compute_plans/:key?',
+        component: ComputePlans,
+    },
+    COMPUTE_PLAN_DETAILS: {
+        path: PATHS.COMPUTE_PLAN_DETAILS,
+        component: ComputePlanDetails,
+    },
+    COMPUTE_PLAN: {
+        path: PATHS.COMPUTE_PLAN,
         component: ComputePlan,
     },
     DATASETS: {
