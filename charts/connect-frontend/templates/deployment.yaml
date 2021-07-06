@@ -28,7 +28,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ trimSuffix "/" .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default (.Chart.AppVersion | replace "+" "_")}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -47,6 +47,8 @@ spec:
           env:
             - name: API_URL
               value: {{ .Values.api.url | quote }}
+            - name: APP_VERSION
+              value: {{ .Chart.AppVersion }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+
+import argparse
+import os.path
+import sys
+from datetime import datetime
+from cilib.version import *
+from cilib.version_json import *
+from cilib.command import *
+from cilib import git
+
+
+helpMsg="This tool reads the version package.json and outputs it, with modifications depending on options"
+
+def main():
+
+    parser = argparse.ArgumentParser(description=helpMsg)
+
+    parser.add_argument(
+        "verb",
+        choices=[
+            "tag",
+            "version",
+            "url",
+        ],
+        # yes I know those are not verbs
+        default="version",
+        nargs="?",
+        help="version: produce a final version string; tag: same but it's a docker tag; url: same but it's a k8s-compliant URL (what k8s calls DNS-1123)",
+    )
+    parser.add_argument(
+        "--ref",
+        help="What git ref to operate on (if not given, a mix of HEAD and the working directory)",
+    )
+    parser.add_argument(
+        "--version", help="Use this SemVer2 string instead of parsing the version file"
+    )
+    parser.add_argument(
+        "--insert-prerelease",
+        action="append",
+        help="Insert element into the prerelease field of the version",
+        default=[],
+    )
+    parser.add_argument(
+        "--version-file",
+        default="package.json",
+        help='Path of the file to parse; if --ref is given, from the root of the repo, else a regular FS path. Defaults to "{project root}/package.json".',
+    )
+    parser.add_argument(
+        "--max-length",
+        type=int,
+        help="Max length in characters for tags and URLs; a docker tag can't be over 128, a Common Name for TLS certs 64 usually",
+    )
+    parser.add_argument(
+        "--length-fallback",
+        action="store_true",
+        help="If the produced tag or URL is too long for --max-length, instead output (prefix-)commit_id(-suffix); commit_id will be as long as possible, but an error will be returned if it is less than 7 characters",
+    )
+
+    args = parser.parse_args()
+    file_system.set_wd_to_project_root()
+
+    if args.version:
+        args.version = parse_semver(args.version)
+    else:
+        if args.ref:
+            args.version = get_version_from_ref(args.ref, args.version_file)
+        else:
+            args.version = get_version_from_path(args.version_file)
+
+    if args.ref:
+        short_commit_id = git.short_id(args.ref)
+    else:
+        short_commit_id = git.short_id()
+    
+    to_insert = {}
+    if args.insert_prerelease:
+        to_insert["prerelease"] = []
+        for i in reversed(args.insert_prerelease):
+            to_insert["prerelease"].append({"prepend": i})
+        
+    to_insert.setdefault("buildmetadata", []).append({"append": f"{short_commit_id}"})
+
+    final_version = produce_version(args.version, to_insert)
+
+    if args.verb == "version":
+        print(final_version.semver)
+    if args.verb == "tag":
+        print(
+            produce_tag(
+                final_version,
+                max_length=args.max_length,
+                length_fallback=args.length_fallback,
+            )
+        )
+    if args.verb == "url":
+        print(
+            produce_url(
+                final_version,
+                max_length=args.max_length,
+                length_fallback=args.length_fallback,
+            )
+        )
+
+
+if __name__ == "__main__":
+    main()

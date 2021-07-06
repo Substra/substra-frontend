@@ -7,3 +7,5 @@ dist-ssr
 package-lock.json
 
 .vscode
+
+*.pyc

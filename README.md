@@ -35,3 +35,11 @@ When logging in, the backend will set 3 cookies:
 In order to fetch data, you then have to send back both `refresh` and `signature` as cookies (automatically handled by the browser) and `header.payload` in an `Authorization` header with the `JWT` prefix.
 
 E.g. `Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIxNjY5MDQ3LCJqdGkiOiJiYzAzNjU1NTJkNzc0ZmJjYTBmYmUwOTQ5Y2QwMGVhZiIsInVzZXJfaWQiOjF9`
+
+## CI
+
+The CI will build all commits on the `main` branch as "unstable" builds, with the version from `package.json`.
+Builds are a Docker image + a Helm chart.
+
+Tagged commits will be made into full release (not marked as "unstable" and with a GitHub release).
+Typically, `git tag 1.2.3 && git push origin 1.2.3` should be enough.
