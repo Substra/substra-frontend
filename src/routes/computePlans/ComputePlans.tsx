@@ -14,22 +14,18 @@ import {
 import Navigation from '@/components/layout/navigation/Navigation';
 import PageLayout from '@/components/layout/PageLayout';
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import {
-    EmptyTr,
-    FirstTabTh,
-    Table,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-} from '@/components/Table';
+import { EmptyTr, Table, Tbody, Td, Th, Thead, Tr } from '@/components/Table';
 import PageTitle from '@/components/PageTitle';
 import ComputePlanSider from './components/ComputePlansSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
 import SearchBar from '@/components/Searchbar';
 import StatusTableFilter from '@/components/StatusTableFilter';
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    CreationDateTh,
+} from '@/components/CreationDateTableCells';
 
 const tagColWidth = css`
     width: 200px;
@@ -95,7 +91,8 @@ const ComputePlans = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
-                                <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
+                                <CreationDateTh />
+                                <Th css={tagColWidth}>Tag</Th>
                                 <Th css={statusColWidth}>
                                     Status
                                     <StatusTableFilter
@@ -119,7 +116,8 @@ const ComputePlans = (): JSX.Element => {
             <Table>
                 <Thead>
                     <Tr>
-                        <FirstTabTh css={tagColWidth}>Tag</FirstTabTh>
+                        <CreationDateTh />
+                        <Th css={tagColWidth}>Tag</Th>
                         <Th css={statusColWidth}>Status</Th>
                         <Th css={taskColWidth}>Tasks</Th>
                     </Tr>
@@ -131,6 +129,7 @@ const ComputePlans = (): JSX.Element => {
                     {computePlansLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
+                                  <CreationDateSkeletonTd />
                                   <Td>
                                       <Skeleton width={150} height={12} />
                                   </Td>
@@ -158,6 +157,9 @@ const ComputePlans = (): JSX.Element => {
                                       )
                                   }
                               >
+                                  <CreationDateTd
+                                      creationDate={computePlan.creation_date}
+                                  />
                                   <Td>{computePlan.tag}</Td>
                                   <Td>
                                       <Status status={computePlan.status} />

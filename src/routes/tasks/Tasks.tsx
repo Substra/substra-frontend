@@ -31,6 +31,11 @@ import Status from '@/components/Status';
 import TaskSider from './components/TaskSider';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 import StatusTableFilter from '@/components/StatusTableFilter';
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    creationDateWidth,
+} from '@/components/CreationDateTableCells';
 import TypeTableFilter from './components/TypeTableFilter';
 
 const typeColWidth = css`
@@ -118,6 +123,7 @@ const Tasks = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
+                                <Th css={creationDateWidth}>Creation date</Th>
                                 <Th css={typeColWidth}>
                                     Type
                                     <TypeTableFilter
@@ -166,6 +172,7 @@ const Tasks = (): JSX.Element => {
                     `}
                 >
                     <Tr>
+                        <Th css={creationDateWidth}>Creation date</Th>
                         <Th css={typeColWidth}>Type</Th>
                         <Th css={statusColWidth}>Current status</Th>
                         <Th css={ownerColWidth}>Worker</Th>
@@ -179,6 +186,7 @@ const Tasks = (): JSX.Element => {
                     {tasksLoading &&
                         [1, 2, 3].map((index) => (
                             <Tr key={index}>
+                                <CreationDateSkeletonTd />
                                 <Td>
                                     <Skeleton width={100} height={12} />
                                 </Td>
@@ -219,6 +227,9 @@ const Tasks = (): JSX.Element => {
                                     )
                                 }
                             >
+                                <CreationDateTd
+                                    creationDate={task.creation_date}
+                                />
                                 <Td>{typeLabels[task.type]}</Td>
                                 <Td>
                                     <Status status={task.status} />

@@ -14,6 +14,7 @@ export interface APIAlgoType {
         storage_address: string;
     };
     metadata: { [key: string]: string };
+    creation_date: string;
 }
 
 export interface AlgoType extends APIAlgoType {

@@ -14,6 +14,7 @@ export interface DatasetStubType {
         checksum: string;
         storage_address: string;
     };
+    creation_date: string;
 }
 
 // DatasetType is returned when fetching a single dataset

@@ -20,4 +20,5 @@ export interface MetricType {
         worker: string;
     };
     metadata: { [key: string]: string };
+    creation_date: string;
 }

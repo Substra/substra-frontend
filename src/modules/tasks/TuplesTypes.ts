@@ -72,6 +72,7 @@ interface OutModel {
 }
 
 interface BaseTupleT {
+    creation_date: string;
     algo: TraintupleAlgo;
     compute_plan_key: string;
     creator: string;

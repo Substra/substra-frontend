@@ -33,6 +33,11 @@ import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
 import SearchBar from '@/components/Searchbar';
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    creationDateWidth,
+} from '@/components/CreationDateTableCells';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -75,6 +80,7 @@ const Metrics = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
+                                <Th css={creationDateWidth}>Creation date</Th>
                                 <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
@@ -102,6 +108,7 @@ const Metrics = (): JSX.Element => {
                     `}
                 >
                     <Tr>
+                        <Th css={creationDateWidth}>Creation date</Th>
                         <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
@@ -114,6 +121,7 @@ const Metrics = (): JSX.Element => {
                     {metricsLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
+                                  <CreationDateSkeletonTd />
                                   <Td>
                                       <Skeleton width={500} height={12} />
                                   </Td>
@@ -138,6 +146,9 @@ const Metrics = (): JSX.Element => {
                                       )
                                   }
                               >
+                                  <CreationDateTd
+                                      creationDate={metric.creation_date}
+                                  />
                                   <Td>{metric.name}</Td>
                                   <Td>{metric.owner}</Td>
                                   <Td>

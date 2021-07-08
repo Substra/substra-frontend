@@ -1,4 +1,5 @@
 export interface ComputePlanType {
+    creation_date: string;
     clean_models: boolean;
     done_count: number;
     key: string;

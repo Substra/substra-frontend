@@ -17,7 +17,6 @@ import {
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     EmptyTr,
-    FirstTabTh,
     nameColWidth,
     ownerColWidth,
     permissionsColWidth,
@@ -34,6 +33,11 @@ import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
 import SearchBar from '@/components/Searchbar';
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    CreationDateTh,
+} from '@/components/CreationDateTableCells';
 
 const typeColWidth = css`
     width: 110px;
@@ -89,7 +93,8 @@ const Algos = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
-                                <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                                <CreationDateTh />
+                                <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
                                     <OwnerTableFilter
@@ -123,7 +128,8 @@ const Algos = (): JSX.Element => {
                     `}
                 >
                     <Tr>
-                        <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                        <CreationDateTh />
+                        <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                         <Th css={typeColWidth}>Type</Th>
@@ -136,6 +142,7 @@ const Algos = (): JSX.Element => {
                     {algosLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
+                                  <CreationDateSkeletonTd />
                                   <Td>
                                       <Skeleton width={500} height={12} />
                                   </Td>
@@ -163,6 +170,9 @@ const Algos = (): JSX.Element => {
                                       )
                                   }
                               >
+                                  <CreationDateTd
+                                      creationDate={algo.creation_date}
+                                  />
                                   <Td>{algo.name}</Td>
                                   <Td>{algo.owner}</Td>
                                   <Td>

@@ -15,7 +15,6 @@ import {
 import PermissionCellContent from '@/components/PermissionCellContent';
 import {
     EmptyTr,
-    FirstTabTh,
     nameColWidth,
     ownerColWidth,
     permissionsColWidth,
@@ -32,6 +31,11 @@ import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import SearchBar from '@/components/Searchbar';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    CreationDateTh,
+} from '@/components/CreationDateTableCells';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -71,7 +75,8 @@ const Datasets = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
-                                <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                                <CreationDateTh />
+                                <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
                                     <OwnerTableFilter assets={['dataset']} />
@@ -98,7 +103,8 @@ const Datasets = (): JSX.Element => {
                     `}
                 >
                     <Tr>
-                        <FirstTabTh css={nameColWidth}>Name</FirstTabTh>
+                        <CreationDateTh />
+                        <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
@@ -110,6 +116,7 @@ const Datasets = (): JSX.Element => {
                     {datasetsLoading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
+                                  <CreationDateSkeletonTd />
                                   <Td>
                                       <Skeleton width={500} height={12} />
                                   </Td>
@@ -134,6 +141,9 @@ const Datasets = (): JSX.Element => {
                                       )
                                   }
                               >
+                                  <CreationDateTd
+                                      creationDate={dataset.creation_date}
+                                  />
                                   <Td>{dataset.name}</Td>
                                   <Td>{dataset.owner}</Td>
                                   <Td>
