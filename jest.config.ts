@@ -8,4 +8,5 @@ export default {
     preset: 'vite-jest',
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     testEnvironment: 'jest-environment-jsdom',
+    roots: ['src/'],
 };

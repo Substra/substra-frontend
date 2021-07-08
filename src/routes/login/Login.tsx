@@ -52,11 +52,17 @@ const Login = (): JSX.Element => {
 
         dispatch(logIn(payload))
             .then(unwrapResult)
-            .then(() => {
-                // Fetch current node name to update the page's header
-                dispatch(listNodes());
-                setLocation(nextLocation);
-            });
+            .then(
+                () => {
+                    // Fetch current node name to update the page's header
+                    dispatch(listNodes());
+                    setLocation(nextLocation);
+                },
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                () => {
+                    // do nothing if login failed
+                }
+            );
     };
 
     const error = useAppSelector((state) => state.user.error);

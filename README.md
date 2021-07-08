@@ -43,3 +43,43 @@ Builds are a Docker image + a Helm chart.
 
 Tagged commits will be made into full release (not marked as "unstable" and with a GitHub release).
 Typically, `git tag 1.2.3 && git push origin 1.2.3` should be enough.
+
+## Tests
+
+### Unit tests
+
+They are written using Jest in files ending in `.test.ts`. These files live next to the module / component they test.
+
+To run these tests:
+
+```sh
+npx vite-dev
+```
+
+or using our alias:
+
+```sh
+npm run test:unit
+```
+
+### E2E tests
+
+They are written using Cypress. All E2E tests are under `cypress/integration/` and end in `.spec.js`.
+
+To run these tests:
+
+```sh
+npx cypress run
+```
+
+or using our alias:
+
+```sh
+npm run test:e2e
+```
+
+To run these tests in dev mode:
+
+```sh
+npx cypress open
+```

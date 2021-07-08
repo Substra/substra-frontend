@@ -1,0 +1,9 @@
+{
+    "baseUrl": "http://substra-frontend.node-1.com:3000",
+    "env": {
+        "USERNAME": "node-1",
+        "PASSWORD": "p@$swr0d44",
+        "BACKEND_API_URL": "http://substra-backend.node-1.com"
+    },
+    "video": false
+}

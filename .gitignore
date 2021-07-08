@@ -9,3 +9,5 @@ package-lock.json
 *.pyc
 .idea
 .vscode
+
+cypress/videos/
