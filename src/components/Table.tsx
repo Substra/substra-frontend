@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx jsx */
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';

@@ -51,6 +51,7 @@ jobs:
             - run: python3 -m pip install -r ci/cilib/requirements.txt
             - run: sudo snap install helm --classic && helm plugin install https://github.com/chartmuseum/helm-push
 
+            - run: helm lint charts/connect-frontend
             - run: printf 'HELM_VERSION=%s\n' "$(ci/version --insert-prerelease unstable)" >> $GITHUB_ENV
             - run: |
                   helm package charts/connect-frontend \

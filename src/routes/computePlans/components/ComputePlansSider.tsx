@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx jsx */
 import React, { useEffect, Fragment, useMemo } from 'react';
 import styled from '@emotion/styled';

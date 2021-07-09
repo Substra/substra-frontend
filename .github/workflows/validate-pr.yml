@@ -7,8 +7,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-              with:
-                  ref: ${{ github.head_ref }}
             - uses: actions/setup-node@v2
               with:
                   node-version: '14.17.1'
@@ -24,3 +22,12 @@ jobs:
               run: npx tsc
             - name: Unit tests
               run: npm run test:unit
+            - name: Helm
+              run: sudo snap install helm --classic && helm lint charts/connect-frontend
+
+    build: #separate for parallelisation
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Docker
+              run: DOCKER_BUILDKIT=1 docker build .
