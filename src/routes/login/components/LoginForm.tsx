@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';

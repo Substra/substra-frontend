@@ -1,14 +1,14 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { RiFilter2Line, RiFilter2Fill } from 'react-icons/ri';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
 import { Colors, Spaces } from '@/assets/theme';
-import CloseButton from './CloseButton';
-import Checkbox from './Checkbox';
+import CloseButton from '@/components/CloseButton';
+import Checkbox from '@/components/Checkbox';
 
 const Container = styled.div`
     position: relative;

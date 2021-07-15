@@ -1,7 +1,5 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TestTaskT } from '@/modules/tasks/TasksTypes';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import { Link } from 'wouter';

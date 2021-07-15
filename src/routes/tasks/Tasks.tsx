@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -27,7 +27,7 @@ import {
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
-import SearchBar from '@/components/Searchbar';
+import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import TaskSider from './components/TaskSider';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';

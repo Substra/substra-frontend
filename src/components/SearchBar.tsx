@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -11,7 +11,7 @@ import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
 import Select from '@/components/Select';
 import { SearchFilterType } from '@/libs/searchFilter';
 import { AssetType } from '@/modules/common/CommonTypes';
-import CloseButton from './CloseButton';
+import CloseButton from '@/components/CloseButton';
 
 const selectWidth = css`
     width: 180px;

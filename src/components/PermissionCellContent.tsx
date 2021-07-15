@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { PermissionType } from '@/modules/common/CommonTypes';
 
 type PermissionCellContentProps = {

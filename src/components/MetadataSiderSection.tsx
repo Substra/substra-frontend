@@ -1,7 +1,5 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -11,9 +9,9 @@ import {
     SiderSectionTitle,
     SimpleSiderSection,
 } from '@/components/SiderSection';
-import Skeleton from './Skeleton';
+import Skeleton from '@/components/Skeleton';
 import { Spaces } from '@/assets/theme';
-import ExpandableSiderSection from './ExpandableSiderSection';
+import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 
 export const LoadingMetadataSiderSection = (): JSX.Element => (
     <SiderSection>

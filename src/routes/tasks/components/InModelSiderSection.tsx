@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { Link } from 'wouter';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';

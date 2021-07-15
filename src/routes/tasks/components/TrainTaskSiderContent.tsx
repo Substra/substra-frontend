@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { TrainTaskT } from '@/modules/tasks/TasksTypes';
 import AlgoSiderSection from './AlgoSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';

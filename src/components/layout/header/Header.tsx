@@ -6,7 +6,7 @@ import { useAppSelector } from '@/hooks';
 import { Colors, Spaces, zIndexes } from '@/assets/theme';
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
 
-import SubMenu from './SubMenu';
+import SubMenu from '@/components/layout/header/SubMenu';
 
 type HeaderProps = {
     title: string;

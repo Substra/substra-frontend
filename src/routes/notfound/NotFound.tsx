@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
 import { H1 } from '@/components/Typography';

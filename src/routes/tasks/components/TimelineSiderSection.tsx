@@ -1,4 +1,3 @@
-import React from 'react';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 const TimelineSiderSection = (): JSX.Element => {

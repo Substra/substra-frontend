@@ -1,6 +1,5 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
 import { RiArrowRightLine } from 'react-icons/ri';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

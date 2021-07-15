@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -33,7 +33,7 @@ import { compilePath, PATHS, useKeyFromPath } from '@/routes';
 import PageTitle from '@/components/PageTitle';
 import Skeleton from '@/components/Skeleton';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import SearchBar from '@/components/Searchbar';
+import SearchBar from '@/components/SearchBar';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,

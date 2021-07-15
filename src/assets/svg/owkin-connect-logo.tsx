@@ -1,5 +1,3 @@
-import React from 'react';
-
 type OwkinConnectLogoProps = {
     width: number;
     height: number;

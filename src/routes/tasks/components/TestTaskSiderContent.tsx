@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { TestTaskT } from '@/modules/tasks/TasksTypes';
 import TimelineSiderSection from './TimelineSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';

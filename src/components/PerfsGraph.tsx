@@ -1,4 +1,3 @@
-import React from 'react';
 import { Colors } from '@/assets/theme';
 
 import { Line } from 'react-chartjs-2';

@@ -2,13 +2,15 @@ import jest from 'jest-mock';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useSearchFiltersEffect from './useSearchFiltersEffect';
-import { EffectCallback } from 'react';
 
 test('triggers effect when non searchFilter deps update', () => {
     const dummyEffect = jest.fn();
     const { rerender } = renderHook(
         ({ dummyDeps }) =>
-            useSearchFiltersEffect(dummyEffect as EffectCallback, dummyDeps),
+            useSearchFiltersEffect(
+                dummyEffect as React.EffectCallback,
+                dummyDeps
+            ),
         {
             initialProps: {
                 dummyDeps: [
@@ -45,7 +47,9 @@ test("doesn't trigger effect when the searchFilters set is empty", () => {
     const dummyEffect = jest.fn();
     const { rerender } = renderHook(
         ({ dummySF }) =>
-            useSearchFiltersEffect(dummyEffect as EffectCallback, [dummySF]),
+            useSearchFiltersEffect(dummyEffect as React.EffectCallback, [
+                dummySF,
+            ]),
         { initialProps: { dummySF: [] } }
     );
     expect(dummyEffect).toBeCalledTimes(1);
@@ -58,7 +62,9 @@ test("doesn't trigger effect when the searchFilters set is the same", () => {
     const dummyEffect = jest.fn();
     const { rerender } = renderHook(
         ({ dummySF }) =>
-            useSearchFiltersEffect(dummyEffect as EffectCallback, [dummySF]),
+            useSearchFiltersEffect(dummyEffect as React.EffectCallback, [
+                dummySF,
+            ]),
         {
             initialProps: {
                 dummySF: [
@@ -115,7 +121,9 @@ test('triggers effect when searchFilters change', () => {
     const dummyEffect = jest.fn();
     const { rerender } = renderHook(
         ({ dummySF }) =>
-            useSearchFiltersEffect(dummyEffect as EffectCallback, [dummySF]),
+            useSearchFiltersEffect(dummyEffect as React.EffectCallback, [
+                dummySF,
+            ]),
         {
             initialProps: {
                 dummySF: [

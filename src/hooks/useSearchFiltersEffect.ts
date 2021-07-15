@@ -1,4 +1,3 @@
-import { DependencyList, EffectCallback } from 'react';
 import { useCustomCompareEffect } from 'use-custom-compare';
 import {
     areSearchFiltersListsEqual,
@@ -6,8 +5,8 @@ import {
 } from '@/libs/searchFilter';
 
 const customCompare = (
-    prevDeps: DependencyList,
-    nextDeps: DependencyList
+    prevDeps: React.DependencyList,
+    nextDeps: React.DependencyList
 ): boolean => {
     return prevDeps.every((prevDep, index) => {
         const nextDep = nextDeps[index];
@@ -19,8 +18,8 @@ const customCompare = (
 };
 
 const useSearchFiltersEffect = (
-    effect: EffectCallback,
-    deps: DependencyList
+    effect: React.EffectCallback,
+    deps: React.DependencyList
 ): void => {
     useCustomCompareEffect(effect, deps, customCompare);
 };

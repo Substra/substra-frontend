@@ -1,11 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
 import { FirstTabTh, Td } from '@/components/Table';
-import Skeleton from './Skeleton';
+import Skeleton from '@/components/Skeleton';
 
 export const creationDateWidth = css`
     width: 190px;

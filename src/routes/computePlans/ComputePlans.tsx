@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -20,7 +20,7 @@ import PageTitle from '@/components/PageTitle';
 import ComputePlanSider from './components/ComputePlansSider';
 import Status from '@/components/Status';
 import Skeleton from '@/components/Skeleton';
-import SearchBar from '@/components/Searchbar';
+import SearchBar from '@/components/SearchBar';
 import StatusTableFilter from '@/components/StatusTableFilter';
 import {
     CreationDateSkeletonTd,

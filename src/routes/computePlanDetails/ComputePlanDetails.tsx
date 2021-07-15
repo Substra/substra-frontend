@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import styled from '@emotion/styled';
 

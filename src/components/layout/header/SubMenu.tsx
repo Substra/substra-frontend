@@ -1,6 +1,5 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, { MouseEvent } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -94,7 +93,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
     };
 
     // prevent clicks in the component from bubbling up
-    const stopPropagation = (e: MouseEvent) => e.stopPropagation();
+    const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
     return (
         <Container

@@ -1,11 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
 import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import { Fonts, Spaces } from '@/assets/theme';
-import Status from './Status';
+import Status from '@/components/Status';
 import { AnyTaskT } from '@/modules/tasks/TasksTypes';
 import Skeleton from '@/components/Skeleton';
 

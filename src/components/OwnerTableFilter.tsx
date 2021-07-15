@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useAppSelector, useSearchFiltersLocation } from '@/hooks';
 import TableFilter from '@/components/TableFilter';
 import { SearchFilterType } from '@/libs/searchFilter';
