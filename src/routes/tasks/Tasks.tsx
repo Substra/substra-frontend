@@ -212,7 +212,7 @@ const Tasks = (): JSX.Element => {
                             </Tr>
                         ))}
                     {!tasksLoading && tasks.length === 0 && (
-                        <EmptyTr nbColumns={7} />
+                        <EmptyTr nbColumns={8} />
                     )}
                     {!tasksLoading &&
                         tasks.map((task) => (

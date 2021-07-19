@@ -112,7 +112,7 @@ const Datasets = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {!datasetsLoading && datasets.length === 0 && (
-                        <EmptyTr nbColumns={3} />
+                        <EmptyTr nbColumns={4} />
                     )}
                     {datasetsLoading
                         ? [1, 2, 3].map((index) => (

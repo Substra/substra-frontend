@@ -138,7 +138,7 @@ const Algos = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {!algosLoading && algos.length === 0 && (
-                        <EmptyTr nbColumns={4} />
+                        <EmptyTr nbColumns={5} />
                     )}
                     {algosLoading
                         ? [1, 2, 3].map((index) => (

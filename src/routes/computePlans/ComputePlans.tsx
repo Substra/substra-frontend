@@ -125,7 +125,7 @@ const ComputePlans = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {!computePlansLoading && computePlans.length === 0 && (
-                        <EmptyTr nbColumns={3} />
+                        <EmptyTr nbColumns={4} />
                     )}
                     {computePlansLoading
                         ? [1, 2, 3].map((index) => (
