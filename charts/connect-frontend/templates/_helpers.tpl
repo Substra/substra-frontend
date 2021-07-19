@@ -37,7 +37,7 @@ Common labels
 helm.sh/chart: {{ include "connect-frontend.chart" . }}
 {{ include "connect-frontend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | default .Chart.Version | replace "+" "_" | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
