@@ -225,7 +225,9 @@ const ComputePlanSider = (): JSX.Element => {
                 )}
                 {!computePlanLoading && computePlan && (
                     <Fragment>
-                        <PercentageNumber>{percentage}%</PercentageNumber>
+                        <PercentageNumber>
+                            {isNaN(percentage) ? 'N/A' : `${percentage}%`}
+                        </PercentageNumber>
                         <ProgressBar percentage={percentage} />
                     </Fragment>
                 )}
