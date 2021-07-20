@@ -93,6 +93,8 @@ Builds are a Docker image + a Helm chart.
 Tagged commits will be made into full release (not marked as "unstable" and with a GitHub release).
 Typically, `git tag 1.2.3 && git push origin 1.2.3` should be enough.
 
+[More info](ci/readme.md)
+
 ## Tests
 
 ### Unit tests

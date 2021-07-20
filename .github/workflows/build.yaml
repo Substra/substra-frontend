@@ -20,8 +20,6 @@ on:
 jobs:
     build:
         name: Build Docker image
-        outputs:
-            version: ${{ steps.set_version.outputs.version }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -30,9 +28,6 @@ jobs:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
-            - run: printf 'VERSION=%s\n' "$(ci/version --insert-prerelease unstable)" >> $GITHUB_ENV
-            - id: set_version
-              run: printf "::set-output name=version::%s" '${{env.VERSION}}'
             - run: printf 'IMAGE_FULL_TAG=%s/%s/connect-frontend:%s\n' $GCP_DOCKER_SERVER $GCP_PROJECT "$(ci/version tag)" >> $GITHUB_ENV
 
             - run: DOCKER_BUILDKIT=1 docker build . -t '${{env.IMAGE_FULL_TAG}}'
@@ -52,11 +47,12 @@ jobs:
             - run: sudo snap install helm --classic && helm plugin install https://github.com/chartmuseum/helm-push
 
             - run: helm lint charts/connect-frontend
+            - run: printf 'VERSION=%s\n' "$(ci/version)" >> $GITHUB_ENV
             - run: printf 'HELM_VERSION=%s\n' "$(ci/version --insert-prerelease unstable)" >> $GITHUB_ENV
             - run: |
                   helm package charts/connect-frontend \
                   --version '${{env.HELM_VERSION}}' \
-                  --app-version '${{needs.build.outputs.version}}'
+                  --app-version '${{env.VERSION}}'
             - uses: actions/upload-artifact@v2
               with:
                   name: connect-frontend-${{ env.HELM_VERSION }}.tgz
