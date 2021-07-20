@@ -1,12 +1,14 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import { RiCheckLine, RiCloseLine, RiLoader4Line } from 'react-icons/ri';
+
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
-import { RiCheckLine, RiCloseLine, RiLoader4Line } from 'react-icons/ri';
 
 interface StatusProps {
     status: string;

@@ -1,13 +1,16 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
-import { RiArrowRightLine } from 'react-icons/ri';
-import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { RiArrowRightLine } from 'react-icons/ri';
+
+import { useExpandedSection } from '@/hooks';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+
 import { Colors, Fonts, Spaces } from '@/assets/theme';
-import { useExpandedSection } from '@/hooks';
 
 const CroppedContent = styled.div`
     max-height: 150px;

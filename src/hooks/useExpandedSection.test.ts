@@ -1,8 +1,7 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-
 import { StoreProvider } from '@/store';
 
 import useExpandedSection from './useExpandedSection';
+import { renderHook, act } from '@testing-library/react-hooks';
 
 test('useExpandedSection has one global state', () => {
     const { result: resultA } = renderHook(() => useExpandedSection('a'), {

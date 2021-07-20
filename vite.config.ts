@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
+import { version } from './package.json';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import path from 'path';
+import { defineConfig } from 'vite';
 import reactSvgPlugin from 'vite-plugin-react-svg';
 import reactJsx from 'vite-react-jsx';
-import { version } from './package.json';
-import path from 'path';
 
 // TODO: inject this env variable automatically at build
 const GIT_COMMIT = process.env['GIT_COMMIT'];

@@ -1,9 +1,11 @@
 import { Link } from 'wouter';
 
 import { TestTaskT } from '@/modules/tasks/TasksTypes';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import { compilePath, PATHS } from '@/routes';
 import { TesttupleTraintupleType } from '@/modules/tasks/TuplesTypes';
+
+import { compilePath, PATHS } from '@/routes';
+
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TraintupleSiderSectionProps {
     task: TestTaskT;

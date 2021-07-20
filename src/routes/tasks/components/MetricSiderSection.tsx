@@ -1,7 +1,10 @@
-import { TestTaskT } from '@/modules/tasks/TasksTypes';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import { Link } from 'wouter';
+
+import { TestTaskT } from '@/modules/tasks/TasksTypes';
+
 import { compilePath, PATHS } from '@/routes';
+
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TrainTaskSiderContentProps {
     task: TestTaskT;

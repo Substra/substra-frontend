@@ -1,11 +1,15 @@
 import { Fragment } from 'react';
-import { Link } from 'wouter';
+
 import styled from '@emotion/styled';
+import { Link } from 'wouter';
+
+import { useAppSelector } from '@/hooks';
+
+import { PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
-import { PATHS } from '@/routes';
-import { useAppSelector } from '@/hooks';
+
 import { Spaces } from '@/assets/theme';
 
 const Rank = styled.div`

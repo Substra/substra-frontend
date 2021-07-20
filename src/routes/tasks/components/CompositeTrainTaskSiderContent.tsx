@@ -1,10 +1,13 @@
 import { Fragment } from 'react';
-import { CompositeTrainTaskT } from '@/modules/tasks/TasksTypes';
+
 import AlgoSiderSection from './AlgoSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
-import PermissionSiderSection from '@/components/PermissionSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
 import InModelSiderSection from './InModelSiderSection';
+import TimelineSiderSection from './TimelineSiderSection';
+
+import { CompositeTrainTaskT } from '@/modules/tasks/TasksTypes';
+
+import PermissionSiderSection from '@/components/PermissionSiderSection';
 
 interface CompositeTrainTaskSiderContentProps {
     task: CompositeTrainTaskT;

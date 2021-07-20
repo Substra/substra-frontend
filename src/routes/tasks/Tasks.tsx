@@ -1,19 +1,36 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { Fragment } from 'react';
+
+import TaskSider from './components/TaskSider';
+import TypeTableFilter from './components/TypeTableFilter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
-import { AnyTaskT, TaskType } from '@/modules/tasks/TasksTypes';
 import { listTasks } from '@/modules/tasks/TasksSlice';
-import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
+import { AnyTaskT, TaskType } from '@/modules/tasks/TasksTypes';
+import { getTaskWorker } from '@/modules/tasks/TasksUtils';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    creationDateWidth,
+} from '@/components/CreationDateTableCells';
+import PageTitle from '@/components/PageTitle';
+import SearchBar from '@/components/SearchBar';
+import Skeleton from '@/components/Skeleton';
+import Status from '@/components/Status';
+import StatusTableFilter from '@/components/StatusTableFilter';
 import {
     EmptyTr,
     ownerColWidth,
@@ -24,20 +41,8 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import PageTitle from '@/components/PageTitle';
-import Skeleton from '@/components/Skeleton';
-import SearchBar from '@/components/SearchBar';
-import Status from '@/components/Status';
-import TaskSider from './components/TaskSider';
-import { getTaskWorker } from '@/modules/tasks/TasksUtils';
-import StatusTableFilter from '@/components/StatusTableFilter';
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-    creationDateWidth,
-} from '@/components/CreationDateTableCells';
-import TypeTableFilter from './components/TypeTableFilter';
+import PageLayout from '@/components/layout/PageLayout';
+import Navigation from '@/components/layout/navigation/Navigation';
 
 const typeColWidth = css`
     width: 120px;

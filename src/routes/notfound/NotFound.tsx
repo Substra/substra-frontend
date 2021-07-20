@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
-import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
-import { H1 } from '@/components/Typography';
-import { useAppSelector } from '@/hooks';
-import { PATHS } from '@/routes';
-import { Spaces } from '@/assets/theme';
 import { Link } from 'wouter';
+
+import { useAppSelector } from '@/hooks';
+
+import { PATHS } from '@/routes';
+
+import { H1 } from '@/components/Typography';
+
+import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
+import { Spaces } from '@/assets/theme';
 
 const Container = styled.div`
     // center in the viewport and not just in the container

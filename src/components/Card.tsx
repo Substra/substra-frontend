@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+
 import { Colors } from '@/assets/theme';
 
 const Card = styled.div`

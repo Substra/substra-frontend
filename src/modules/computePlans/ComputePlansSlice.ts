@@ -1,7 +1,7 @@
+import ComputePlansApi from './ComputePlansApi';
+import { ComputePlanType } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { ComputePlanType } from './ComputePlansTypes';
-import ComputePlansApi from './ComputePlansApi';
 import TasksApi from '@/modules/tasks/TasksApi';
 import {
     TestTaskT,
@@ -9,6 +9,7 @@ import {
     CompositeTrainTaskT,
     AggregateTaskT,
 } from '@/modules/tasks/TasksTypes';
+
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface ComputePlansState {

@@ -1,10 +1,13 @@
 import { Fragment } from 'react';
-import { TrainTaskT } from '@/modules/tasks/TasksTypes';
+
 import AlgoSiderSection from './AlgoSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
-import PermissionSiderSection from '@/components/PermissionSiderSection';
-import InModelsSiderSection from './InModelsSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
+import InModelsSiderSection from './InModelsSiderSection';
+import TimelineSiderSection from './TimelineSiderSection';
+
+import { TrainTaskT } from '@/modules/tasks/TasksTypes';
+
+import PermissionSiderSection from '@/components/PermissionSiderSection';
 
 interface TrainTaskSiderContentProps {
     task: TrainTaskT;

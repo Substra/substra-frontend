@@ -1,9 +1,8 @@
+import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { AxiosPromise } from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import API, { getApiOptions } from '@/libs/request';
-
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/data_manager/',

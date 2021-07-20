@@ -1,6 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-
 import useSearchFiltersLocation from './useSearchFiltersLocation';
+import { renderHook, act } from '@testing-library/react-hooks';
 
 test('can update only location', () => {
     const { result } = renderHook(() => useSearchFiltersLocation());

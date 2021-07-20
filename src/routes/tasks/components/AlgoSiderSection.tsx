@@ -1,11 +1,14 @@
+import { Link } from 'wouter';
+
 import {
     AggregateTaskT,
     CompositeTrainTaskT,
     TrainTaskT,
 } from '@/modules/tasks/TasksTypes';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import { Link } from 'wouter';
+
 import { compilePath, PATHS } from '@/routes';
+
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TrainTaskSiderContentProps {
     task: TrainTaskT | CompositeTrainTaskT | AggregateTaskT;

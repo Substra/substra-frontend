@@ -1,11 +1,10 @@
+import TasksApi from './TasksApi';
+import { AnyTaskT, TaskType } from './TasksTypes';
+import { AnyTupleT } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosPromise, AxiosResponse } from 'axios';
 
 import { SearchFilterType } from '@/libs/searchFilter';
-
-import { AnyTaskT, TaskType } from './TasksTypes';
-import TasksApi from './TasksApi';
-import { AnyTupleT } from './TuplesTypes';
 
 interface TasksState {
     tasks: AnyTaskT[];

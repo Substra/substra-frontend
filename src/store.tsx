@@ -1,14 +1,14 @@
-import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 
-import userSlice from '@/modules/user/UserSlice';
-import datasetsSlice from '@/modules/datasets/DatasetsSlice';
-import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
-import nodesSlice from '@/modules/nodes/NodesSlice';
 import algosSlice from '@/modules/algos/AlgosSlice';
+import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
+import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
-import uiSlice from '@/modules/ui/UISlice';
+import nodesSlice from '@/modules/nodes/NodesSlice';
 import tasksSlice from '@/modules/tasks/TasksSlice';
+import uiSlice from '@/modules/ui/UISlice';
+import userSlice from '@/modules/user/UserSlice';
 
 const store = configureStore({
     reducer: {

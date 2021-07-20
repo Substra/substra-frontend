@@ -1,9 +1,8 @@
+import { MetricType } from './MetricsTypes';
 import { AxiosPromise } from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import API, { getApiOptions } from '@/libs/request';
-
-import { MetricType } from './MetricsTypes';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/objective/',

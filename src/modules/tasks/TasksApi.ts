@@ -1,12 +1,13 @@
-import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
-import { AxiosPromise } from 'axios';
 import {
     TraintupleT,
     CompositeTraintupleT,
     AggregatetupleT,
     TesttupleT,
 } from './TuplesTypes';
+import { AxiosPromise } from 'axios';
+
+import API, { getApiOptions } from '@/libs/request';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     AGGREGATE_LIST: '/aggregatetuple/',

@@ -1,13 +1,15 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { useState } from 'react';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import { RiCheckLine } from 'react-icons/ri';
+import styled from '@emotion/styled';
 import copy from 'copy-to-clipboard';
+import { RiCheckLine } from 'react-icons/ri';
 
 import { Colors, Spaces } from '@/assets/theme';
-import styled from '@emotion/styled';
 
 const Button = styled.button`
     position: relative;

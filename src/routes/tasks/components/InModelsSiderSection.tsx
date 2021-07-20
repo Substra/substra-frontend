@@ -1,10 +1,14 @@
 import { Fragment } from 'react';
+
 import styled from '@emotion/styled';
 import { Link } from 'wouter';
 
 import { AggregateTaskT, TrainTaskT } from '@/modules/tasks/TasksTypes';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+
 import { compilePath, PATHS } from '@/routes';
+
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+
 import { Spaces } from '@/assets/theme';
 
 const Ul = styled.ul`

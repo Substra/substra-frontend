@@ -1,9 +1,11 @@
 import { Fragment } from 'react';
-import { TestTaskT } from '@/modules/tasks/TasksTypes';
-import TimelineSiderSection from './TimelineSiderSection';
+
 import DatasetSiderSection from './DatasetSiderSection';
 import MetricSiderSection from './MetricSiderSection';
+import TimelineSiderSection from './TimelineSiderSection';
 import TraintupleSiderSection from './TraintupleSiderSection';
+
+import { TestTaskT } from '@/modules/tasks/TasksTypes';
 
 interface TrainTaskSiderContentProps {
     task: TestTaskT;

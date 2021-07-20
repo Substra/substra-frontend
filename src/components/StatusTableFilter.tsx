@@ -1,8 +1,11 @@
-import { useSearchFiltersLocation } from '@/hooks';
-import TableFilter from '@/components/TableFilter';
-import { SearchFilterType } from '@/libs/searchFilter';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
 import { AssetType } from '@/modules/common/CommonTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
+
+import { SearchFilterType } from '@/libs/searchFilter';
+
+import { useSearchFiltersLocation } from '@/hooks';
+
+import TableFilter from '@/components/TableFilter';
 
 const buildAssetFilters = (
     asset: AssetType,

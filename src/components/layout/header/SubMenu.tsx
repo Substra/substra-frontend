@@ -1,15 +1,19 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useLocation } from 'wouter';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { RiLogoutCircleRLine } from 'react-icons/ri';
+import { useLocation } from 'wouter';
 
 import { logOut } from '@/modules/user/UserSlice';
-import { PATHS } from '@/routes';
+
 import { useAppDispatch } from '@/hooks';
+
+import { PATHS } from '@/routes';
+
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const Container = styled.ul`

@@ -1,9 +1,9 @@
+import MetricsAPI from './MetricsApi';
+import { MetricType } from './MetricsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import CommonApi from '@/modules/common/CommonApi';
 
-import { MetricType } from './MetricsTypes';
-import MetricsAPI from './MetricsApi';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface MetricState {

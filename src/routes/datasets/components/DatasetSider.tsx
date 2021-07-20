@@ -1,36 +1,39 @@
 import { useEffect } from 'react';
+
+import DataSamplesTabs from './DataSamplesTabs';
+import OpenerSiderSection, {
+    LoadingOpenerSiderSection,
+} from './OpenerSiderSection';
 import { unwrapResult } from '@reduxjs/toolkit';
 
-import KeySiderSection from '@/components/KeySiderSection';
-import PermissionSiderSection, {
-    LoadingPermissionSiderSection,
-} from '@/components/PermissionSiderSection';
-import {
-    SiderSection,
-    SiderSectionTitle,
-    SimpleSiderSection,
-} from '@/components/SiderSection';
 import {
     retrieveDataset,
     retrieveDescription,
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
-import { PATHS, useKeyFromPath } from '@/routes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
-import Skeleton from '@/components/Skeleton';
+
+import { PATHS, useKeyFromPath } from '@/routes';
+
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
 } from '@/components/DescriptionSiderSection';
+import KeySiderSection from '@/components/KeySiderSection';
+import PermissionSiderSection, {
+    LoadingPermissionSiderSection,
+} from '@/components/PermissionSiderSection';
 import Sider from '@/components/Sider';
-
-import OpenerSiderSection, {
-    LoadingOpenerSiderSection,
-} from './OpenerSiderSection';
-import DataSamplesTabs from './DataSamplesTabs';
+import {
+    SiderSection,
+    SiderSectionTitle,
+    SimpleSiderSection,
+} from '@/components/SiderSection';
+import Skeleton from '@/components/Skeleton';
 
 const DatasetSider = (): JSX.Element => {
     const [

@@ -6,9 +6,12 @@ import {
     TestTaskT,
     TrainTaskT,
 } from '@/modules/tasks/TasksTypes';
+
 import { compilePath, PATHS } from '@/routes';
-import { Spaces } from '@/assets/theme';
+
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
+
+import { Spaces } from '@/assets/theme';
 
 const Ul = styled.ul`
     list-style-type: initial;

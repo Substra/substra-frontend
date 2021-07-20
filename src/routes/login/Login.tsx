@@ -1,17 +1,21 @@
 import { useEffect } from 'react';
-import { unwrapResult } from '@reduxjs/toolkit';
-import styled from '@emotion/styled';
-
-import { H1 } from '@/components/Typography';
-import LoginPageSvg from '@/assets/svg/illustrations/illustration-login-page.svg';
-import { loginPayload } from '@/modules/user/UserApi';
-import { logIn } from '@/modules/user/UserSlice';
-import { useLocation } from 'wouter';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { PATHS } from '@/routes';
-import { listNodes } from '@/modules/nodes/NodesSlice';
 
 import LoginForm from './components/LoginForm';
+import styled from '@emotion/styled';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useLocation } from 'wouter';
+
+import { listNodes } from '@/modules/nodes/NodesSlice';
+import { loginPayload } from '@/modules/user/UserApi';
+import { logIn } from '@/modules/user/UserSlice';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { PATHS } from '@/routes';
+
+import { H1 } from '@/components/Typography';
+
+import LoginPageSvg from '@/assets/svg/illustrations/illustration-login-page.svg';
 
 const LeftSideContainer = styled.div`
     width: 50%;

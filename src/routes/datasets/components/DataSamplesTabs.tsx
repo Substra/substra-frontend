@@ -1,4 +1,7 @@
 import { useState } from 'react';
+
+import DataSamplesList from './DataSamplesList';
+import styled from '@emotion/styled';
 import {
     Tabs as ReactTabs,
     TabList as ReactTabList,
@@ -7,9 +10,6 @@ import {
 } from 'react-tabs';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
-
-import DataSamplesList from './DataSamplesList';
-import styled from '@emotion/styled';
 
 const Tabs = styled(ReactTabs)`
     margin-top: ${Spaces.medium};

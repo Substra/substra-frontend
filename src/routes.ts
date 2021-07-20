@@ -1,13 +1,15 @@
 import { FC } from 'react';
+
+import { useRoute } from 'wouter';
+
 import Algos from '@/routes/algos/Algos';
-import ComputePlans from '@/routes/computePlans/ComputePlans';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
 import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
+import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Datasets from '@/routes/datasets/Datasets';
 import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
 import Tasks from '@/routes/tasks/Tasks';
-import { useRoute } from 'wouter';
 
 export interface IRoute {
     path: string;

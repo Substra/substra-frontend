@@ -1,19 +1,34 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { Fragment } from 'react';
+
+import DatasetSider from './components/DatasetSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
-import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
+import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    CreationDateTh,
+} from '@/components/CreationDateTableCells';
+import OwnerTableFilter from '@/components/OwnerTableFilter';
+import PageTitle from '@/components/PageTitle';
 import PermissionCellContent from '@/components/PermissionCellContent';
+import SearchBar from '@/components/SearchBar';
+import Skeleton from '@/components/Skeleton';
 import {
     EmptyTr,
     nameColWidth,
@@ -26,17 +41,8 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
-import DatasetSider from './components/DatasetSider';
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import PageTitle from '@/components/PageTitle';
-import Skeleton from '@/components/Skeleton';
-import SearchBar from '@/components/SearchBar';
-import OwnerTableFilter from '@/components/OwnerTableFilter';
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-    CreationDateTh,
-} from '@/components/CreationDateTableCells';
+import PageLayout from '@/components/layout/PageLayout';
+import Navigation from '@/components/layout/navigation/Navigation';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();

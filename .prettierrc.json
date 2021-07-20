@@ -2,5 +2,17 @@
     "trailingComma": "es5",
     "tabWidth": 4,
     "semi": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "importOrder": [
+        "^react$",
+        "^((?![@][/]).)*$",
+        "^@/modules(/)?(.*)$",
+        "^@/libs(/)?(.*)$",
+        "^@/hooks(/)?(.*)$",
+        "^@/routes(/)?(.*)$",
+        "^@/components(/)?(.*)$",
+        "^@/assets(/)?(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true
 }

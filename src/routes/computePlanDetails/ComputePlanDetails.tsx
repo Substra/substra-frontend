@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { unwrapResult } from '@reduxjs/toolkit';
+
 import styled from '@emotion/styled';
+import { unwrapResult } from '@reduxjs/toolkit';
 import {
     Tabs as ReactTabs,
     TabList as ReactTabList,
@@ -8,18 +9,23 @@ import {
     TabPanel,
 } from 'react-tabs';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
     retrieveComputePlan,
     retrieveComputePlanTestTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { PATHS, useKeyFromPath } from '@/routes';
-import PerfsGraph, { DataType } from '@/components/PerfsGraph';
+
 import { isEmpty } from '@/libs/utils';
-import { Colors, Fonts, Spaces } from '@/assets/theme';
-import Navigation from '@/components/layout/navigation/Navigation';
-import PageLayout from '@/components/layout/PageLayout';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { PATHS, useKeyFromPath } from '@/routes';
+
+import PerfsGraph, { DataType } from '@/components/PerfsGraph';
 import Status from '@/components/Status';
+import PageLayout from '@/components/layout/PageLayout';
+import Navigation from '@/components/layout/navigation/Navigation';
+
+import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const Container = styled.div`
     display: flex;

@@ -1,8 +1,8 @@
-import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
+import { ComputePlanType } from './ComputePlansTypes';
 import { AxiosPromise } from 'axios';
 
-import { ComputePlanType } from './ComputePlansTypes';
+import API, { getApiOptions } from '@/libs/request';
+import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/compute_plan/',

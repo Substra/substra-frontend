@@ -1,14 +1,14 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { useEffect, Fragment, useMemo } from 'react';
-import styled from '@emotion/styled';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useLocation } from 'wouter';
 
-import { Fonts, Spaces } from '@/assets/theme';
-import KeySiderSection from '@/components/KeySiderSection';
 import {
     retrieveComputePlan,
     retrieveComputePlanAggregateTasks,
@@ -16,29 +16,35 @@ import {
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { AnyTaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import { getTaskWorker } from '@/modules/tasks/TasksUtils';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import ProgressBar from '@/components/ProgressBar';
-import TaskSiderSection, {
-    LoadingTaskSiderSection,
-} from '@/components/TaskSiderSection';
+
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+
+import Button from '@/components/Button';
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
-import Sider from '@/components/Sider';
+import KeySiderSection from '@/components/KeySiderSection';
 import MetadataSiderSection, {
     LoadingMetadataSiderSection,
 } from '@/components/MetadataSiderSection';
-import Skeleton from '@/components/Skeleton';
 import NodeSiderElement, {
     LoadingNodeSiderSection,
 } from '@/components/NodeSiderElement';
-import { AnyTaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
-import { getTaskWorker } from '@/modules/tasks/TasksUtils';
-import Button from '@/components/Button';
+import ProgressBar from '@/components/ProgressBar';
+import Sider from '@/components/Sider';
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import Skeleton from '@/components/Skeleton';
+import TaskSiderSection, {
+    LoadingTaskSiderSection,
+} from '@/components/TaskSiderSection';
+
+import { Fonts, Spaces } from '@/assets/theme';
 
 const PercentageNumber = styled.div`
     font-size: ${Fonts.sizes.h2};

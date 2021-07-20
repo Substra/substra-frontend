@@ -1,22 +1,26 @@
 import { Fragment, useEffect } from 'react';
+
+import AggregateTaskSiderContent from './AggregateTaskSiderContent';
+import CompositeTrainTaskSiderContent from './CompositeTrainTaskSiderContent';
+import ComputePlanSiderSection from './ComputePlanSiderSection';
+import LoadingSiderSection from './LoadingSiderSection';
+import TestTaskSiderContent from './TestTaskSiderContent';
+import TrainTaskSiderContent from './TrainTaskSiderContent';
+
+import { retrieveTask } from '@/modules/tasks/TasksSlice';
+import { TaskType } from '@/modules/tasks/TasksTypes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
 
-import KeySiderSection from '@/components/KeySiderSection';
-import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
+
+import KeySiderSection from '@/components/KeySiderSection';
 import Sider from '@/components/Sider';
-import { TaskType } from '@/modules/tasks/TasksTypes';
-import ComputePlanSiderSection from './ComputePlanSiderSection';
-import LoadingSiderSection from './LoadingSiderSection';
-import TrainTaskSiderContent from './TrainTaskSiderContent';
 import Skeleton from '@/components/Skeleton';
-import TestTaskSiderContent from './TestTaskSiderContent';
-import CompositeTrainTaskSiderContent from './CompositeTrainTaskSiderContent';
-import AggregateTaskSiderContent from './AggregateTaskSiderContent';
 
 const titleTypes: { [key in TaskType]: string } = {
     traintuple: 'Train task',

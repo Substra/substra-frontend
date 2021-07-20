@@ -1,6 +1,7 @@
-import { Colors } from '@/assets/theme';
-import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import { Colors } from '@/assets/theme';
 
 interface SkeletonProps {
     width: number;

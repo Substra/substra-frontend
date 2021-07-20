@@ -1,7 +1,10 @@
-import { useAppSelector, useSearchFiltersLocation } from '@/hooks';
-import TableFilter from '@/components/TableFilter';
-import { SearchFilterType } from '@/libs/searchFilter';
 import { AssetType } from '@/modules/common/CommonTypes';
+
+import { SearchFilterType } from '@/libs/searchFilter';
+
+import { useAppSelector, useSearchFiltersLocation } from '@/hooks';
+
+import TableFilter from '@/components/TableFilter';
 
 interface OwnerTableFilterProps {
     assets: AssetType[];

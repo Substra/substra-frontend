@@ -1,9 +1,11 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { Fragment } from 'react';
-import { Link } from 'wouter';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import { Link } from 'wouter';
 
 import { Colors, Spaces } from '@/assets/theme';
 

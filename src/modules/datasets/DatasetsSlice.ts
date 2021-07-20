@@ -1,9 +1,9 @@
+import DatasetAPI from './DatasetsApi';
+import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import CommonApi from '@/modules/common/CommonApi';
 
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
-import DatasetAPI from './DatasetsApi';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface DatasetState {

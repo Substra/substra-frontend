@@ -1,4 +1,5 @@
 import { useCustomCompareEffect } from 'use-custom-compare';
+
 import {
     areSearchFiltersListsEqual,
     isSearchFiltersList,

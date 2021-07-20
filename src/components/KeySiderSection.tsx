@@ -1,12 +1,14 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
-import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
 
-import { Spaces } from '@/assets/theme';
 import CopyButton from '@/components/CopyButton';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+
+import { Spaces } from '@/assets/theme';
 
 const copyButtonStyles = css`
     position: absolute;

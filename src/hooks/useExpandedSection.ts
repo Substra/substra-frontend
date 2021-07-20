@@ -1,7 +1,7 @@
-import { setExpandedSection } from '@/modules/ui/UISlice';
-
 import useAppDispatch from './useAppDispatch';
 import useAppSelector from './useAppSelector';
+
+import { setExpandedSection } from '@/modules/ui/UISlice';
 
 const useExpandedSection = (
     sectionName: string

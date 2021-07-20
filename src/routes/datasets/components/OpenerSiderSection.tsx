@@ -1,4 +1,5 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -6,9 +7,10 @@ import styled from '@emotion/styled';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+import ExpandableSiderSection from '@/components/ExpandableSiderSection';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
-import ExpandableSiderSection from '@/components/ExpandableSiderSection';
+
 import { Colors, Spaces } from '@/assets/theme';
 
 const FakeOpenerContainer = styled.div`

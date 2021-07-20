@@ -1,17 +1,23 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { useState } from 'react';
-import styled from '@emotion/styled';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
 import { RiSearchLine } from 'react-icons/ri';
 
-import { Colors, Fonts, Spaces } from '@/assets/theme';
-import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
-import Select from '@/components/Select';
-import { SearchFilterType } from '@/libs/searchFilter';
 import { AssetType } from '@/modules/common/CommonTypes';
+
+import { SearchFilterType } from '@/libs/searchFilter';
+
+import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
+
 import CloseButton from '@/components/CloseButton';
+import Select from '@/components/Select';
+
+import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const selectWidth = css`
     width: 180px;

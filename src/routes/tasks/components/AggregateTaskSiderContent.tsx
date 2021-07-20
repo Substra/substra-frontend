@@ -1,9 +1,12 @@
 import { Fragment } from 'react';
-import { AggregateTaskT } from '@/modules/tasks/TasksTypes';
+
 import AlgoSiderSection from './AlgoSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
-import PermissionSiderSection from '@/components/PermissionSiderSection';
 import InModelsSiderSection from './InModelsSiderSection';
+import TimelineSiderSection from './TimelineSiderSection';
+
+import { AggregateTaskT } from '@/modules/tasks/TasksTypes';
+
+import PermissionSiderSection from '@/components/PermissionSiderSection';
 
 interface AggregateTaskSiderContentProps {
     task: AggregateTaskT;

@@ -1,32 +1,37 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
 import { Fragment } from 'react';
+
+import ComputePlanSider from './components/ComputePlansSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
-import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
+import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
-import Navigation from '@/components/layout/navigation/Navigation';
-import PageLayout from '@/components/layout/PageLayout';
+
 import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import { EmptyTr, Table, Tbody, Td, Th, Thead, Tr } from '@/components/Table';
-import PageTitle from '@/components/PageTitle';
-import ComputePlanSider from './components/ComputePlansSider';
-import Status from '@/components/Status';
-import Skeleton from '@/components/Skeleton';
-import SearchBar from '@/components/SearchBar';
-import StatusTableFilter from '@/components/StatusTableFilter';
+
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
     CreationDateTh,
 } from '@/components/CreationDateTableCells';
+import PageTitle from '@/components/PageTitle';
+import SearchBar from '@/components/SearchBar';
+import Skeleton from '@/components/Skeleton';
+import Status from '@/components/Status';
+import StatusTableFilter from '@/components/StatusTableFilter';
+import { EmptyTr, Table, Tbody, Td, Th, Thead, Tr } from '@/components/Table';
+import PageLayout from '@/components/layout/PageLayout';
+import Navigation from '@/components/layout/navigation/Navigation';
 
 const tagColWidth = css`
     width: 200px;

@@ -1,9 +1,8 @@
+import { APIAlgoType } from './AlgosTypes';
 import { AxiosPromise } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
-
-import { APIAlgoType } from './AlgosTypes';
 
 const URLS = {
     LIST_AGGREGATE: '/aggregate_algo/',

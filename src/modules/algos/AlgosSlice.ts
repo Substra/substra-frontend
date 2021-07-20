@@ -1,9 +1,9 @@
+import AlgosApi from './AlgosApi';
+import { APIAlgoType, AlgoType } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import CommonApi from '@/modules/common/CommonApi';
 
-import { APIAlgoType, AlgoType } from './AlgosTypes';
-import AlgosApi from './AlgosApi';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface AlgoState {

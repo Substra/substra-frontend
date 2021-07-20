@@ -1,6 +1,6 @@
-import { Colors } from '@/assets/theme';
-
 import { Line } from 'react-chartjs-2';
+
+import { Colors } from '@/assets/theme';
 
 interface PerfsGraphProps {
     data: Record<string, DataType>;

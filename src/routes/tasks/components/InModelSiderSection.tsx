@@ -1,9 +1,12 @@
 import { Fragment } from 'react';
+
 import { Link } from 'wouter';
 
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
-import { compilePath, PATHS } from '@/routes';
 import { InModel } from '@/modules/tasks/TuplesTypes';
+
+import { compilePath, PATHS } from '@/routes';
+
+import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface InModelSiderSectionProps {
     title: string;

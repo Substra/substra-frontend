@@ -1,7 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-import { NodeType } from './NodesTypes';
 import NodesAPI from './NodesApi';
+import { NodeType } from './NodesTypes';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 interface NodesState {
     nodes: NodeType[];

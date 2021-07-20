@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 
-import { Colors } from '@/assets/theme';
-import Header from '@/components/layout/header/Header';
 import { useAppSelector } from '@/hooks';
+
+import Header from '@/components/layout/header/Header';
+
+import { Colors } from '@/assets/theme';
 
 type AppLayoutProps = {
     children: React.ReactNode;

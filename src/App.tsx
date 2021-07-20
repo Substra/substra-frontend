@@ -1,13 +1,17 @@
 import { useEffect } from 'react';
+
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
-import AppLayout from '@/components/layout/applayout/AppLayout';
 import { listNodes } from '@/modules/nodes/NodesSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
+
+import { useAppDispatch } from '@/hooks';
+
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
-import { useAppDispatch } from '@/hooks';
+
+import AppLayout from '@/components/layout/applayout/AppLayout';
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();

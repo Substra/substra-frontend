@@ -1,4 +1,5 @@
 import { useLocation } from 'wouter';
+
 import {
     buildSearchFiltersString,
     parseSearchFiltersString,

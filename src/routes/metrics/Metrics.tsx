@@ -1,21 +1,36 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
+import { RootState } from '@/store';
+
 import { Fragment } from 'react';
+
+import MetricSider from './components/MetricSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
-import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
-import { RootState } from '@/store';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+
+import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    creationDateWidth,
+} from '@/components/CreationDateTableCells';
+import OwnerTableFilter from '@/components/OwnerTableFilter';
+import PageTitle from '@/components/PageTitle';
 import PermissionCellContent from '@/components/PermissionCellContent';
+import SearchBar from '@/components/SearchBar';
+import Skeleton from '@/components/Skeleton';
 import {
     EmptyTr,
     nameColWidth,
@@ -28,17 +43,8 @@ import {
     Thead,
     Tr,
 } from '@/components/Table';
-import MetricSider from './components/MetricSider';
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
-import PageTitle from '@/components/PageTitle';
-import Skeleton from '@/components/Skeleton';
-import OwnerTableFilter from '@/components/OwnerTableFilter';
-import SearchBar from '@/components/SearchBar';
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-    creationDateWidth,
-} from '@/components/CreationDateTableCells';
+import PageLayout from '@/components/layout/PageLayout';
+import Navigation from '@/components/layout/navigation/Navigation';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();

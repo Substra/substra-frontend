@@ -1,21 +1,25 @@
 import { useEffect } from 'react';
+
+import { unwrapResult } from '@reduxjs/toolkit';
+
+import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
+import { AlgoType } from '@/modules/algos/AlgosTypes';
+
 import {
     useAppDispatch,
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
 
-import KeySiderSection from '@/components/KeySiderSection';
-import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { PATHS, useKeyFromPath } from '@/routes';
-import { unwrapResult } from '@reduxjs/toolkit';
-import SiderBottomButton from '@/components/SiderBottomButton';
-import { AlgoType } from '@/modules/algos/AlgosTypes';
-import PermissionSiderSection from '@/components/PermissionSiderSection';
-import Sider from '@/components/Sider';
+
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
 } from '@/components/DescriptionSiderSection';
+import KeySiderSection from '@/components/KeySiderSection';
+import PermissionSiderSection from '@/components/PermissionSiderSection';
+import Sider from '@/components/Sider';
+import SiderBottomButton from '@/components/SiderBottomButton';
 import { SimpleSiderSection } from '@/components/SiderSection';
 
 const AlgoSider = (): JSX.Element => {

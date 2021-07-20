@@ -1,12 +1,16 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
-import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import { Fonts, Spaces } from '@/assets/theme';
-import Status from '@/components/Status';
+import styled from '@emotion/styled';
+
 import { AnyTaskT } from '@/modules/tasks/TasksTypes';
+
 import Skeleton from '@/components/Skeleton';
+import Status from '@/components/Status';
+
+import { Fonts, Spaces } from '@/assets/theme';
 
 export const LoadingTaskSiderSection = (): JSX.Element => (
     <TaskSiderSectionContainer>

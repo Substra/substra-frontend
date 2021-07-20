@@ -1,12 +1,14 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
-import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { RiAddCircleLine } from 'react-icons/ri';
+
+import Skeleton from '@/components/Skeleton';
 
 import { Spaces, Fonts, Colors } from '@/assets/theme';
-import { RiAddCircleLine } from 'react-icons/ri';
-import Skeleton from '@/components/Skeleton';
 
 export const LoadingNodeSiderSection = (): JSX.Element => {
     return (

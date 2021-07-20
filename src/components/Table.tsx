@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
+
 /** @jsx jsx */
-import styled from '@emotion/styled';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 

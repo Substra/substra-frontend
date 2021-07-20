@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { RiUserLine } from 'react-icons/ri';
 
 import { useAppSelector } from '@/hooks';
-import { Colors, Spaces, zIndexes } from '@/assets/theme';
-import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
 
 import SubMenu from '@/components/layout/header/SubMenu';
+
+import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon.svg';
+import { Colors, Spaces, zIndexes } from '@/assets/theme';
 
 type HeaderProps = {
     title: string;
