@@ -6,8 +6,10 @@ import {
     SearchFilterType,
 } from '@/libs/searchFilter';
 
+declare const API_URL: string;
+
 const API = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}`,
+    baseURL: API_URL,
     timeout: 10000,
     headers: {
         Accept: 'application/json;version=0.0',

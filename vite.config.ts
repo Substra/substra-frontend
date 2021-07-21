@@ -12,6 +12,9 @@ const GIT_COMMIT = process.env['GIT_COMMIT'];
 export default defineConfig({
     define: {
         __APP_VERSION__: `'${version} - ${GIT_COMMIT}'`,
+        ...(process.env.NODE_ENV !== 'production'
+            ? { API_URL: `'http://substra-backend.node-1.com'` }
+            : {}),
     },
     plugins: [
         reactJsx(),

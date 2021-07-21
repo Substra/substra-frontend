@@ -13,3 +13,5 @@ RUN npm run build
 FROM nginx:latest
 
 COPY --from=build /workspace/dist /usr/share/nginx/html
+
+RUN mv /usr/share/nginx/html/index.html /usr/share/nginx/html/index-template.html

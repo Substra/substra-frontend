@@ -9,4 +9,7 @@ export default {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     testEnvironment: 'jest-environment-jsdom',
     roots: ['src/'],
+    globals: {
+        API_URL: 'http://foo.bar',
+    },
 };

@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta16
 kind: Config
 build:
     artifacts:
-        - image: owkin/connect-frontend
+        - image: owkin
           context: .
 
 deploy:
@@ -13,7 +13,7 @@ deploy:
               namespace: org-1
               createNamespace: true
               artifactOverrides:
-                  image: owkin/connect-frontend
+                  image: owkin
               imageStrategy:
                   helm: {}
               valuesFiles:
@@ -24,8 +24,14 @@ deploy:
               namespace: org-2
               createNamespace: true
               artifactOverrides:
-                  image: owkin/connect-frontend
+                  image: owkin
               imageStrategy:
                   helm: {}
               valuesFiles:
                   - 'skaffold-values/org-2.yaml'
+
+profiles:
+    - name: single-org
+      patches:
+          - op: remove
+            path: /deploy/helm/releases/1
