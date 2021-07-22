@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import TaskList from './TaskList';
 import styled from '@emotion/styled';
 import { unwrapResult } from '@reduxjs/toolkit';
 import {
@@ -174,7 +175,9 @@ const ComputePlanDetails = (): JSX.Element => {
                             </PerfContainer>
                         )}
                     </TabPanel>
-                    <TabPanel>COMING SOON</TabPanel>
+                    <TabPanel>
+                        <TaskList />
+                    </TabPanel>
                 </Tabs>
             </Container>
         </PageLayout>

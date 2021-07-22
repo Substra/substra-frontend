@@ -6,6 +6,7 @@ export const Colors = {
     primaryDisabled: '#9BA3BF',
     border: '#e5eaea',
     background: '#f7f7f7',
+    darkBackground: '#E6EAEA',
     darkerBackground: '#f7f9f8',
     content: 'rgba(0, 0, 0, 0.87)',
     lightContent: 'rgba(0, 0, 0, 0.56)',
