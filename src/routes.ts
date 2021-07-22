@@ -7,6 +7,7 @@ import ComputePlan from '@/routes/computePlan/ComputePlan';
 import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Datasets from '@/routes/datasets/Datasets';
+import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
 import Tasks from '@/routes/tasks/Tasks';
@@ -17,6 +18,7 @@ export interface IRoute {
 }
 
 export const PATHS = {
+    HOME: '/',
     LOGIN: '/login',
     COMPUTE_PLANS: '/compute_plans',
     COMPUTE_PLANS_DETAILS: '/compute_plans/:key',
@@ -33,6 +35,10 @@ export const PATHS = {
 };
 
 export const ROUTES: { [key: string]: IRoute } = {
+    HOME: {
+        path: PATHS.HOME,
+        component: Home,
+    },
     LOGIN: {
         path: PATHS.LOGIN,
         component: Login,
