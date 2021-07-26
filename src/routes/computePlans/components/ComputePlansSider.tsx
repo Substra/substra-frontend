@@ -186,6 +186,8 @@ const ComputePlanSider = (): JSX.Element => {
     if (computePlan) {
         percentage = (computePlan.done_count / computePlan.tuple_count) * 100;
     }
+    const formattedPercentage =
+        percentage === 100 ? `${percentage}%` : `${percentage.toFixed(1)}%`;
 
     return (
         <Sider
@@ -232,7 +234,7 @@ const ComputePlanSider = (): JSX.Element => {
                 {!computePlanLoading && computePlan && (
                     <Fragment>
                         <PercentageNumber>
-                            {isNaN(percentage) ? 'N/A' : `${percentage}%`}
+                            {isNaN(percentage) ? 'N/A' : formattedPercentage}
                         </PercentageNumber>
                         <ProgressBar percentage={percentage} />
                     </Fragment>
