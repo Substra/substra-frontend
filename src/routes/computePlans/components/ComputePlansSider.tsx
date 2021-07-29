@@ -24,8 +24,10 @@ import {
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import Button from '@/components/Button';
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
@@ -77,6 +79,15 @@ const ComputePlanSider = (): JSX.Element => {
     const [, setLocation] = useLocation();
 
     const key = useKeyFromPath(PATHS.COMPUTE_PLANS_DETAILS);
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (key) {
+                setDocumentTitle(`${key} (compute plan)`);
+            }
+        },
+        [key]
+    );
 
     const visible = !!key;
 

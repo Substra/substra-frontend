@@ -15,8 +15,10 @@ import {
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS, useKeyFromPath } from '@/routes';
+import { PATHS } from '@/routes';
 
 import KeySiderSection from '@/components/KeySiderSection';
 import Sider from '@/components/Sider';
@@ -48,6 +50,15 @@ const TaskSider = (): JSX.Element => {
 
     const task = useAppSelector((state) => state.tasks.task);
     const taskLoading = useAppSelector((state) => state.tasks.taskLoading);
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (key) {
+                setDocumentTitle(`${key} (task)`);
+            }
+        },
+        [key]
+    );
 
     return (
         <Sider

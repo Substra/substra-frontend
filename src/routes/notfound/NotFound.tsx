@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Link } from 'wouter';
 
 import { useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
 
@@ -31,6 +32,11 @@ const Container = styled.div`
 
 const NotFound = (): JSX.Element => {
     const authenticated = useAppSelector((state) => state.user.authenticated);
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle('Page not found'),
+        []
+    );
 
     return (
         <Container>

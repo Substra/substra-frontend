@@ -16,8 +16,10 @@ import {
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import {
     CreationDateSkeletonTd,
@@ -63,6 +65,8 @@ const Datasets = (): JSX.Element => {
         (state) => state.datasets.datasetsLoading
     );
     const key = useKeyFromPath(PATHS.DATASET);
+
+    useAssetListDocumentTitleEffect('Datasets list', key);
 
     const pageTitleLinks = [
         { location: PATHS.DATASETS, title: 'Datasets', active: true },

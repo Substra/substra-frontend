@@ -18,8 +18,10 @@ import {
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import {
     CreationDateSkeletonTd,
@@ -71,6 +73,8 @@ const Algos = (): JSX.Element => {
     );
 
     const key = useKeyFromPath(PATHS.ALGO);
+
+    useAssetListDocumentTitleEffect('Algorithms list', key);
 
     const pageTitleLinks = [
         { location: PATHS.ALGOS, title: 'Algorithms', active: true },

@@ -18,8 +18,10 @@ import {
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import {
     CreationDateSkeletonTd,
@@ -87,6 +89,8 @@ const Tasks = (): JSX.Element => {
     const tasksLoading = useAppSelector((state) => state.tasks.tasksLoading);
 
     const key = useKeyFromPath(PATHS.TASK);
+
+    useAssetListDocumentTitleEffect('Tasks list', key);
 
     const pageTitleLinks = [
         {

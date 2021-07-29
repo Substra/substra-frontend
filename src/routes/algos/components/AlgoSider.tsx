@@ -10,8 +10,10 @@ import {
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
+import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS, useKeyFromPath } from '@/routes';
+import { PATHS } from '@/routes';
 
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
@@ -50,6 +52,8 @@ const AlgoSider = (): JSX.Element => {
     const descriptionLoading = useAppSelector(
         (state) => state.algos.descriptionLoading
     );
+
+    useAssetSiderDocumentTitleEffect(key, algo, 'algorithm');
 
     return (
         <Sider

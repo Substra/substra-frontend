@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import { useRoute } from 'wouter';
-
 import Algos from '@/routes/algos/Algos';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
 import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
@@ -88,12 +86,4 @@ export function compilePath(
         );
     }
     return compiledPath;
-}
-
-export function useKeyFromPath(path: string): string | null {
-    const [, params] = useRoute(path);
-    if (params && params.key) {
-        return params.key;
-    }
-    return null;
 }

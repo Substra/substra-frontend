@@ -17,8 +17,10 @@ import {
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
+import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS, useKeyFromPath } from '@/routes';
+import { PATHS } from '@/routes';
 
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
@@ -73,6 +75,8 @@ const DatasetSider = (): JSX.Element => {
     const openerLoading = useAppSelector(
         (state) => state.datasets.openerLoading
     );
+
+    useAssetSiderDocumentTitleEffect(key, dataset, 'dataset');
 
     return (
         <Sider

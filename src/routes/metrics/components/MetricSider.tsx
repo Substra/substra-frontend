@@ -13,8 +13,10 @@ import {
     useAppSelector,
     useSearchFiltersLocation,
 } from '@/hooks';
+import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS, useKeyFromPath } from '@/routes';
+import { PATHS } from '@/routes';
 
 import DescriptionSiderSection, {
     LoadingDescriptionSiderSection,
@@ -53,6 +55,8 @@ const MetricSider = (): JSX.Element => {
     const descriptionLoading = useAppSelector(
         (state) => state.metrics.descriptionLoading
     );
+
+    useAssetSiderDocumentTitleEffect(key, metric, 'metric');
 
     return (
         <Sider

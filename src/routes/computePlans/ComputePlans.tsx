@@ -16,8 +16,10 @@ import {
     useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { compilePath, PATHS, useKeyFromPath } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import {
     CreationDateSkeletonTd,
@@ -64,6 +66,8 @@ const ComputePlans = (): JSX.Element => {
     );
 
     const key = useKeyFromPath(PATHS.COMPUTE_PLANS_DETAILS);
+
+    useAssetListDocumentTitleEffect('Compute plans list', key);
 
     const pageTitleLinks = [
         {

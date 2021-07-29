@@ -10,6 +10,7 @@ import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
 
@@ -41,6 +42,8 @@ const Login = (): JSX.Element => {
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const nextLocation = urlSearchParams.get('next') || PATHS.DATASETS;
+
+    useDocumentTitleEffect((setDocumentTitle) => setDocumentTitle('Login'), []);
 
     useEffect(() => {
         if (authenticated) {

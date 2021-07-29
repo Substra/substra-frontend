@@ -18,8 +18,10 @@ import {
 import { isEmpty } from '@/libs/utils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS, useKeyFromPath } from '@/routes';
+import { PATHS } from '@/routes';
 
 import PerfsGraph, { DataType } from '@/components/PerfsGraph';
 import Status from '@/components/Status';
@@ -102,6 +104,11 @@ const ComputePlanDetails = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_DETAILS);
     const [tabIndex, setTabIndex] = useState(0);
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle(`${key} (compute plan)`),
+        []
+    );
 
     useEffect(() => {
         if (key) {
