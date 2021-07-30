@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import TaskList from './TaskList';
+import PerfChartBuilder from './components/PerfChartBuilder';
+import TaskList from './components/TaskList';
 import styled from '@emotion/styled';
-import { unwrapResult } from '@reduxjs/toolkit';
 import {
     Tabs as ReactTabs,
     TabList as ReactTabList,
@@ -10,12 +10,7 @@ import {
     TabPanel,
 } from 'react-tabs';
 
-import {
-    retrieveComputePlan,
-    retrieveComputePlanTestTasks,
-} from '@/modules/computePlans/ComputePlansSlice';
-
-import { isEmpty } from '@/libs/utils';
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -23,7 +18,6 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 
 import { PATHS } from '@/routes';
 
-import PerfsGraph, { DataType } from '@/components/PerfsGraph';
 import Status from '@/components/Status';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
@@ -36,18 +30,15 @@ const Container = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     flex: 1;
-    height: 100%;
+    min-height: 100%;
     background-color: white;
     border-radius: 24px;
     padding: ${Spaces.large};
 `;
 
-const PerfContainer = styled.div`
-    width: 500px;
-    height: 100%;
+const Tabs = styled(ReactTabs)`
+    width: 100%;
 `;
-
-const Tabs = styled(ReactTabs)``;
 
 const TabList = styled(ReactTabList)`
     display: flex;
@@ -112,44 +103,13 @@ const ComputePlanDetails = (): JSX.Element => {
 
     useEffect(() => {
         if (key) {
-            dispatch(retrieveComputePlan(key))
-                .then(unwrapResult)
-                .then((computePlan) => {
-                    dispatch(retrieveComputePlanTestTasks(computePlan.key));
-                });
+            dispatch(retrieveComputePlan(key));
         }
     }, [key]);
 
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
-
-    const computePlanTestTasks = useAppSelector(
-        (state) => state.computePlans.computePlanTestTasks
-    );
-
-    const perfData: Record<string, DataType> = {};
-
-    const sortedTasks = [...computePlanTestTasks].sort((a, b) => {
-        return a.rank - b.rank;
-    });
-
-    sortedTasks.forEach((testTask) => {
-        if (!perfData[testTask.dataset.worker]) {
-            perfData[testTask.dataset.worker] = {
-                x: [testTask.rank],
-                y: [testTask.dataset.perf],
-            };
-        } else {
-            perfData[testTask.dataset.worker] = {
-                x: [...perfData[testTask.dataset.worker].x, testTask.rank],
-                y: [
-                    ...perfData[testTask.dataset.worker].y,
-                    testTask.dataset.perf,
-                ],
-            };
-        }
-    });
 
     return (
         <PageLayout siderVisible={false} navigation={<Navigation />}>
@@ -176,10 +136,8 @@ const ComputePlanDetails = (): JSX.Element => {
                     </TabList>
 
                     <TabPanel>
-                        {!isEmpty(perfData) && (
-                            <PerfContainer>
-                                <PerfsGraph data={perfData} />
-                            </PerfContainer>
+                        {computePlan && (
+                            <PerfChartBuilder computePlan={computePlan} />
                         )}
                     </TabPanel>
                     <TabPanel>

@@ -6,6 +6,7 @@ import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
 import nodesSlice from '@/modules/nodes/NodesSlice';
+import seriesSlice from '@/modules/series/SeriesSlice';
 import tasksSlice from '@/modules/tasks/TasksSlice';
 import uiSlice from '@/modules/ui/UISlice';
 import userSlice from '@/modules/user/UserSlice';
@@ -20,6 +21,7 @@ const store = configureStore({
         metrics: metricsSlice,
         ui: uiSlice,
         tasks: tasksSlice,
+        series: seriesSlice,
     },
 });
 

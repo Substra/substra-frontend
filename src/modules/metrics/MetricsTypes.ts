@@ -10,6 +10,7 @@ export interface MetricType {
         storage_address: string;
     };
     metrics: {
+        name: string;
         checksum: string;
         storage_address: string;
     };

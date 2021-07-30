@@ -1,12 +1,9 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { RiCheckLine, RiCloseLine, RiLoader4Line } from 'react-icons/ri';
+import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
 
 import { TaskStatus } from '@/modules/tasks/TasksTypes';
+
+import Spinner from '@/components/Spinner';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -28,19 +25,6 @@ const StatusIcon = styled.div`
     margin-right: ${Spaces.small};
 `;
 
-const rotate = keyframes`
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-`;
-
-const rotation = css`
-    animation: ${rotate} 2s linear infinite;
-`;
-
 const Status = ({ status }: StatusProps): JSX.Element => {
     let type = '';
     let icon: JSX.Element | null = null;
@@ -52,11 +36,11 @@ const Status = ({ status }: StatusProps): JSX.Element => {
             break;
         case TaskStatus.waiting:
         case TaskStatus.todo:
-            icon = <RiLoader4Line css={rotation} color={Colors.running} />;
+            icon = <Spinner color={Colors.running} />;
             type = Colors.running;
             break;
         case TaskStatus.doing:
-            icon = <RiLoader4Line css={rotation} color={Colors.success} />;
+            icon = <Spinner color={Colors.success} />;
             type = Colors.success;
             break;
         case TaskStatus.failed:

@@ -107,7 +107,11 @@ const Navigation = (): JSX.Element => {
             )}
             {renderLink(
                 'Compute Plans and Tasks',
-                [ROUTES.COMPUTE_PLANS.path, ROUTES.TASKS.path],
+                [
+                    ROUTES.COMPUTE_PLANS.path,
+                    ROUTES.TASKS.path,
+                    ROUTES.COMPUTE_PLAN_DETAILS.path,
+                ],
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
             )}
