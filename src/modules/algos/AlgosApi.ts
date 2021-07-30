@@ -1,4 +1,4 @@
-import { APIAlgoType } from './AlgosTypes';
+import { AlgoT } from './AlgosTypes';
 import { AxiosPromise } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
@@ -17,26 +17,26 @@ const URLS = {
 
 export const listAggregateAlgos = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<APIAlgoType[]> =>
+): AxiosPromise<AlgoT[]> =>
     API.get(URLS.LIST_AGGREGATE, getApiOptions(searchFilters));
 
-export const retrieveAggregateAlgo = (key: string): AxiosPromise<APIAlgoType> =>
+export const retrieveAggregateAlgo = (key: string): AxiosPromise<AlgoT> =>
     API.get(URLS.RETRIEVE_AGGREGATE.replace('__KEY__', key));
 
 export const listStandardAlgos = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<APIAlgoType[]> =>
+): AxiosPromise<AlgoT[]> =>
     API.get(URLS.LIST_STANDARD, getApiOptions(searchFilters));
 
-export const retrieveStandardAlgo = (key: string): AxiosPromise<APIAlgoType> =>
+export const retrieveStandardAlgo = (key: string): AxiosPromise<AlgoT> =>
     API.get(URLS.RETRIEVE_STANDARD.replace('__KEY__', key));
 
 export const listCompositeAlgos = (
     searchFilters: SearchFilterType[]
-): AxiosPromise<APIAlgoType[]> =>
+): AxiosPromise<AlgoT[]> =>
     API.get(URLS.LIST_COMPOSITE, getApiOptions(searchFilters));
 
-export const retrieveCompositeAlgo = (key: string): AxiosPromise<APIAlgoType> =>
+export const retrieveCompositeAlgo = (key: string): AxiosPromise<AlgoT> =>
     API.get(URLS.RETRIEVE_COMPOSITE.replace('__KEY__', key));
 
 export default {

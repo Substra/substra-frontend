@@ -1,5 +1,5 @@
 import AlgosApi from './AlgosApi';
-import { APIAlgoType, AlgoType } from './AlgosTypes';
+import { AlgoT } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import CommonApi from '@/modules/common/CommonApi';
@@ -7,11 +7,19 @@ import CommonApi from '@/modules/common/CommonApi';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface AlgoState {
-    algos: AlgoType[];
-    algosLoading: boolean;
-    algosError: string;
+    standardAlgos: AlgoT[];
+    standardAlgosLoading: boolean;
+    standardAlgosError: string;
 
-    algo: AlgoType | null;
+    compositeAlgos: AlgoT[];
+    compositeAlgosLoading: boolean;
+    compositeAlgosError: string;
+
+    aggregateAlgos: AlgoT[];
+    aggregateAlgosLoading: boolean;
+    aggregateAlgosError: string;
+
+    algo: AlgoT | null;
     algoLoading: boolean;
     algoError: string;
 
@@ -21,9 +29,17 @@ interface AlgoState {
 }
 
 const initialState: AlgoState = {
-    algos: [],
-    algosLoading: true,
-    algosError: '',
+    standardAlgos: [],
+    standardAlgosLoading: true,
+    standardAlgosError: '',
+
+    compositeAlgos: [],
+    compositeAlgosLoading: true,
+    compositeAlgosError: '',
+
+    aggregateAlgos: [],
+    aggregateAlgosLoading: true,
+    aggregateAlgosError: '',
 
     algo: null,
     algoLoading: true,
@@ -34,72 +50,81 @@ const initialState: AlgoState = {
     descriptionError: '',
 };
 
-const addAlgoType = (type: 'standard' | 'aggregate' | 'composite') => (
-    algo: APIAlgoType
-): AlgoType => {
-    return {
-        ...algo,
-        type,
-    };
-};
-
-export const listAlgos = createAsyncThunk<
-    AlgoType[],
+export const listStandardAlgos = createAsyncThunk<
+    AlgoT[],
     SearchFilterType[],
     { rejectValue: string }
->('algos/list', async (filters: SearchFilterType[], thunkAPI) => {
+>('algos/listStandardAlgos', async (filters: SearchFilterType[], thunkAPI) => {
     try {
         const standardFilters = filters.filter((sf) => sf.asset === 'algo');
+
+        const response = await AlgosApi.listStandardAlgos(standardFilters);
+
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
+
+export const listCompositeAlgos = createAsyncThunk<
+    AlgoT[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('algos/listCompositeAlgos', async (filters: SearchFilterType[], thunkAPI) => {
+    try {
         const compositeFilters = filters.filter(
             (sf) => sf.asset === 'composite_algo'
         );
+
+        const response = await AlgosApi.listCompositeAlgos(compositeFilters);
+
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
+
+export const listAggregateAlgos = createAsyncThunk<
+    AlgoT[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('algos/listAggregateAlgos', async (filters: SearchFilterType[], thunkAPI) => {
+    try {
         const aggregateFilters = filters.filter(
             (sf) => sf.asset === 'aggregate_algo'
         );
 
-        const promises = [
-            AlgosApi.listStandardAlgos(standardFilters),
-            AlgosApi.listCompositeAlgos(compositeFilters),
-            AlgosApi.listAggregateAlgos(aggregateFilters),
-        ];
+        const response = await AlgosApi.listAggregateAlgos(aggregateFilters);
 
-        const responses = await Promise.all(promises);
-
-        const standardAlgos = responses[0].data.map(addAlgoType('standard'));
-
-        const compositeAlgos = responses[1].data.map(addAlgoType('composite'));
-
-        const aggregateAlgos = responses[2].data.map(addAlgoType('aggregate'));
-
-        return [...standardAlgos, ...compositeAlgos, ...aggregateAlgos];
+        return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveAlgo = createAsyncThunk<
-    AlgoType,
+    AlgoT,
     string,
     { rejectValue: string }
 >('algos/get', async (key: string, thunkAPI) => {
     const errors = [];
     try {
         const response = await AlgosApi.retrieveStandardAlgo(key);
-        return addAlgoType('standard')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
 
     try {
         const response = await AlgosApi.retrieveCompositeAlgo(key);
-        return addAlgoType('composite')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
 
     try {
         const response = await AlgosApi.retrieveAggregateAlgo(key);
-        return addAlgoType('aggregate')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
@@ -126,18 +151,44 @@ export const algosSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(listAlgos.pending, (state) => {
-                state.algosLoading = true;
-                state.algosError = '';
+            .addCase(listStandardAlgos.pending, (state) => {
+                state.standardAlgosLoading = true;
+                state.standardAlgosError = '';
             })
-            .addCase(listAlgos.fulfilled, (state, { payload }) => {
-                state.algos = payload;
-                state.algosLoading = false;
-                state.algosError = '';
+            .addCase(listStandardAlgos.fulfilled, (state, { payload }) => {
+                state.standardAlgos = payload;
+                state.standardAlgosLoading = false;
+                state.standardAlgosError = '';
             })
-            .addCase(listAlgos.rejected, (state, { payload }) => {
-                state.algosLoading = false;
-                state.algosError = payload || 'Unknown error';
+            .addCase(listStandardAlgos.rejected, (state, { payload }) => {
+                state.standardAlgosLoading = false;
+                state.standardAlgosError = payload || 'Unknown error';
+            })
+            .addCase(listCompositeAlgos.pending, (state) => {
+                state.compositeAlgosLoading = true;
+                state.compositeAlgosError = '';
+            })
+            .addCase(listCompositeAlgos.fulfilled, (state, { payload }) => {
+                state.compositeAlgos = payload;
+                state.compositeAlgosLoading = false;
+                state.compositeAlgosError = '';
+            })
+            .addCase(listCompositeAlgos.rejected, (state, { payload }) => {
+                state.compositeAlgosLoading = false;
+                state.compositeAlgosError = payload || 'Unknown error';
+            })
+            .addCase(listAggregateAlgos.pending, (state) => {
+                state.aggregateAlgosLoading = true;
+                state.aggregateAlgosError = '';
+            })
+            .addCase(listAggregateAlgos.fulfilled, (state, { payload }) => {
+                state.aggregateAlgos = payload;
+                state.aggregateAlgosLoading = false;
+                state.aggregateAlgosError = '';
+            })
+            .addCase(listAggregateAlgos.rejected, (state, { payload }) => {
+                state.aggregateAlgosLoading = false;
+                state.aggregateAlgosError = payload || 'Unknown error';
             })
             .addCase(retrieveAlgo.pending, (state) => {
                 state.algoLoading = true;

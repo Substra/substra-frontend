@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'wouter';
 
-import { AggregateTaskT, TrainTaskT } from '@/modules/tasks/TasksTypes';
+import { AggregatetupleT, TraintupleT } from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -19,7 +19,7 @@ const Ul = styled.ul`
 `;
 
 interface InModelsSiderSectionProps {
-    task: TrainTaskT | AggregateTaskT;
+    task: TraintupleT | AggregatetupleT;
 }
 
 const InModelsSiderSection = ({

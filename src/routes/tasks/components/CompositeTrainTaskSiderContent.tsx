@@ -5,12 +5,12 @@ import DatasetSiderSection from './DatasetSiderSection';
 import InModelSiderSection from './InModelSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 
-import { CompositeTrainTaskT } from '@/modules/tasks/TasksTypes';
+import { CompositeTraintupleT } from '@/modules/tasks/TuplesTypes';
 
 import PermissionSiderSection from '@/components/PermissionSiderSection';
 
 interface CompositeTrainTaskSiderContentProps {
-    task: CompositeTrainTaskT;
+    task: CompositeTraintupleT;
 }
 
 const CompositeTrainTaskSiderContent = ({

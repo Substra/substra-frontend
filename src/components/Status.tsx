@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
 
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import Spinner from '@/components/Spinner';
 
@@ -30,24 +30,24 @@ const Status = ({ status }: StatusProps): JSX.Element => {
     let icon: JSX.Element | null = null;
 
     switch (status) {
-        case TaskStatus.canceled:
+        case TupleStatus.canceled:
             icon = <RiCloseLine color={Colors.veryLightContent} />;
             type = Colors.veryLightContent;
             break;
-        case TaskStatus.waiting:
-        case TaskStatus.todo:
+        case TupleStatus.waiting:
+        case TupleStatus.todo:
             icon = <Spinner color={Colors.running} />;
             type = Colors.running;
             break;
-        case TaskStatus.doing:
+        case TupleStatus.doing:
             icon = <Spinner color={Colors.success} />;
             type = Colors.success;
             break;
-        case TaskStatus.failed:
+        case TupleStatus.failed:
             icon = <RiCloseLine color={Colors.error} />;
             type = Colors.error;
             break;
-        case TaskStatus.done:
+        case TupleStatus.done:
             icon = <RiCheckLine color={Colors.success} />;
             type = Colors.success;
             break;

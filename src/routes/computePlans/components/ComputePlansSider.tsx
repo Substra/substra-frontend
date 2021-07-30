@@ -16,8 +16,15 @@ import {
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { AnyTaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
+import {
+    AggregatetupleT,
+    AnyTupleT,
+    CompositeTraintupleT,
+    TesttupleT,
+    TraintupleT,
+    TupleStatus,
+} from '@/modules/tasks/TuplesTypes';
 
 import {
     useAppDispatch,
@@ -117,8 +124,20 @@ const ComputePlanSider = (): JSX.Element => {
         (state) => state.computePlans.computePlanLoading
     );
 
-    const computePlanTrainTasks = useAppSelector(
+    const computePlanTrainTasks: TraintupleT[] = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasks
+    );
+
+    const computePlanTestTasks: TesttupleT[] = useAppSelector(
+        (state) => state.computePlans.computePlanTestTasks
+    );
+
+    const computePlanCompositeTasks: CompositeTraintupleT[] = useAppSelector(
+        (state) => state.computePlans.computePlanCompositeTasks
+    );
+
+    const computePlanAggregateTasks: AggregatetupleT[] = useAppSelector(
+        (state) => state.computePlans.computePlanAggregateTasks
     );
 
     const computePlanTrainTasksLoading = useAppSelector(
@@ -134,20 +153,8 @@ const ComputePlanSider = (): JSX.Element => {
         (state) => state.computePlans.computePlanAggregateTasksLoading
     );
 
-    const computePlanTestTasks = useAppSelector(
-        (state) => state.computePlans.computePlanTestTasks
-    );
-
-    const computePlanCompositeTasks = useAppSelector(
-        (state) => state.computePlans.computePlanCompositeTasks
-    );
-
-    const computePlanAggregateTasks = useAppSelector(
-        (state) => state.computePlans.computePlanAggregateTasks
-    );
-
-    const incrementNodeWaitingTasks = (count: number, status: TaskStatus) => {
-        if (status === TaskStatus.waiting) {
+    const incrementNodeWaitingTasks = (count: number, status: TupleStatus) => {
+        if (status === TupleStatus.waiting) {
             if (count === undefined) {
                 return 1;
             } else {
@@ -159,7 +166,7 @@ const ComputePlanSider = (): JSX.Element => {
         return count;
     };
 
-    const getTasksNodes = (tasks: AnyTaskT[]) => {
+    const getTasksNodes = (tasks: AnyTupleT[]) => {
         const nodes: Record<string, number> = {};
         tasks.forEach((task) => {
             const node = getTaskWorker(task);

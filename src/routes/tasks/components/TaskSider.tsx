@@ -8,7 +8,15 @@ import TestTaskSiderContent from './TestTaskSiderContent';
 import TrainTaskSiderContent from './TrainTaskSiderContent';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
-import { TaskType } from '@/modules/tasks/TasksTypes';
+import { TupleType } from '@/modules/tasks/TuplesTypes';
+
+import {
+    getTupleType,
+    isAggregatetupleT,
+    isCompositeTraintupleT,
+    isTesttupleT,
+    isTraintupleT,
+} from '@/libs/tuples';
 
 import {
     useAppDispatch,
@@ -24,7 +32,7 @@ import KeySiderSection from '@/components/KeySiderSection';
 import Sider from '@/components/Sider';
 import Skeleton from '@/components/Skeleton';
 
-const titleTypes: { [key in TaskType]: string } = {
+const titleTypes: { [key in TupleType]: string } = {
     traintuple: 'Train task',
     composite_traintuple: 'Composite train task',
     aggregatetuple: 'Aggregate task',
@@ -71,7 +79,7 @@ const TaskSider = (): JSX.Element => {
                 taskLoading || !task ? (
                     <Skeleton width={370} height={30} />
                 ) : (
-                    titleTypes[task.type]
+                    titleTypes[getTupleType(task)]
                 )
             }
         >
@@ -86,18 +94,16 @@ const TaskSider = (): JSX.Element => {
             )}
             {!taskLoading && task && (
                 <Fragment>
-                    {task.type === 'traintuple' && (
+                    {isTraintupleT(task) && (
                         <TrainTaskSiderContent task={task} />
                     )}
-                    {task.type === 'composite_traintuple' && (
+                    {isCompositeTraintupleT(task) && (
                         <CompositeTrainTaskSiderContent task={task} />
                     )}
-                    {task.type === 'aggregatetuple' && (
+                    {isAggregatetupleT(task) && (
                         <AggregateTaskSiderContent task={task} />
                     )}
-                    {task.type === 'testtuple' && (
-                        <TestTaskSiderContent task={task} />
-                    )}
+                    {isTesttupleT(task) && <TestTaskSiderContent task={task} />}
                 </Fragment>
             )}
         </Sider>

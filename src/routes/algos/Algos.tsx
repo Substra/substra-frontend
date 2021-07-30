@@ -3,14 +3,23 @@
 /** @jsx jsx */
 import { RootState } from '@/store';
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import AlgoSider from './components/AlgoSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
-import { listAlgos } from '@/modules/algos/AlgosSlice';
-import { AlgoType } from '@/modules/algos/AlgosTypes';
+import {
+    listAggregateAlgos,
+    listCompositeAlgos,
+    listStandardAlgos,
+} from '@/modules/algos/AlgosSlice';
+import { AlgoT } from '@/modules/algos/AlgosTypes';
+import { AssetType } from '@/modules/common/CommonTypes';
+
+import { SearchFilterType } from '@/libs/searchFilter';
 
 import {
     useAppDispatch,
@@ -48,9 +57,43 @@ import {
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
-const typeColWidth = css`
-    width: 110px;
+import { Colors, Spaces } from '@/assets/theme';
+
+interface TypeButtonProps {
+    active: boolean;
+}
+
+const TypeButton = styled.button<TypeButtonProps>`
+    background: ${({ active }) => (active ? Colors.primary : 'white')};
+    border-color: ${({ active }) => (active ? Colors.primary : Colors.border)};
+    border-radius: 4px;
+    border-width: 1px;
+    border-style: solid;
+    color: ${({ active }) => (active ? 'white' : Colors.lightContent)};
+    height: 38px;
+    margin-right: ${Spaces.medium};
+    padding: ${Spaces.small} ${Spaces.medium};
+    text-transform: uppercase;
 `;
+
+const AlgoButtonsContainer = styled.div`
+    display: flex;
+    margin: ${Spaces.medium} 0;
+`;
+
+interface selectedAlgoT {
+    id: number;
+    name: string;
+    searchLabel: string;
+    slug: AssetType;
+    loading: boolean;
+    list: AsyncThunkAction<
+        AlgoT[],
+        SearchFilterType[],
+        { rejectValue: string }
+    >;
+    algos: AlgoT[];
+}
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -60,21 +103,73 @@ const Algos = (): JSX.Element => {
         setSearchFiltersLocation,
     ] = useSearchFiltersLocation();
 
+    const [selectedAlgoType, setSelectedAlgoType] = useState(0);
+
+    const algoTypes: selectedAlgoT[] = [
+        {
+            id: 0,
+            name: 'Standard Algos',
+            searchLabel: 'Standard Algo',
+            slug: 'algo',
+            loading: useAppSelector(
+                (state: RootState) => state.algos.standardAlgosLoading
+            ),
+            list: listStandardAlgos(searchFilters),
+            algos: useAppSelector(
+                (state: RootState) => state.algos.standardAlgos
+            ),
+        },
+        {
+            id: 1,
+            name: 'Composite Algos',
+            searchLabel: 'Composite Algo',
+            slug: 'composite_algo',
+            loading: useAppSelector(
+                (state: RootState) => state.algos.compositeAlgosLoading
+            ),
+            list: listCompositeAlgos(searchFilters),
+            algos: useAppSelector(
+                (state: RootState) => state.algos.compositeAlgos
+            ),
+        },
+        {
+            id: 2,
+            name: 'Aggregate Algos',
+            searchLabel: 'Aggregate Algo',
+            slug: 'aggregate_algo',
+            loading: useAppSelector(
+                (state: RootState) => state.algos.aggregateAlgosLoading
+            ),
+            list: listAggregateAlgos(searchFilters),
+            algos: useAppSelector(
+                (state: RootState) => state.algos.aggregateAlgos
+            ),
+        },
+    ];
+
     useSearchFiltersEffect(() => {
-        dispatch(listAlgos(searchFilters));
-    }, [searchFilters]);
-
-    const algos: AlgoType[] = useAppSelector(
-        (state: RootState) => state.algos.algos
-    );
-
-    const algosLoading = useAppSelector(
-        (state: RootState) => state.algos.algosLoading
-    );
+        dispatch(algoTypes[selectedAlgoType].list);
+    }, [searchFilters, selectedAlgoType]);
 
     const key = useKeyFromPath(PATHS.ALGO);
 
     useAssetListDocumentTitleEffect('Algorithms list', key);
+
+    const renderAlgosButtons = () => {
+        return (
+            <AlgoButtonsContainer>
+                {algoTypes.map((algoType) => (
+                    <TypeButton
+                        onClick={() => setSelectedAlgoType(algoType.id)}
+                        key={algoType.id}
+                        active={selectedAlgoType === algoType.id}
+                    >
+                        {algoType.name}
+                    </TypeButton>
+                ))}
+            </AlgoButtonsContainer>
+        );
+    };
 
     const pageTitleLinks = [
         { location: PATHS.ALGOS, title: 'Algorithms', active: true },
@@ -90,17 +185,13 @@ const Algos = (): JSX.Element => {
                     <PageTitle links={pageTitleLinks} />
                     <SearchBar
                         assetOptions={[
-                            { label: 'Standard Algo', value: 'algo' },
                             {
-                                label: 'Composite Algo',
-                                value: 'composite_algo',
-                            },
-                            {
-                                label: 'Aggregate Algo',
-                                value: 'aggregate_algo',
+                                label: algoTypes[selectedAlgoType].name,
+                                value: algoTypes[selectedAlgoType].slug,
                             },
                         ]}
                     />
+                    {renderAlgosButtons()}
                     <Table>
                         <Thead>
                             <Tr>
@@ -117,7 +208,6 @@ const Algos = (): JSX.Element => {
                                     />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
-                                <Th css={typeColWidth}>Type</Th>
                             </Tr>
                         </Thead>
                     </Table>
@@ -131,6 +221,7 @@ const Algos = (): JSX.Element => {
                     pointer-events: none;
                 `}
             />
+            {renderAlgosButtons()}
             <Table>
                 <Thead
                     css={css`
@@ -143,14 +234,14 @@ const Algos = (): JSX.Element => {
                         <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
-                        <Th css={typeColWidth}>Type</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {!algosLoading && algos.length === 0 && (
-                        <EmptyTr nbColumns={5} />
-                    )}
-                    {algosLoading
+                    {!algoTypes[selectedAlgoType].loading &&
+                        algoTypes[selectedAlgoType].algos.length === 0 && (
+                            <EmptyTr nbColumns={4} />
+                        )}
+                    {algoTypes[selectedAlgoType].loading
                         ? [1, 2, 3].map((index) => (
                               <Tr key={index}>
                                   <CreationDateSkeletonTd />
@@ -163,12 +254,9 @@ const Algos = (): JSX.Element => {
                                   <Td>
                                       <Skeleton width={150} height={12} />
                                   </Td>
-                                  <Td>
-                                      <Skeleton width={60} height={12} />
-                                  </Td>
                               </Tr>
                           ))
-                        : algos.map((algo) => (
+                        : algoTypes[selectedAlgoType].algos.map((algo) => (
                               <Tr
                                   key={algo.key}
                                   highlighted={algo.key === key}
@@ -191,7 +279,6 @@ const Algos = (): JSX.Element => {
                                           permission={algo.permissions.process}
                                       />
                                   </Td>
-                                  <Td>{algo.type}</Td>
                               </Tr>
                           ))}
                 </Tbody>

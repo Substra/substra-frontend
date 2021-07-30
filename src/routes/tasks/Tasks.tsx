@@ -1,16 +1,26 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import TaskSider from './components/TaskSider';
-import TypeTableFilter from './components/TypeTableFilter';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
-import { listTasks } from '@/modules/tasks/TasksSlice';
-import { AnyTaskT, TaskType } from '@/modules/tasks/TasksTypes';
+import { AssetType } from '@/modules/common/CommonTypes';
+import {
+    listAggregateTasks,
+    listCompositeTasks,
+    listTestTasks,
+    listTrainTasks,
+} from '@/modules/tasks/TasksSlice';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
+import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
+
+import { SearchFilterType } from '@/libs/searchFilter';
+import { isTesttupleT } from '@/libs/tuples';
 
 import {
     useAppDispatch,
@@ -46,9 +56,8 @@ import {
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
-const typeColWidth = css`
-    width: 120px;
-`;
+import { Colors, Spaces } from '@/assets/theme';
+
 const statusColWidth = css`
     width: 200px;
 `;
@@ -65,12 +74,41 @@ const perfColWidth = css`
     width: 110px;
 `;
 
-const typeLabels: { [key in TaskType]: string } = {
-    traintuple: 'Train',
-    composite_traintuple: 'Composite train',
-    aggregatetuple: 'Aggregate',
-    testtuple: 'Test',
-};
+interface TypeButtonProps {
+    active: boolean;
+}
+
+const TypeButton = styled.button<TypeButtonProps>`
+    background: ${({ active }) => (active ? Colors.primary : 'white')};
+    border-color: ${({ active }) => (active ? Colors.primary : Colors.border)};
+    border-radius: 4px;
+    border-width: 1px;
+    border-style: solid;
+    color: ${({ active }) => (active ? 'white' : Colors.lightContent)};
+    height: 38px;
+    margin-right: ${Spaces.medium};
+    padding: ${Spaces.small} ${Spaces.medium};
+    text-transform: uppercase;
+`;
+
+const TaskButtonsContainer = styled.div`
+    display: flex;
+    margin: ${Spaces.medium} 0;
+`;
+
+interface selectedTaskT {
+    id: number;
+    name: string;
+    searchLabel: string;
+    slug: AssetType;
+    loading: boolean;
+    list: AsyncThunkAction<
+        AnyTupleT[],
+        SearchFilterType[],
+        { rejectValue: string }
+    >;
+    tasks: AnyTupleT[];
+}
 
 const Tasks = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -80,17 +118,74 @@ const Tasks = (): JSX.Element => {
         setSearchFiltersLocation,
     ] = useSearchFiltersLocation();
 
+    const [selectedTaskType, setSelectedTaskType] = useState(0);
+
+    const taskTypes: selectedTaskT[] = [
+        {
+            id: 0,
+            name: 'Train tasks',
+            searchLabel: 'Train task',
+            slug: 'traintuple',
+            loading: useAppSelector((state) => state.tasks.trainTasksLoading),
+            list: listTrainTasks(searchFilters),
+            tasks: useAppSelector((state) => state.tasks.trainTasks),
+        },
+        {
+            id: 1,
+            name: 'Test tasks',
+            searchLabel: 'Test task',
+            slug: 'testtuple',
+            loading: useAppSelector((state) => state.tasks.testTasksLoading),
+            list: listTestTasks(searchFilters),
+            tasks: useAppSelector((state) => state.tasks.testTasks),
+        },
+        {
+            id: 2,
+            name: 'Composite tasks',
+            searchLabel: 'Composite task',
+            slug: 'composite_traintuple',
+            loading: useAppSelector(
+                (state) => state.tasks.compositeTasksLoading
+            ),
+            list: listCompositeTasks(searchFilters),
+            tasks: useAppSelector((state) => state.tasks.compositeTasks),
+        },
+        {
+            id: 3,
+            name: 'Aggregate tasks',
+            searchLabel: 'Aggregate task',
+            slug: 'aggregatetuple',
+            loading: useAppSelector(
+                (state) => state.tasks.aggregateTasksLoading
+            ),
+            list: listAggregateTasks(searchFilters),
+            tasks: useAppSelector((state) => state.tasks.aggregateTasks),
+        },
+    ];
+
     useSearchFiltersEffect(() => {
-        dispatch(listTasks(searchFilters));
-    }, [searchFilters]);
-
-    const tasks: AnyTaskT[] = useAppSelector((state) => state.tasks.tasks);
-
-    const tasksLoading = useAppSelector((state) => state.tasks.tasksLoading);
+        dispatch(taskTypes[selectedTaskType].list);
+    }, [searchFilters, selectedTaskType]);
 
     const key = useKeyFromPath(PATHS.TASK);
 
     useAssetListDocumentTitleEffect('Tasks list', key);
+
+    const renderTasksButtons = () => {
+        return (
+            <TaskButtonsContainer>
+                {taskTypes.map((taskType) => (
+                    <TypeButton
+                        onClick={() => setSelectedTaskType(taskType.id)}
+                        key={taskType.id}
+                        active={selectedTaskType === taskType.id}
+                    >
+                        {taskType.name}
+                    </TypeButton>
+                ))}
+            </TaskButtonsContainer>
+        );
+    };
 
     const pageTitleLinks = [
         {
@@ -115,36 +210,17 @@ const Tasks = (): JSX.Element => {
                     <PageTitle links={pageTitleLinks} />
                     <SearchBar
                         assetOptions={[
-                            { label: 'Train task', value: 'traintuple' },
                             {
-                                label: 'Composite train task',
-                                value: 'composite_traintuple',
-                            },
-                            {
-                                label: 'Aggregate task',
-                                value: 'aggregatetuple',
-                            },
-                            {
-                                label: 'Test task',
-                                value: 'testtuple',
+                                label: taskTypes[selectedTaskType].searchLabel,
+                                value: taskTypes[selectedTaskType].slug,
                             },
                         ]}
                     />
+                    {renderTasksButtons()}
                     <Table>
                         <Thead>
                             <Tr>
                                 <Th css={creationDateWidth}>Creation date</Th>
-                                <Th css={typeColWidth}>
-                                    Type
-                                    <TypeTableFilter
-                                        assets={[
-                                            'traintuple',
-                                            'testtuple',
-                                            'composite_traintuple',
-                                            'aggregatetuple',
-                                        ]}
-                                    />
-                                </Th>
                                 <Th css={statusColWidth}>
                                     Current status
                                     <StatusTableFilter
@@ -174,6 +250,7 @@ const Tasks = (): JSX.Element => {
                     pointer-events: none;
                 `}
             />
+            {renderTasksButtons()}
             <Table>
                 <Thead
                     css={css`
@@ -183,7 +260,6 @@ const Tasks = (): JSX.Element => {
                 >
                     <Tr>
                         <Th css={creationDateWidth}>Creation date</Th>
-                        <Th css={typeColWidth}>Type</Th>
                         <Th css={statusColWidth}>Current status</Th>
                         <Th css={ownerColWidth}>Worker</Th>
                         <Th css={timeColWidth}>Execution time</Th>
@@ -193,13 +269,10 @@ const Tasks = (): JSX.Element => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {tasksLoading &&
+                    {taskTypes[selectedTaskType].loading &&
                         [1, 2, 3].map((index) => (
                             <Tr key={index}>
                                 <CreationDateSkeletonTd />
-                                <Td>
-                                    <Skeleton width={100} height={12} />
-                                </Td>
                                 <Td>
                                     <Skeleton width={150} height={12} />
                                 </Td>
@@ -220,11 +293,12 @@ const Tasks = (): JSX.Element => {
                                 </Td>
                             </Tr>
                         ))}
-                    {!tasksLoading && tasks.length === 0 && (
-                        <EmptyTr nbColumns={8} />
-                    )}
-                    {!tasksLoading &&
-                        tasks.map((task) => (
+                    {!taskTypes[selectedTaskType].loading &&
+                        taskTypes[selectedTaskType].tasks.length === 0 && (
+                            <EmptyTr nbColumns={7} />
+                        )}
+                    {!taskTypes[selectedTaskType].loading &&
+                        taskTypes[selectedTaskType].tasks.map((task) => (
                             <Tr
                                 key={task.key}
                                 highlighted={task.key === key}
@@ -240,7 +314,6 @@ const Tasks = (): JSX.Element => {
                                 <CreationDateTd
                                     creationDate={task.creation_date}
                                 />
-                                <Td>{typeLabels[task.type]}</Td>
                                 <Td>
                                     <Status status={task.status} />
                                 </Td>
@@ -251,7 +324,7 @@ const Tasks = (): JSX.Element => {
                                     {task.compute_plan_key ? task.rank : '-'}
                                 </Td>
                                 <Td>
-                                    {task.type === 'testtuple' &&
+                                    {isTesttupleT(task) &&
                                     task.status === 'done'
                                         ? task.dataset.perf
                                         : 'N/A'}

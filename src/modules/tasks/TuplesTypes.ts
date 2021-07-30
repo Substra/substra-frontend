@@ -1,5 +1,11 @@
 import { PermissionsType } from '@/modules/common/CommonTypes';
 
+export type TupleType =
+    | 'traintuple'
+    | 'composite_traintuple'
+    | 'aggregatetuple'
+    | 'testtuple';
+
 export enum TupleStatus {
     doing = 'doing',
     done = 'done',
@@ -122,7 +128,7 @@ export interface TraintupleT extends BaseTupleT {
     out_model: OutModel;
     permissions: PermissionsType;
     rank: number;
-    tags: string;
+    tag: string;
 }
 
 export type AnyTupleT =

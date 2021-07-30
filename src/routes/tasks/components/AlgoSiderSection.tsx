@@ -1,17 +1,17 @@
 import { Link } from 'wouter';
 
 import {
-    AggregateTaskT,
-    CompositeTrainTaskT,
-    TrainTaskT,
-} from '@/modules/tasks/TasksTypes';
+    AggregatetupleT,
+    CompositeTraintupleT,
+    TraintupleT,
+} from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TrainTaskSiderContentProps {
-    task: TrainTaskT | CompositeTrainTaskT | AggregateTaskT;
+    task: TraintupleT | CompositeTraintupleT | AggregatetupleT;
 }
 
 const AlgoSiderSection = ({

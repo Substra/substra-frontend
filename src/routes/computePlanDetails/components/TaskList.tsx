@@ -10,8 +10,8 @@ import {
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { AnyTaskT } from '@/modules/tasks/TasksTypes';
 import { getTaskPerf, getTaskWorker } from '@/modules/tasks/TasksUtils';
+import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
@@ -90,7 +90,7 @@ const TaskButtonsContainer = styled.div`
 const TaskList = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [selectedTask, setSelectedTask] = useState(0);
-    const [tasks, setTasks] = useState<AnyTaskT[]>([]);
+    const [tasks, setTasks] = useState<AnyTupleT[]>([]);
     const isLoading = false;
 
     const computePlan = useAppSelector(

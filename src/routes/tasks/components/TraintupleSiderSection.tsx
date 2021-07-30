@@ -1,14 +1,16 @@
 import { Link } from 'wouter';
 
-import { TestTaskT } from '@/modules/tasks/TasksTypes';
-import { TesttupleTraintupleType } from '@/modules/tasks/TuplesTypes';
+import {
+    TesttupleT,
+    TesttupleTraintupleType,
+} from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TraintupleSiderSectionProps {
-    task: TestTaskT;
+    task: TesttupleT;
 }
 
 const titles: { [key in TesttupleTraintupleType]: string } = {

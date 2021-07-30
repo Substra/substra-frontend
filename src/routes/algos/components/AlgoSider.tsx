@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
-import { AlgoType } from '@/modules/algos/AlgosTypes';
+import { AlgoT } from '@/modules/algos/AlgosTypes';
 
 import {
     useAppDispatch,
@@ -39,7 +39,7 @@ const AlgoSider = (): JSX.Element => {
         if (key) {
             dispatch(retrieveAlgo(key))
                 .then(unwrapResult)
-                .then((algo: AlgoType) => {
+                .then((algo: AlgoT) => {
                     dispatch(
                         retrieveDescription(algo.description.storage_address)
                     );

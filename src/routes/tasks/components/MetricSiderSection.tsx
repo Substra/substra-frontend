@@ -1,13 +1,13 @@
 import { Link } from 'wouter';
 
-import { TestTaskT } from '@/modules/tasks/TasksTypes';
+import { TesttupleT } from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 
 interface TrainTaskSiderContentProps {
-    task: TestTaskT;
+    task: TesttupleT;
 }
 
 const MetricSiderSection = ({

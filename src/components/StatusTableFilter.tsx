@@ -1,5 +1,5 @@
 import { AssetType } from '@/modules/common/CommonTypes';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -29,12 +29,12 @@ const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
     ] = useSearchFiltersLocation();
 
     const options = [
-        TaskStatus.canceled,
-        TaskStatus.doing,
-        TaskStatus.done,
-        TaskStatus.failed,
-        TaskStatus.todo,
-        TaskStatus.waiting,
+        TupleStatus.canceled,
+        TupleStatus.doing,
+        TupleStatus.done,
+        TupleStatus.failed,
+        TupleStatus.todo,
+        TupleStatus.waiting,
     ];
 
     const value: string[] = searchFilters

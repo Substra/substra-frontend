@@ -5,7 +5,7 @@
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { AnyTaskT } from '@/modules/tasks/TasksTypes';
+import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
@@ -61,7 +61,7 @@ const Worker = styled.span`
 `;
 
 type TaskSiderSectionProps = {
-    task: AnyTaskT;
+    task: AnyTupleT;
 };
 
 const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {

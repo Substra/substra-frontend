@@ -4,12 +4,12 @@ import AlgoSiderSection from './AlgoSiderSection';
 import InModelsSiderSection from './InModelsSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 
-import { AggregateTaskT } from '@/modules/tasks/TasksTypes';
+import { AggregatetupleT } from '@/modules/tasks/TuplesTypes';
 
 import PermissionSiderSection from '@/components/PermissionSiderSection';
 
 interface AggregateTaskSiderContentProps {
-    task: AggregateTaskT;
+    task: AggregatetupleT;
 }
 
 const AggregateTaskSiderContent = ({

@@ -1,6 +1,6 @@
 import { PermissionsType } from '@/modules/common/CommonTypes';
 
-export interface APIAlgoType {
+export interface AlgoT {
     key: string;
     name: string;
     owner: string;
@@ -15,8 +15,4 @@ export interface APIAlgoType {
     };
     metadata: { [key: string]: string };
     creation_date: string;
-}
-
-export interface AlgoType extends APIAlgoType {
-    type: 'standard' | 'aggregate' | 'composite';
 }

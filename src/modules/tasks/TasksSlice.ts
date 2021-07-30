@@ -1,128 +1,160 @@
 import TasksApi from './TasksApi';
-import { AnyTaskT, TaskType } from './TasksTypes';
-import { AnyTupleT } from './TuplesTypes';
+import {
+    AggregatetupleT,
+    AnyTupleT,
+    CompositeTraintupleT,
+    TesttupleT,
+    TraintupleT,
+} from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosPromise, AxiosResponse } from 'axios';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface TasksState {
-    tasks: AnyTaskT[];
-    tasksLoading: boolean;
-    tasksError: string;
+    trainTasks: TraintupleT[];
+    trainTasksLoading: boolean;
+    trainTasksError: string;
 
-    task: AnyTaskT | null;
+    testTasks: TesttupleT[];
+    testTasksLoading: boolean;
+    testTasksError: string;
+
+    compositeTasks: CompositeTraintupleT[];
+    compositeTasksLoading: boolean;
+    compositeTasksError: string;
+
+    aggregateTasks: AggregatetupleT[];
+    aggregateTasksLoading: boolean;
+    aggregateTasksError: string;
+
+    task: AnyTupleT | null;
     taskLoading: boolean;
     taskError: string;
 }
 
 const initialState: TasksState = {
-    tasks: [],
-    tasksLoading: true,
-    tasksError: '',
+    trainTasks: [],
+    trainTasksLoading: true,
+    trainTasksError: '',
+
+    testTasks: [],
+    testTasksLoading: true,
+    testTasksError: '',
+
+    compositeTasks: [],
+    compositeTasksLoading: true,
+    compositeTasksError: '',
+
+    aggregateTasks: [],
+    aggregateTasksLoading: true,
+    aggregateTasksError: '',
 
     task: null,
     taskLoading: true,
     taskError: '',
 };
 
-const addTaskType = (type: TaskType) => (tuple: AnyTupleT): AnyTaskT => {
-    return {
-        ...tuple,
-        type,
-    } as AnyTaskT;
-};
-
-export const listTasks = createAsyncThunk<
-    AnyTaskT[],
+export const listTrainTasks = createAsyncThunk<
+    TraintupleT[],
     SearchFilterType[],
     { rejectValue: string }
->('tasks/list', async (filters: SearchFilterType[], thunkAPI) => {
-    const taskFilters = filters.filter((sf) =>
-        [
-            'traintuple',
-            'composite_traintuple',
-            'aggregatetuple',
-            'testtuple',
-        ].includes(sf.asset)
-    );
-    const typeFilters = taskFilters.filter((sf) => sf.key === 'type');
-    const nonTypeFilters = taskFilters.filter((sf) => sf.key !== 'type');
+>('tasks/listTrainTasks', async (filters: SearchFilterType[], thunkAPI) => {
+    const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
 
-    const requestedTypes = typeFilters.map((sf) => sf.value);
-
-    const listTuplesByType: {
-        [key in TaskType]: (
-            sf: SearchFilterType[]
-        ) => AxiosPromise<AnyTupleT[]>;
-    } = {
-        traintuple: TasksApi.listTraintuples,
-        testtuple: TasksApi.listTesttuples,
-        composite_traintuple: TasksApi.listCompositeTraintuples,
-        aggregatetuple: TasksApi.listAggregatetuples,
-    };
+    const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
 
     try {
-        const promises: AxiosPromise<AnyTupleT[]>[] = [];
-        const responseParsers: ((
-            response: AxiosResponse<AnyTupleT[]>
-        ) => AnyTaskT[])[] = [];
+        const response = await TasksApi.listTraintuples(nonTypeFilters);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
 
-        for (const [type, listTuples] of Object.entries(listTuplesByType)) {
-            if (requestedTypes.length === 0 || requestedTypes.includes(type)) {
-                promises.push(
-                    listTuples(
-                        nonTypeFilters.filter((sf) => sf.asset === type)
-                    ) as AxiosPromise<AnyTupleT[]>
-                );
-                responseParsers.push((response: AxiosResponse<AnyTupleT[]>) =>
-                    response.data.map(addTaskType(type as TaskType))
-                );
-            }
-        }
+export const listTestTasks = createAsyncThunk<
+    TesttupleT[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('tasks/listTestTasks', async (filters: SearchFilterType[], thunkAPI) => {
+    const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
 
-        const responses = await Promise.all(promises);
+    const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
 
-        const result = responses.reduce(
-            (tasks: AnyTaskT[], response, index): AnyTaskT[] => {
-                return [...tasks, ...responseParsers[index](response)];
-            },
-            []
+    try {
+        const response = await TasksApi.listTesttuples(nonTypeFilters);
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
+
+export const listCompositeTasks = createAsyncThunk<
+    CompositeTraintupleT[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('tasks/listCompisiteTasks', async (filters: SearchFilterType[], thunkAPI) => {
+    const compositeFilters = filters.filter(
+        (sf) => (sf.asset = 'composite_traintuple')
+    );
+
+    const nonTypeFilters = compositeFilters.filter((sf) => sf.key !== 'type');
+
+    try {
+        const response = await TasksApi.listCompositeTraintuples(
+            nonTypeFilters
         );
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
 
-        return result;
+export const listAggregateTasks = createAsyncThunk<
+    AggregatetupleT[],
+    SearchFilterType[],
+    { rejectValue: string }
+>('tasks/listAgreggateTasks', async (filters: SearchFilterType[], thunkAPI) => {
+    const aggregateFilters = filters.filter(
+        (sf) => sf.asset === 'aggregatetuple'
+    );
+
+    const nonTypeFilters = aggregateFilters.filter((sf) => sf.key !== 'type');
+
+    try {
+        const response = await TasksApi.listAggregatetuples(nonTypeFilters);
+        return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveTask = createAsyncThunk<
-    AnyTaskT,
+    AnyTupleT,
     string,
     { rejectValue: string }
 >('tasks/get', async (key: string, thunkAPI) => {
     const errors = [];
     try {
         const response = await TasksApi.retrieveTraintuple(key);
-        return addTaskType('traintuple')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
     try {
         const response = await TasksApi.retrieveCompositeTraintuple(key);
-        return addTaskType('composite_traintuple')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
     try {
         const response = await TasksApi.retrieveAggregateTuple(key);
-        return addTaskType('aggregatetuple')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
     try {
         const response = await TasksApi.retrieveTesttuple(key);
-        return addTaskType('testtuple')(response.data);
+        return response.data;
     } catch (err) {
         errors.push(err);
     }
@@ -136,20 +168,65 @@ export const tasksSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(listTasks.pending, (state) => {
-                state.tasks = [];
-                state.tasksLoading = true;
-                state.tasksError = '';
+            .addCase(listTrainTasks.pending, (state) => {
+                state.trainTasks = [];
+                state.trainTasksLoading = true;
+                state.trainTasksError = '';
             })
-            .addCase(listTasks.fulfilled, (state, { payload }) => {
-                state.tasks = payload;
-                state.tasksLoading = false;
-                state.tasksError = '';
+            .addCase(listTrainTasks.fulfilled, (state, { payload }) => {
+                state.trainTasks = payload;
+                state.trainTasksLoading = false;
+                state.trainTasksError = '';
             })
-            .addCase(listTasks.rejected, (state, { payload }) => {
-                state.tasks = [];
-                state.tasksLoading = false;
-                state.tasksError = payload || 'Unknown error';
+            .addCase(listTrainTasks.rejected, (state, { payload }) => {
+                state.trainTasks = [];
+                state.trainTasksLoading = false;
+                state.trainTasksError = payload || 'Unknown error';
+            })
+            .addCase(listTestTasks.pending, (state) => {
+                state.testTasks = [];
+                state.testTasksLoading = true;
+                state.testTasksError = '';
+            })
+            .addCase(listTestTasks.fulfilled, (state, { payload }) => {
+                state.testTasks = payload;
+                state.testTasksLoading = false;
+                state.testTasksError = '';
+            })
+            .addCase(listTestTasks.rejected, (state, { payload }) => {
+                state.testTasks = [];
+                state.testTasksLoading = false;
+                state.testTasksError = payload || 'Unknown error';
+            })
+            .addCase(listCompositeTasks.pending, (state) => {
+                state.compositeTasks = [];
+                state.compositeTasksLoading = true;
+                state.compositeTasksError = '';
+            })
+            .addCase(listCompositeTasks.fulfilled, (state, { payload }) => {
+                state.compositeTasks = payload;
+                state.compositeTasksLoading = false;
+                state.compositeTasksError = '';
+            })
+            .addCase(listCompositeTasks.rejected, (state, { payload }) => {
+                state.compositeTasks = [];
+                state.compositeTasksLoading = false;
+                state.compositeTasksError = payload || 'Unknown error';
+            })
+            .addCase(listAggregateTasks.pending, (state) => {
+                state.aggregateTasks = [];
+                state.aggregateTasksLoading = true;
+                state.aggregateTasksError = '';
+            })
+            .addCase(listAggregateTasks.fulfilled, (state, { payload }) => {
+                state.aggregateTasks = payload;
+                state.aggregateTasksLoading = false;
+                state.aggregateTasksError = '';
+            })
+            .addCase(listAggregateTasks.rejected, (state, { payload }) => {
+                state.aggregateTasks = [];
+                state.aggregateTasksLoading = false;
+                state.aggregateTasksError = payload || 'Unknown error';
             })
             .addCase(retrieveTask.pending, (state) => {
                 state.taskLoading = true;

@@ -60,17 +60,21 @@ const Select = ({
 
     return (
         <SelectContainer {...props}>
-            <HtmlSelect value={value} onChange={handleOnChange}>
-                {options.map(({ label, value }) => (
-                    <option value={value} key={value}>
-                        {label}
-                    </option>
-                ))}
-            </HtmlSelect>
+            {options.length > 1 && (
+                <HtmlSelect value={value} onChange={handleOnChange}>
+                    {options.map(({ label, value }) => (
+                        <option value={value} key={value}>
+                            {label}
+                        </option>
+                    ))}
+                </HtmlSelect>
+            )}
             <SelectedValue>
                 {selectedOption ? selectedOption.label : ''}
             </SelectedValue>
-            <RiArrowDownSLine css={arrowDownIcon} aria-hidden={true} />
+            {options.length > 1 && (
+                <RiArrowDownSLine css={arrowDownIcon} aria-hidden={true} />
+            )}
         </SelectContainer>
     );
 };

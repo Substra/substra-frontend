@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { Link } from 'wouter';
 
 import {
-    CompositeTrainTaskT,
-    TestTaskT,
-    TrainTaskT,
-} from '@/modules/tasks/TasksTypes';
+    CompositeTraintupleT,
+    TesttupleT,
+    TraintupleT,
+} from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -25,7 +25,7 @@ const UlTitle = styled.div`
 `;
 
 interface DatasetSiderSectionProps {
-    task: TrainTaskT | TestTaskT | CompositeTrainTaskT;
+    task: TraintupleT | TesttupleT | CompositeTraintupleT;
 }
 
 const DatasetSiderSection = ({

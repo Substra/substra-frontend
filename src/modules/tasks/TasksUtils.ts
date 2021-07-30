@@ -1,15 +1,16 @@
-import { AnyTaskT } from './TasksTypes';
-import { TupleStatus } from './TuplesTypes';
+import { AnyTupleT, TupleStatus } from './TuplesTypes';
 
-export const getTaskWorker = (task: AnyTaskT): string => {
-    if (task.type === 'aggregatetuple') {
+import { isAggregatetupleT, isTesttupleT } from '@/libs/tuples';
+
+export const getTaskWorker = (task: AnyTupleT): string => {
+    if (isAggregatetupleT(task)) {
         return task.worker;
     }
     return task.dataset.worker;
 };
 
-export const getTaskPerf = (task: AnyTaskT): number | string => {
-    if (task.type === 'testtuple' && task.status === TupleStatus.done) {
+export const getTaskPerf = (task: AnyTupleT): number | string => {
+    if (isTesttupleT(task) && task.status === TupleStatus.done) {
         return task.dataset.perf;
     }
     return 'N/A';

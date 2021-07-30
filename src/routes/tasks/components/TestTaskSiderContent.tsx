@@ -5,10 +5,10 @@ import MetricSiderSection from './MetricSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 import TraintupleSiderSection from './TraintupleSiderSection';
 
-import { TestTaskT } from '@/modules/tasks/TasksTypes';
+import { TesttupleT } from '@/modules/tasks/TuplesTypes';
 
 interface TrainTaskSiderContentProps {
-    task: TestTaskT;
+    task: TesttupleT;
 }
 
 const TrainTaskSiderContent = ({

@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -111,6 +111,10 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
             setValue(keySearchFilter.value);
         }
     }, [searchFilters]);
+
+    useEffect(() => {
+        onAssetChange(defaultAsset);
+    }, [defaultAsset]);
 
     const applySearchFilters = (asset: string) => {
         // preserve all filters that are not on asset key

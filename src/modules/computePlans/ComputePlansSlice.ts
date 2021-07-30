@@ -1,14 +1,14 @@
+import {
+    AggregatetupleT,
+    CompositeTraintupleT,
+    TesttupleT,
+    TraintupleT,
+} from '../tasks/TuplesTypes';
 import ComputePlansApi from './ComputePlansApi';
 import { ComputePlanType } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import TasksApi from '@/modules/tasks/TasksApi';
-import {
-    TestTaskT,
-    TrainTaskT,
-    CompositeTrainTaskT,
-    AggregateTaskT,
-} from '@/modules/tasks/TasksTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -19,16 +19,16 @@ interface ComputePlansState {
     computePlan: ComputePlanType | null;
     computePlanLoading: boolean;
     computePlanError: string;
-    computePlanTrainTasks: TrainTaskT[];
+    computePlanTrainTasks: TraintupleT[];
     computePlanTrainTasksLoading: boolean;
     computePlanTrainTasksError: string;
-    computePlanTestTasks: TestTaskT[];
+    computePlanTestTasks: TesttupleT[];
     computePlanTestTasksLoading: boolean;
     computePlanTestTasksError: string;
-    computePlanAggregateTasks: AggregateTaskT[];
+    computePlanAggregateTasks: AggregatetupleT[];
     computePlanAggregateTasksLoading: boolean;
     computePlanAggregateTasksError: string;
-    computePlanCompositeTasks: CompositeTrainTaskT[];
+    computePlanCompositeTasks: CompositeTraintupleT[];
     computePlanCompositeTasksLoading: boolean;
     computePlanCompositeTasksError: string;
 }
@@ -81,7 +81,7 @@ export const retrieveComputePlan = createAsyncThunk<
 });
 
 export const retrieveComputePlanTrainTasks = createAsyncThunk<
-    TrainTaskT[],
+    TraintupleT[],
     string,
     { rejectValue: string }
 >('computePlans/getTrainTasks', async (computePlanKey: string, thunkAPI) => {
@@ -95,14 +95,14 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
         ];
         const response = await TasksApi.listTraintuples(searchFilters);
 
-        return response.data.map((task) => ({ ...task, type: 'traintuple' }));
+        return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveComputePlanTestTasks = createAsyncThunk<
-    TestTaskT[],
+    TesttupleT[],
     string,
     { rejectValue: string }
 >('computePlans/getTestTasks', async (computePlanKey: string, thunkAPI) => {
@@ -116,14 +116,14 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
         ];
         const response = await TasksApi.listTesttuples(searchFilters);
 
-        return response.data.map((task) => ({ ...task, type: 'testtuple' }));
+        return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
 });
 
 export const retrieveComputePlanAggregateTasks = createAsyncThunk<
-    AggregateTaskT[],
+    AggregatetupleT[],
     string,
     { rejectValue: string }
 >(
@@ -139,10 +139,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
             ];
             const response = await TasksApi.listAggregatetuples(searchFilters);
 
-            return response.data.map((task) => ({
-                ...task,
-                type: 'aggregatetuple',
-            }));
+            return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);
         }
@@ -150,7 +147,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanCompositeTasks = createAsyncThunk<
-    CompositeTrainTaskT[],
+    CompositeTraintupleT[],
     string,
     { rejectValue: string }
 >(
@@ -168,10 +165,7 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
                 searchFilters
             );
 
-            return response.data.map((task) => ({
-                ...task,
-                type: 'composite_traintuple',
-            }));
+            return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);
         }
