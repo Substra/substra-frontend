@@ -35,10 +35,13 @@ interface PerfChartLegendProps {
 }
 const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
     const nodesChartStyles = useNodesChartStyles();
+    const sortedSeries = [...series].sort((serieA, serieB) =>
+        serieA.worker.localeCompare(serieB.worker)
+    );
 
     return (
         <ul>
-            {series.map((serie) => (
+            {sortedSeries.map((serie) => (
                 <Item key={serie.id}>
                     <ItemTitle color={nodesChartStyles[serie.worker].color}>
                         <PerfChartLegendMarker
