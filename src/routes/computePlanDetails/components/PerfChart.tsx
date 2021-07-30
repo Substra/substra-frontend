@@ -87,8 +87,18 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
         },
         scales: {
             x: {
+                title: {
+                    display: true,
+                    text: 'Rank',
+                },
                 grid: {
                     display: false,
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Perf',
                 },
             },
         },
