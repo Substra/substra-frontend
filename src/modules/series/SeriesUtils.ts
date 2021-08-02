@@ -64,11 +64,19 @@ function findSerie(
 
 export function buildSeries(
     testtuples: TesttupleT[],
-    datasetIndex: Index<DatasetStubType>,
-    metricIndex: Index<MetricType>,
-    traintupleIndex: Index<TraintupleT>,
-    compositeTraintupleIndex: Index<CompositeTraintupleT>
+    traintuples: TraintupleT[],
+    compositeTraintuples: CompositeTraintupleT[],
+    datasets: DatasetStubType[],
+    metrics: MetricType[]
 ): SerieT[] {
+    // create indexes
+    const traintupleIndex = buildIndex<TraintupleT>(traintuples);
+    const compositeTraintupleIndex = buildIndex<CompositeTraintupleT>(
+        compositeTraintuples
+    );
+    const datasetIndex = buildIndex<DatasetStubType>(datasets);
+    const metricIndex = buildIndex(metrics);
+
     // create series from test tasks
     const series: SerieT[] = [];
 
@@ -110,10 +118,28 @@ export function buildSeries(
 interface HasKey {
     key: string;
 }
-export function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
+function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
     const index: Record<string, Type> = {};
     for (const asset of assets) {
         index[asset.key] = asset;
     }
     return index;
+}
+
+export function buildSeriesGroups(
+    series: SerieT[],
+    multiChart: boolean
+): SerieT[][] {
+    const groups = [];
+
+    if (multiChart) {
+        const workers = new Set(series.map((serie) => serie.worker));
+        for (const worker of workers) {
+            groups.push(series.filter((serie) => serie.worker === worker));
+        }
+    } else {
+        groups.push(series);
+    }
+
+    return groups;
 }

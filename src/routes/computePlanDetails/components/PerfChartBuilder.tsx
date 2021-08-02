@@ -7,8 +7,9 @@ import PerfChart from './PerfChart';
 import styled from '@emotion/styled';
 
 import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
-import { resetSeries } from '@/modules/series/SeriesSlice';
+import { loadSeries } from '@/modules/series/SeriesSlice';
 import { SerieT } from '@/modules/series/SeriesTypes';
+import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
@@ -34,36 +35,31 @@ const PerfChartBuilder = ({
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(resetSeries(computePlan.key));
-    }, []);
+        dispatch(loadSeries(computePlan.key));
+    }, [computePlan.key]);
+
+    const loading = useAppSelector((state) => state.series.loading);
+    const series = useAppSelector((state) => state.series.series);
 
     const selectedMetricKeys = useAppSelector(
         (state) => state.series.selectedMetricKeys
     );
-    const seriesLoading = useAppSelector((state) => state.series.seriesLoading);
-    const series = useAppSelector((state) => state.series.series);
 
     const [multiChart, setMultiChart] = useState(false);
 
-    const seriesGroups: SerieT[][] = useMemo(() => {
-        const groups = [];
+    const seriesGroups: SerieT[][] = useMemo(
+        () =>
+            buildSeriesGroups(
+                series.filter((serie) =>
+                    selectedMetricKeys.includes(serie.metricKey)
+                ),
+                multiChart
+            ),
+        [series, multiChart, selectedMetricKeys]
+    );
 
-        if (multiChart) {
-            const workers = new Set(series.map((serie) => serie.worker));
-            for (const worker of workers) {
-                groups.push(series.filter((serie) => serie.worker === worker));
-            }
-        } else {
-            groups.push(series);
-        }
-
-        return groups;
-    }, [multiChart, series]);
-
-    if (!selectedMetricKeys.length) {
-        return <MetricKeysSelector computePlan={computePlan} />;
-    } else if (seriesLoading) {
-        return <LoadingState message="Loading series..." />;
+    if (loading) {
+        return <LoadingState message="Loading compute plan data..." />;
     } else if (!seriesGroups.length) {
         return (
             <p>
@@ -74,6 +70,7 @@ const PerfChartBuilder = ({
     } else {
         return (
             <Fragment>
+                <MetricKeysSelector />
                 <LabelContainer>
                     <label>
                         <Checkbox

@@ -1,6 +1,6 @@
 import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
-import { buildIndex, buildSeries } from './SeriesUtils';
+import { buildSeries } from './SeriesUtils';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosPromise } from 'axios';
 
@@ -19,239 +19,177 @@ import { SearchFilterType } from '@/libs/searchFilter';
 interface SeriesState {
     computePlanKey: string;
 
+    series: SerieT[];
     metrics: MetricType[];
-    metricsLoading: boolean;
-    metricsError: string;
 
     selectedMetricKeys: string[];
 
-    testtuples: TesttupleT[];
-
-    series: SerieT[];
-    seriesLoading: boolean;
-    seriesError: string;
+    loading: boolean;
+    error: string;
 }
 
 const initialState: SeriesState = {
     computePlanKey: '',
 
+    series: [],
     metrics: [],
-    metricsLoading: true,
-    metricsError: '',
 
     selectedMetricKeys: [],
 
-    testtuples: [],
-
-    series: [],
-    seriesLoading: false,
-    seriesError: '',
+    loading: true,
+    error: '',
 };
 
-export const listMetrics = createAsyncThunk<
-    { metrics: MetricType[]; testtuples: TesttupleT[] },
+export const loadSeries = createAsyncThunk<
+    {
+        metrics: MetricType[];
+        series: SerieT[];
+    },
     string,
     { rejectValue: string }
->('series/listMetrics', async (computePlanKey, thunkAPI) => {
-    let testtuplesResponse;
-    try {
-        testtuplesResponse = await TasksApi.listTesttuples([
+>('series/loadData', async (computePlanKey, thunkAPI) => {
+    // load tuples
+    const tuplePromises: [
+        AxiosPromise<TesttupleT[]>,
+        AxiosPromise<TraintupleT[]>,
+        AxiosPromise<CompositeTraintupleT[]>
+    ] = [
+        TasksApi.listTesttuples([
             {
                 asset: 'testtuple',
                 key: 'compute_plan_key',
                 value: computePlanKey,
             },
-        ]);
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
-    }
-
-    const testtuples = testtuplesResponse.data;
-
-    // deduplicate metrics keys
-    const metricKeys = new Set(
-        testtuples.map((testtuple) => testtuple.objective.key)
-    );
-
-    // load all the metrics used in the compute plan
-    const metricsSearchFilter: SearchFilterType[] = [];
-    for (const metricKey of metricKeys) {
-        metricsSearchFilter.push({
-            asset: 'objective',
-            key: 'key',
-            value: metricKey,
-        });
-    }
-    let metricsResponse;
+        ]),
+        TasksApi.listTraintuples([
+            {
+                asset: 'traintuple',
+                key: 'compute_plan_key',
+                value: computePlanKey,
+            },
+        ]),
+        TasksApi.listCompositeTraintuples([
+            {
+                asset: 'composite_traintuple',
+                key: 'compute_plan_key',
+                value: computePlanKey,
+            },
+        ]),
+    ];
+    let tupleResponses;
     try {
-        metricsResponse = await MetricsApi.listMetrics(metricsSearchFilter);
+        tupleResponses = await Promise.all(tuplePromises);
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
-    const metrics = metricsResponse.data;
+
+    const testtuples = tupleResponses[0].data;
+    const traintuples = tupleResponses[1].data;
+    const compositeTraintuples = tupleResponses[2].data;
+
+    // load datasets and metrics
+
+    let metrics: MetricType[] = [];
+    let datasets: DatasetStubType[] = [];
+    if (testtuples.length) {
+        const metricKeys: string[] = [];
+        const datasetKeys: string[] = [];
+        for (const testtuple of testtuples) {
+            if (!metricKeys.includes(testtuple.objective.key)) {
+                metricKeys.push(testtuple.objective.key);
+            }
+            if (!datasetKeys.includes(testtuple.dataset.key)) {
+                datasetKeys.push(testtuple.dataset.key);
+            }
+        }
+        const metricSearchFilters = metricKeys.map(
+            (key: string): SearchFilterType => ({
+                asset: 'objective',
+                key: 'key',
+                value: key,
+            })
+        );
+        const datasetSearchFilters = metricKeys.map(
+            (key: string): SearchFilterType => ({
+                asset: 'objective',
+                key: 'key',
+                value: key,
+            })
+        );
+        const promises: [
+            AxiosPromise<MetricType[]>,
+            AxiosPromise<DatasetStubType[]>
+        ] = [
+            MetricsApi.listMetrics(metricSearchFilters),
+            DatasetsApi.listDatasets(datasetSearchFilters),
+        ];
+        let responses;
+        try {
+            responses = await Promise.all(promises);
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
+
+        metrics = responses[0].data;
+        datasets = responses[1].data;
+    }
+
+    // build series
+
+    const series = buildSeries(
+        testtuples,
+        traintuples,
+        compositeTraintuples,
+        datasets,
+        metrics
+    );
 
     return {
         metrics,
-        testtuples,
+        series,
     };
-});
-
-function emptyAxiosPromise<Type>(): AxiosPromise<Type[]> {
-    return new Promise((resolve) => {
-        resolve({
-            data: [],
-            status: 0,
-            statusText: 'foo',
-            headers: {},
-            config: {},
-        });
-    });
-}
-
-export const loadSeries = createAsyncThunk<
-    SerieT[],
-    string[],
-    { rejectValue: string }
->('series/loadSeries', async (metricKeys, thunkAPI) => {
-    const {
-        series: { testtuples, metrics },
-    } = thunkAPI.getState() as { series: SeriesState };
-    const selectedTesttuples = testtuples.filter((testtuple) =>
-        metricKeys.includes(testtuple.objective.key)
-    );
-
-    // load datasets, traintuples and composite traintuples
-    // build filters
-    const datasetFilters: SearchFilterType[] = [];
-    const datasetKeys = new Set(
-        selectedTesttuples.map((testtuple) => testtuple.dataset.key)
-    );
-    for (const datasetKey of datasetKeys) {
-        datasetFilters.push({
-            asset: 'dataset',
-            key: 'key',
-            value: datasetKey,
-        });
-    }
-    const traintupleFilters: SearchFilterType[] = selectedTesttuples
-        .filter((testtuple) => testtuple.traintuple_type === 'traintuple')
-        .map((testtuple) => ({
-            asset: 'traintuple',
-            key: 'key',
-            value: testtuple.traintuple_key,
-        }));
-    const compositeTraintupleFilters: SearchFilterType[] = selectedTesttuples
-        .filter(
-            (testtuple) => testtuple.traintuple_type === 'composite_traintuple'
-        )
-        .map((testtuple) => ({
-            asset: 'composite_traintuple',
-            key: 'key',
-            value: testtuple.traintuple_key,
-        }));
-
-    // actually load assets
-    const promises: [
-        AxiosPromise<DatasetStubType[]>,
-        AxiosPromise<TraintupleT[]>,
-        AxiosPromise<CompositeTraintupleT[]>
-    ] = [
-        DatasetsApi.listDatasets(datasetFilters),
-        traintupleFilters.length
-            ? TasksApi.listTraintuples(traintupleFilters)
-            : emptyAxiosPromise<TraintupleT>(),
-        compositeTraintupleFilters.length
-            ? TasksApi.listCompositeTraintuples(compositeTraintupleFilters)
-            : emptyAxiosPromise<CompositeTraintupleT>(),
-    ];
-    let responses;
-    try {
-        responses = await Promise.all(promises);
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
-    }
-
-    // build indexes
-    const metricIndex = buildIndex(metrics);
-    const datasetIndex = buildIndex<DatasetStubType>(responses[0].data);
-    const traintupleIndex = buildIndex<TraintupleT>(responses[1].data);
-    const compositeTraintupleIndex = buildIndex<CompositeTraintupleT>(
-        responses[2].data
-    );
-
-    // build series from test tasks
-    return buildSeries(
-        testtuples,
-        datasetIndex,
-        metricIndex,
-        traintupleIndex,
-        compositeTraintupleIndex
-    );
 });
 
 export const seriesSlice = createSlice({
     name: 'series',
     initialState,
     reducers: {
-        resetSeries(state: SeriesState, action: PayloadAction<string>) {
-            const computePlanKey = action.payload;
-            if (state.computePlanKey !== computePlanKey) {
-                state.metrics = initialState.metrics;
-                state.metricsLoading = initialState.metricsLoading;
-                state.metricsError = initialState.metricsError;
-
-                state.testtuples = initialState.testtuples;
-            }
-
-            state.series = initialState.series;
-            state.seriesLoading = initialState.seriesLoading;
-            state.seriesError = initialState.seriesError;
-
-            state.selectedMetricKeys = initialState.selectedMetricKeys;
-
-            state.computePlanKey = computePlanKey;
+        setSelectedMetricKeys(
+            state: SeriesState,
+            action: PayloadAction<string[]>
+        ) {
+            state.selectedMetricKeys = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(listMetrics.pending, (state, action) => {
-                state.metrics = [];
-                state.testtuples = [];
-                state.metricsLoading = true;
-                state.metricsError = '';
-                state.computePlanKey = action.meta.arg;
-            })
-            .addCase(listMetrics.fulfilled, (state, { payload }) => {
-                state.metrics = payload.metrics;
-                state.testtuples = payload.testtuples;
-                state.metricsLoading = false;
-                state.metricsError = '';
-            })
-            .addCase(listMetrics.rejected, (state, { payload }) => {
-                state.metrics = [];
-                state.testtuples = [];
-                state.metricsLoading = false;
-                state.metricsError = payload || 'Unknown error';
-            })
             .addCase(loadSeries.pending, (state, action) => {
+                state.computePlanKey = action.meta.arg;
                 state.series = [];
-                state.seriesLoading = true;
-                state.seriesError = '';
-                state.selectedMetricKeys = action.meta.arg;
+                state.metrics = [];
+                state.selectedMetricKeys = [];
+                state.loading = true;
+                state.error = '';
             })
             .addCase(loadSeries.fulfilled, (state, { payload }) => {
-                state.series = payload;
-                state.seriesLoading = false;
-                state.seriesError = '';
+                state.series = payload.series;
+                state.metrics = payload.metrics;
+                state.selectedMetricKeys = payload.metrics.map(
+                    (metric) => metric.key
+                );
+                state.loading = false;
+                state.error = '';
             })
-            .addCase(loadSeries.rejected, (state) => {
+            .addCase(loadSeries.rejected, (state, { payload }) => {
                 state.series = [];
-                state.seriesLoading = false;
-                state.seriesError = '';
+                state.metrics = [];
+                state.selectedMetricKeys = [];
+                state.loading = false;
+                state.error = payload || 'Unknown error';
             });
     },
 });
 
-export const { resetSeries } = seriesSlice.actions;
+export const { setSelectedMetricKeys } = seriesSlice.actions;
 
 export default seriesSlice.reducer;
