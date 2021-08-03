@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/connect-314908
-  name: connect-frontend
+  registry: gcr.io
+  repository: connect-314908/connect-frontend
   tag: null # defaults to AppVersion
   pullPolicy: IfNotPresent
 

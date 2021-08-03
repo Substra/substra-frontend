@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta16
 kind: Config
 build:
     artifacts:
-        - image: owkin
+        - image: &imageref eu.gcr.io/connect-314908/connect-frontend
           context: .
 
 deploy:
@@ -13,9 +13,10 @@ deploy:
               namespace: org-1
               createNamespace: true
               artifactOverrides:
-                  image: owkin
+                  image: *imageref
               imageStrategy:
-                  helm: {}
+                  helm:
+                      explicitRegistry: true
               valuesFiles:
                   - 'skaffold-values/org-1.yaml'
 
@@ -24,9 +25,10 @@ deploy:
               namespace: org-2
               createNamespace: true
               artifactOverrides:
-                  image: owkin
+                  image: *imageref
               imageStrategy:
-                  helm: {}
+                  helm:
+                      explicitRegistry: true
               valuesFiles:
                   - 'skaffold-values/org-2.yaml'
 
