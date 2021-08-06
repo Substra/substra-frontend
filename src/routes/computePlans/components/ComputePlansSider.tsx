@@ -18,6 +18,7 @@ import {
 } from '@/modules/computePlans/ComputePlansSlice';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 import {
+    TupleType,
     AggregatetupleT,
     AnyTupleT,
     CompositeTraintupleT,
@@ -152,6 +153,11 @@ const ComputePlanSider = (): JSX.Element => {
     const computePlanAggregateTasksLoading = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksLoading
     );
+    const tasksLoading =
+        computePlanTrainTasksLoading ||
+        computePlanTestTasksLoading ||
+        computePlanAggregateTasksLoading ||
+        computePlanCompositeTasksLoading;
 
     const incrementNodeWaitingTasks = (count: number, status: TupleStatus) => {
         if (status === TupleStatus.waiting) {
@@ -165,6 +171,29 @@ const ComputePlanSider = (): JSX.Element => {
         }
         return count;
     };
+
+    const computePlanFailedTask = useMemo(() => {
+        if (!computePlan || !computePlan.failed_tuple.type) {
+            return undefined;
+        }
+
+        const tasks: Record<TupleType, AnyTupleT[]> = {
+            traintuple: computePlanTrainTasks,
+            testtuple: computePlanTestTasks,
+            aggregatetuple: computePlanAggregateTasks,
+            composite_traintuple: computePlanCompositeTasks,
+        };
+
+        return tasks[computePlan.failed_tuple.type].find(
+            (task) => task.key === computePlan.failed_tuple.key
+        );
+    }, [
+        computePlan,
+        computePlanTrainTasks,
+        computePlanTestTasks,
+        computePlanCompositeTasks,
+        computePlanAggregateTasks,
+    ]);
 
     const getTasksNodes = (tasks: AnyTupleT[]) => {
         const nodes: Record<string, number> = {};
@@ -194,11 +223,6 @@ const ComputePlanSider = (): JSX.Element => {
             computePlanCompositeTasks,
         ]
     );
-    const nodesListLoading =
-        computePlanTrainTasksLoading ||
-        computePlanTestTasksLoading ||
-        computePlanAggregateTasksLoading ||
-        computePlanCompositeTasksLoading;
 
     let percentage = 0;
     if (computePlan) {
@@ -262,8 +286,8 @@ const ComputePlanSider = (): JSX.Element => {
                 <SiderSectionTitle>
                     Nodes running on compute plan
                 </SiderSectionTitle>
-                {nodesListLoading && <LoadingNodeSiderSection />}
-                {!nodesListLoading &&
+                {tasksLoading && <LoadingNodeSiderSection />}
+                {!tasksLoading &&
                     Object.entries(nodesList).map(([node, waitingTasks]) => {
                         return (
                             <NodeSiderElement
@@ -274,6 +298,15 @@ const ComputePlanSider = (): JSX.Element => {
                         );
                     })}
             </SiderSection>
+            {computePlan?.failed_tuple.key && (
+                <SiderSection>
+                    <SiderSectionTitle>Failed task</SiderSectionTitle>
+                    {tasksLoading && <LoadingTaskSiderSection />}
+                    {!tasksLoading && computePlanFailedTask && (
+                        <TaskSiderSection task={computePlanFailedTask} />
+                    )}
+                </SiderSection>
+            )}
             <ExpandableSiderSection title="Train tasks">
                 {computePlanTrainTasksLoading && <LoadingTaskSiderSection />}
                 {!computePlanTrainTasksLoading &&

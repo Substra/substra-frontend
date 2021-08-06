@@ -1,3 +1,5 @@
+import { TupleType } from '@/modules/tasks/TuplesTypes';
+
 export interface ComputePlanType {
     creation_date: string;
     clean_models: boolean;
@@ -9,6 +11,7 @@ export interface ComputePlanType {
     traintuple_keys: string[];
     aggregatetuple_keys: string[];
     composite_traintuple_keys: string[];
+    failed_tuple: { key?: string; type?: TupleType };
     tuple_count: number;
     metadata: { [key: string]: string };
 }
