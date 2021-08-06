@@ -141,7 +141,7 @@ const Tasks = (): JSX.Element => {
         },
         {
             id: 2,
-            name: 'Composite tasks',
+            name: 'Composite train tasks',
             searchLabel: 'Composite task',
             slug: 'composite_traintuple',
             loading: useAppSelector(

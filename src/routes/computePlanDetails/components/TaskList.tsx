@@ -150,7 +150,7 @@ const TaskList = (): JSX.Element => {
             },
             {
                 id: 2,
-                name: 'Composite tasks',
+                name: 'Composite train tasks',
             },
             {
                 id: 3,

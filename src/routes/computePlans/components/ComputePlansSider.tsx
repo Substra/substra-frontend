@@ -300,15 +300,15 @@ const ComputePlanSider = (): JSX.Element => {
                     <TaskSiderSection key={testTask.key} task={testTask} />
                 ))}
             </ExpandableSiderSection>
-            <ExpandableSiderSection title="Composite tasks">
+            <ExpandableSiderSection title="Composite train tasks">
                 {computePlanCompositeTasksLoading && (
                     <LoadingTaskSiderSection />
                 )}
                 {!computePlanCompositeTasksLoading &&
                     computePlanCompositeTasks.length === 0 && (
                         <TaskText>
-                            This compute plan doesn't have any composite tasks
-                            attached
+                            This compute plan doesn't have any composite train
+                            tasks attached
                         </TaskText>
                     )}
                 {computePlanCompositeTasks.map((compositeTask) => (
