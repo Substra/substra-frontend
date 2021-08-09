@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
 import styled from '@emotion/styled';
@@ -8,6 +8,8 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
+import Checkbox from '@/components/Checkbox';
+
 import { Spaces } from '@/assets/theme';
 
 const Container = styled.div`
@@ -16,15 +18,29 @@ const Container = styled.div`
     margin: ${Spaces.extraLarge} 0;
 `;
 
+const LabelContainer = styled.div`
+    margin-bottom: ${Spaces.medium};
+
+    & > label > div {
+        margin-right: ${Spaces.medium};
+    }
+`;
+
 const LineContainer = styled.div`
     width: 500px;
     margin-right: ${Spaces.extraLarge};
 `;
 
+const average = (values: number[]): number => {
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
+};
+
 interface PerfChartProps {
     series: SerieT[];
 }
 const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
+    const [displayAverage, setDisplayAverage] = useState(true);
+
     const nodesChartStyles = useNodesChartStyles();
 
     const maxRank = useMemo(
@@ -39,10 +55,48 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
         [series]
     );
 
-    const data = useMemo(
-        () => ({
-            labels: [...Array(maxRank + 1).keys()],
-            datasets: series.map((serie) => ({
+    const averageDataset = useMemo(() => {
+        if (series.length < 2) {
+            return null;
+        }
+
+        const ranksPerfs: Record<number, number[]> = {};
+        for (const serie of series) {
+            for (const point of serie.points) {
+                if (point.perf !== null) {
+                    ranksPerfs[point.rank] = ranksPerfs[point.rank]
+                        ? [...ranksPerfs[point.rank], point.perf]
+                        : [point.perf];
+                }
+            }
+        }
+
+        return {
+            label: 'Average',
+            data: Object.entries(ranksPerfs)
+                .filter(([, perfs]) => perfs.length === series.length)
+                .map(([rank, perfs]) => ({
+                    x: parseInt(rank),
+                    y: average(perfs),
+                    testTaskKey: `average for rank ${rank}`,
+                })),
+            parsing: false,
+            // styles
+            backgroundColor: '#000',
+            borderColor: '#000',
+            // line styles
+            borderWidth: 3,
+            // point styles
+            pointStyle: 'circle',
+            pointBackgroundColor: 'white',
+            pointBorderColor: '#000',
+            pointBorderWidth: 3,
+        };
+    }, [series]);
+
+    const seriesDatasets = useMemo(
+        () =>
+            series.map((serie) => ({
                 label: serie.id,
                 data: serie.points.map((point) => ({
                     x: point.rank,
@@ -61,8 +115,18 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
                 pointBorderColor: nodesChartStyles[serie.worker].color,
                 pointBorderWidth: 2,
             })),
+        [series]
+    );
+
+    const data = useMemo(
+        () => ({
+            labels: [...Array(maxRank + 1).keys()],
+            datasets: [
+                ...seriesDatasets,
+                ...(averageDataset && displayAverage ? [averageDataset] : []),
+            ],
         }),
-        [maxRank, series]
+        [maxRank, seriesDatasets, averageDataset, displayAverage]
     );
 
     const options = {
@@ -106,6 +170,17 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
 
     return (
         <Container>
+            {averageDataset && (
+                <LabelContainer>
+                    <label>
+                        <Checkbox
+                            checked={displayAverage}
+                            onChange={() => setDisplayAverage(!displayAverage)}
+                        />
+                        Display average perf
+                    </label>
+                </LabelContainer>
+            )}
             <LineContainer>
                 <Line type="line" data={data} options={options} />
             </LineContainer>
