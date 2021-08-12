@@ -1,3 +1,4 @@
+import { PaginatedApiResponse } from '../common/CommonTypes';
 import TasksApi from './TasksApi';
 import {
     AggregatetupleT,
@@ -12,18 +13,22 @@ import { SearchFilterType } from '@/libs/searchFilter';
 
 interface TasksState {
     trainTasks: TraintupleT[];
+    trainTasksCount: number;
     trainTasksLoading: boolean;
     trainTasksError: string;
 
     testTasks: TesttupleT[];
+    testTasksCount: number;
     testTasksLoading: boolean;
     testTasksError: string;
 
     compositeTasks: CompositeTraintupleT[];
+    compositeTasksCount: number;
     compositeTasksLoading: boolean;
     compositeTasksError: string;
 
     aggregateTasks: AggregatetupleT[];
+    aggregateTasksCount: number;
     aggregateTasksLoading: boolean;
     aggregateTasksError: string;
 
@@ -34,18 +39,22 @@ interface TasksState {
 
 const initialState: TasksState = {
     trainTasks: [],
+    trainTasksCount: 0,
     trainTasksLoading: true,
     trainTasksError: '',
 
     testTasks: [],
+    testTasksCount: 0,
     testTasksLoading: true,
     testTasksError: '',
 
     compositeTasks: [],
+    compositeTasksCount: 0,
     compositeTasksLoading: true,
     compositeTasksError: '',
 
     aggregateTasks: [],
+    aggregateTasksCount: 0,
     aggregateTasksLoading: true,
     aggregateTasksError: '',
 
@@ -54,34 +63,44 @@ const initialState: TasksState = {
     taskError: '',
 };
 
+export interface listTasksArgs {
+    filters: SearchFilterType[];
+    page?: number;
+}
 export const listTrainTasks = createAsyncThunk<
-    TraintupleT[],
-    SearchFilterType[],
+    PaginatedApiResponse<TraintupleT>,
+    listTasksArgs,
     { rejectValue: string }
->('tasks/listTrainTasks', async (filters: SearchFilterType[], thunkAPI) => {
-    const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
+>(
+    'tasks/listTrainTasks',
+    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+        const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
 
-    const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
+        const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
 
-    try {
-        const response = await TasksApi.listTraintuples(nonTypeFilters);
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+        try {
+            const response = await TasksApi.listTraintuples(
+                nonTypeFilters,
+                page
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const listTestTasks = createAsyncThunk<
-    TesttupleT[],
-    SearchFilterType[],
+    PaginatedApiResponse<TesttupleT>,
+    listTasksArgs,
     { rejectValue: string }
->('tasks/listTestTasks', async (filters: SearchFilterType[], thunkAPI) => {
+>('tasks/listTestTasks', async ({ filters, page }: listTasksArgs, thunkAPI) => {
     const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
 
     const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
 
     try {
-        const response = await TasksApi.listTesttuples(nonTypeFilters);
+        const response = await TasksApi.listTesttuples(nonTypeFilters, page);
         return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
@@ -89,44 +108,58 @@ export const listTestTasks = createAsyncThunk<
 });
 
 export const listCompositeTasks = createAsyncThunk<
-    CompositeTraintupleT[],
-    SearchFilterType[],
+    PaginatedApiResponse<CompositeTraintupleT>,
+    listTasksArgs,
     { rejectValue: string }
->('tasks/listCompisiteTasks', async (filters: SearchFilterType[], thunkAPI) => {
-    const compositeFilters = filters.filter(
-        (sf) => (sf.asset = 'composite_traintuple')
-    );
-
-    const nonTypeFilters = compositeFilters.filter((sf) => sf.key !== 'type');
-
-    try {
-        const response = await TasksApi.listCompositeTraintuples(
-            nonTypeFilters
+>(
+    'tasks/listCompisiteTasks',
+    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+        const compositeFilters = filters.filter(
+            (sf) => (sf.asset = 'composite_traintuple')
         );
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+
+        const nonTypeFilters = compositeFilters.filter(
+            (sf) => sf.key !== 'type'
+        );
+
+        try {
+            const response = await TasksApi.listCompositeTraintuples(
+                nonTypeFilters,
+                page
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const listAggregateTasks = createAsyncThunk<
-    AggregatetupleT[],
-    SearchFilterType[],
+    PaginatedApiResponse<AggregatetupleT>,
+    listTasksArgs,
     { rejectValue: string }
->('tasks/listAgreggateTasks', async (filters: SearchFilterType[], thunkAPI) => {
-    const aggregateFilters = filters.filter(
-        (sf) => sf.asset === 'aggregatetuple'
-    );
+>(
+    'tasks/listAgreggateTasks',
+    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+        const aggregateFilters = filters.filter(
+            (sf) => sf.asset === 'aggregatetuple'
+        );
 
-    const nonTypeFilters = aggregateFilters.filter((sf) => sf.key !== 'type');
+        const nonTypeFilters = aggregateFilters.filter(
+            (sf) => sf.key !== 'type'
+        );
 
-    try {
-        const response = await TasksApi.listAggregatetuples(nonTypeFilters);
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+        try {
+            const response = await TasksApi.listAggregatetuples(
+                nonTypeFilters,
+                page
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const retrieveTask = createAsyncThunk<
     AnyTupleT,
@@ -174,7 +207,8 @@ export const tasksSlice = createSlice({
                 state.trainTasksError = '';
             })
             .addCase(listTrainTasks.fulfilled, (state, { payload }) => {
-                state.trainTasks = payload;
+                state.trainTasks = payload.results;
+                state.trainTasksCount = payload.count;
                 state.trainTasksLoading = false;
                 state.trainTasksError = '';
             })
@@ -189,7 +223,8 @@ export const tasksSlice = createSlice({
                 state.testTasksError = '';
             })
             .addCase(listTestTasks.fulfilled, (state, { payload }) => {
-                state.testTasks = payload;
+                state.testTasks = payload.results;
+                state.testTasksCount = payload.count;
                 state.testTasksLoading = false;
                 state.testTasksError = '';
             })
@@ -204,7 +239,8 @@ export const tasksSlice = createSlice({
                 state.compositeTasksError = '';
             })
             .addCase(listCompositeTasks.fulfilled, (state, { payload }) => {
-                state.compositeTasks = payload;
+                state.compositeTasks = payload.results;
+                state.compositeTasksCount = payload.count;
                 state.compositeTasksLoading = false;
                 state.compositeTasksError = '';
             })
@@ -219,7 +255,8 @@ export const tasksSlice = createSlice({
                 state.aggregateTasksError = '';
             })
             .addCase(listAggregateTasks.fulfilled, (state, { payload }) => {
-                state.aggregateTasks = payload;
+                state.aggregateTasks = payload.results;
+                state.aggregateTasksCount = payload.count;
                 state.aggregateTasksLoading = false;
                 state.aggregateTasksError = '';
             })

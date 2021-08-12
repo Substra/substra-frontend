@@ -1,68 +1,80 @@
-import { Fragment, useEffect, useState } from 'react';
+/** @jsxRuntime classic */
 
-import { css } from '@emotion/react';
+/** @jsx jsx */
+import { useEffect, useState } from 'react';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
+import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
     retrieveComputePlanAggregateTasks,
     retrieveComputePlanCompositeTasks,
+    retrieveComputePlanTasksArgs,
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { getTaskPerf, getTaskWorker } from '@/modules/tasks/TasksUtils';
+import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import { isTesttupleT } from '@/libs/tuples';
 
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
+
+import { PATHS } from '@/routes';
+
+import {
+    CreationDateSkeletonTd,
+    CreationDateTd,
+    creationDateWidth,
+} from '@/components/CreationDateTableCells';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
-import { EmptyTr, Table, Tbody, Td, Th, Thead, Tr } from '@/components/Table';
+import {
+    EmptyTr,
+    ownerColWidth,
+    Table,
+    TableSkeleton,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+} from '@/components/Table';
+import TablePagination from '@/components/TablePagination';
 
-import { Colors, Fonts, Spaces } from '@/assets/theme';
+import { Colors, Spaces } from '@/assets/theme';
 
 const thStyle = css`
-    background: ${Colors.darkBackground};
-    padding: ${Spaces.medium} ${Spaces.small};
-    text-align: left;
-
-    &:first-of-type {
-        border-top-left-radius: 8px;
+    & > div {
+        background: ${Colors.darkBackground};
+        padding: ${Spaces.medium} ${Spaces.medium};
     }
-    &:last-of-type {
+
+    &:first-of-type > div {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 0;
+    }
+    &:last-of-type > div {
         border-top-right-radius: 8px;
+        border-bottom-right-radius: 0;
     }
 `;
 
 const statusColWidth = css`
-    width: 150px;
-`;
-
-const workerColWidth = css`
-    width: 200px;
-`;
-
-const executionColWidth = css`
-    width: 100px;
-`;
-
-const computeColWidth = css`
     width: 200px;
 `;
 
 const rankColWidth = css`
-    width: 100px;
+    width: 70px;
 `;
-
-const performanceColWidth = css`
-    width: 200px;
-`;
-
-const Label = styled.div`
-    color: ${Colors.lightContent};
-    font-size: ${Fonts.sizes.input};
-    margin-bottom: ${Spaces.small};
+const perfColWidth = css`
+    width: 110px;
 `;
 
 interface TypeButtonProps {
@@ -84,95 +96,129 @@ const TypeButton = styled.button<TypeButtonProps>`
 
 const TaskButtonsContainer = styled.div`
     display: flex;
-    margin-bottom: ${Spaces.medium};
+    margin: ${Spaces.medium} 0;
 `;
 
-const TaskList = (): JSX.Element => {
-    const dispatch = useAppDispatch();
-    const [selectedTask, setSelectedTask] = useState(0);
-    const [tasks, setTasks] = useState<AnyTupleT[]>([]);
-    const isLoading = false;
+interface selectedTaskT {
+    id: number;
+    name: string;
+    searchLabel: string;
+    slug: AssetType;
+    loading: boolean;
+    list: AsyncThunkAction<
+        PaginatedApiResponse<AnyTupleT>,
+        retrieveComputePlanTasksArgs,
+        { rejectValue: string }
+    >;
+    tasks: AnyTupleT[];
+    count: number;
+}
 
-    const computePlan = useAppSelector(
-        (state) => state.computePlans.computePlan
-    );
+const Tasks = (): JSX.Element => {
+    const dispatch = useAppDispatch();
+    const {
+        params: { page },
+        setLocationWithParams,
+    } = useLocationWithParams();
+
+    // the || '' at the end is just a way to make sure computePlanKey is always a string.
+    const computePlanKey =
+        useAppSelector((state) => state.computePlans.computePlan?.key) || '';
+    const [selectedTaskType, setSelectedTaskType] = useState(0);
+
+    const taskTypes: selectedTaskT[] = [
+        {
+            id: 0,
+            name: 'Train tasks',
+            searchLabel: 'Train task',
+            slug: 'traintuple',
+            loading: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasksLoading
+            ),
+            list: retrieveComputePlanTrainTasks({ computePlanKey, page }),
+            tasks: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasks
+            ),
+            count: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasksCount
+            ),
+        },
+        {
+            id: 1,
+            name: 'Test tasks',
+            searchLabel: 'Test task',
+            slug: 'testtuple',
+            loading: useAppSelector(
+                (state) => state.computePlans.computePlanTestTasksLoading
+            ),
+            list: retrieveComputePlanTestTasks({ computePlanKey, page }),
+            tasks: useAppSelector(
+                (state) => state.computePlans.computePlanTestTasks
+            ),
+            count: useAppSelector(
+                (state) => state.computePlans.computePlanTestTasksCount
+            ),
+        },
+        {
+            id: 2,
+            name: 'Composite train tasks',
+            searchLabel: 'Composite task',
+            slug: 'composite_traintuple',
+            loading: useAppSelector(
+                (state) => state.computePlans.computePlanCompositeTasksLoading
+            ),
+            list: retrieveComputePlanCompositeTasks({ computePlanKey, page }),
+            tasks: useAppSelector(
+                (state) => state.computePlans.computePlanCompositeTasks
+            ),
+            count: useAppSelector(
+                (state) => state.computePlans.computePlanCompositeTasksCount
+            ),
+        },
+        {
+            id: 3,
+            name: 'Aggregate tasks',
+            searchLabel: 'Aggregate task',
+            slug: 'aggregatetuple',
+            loading: useAppSelector(
+                (state) => state.computePlans.computePlanAggregateTasksLoading
+            ),
+            list: retrieveComputePlanAggregateTasks({ computePlanKey, page }),
+            tasks: useAppSelector(
+                (state) => state.computePlans.computePlanAggregateTasks
+            ),
+            count: useAppSelector(
+                (state) => state.computePlans.computePlanAggregateTasksCount
+            ),
+        },
+    ];
 
     useEffect(() => {
-        if (computePlan) {
-            switch (selectedTask) {
-                case 0:
-                    dispatch(retrieveComputePlanTrainTasks(computePlan.key))
-                        .then(unwrapResult)
-                        .then((tasks) => {
-                            setTasks(tasks);
-                        });
-                    break;
-
-                case 1:
-                    dispatch(retrieveComputePlanTestTasks(computePlan.key))
-                        .then(unwrapResult)
-                        .then((tasks) => {
-                            setTasks(tasks);
-                        });
-                    break;
-
-                case 2:
-                    dispatch(retrieveComputePlanCompositeTasks(computePlan.key))
-                        .then(unwrapResult)
-                        .then((tasks) => {
-                            setTasks(tasks);
-                        });
-                    break;
-
-                case 3:
-                    dispatch(retrieveComputePlanAggregateTasks(computePlan.key))
-                        .then(unwrapResult)
-                        .then((tasks) => {
-                            setTasks(tasks);
-                        });
-                    break;
-
-                default:
-                    break;
-            }
+        if (computePlanKey) {
+            dispatch(taskTypes[selectedTaskType].list);
         }
-    }, [selectedTask]);
+    }, [computePlanKey, selectedTaskType, page]);
+
+    const key = useKeyFromPath(PATHS.TASK);
+
+    useAssetListDocumentTitleEffect('Tasks list', key);
 
     const renderTasksButtons = () => {
-        const tasksTypes = [
-            {
-                id: 0,
-                name: 'Train tasks',
-            },
-            {
-                id: 1,
-                name: 'Test tasks',
-            },
-            {
-                id: 2,
-                name: 'Composite train tasks',
-            },
-            {
-                id: 3,
-                name: 'Aggregate tasks',
-            },
-        ];
-
         return (
-            <Fragment>
-                <Label>Task type</Label>
-                <TaskButtonsContainer>
-                    {tasksTypes.map((taskType) => (
-                        <TypeButton
-                            onClick={() => setSelectedTask(taskType.id)}
-                            key={taskType.id}
-                            active={selectedTask === taskType.id}
-                        >
-                            {taskType.name}
-                        </TypeButton>
-                    ))}
-                </TaskButtonsContainer>
-            </Fragment>
+            <TaskButtonsContainer>
+                {taskTypes.map((taskType) => (
+                    <TypeButton
+                        onClick={() => {
+                            setLocationWithParams({ page: 1 });
+                            setSelectedTaskType(taskType.id);
+                        }}
+                        key={taskType.id}
+                        active={selectedTaskType === taskType.id}
+                    >
+                        {taskType.name}
+                    </TypeButton>
+                ))}
+            </TaskButtonsContainer>
         );
     };
 
@@ -182,63 +228,71 @@ const TaskList = (): JSX.Element => {
             <Table>
                 <Thead>
                     <Tr>
+                        <Th css={[thStyle, creationDateWidth]}>
+                            Creation date
+                        </Th>
                         <Th css={[thStyle, statusColWidth]}>Current status</Th>
-                        <Th css={[thStyle, workerColWidth]}>Worker</Th>
-                        <Th css={[thStyle, executionColWidth]}>
-                            Execution time
-                        </Th>
-                        <Th css={[thStyle, computeColWidth]}>Compute plan</Th>
+                        <Th css={[thStyle, ownerColWidth]}>Worker</Th>
                         <Th css={[thStyle, rankColWidth]}>Rank</Th>
-                        <Th css={[thStyle, performanceColWidth]}>
-                            Performance
-                        </Th>
+                        <Th css={[thStyle, perfColWidth]}>Performance</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {!isLoading && tasks.length === 0 && (
-                        <EmptyTr nbColumns={7} />
+                    {taskTypes[selectedTaskType].loading && (
+                        <TableSkeleton
+                            itemCount={taskTypes[selectedTaskType].count}
+                            currentPage={page}
+                        >
+                            <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={150} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={60} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={90} height={12} />
+                            </Td>
+                        </TableSkeleton>
                     )}
-                    {isLoading
-                        ? [1, 2, 3].map((index) => (
-                              <Tr key={index}>
-                                  <Td>
-                                      <Skeleton width={150} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={200} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={100} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={200} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={100} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={200} height={12} />
-                                  </Td>
-                              </Tr>
-                          ))
-                        : tasks.map((task) => {
-                              return (
-                                  <Tr key={task.key}>
-                                      <Td>
-                                          <Status status={task.status} />
-                                      </Td>
-                                      <Td>{getTaskWorker(task)}</Td>
-                                      <Td>Coming soon</Td>
-                                      <Td>{task.key}</Td>
-                                      <Td>{task.rank}</Td>
-                                      <Td>{getTaskPerf(task)}</Td>
-                                  </Tr>
-                              );
-                          })}
+                    {!taskTypes[selectedTaskType].loading &&
+                        taskTypes[selectedTaskType].tasks.length === 0 && (
+                            <EmptyTr nbColumns={7} />
+                        )}
+                    {!taskTypes[selectedTaskType].loading &&
+                        taskTypes[selectedTaskType].tasks.map((task) => (
+                            <Tr key={task.key}>
+                                <CreationDateTd
+                                    creationDate={task.creation_date}
+                                />
+                                <Td>
+                                    <Status status={task.status} />
+                                </Td>
+                                <Td>{getTaskWorker(task)}</Td>
+                                <Td>
+                                    {task.compute_plan_key ? task.rank : '-'}
+                                </Td>
+                                <Td>
+                                    {isTesttupleT(task) &&
+                                    task.status === 'done'
+                                        ? task.dataset.perf
+                                        : 'N/A'}
+                                </Td>
+                            </Tr>
+                        ))}
+                    <TablePagination
+                        colSpan={5}
+                        currentPage={page}
+                        itemCount={taskTypes[selectedTaskType].count}
+                        asset={taskTypes[selectedTaskType].slug}
+                    />
                 </Tbody>
             </Table>
         </div>
     );
 };
 
-export default TaskList;
+export default Tasks;

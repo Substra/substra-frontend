@@ -18,3 +18,10 @@ export type AssetType =
     | 'composite_traintuple'
     | 'aggregatetuple'
     | 'compute_plan';
+
+export type PaginatedApiResponse<T> = {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: T[];
+};

@@ -1,3 +1,4 @@
+import { PaginatedApiResponse } from '../common/CommonTypes';
 import {
     TraintupleT,
     CompositeTraintupleT,
@@ -22,27 +23,31 @@ const URLS = {
 };
 
 export const listAggregatetuples = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<AggregatetupleT[]> => {
-    return API.get(URLS.AGGREGATE_LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<AggregatetupleT>> => {
+    return API.get(URLS.AGGREGATE_LIST, getApiOptions(searchFilters, page));
 };
 
 export const listCompositeTraintuples = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<CompositeTraintupleT[]> => {
-    return API.get(URLS.COMPOSITE_LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>> => {
+    return API.get(URLS.COMPOSITE_LIST, getApiOptions(searchFilters, page));
 };
 
 export const listTesttuples = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<TesttupleT[]> => {
-    return API.get(URLS.TEST_LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<TesttupleT>> => {
+    return API.get(URLS.TEST_LIST, getApiOptions(searchFilters, page));
 };
 
 export const listTraintuples = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<TraintupleT[]> => {
-    return API.get(URLS.TRAIN_LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<TraintupleT>> => {
+    return API.get(URLS.TRAIN_LIST, getApiOptions(searchFilters, page));
 };
 
 export const retrieveAggregateTuple = (

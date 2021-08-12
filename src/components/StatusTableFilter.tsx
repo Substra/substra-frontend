@@ -3,7 +3,7 @@ import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
-import { useSearchFiltersLocation } from '@/hooks';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import TableFilter from '@/components/TableFilter';
 
@@ -22,11 +22,10 @@ interface StatusTableFilterProps {
     assets: AssetType[];
 }
 const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     const options = [
         TupleStatus.canceled,
@@ -50,7 +49,7 @@ const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
             },
             []
         );
-        setSearchFiltersLocation(filters);
+        setLocationWithParams({ search: filters });
     };
 
     return <TableFilter options={options} value={value} setValue={setValue} />;

@@ -12,13 +12,10 @@ import {
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersLocation,
-} from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { PATHS } from '@/routes';
 
@@ -38,11 +35,7 @@ import {
 import Skeleton from '@/components/Skeleton';
 
 const DatasetSider = (): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { setLocationWithParams } = useLocationWithParams();
     const key = useKeyFromPath(PATHS.DATASET);
 
     const visible = !!key;
@@ -81,9 +74,7 @@ const DatasetSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() =>
-                setSearchFiltersLocation(PATHS.DATASETS, searchFilters)
-            }
+            onCloseButtonClick={() => setLocationWithParams(PATHS.DATASETS)}
             titleType="Dataset details"
             title={
                 datasetLoading || !dataset ? (

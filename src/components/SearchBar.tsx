@@ -12,7 +12,8 @@ import { AssetType } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
-import { useSearchFiltersLocation, useSearchFiltersEffect } from '@/hooks';
+import { useSearchFiltersEffect } from '@/hooks';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import CloseButton from '@/components/CloseButton';
 import Select from '@/components/Select';
@@ -90,11 +91,8 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
     const [value, setValue] = useState('');
     const [asset, setAsset] = useState(defaultAsset);
 
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { params, setLocationWithParams } = useLocationWithParams();
+    const searchFilters = params.search;
 
     useSearchFiltersEffect(() => {
         // filters that can be created with this search bar:
@@ -128,7 +126,7 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
                 value,
             });
         }
-        setSearchFiltersLocation(newSearchFilters);
+        setLocationWithParams({ search: newSearchFilters, page: 1 });
     };
 
     const onAssetChange = (asset: string) => {
@@ -143,9 +141,10 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
 
     const onClear = () => {
         setValue('');
-        setSearchFiltersLocation(
-            searchFilters.filter((sf) => sf.key !== 'key')
-        );
+        setLocationWithParams({
+            search: searchFilters.filter((sf) => sf.key !== 'key'),
+            page: 1,
+        });
     };
 
     return (

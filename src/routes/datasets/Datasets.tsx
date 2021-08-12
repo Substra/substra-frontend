@@ -13,11 +13,11 @@ import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -42,27 +42,31 @@ import {
     Th,
     Thead,
     Tr,
+    TableSkeleton,
 } from '@/components/Table';
+import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { page, search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     useSearchFiltersEffect(() => {
-        dispatch(listDatasets(searchFilters));
-    }, [searchFilters]);
+        dispatch(listDatasets({ filters: searchFilters, page }));
+    }, [searchFilters, page]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
     );
     const datasetsLoading = useAppSelector(
         (state) => state.datasets.datasetsLoading
+    );
+    const datasetsCount = useAppSelector(
+        (state) => state.datasets.datasetsCount
     );
     const key = useKeyFromPath(PATHS.DATASET);
 
@@ -124,48 +128,54 @@ const Datasets = (): JSX.Element => {
                     {!datasetsLoading && datasets.length === 0 && (
                         <EmptyTr nbColumns={4} />
                     )}
-                    {datasetsLoading
-                        ? [1, 2, 3].map((index) => (
-                              <Tr key={index}>
-                                  <CreationDateSkeletonTd />
-                                  <Td>
-                                      <Skeleton width={500} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={80} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={120} height={12} />
-                                  </Td>
-                              </Tr>
-                          ))
-                        : datasets.map((dataset) => (
-                              <Tr
-                                  key={dataset.key}
-                                  highlighted={dataset.key === key}
-                                  onClick={() =>
-                                      setSearchFiltersLocation(
-                                          compilePath(PATHS.DATASET, {
-                                              key: dataset.key,
-                                          }),
-                                          searchFilters
-                                      )
-                                  }
-                              >
-                                  <CreationDateTd
-                                      creationDate={dataset.creation_date}
-                                  />
-                                  <Td>{dataset.name}</Td>
-                                  <Td>{dataset.owner}</Td>
-                                  <Td>
-                                      <PermissionCellContent
-                                          permission={
-                                              dataset.permissions.process
-                                          }
-                                      />
-                                  </Td>
-                              </Tr>
-                          ))}
+                    {datasetsLoading ? (
+                        <TableSkeleton
+                            itemCount={datasetsCount}
+                            currentPage={page}
+                        >
+                            <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={500} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={120} height={12} />
+                            </Td>
+                        </TableSkeleton>
+                    ) : (
+                        datasets.map((dataset) => (
+                            <Tr
+                                key={dataset.key}
+                                highlighted={dataset.key === key}
+                                onClick={() =>
+                                    setLocationWithParams(
+                                        compilePath(PATHS.DATASET, {
+                                            key: dataset.key,
+                                        })
+                                    )
+                                }
+                            >
+                                <CreationDateTd
+                                    creationDate={dataset.creation_date}
+                                />
+                                <Td>{dataset.name}</Td>
+                                <Td>{dataset.owner}</Td>
+                                <Td>
+                                    <PermissionCellContent
+                                        permission={dataset.permissions.process}
+                                    />
+                                </Td>
+                            </Tr>
+                        ))
+                    )}
+                    <TablePagination
+                        colSpan={4}
+                        currentPage={page}
+                        itemCount={datasetsCount}
+                        asset="dataset"
+                    />
                 </Tbody>
             </Table>
         </PageLayout>

@@ -1,6 +1,8 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
+import { Fragment } from 'react';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -84,6 +86,7 @@ export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
 
 interface CellProps {
     children: React.ReactNode;
+    colSpan?: number;
 }
 
 const thStyles = css`
@@ -150,12 +153,14 @@ const tdStyle = css`
     }
 
     &:first-of-type:before {
-        border-radius: ${Spaces.medium} 0 0 ${Spaces.medium};
+        border-top-left-radius: ${Spaces.medium};
+        border-bottom-left-radius: ${Spaces.medium};
         border-left: 1px solid white;
     }
 
     &:last-of-type:before {
-        border-radius: 0 ${Spaces.medium} ${Spaces.medium} 0;
+        border-top-right-radius: ${Spaces.medium};
+        border-bottom-right-radius: ${Spaces.medium};
         border-right: 1px solid white;
     }
 
@@ -185,3 +190,32 @@ export const ownerColWidth = css`
 export const permissionsColWidth = css`
     width: 210px;
 `;
+
+declare const PAGE_SIZE: number;
+
+interface TableSkeletonProps {
+    children: React.ReactNode;
+    currentPage: number;
+    itemCount: number;
+}
+export const TableSkeleton = ({
+    children,
+    currentPage,
+    itemCount,
+}: TableSkeletonProps): JSX.Element => {
+    let nbRows = PAGE_SIZE;
+    const lastPage = Math.ceil(itemCount / PAGE_SIZE);
+    // if on the last page, display one row per item on this last page
+    if (currentPage === lastPage) {
+        nbRows = itemCount % PAGE_SIZE;
+    }
+    // handle the case where we don't know how many items there are (itemCount == 0)
+    nbRows = nbRows || PAGE_SIZE;
+    return (
+        <Fragment>
+            {[...Array(nbRows)].map((_, index) => (
+                <Tr key={index}>{children}</Tr>
+            ))}
+        </Fragment>
+    );
+};

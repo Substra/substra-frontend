@@ -1,3 +1,4 @@
+import { PaginatedApiResponse } from '../common/CommonTypes';
 import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
@@ -50,9 +51,9 @@ export const loadSeries = createAsyncThunk<
 >('series/loadData', async (computePlanKey, thunkAPI) => {
     // load tuples
     const tuplePromises: [
-        AxiosPromise<TesttupleT[]>,
-        AxiosPromise<TraintupleT[]>,
-        AxiosPromise<CompositeTraintupleT[]>
+        AxiosPromise<PaginatedApiResponse<TesttupleT>>,
+        AxiosPromise<PaginatedApiResponse<TraintupleT>>,
+        AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>>
     ] = [
         TasksApi.listTesttuples([
             {
@@ -83,9 +84,9 @@ export const loadSeries = createAsyncThunk<
         return thunkAPI.rejectWithValue(err.response.data);
     }
 
-    const testtuples = tupleResponses[0].data;
-    const traintuples = tupleResponses[1].data;
-    const compositeTraintuples = tupleResponses[2].data;
+    const testtuples = tupleResponses[0].data.results;
+    const traintuples = tupleResponses[1].data.results;
+    const compositeTraintuples = tupleResponses[2].data.results;
 
     // load datasets and metrics
 
@@ -117,8 +118,8 @@ export const loadSeries = createAsyncThunk<
             })
         );
         const promises: [
-            AxiosPromise<MetricType[]>,
-            AxiosPromise<DatasetStubType[]>
+            AxiosPromise<PaginatedApiResponse<MetricType>>,
+            AxiosPromise<PaginatedApiResponse<DatasetStubType>>
         ] = [
             MetricsApi.listMetrics(metricSearchFilters),
             DatasetsApi.listDatasets(datasetSearchFilters),
@@ -130,8 +131,8 @@ export const loadSeries = createAsyncThunk<
             return thunkAPI.rejectWithValue(err.response.data);
         }
 
-        metrics = responses[0].data;
-        datasets = responses[1].data;
+        metrics = responses[0].data.results;
+        datasets = responses[1].data.results;
     }
 
     // build series

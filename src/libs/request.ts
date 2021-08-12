@@ -35,16 +35,33 @@ API.interceptors.request.use((config) => {
     };
 });
 
+declare const PAGE_SIZE: number;
+
 export const getApiOptions = (
-    searchFilters: SearchFilterType[]
+    searchFilters: SearchFilterType[],
+    page?: number
 ): AxiosRequestConfig => {
+    let params = {};
+
+    // searchFilters
     const search = buildSearchFiltersString(searchFilters);
 
-    let options = {};
     if (search) {
-        options = { params: { search } };
+        params = { ...params, search };
     }
 
+    // pagination
+    if (page) {
+        params = {
+            ...params,
+            page_size: PAGE_SIZE,
+            page,
+        };
+    }
+
+    const options = {
+        params,
+    };
     return options;
 };
 

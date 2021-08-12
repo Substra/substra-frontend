@@ -27,13 +27,10 @@ import {
     TupleStatus,
 } from '@/modules/tasks/TuplesTypes';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersLocation,
-} from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -78,11 +75,7 @@ const FooterSection = styled.div`
 `;
 
 const ComputePlanSider = (): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { setLocationWithParams } = useLocationWithParams();
 
     const [, setLocation] = useLocation();
 
@@ -106,13 +99,25 @@ const ComputePlanSider = (): JSX.Element => {
             dispatch(retrieveComputePlan(key))
                 .then(unwrapResult)
                 .then((computePlan) => {
-                    dispatch(retrieveComputePlanTrainTasks(computePlan.key));
-                    dispatch(retrieveComputePlanTestTasks(computePlan.key));
                     dispatch(
-                        retrieveComputePlanAggregateTasks(computePlan.key)
+                        retrieveComputePlanTrainTasks({
+                            computePlanKey: computePlan.key,
+                        })
                     );
                     dispatch(
-                        retrieveComputePlanCompositeTasks(computePlan.key)
+                        retrieveComputePlanTestTasks({
+                            computePlanKey: computePlan.key,
+                        })
+                    );
+                    dispatch(
+                        retrieveComputePlanAggregateTasks({
+                            computePlanKey: computePlan.key,
+                        })
+                    );
+                    dispatch(
+                        retrieveComputePlanCompositeTasks({
+                            computePlanKey: computePlan.key,
+                        })
                     );
                 });
         }
@@ -235,7 +240,7 @@ const ComputePlanSider = (): JSX.Element => {
         <Sider
             visible={visible}
             onCloseButtonClick={() =>
-                setSearchFiltersLocation(PATHS.COMPUTE_PLANS, searchFilters)
+                setLocationWithParams(PATHS.COMPUTE_PLANS)
             }
             titleType="Compute plan details"
             title=""
@@ -312,7 +317,7 @@ const ComputePlanSider = (): JSX.Element => {
                 {!computePlanTrainTasksLoading &&
                     computePlanTrainTasks.length === 0 && (
                         <TaskText>
-                            This compute plan doesn't have any traintasks
+                            This compute plan doesn't have any train tasks
                             attached
                         </TaskText>
                     )}
@@ -325,7 +330,7 @@ const ComputePlanSider = (): JSX.Element => {
                 {!computePlanTestTasksLoading &&
                     computePlanTestTasks.length === 0 && (
                         <TaskText>
-                            This compute plan doesn't have any testtasks
+                            This compute plan doesn't have any test tasks
                             attached
                         </TaskText>
                     )}

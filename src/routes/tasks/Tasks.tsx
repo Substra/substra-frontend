@@ -9,27 +9,27 @@ import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 
-import { AssetType } from '@/modules/common/CommonTypes';
+import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
     listAggregateTasks,
     listCompositeTasks,
+    listTasksArgs,
     listTestTasks,
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
 import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import { isTesttupleT } from '@/libs/tuples';
 
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -47,12 +47,14 @@ import {
     EmptyTr,
     ownerColWidth,
     Table,
+    TableSkeleton,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
 } from '@/components/Table';
+import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
@@ -103,20 +105,20 @@ interface selectedTaskT {
     slug: AssetType;
     loading: boolean;
     list: AsyncThunkAction<
-        AnyTupleT[],
-        SearchFilterType[],
+        PaginatedApiResponse<AnyTupleT>,
+        listTasksArgs,
         { rejectValue: string }
     >;
     tasks: AnyTupleT[];
+    count: number;
 }
 
 const Tasks = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { search: searchFilters, page },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     const [selectedTaskType, setSelectedTaskType] = useState(0);
 
@@ -127,8 +129,9 @@ const Tasks = (): JSX.Element => {
             searchLabel: 'Train task',
             slug: 'traintuple',
             loading: useAppSelector((state) => state.tasks.trainTasksLoading),
-            list: listTrainTasks(searchFilters),
+            list: listTrainTasks({ filters: searchFilters, page }),
             tasks: useAppSelector((state) => state.tasks.trainTasks),
+            count: useAppSelector((state) => state.tasks.trainTasksCount),
         },
         {
             id: 1,
@@ -136,8 +139,9 @@ const Tasks = (): JSX.Element => {
             searchLabel: 'Test task',
             slug: 'testtuple',
             loading: useAppSelector((state) => state.tasks.testTasksLoading),
-            list: listTestTasks(searchFilters),
+            list: listTestTasks({ filters: searchFilters, page }),
             tasks: useAppSelector((state) => state.tasks.testTasks),
+            count: useAppSelector((state) => state.tasks.testTasksCount),
         },
         {
             id: 2,
@@ -147,8 +151,9 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.tasks.compositeTasksLoading
             ),
-            list: listCompositeTasks(searchFilters),
+            list: listCompositeTasks({ filters: searchFilters, page }),
             tasks: useAppSelector((state) => state.tasks.compositeTasks),
+            count: useAppSelector((state) => state.tasks.compositeTasksCount),
         },
         {
             id: 3,
@@ -158,14 +163,15 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.tasks.aggregateTasksLoading
             ),
-            list: listAggregateTasks(searchFilters),
+            list: listAggregateTasks({ filters: searchFilters, page }),
             tasks: useAppSelector((state) => state.tasks.aggregateTasks),
+            count: useAppSelector((state) => state.tasks.aggregateTasksCount),
         },
     ];
 
     useSearchFiltersEffect(() => {
         dispatch(taskTypes[selectedTaskType].list);
-    }, [searchFilters, selectedTaskType]);
+    }, [searchFilters, selectedTaskType, page]);
 
     const key = useKeyFromPath(PATHS.TASK);
 
@@ -269,30 +275,32 @@ const Tasks = (): JSX.Element => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {taskTypes[selectedTaskType].loading &&
-                        [1, 2, 3].map((index) => (
-                            <Tr key={index}>
-                                <CreationDateSkeletonTd />
-                                <Td>
-                                    <Skeleton width={150} height={12} />
-                                </Td>
-                                <Td>
-                                    <Skeleton width={80} height={12} />
-                                </Td>
-                                <Td>
-                                    <Skeleton width={80} height={12} />
-                                </Td>
-                                <Td>
-                                    <Skeleton width={220} height={12} />
-                                </Td>
-                                <Td>
-                                    <Skeleton width={60} height={12} />
-                                </Td>
-                                <Td>
-                                    <Skeleton width={90} height={12} />
-                                </Td>
-                            </Tr>
-                        ))}
+                    {taskTypes[selectedTaskType].loading && (
+                        <TableSkeleton
+                            itemCount={taskTypes[selectedTaskType].count}
+                            currentPage={page}
+                        >
+                            <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={150} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={220} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={60} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={90} height={12} />
+                            </Td>
+                        </TableSkeleton>
+                    )}
                     {!taskTypes[selectedTaskType].loading &&
                         taskTypes[selectedTaskType].tasks.length === 0 && (
                             <EmptyTr nbColumns={7} />
@@ -303,11 +311,10 @@ const Tasks = (): JSX.Element => {
                                 key={task.key}
                                 highlighted={task.key === key}
                                 onClick={() =>
-                                    setSearchFiltersLocation(
+                                    setLocationWithParams(
                                         compilePath(PATHS.TASK, {
                                             key: task.key,
-                                        }),
-                                        searchFilters
+                                        })
                                     )
                                 }
                             >
@@ -331,6 +338,12 @@ const Tasks = (): JSX.Element => {
                                 </Td>
                             </Tr>
                         ))}
+                    <TablePagination
+                        colSpan={7}
+                        currentPage={page}
+                        itemCount={taskTypes[selectedTaskType].count}
+                        asset={taskTypes[selectedTaskType].slug}
+                    />
                 </Tbody>
             </Table>
         </PageLayout>

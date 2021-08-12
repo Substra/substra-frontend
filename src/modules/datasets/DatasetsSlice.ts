@@ -3,11 +3,13 @@ import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import CommonApi from '@/modules/common/CommonApi';
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface DatasetState {
     datasets: DatasetStubType[];
+    datasetsCount: number;
     datasetsLoading: boolean;
     datasetsError: string;
 
@@ -26,6 +28,7 @@ interface DatasetState {
 
 const initialState: DatasetState = {
     datasets: [],
+    datasetsCount: 0,
     datasetsLoading: true,
     datasetsError: '',
 
@@ -42,13 +45,17 @@ const initialState: DatasetState = {
     openerError: '',
 };
 
+interface listDatasetsArgs {
+    filters: SearchFilterType[];
+    page: number;
+}
 export const listDatasets = createAsyncThunk<
-    DatasetStubType[],
-    SearchFilterType[],
+    PaginatedApiResponse<DatasetStubType>,
+    listDatasetsArgs,
     { rejectValue: string }
->('datasets/list', async (filters: SearchFilterType[], thunkAPI) => {
+>('datasets/list', async ({ filters, page }: listDatasetsArgs, thunkAPI) => {
     try {
-        const response = await DatasetAPI.listDatasets(filters);
+        const response = await DatasetAPI.listDatasets(filters, page);
         return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
@@ -105,7 +112,8 @@ export const datasetsSlice = createSlice({
                 state.datasetsError = '';
             })
             .addCase(listDatasets.fulfilled, (state, { payload }) => {
-                state.datasets = payload;
+                state.datasets = payload.results;
+                state.datasetsCount = payload.count;
                 state.datasetsLoading = false;
                 state.datasetsError = '';
             })

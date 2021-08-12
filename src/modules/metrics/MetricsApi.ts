@@ -1,3 +1,4 @@
+import { PaginatedApiResponse } from '../common/CommonTypes';
 import { MetricType } from './MetricsTypes';
 import { AxiosPromise } from 'axios';
 
@@ -10,9 +11,10 @@ const URLS = {
 };
 
 export const listMetrics = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<MetricType[]> => {
-    return API.get(URLS.LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<MetricType>> => {
+    return API.get(URLS.LIST, getApiOptions(searchFilters, page));
 };
 
 export const retrieveMetric = (key: string): AxiosPromise<MetricType> =>

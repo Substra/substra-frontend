@@ -15,11 +15,11 @@ import { MetricType } from '@/modules/metrics/MetricsTypes';
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -44,21 +44,22 @@ import {
     Th,
     Thead,
     Tr,
+    TableSkeleton,
 } from '@/components/Table';
+import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { page, search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     useSearchFiltersEffect(() => {
-        dispatch(listMetrics(searchFilters));
-    }, [searchFilters]);
+        dispatch(listMetrics({ filters: searchFilters, page }));
+    }, [searchFilters, page]);
 
     const metrics: MetricType[] = useAppSelector(
         (state: RootState) => state.metrics.metrics
@@ -67,6 +68,7 @@ const Metrics = (): JSX.Element => {
     const metricsLoading = useAppSelector(
         (state: RootState) => state.metrics.metricsLoading
     );
+    const metricsCount = useAppSelector((state) => state.metrics.metricsCount);
 
     const key = useKeyFromPath(PATHS.METRIC);
 
@@ -129,48 +131,54 @@ const Metrics = (): JSX.Element => {
                     {!metricsLoading && metrics.length === 0 && (
                         <EmptyTr nbColumns={4} />
                     )}
-                    {metricsLoading
-                        ? [1, 2, 3].map((index) => (
-                              <Tr key={index}>
-                                  <CreationDateSkeletonTd />
-                                  <Td>
-                                      <Skeleton width={500} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={80} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={150} height={12} />
-                                  </Td>
-                              </Tr>
-                          ))
-                        : metrics.map((metric) => (
-                              <Tr
-                                  key={metric.key}
-                                  highlighted={metric.key === key}
-                                  onClick={() =>
-                                      setSearchFiltersLocation(
-                                          compilePath(PATHS.METRIC, {
-                                              key: metric.key,
-                                          }),
-                                          searchFilters
-                                      )
-                                  }
-                              >
-                                  <CreationDateTd
-                                      creationDate={metric.creation_date}
-                                  />
-                                  <Td>{metric.name}</Td>
-                                  <Td>{metric.owner}</Td>
-                                  <Td>
-                                      <PermissionCellContent
-                                          permission={
-                                              metric.permissions.process
-                                          }
-                                      />
-                                  </Td>
-                              </Tr>
-                          ))}
+                    {metricsLoading ? (
+                        <TableSkeleton
+                            itemCount={metricsCount}
+                            currentPage={page}
+                        >
+                            <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={500} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={150} height={12} />
+                            </Td>
+                        </TableSkeleton>
+                    ) : (
+                        metrics.map((metric) => (
+                            <Tr
+                                key={metric.key}
+                                highlighted={metric.key === key}
+                                onClick={() =>
+                                    setLocationWithParams(
+                                        compilePath(PATHS.METRIC, {
+                                            key: metric.key,
+                                        })
+                                    )
+                                }
+                            >
+                                <CreationDateTd
+                                    creationDate={metric.creation_date}
+                                />
+                                <Td>{metric.name}</Td>
+                                <Td>{metric.owner}</Td>
+                                <Td>
+                                    <PermissionCellContent
+                                        permission={metric.permissions.process}
+                                    />
+                                </Td>
+                            </Tr>
+                        ))
+                    )}
+                    <TablePagination
+                        colSpan={4}
+                        currentPage={page}
+                        itemCount={metricsCount}
+                        asset="objective"
+                    />
                 </Tbody>
             </Table>
         </PageLayout>

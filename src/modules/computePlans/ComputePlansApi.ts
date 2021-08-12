@@ -1,6 +1,8 @@
 import { ComputePlanType } from './ComputePlansTypes';
 import { AxiosPromise } from 'axios';
 
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+
 import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -10,9 +12,10 @@ const URLS = {
 };
 
 export const listComputePlans = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<ComputePlanType[]> =>
-    API.get(URLS.LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page: number
+): AxiosPromise<PaginatedApiResponse<ComputePlanType>> =>
+    API.get(URLS.LIST, getApiOptions(searchFilters, page));
 
 export const retrieveComputePlan = (
     key: string

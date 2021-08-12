@@ -18,13 +18,10 @@ import {
     isTraintupleT,
 } from '@/libs/tuples';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersLocation,
-} from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { PATHS } from '@/routes';
 
@@ -40,11 +37,7 @@ const titleTypes: { [key in TupleType]: string } = {
 };
 
 const TaskSider = (): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { setLocationWithParams } = useLocationWithParams();
     const key = useKeyFromPath(PATHS.TASK);
 
     const visible = !!key;
@@ -71,9 +64,7 @@ const TaskSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() =>
-                setSearchFiltersLocation(PATHS.TASKS, searchFilters)
-            }
+            onCloseButtonClick={() => setLocationWithParams(PATHS.TASKS)}
             titleType="Task details"
             title={
                 taskLoading || !task ? (

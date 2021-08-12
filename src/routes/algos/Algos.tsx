@@ -1,8 +1,6 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { RootState } from '@/store';
-
 import { Fragment, useState } from 'react';
 
 import AlgoSider from './components/AlgoSider';
@@ -13,22 +11,21 @@ import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import {
     listAggregateAlgos,
+    listAlgosArgs,
     listCompositeAlgos,
     listStandardAlgos,
 } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { AssetType } from '@/modules/common/CommonTypes';
-
-import { SearchFilterType } from '@/libs/searchFilter';
+import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import {
     useAppDispatch,
     useAppSelector,
-    useSearchFiltersLocation,
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -48,12 +45,14 @@ import {
     ownerColWidth,
     permissionsColWidth,
     Table,
+    TableSkeleton,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
 } from '@/components/Table';
+import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
@@ -88,20 +87,20 @@ interface selectedAlgoT {
     slug: AssetType;
     loading: boolean;
     list: AsyncThunkAction<
-        AlgoT[],
-        SearchFilterType[],
+        PaginatedApiResponse<AlgoT>,
+        listAlgosArgs,
         { rejectValue: string }
     >;
     algos: AlgoT[];
+    count: number;
 }
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { search: searchFilters, page },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     const [selectedAlgoType, setSelectedAlgoType] = useState(0);
 
@@ -112,12 +111,11 @@ const Algos = (): JSX.Element => {
             searchLabel: 'Standard Algo',
             slug: 'algo',
             loading: useAppSelector(
-                (state: RootState) => state.algos.standardAlgosLoading
+                (state) => state.algos.standardAlgosLoading
             ),
-            list: listStandardAlgos(searchFilters),
-            algos: useAppSelector(
-                (state: RootState) => state.algos.standardAlgos
-            ),
+            list: listStandardAlgos({ filters: searchFilters, page }),
+            algos: useAppSelector((state) => state.algos.standardAlgos),
+            count: useAppSelector((state) => state.algos.standardAlgosCount),
         },
         {
             id: 1,
@@ -125,12 +123,11 @@ const Algos = (): JSX.Element => {
             searchLabel: 'Composite Algo',
             slug: 'composite_algo',
             loading: useAppSelector(
-                (state: RootState) => state.algos.compositeAlgosLoading
+                (state) => state.algos.compositeAlgosLoading
             ),
-            list: listCompositeAlgos(searchFilters),
-            algos: useAppSelector(
-                (state: RootState) => state.algos.compositeAlgos
-            ),
+            list: listCompositeAlgos({ filters: searchFilters, page }),
+            algos: useAppSelector((state) => state.algos.compositeAlgos),
+            count: useAppSelector((state) => state.algos.compositeAlgosCount),
         },
         {
             id: 2,
@@ -138,12 +135,11 @@ const Algos = (): JSX.Element => {
             searchLabel: 'Aggregate Algo',
             slug: 'aggregate_algo',
             loading: useAppSelector(
-                (state: RootState) => state.algos.aggregateAlgosLoading
+                (state) => state.algos.aggregateAlgosLoading
             ),
-            list: listAggregateAlgos(searchFilters),
-            algos: useAppSelector(
-                (state: RootState) => state.algos.aggregateAlgos
-            ),
+            list: listAggregateAlgos({ filters: searchFilters, page }),
+            algos: useAppSelector((state) => state.algos.aggregateAlgos),
+            count: useAppSelector((state) => state.algos.aggregateAlgosCount),
         },
     ];
 
@@ -241,46 +237,54 @@ const Algos = (): JSX.Element => {
                         algoTypes[selectedAlgoType].algos.length === 0 && (
                             <EmptyTr nbColumns={4} />
                         )}
-                    {algoTypes[selectedAlgoType].loading
-                        ? [1, 2, 3].map((index) => (
-                              <Tr key={index}>
-                                  <CreationDateSkeletonTd />
-                                  <Td>
-                                      <Skeleton width={500} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={80} height={12} />
-                                  </Td>
-                                  <Td>
-                                      <Skeleton width={150} height={12} />
-                                  </Td>
-                              </Tr>
-                          ))
-                        : algoTypes[selectedAlgoType].algos.map((algo) => (
-                              <Tr
-                                  key={algo.key}
-                                  highlighted={algo.key === key}
-                                  onClick={() =>
-                                      setSearchFiltersLocation(
-                                          compilePath(PATHS.ALGO, {
-                                              key: algo.key,
-                                          }),
-                                          searchFilters
-                                      )
-                                  }
-                              >
-                                  <CreationDateTd
-                                      creationDate={algo.creation_date}
-                                  />
-                                  <Td>{algo.name}</Td>
-                                  <Td>{algo.owner}</Td>
-                                  <Td>
-                                      <PermissionCellContent
-                                          permission={algo.permissions.process}
-                                      />
-                                  </Td>
-                              </Tr>
-                          ))}
+                    {algoTypes[selectedAlgoType].loading ? (
+                        <TableSkeleton
+                            itemCount={algoTypes[selectedAlgoType].count}
+                            currentPage={page}
+                        >
+                            <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={500} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
+                            <Td>
+                                <Skeleton width={150} height={12} />
+                            </Td>
+                        </TableSkeleton>
+                    ) : (
+                        algoTypes[selectedAlgoType].algos.map((algo) => (
+                            <Tr
+                                key={algo.key}
+                                highlighted={algo.key === key}
+                                onClick={() =>
+                                    setLocationWithParams(
+                                        compilePath(PATHS.ALGO, {
+                                            key: algo.key,
+                                        })
+                                    )
+                                }
+                            >
+                                <CreationDateTd
+                                    creationDate={algo.creation_date}
+                                />
+                                <Td>{algo.name}</Td>
+                                <Td>{algo.owner}</Td>
+                                <Td>
+                                    <PermissionCellContent
+                                        permission={algo.permissions.process}
+                                    />
+                                </Td>
+                            </Tr>
+                        ))
+                    )}
+                    <TablePagination
+                        colSpan={4}
+                        currentPage={page}
+                        itemCount={algoTypes[selectedAlgoType].count}
+                        asset="algo"
+                    />
                 </Tbody>
             </Table>
         </PageLayout>

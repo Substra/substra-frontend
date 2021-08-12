@@ -2,7 +2,7 @@ import { AssetType } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
-import { useSearchFiltersLocation } from '@/hooks';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import TableFilter from '@/components/TableFilter';
 
@@ -21,11 +21,10 @@ interface TypeTableFilterProps {
     assets: AssetType[];
 }
 const TypeTableFilter = ({ assets }: TypeTableFilterProps): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     const options = [
         'traintuple',
@@ -47,7 +46,7 @@ const TypeTableFilter = ({ assets }: TypeTableFilterProps): JSX.Element => {
             },
             []
         );
-        setSearchFiltersLocation(filters);
+        setLocationWithParams({ search: filters });
     };
 
     return <TableFilter options={options} value={value} setValue={setValue} />;

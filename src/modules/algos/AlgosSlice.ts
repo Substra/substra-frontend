@@ -1,3 +1,4 @@
+import { PaginatedApiResponse } from '../common/CommonTypes';
 import AlgosApi from './AlgosApi';
 import { AlgoT } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
@@ -8,14 +9,17 @@ import { SearchFilterType } from '@/libs/searchFilter';
 
 interface AlgoState {
     standardAlgos: AlgoT[];
+    standardAlgosCount: number;
     standardAlgosLoading: boolean;
     standardAlgosError: string;
 
     compositeAlgos: AlgoT[];
+    compositeAlgosCount: number;
     compositeAlgosLoading: boolean;
     compositeAlgosError: string;
 
     aggregateAlgos: AlgoT[];
+    aggregateAlgosCount: number;
     aggregateAlgosLoading: boolean;
     aggregateAlgosError: string;
 
@@ -30,14 +34,17 @@ interface AlgoState {
 
 const initialState: AlgoState = {
     standardAlgos: [],
+    standardAlgosCount: 0,
     standardAlgosLoading: true,
     standardAlgosError: '',
 
     compositeAlgos: [],
+    compositeAlgosCount: 0,
     compositeAlgosLoading: true,
     compositeAlgosError: '',
 
     aggregateAlgos: [],
+    aggregateAlgosCount: 0,
     aggregateAlgosLoading: true,
     aggregateAlgosError: '',
 
@@ -50,57 +57,80 @@ const initialState: AlgoState = {
     descriptionError: '',
 };
 
+export interface listAlgosArgs {
+    filters: SearchFilterType[];
+    page: number;
+}
+
 export const listStandardAlgos = createAsyncThunk<
-    AlgoT[],
-    SearchFilterType[],
+    PaginatedApiResponse<AlgoT>,
+    listAlgosArgs,
     { rejectValue: string }
->('algos/listStandardAlgos', async (filters: SearchFilterType[], thunkAPI) => {
-    try {
-        const standardFilters = filters.filter((sf) => sf.asset === 'algo');
+>(
+    'algos/listStandardAlgos',
+    async ({ filters, page }: listAlgosArgs, thunkAPI) => {
+        try {
+            const standardFilters = filters.filter((sf) => sf.asset === 'algo');
 
-        const response = await AlgosApi.listStandardAlgos(standardFilters);
+            const response = await AlgosApi.listStandardAlgos(
+                standardFilters,
+                page
+            );
 
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const listCompositeAlgos = createAsyncThunk<
-    AlgoT[],
-    SearchFilterType[],
+    PaginatedApiResponse<AlgoT>,
+    listAlgosArgs,
     { rejectValue: string }
->('algos/listCompositeAlgos', async (filters: SearchFilterType[], thunkAPI) => {
-    try {
-        const compositeFilters = filters.filter(
-            (sf) => sf.asset === 'composite_algo'
-        );
+>(
+    'algos/listCompositeAlgos',
+    async ({ filters, page }: listAlgosArgs, thunkAPI) => {
+        try {
+            const compositeFilters = filters.filter(
+                (sf) => sf.asset === 'composite_algo'
+            );
 
-        const response = await AlgosApi.listCompositeAlgos(compositeFilters);
+            const response = await AlgosApi.listCompositeAlgos(
+                compositeFilters,
+                page
+            );
 
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const listAggregateAlgos = createAsyncThunk<
-    AlgoT[],
-    SearchFilterType[],
+    PaginatedApiResponse<AlgoT>,
+    listAlgosArgs,
     { rejectValue: string }
->('algos/listAggregateAlgos', async (filters: SearchFilterType[], thunkAPI) => {
-    try {
-        const aggregateFilters = filters.filter(
-            (sf) => sf.asset === 'aggregate_algo'
-        );
+>(
+    'algos/listAggregateAlgos',
+    async ({ filters, page }: listAlgosArgs, thunkAPI) => {
+        try {
+            const aggregateFilters = filters.filter(
+                (sf) => sf.asset === 'aggregate_algo'
+            );
 
-        const response = await AlgosApi.listAggregateAlgos(aggregateFilters);
+            const response = await AlgosApi.listAggregateAlgos(
+                aggregateFilters,
+                page
+            );
 
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const retrieveAlgo = createAsyncThunk<
     AlgoT,
@@ -156,7 +186,8 @@ export const algosSlice = createSlice({
                 state.standardAlgosError = '';
             })
             .addCase(listStandardAlgos.fulfilled, (state, { payload }) => {
-                state.standardAlgos = payload;
+                state.standardAlgos = payload.results;
+                state.standardAlgosCount = payload.count;
                 state.standardAlgosLoading = false;
                 state.standardAlgosError = '';
             })
@@ -169,7 +200,8 @@ export const algosSlice = createSlice({
                 state.compositeAlgosError = '';
             })
             .addCase(listCompositeAlgos.fulfilled, (state, { payload }) => {
-                state.compositeAlgos = payload;
+                state.compositeAlgos = payload.results;
+                state.compositeAlgosCount = payload.count;
                 state.compositeAlgosLoading = false;
                 state.compositeAlgosError = '';
             })
@@ -182,7 +214,8 @@ export const algosSlice = createSlice({
                 state.aggregateAlgosError = '';
             })
             .addCase(listAggregateAlgos.fulfilled, (state, { payload }) => {
-                state.aggregateAlgos = payload;
+                state.aggregateAlgos = payload.results;
+                state.aggregateAlgosCount = payload.count;
                 state.aggregateAlgosLoading = false;
                 state.aggregateAlgosError = '';
             })

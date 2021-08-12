@@ -1,20 +1,20 @@
+import TableFilter from './TableFilter';
+
 import { AssetType } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
-import { useAppSelector, useSearchFiltersLocation } from '@/hooks';
-
-import TableFilter from '@/components/TableFilter';
+import { useAppSelector } from '@/hooks';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 interface OwnerTableFilterProps {
     assets: AssetType[];
 }
 const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const {
+        params: { search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
 
     const nodes = useAppSelector((state) => state.nodes.nodes);
     const ownerFilterOptions: string[] = nodes.map((node) => node.id);
@@ -42,7 +42,7 @@ const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
             },
             []
         );
-        setSearchFiltersLocation(filters);
+        setLocationWithParams({ search: filters });
     };
 
     return (

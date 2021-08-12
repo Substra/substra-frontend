@@ -8,13 +8,10 @@ import {
 } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersLocation,
-} from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { PATHS } from '@/routes';
 
@@ -28,11 +25,7 @@ import SiderBottomButton from '@/components/SiderBottomButton';
 import { SimpleSiderSection } from '@/components/SiderSection';
 
 const MetricSider = (): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { setLocationWithParams } = useLocationWithParams();
     const key = useKeyFromPath(PATHS.METRIC);
 
     const visible = !!key;
@@ -61,9 +54,7 @@ const MetricSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() =>
-                setSearchFiltersLocation(PATHS.METRICS, searchFilters)
-            }
+            onCloseButtonClick={() => setLocationWithParams(PATHS.METRICS)}
             titleType="Metric details"
             title={metric ? metric.name : 'Metric name'}
         >

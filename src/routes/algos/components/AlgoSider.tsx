@@ -5,13 +5,10 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersLocation,
-} from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { PATHS } from '@/routes';
 
@@ -25,11 +22,7 @@ import SiderBottomButton from '@/components/SiderBottomButton';
 import { SimpleSiderSection } from '@/components/SiderSection';
 
 const AlgoSider = (): JSX.Element => {
-    const [
-        ,
-        searchFilters,
-        setSearchFiltersLocation,
-    ] = useSearchFiltersLocation();
+    const { setLocationWithParams } = useLocationWithParams();
     const key = useKeyFromPath(PATHS.ALGO);
 
     const visible = !!key;
@@ -58,9 +51,7 @@ const AlgoSider = (): JSX.Element => {
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() =>
-                setSearchFiltersLocation(PATHS.ALGOS, searchFilters)
-            }
+            onCloseButtonClick={() => setLocationWithParams(PATHS.ALGOS)}
             titleType="Algorithm details"
             title={algo ? algo.name : 'Algorithm name'}
         >

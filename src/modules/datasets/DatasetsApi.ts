@@ -1,6 +1,8 @@
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { AxiosPromise } from 'axios';
 
+import { PaginatedApiResponse } from '@/modules//common/CommonTypes';
+
 import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -10,9 +12,10 @@ const URLS = {
 };
 
 export const listDatasets = (
-    searchFilters: SearchFilterType[]
-): AxiosPromise<DatasetStubType[]> => {
-    return API.get(URLS.LIST, getApiOptions(searchFilters));
+    searchFilters: SearchFilterType[],
+    page?: number
+): AxiosPromise<PaginatedApiResponse<DatasetStubType>> => {
+    return API.get(URLS.LIST, getApiOptions(searchFilters, page));
 };
 
 export const retrieveDataset = (key: string): AxiosPromise<DatasetType> =>
