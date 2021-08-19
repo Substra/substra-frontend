@@ -63,8 +63,8 @@ const PerfChartBuilder = ({
     } else if (!seriesGroups.length) {
         return (
             <p>
-                There is no data to display: none of the test tasks are in
-                status done.
+                There is no data to display: there are no test tasks in status
+                done.
             </p>
         );
     } else {
