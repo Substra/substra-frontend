@@ -15,3 +15,7 @@
 ## Screenshots
 
 <!-- add screenshots if appropriate or delete this section -->
+
+## Notes for developers and reviewers:
+
+-   Think to update CHANGELOG.md before merge if needed !
