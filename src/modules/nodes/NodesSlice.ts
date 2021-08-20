@@ -1,12 +1,18 @@
 import NodesAPI from './NodesApi';
-import { NodeType } from './NodesTypes';
+import { NodeInfoType, NodeType } from './NodesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+declare const API_URL: string;
 
 interface NodesState {
     nodes: NodeType[];
     nodesLoading: boolean;
     nodesError: string;
     currentNodeID: string;
+
+    info: NodeInfoType;
+    infoLoading: boolean;
+    infoError: string;
 }
 
 const initialState: NodesState = {
@@ -14,6 +20,16 @@ const initialState: NodesState = {
     nodesLoading: false,
     nodesError: '',
     currentNodeID: 'Owkin Connect',
+
+    info: {
+        host: API_URL,
+        channel: '',
+        config: {
+            model_export_enabled: false,
+        },
+    },
+    infoLoading: false,
+    infoError: '',
 };
 
 export const listNodes = createAsyncThunk<
@@ -23,6 +39,19 @@ export const listNodes = createAsyncThunk<
 >('nodes/list', async (_, thunkAPI) => {
     try {
         const response = await NodesAPI.listNodes();
+        return response.data;
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+    }
+});
+
+export const retrieveInfo = createAsyncThunk<
+    NodeInfoType,
+    void,
+    { rejectValue: string }
+>('nodes/info', async (_, thunkAPI) => {
+    try {
+        const response = await NodesAPI.retrieveInfo();
         return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
@@ -51,6 +80,19 @@ export const nodesSlice = createSlice({
             .addCase(listNodes.rejected, (state, { payload }) => {
                 state.nodesLoading = false;
                 state.nodesError = payload || 'Unknown error';
+            })
+            .addCase(retrieveInfo.pending, (state) => {
+                state.infoLoading = true;
+                state.infoError = '';
+            })
+            .addCase(retrieveInfo.fulfilled, (state, { payload }) => {
+                state.infoLoading = false;
+                state.infoError = '';
+                state.info = payload;
+            })
+            .addCase(retrieveInfo.rejected, (state, { payload }) => {
+                state.infoLoading = false;
+                state.infoError = payload || 'Unknown error';
             });
     },
 });

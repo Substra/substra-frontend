@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Display channel name in header instead of node ID (#97)
+
 ## [0.1.0] - 2021-08-04
 
 [unreleased]: https://github.com/owkin/connect-frontend/compare/0.1.0...HEAD

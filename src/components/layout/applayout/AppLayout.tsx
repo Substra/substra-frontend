@@ -29,10 +29,11 @@ const Content = styled.div`
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
     const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+    const channelName = useAppSelector((state) => state.nodes.info.channel);
 
     return (
         <Container>
-            <Header title={currentNodeID} />
+            <Header title={channelName || currentNodeID} />
             <Content>{children}</Content>
         </Container>
     );

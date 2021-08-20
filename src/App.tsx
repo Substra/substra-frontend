@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
-import { listNodes } from '@/modules/nodes/NodesSlice';
+import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
 
 import { useAppDispatch } from '@/hooks';
@@ -28,6 +28,7 @@ const App = (): JSX.Element => {
             .then(
                 () => {
                     dispatch(listNodes());
+                    dispatch(retrieveInfo());
                 },
                 () => {
                     if (!onLoginPage) {
