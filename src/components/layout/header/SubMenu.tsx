@@ -11,6 +11,7 @@ import { useLocation } from 'wouter';
 import { logOut } from '@/modules/user/UserSlice';
 
 import { useAppDispatch } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 
 import { PATHS } from '@/routes';
 
@@ -56,6 +57,11 @@ const Li = styled.li`
     margin: ${Spaces.large};
 `;
 
+const ItemTitle = styled.div`
+    font-size: ${Fonts.sizes.smallBody};
+    color: ${Colors.lightContent};
+`;
+
 const LogOutButton = styled.button`
     border: none;
     background: none;
@@ -98,6 +104,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
 
     // prevent clicks in the component from bubbling up
     const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
+    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
 
     return (
         <Container
@@ -105,6 +112,10 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
             aria-hidden={!visible}
             onClick={stopPropagation}
         >
+            <Li>
+                <ItemTitle>Current node</ItemTitle>
+                {currentNodeID}
+            </Li>
             <Li>
                 <LogOutButton onClick={handleLogOut}>
                     <RiLogoutCircleRLine />
