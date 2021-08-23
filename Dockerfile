@@ -3,7 +3,8 @@ FROM node:14.17.1-alpine AS build
 WORKDIR /workspace
 
 COPY package.json .
-RUN npm install
+COPY patches ./patches
+RUN npm install --unsafe-perm
 
 COPY . .
 

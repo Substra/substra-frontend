@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Patch circular import in mdast-util-to-hast dependency (#99)
+
 ### Changed
 
 -   Display channel name in header instead of node ID (#97)
