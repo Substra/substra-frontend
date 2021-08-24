@@ -2,6 +2,7 @@ import {
     AggregatetupleT,
     AnyTupleT,
     CompositeTraintupleT,
+    InModel,
     TesttupleT,
     TraintupleT,
     TupleType,
@@ -77,4 +78,17 @@ export const getTupleType = (tuple: AnyTupleT): TupleType => {
     }
 
     return new Error('Unknown tuple type') as never;
+};
+
+export const isInModel = (model: unknown): model is InModel => {
+    if (typeof model !== 'object') {
+        return false;
+    }
+
+    return (
+        (model as InModel).key !== undefined &&
+        (model as InModel).checksum !== undefined &&
+        (model as InModel).storage_address !== undefined &&
+        (model as InModel).traintuple_key !== undefined
+    );
 };

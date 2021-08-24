@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 
 import AlgoSiderSection from './AlgoSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
-import InModelSiderSection from './InModelSiderSection';
+import ModelSiderSection from './ModelSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 
 import { CompositeTraintupleT } from '@/modules/tasks/TuplesTypes';
@@ -20,11 +20,11 @@ const CompositeTrainTaskSiderContent = ({
         <Fragment>
             <AlgoSiderSection task={task} />
             <DatasetSiderSection task={task} />
-            <InModelSiderSection
+            <ModelSiderSection
                 title="In trunk model"
                 model={task.in_trunk_model}
             />
-            <InModelSiderSection
+            <ModelSiderSection
                 title="In head model"
                 model={task.in_head_model}
             />

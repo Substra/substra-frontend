@@ -71,7 +71,7 @@ interface TraintupleDataset {
     metadata: { [key: string]: string };
 }
 
-interface OutModel {
+export interface OutModel {
     key: string;
     checksum: string;
     storage_address: string;
