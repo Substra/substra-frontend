@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
 import styled from '@emotion/styled';
@@ -8,22 +8,12 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
-import Checkbox from '@/components/Checkbox';
-
 import { Spaces } from '@/assets/theme';
 
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin: ${Spaces.extraLarge} 0;
-`;
-
-const LabelContainer = styled.div`
-    margin-bottom: ${Spaces.medium};
-
-    & > label > div {
-        margin-right: ${Spaces.medium};
-    }
 `;
 
 const LineContainer = styled.div`
@@ -37,10 +27,9 @@ const average = (values: number[]): number => {
 
 interface PerfChartProps {
     series: SerieT[];
+    displayAverage: boolean;
 }
-const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
-    const [displayAverage, setDisplayAverage] = useState(true);
-
+const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
     const nodesChartStyles = useNodesChartStyles();
 
     const maxRank = useMemo(
@@ -153,7 +142,7 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
             x: {
                 title: {
                     display: true,
-                    text: 'Rank',
+                    text: 'RANK',
                 },
                 grid: {
                     display: false,
@@ -162,7 +151,9 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
             y: {
                 title: {
                     display: true,
-                    text: 'Perf',
+                    text: series.length
+                        ? series[0].metricName.toUpperCase()
+                        : 'PERF',
                 },
             },
         },
@@ -170,17 +161,6 @@ const PerfChart = ({ series }: PerfChartProps): JSX.Element => {
 
     return (
         <Container>
-            {averageDataset && (
-                <LabelContainer>
-                    <label>
-                        <Checkbox
-                            checked={displayAverage}
-                            onChange={() => setDisplayAverage(!displayAverage)}
-                        />
-                        Display average perf
-                    </label>
-                </LabelContainer>
-            )}
             <LineContainer>
                 <Line type="line" data={data} options={options} />
             </LineContainer>

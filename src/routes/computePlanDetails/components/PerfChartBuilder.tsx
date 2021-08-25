@@ -46,6 +46,7 @@ const PerfChartBuilder = ({
     );
 
     const [multiChart, setMultiChart] = useState(false);
+    const [displayAverage, setDisplayAverage] = useState(true);
 
     const seriesGroups: SerieT[][] = useMemo(
         () =>
@@ -80,9 +81,19 @@ const PerfChartBuilder = ({
                         Display each node on a separate chart
                     </label>
                 </LabelContainer>
+                <LabelContainer>
+                    <label>
+                        <Checkbox
+                            checked={displayAverage}
+                            onChange={() => setDisplayAverage(!displayAverage)}
+                        />
+                        Display average perf
+                    </label>
+                </LabelContainer>
                 {seriesGroups.map((series) => (
                     <PerfChart
                         series={series}
+                        displayAverage={displayAverage}
                         key={series.map((serie) => serie.id).join('-')}
                     />
                 ))}

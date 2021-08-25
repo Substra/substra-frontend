@@ -67,7 +67,7 @@ const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
                                     key: serie.metricKey,
                                 })}
                             >
-                                {serie.metricName}
+                                {serie.objectiveName}
                             </Link>
                         </Li>
                         <Li>

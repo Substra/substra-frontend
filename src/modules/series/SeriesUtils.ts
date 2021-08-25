@@ -22,7 +22,8 @@ function buildSerieFeatures(
         dataSampleKeys: testtuple.dataset.data_sample_keys,
         worker: testtuple.dataset.worker,
         metricKey: metric.key,
-        metricName: metric.name,
+        objectiveName: metric.name,
+        metricName: metric.metrics.name,
     };
 }
 
@@ -132,14 +133,23 @@ export function buildSeriesGroups(
 ): SerieT[][] {
     const groups = [];
 
-    if (multiChart) {
-        const workers = new Set(series.map((serie) => serie.worker));
-        for (const worker of workers) {
-            groups.push(series.filter((serie) => serie.worker === worker));
+    const metricNames = new Set(
+        series.map((serie) => serie.metricName.toLowerCase())
+    );
+    for (const metricName of metricNames) {
+        const metricGroup = series.filter(
+            (serie) => serie.metricName.toLowerCase() === metricName
+        );
+        if (multiChart) {
+            const workers = new Set(metricGroup.map((serie) => serie.worker));
+            for (const worker of workers) {
+                groups.push(
+                    metricGroup.filter((serie) => serie.worker === worker)
+                );
+            }
+        } else {
+            groups.push(metricGroup);
         }
-    } else {
-        groups.push(series);
     }
-
     return groups;
 }

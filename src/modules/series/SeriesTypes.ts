@@ -7,6 +7,7 @@ export interface SerieFeaturesT {
     worker: string;
     metricKey: string;
     metricName: string;
+    objectiveName: string;
 }
 
 export interface PointT {

@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Display channel name in header instead of node ID (#97)
 -   Add out_model key and permissions in Sider (#98)
+-   Always group series by lowercase metric name (#95)
 
 ## [0.1.0] - 2021-08-04
 
