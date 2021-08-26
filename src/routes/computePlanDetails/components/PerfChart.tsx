@@ -1,14 +1,18 @@
-import { useMemo } from 'react';
+import { RefObject, useMemo, useRef } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
 import styled from '@emotion/styled';
+import { toJpeg } from 'html-to-image';
 import { Line } from 'react-chartjs-2';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
-import { Spaces } from '@/assets/theme';
+import { PATHS } from '@/routes';
+
+import { Colors, Spaces } from '@/assets/theme';
 
 const Container = styled.div`
     display: flex;
@@ -19,6 +23,36 @@ const Container = styled.div`
 const LineContainer = styled.div`
     width: 500px;
     margin-right: ${Spaces.extraLarge};
+`;
+
+interface DownloadButtonProps {
+    disabled: boolean;
+}
+
+const DownloadButton = styled.div<DownloadButtonProps>`
+    color: ${Colors.primary};
+    height: 40px;
+    min-width: 50%;
+    background: none;
+    border: 1px solid ${Colors.border};
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 auto;
+    opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+    cursor: pointer;
+
+    &:hover {
+        background-color: ${Colors.darkerBackground};
+    }
+
+    &:active {
+        background-color: white;
+    }
 `;
 
 const average = (values: number[]): number => {
@@ -106,7 +140,6 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
             })),
         [series]
     );
-
     const data = useMemo(
         () => ({
             labels: [...Array(maxRank + 1).keys()],
@@ -159,12 +192,34 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
         },
     };
 
+    const downloadRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_DETAILS);
+
+    const downloadImage = (ref: HTMLElement | null) => {
+        if (ref === null) {
+            return;
+        }
+
+        toJpeg(ref, { backgroundColor: '#fff' }).then((dataUrl) => {
+            const link = document.createElement('a');
+            link.download = `cp_${key}.jpeg`;
+            link.href = dataUrl;
+            link.click();
+        });
+    };
+
     return (
         <Container>
             <LineContainer>
                 <Line type="line" data={data} options={options} />
             </LineContainer>
             <PerfChartLegend series={series} />
+            <DownloadButton
+                disabled={!downloadRef.current}
+                onClick={() => downloadImage(downloadRef.current)}
+            >
+                Download Chart
+            </DownloadButton>
         </Container>
     );
 };

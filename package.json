@@ -21,6 +21,7 @@
         "axios": "0.21.1",
         "chart.js": "3.3.2",
         "copy-to-clipboard": "3.3.1",
+        "html-to-image": "1.7.0",
         "immer": "9.0.2",
         "react": "17.0.0",
         "react-chartjs-2": "3.0.3",
