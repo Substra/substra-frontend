@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import styled from '@emotion/styled';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
@@ -11,12 +12,24 @@ import { useAppDispatch } from '@/hooks';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
+import Spinner from '@/components/Spinner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
+
+import { Colors } from '@/assets/theme';
+
+const SpinnerContainer = styled.div`
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 72px;
+    color: ${Colors.veryLightContent};
+`;
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
     const [onLoginPage] = useRoute(PATHS.LOGIN);
+    const [checkingCredentials, setCheckingCredentials] = useState(true);
 
     useEffect(() => {
         /**
@@ -38,8 +51,21 @@ const App = (): JSX.Element => {
                         setLocation(url);
                     }
                 }
-            );
-    }, [dispatch]);
+            )
+            .finally(() => {
+                setCheckingCredentials(false);
+            });
+    }, []);
+
+    if (checkingCredentials) {
+        return (
+            <AppLayout>
+                <SpinnerContainer>
+                    <Spinner />
+                </SpinnerContainer>
+            </AppLayout>
+        );
+    }
 
     return (
         <AppLayout>
