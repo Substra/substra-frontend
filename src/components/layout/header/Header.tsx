@@ -21,13 +21,14 @@ const Container = styled.div`
     height: 72px;
     justify-content: flex-start;
     align-items: center;
-    padding: ${Spaces.medium} 0;
+    padding: ${Spaces.medium};
     z-index: ${zIndexes.appHeader};
 `;
 
 const IconContainer = styled.div`
-    width: 120px;
+    width: 90px;
     text-align: center;
+    margin-left: ${Spaces.large};
 
     & > svg {
         width: 38px;
@@ -46,7 +47,7 @@ const UserMenuButton = styled.button`
     justify-content: center;
     align-items: center;
     margin-left: auto;
-    margin-right: ${Spaces.extraLarge};
+    margin-right: ${Spaces.medium};
     width: 40px;
     height: 40px;
     border-radius: 50%;
