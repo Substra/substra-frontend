@@ -1,9 +1,9 @@
 import { useRoute } from 'wouter';
 
-function useKeyFromPath(path: string): string | null {
+function useKeyFromPath(path: string, paramName = 'key'): string | null {
     const [, params] = useRoute(path);
-    if (params?.key) {
-        return params.key;
+    if (params && params[paramName]) {
+        return params[paramName];
     }
     return null;
 }

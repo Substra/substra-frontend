@@ -26,7 +26,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-import { PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import {
     CreationDateSkeletonTd,
@@ -199,7 +199,7 @@ const Tasks = (): JSX.Element => {
         }
     }, [computePlanKey, selectedTaskType, page]);
 
-    const key = useKeyFromPath(PATHS.TASK);
+    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_TASK, 'taskKey');
 
     useAssetListDocumentTitleEffect('Tasks list', key);
 
@@ -264,7 +264,18 @@ const Tasks = (): JSX.Element => {
                         )}
                     {!taskTypes[selectedTaskType].loading &&
                         taskTypes[selectedTaskType].tasks.map((task) => (
-                            <Tr key={task.key}>
+                            <Tr
+                                key={task.key}
+                                highlighted={task.key === key}
+                                onClick={() =>
+                                    setLocationWithParams(
+                                        compilePath(PATHS.COMPUTE_PLAN_TASK, {
+                                            key: task.compute_plan_key,
+                                            taskKey: task.key,
+                                        })
+                                    )
+                                }
+                            >
                                 <CreationDateTd
                                     creationDate={task.creation_date}
                                 />

@@ -6,6 +6,7 @@ import ComputePlanSiderSection from './ComputePlanSiderSection';
 import LoadingSiderSection from './LoadingSiderSection';
 import TestTaskSiderContent from './TestTaskSiderContent';
 import TrainTaskSiderContent from './TrainTaskSiderContent';
+import { useRoute } from 'wouter';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import { TupleType } from '@/modules/tasks/TuplesTypes';
@@ -20,10 +21,9 @@ import {
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-import { PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/routes';
 
 import KeySiderSection from '@/components/KeySiderSection';
 import Sider from '@/components/Sider';
@@ -38,7 +38,17 @@ const titleTypes: { [key in TupleType]: string } = {
 
 const TaskSider = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
-    const key = useKeyFromPath(PATHS.TASK);
+
+    const [isTaskPath, taskParams] = useRoute(PATHS.TASK);
+    const [isComputePlanTask, computePlanTaskParams] = useRoute(
+        PATHS.COMPUTE_PLAN_TASK
+    );
+    let key: string | undefined;
+    if (isTaskPath) {
+        key = taskParams?.key;
+    } else if (isComputePlanTask) {
+        key = computePlanTaskParams?.taskKey;
+    }
 
     const visible = !!key;
 
@@ -61,10 +71,22 @@ const TaskSider = (): JSX.Element => {
         [key]
     );
 
+    const onCloseButtonClick = () => {
+        if (isTaskPath) {
+            setLocationWithParams(PATHS.TASKS);
+        } else if (isComputePlanTask && computePlanTaskParams) {
+            setLocationWithParams(
+                compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                    key: computePlanTaskParams.key,
+                })
+            );
+        }
+    };
+
     return (
         <Sider
             visible={visible}
-            onCloseButtonClick={() => setLocationWithParams(PATHS.TASKS)}
+            onCloseButtonClick={onCloseButtonClick}
             titleType="Task details"
             title={
                 taskLoading || !task ? (

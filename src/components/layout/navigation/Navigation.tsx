@@ -109,8 +109,11 @@ const Navigation = (): JSX.Element => {
                 'Compute Plans and Tasks',
                 [
                     ROUTES.COMPUTE_PLANS.path,
-                    ROUTES.TASKS.path,
+                    ROUTES.COMPUTE_PLAN.path,
                     ROUTES.COMPUTE_PLAN_DETAILS.path,
+                    ROUTES.COMPUTE_PLAN_CHART.path,
+                    ROUTES.COMPUTE_PLAN_TASKS.path,
+                    ROUTES.TASKS.path,
                 ],
                 PATHS.COMPUTE_PLANS,
                 <ComputePlanIcon />
