@@ -2,7 +2,10 @@ import TableFilter from './TableFilter';
 
 import { AssetType } from '@/modules/common/CommonTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
+import {
+    areSearchFiltersListsEqual,
+    SearchFilterType,
+} from '@/libs/searchFilter';
 
 import { useAppSelector } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -42,7 +45,9 @@ const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
             },
             []
         );
-        setLocationWithParams({ search: filters });
+        if (!areSearchFiltersListsEqual(searchFilters, filters)) {
+            setLocationWithParams({ search: filters, page: 1 });
+        }
     };
 
     return (

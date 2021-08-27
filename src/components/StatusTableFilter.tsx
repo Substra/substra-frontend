@@ -1,7 +1,10 @@
 import { AssetType } from '@/modules/common/CommonTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
+import {
+    areSearchFiltersListsEqual,
+    SearchFilterType,
+} from '@/libs/searchFilter';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -49,7 +52,9 @@ const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
             },
             []
         );
-        setLocationWithParams({ search: filters });
+        if (!areSearchFiltersListsEqual(searchFilters, filters)) {
+            setLocationWithParams({ search: filters, page: 1 });
+        }
     };
 
     return <TableFilter options={options} value={value} setValue={setValue} />;
