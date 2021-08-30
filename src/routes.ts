@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import Algos from '@/routes/algos/Algos';
+import Compare from '@/routes/compare/Compare';
 import ComputePlan from '@/routes/computePlan/ComputePlan';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
@@ -20,6 +21,7 @@ export interface IRoute {
 export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
+    COMPARE: '/compare/:keys',
     COMPUTE_PLANS: '/compute_plans',
     COMPUTE_PLANS_DETAILS: '/compute_plans/:key',
     COMPUTE_PLAN: '/compute_plan',
@@ -45,6 +47,10 @@ export const ROUTES: Record<string, IRoute> = {
     LOGIN: {
         path: PATHS.LOGIN,
         component: Login,
+    },
+    COMPARE: {
+        path: PATHS.COMPARE,
+        component: Compare,
     },
     COMPUTE_PLANS: {
         // the following path matches both PATHS.COMPUTE_PLANS and PATHS.COMPUTE_PLANS_DETAILS

@@ -6,6 +6,8 @@ import { Fragment } from 'react';
 import ComputePlanSider from './components/ComputePlansSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { useLocation } from 'wouter';
 
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
@@ -18,9 +20,11 @@ import {
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSelection from '@/hooks/useSelection';
 
 import { compilePath, PATHS } from '@/routes';
 
+import Checkbox from '@/components/Checkbox';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
@@ -45,6 +49,46 @@ import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
+import { Colors, Fonts, Spaces } from '@/assets/theme';
+
+const SelectionContainer = styled.div`
+    display: inline-block;
+    font-size: ${Fonts.sizes.smallBody};
+`;
+
+const SelectionLabel = styled.span`
+    font-style: italic;
+`;
+
+const ClearSelectionButton = styled.button`
+    padding: ${Spaces.extraSmall} ${Spaces.small};
+    margin: 0 ${Spaces.extraSmall};
+    color: ${Colors.primary};
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:disabled {
+        color: ${Colors.veryLightContent};
+        cursor: not-allowed;
+    }
+`;
+
+const CompareSelectionButton = styled.button`
+    padding: ${Spaces.extraSmall} ${Spaces.small};
+    background: ${Colors.primary};
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:disabled {
+        background-color: ${Colors.primaryDisabled};
+        cursor: not-allowed;
+    }
+`;
+
+const checkboxColWidth = css`
+    width: 50px;
+`;
 const tagColWidth = css`
     width: 200px;
 `;
@@ -52,7 +96,7 @@ const statusColWidth = css`
     width: 200px;
 `;
 const taskColWidth = css`
-    width: 600px;
+    width: 550px;
 `;
 
 const ComputePlans = (): JSX.Element => {
@@ -61,6 +105,7 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [, setLocation] = useLocation();
 
     useSearchFiltersEffect(() => {
         dispatch(listComputePlans({ filters: searchFilters, page }));
@@ -95,6 +140,18 @@ const ComputePlans = (): JSX.Element => {
         },
     ];
 
+    const [selectedKeys, onSelectionChange, resetSelection] = useSelection();
+
+    const onClear = () => {
+        resetSelection();
+    };
+
+    const onCompare = () => {
+        setLocation(
+            compilePath(PATHS.COMPARE, { keys: selectedKeys.join(',') })
+        );
+    };
+
     return (
         <PageLayout
             navigation={<Navigation />}
@@ -103,6 +160,25 @@ const ComputePlans = (): JSX.Element => {
             stickyHeader={
                 <Fragment>
                     <PageTitle links={pageTitleLinks} />
+                    <SelectionContainer>
+                        <SelectionLabel>
+                            {selectedKeys.length === 1
+                                ? '1 selected compute plan'
+                                : `${selectedKeys.length} selected compute plans`}
+                        </SelectionLabel>
+                        <ClearSelectionButton
+                            onClick={onClear}
+                            disabled={selectedKeys.length === 0}
+                        >
+                            Clear
+                        </ClearSelectionButton>
+                        <CompareSelectionButton
+                            onClick={onCompare}
+                            disabled={selectedKeys.length < 2}
+                        >
+                            Compare
+                        </CompareSelectionButton>
+                    </SelectionContainer>
                     <SearchBar
                         assetOptions={[
                             {
@@ -114,6 +190,7 @@ const ComputePlans = (): JSX.Element => {
                     <Table>
                         <Thead>
                             <Tr>
+                                <Th css={checkboxColWidth}>&nbsp;</Th>
                                 <CreationDateTh />
                                 <Th css={tagColWidth}>Tag</Th>
                                 <Th css={statusColWidth}>
@@ -139,6 +216,7 @@ const ComputePlans = (): JSX.Element => {
             <Table>
                 <Thead>
                     <Tr>
+                        <Th css={checkboxColWidth}>&nbsp;</Th>
                         <CreationDateTh />
                         <Th css={tagColWidth}>Tag</Th>
                         <Th css={statusColWidth}>Status</Th>
@@ -147,13 +225,16 @@ const ComputePlans = (): JSX.Element => {
                 </Thead>
                 <Tbody>
                     {!computePlansLoading && computePlans.length === 0 && (
-                        <EmptyTr nbColumns={4} />
+                        <EmptyTr nbColumns={5} />
                     )}
                     {computePlansLoading ? (
                         <TableSkeleton
                             itemCount={computePlansCount}
                             currentPage={page}
                         >
+                            <Td>
+                                <Skeleton width={16} height={16} />
+                            </Td>
                             <CreationDateSkeletonTd />
                             <Td>
                                 <Skeleton width={150} height={12} />
@@ -181,6 +262,18 @@ const ComputePlans = (): JSX.Element => {
                                     )
                                 }
                             >
+                                <Td>
+                                    <Checkbox
+                                        value={computePlan.key}
+                                        checked={selectedKeys.includes(
+                                            computePlan.key
+                                        )}
+                                        onChange={onSelectionChange(
+                                            computePlan.key
+                                        )}
+                                        onClick={(e) => e.stopPropagation()}
+                                    />
+                                </Td>
                                 <CreationDateTd
                                     creationDate={computePlan.creation_date}
                                 />
@@ -196,7 +289,7 @@ const ComputePlans = (): JSX.Element => {
                         ))
                     )}
                     <TablePagination
-                        colSpan={4}
+                        colSpan={5}
                         currentPage={page}
                         itemCount={computePlansCount}
                         asset="compute_plan"

@@ -8,6 +8,8 @@ import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { RiFilter2Line, RiFilter2Fill } from 'react-icons/ri';
 
+import useSelection from '@/hooks/useSelection';
+
 import Checkbox from '@/components/Checkbox';
 import CloseButton from '@/components/CloseButton';
 
@@ -132,22 +134,7 @@ const TableFilter = ({
     options,
 }: TableFilterProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
-    const [tmpValue, setTmpValue] = useState(value);
-
-    const onOptionChange = (option: string) => (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const checked = event.target.checked;
-        const inList = tmpValue.includes(option);
-
-        if (checked && !inList) {
-            setTmpValue([...tmpValue, option]);
-        }
-
-        if (!checked && inList) {
-            setTmpValue(tmpValue.filter((v) => v !== option));
-        }
-    };
+    const [tmpValue, onOptionChange, , setTmpValue] = useSelection(value);
 
     const onToggleClick = () => {
         if (!visible) {
