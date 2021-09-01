@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add the name of the current node to the account menu (#96)
 -   Add Chakra UI as a UI library (#106)
+-   Add GitHub style to the markdown content (#103)
 
 ### Fixed
 

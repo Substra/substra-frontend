@@ -3,9 +3,9 @@
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import ReactMarkdown from 'react-markdown';
 
 import ExpandableSiderSection from '@/components/ExpandableSiderSection';
+import MarkdownSection from '@/components/MarkdownSection';
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
 
@@ -33,7 +33,7 @@ const DescriptionSiderSection = ({
     description,
 }: DescriptionSiderSectionProps): JSX.Element => (
     <ExpandableSiderSection title="Description">
-        <ReactMarkdown children={description} />
+        <MarkdownSection source={description} />
     </ExpandableSiderSection>
 );
 
