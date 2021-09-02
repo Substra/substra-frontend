@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2021-09-02
+
 ### Added
 
 -   Add the name of the current node to the account menu (#96)
 -   Add Chakra UI as a UI library (#106)
 -   Add GitHub style to the markdown content (#103)
+-   Add JPEG export (#94)
+-   Add routes for compute plan details page's tabs (#104)
 
 ### Fixed
 
