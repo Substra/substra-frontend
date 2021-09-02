@@ -1,4 +1,4 @@
-import { RefObject, useMemo, useRef } from 'react';
+import { Fragment, RefObject, useMemo, useRef } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
 import styled from '@emotion/styled';
@@ -17,7 +17,7 @@ import { Colors, Spaces } from '@/assets/theme';
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: ${Spaces.extraLarge} 0;
+    margin: ${Spaces.extraLarge} 0 ${Spaces.small} 0;
 `;
 
 const LineContainer = styled.div`
@@ -29,10 +29,10 @@ interface DownloadButtonProps {
     disabled: boolean;
 }
 
-const DownloadButton = styled.div<DownloadButtonProps>`
+const DownloadButton = styled.button<DownloadButtonProps>`
     color: ${Colors.primary};
     height: 40px;
-    min-width: 50%;
+    min-width: 200px;
     background: none;
     border: 1px solid ${Colors.border};
     border-radius: 20px;
@@ -42,7 +42,7 @@ const DownloadButton = styled.div<DownloadButtonProps>`
     justify-content: center;
     text-transform: uppercase;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto ${Spaces.extraLarge} auto;
     opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
     cursor: pointer;
 
@@ -193,7 +193,7 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
     };
 
     const downloadRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_DETAILS);
+    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
 
     const downloadImage = (ref: HTMLElement | null) => {
         if (ref === null) {
@@ -209,18 +209,21 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
     };
 
     return (
-        <Container>
-            <LineContainer>
-                <Line type="line" data={data} options={options} />
-            </LineContainer>
-            <PerfChartLegend series={series} />
+        <Fragment>
+            <Container ref={downloadRef}>
+                <LineContainer>
+                    <Line type="line" data={data} options={options} />
+                </LineContainer>
+                <PerfChartLegend series={series} />
+            </Container>
+
             <DownloadButton
                 disabled={!downloadRef.current}
                 onClick={() => downloadImage(downloadRef.current)}
             >
                 Download Chart
             </DownloadButton>
-        </Container>
+        </Fragment>
     );
 };
 
