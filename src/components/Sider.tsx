@@ -1,6 +1,8 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
+import { useEffect, useRef } from 'react';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -90,6 +92,14 @@ const Sider = ({
     children,
     footer,
 }: SiderProps): JSX.Element => {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0;
+        }
+    }, [visible, title]);
+
     return (
         <Container
             css={[!visible && hiddenContainerStyles]}
@@ -103,7 +113,7 @@ const Sider = ({
                 <TitleType>{titleType}</TitleType>
                 <Title>{title}</Title>
             </TitleContainer>
-            <ContentContainer>{children}</ContentContainer>
+            <ContentContainer ref={contentRef}>{children}</ContentContainer>
             {footer && <FooterContainer>{footer}</FooterContainer>}
         </Container>
     );

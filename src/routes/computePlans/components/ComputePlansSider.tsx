@@ -238,7 +238,13 @@ const ComputePlanSider = (): JSX.Element => {
                 setLocationWithParams(PATHS.COMPUTE_PLANS)
             }
             titleType="Compute plan details"
-            title=""
+            title={
+                computePlanLoading || !computePlan ? (
+                    <Skeleton width={370} height={30} />
+                ) : (
+                    computePlan.tag
+                )
+            }
             footer={
                 computePlan && (
                     <FooterSection>
