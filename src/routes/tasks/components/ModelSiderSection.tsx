@@ -1,23 +1,22 @@
 import { Fragment } from 'react';
 
-import { Link } from 'wouter';
-
-import { InModel, OutModel } from '@/modules/tasks/TuplesTypes';
-
-import { isInModel } from '@/libs/tuples';
+import { Model } from '@/modules/tasks/ModelsTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import StyledLink from '@/components/StyledLink';
 
 interface ModelSiderSectionProps {
     title: string;
-    model: InModel | OutModel | undefined;
+    model?: Model;
+    sourceTupleTitle?: string;
 }
 
 const ModelSiderSection = ({
     title,
     model,
+    sourceTupleTitle,
 }: ModelSiderSectionProps): JSX.Element => {
     return (
         <SiderSection>
@@ -26,17 +25,17 @@ const ModelSiderSection = ({
             {model && (
                 <Fragment>
                     {model.key}
-                    <br />
-                    {isInModel(model) && (
+                    {sourceTupleTitle && (
                         <Fragment>
-                            {`${title} from task `}
-                            <Link
+                            <br />
+                            {`${sourceTupleTitle} `}
+                            <StyledLink
                                 href={compilePath(PATHS.TASK, {
-                                    key: model.traintuple_key,
+                                    key: model.compute_task_key,
                                 })}
                             >
-                                {model.traintuple_key}
-                            </Link>
+                                {model.compute_task_key}
+                            </StyledLink>
                         </Fragment>
                     )}
                 </Fragment>

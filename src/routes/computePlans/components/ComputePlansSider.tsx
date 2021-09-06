@@ -16,15 +16,10 @@ import {
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { getTaskWorker } from '@/modules/tasks/TasksUtils';
 import {
-    TupleType,
-    AggregatetupleT,
     AnyTupleT,
-    CompositeTraintupleT,
-    TesttupleT,
-    TraintupleT,
     TupleStatus,
+    TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -130,19 +125,19 @@ const ComputePlanSider = (): JSX.Element => {
         (state) => state.computePlans.computePlanLoading
     );
 
-    const computePlanTrainTasks: TraintupleT[] = useAppSelector(
+    const computePlanTrainTasks = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasks
     );
 
-    const computePlanTestTasks: TesttupleT[] = useAppSelector(
+    const computePlanTestTasks = useAppSelector(
         (state) => state.computePlans.computePlanTestTasks
     );
 
-    const computePlanCompositeTasks: CompositeTraintupleT[] = useAppSelector(
+    const computePlanCompositeTasks = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasks
     );
 
-    const computePlanAggregateTasks: AggregatetupleT[] = useAppSelector(
+    const computePlanAggregateTasks = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasks
     );
 
@@ -178,19 +173,20 @@ const ComputePlanSider = (): JSX.Element => {
     };
 
     const computePlanFailedTask = useMemo(() => {
-        if (!computePlan || !computePlan.failed_tuple.type) {
+        if (!computePlan?.failed_task) {
             return undefined;
         }
 
-        const tasks: Record<TupleType, AnyTupleT[]> = {
-            traintuple: computePlanTrainTasks,
-            testtuple: computePlanTestTasks,
-            aggregatetuple: computePlanAggregateTasks,
-            composite_traintuple: computePlanCompositeTasks,
+        const tasks: Record<TaskCategory, AnyTupleT[]> = {
+            [TaskCategory.train]: computePlanTrainTasks,
+            [TaskCategory.test]: computePlanTestTasks,
+            [TaskCategory.aggregate]: computePlanAggregateTasks,
+            [TaskCategory.composite]: computePlanCompositeTasks,
         };
 
-        return tasks[computePlan.failed_tuple.type].find(
-            (task) => task.key === computePlan.failed_tuple.key
+        const failedTask = computePlan.failed_task;
+        return tasks[failedTask.category].find(
+            (task) => task.key === failedTask.key
         );
     }, [
         computePlan,
@@ -203,9 +199,8 @@ const ComputePlanSider = (): JSX.Element => {
     const getTasksNodes = (tasks: AnyTupleT[]) => {
         const nodes: Record<string, number> = {};
         tasks.forEach((task) => {
-            const node = getTaskWorker(task);
-            return (nodes[node] = incrementNodeWaitingTasks(
-                nodes[node],
+            return (nodes[task.worker] = incrementNodeWaitingTasks(
+                nodes[task.worker],
                 task.status
             ));
         });
@@ -231,7 +226,7 @@ const ComputePlanSider = (): JSX.Element => {
 
     let percentage = 0;
     if (computePlan) {
-        percentage = (computePlan.done_count / computePlan.tuple_count) * 100;
+        percentage = (computePlan.done_count / computePlan.task_count) * 100;
     }
     const formattedPercentage =
         percentage === 100 ? `${percentage}%` : `${percentage.toFixed(1)}%`;
@@ -303,7 +298,7 @@ const ComputePlanSider = (): JSX.Element => {
                         );
                     })}
             </SiderSection>
-            {computePlan?.failed_tuple.key && (
+            {computePlan?.failed_task && (
                 <SiderSection>
                     <SiderSectionTitle>Failed task</SiderSectionTitle>
                     {tasksLoading && <LoadingTaskSiderSection />}

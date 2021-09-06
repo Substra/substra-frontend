@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Fixed
+
+### Changed
+
+-   Works with orchestrator-powered backends only (#100)
+
 ## [0.2.0] - 2021-09-02
 
 ### Added

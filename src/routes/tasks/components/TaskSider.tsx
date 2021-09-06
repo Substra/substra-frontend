@@ -9,10 +9,9 @@ import TrainTaskSiderContent from './TrainTaskSiderContent';
 import { useRoute } from 'wouter';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
-import { TupleType } from '@/modules/tasks/TuplesTypes';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import {
-    getTupleType,
     isAggregatetupleT,
     isCompositeTraintupleT,
     isTesttupleT,
@@ -29,11 +28,11 @@ import KeySiderSection from '@/components/KeySiderSection';
 import Sider from '@/components/Sider';
 import Skeleton from '@/components/Skeleton';
 
-const titleTypes: { [key in TupleType]: string } = {
-    traintuple: 'Train task',
-    composite_traintuple: 'Composite train task',
-    aggregatetuple: 'Aggregate task',
-    testtuple: 'Test task',
+const titleTypes: Record<TaskCategory, string> = {
+    [TaskCategory.train]: 'Train task',
+    [TaskCategory.composite]: 'Composite train task',
+    [TaskCategory.aggregate]: 'Aggregate task',
+    [TaskCategory.test]: 'Test task',
 };
 
 const TaskSider = (): JSX.Element => {
@@ -92,7 +91,7 @@ const TaskSider = (): JSX.Element => {
                 taskLoading || !task ? (
                     <Skeleton width={370} height={30} />
                 ) : (
-                    titleTypes[getTupleType(task)]
+                    titleTypes[task.category]
                 )
             }
         >

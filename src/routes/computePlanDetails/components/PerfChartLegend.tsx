@@ -1,12 +1,13 @@
 import PerfChartLegendMarker from './PerfChartLegendMarker';
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
 import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
 import { compilePath, PATHS } from '@/routes';
+
+import StyledLink from '@/components/StyledLink';
 
 import { Fonts, Spaces } from '@/assets/theme';
 
@@ -52,33 +53,33 @@ const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
                     <Ul>
                         <Li>
                             Algorithm{' '}
-                            <Link
+                            <StyledLink
                                 href={compilePath(PATHS.ALGO, {
                                     key: serie.algoKey,
                                 })}
                             >
                                 {serie.algoName}
-                            </Link>
+                            </StyledLink>
                         </Li>
                         <Li>
                             Metric{' '}
-                            <Link
+                            <StyledLink
                                 href={compilePath(PATHS.METRIC, {
                                     key: serie.metricKey,
                                 })}
                             >
                                 {serie.objectiveName}
-                            </Link>
+                            </StyledLink>
                         </Li>
                         <Li>
                             Dataset{' '}
-                            <Link
+                            <StyledLink
                                 href={compilePath(PATHS.DATASET, {
                                     key: serie.datasetKey,
                                 })}
                             >
                                 {serie.datasetName}
-                            </Link>
+                            </StyledLink>
                         </Li>
                     </Ul>
                 </Item>

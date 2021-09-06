@@ -11,7 +11,7 @@ interface TrainTaskSiderContentProps {
     task: TesttupleT;
 }
 
-const TrainTaskSiderContent = ({
+const TestTaskSiderContent = ({
     task,
 }: TrainTaskSiderContentProps): JSX.Element => {
     return (
@@ -24,4 +24,4 @@ const TrainTaskSiderContent = ({
     );
 };
 
-export default TrainTaskSiderContent;
+export default TestTaskSiderContent;

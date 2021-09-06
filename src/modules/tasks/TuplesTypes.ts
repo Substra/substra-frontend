@@ -1,134 +1,73 @@
-import { PermissionsType } from '@/modules/common/CommonTypes';
+import { Model } from './ModelsTypes';
 
-export type TupleType =
-    | 'traintuple'
-    | 'composite_traintuple'
-    | 'aggregatetuple'
-    | 'testtuple';
+import { AlgoT } from '@/modules/algos/AlgosTypes';
+import { MetadataT, PermissionsType } from '@/modules/common/CommonTypes';
 
 export enum TupleStatus {
-    doing = 'doing',
-    done = 'done',
-    failed = 'failed',
-    todo = 'todo',
-    waiting = 'waiting',
-    canceled = 'canceled',
+    doing = 'STATUS_DOING',
+    done = 'STATUS_DONE',
+    failed = 'STATUS_FAILED',
+    todo = 'STATUS_TODO',
+    waiting = 'STATUS_WAITING',
+    canceled = 'STATUS_CANCELED',
 }
 
-export interface InModel {
-    key: string;
-    checksum: string;
-    storage_address: string;
-    traintuple_key: string;
-}
-
-interface OutHeadModel {
-    key: string;
-    checksum: string;
-    storage_address?: string;
-}
-
-interface OutCompositeHeadModel {
-    permissions: PermissionsType;
-    out_model?: OutHeadModel;
-}
-
-interface OutCompositeTrunkModel {
-    permissions: PermissionsType;
-    out_model?: OutHeadModel;
-}
-
-interface TesttupleDataset {
-    key: string;
-    opener_checksum: string;
-    data_sample_keys: string[];
-    worker: string;
-    perf: number;
-}
-
-interface Metric {
-    checksum: string;
-    storage_address: string;
-}
-
-interface TesttupleObjective {
-    key: string;
-    metrics: Metric;
-}
-
-interface TraintupleAlgo {
-    key: string;
-    checksum: string;
-    storage_address: string;
-    name: string;
-}
-
-interface TraintupleDataset {
-    key: string;
-    worker: string;
-    data_sample_keys: string[];
-    opener_checksum: string;
-    metadata: { [key: string]: string };
-}
-
-export interface OutModel {
-    key: string;
-    checksum: string;
-    storage_address: string;
+export enum TaskCategory {
+    train = 'TASK_TRAIN',
+    composite = 'TASK_COMPOSITE',
+    test = 'TASK_TEST',
+    aggregate = 'TASK_AGGREGATE',
 }
 
 interface BaseTupleT {
-    creation_date: string;
-    algo: TraintupleAlgo;
-    compute_plan_key: string;
-    creator: string;
     key: string;
-    log: string;
-    metadata: { [key: string]: string };
+    category: TaskCategory;
+    creation_date: string;
+    algo: AlgoT;
+    compute_plan_key: string;
+    owner: string;
+    metadata: MetadataT;
     status: TupleStatus;
-}
-
-export type TesttupleTraintupleType =
-    | 'traintuple'
-    | 'composite_traintuple'
-    | 'aggregatetuple';
-
-export interface CompositeTraintupleT extends BaseTupleT {
-    dataset: TraintupleDataset;
-    in_head_model?: InModel;
-    in_trunk_model?: InModel;
-    out_head_model: OutCompositeHeadModel;
-    out_trunk_model: OutCompositeTrunkModel;
-    rank?: number;
+    rank: number;
     tag: string;
-}
-
-export interface AggregatetupleT extends BaseTupleT {
-    in_models: InModel[] | null;
-    out_model?: OutModel;
-    permissions: PermissionsType;
-    rank?: string;
-    tag: string;
+    parent_task_keys: string[];
     worker: string;
 }
 
+export interface CompositeTraintupleT extends BaseTupleT {
+    composite: {
+        data_manager_key: string;
+        data_sample_keys: string[];
+        head_permissions: PermissionsType;
+        trunk_permissions: PermissionsType;
+        models?: Model[];
+    };
+}
+
+export interface AggregatetupleT extends BaseTupleT {
+    aggregate: {
+        model_permissions: PermissionsType;
+        models?: Model[];
+    };
+}
+
 export interface TesttupleT extends BaseTupleT {
-    certified: boolean;
-    dataset: TesttupleDataset;
-    objective: TesttupleObjective;
-    rank: number;
-    tag?: string;
-    traintuple_key: string;
-    traintuple_type: TesttupleTraintupleType;
+    test: {
+        data_manager_key: string;
+        data_sample_keys: string[];
+        objective_key: string;
+        certified: boolean;
+        perf: number;
+    };
 }
 
 export interface TraintupleT extends BaseTupleT {
-    dataset: TraintupleDataset;
-    in_models: InModel[] | null;
-    out_model: OutModel;
-    permissions: PermissionsType;
-    rank: number;
-    tag: string;
+    train: {
+        data_manager_key: string;
+        data_sample_keys: string[];
+        model_permissions: PermissionsType;
+        models?: Model[];
+    };
 }
 
 export type AnyTupleT =

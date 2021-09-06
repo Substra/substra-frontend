@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import { setSelectedMetricKeys } from '@/modules/series/SeriesSlice';
 
@@ -9,6 +8,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { compilePath, PATHS } from '@/routes';
 
 import Checkbox from '@/components/Checkbox';
+import StyledLink from '@/components/StyledLink';
 
 import { Spaces } from '@/assets/theme';
 
@@ -75,15 +75,14 @@ const MetricKeysSelector = (): JSX.Element => {
                                     )}
                                     onChange={onChange(metric.key)}
                                 />
-                                <Spacer>{metric.metrics.name}</Spacer>
-                                {/* <Spacer>&ndash;</Spacer> */}
-                                <Link
+                                <Spacer>{metric.metrics_name}</Spacer>
+                                <StyledLink
                                     href={compilePath(PATHS.METRIC, {
                                         key: metric.key,
                                     })}
                                 >
                                     {metric.name}
-                                </Link>
+                                </StyledLink>
                             </label>
                         </Li>
                     ))}

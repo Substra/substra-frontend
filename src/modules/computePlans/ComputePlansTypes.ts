@@ -1,17 +1,23 @@
-import { TupleType } from '@/modules/tasks/TuplesTypes';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
-export interface ComputePlanType {
-    creation_date: string;
-    clean_models: boolean;
-    done_count: number;
+export enum ComputePlanStatus {
+    waiting = 'PLAN_STATUS_WAITING',
+    todo = 'PLAN_STATUS_TODO',
+    doing = 'PLAN_STATUS_DOING',
+    done = 'PLAN_STATUS_DONE',
+    canceled = 'PLAN_STATUS_CANCELED',
+    failed = 'PLAN_STATUS_FAILED',
+}
+
+export interface ComputePlanT {
     key: string;
-    status: string;
+    owner: string;
+    task_count: number;
+    status: ComputePlanStatus;
+    done_count: number;
+    delete_intermediary_models: boolean;
     tag: string;
-    testtuple_keys: string[];
-    traintuple_keys: string[];
-    aggregatetuple_keys: string[];
-    composite_traintuple_keys: string[];
-    failed_tuple: { key?: string; type?: TupleType };
-    tuple_count: number;
+    creation_date: string;
     metadata: { [key: string]: string };
+    failed_task?: { key: string; category: TaskCategory };
 }

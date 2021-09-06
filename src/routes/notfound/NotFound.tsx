@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import { useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
 
+import StyledLink from '@/components/StyledLink';
 import { H1 } from '@/components/Typography';
 
 import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
@@ -43,9 +43,11 @@ const NotFound = (): JSX.Element => {
             <OwkinConnectLogo />
             <H1>Page not found</H1>
             {authenticated ? (
-                <Link href={PATHS.DATASETS}>Go to datasets page</Link>
+                <StyledLink href={PATHS.DATASETS}>
+                    Go to datasets page
+                </StyledLink>
             ) : (
-                <Link href={PATHS.LOGIN}>Go to login page</Link>
+                <StyledLink href={PATHS.LOGIN}>Go to login page</StyledLink>
             )}
         </Container>
     );

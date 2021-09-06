@@ -5,6 +5,7 @@ import InModelsSiderSection from './InModelsSiderSection';
 import ModelSiderSection from './ModelSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 
+import { getSimpleModel } from '@/modules/tasks/ModelsUtils';
 import { AggregatetupleT } from '@/modules/tasks/TuplesTypes';
 
 import PermissionSiderSection from '@/components/PermissionSiderSection';
@@ -20,12 +21,14 @@ const AggregateTaskSiderContent = ({
         <Fragment>
             <AlgoSiderSection task={task} />
             <InModelsSiderSection task={task} />
-            <ModelSiderSection title="Out model key" model={task.out_model} />
+            <ModelSiderSection
+                title="Out model key"
+                model={getSimpleModel(task)}
+            />
             <PermissionSiderSection
                 title="Out model permissions"
-                permission={task.permissions.process}
+                permission={task.aggregate.model_permissions.process}
             />
-            <PermissionSiderSection permission={task.permissions.process} />
             <TimelineSiderSection />
         </Fragment>
     );

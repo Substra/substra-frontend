@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import { useAppSelector } from '@/hooks';
 
@@ -9,6 +8,7 @@ import { PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
+import StyledLink from '@/components/StyledLink';
 
 import { Spaces } from '@/assets/theme';
 
@@ -28,14 +28,14 @@ const ComputePlanSiderSection = (): JSX.Element => {
                 task &&
                 (task.compute_plan_key ? (
                     <Fragment>
-                        <Link
+                        <StyledLink
                             href={PATHS.COMPUTE_PLANS_DETAILS.replace(
                                 ':key',
                                 task.compute_plan_key
                             )}
                         >
                             {task.compute_plan_key}
-                        </Link>
+                        </StyledLink>
                         <Rank>{`Rank ${task.rank}`}</Rank>
                     </Fragment>
                 ) : (

@@ -3,10 +3,11 @@ import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri';
 
 import { Colors } from '@/assets/theme';
 
-const Container = styled.div`
+const Container = styled.div<{ disabled?: boolean }>`
     display: inline-block;
     position: relative;
     color: ${Colors.primary};
+    opacity: ${({ disabled }) => (disabled ? '0.3' : '1')};
 
     svg {
         width: 20px;
@@ -41,7 +42,7 @@ const Input = styled.input`
 
 const Checkbox = (props: React.ComponentPropsWithRef<'input'>): JSX.Element => {
     return (
-        <Container>
+        <Container disabled={props.disabled}>
             <Input type="checkbox" {...props} />
             <RiCheckboxBlankLine />
             <RiCheckboxFill />

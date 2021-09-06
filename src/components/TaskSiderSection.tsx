@@ -71,7 +71,7 @@ const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {
             <Key>{task.key}</Key>
             <WorkerSection>
                 worker:
-                <Worker>{task.creator}</Worker>
+                <Worker>{task.worker}</Worker>
             </WorkerSection>
         </TaskSiderSectionContainer>
     );

@@ -1,10 +1,12 @@
 import { AssetType } from '@/modules/common/CommonTypes';
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import {
     areSearchFiltersListsEqual,
     SearchFilterType,
 } from '@/libs/searchFilter';
+import { getStatusFromLabel, getStatusLabel, StatusLabel } from '@/libs/status';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -17,47 +19,39 @@ const buildAssetFilters = (
     return value.map((v) => ({
         asset: asset,
         key: 'status',
-        value: v,
+        value: getStatusFromLabel(asset, v as StatusLabel),
     }));
 };
 
 interface StatusTableFilterProps {
-    assets: AssetType[];
+    asset: AssetType;
 }
-const StatusTableFilter = ({ assets }: StatusTableFilterProps): JSX.Element => {
+const StatusTableFilter = ({ asset }: StatusTableFilterProps): JSX.Element => {
     const {
         params: { search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
 
-    const options = [
-        TupleStatus.canceled,
-        TupleStatus.doing,
-        TupleStatus.done,
-        TupleStatus.failed,
-        TupleStatus.todo,
-        TupleStatus.waiting,
-    ];
-
     const value: string[] = searchFilters
-        .filter(
-            (filter) => assets.includes(filter.asset) && filter.key === 'status'
-        )
-        .map((filter) => filter.value);
+        .filter((filter) => filter.asset === asset && filter.key === 'status')
+        .map((filter) =>
+            getStatusLabel(filter.value as TupleStatus | ComputePlanStatus)
+        );
 
     const setValue = (value: string[]) => {
-        const filters = assets.reduce(
-            (filters: SearchFilterType[], asset: AssetType) => {
-                return [...filters, ...buildAssetFilters(asset, value)];
-            },
-            []
-        );
+        const filters = buildAssetFilters(asset, value);
         if (!areSearchFiltersListsEqual(searchFilters, filters)) {
             setLocationWithParams({ search: filters, page: 1 });
         }
     };
 
-    return <TableFilter options={options} value={value} setValue={setValue} />;
+    return (
+        <TableFilter
+            options={Object.values(StatusLabel)}
+            value={value}
+            setValue={setValue}
+        />
+    );
 };
 
 export default StatusTableFilter;

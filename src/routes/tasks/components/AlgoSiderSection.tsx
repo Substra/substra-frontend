@@ -1,5 +1,3 @@
-import { Link } from 'wouter';
-
 import {
     AggregatetupleT,
     CompositeTraintupleT,
@@ -9,6 +7,7 @@ import {
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import StyledLink from '@/components/StyledLink';
 
 interface TrainTaskSiderContentProps {
     task: TraintupleT | CompositeTraintupleT | AggregatetupleT;
@@ -20,9 +19,9 @@ const AlgoSiderSection = ({
     return (
         <SiderSection>
             <SiderSectionTitle>Algorithm</SiderSectionTitle>
-            <Link href={compilePath(PATHS.ALGO, { key: task.algo.key })}>
+            <StyledLink href={compilePath(PATHS.ALGO, { key: task.algo.key })}>
                 {task.algo.name}
-            </Link>
+            </StyledLink>
         </SiderSection>
     );
 };

@@ -10,7 +10,7 @@ import styled from '@emotion/styled';
 import { useLocation } from 'wouter';
 
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import {
     useAppDispatch,
@@ -111,7 +111,7 @@ const ComputePlans = (): JSX.Element => {
         dispatch(listComputePlans({ filters: searchFilters, page }));
     }, [searchFilters, page]);
 
-    const computePlans: ComputePlanType[] = useAppSelector(
+    const computePlans: ComputePlanT[] = useAppSelector(
         (state) => state.computePlans.computePlans
     );
 
@@ -195,9 +195,7 @@ const ComputePlans = (): JSX.Element => {
                                 <Th css={tagColWidth}>Tag</Th>
                                 <Th css={statusColWidth}>
                                     Status
-                                    <StatusTableFilter
-                                        assets={['compute_plan']}
-                                    />
+                                    <StatusTableFilter asset="compute_plan" />
                                 </Th>
                                 <Th css={taskColWidth}>Tasks</Th>
                             </Tr>
@@ -283,7 +281,7 @@ const ComputePlans = (): JSX.Element => {
                                 </Td>
                                 <Td>
                                     {computePlan.done_count}/
-                                    {computePlan.tuple_count}
+                                    {computePlan.task_count}
                                 </Td>
                             </Tr>
                         ))

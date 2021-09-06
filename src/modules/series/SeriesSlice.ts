@@ -96,11 +96,11 @@ export const loadSeries = createAsyncThunk<
         const metricKeys: string[] = [];
         const datasetKeys: string[] = [];
         for (const testtuple of testtuples) {
-            if (!metricKeys.includes(testtuple.objective.key)) {
-                metricKeys.push(testtuple.objective.key);
+            if (!metricKeys.includes(testtuple.test.objective_key)) {
+                metricKeys.push(testtuple.test.objective_key);
             }
-            if (!datasetKeys.includes(testtuple.dataset.key)) {
-                datasetKeys.push(testtuple.dataset.key);
+            if (!datasetKeys.includes(testtuple.test.data_manager_key)) {
+                datasetKeys.push(testtuple.test.data_manager_key);
             }
         }
         const metricSearchFilters = metricKeys.map(

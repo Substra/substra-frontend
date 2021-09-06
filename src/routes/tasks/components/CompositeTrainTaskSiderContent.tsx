@@ -1,10 +1,17 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 import AlgoSiderSection from './AlgoSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
+import LoadingSiderSection from './LoadingSiderSection';
 import ModelSiderSection from './ModelSiderSection';
 import TimelineSiderSection from './TimelineSiderSection';
 
+import { Model } from '@/modules/tasks/ModelsTypes';
+import { getHeadModel, getSimpleModel } from '@/modules/tasks/ModelsUtils';
+import {
+    retrieveAggregateTuple,
+    retrieveCompositeTraintuple,
+} from '@/modules/tasks/TasksApi';
 import { CompositeTraintupleT } from '@/modules/tasks/TuplesTypes';
 
 import PermissionSiderSection from '@/components/PermissionSiderSection';
@@ -16,25 +23,97 @@ interface CompositeTrainTaskSiderContentProps {
 const CompositeTrainTaskSiderContent = ({
     task,
 }: CompositeTrainTaskSiderContentProps): JSX.Element => {
+    // All of the following is only here to understand what the parent_task_keys are referring to.
+    // The orchestrator only gives us a key, not the type of tuple it refers to.
+    const [loading, setLoading] = useState(true);
+    const [inHeadModel, setInHeadModel] = useState<Model | undefined>();
+    const [inTrunkModel, setInTrunkModel] = useState<Model | undefined>();
+    const [isInTrunkTupleAggregate, setIsInTrunkTupleAggregate] = useState(
+        false
+    );
+
+    useEffect(() => {
+        setLoading(true);
+
+        if (task.parent_task_keys.length === 0) {
+            // no parent task
+            setLoading(false);
+            setInHeadModel(undefined);
+            setInTrunkModel(undefined);
+            setIsInTrunkTupleAggregate(false);
+        } else if (task.parent_task_keys.length === 1) {
+            // 1 parent task: it must be a composite train task
+            (async () => {
+                const response = await retrieveCompositeTraintuple(
+                    task.parent_task_keys[0]
+                );
+                setInHeadModel(getHeadModel(response.data));
+                setInTrunkModel(getSimpleModel(response.data));
+                setIsInTrunkTupleAggregate(false);
+                setLoading(false);
+            })();
+        } else {
+            // 2 parent tasks: one must be a composite train task and the other an aggregate
+            (async () => {
+                let compositeResponse, aggregateResponse;
+                try {
+                    compositeResponse = await retrieveCompositeTraintuple(
+                        task.parent_task_keys[0]
+                    );
+                    aggregateResponse = await retrieveAggregateTuple(
+                        task.parent_task_keys[1]
+                    );
+                } catch {
+                    compositeResponse = await retrieveCompositeTraintuple(
+                        task.parent_task_keys[1]
+                    );
+                    aggregateResponse = await retrieveAggregateTuple(
+                        task.parent_task_keys[0]
+                    );
+                }
+                setInHeadModel(getHeadModel(compositeResponse.data));
+                setInTrunkModel(getSimpleModel(aggregateResponse.data));
+                setIsInTrunkTupleAggregate(true);
+                setLoading(false);
+            })();
+        }
+    }, [task.parent_task_keys]);
+
     return (
         <Fragment>
             <AlgoSiderSection task={task} />
             <DatasetSiderSection task={task} />
-            <ModelSiderSection
-                title="In trunk model"
-                model={task.in_trunk_model}
-            />
-            <ModelSiderSection
-                title="In head model"
-                model={task.in_head_model}
-            />
+            {loading && (
+                <Fragment>
+                    <LoadingSiderSection />
+                    <LoadingSiderSection />
+                </Fragment>
+            )}
+            {!loading && (
+                <Fragment>
+                    <ModelSiderSection
+                        title="In trunk model"
+                        model={inTrunkModel}
+                        sourceTupleTitle={
+                            isInTrunkTupleAggregate
+                                ? 'Aggregated trunk model from task'
+                                : 'Out trunk model from task'
+                        }
+                    />
+                    <ModelSiderSection
+                        title="In head model"
+                        model={inHeadModel}
+                        sourceTupleTitle="Out head model from task"
+                    />
+                </Fragment>
+            )}
             <PermissionSiderSection
                 title="Out trunk model permissions"
-                permission={task.out_trunk_model.permissions.process}
+                permission={task.composite.trunk_permissions.process}
             />
             <PermissionSiderSection
                 title="Out head model permissions"
-                permission={task.out_head_model.permissions.process}
+                permission={task.composite.head_permissions.process}
             />
             <TimelineSiderSection />
         </Fragment>

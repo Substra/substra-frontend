@@ -1,4 +1,8 @@
-import { PermissionsType } from '@/modules/common/CommonTypes';
+import {
+    FileT,
+    MetadataT,
+    PermissionsType,
+} from '@/modules/common/CommonTypes';
 
 // DatasetStubType is returned when fetching a list of datasets
 export interface DatasetStubType {
@@ -6,15 +10,12 @@ export interface DatasetStubType {
     name: string;
     owner: string;
     permissions: PermissionsType;
-    description: {
-        checksum: string;
-        storage_address: string;
-    };
-    opener: {
-        checksum: string;
-        storage_address: string;
-    };
+    objective_key: string;
+    description: FileT;
+    opener: FileT;
+    type: string;
     creation_date: string;
+    metadata: MetadataT;
 }
 
 // DatasetType is returned when fetching a single dataset

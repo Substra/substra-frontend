@@ -1,13 +1,13 @@
 import { Fragment } from 'react';
 
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import { AggregatetupleT, TraintupleT } from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import StyledLink from '@/components/StyledLink';
 
 import { Spaces } from '@/assets/theme';
 
@@ -28,21 +28,20 @@ const InModelsSiderSection = ({
     return (
         <SiderSection>
             <SiderSectionTitle>In models</SiderSectionTitle>
-            {(!task.in_models || task.in_models.length === 0) &&
-                'No in models.'}
-            {task.in_models && (
+            {task.parent_task_keys.length === 0 && 'No in models.'}
+            {task.parent_task_keys.length > 0 && (
                 <Fragment>
                     <p>Models from tasks:</p>
                     <Ul>
-                        {task.in_models.map(({ traintuple_key }) => (
-                            <li key={traintuple_key}>
-                                <Link
+                        {task.parent_task_keys.map((task_key) => (
+                            <li key={task_key}>
+                                <StyledLink
                                     href={compilePath(PATHS.TASK, {
-                                        key: traintuple_key,
+                                        key: task_key,
                                     })}
                                 >
-                                    {traintuple_key}
-                                </Link>
+                                    {task_key}
+                                </StyledLink>
                             </li>
                         ))}
                     </Ul>

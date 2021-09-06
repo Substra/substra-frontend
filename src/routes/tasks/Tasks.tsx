@@ -17,8 +17,7 @@ import {
     listTestTasks,
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
-import { getTaskWorker } from '@/modules/tasks/TasksUtils';
-import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
+import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { isTesttupleT } from '@/libs/tuples';
 
@@ -230,12 +229,7 @@ const Tasks = (): JSX.Element => {
                                 <Th css={statusColWidth}>
                                     Current status
                                     <StatusTableFilter
-                                        assets={[
-                                            'traintuple',
-                                            'testtuple',
-                                            'composite_traintuple',
-                                            'aggregatetuple',
-                                        ]}
+                                        asset={taskTypes[selectedTaskType].slug}
                                     />
                                 </Th>
                                 <Th css={ownerColWidth}>Worker</Th>
@@ -324,7 +318,7 @@ const Tasks = (): JSX.Element => {
                                 <Td>
                                     <Status status={task.status} />
                                 </Td>
-                                <Td>{getTaskWorker(task)}</Td>
+                                <Td>{task.worker}</Td>
                                 <Td>Coming soon</Td>
                                 <Td>{task.compute_plan_key || '-'}</Td>
                                 <Td>
@@ -332,8 +326,8 @@ const Tasks = (): JSX.Element => {
                                 </Td>
                                 <Td>
                                     {isTesttupleT(task) &&
-                                    task.status === 'done'
-                                        ? task.dataset.perf
+                                    task.status === TupleStatus.done
+                                        ? task.test.perf
                                         : 'N/A'}
                                 </Td>
                             </Tr>

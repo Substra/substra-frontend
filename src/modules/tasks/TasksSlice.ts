@@ -112,7 +112,7 @@ export const listCompositeTasks = createAsyncThunk<
     listTasksArgs,
     { rejectValue: string }
 >(
-    'tasks/listCompisiteTasks',
+    'tasks/listCompositeTasks',
     async ({ filters, page }: listTasksArgs, thunkAPI) => {
         const compositeFilters = filters.filter(
             (sf) => (sf.asset = 'composite_traintuple')

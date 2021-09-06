@@ -5,6 +5,7 @@ export interface PermissionType {
 
 export interface PermissionsType {
     process: PermissionType;
+    download: PermissionType;
 }
 
 export type AssetType =
@@ -25,3 +26,10 @@ export type PaginatedApiResponse<T> = {
     previous: string | null;
     results: T[];
 };
+
+export type MetadataT = Record<string, string>;
+
+export interface FileT {
+    checksum: string;
+    storage_address: string;
+}

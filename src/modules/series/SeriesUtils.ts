@@ -6,6 +6,7 @@ import {
     CompositeTraintupleT,
     TesttupleT,
     TraintupleT,
+    TupleStatus,
 } from '@/modules/tasks/TuplesTypes';
 
 function buildSerieFeatures(
@@ -19,11 +20,11 @@ function buildSerieFeatures(
         algoName: traintuple.algo.name,
         datasetKey: dataset.key,
         datasetName: dataset.name,
-        dataSampleKeys: testtuple.dataset.data_sample_keys,
-        worker: testtuple.dataset.worker,
+        dataSampleKeys: testtuple.test.data_sample_keys,
+        worker: testtuple.worker,
         metricKey: metric.key,
         objectiveName: metric.name,
-        metricName: metric.metrics.name,
+        metricName: metric.metrics_name,
     };
 }
 
@@ -71,10 +72,10 @@ export function buildSeries(
     metrics: MetricType[]
 ): SerieT[] {
     // create indexes
-    const traintupleIndex = buildIndex<TraintupleT>(traintuples);
-    const compositeTraintupleIndex = buildIndex<CompositeTraintupleT>(
-        compositeTraintuples
-    );
+    const traintupleIndex = buildIndex<TraintupleT | CompositeTraintupleT>([
+        ...traintuples,
+        ...compositeTraintuples,
+    ]);
     const datasetIndex = buildIndex<DatasetStubType>(datasets);
     const metricIndex = buildIndex(metrics);
 
@@ -84,16 +85,18 @@ export function buildSeries(
     for (const testtuple of testtuples) {
         const point: PointT = {
             rank: testtuple.rank,
-            perf: testtuple.status === 'done' ? testtuple.dataset.perf : null,
+            perf:
+                testtuple.status === TupleStatus.done
+                    ? testtuple.test.perf
+                    : null,
             testTaskKey: testtuple.key,
         };
 
         const serieFeatures = buildSerieFeatures(
             testtuple,
-            traintupleIndex[testtuple.traintuple_key] ||
-                compositeTraintupleIndex[testtuple.traintuple_key],
-            datasetIndex[testtuple.dataset.key],
-            metricIndex[testtuple.objective.key]
+            traintupleIndex[testtuple.parent_task_keys[0]],
+            datasetIndex[testtuple.test.data_manager_key],
+            metricIndex[testtuple.test.objective_key]
         );
 
         const serie = findSerie(series, serieFeatures);

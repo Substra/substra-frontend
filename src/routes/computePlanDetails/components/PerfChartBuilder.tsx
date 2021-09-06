@@ -6,7 +6,7 @@ import MetricKeysSelector from './MetricKeysSelector';
 import PerfChart from './PerfChart';
 import styled from '@emotion/styled';
 
-import { ComputePlanType } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
@@ -27,7 +27,7 @@ const LabelContainer = styled.div`
 `;
 
 interface PerfChartBuilderProps {
-    computePlan: ComputePlanType;
+    computePlan: ComputePlanT;
 }
 const PerfChartBuilder = ({
     computePlan,
@@ -59,6 +59,14 @@ const PerfChartBuilder = ({
         [series, multiChart, selectedMetricKeys]
     );
 
+    const maxNumberOfSeriesPerGroup: number = useMemo(() => {
+        let max = 0;
+        for (const series of seriesGroups) {
+            max = Math.max(max, series.length);
+        }
+        return max;
+    }, [seriesGroups]);
+
     if (loading) {
         return <LoadingState message="Loading compute plan data..." />;
     } else if (!seriesGroups.length) {
@@ -86,6 +94,7 @@ const PerfChartBuilder = ({
                         <Checkbox
                             checked={displayAverage}
                             onChange={() => setDisplayAverage(!displayAverage)}
+                            disabled={maxNumberOfSeriesPerGroup < 2}
                         />
                         Display average perf
                     </label>

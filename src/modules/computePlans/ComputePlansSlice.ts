@@ -5,7 +5,7 @@ import {
     TraintupleT,
 } from '../tasks/TuplesTypes';
 import ComputePlansApi from './ComputePlansApi';
-import { ComputePlanType } from './ComputePlansTypes';
+import { ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -14,11 +14,11 @@ import TasksApi from '@/modules/tasks/TasksApi';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface ComputePlansState {
-    computePlans: ComputePlanType[];
+    computePlans: ComputePlanT[];
     computePlansLoading: boolean;
     computePlansError: string;
     computePlansCount: number;
-    computePlan: ComputePlanType | null;
+    computePlan: ComputePlanT | null;
     computePlanLoading: boolean;
     computePlanError: string;
     computePlanTrainTasks: TraintupleT[];
@@ -70,7 +70,7 @@ interface listComputePlansArgs {
     page: number;
 }
 export const listComputePlans = createAsyncThunk<
-    PaginatedApiResponse<ComputePlanType>,
+    PaginatedApiResponse<ComputePlanT>,
     listComputePlansArgs,
     { rejectValue: string }
 >(
@@ -89,7 +89,7 @@ export const listComputePlans = createAsyncThunk<
 );
 
 export const retrieveComputePlan = createAsyncThunk<
-    ComputePlanType,
+    ComputePlanT,
     string,
     { rejectValue: string }
 >('computePlans/get', async (key: string, thunkAPI) => {
