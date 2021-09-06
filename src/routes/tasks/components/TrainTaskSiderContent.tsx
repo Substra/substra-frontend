@@ -4,7 +4,6 @@ import AlgoSiderSection from './AlgoSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
 import InModelsSiderSection from './InModelsSiderSection';
 import ModelSiderSection from './ModelSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
 
 import { getSimpleModel } from '@/modules/tasks/ModelsUtils';
 import { TraintupleT } from '@/modules/tasks/TuplesTypes';
@@ -31,7 +30,6 @@ const TrainTaskSiderContent = ({
                 title="Out model permissions"
                 permission={task.train.model_permissions.process}
             />
-            <TimelineSiderSection />
         </Fragment>
     );
 };

@@ -4,7 +4,6 @@ import AlgoSiderSection from './AlgoSiderSection';
 import DatasetSiderSection from './DatasetSiderSection';
 import LoadingSiderSection from './LoadingSiderSection';
 import ModelSiderSection from './ModelSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
 
 import { Model } from '@/modules/tasks/ModelsTypes';
 import { getHeadModel, getSimpleModel } from '@/modules/tasks/ModelsUtils';
@@ -115,7 +114,6 @@ const CompositeTrainTaskSiderContent = ({
                 title="Out head model permissions"
                 permission={task.composite.head_permissions.process}
             />
-            <TimelineSiderSection />
         </Fragment>
     );
 };

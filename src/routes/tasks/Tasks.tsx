@@ -62,9 +62,6 @@ import { Colors, Spaces } from '@/assets/theme';
 const statusColWidth = css`
     width: 200px;
 `;
-const timeColWidth = css`
-    width: 120px;
-`;
 const computePlanColWidth = css`
     width: 270px;
 `;
@@ -233,7 +230,6 @@ const Tasks = (): JSX.Element => {
                                     />
                                 </Th>
                                 <Th css={ownerColWidth}>Worker</Th>
-                                <Th css={timeColWidth}>Execution time</Th>
                                 <Th css={computePlanColWidth}>Compute Plan</Th>
                                 <Th css={rankColWidth}>Rank</Th>
                                 <Th css={perfColWidth}>Performance</Th>
@@ -262,7 +258,6 @@ const Tasks = (): JSX.Element => {
                         <Th css={creationDateWidth}>Creation date</Th>
                         <Th css={statusColWidth}>Current status</Th>
                         <Th css={ownerColWidth}>Worker</Th>
-                        <Th css={timeColWidth}>Execution time</Th>
                         <Th css={computePlanColWidth}>Compute Plan</Th>
                         <Th css={rankColWidth}>Rank</Th>
                         <Th css={perfColWidth}>Performance</Th>
@@ -277,9 +272,6 @@ const Tasks = (): JSX.Element => {
                             <CreationDateSkeletonTd />
                             <Td>
                                 <Skeleton width={150} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={80} height={12} />
                             </Td>
                             <Td>
                                 <Skeleton width={80} height={12} />
@@ -319,7 +311,6 @@ const Tasks = (): JSX.Element => {
                                     <Status status={task.status} />
                                 </Td>
                                 <Td>{task.worker}</Td>
-                                <Td>Coming soon</Td>
                                 <Td>{task.compute_plan_key || '-'}</Td>
                                 <Td>
                                     {task.compute_plan_key ? task.rank : '-'}
@@ -333,7 +324,7 @@ const Tasks = (): JSX.Element => {
                             </Tr>
                         ))}
                     <TablePagination
-                        colSpan={7}
+                        colSpan={6}
                         currentPage={page}
                         itemCount={taskTypes[selectedTaskType].count}
                         asset={taskTypes[selectedTaskType].slug}

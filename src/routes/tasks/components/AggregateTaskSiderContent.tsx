@@ -3,7 +3,6 @@ import { Fragment } from 'react';
 import AlgoSiderSection from './AlgoSiderSection';
 import InModelsSiderSection from './InModelsSiderSection';
 import ModelSiderSection from './ModelSiderSection';
-import TimelineSiderSection from './TimelineSiderSection';
 
 import { getSimpleModel } from '@/modules/tasks/ModelsUtils';
 import { AggregatetupleT } from '@/modules/tasks/TuplesTypes';
@@ -29,7 +28,6 @@ const AggregateTaskSiderContent = ({
                 title="Out model permissions"
                 permission={task.aggregate.model_permissions.process}
             />
-            <TimelineSiderSection />
         </Fragment>
     );
 };
