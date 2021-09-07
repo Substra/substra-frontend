@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Expired credentials will try to be renewed before triggering a log out (#112)
+
 ### Fixed
 
 -   Sider scroll not preserved across different assets anymore (#114)

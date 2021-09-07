@@ -8,10 +8,11 @@ const URLS = {
     INFO: '/info/',
 };
 
-export const listNodes = (): AxiosPromise<NodeType[]> => API.get(URLS.LIST);
+export const listNodes = (): AxiosPromise<NodeType[]> =>
+    API.authenticatedGet(URLS.LIST);
 
 export const retrieveInfo = (): AxiosPromise<NodeInfoType> =>
-    API.get(URLS.INFO);
+    API.authenticatedGet(URLS.INFO);
 
 export default {
     listNodes,

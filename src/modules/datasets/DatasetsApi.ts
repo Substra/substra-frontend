@@ -15,14 +15,14 @@ export const listDatasets = (
     searchFilters: SearchFilterType[],
     page?: number
 ): AxiosPromise<PaginatedApiResponse<DatasetStubType>> => {
-    return API.get(URLS.LIST, getApiOptions(searchFilters, page));
+    return API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
 };
 
 export const retrieveDataset = (key: string): AxiosPromise<DatasetType> =>
-    API.get(URLS.RETRIEVE.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
 
 export const retrieveOpener = (url: string): AxiosPromise<string> =>
-    API.get(url);
+    API.authenticatedGet(url);
 
 export default {
     listDatasets,

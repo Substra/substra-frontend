@@ -15,10 +15,10 @@ export const listComputePlans = (
     searchFilters: SearchFilterType[],
     page: number
 ): AxiosPromise<PaginatedApiResponse<ComputePlanT>> =>
-    API.get(URLS.LIST, getApiOptions(searchFilters, page));
+    API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
 
 export const retrieveComputePlan = (key: string): AxiosPromise<ComputePlanT> =>
-    API.get(URLS.RETRIEVE.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
 
 export default {
     listComputePlans,

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import Cookies from 'universal-cookie';
 
 import {
@@ -8,7 +8,7 @@ import {
 
 declare const API_URL: string;
 
-const API = axios.create({
+const instance = axios.create({
     baseURL: API_URL,
     timeout: 10000,
     headers: {
@@ -17,13 +17,7 @@ const API = axios.create({
     },
 });
 
-// TODO:
-// proper request handling should be:
-// 1. try call
-// 2. if success, then success
-// 3. if auth error, then refresh token, then try call again
-
-API.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) => {
     const cookies = new Cookies();
     const jwt = cookies.get('header.payload');
     return {
@@ -34,6 +28,33 @@ API.interceptors.request.use((config) => {
         },
     };
 });
+
+const withRetry = (instanceMethod: AxiosInstance['get']) => (
+    url: string,
+    config?: AxiosRequestConfig
+) => {
+    return instanceMethod(url, config).catch((error) => {
+        if (error.response && error.response.status === 401) {
+            return instance.post('/user/refresh/').then(
+                () => instanceMethod(url, config),
+                () => {
+                    const url = encodeURI(
+                        `/login?logout=true&next=${window.location.pathname}${window.location.search}`
+                    );
+                    history.pushState({}, '', url);
+                    throw error;
+                }
+            );
+        }
+        throw error;
+    });
+};
+
+const API = {
+    authenticatedGet: withRetry(instance.get),
+    get: instance.get,
+    post: instance.post,
+};
 
 declare const PAGE_SIZE: number;
 
@@ -92,7 +113,7 @@ export const downloadFromApi = async (
     url: string,
     filename: string
 ): Promise<void> => {
-    const response = await API.get(url, { responseType: 'blob' });
+    const response = await API.authenticatedGet(url, { responseType: 'blob' });
     downloadBlob(response.data, filename);
 };
 export default API;

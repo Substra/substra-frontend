@@ -21,28 +21,37 @@ export const listAggregateAlgos = (
     searchFilters: SearchFilterType[],
     page?: number
 ): AxiosPromise<PaginatedApiResponse<AlgoT>> =>
-    API.get(URLS.LIST_AGGREGATE, getApiOptions(searchFilters, page));
+    API.authenticatedGet(
+        URLS.LIST_AGGREGATE,
+        getApiOptions(searchFilters, page)
+    );
 
 export const retrieveAggregateAlgo = (key: string): AxiosPromise<AlgoT> =>
-    API.get(URLS.RETRIEVE_AGGREGATE.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE_AGGREGATE.replace('__KEY__', key));
 
 export const listStandardAlgos = (
     searchFilters: SearchFilterType[],
     page?: number
 ): AxiosPromise<PaginatedApiResponse<AlgoT>> =>
-    API.get(URLS.LIST_STANDARD, getApiOptions(searchFilters, page));
+    API.authenticatedGet(
+        URLS.LIST_STANDARD,
+        getApiOptions(searchFilters, page)
+    );
 
 export const retrieveStandardAlgo = (key: string): AxiosPromise<AlgoT> =>
-    API.get(URLS.RETRIEVE_STANDARD.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE_STANDARD.replace('__KEY__', key));
 
 export const listCompositeAlgos = (
     searchFilters: SearchFilterType[],
     page?: number
 ): AxiosPromise<PaginatedApiResponse<AlgoT>> =>
-    API.get(URLS.LIST_COMPOSITE, getApiOptions(searchFilters, page));
+    API.authenticatedGet(
+        URLS.LIST_COMPOSITE,
+        getApiOptions(searchFilters, page)
+    );
 
 export const retrieveCompositeAlgo = (key: string): AxiosPromise<AlgoT> =>
-    API.get(URLS.RETRIEVE_COMPOSITE.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE_COMPOSITE.replace('__KEY__', key));
 
 export default {
     listAggregateAlgos,

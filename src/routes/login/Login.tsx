@@ -7,7 +7,7 @@ import { useLocation } from 'wouter';
 
 import { listNodes } from '@/modules/nodes/NodesSlice';
 import { loginPayload } from '@/modules/user/UserApi';
-import { logIn } from '@/modules/user/UserSlice';
+import { logIn, logOut } from '@/modules/user/UserSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -42,11 +42,17 @@ const Login = (): JSX.Element => {
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const nextLocation = urlSearchParams.get('next') || PATHS.DATASETS;
+    const forceLogout = !!urlSearchParams.get('logout');
 
     useDocumentTitleEffect((setDocumentTitle) => setDocumentTitle('Login'), []);
 
     useEffect(() => {
-        if (authenticated) {
+        if (forceLogout && authenticated) {
+            dispatch(logOut()).then(() =>
+                setLocation(encodeURI(`${PATHS.LOGIN}?next=${nextLocation}`))
+            );
+        }
+        if (!forceLogout && authenticated) {
             setLocation(nextLocation);
         }
     });

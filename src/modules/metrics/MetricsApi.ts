@@ -14,11 +14,11 @@ export const listMetrics = (
     searchFilters: SearchFilterType[],
     page?: number
 ): AxiosPromise<PaginatedApiResponse<MetricType>> => {
-    return API.get(URLS.LIST, getApiOptions(searchFilters, page));
+    return API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
 };
 
 export const retrieveMetric = (key: string): AxiosPromise<MetricType> =>
-    API.get(URLS.RETRIEVE.replace('__KEY__', key));
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
 
 export default {
     listMetrics,
