@@ -99,9 +99,7 @@ const DatasetSider = (): JSX.Element => {
                 <SimpleSiderSection title="Permissions" content="N/A" />
             )}
             {!datasetLoading && dataset && (
-                <PermissionSiderSection
-                    permission={dataset.permissions.process}
-                />
+                <PermissionSiderSection permissions={dataset.permissions} />
             )}
 
             {openerLoading && <LoadingOpenerSiderSection />}

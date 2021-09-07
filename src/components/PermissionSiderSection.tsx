@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 
-import { PermissionType } from '@/modules/common/CommonTypes';
+import { PermissionsType, PermissionType } from '@/modules/common/CommonTypes';
+
+import { downloadFromApi } from '@/libs/request';
+
+import useAppSelector from '@/hooks/useAppSelector';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
@@ -24,6 +28,27 @@ const Code = styled.code`
     border-radius: 4px;
 `;
 
+const DownloadButton = styled.button`
+    padding: ${Spaces.small} ${Spaces.medium};
+    color: ${Colors.primary};
+    background: none;
+    border: 1px solid ${Colors.border};
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: ${Spaces.small};
+
+    &:hover {
+        background-color: ${Colors.darkerBackground};
+    }
+
+    &:active {
+        background-color: white;
+    }
+`;
+
 export const LoadingPermissionSiderSection = (): JSX.Element => (
     <SiderSection>
         <SiderSectionTitle>Permissions</SiderSectionTitle>
@@ -31,36 +56,72 @@ export const LoadingPermissionSiderSection = (): JSX.Element => (
     </SiderSection>
 );
 
+interface PermissionProps {
+    permission: PermissionType;
+    title: string;
+}
+const Permission = ({ permission, title }: PermissionProps): JSX.Element => {
+    if (permission.public) {
+        return <p>{`${title} by anyone.`}</p>;
+    }
+    if (permission.authorized_ids.length === 1) {
+        return (
+            <p>
+                {`${title} by its owner only:`}
+                <Code>{permission.authorized_ids[0]}</Code>
+            </p>
+        );
+    }
+    return (
+        <>
+            <p>{`${title} by the following nodes:`}</p>
+            <Ul>
+                {permission.authorized_ids.map((nodeId) => (
+                    <li key={nodeId}>
+                        <Code>{nodeId}</Code>
+                    </li>
+                ))}
+            </Ul>
+        </>
+    );
+};
+
 type PermissionSiderSectionProps = {
     title?: string;
-    permission: PermissionType;
+    permissions: PermissionsType;
+    modelUrl?: string;
+    modelButtonTitle?: string;
 };
 
 const PermissionSiderSection = ({
-    permission,
+    permissions,
     title,
+    modelUrl,
+    modelButtonTitle,
 }: PermissionSiderSectionProps): JSX.Element => {
+    const modelExportEnabled = useAppSelector(
+        (state) => state.nodes.info.config.model_export_enabled
+    );
+    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+
+    const canDownload =
+        permissions.download.public ||
+        permissions.download.authorized_ids.includes(currentNodeID);
+
     return (
         <SiderSection>
             <SiderSectionTitle>{title || 'Permissions'}</SiderSectionTitle>
-            {permission.public && <p>Processable by anyone.</p>}
-            {!permission.public && permission.authorized_ids.length === 1 && (
-                <p>
-                    Processable by its owner only:
-                    <Code>{permission.authorized_ids[0]}</Code>
-                </p>
-            )}
-            {!permission.public && permission.authorized_ids.length > 1 && (
-                <>
-                    <p>Processable by the following nodes:</p>
-                    <Ul>
-                        {permission.authorized_ids.map((nodeId) => (
-                            <li key={nodeId}>
-                                <Code>{nodeId}</Code>
-                            </li>
-                        ))}
-                    </Ul>
-                </>
+            <Permission title="Processable" permission={permissions.process} />
+            <Permission
+                title="Downloadable"
+                permission={permissions.download}
+            />
+            {modelUrl && modelExportEnabled && canDownload && (
+                <DownloadButton
+                    onClick={() => downloadFromApi(modelUrl, 'model')}
+                >
+                    {modelButtonTitle}
+                </DownloadButton>
             )}
         </SiderSection>
     );

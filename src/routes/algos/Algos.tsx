@@ -273,7 +273,7 @@ const Algos = (): JSX.Element => {
                                 <Td>{algo.owner}</Td>
                                 <Td>
                                     <PermissionCellContent
-                                        permission={algo.permissions.process}
+                                        permissions={algo.permissions}
                                     />
                                 </Td>
                             </Tr>

@@ -167,7 +167,7 @@ const Metrics = (): JSX.Element => {
                                 <Td>{metric.owner}</Td>
                                 <Td>
                                     <PermissionCellContent
-                                        permission={metric.permissions.process}
+                                        permissions={metric.permissions}
                                     />
                                 </Td>
                             </Tr>

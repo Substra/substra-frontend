@@ -69,9 +69,7 @@ const MetricSider = (): JSX.Element => {
             )}
 
             {metric && (
-                <PermissionSiderSection
-                    permission={metric.permissions.process}
-                />
+                <PermissionSiderSection permissions={metric.permissions} />
             )}
             {metric && (
                 <SiderBottomButton

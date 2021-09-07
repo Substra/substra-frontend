@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Expired credentials will try to be renewed before triggering a log out (#112)
 -   Support for testtuples which parent is an aggregatetuple (#113)
+-   Expired credentials will try to be renewed before triggering a log out (#112)
+-   Display both "download" and "process" permissions (#110)
+-   Download button for models (#110)
 
 ### Fixed
 

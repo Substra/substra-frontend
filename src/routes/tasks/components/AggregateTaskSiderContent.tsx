@@ -26,7 +26,9 @@ const AggregateTaskSiderContent = ({
             />
             <PermissionSiderSection
                 title="Out model permissions"
-                permission={task.aggregate.model_permissions.process}
+                permissions={task.aggregate.model_permissions}
+                modelUrl={getSimpleModel(task)?.address.storage_address}
+                modelButtonTitle="Download out model"
             />
         </Fragment>
     );

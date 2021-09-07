@@ -1,21 +1,28 @@
-import { PermissionType } from '@/modules/common/CommonTypes';
+import { PermissionsType, PermissionType } from '@/modules/common/CommonTypes';
 
 type PermissionCellContentProps = {
-    permission: PermissionType;
+    permissions: PermissionsType;
+};
+
+const formatter = (title: string, permission: PermissionType): string => {
+    if (permission.public) {
+        return `${title} by anyone`;
+    } else if (permission.authorized_ids.length === 1) {
+        return `${title} by its owner only`;
+    }
+    return 'Restricted';
 };
 
 const PermissionCellContent = ({
-    permission,
+    permissions,
 }: PermissionCellContentProps): JSX.Element => {
-    if (permission.public) {
-        return <span>Processable by anyone</span>;
-    }
-
-    if (permission.authorized_ids.length === 1) {
-        return <span>Processable by its owner only</span>;
-    }
-
-    return <span>Restricted</span>;
+    return (
+        <>
+            {formatter('Processable', permissions.process)}
+            <br />
+            {formatter('Downloadable', permissions.download)}
+        </>
+    );
 };
 
 export default PermissionCellContent;

@@ -164,7 +164,7 @@ const Datasets = (): JSX.Element => {
                                 <Td>{dataset.owner}</Td>
                                 <Td>
                                     <PermissionCellContent
-                                        permission={dataset.permissions.process}
+                                        permissions={dataset.permissions}
                                     />
                                 </Td>
                             </Tr>

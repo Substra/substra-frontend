@@ -65,9 +65,7 @@ const AlgoSider = (): JSX.Element => {
                 <DescriptionSiderSection description={description} />
             )}
 
-            {algo && (
-                <PermissionSiderSection permission={algo.permissions.process} />
-            )}
+            {algo && <PermissionSiderSection permissions={algo.permissions} />}
             {algo && (
                 <SiderBottomButton
                     target={algo.algorithm.storage_address}
