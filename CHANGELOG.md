@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Ability to zoom and pan on performance charts (#115)
 -   Support for testtuples which parent is an aggregatetuple (#113)
 -   Expired credentials will try to be renewed before triggering a log out (#112)
 -   Display both "download" and "process" permissions (#110)

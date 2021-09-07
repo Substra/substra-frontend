@@ -2,6 +2,8 @@ import { Fragment, RefObject, useMemo, useRef } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
 import styled from '@emotion/styled';
+import { Chart } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { toJpeg } from 'html-to-image';
 import { Line } from 'react-chartjs-2';
 
@@ -12,7 +14,7 @@ import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
 import { PATHS } from '@/routes';
 
-import { Colors, Spaces } from '@/assets/theme';
+import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const Container = styled.div`
     display: flex;
@@ -23,6 +25,24 @@ const Container = styled.div`
 const LineContainer = styled.div`
     width: 500px;
     margin-right: ${Spaces.extraLarge};
+    position: relative;
+`;
+
+const ResetZoom = styled.button`
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    border: 1px solid ${Colors.border};
+    border-radius: 4px;
+    padding: ${Spaces.extraSmall} ${Spaces.small};
+    background-color: ${Colors.background};
+    font-size: ${Fonts.sizes.smallBody};
+
+    &:hover {
+        border-color: ${Colors.primary};
+        color: ${Colors.primary};
+    }
 `;
 
 interface DownloadButtonProps {
@@ -64,6 +84,7 @@ interface PerfChartProps {
     displayAverage: boolean;
 }
 const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
+    const chartRef = useRef<Chart>();
     const nodesChartStyles = useNodesChartStyles();
 
     const maxRank = useMemo(
@@ -170,9 +191,32 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
                     afterLabel: (item) => `Test task ${item.raw.testTaskKey}`,
                 },
             },
+            zoom: {
+                zoom: {
+                    drag: {
+                        enabled: false,
+                    },
+                    wheel: {
+                        enabled: true,
+                        speed: 0.1,
+                    },
+                    pinch: {
+                        enabled: true,
+                    },
+                    mode: 'xy',
+                    overScaleMode: 'xy',
+                },
+                pan: {
+                    enabled: true,
+                    mode: 'xy',
+                    threshold: 0.01,
+                    modifierKey: 'shift',
+                },
+            },
         },
         scales: {
             x: {
+                type: 'category',
                 title: {
                     display: true,
                     text: 'RANK',
@@ -182,6 +226,7 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
                 },
             },
             y: {
+                type: 'linear',
                 title: {
                     display: true,
                     text: series.length
@@ -208,11 +253,25 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
         });
     };
 
+    const onResetZoomClick = () => {
+        const chart = chartRef.current;
+        if (chart) {
+            chart.resetZoom();
+        }
+    };
+
     return (
         <Fragment>
             <Container ref={downloadRef}>
                 <LineContainer>
-                    <Line type="line" data={data} options={options} />
+                    <Line
+                        type="line"
+                        data={data}
+                        options={options}
+                        plugins={[zoomPlugin]}
+                        ref={chartRef}
+                    />
+                    <ResetZoom onClick={onResetZoomClick}>Reset zoom</ResetZoom>
                 </LineContainer>
                 <PerfChartLegend series={series} />
             </Container>
