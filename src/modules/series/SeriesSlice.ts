@@ -10,6 +10,7 @@ import DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import TasksApi from '@/modules/tasks/TasksApi';
 import {
+    AggregatetupleT,
     CompositeTraintupleT,
     TesttupleT,
     TraintupleT,
@@ -53,7 +54,8 @@ export const loadSeries = createAsyncThunk<
     const tuplePromises: [
         AxiosPromise<PaginatedApiResponse<TesttupleT>>,
         AxiosPromise<PaginatedApiResponse<TraintupleT>>,
-        AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>>
+        AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>>,
+        AxiosPromise<PaginatedApiResponse<AggregatetupleT>>
     ] = [
         TasksApi.listTesttuples([
             {
@@ -76,6 +78,13 @@ export const loadSeries = createAsyncThunk<
                 value: computePlanKey,
             },
         ]),
+        TasksApi.listAggregatetuples([
+            {
+                asset: 'aggregatetuple',
+                key: 'compute_plan_key',
+                value: computePlanKey,
+            },
+        ]),
     ];
     let tupleResponses;
     try {
@@ -87,6 +96,7 @@ export const loadSeries = createAsyncThunk<
     const testtuples = tupleResponses[0].data.results;
     const traintuples = tupleResponses[1].data.results;
     const compositeTraintuples = tupleResponses[2].data.results;
+    const aggregatetuples = tupleResponses[3].data.results;
 
     // load datasets and metrics
 
@@ -141,6 +151,7 @@ export const loadSeries = createAsyncThunk<
         testtuples,
         traintuples,
         compositeTraintuples,
+        aggregatetuples,
         datasets,
         metrics
     );

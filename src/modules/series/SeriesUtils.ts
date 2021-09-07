@@ -3,6 +3,7 @@ import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import {
+    AggregatetupleT,
     CompositeTraintupleT,
     TesttupleT,
     TraintupleT,
@@ -11,13 +12,13 @@ import {
 
 function buildSerieFeatures(
     testtuple: TesttupleT,
-    traintuple: TraintupleT | CompositeTraintupleT,
+    parentTuple: TraintupleT | CompositeTraintupleT | AggregatetupleT,
     dataset: DatasetStubType,
     metric: MetricType
 ): SerieFeaturesT {
     return {
-        algoKey: traintuple.algo.key,
-        algoName: traintuple.algo.name,
+        algoKey: parentTuple.algo.key,
+        algoName: parentTuple.algo.name,
         datasetKey: dataset.key,
         datasetName: dataset.name,
         dataSampleKeys: testtuple.test.data_sample_keys,
@@ -68,14 +69,14 @@ export function buildSeries(
     testtuples: TesttupleT[],
     traintuples: TraintupleT[],
     compositeTraintuples: CompositeTraintupleT[],
+    aggregatetuples: AggregatetupleT[],
     datasets: DatasetStubType[],
     metrics: MetricType[]
 ): SerieT[] {
     // create indexes
-    const traintupleIndex = buildIndex<TraintupleT | CompositeTraintupleT>([
-        ...traintuples,
-        ...compositeTraintuples,
-    ]);
+    const parentTupleIndex = buildIndex<
+        TraintupleT | CompositeTraintupleT | AggregatetupleT
+    >([...traintuples, ...compositeTraintuples, ...aggregatetuples]);
     const datasetIndex = buildIndex<DatasetStubType>(datasets);
     const metricIndex = buildIndex(metrics);
 
@@ -94,7 +95,7 @@ export function buildSeries(
 
         const serieFeatures = buildSerieFeatures(
             testtuple,
-            traintupleIndex[testtuple.parent_task_keys[0]],
+            parentTupleIndex[testtuple.parent_task_keys[0]],
             datasetIndex[testtuple.test.data_manager_key],
             metricIndex[testtuple.test.objective_key]
         );
