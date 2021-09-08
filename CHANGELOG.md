@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Patch circular import in mdast-util-to-hast dependency (#99)
 -   Display intermediary state while checking credentials (#102)
 -   Applying filters on a list moves back to the first page of results (#105)
+-   In Chart, display node separation option only for numerous series (#101)
 
 ### Changed
 

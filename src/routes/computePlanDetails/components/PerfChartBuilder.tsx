@@ -69,7 +69,7 @@ const PerfChartBuilder = ({
 
     if (loading) {
         return <LoadingState message="Loading compute plan data..." />;
-    } else if (!seriesGroups.length) {
+    } else if (series?.length < 1) {
         return (
             <p>
                 There is no data to display: there are no test tasks in status
