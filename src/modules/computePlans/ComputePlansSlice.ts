@@ -9,7 +9,6 @@ import { ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
-import TasksApi from '@/modules/tasks/TasksApi';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -112,14 +111,10 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTrainTasks', async ({ computePlanKey, page }, thunkAPI) => {
     try {
-        const searchFilters: SearchFilterType[] = [
-            {
-                asset: 'traintuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ];
-        const response = await TasksApi.listTraintuples(searchFilters, page);
+        const response = await ComputePlansApi.listComputePlanTraintuples(
+            computePlanKey,
+            page
+        );
 
         return response.data;
     } catch (err) {
@@ -133,14 +128,10 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTestTasks', async ({ computePlanKey, page }, thunkAPI) => {
     try {
-        const searchFilters: SearchFilterType[] = [
-            {
-                asset: 'testtuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ];
-        const response = await TasksApi.listTesttuples(searchFilters, page);
+        const response = await ComputePlansApi.listComputePlanTesttuples(
+            computePlanKey,
+            page
+        );
 
         return response.data;
     } catch (err) {
@@ -156,15 +147,8 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     'computePlans/getAggregateTasks',
     async ({ computePlanKey, page }, thunkAPI) => {
         try {
-            const searchFilters: SearchFilterType[] = [
-                {
-                    asset: 'aggregatetuple',
-                    key: 'compute_plan_key',
-                    value: computePlanKey,
-                },
-            ];
-            const response = await TasksApi.listAggregatetuples(
-                searchFilters,
+            const response = await ComputePlansApi.listComputePlanAggregatetuples(
+                computePlanKey,
                 page
             );
 
@@ -183,15 +167,8 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     'computePlans/getCompositeTasks',
     async ({ computePlanKey, page }, thunkAPI) => {
         try {
-            const searchFilters: SearchFilterType[] = [
-                {
-                    asset: 'composite_traintuple',
-                    key: 'compute_plan_key',
-                    value: computePlanKey,
-                },
-            ];
-            const response = await TasksApi.listCompositeTraintuples(
-                searchFilters,
+            const response = await ComputePlansApi.listComputePlanCompositeTraintuples(
+                computePlanKey,
                 page
             );
 
