@@ -109,13 +109,13 @@ const CompositeTrainTaskSiderContent = ({
             <PermissionSiderSection
                 title="Out trunk model permissions"
                 permissions={task.composite.trunk_permissions}
-                modelUrl={getSimpleModel(task)?.address.storage_address}
+                modelUrl={getSimpleModel(task)?.address?.storage_address}
                 modelButtonTitle="Download out trunk model"
             />
             <PermissionSiderSection
                 title="Out head model permissions"
                 permissions={task.composite.head_permissions}
-                modelUrl={getHeadModel(task)?.address.storage_address}
+                modelUrl={getHeadModel(task)?.address?.storage_address}
                 modelButtonTitle="Download out head model"
             />
         </Fragment>

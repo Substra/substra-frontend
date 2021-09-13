@@ -9,7 +9,7 @@ export interface Model {
     key: string;
     category: ModelCategory;
     compute_task_key: string;
-    address: FileT;
+    address?: FileT;
     permissions: PermissionsType;
     owner: string;
 }

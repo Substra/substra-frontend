@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Sider scroll not preserved across different assets anymore (#114)
+-   Handle deleted intermediary models (#118)
 
 ### Changed
 

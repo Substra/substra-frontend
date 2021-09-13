@@ -29,7 +29,7 @@ const TrainTaskSiderContent = ({
             <PermissionSiderSection
                 title="Out model permissions"
                 permissions={task.train.model_permissions}
-                modelUrl={getSimpleModel(task)?.address.storage_address}
+                modelUrl={getSimpleModel(task)?.address?.storage_address}
                 modelButtonTitle="Download out model"
             />
         </Fragment>
