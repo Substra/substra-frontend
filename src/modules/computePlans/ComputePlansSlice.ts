@@ -1,14 +1,15 @@
-import {
-    AggregatetupleT,
-    CompositeTraintupleT,
-    TesttupleT,
-    TraintupleT,
-} from '../tasks/TuplesTypes';
 import ComputePlansApi from './ComputePlansApi';
 import { ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import TasksApi from '@/modules/tasks/TasksApi';
+import {
+    AggregatetupleT,
+    CompositeTraintupleT,
+    TesttupleT,
+    TraintupleT,
+} from '@/modules/tasks/TuplesTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -111,10 +112,22 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTrainTasks', async ({ computePlanKey, page }, thunkAPI) => {
     try {
-        const response = await ComputePlansApi.listComputePlanTraintuples(
-            computePlanKey,
-            page
-        );
+        let response;
+
+        if (page === undefined) {
+            response = await TasksApi.listTraintuples([
+                {
+                    asset: 'traintuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ]);
+        } else {
+            response = await ComputePlansApi.listComputePlanTraintuples(
+                computePlanKey,
+                page
+            );
+        }
 
         return response.data;
     } catch (err) {
@@ -128,10 +141,22 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
     { rejectValue: string }
 >('computePlans/getTestTasks', async ({ computePlanKey, page }, thunkAPI) => {
     try {
-        const response = await ComputePlansApi.listComputePlanTesttuples(
-            computePlanKey,
-            page
-        );
+        let response;
+
+        if (page === undefined) {
+            response = await TasksApi.listTesttuples([
+                {
+                    asset: 'testtuple',
+                    key: 'compute_plan_key',
+                    value: computePlanKey,
+                },
+            ]);
+        } else {
+            response = await ComputePlansApi.listComputePlanTesttuples(
+                computePlanKey,
+                page
+            );
+        }
 
         return response.data;
     } catch (err) {
@@ -147,10 +172,22 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     'computePlans/getAggregateTasks',
     async ({ computePlanKey, page }, thunkAPI) => {
         try {
-            const response = await ComputePlansApi.listComputePlanAggregatetuples(
-                computePlanKey,
-                page
-            );
+            let response;
+
+            if (page === undefined) {
+                response = await TasksApi.listAggregatetuples([
+                    {
+                        asset: 'aggregatetuple',
+                        key: 'compute_plan_key',
+                        value: computePlanKey,
+                    },
+                ]);
+            } else {
+                response = await ComputePlansApi.listComputePlanAggregatetuples(
+                    computePlanKey,
+                    page
+                );
+            }
 
             return response.data;
         } catch (err) {
@@ -167,10 +204,22 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     'computePlans/getCompositeTasks',
     async ({ computePlanKey, page }, thunkAPI) => {
         try {
-            const response = await ComputePlansApi.listComputePlanCompositeTraintuples(
-                computePlanKey,
-                page
-            );
+            let response;
+
+            if (page === undefined) {
+                response = await TasksApi.listCompositeTraintuples([
+                    {
+                        asset: 'composite_traintuple',
+                        key: 'compute_plan_key',
+                        value: computePlanKey,
+                    },
+                ]);
+            } else {
+                response = await ComputePlansApi.listComputePlanCompositeTraintuples(
+                    computePlanKey,
+                    page
+                );
+            }
 
             return response.data;
         } catch (err) {
