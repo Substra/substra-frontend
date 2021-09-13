@@ -120,9 +120,9 @@ export const loadSeries = createAsyncThunk<
                 value: key,
             })
         );
-        const datasetSearchFilters = metricKeys.map(
+        const datasetSearchFilters = datasetKeys.map(
             (key: string): SearchFilterType => ({
-                asset: 'objective',
+                asset: 'dataset',
                 key: 'key',
                 value: key,
             })
