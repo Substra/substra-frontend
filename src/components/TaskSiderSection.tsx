@@ -5,7 +5,7 @@
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
+import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
@@ -55,6 +55,11 @@ const WorkerSection = styled.div`
     margin-bottom: ${Spaces.small};
 `;
 
+const TaskType = styled.div`
+    font-size: ${Fonts.sizes.label};
+    margin-bottom: ${Spaces.small};
+`;
+
 const Worker = styled.span`
     font-weight: ${Fonts.weights.heavy};
     margin-left: ${Spaces.extraSmall};
@@ -69,6 +74,9 @@ const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {
         <TaskSiderSectionContainer>
             <Status status={task.status} />
             <Key>{task.key}</Key>
+            {task.status === TupleStatus.failed && (
+                <TaskType>type: {task.category}</TaskType>
+            )}
             <WorkerSection>
                 worker:
                 <Worker>{task.worker}</Worker>
