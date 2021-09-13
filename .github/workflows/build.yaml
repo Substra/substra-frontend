@@ -30,7 +30,7 @@ jobs:
 
             - run: printf 'IMAGE_FULL_TAG=%s/%s/connect-frontend:%s\n' $GCP_DOCKER_SERVER $GCP_PROJECT "$(ci/version tag)" >> $GITHUB_ENV
 
-            - run: DOCKER_BUILDKIT=1 docker build . -t '${{env.IMAGE_FULL_TAG}}'
+            - run: DOCKER_BUILDKIT=1 docker build . -t '${{env.IMAGE_FULL_TAG}}' --build-arg APP_VERSION="$(ci/version version)"
             - run: printf '${{ secrets.GCP_SERVICE_ACCOUNT_KEY_JSON }}' | docker login -u _json_key --password-stdin https://$GCP_DOCKER_SERVER
             - run: docker push $IMAGE_FULL_TAG
 

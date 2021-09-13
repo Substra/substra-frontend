@@ -5,13 +5,12 @@ import { defineConfig } from 'vite';
 import reactSvgPlugin from 'vite-plugin-react-svg';
 import reactJsx from 'vite-react-jsx';
 
-// TODO: inject this env variable automatically at build
-const GIT_COMMIT = process.env['GIT_COMMIT'];
+const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
 
 // https://vitejs.dev/config/
 export default defineConfig({
     define: {
-        __APP_VERSION__: `'${version} - ${GIT_COMMIT}'`,
+        __APP_VERSION__: `'${APP_VERSION}'`,
         ...(process.env.NODE_ENV !== 'production'
             ? { API_URL: `'http://substra-backend.node-1.com'` }
             : {}),
