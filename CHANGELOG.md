@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Sider scroll not preserved across different assets anymore (#114)
 -   Handle deleted intermediary models (#118)
+-   Removed emotion warning about non-boolean attribute (#121)
 
 ### Changed
 

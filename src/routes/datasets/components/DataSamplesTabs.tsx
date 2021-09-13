@@ -30,7 +30,9 @@ interface TabProps {
     active: boolean;
 }
 
-const Tab = styled(ReactTab)<TabProps>`
+const Tab = styled(ReactTab, {
+    shouldForwardProp: (prop) => prop !== 'active',
+})<TabProps>`
     padding-bottom: ${Spaces.small};
     margin-right: ${Spaces.large};
     border-bottom: 2px solid;
