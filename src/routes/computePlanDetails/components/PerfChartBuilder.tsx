@@ -103,6 +103,7 @@ const PerfChartBuilder = ({
                     <PerfChart
                         series={series}
                         displayAverage={displayAverage}
+                        displayMultiChart={multiChart}
                         key={series.map((serie) => serie.id).join('-')}
                     />
                 ))}

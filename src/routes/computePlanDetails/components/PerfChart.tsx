@@ -1,14 +1,23 @@
-import { Fragment, RefObject, useMemo, useRef } from 'react';
+/** @jsxRuntime classic */
+
+/** @jsx jsx */
+import { Fragment, RefObject, useMemo, useRef, useState } from 'react';
 
 import PerfChartLegend from './PerfChartLegend';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { toJpeg } from 'html-to-image';
 import { Line } from 'react-chartjs-2';
+import CsvDownloader, { ICsvProps } from 'react-csv-downloader';
+import { RiDownloadLine } from 'react-icons/ri';
 
+import { csvPerfChartColumns } from '@/modules/computePlans/ComputePlansConstants';
 import { SerieT } from '@/modules/series/SeriesTypes';
 
+import { useAppSelector } from '@/hooks';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useNodesChartStyles from '@/hooks/useNodesChartStyles';
 
@@ -26,6 +35,15 @@ const LineContainer = styled.div`
     width: 500px;
     margin-right: ${Spaces.extraLarge};
     position: relative;
+
+    & > button {
+        opacity: 0;
+        transition: opacity 0.1s ease-out;
+    }
+
+    &:hover > button {
+        opacity: 1;
+    }
 `;
 
 const ResetZoom = styled.button`
@@ -45,26 +63,72 @@ const ResetZoom = styled.button`
     }
 `;
 
+const Header = styled.div`
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    margin: 0 -${Spaces.small};
+`;
+const Title = styled.div`
+    font-size: ${Fonts.sizes.h2};
+    font-weight: bold;
+    color: ${Colors.content};
+    margin: 0 ${Spaces.small};
+`;
 interface DownloadButtonProps {
+    active: boolean;
+}
+interface DownloadItemProps {
     disabled: boolean;
 }
 
 const DownloadButton = styled.button<DownloadButtonProps>`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: ${Colors.primary};
-    height: 40px;
-    min-width: 200px;
-    background: none;
+    height: 25px;
+    width: 25px;
+    background: ${({ active }) => (active ? Colors.darkerBackground : 'none')};
     border: 1px solid ${Colors.border};
-    border-radius: 20px;
+    border-radius: 50%;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
     text-align: center;
-    margin: 0 auto ${Spaces.extraLarge} auto;
-    opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+    margin: 0 ${Spaces.small};
     cursor: pointer;
+
+    &:hover {
+        background-color: ${Colors.darkerBackground};
+    }
+`;
+
+const DownloadMenu = styled.ul`
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 200px;
+    border-radius: ${Spaces.medium};
+    background-color: white;
+    box-shadow: 0 0 8px ${Colors.border};
+    z-index: 10;
+    transition: all 0.1s linear;
+`;
+
+const invisibleContainer = css`
+    opacity: 0;
+    top: 26px;
+    pointer-events: none;
+`;
+
+const DownloadItem = styled.li<DownloadItemProps>`
+    padding: ${Spaces.medium};
+    opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+    pointer-events: ${({ disabled }) => (disabled ? 'none' : 'inherit')};
 
     &:hover {
         background-color: ${Colors.darkerBackground};
@@ -82,9 +146,19 @@ const average = (values: number[]): number => {
 interface PerfChartProps {
     series: SerieT[];
     displayAverage: boolean;
+    displayMultiChart: boolean;
 }
-const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
+const PerfChart = ({
+    series,
+    displayAverage,
+    displayMultiChart,
+}: PerfChartProps): JSX.Element => {
+    const [showDownloadMenu, setShowDownloadMenu] = useState(false);
     const chartRef = useRef<Chart>();
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
+
     const nodesChartStyles = useNodesChartStyles();
 
     const maxRank = useMemo(
@@ -253,6 +327,28 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
         });
     };
 
+    const csvDatas: ICsvProps['datas'] = useMemo(() => {
+        const datas = [];
+        for (const serie of series) {
+            for (const point of serie.points) {
+                datas.push({
+                    computePlanTag: computePlan?.tag || '',
+                    computePlanMetadata: JSON.stringify(
+                        computePlan?.metadata || {}
+                    ),
+                    worker: serie.worker,
+                    objectiveKey: serie.metricKey,
+                    datasetKey: serie.datasetKey,
+                    metricName: serie.metricName,
+                    testtupleKey: point.testTaskKey,
+                    testtupleRank: point.rank.toString(),
+                    perfValue: point.perf?.toString(),
+                });
+            }
+        }
+        return datas;
+    }, [series]);
+
     const onResetZoomClick = () => {
         const chart = chartRef.current;
         if (chart) {
@@ -260,8 +356,68 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
         }
     };
 
+    const closeDownloadMenu = () => {
+        setShowDownloadMenu(false);
+        document.removeEventListener('click', closeDownloadMenu);
+    };
+
+    const toggleDownloadMenu = (e: React.MouseEvent) => {
+        if (showDownloadMenu) {
+            closeDownloadMenu();
+            return;
+        }
+        setShowDownloadMenu(true);
+        e.stopPropagation();
+        document.addEventListener('click', closeDownloadMenu);
+    };
+
+    const perfChartTitle = useMemo(() => {
+        const metricName = series[0].metricName;
+        const title = `${metricName
+            .charAt(0)
+            .toUpperCase()}${metricName.substring(1)}`;
+
+        return displayMultiChart
+            ? `${title} - ${series[0].worker}`
+            : `${title} - All nodes`;
+    }, [series]);
+
     return (
         <Fragment>
+            <Header>
+                <Title>{perfChartTitle}</Title>
+                <DownloadButton
+                    active={showDownloadMenu}
+                    onClick={toggleDownloadMenu}
+                >
+                    <RiDownloadLine />
+                    <DownloadMenu
+                        css={[!showDownloadMenu && invisibleContainer]}
+                    >
+                        <DownloadItem
+                            disabled={!downloadRef.current}
+                            onClick={(e) => {
+                                downloadImage(downloadRef.current);
+                                toggleDownloadMenu(e);
+                            }}
+                        >
+                            Download As Jpeg
+                        </DownloadItem>
+                        <DownloadItem
+                            disabled={!csvDatas}
+                            onClick={toggleDownloadMenu}
+                        >
+                            <CsvDownloader
+                                filename={`cp_${key}`}
+                                datas={csvDatas}
+                                columns={csvPerfChartColumns}
+                            >
+                                Download As CSV
+                            </CsvDownloader>
+                        </DownloadItem>
+                    </DownloadMenu>
+                </DownloadButton>
+            </Header>
             <Container ref={downloadRef}>
                 <LineContainer>
                     <Line
@@ -275,13 +431,6 @@ const PerfChart = ({ series, displayAverage }: PerfChartProps): JSX.Element => {
                 </LineContainer>
                 <PerfChartLegend series={series} />
             </Container>
-
-            <DownloadButton
-                disabled={!downloadRef.current}
-                onClick={() => downloadImage(downloadRef.current)}
-            >
-                Download Chart
-            </DownloadButton>
         </Fragment>
     );
 };

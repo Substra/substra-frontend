@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Expired credentials will try to be renewed before triggering a log out (#112)
 -   Display both "download" and "process" permissions (#110)
 -   Download button for models (#110)
+-   Add CSV export (#117)
 
 ### Fixed
 
