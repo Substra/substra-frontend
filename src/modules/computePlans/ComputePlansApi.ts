@@ -32,38 +32,42 @@ export const retrieveComputePlan = (key: string): AxiosPromise<ComputePlanT> =>
 
 export const listComputePlanTesttuples = (
     key: string,
-    page?: number
+    page: number,
+    pageSize?: number
 ): AxiosPromise<PaginatedApiResponse<TesttupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_TESTTUPLES.replace('__KEY__', key),
-        getApiOptions([], page)
+        getApiOptions([], page, pageSize)
     );
 };
 export const listComputePlanTraintuples = (
     key: string,
-    page?: number
+    page: number,
+    pageSize?: number
 ): AxiosPromise<PaginatedApiResponse<TraintupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_TRAINTUPLES.replace('__KEY__', key),
-        getApiOptions([], page)
+        getApiOptions([], page, pageSize)
     );
 };
 export const listComputePlanCompositeTraintuples = (
     key: string,
-    page?: number
+    page: number,
+    pageSize?: number
 ): AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_COMPOSITE_TRAINTUPLES.replace('__KEY__', key),
-        getApiOptions([], page)
+        getApiOptions([], page, pageSize)
     );
 };
 export const listComputePlanAggregatetuples = (
     key: string,
-    page?: number
+    page: number,
+    pageSize?: number
 ): AxiosPromise<PaginatedApiResponse<AggregatetupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
-        getApiOptions([], page)
+        getApiOptions([], page, pageSize)
     );
 };
 

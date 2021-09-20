@@ -1,4 +1,5 @@
 import { PaginatedApiResponse } from '../common/CommonTypes';
+import ComputePlansApi from '../computePlans/ComputePlansApi';
 import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
@@ -8,7 +9,6 @@ import { AxiosPromise } from 'axios';
 import MetricsApi from '@/modules//metrics/MetricsApi';
 import DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import TasksApi from '@/modules/tasks/TasksApi';
 import {
     AggregatetupleT,
     CompositeTraintupleT,
@@ -16,6 +16,7 @@ import {
     TraintupleT,
 } from '@/modules/tasks/TuplesTypes';
 
+import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface SeriesState {
@@ -51,40 +52,33 @@ export const loadSeries = createAsyncThunk<
     { rejectValue: string }
 >('series/loadData', async (computePlanKey, thunkAPI) => {
     // load tuples
+    const tuplesPageSize = 100;
     const tuplePromises: [
-        AxiosPromise<PaginatedApiResponse<TesttupleT>>,
-        AxiosPromise<PaginatedApiResponse<TraintupleT>>,
-        AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>>,
-        AxiosPromise<PaginatedApiResponse<AggregatetupleT>>
+        Promise<TesttupleT[]>,
+        Promise<TraintupleT[]>,
+        Promise<CompositeTraintupleT[]>,
+        Promise<AggregatetupleT[]>
     ] = [
-        TasksApi.listTesttuples([
-            {
-                asset: 'testtuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ]),
-        TasksApi.listTraintuples([
-            {
-                asset: 'traintuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ]),
-        TasksApi.listCompositeTraintuples([
-            {
-                asset: 'composite_traintuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ]),
-        TasksApi.listAggregatetuples([
-            {
-                asset: 'aggregatetuple',
-                key: 'compute_plan_key',
-                value: computePlanKey,
-            },
-        ]),
+        getAllPagesResults<TesttupleT, [string]>(
+            ComputePlansApi.listComputePlanTesttuples,
+            [computePlanKey],
+            tuplesPageSize
+        ),
+        getAllPagesResults<TraintupleT, [string]>(
+            ComputePlansApi.listComputePlanTraintuples,
+            [computePlanKey],
+            tuplesPageSize
+        ),
+        getAllPagesResults<CompositeTraintupleT, [string]>(
+            ComputePlansApi.listComputePlanCompositeTraintuples,
+            [computePlanKey],
+            tuplesPageSize
+        ),
+        getAllPagesResults<AggregatetupleT, [string]>(
+            ComputePlansApi.listComputePlanAggregatetuples,
+            [computePlanKey],
+            tuplesPageSize
+        ),
     ];
     let tupleResponses;
     try {
@@ -93,10 +87,10 @@ export const loadSeries = createAsyncThunk<
         return thunkAPI.rejectWithValue(err.response.data);
     }
 
-    const testtuples = tupleResponses[0].data.results;
-    const traintuples = tupleResponses[1].data.results;
-    const compositeTraintuples = tupleResponses[2].data.results;
-    const aggregatetuples = tupleResponses[3].data.results;
+    const testtuples = tupleResponses[0];
+    const traintuples = tupleResponses[1];
+    const compositeTraintuples = tupleResponses[2];
+    const aggregatetuples = tupleResponses[3];
 
     // load datasets and metrics
 

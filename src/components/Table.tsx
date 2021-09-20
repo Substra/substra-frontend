@@ -191,7 +191,7 @@ export const permissionsColWidth = css`
     width: 210px;
 `;
 
-declare const PAGE_SIZE: number;
+declare const DEFAULT_PAGE_SIZE: number;
 
 interface TableSkeletonProps {
     children: React.ReactNode;
@@ -203,14 +203,14 @@ export const TableSkeleton = ({
     currentPage,
     itemCount,
 }: TableSkeletonProps): JSX.Element => {
-    let nbRows = PAGE_SIZE;
-    const lastPage = Math.ceil(itemCount / PAGE_SIZE);
+    let nbRows = DEFAULT_PAGE_SIZE;
+    const lastPage = Math.ceil(itemCount / DEFAULT_PAGE_SIZE);
     // if on the last page, display one row per item on this last page
     if (currentPage === lastPage) {
-        nbRows = itemCount % PAGE_SIZE;
+        nbRows = itemCount % DEFAULT_PAGE_SIZE;
     }
     // handle the case where we don't know how many items there are (itemCount == 0)
-    nbRows = nbRows || PAGE_SIZE;
+    nbRows = nbRows || DEFAULT_PAGE_SIZE;
     return (
         <Fragment>
             {[...Array(nbRows)].map((_, index) => (

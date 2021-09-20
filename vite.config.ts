@@ -14,7 +14,7 @@ export default defineConfig({
         ...(process.env.NODE_ENV !== 'production'
             ? { API_URL: `'http://substra-backend.node-1.com'` }
             : {}),
-        PAGE_SIZE: '10',
+        DEFAULT_PAGE_SIZE: '10',
     },
     plugins: [
         reactJsx(),

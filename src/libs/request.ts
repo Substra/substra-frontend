@@ -1,5 +1,7 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
 import Cookies from 'universal-cookie';
+
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import {
     buildSearchFiltersString,
@@ -56,11 +58,12 @@ const API = {
     post: instance.post,
 };
 
-declare const PAGE_SIZE: number;
+declare const DEFAULT_PAGE_SIZE: number;
 
 export const getApiOptions = (
     searchFilters: SearchFilterType[],
-    page?: number
+    page?: number,
+    pageSize?: number
 ): AxiosRequestConfig => {
     let params = {};
 
@@ -75,7 +78,7 @@ export const getApiOptions = (
     if (page) {
         params = {
             ...params,
-            page_size: PAGE_SIZE,
+            page_size: pageSize || DEFAULT_PAGE_SIZE,
             page,
         };
     }
@@ -117,3 +120,24 @@ export const downloadFromApi = async (
     downloadBlob(response.data, filename);
 };
 export default API;
+
+type ArgsWithPage<Args extends unknown[]> = [...Args, number, number?];
+
+export const getAllPagesResults = async <Asset, CommonArgs extends unknown[]>(
+    apiMethod: (
+        ...args: ArgsWithPage<CommonArgs>
+    ) => AxiosPromise<PaginatedApiResponse<Asset>>,
+    commonApiMethodArgs: CommonArgs,
+    pageSize: number
+): Promise<Asset[]> => {
+    const commonArgs = commonApiMethodArgs || [];
+    const firstPage = await apiMethod(...commonArgs, 1, pageSize);
+    const lastPage = Math.ceil(firstPage.data.count / pageSize);
+    let results = firstPage.data.results;
+
+    for (let page = 2; page <= lastPage; page++) {
+        const currentPage = await apiMethod(...commonArgs, page, pageSize);
+        results = [...results, ...currentPage.data.results];
+    }
+    return results;
+};

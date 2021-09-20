@@ -41,7 +41,7 @@ const tdStyle = css`
     }
 `;
 
-declare const PAGE_SIZE: number;
+declare const DEFAULT_PAGE_SIZE: number;
 
 interface TablePaginationProps {
     colSpan: number;
@@ -56,9 +56,9 @@ const TablePagination = ({
     asset,
     itemCount,
 }: TablePaginationProps): JSX.Element => {
-    const firstIndex = Math.max((currentPage - 1) * PAGE_SIZE + 1, 0);
-    const lastIndex = Math.min(currentPage * PAGE_SIZE, itemCount);
-    const lastPage = Math.ceil(itemCount / PAGE_SIZE);
+    const firstIndex = Math.max((currentPage - 1) * DEFAULT_PAGE_SIZE + 1, 0);
+    const lastIndex = Math.min(currentPage * DEFAULT_PAGE_SIZE, itemCount);
+    const lastPage = Math.ceil(itemCount / DEFAULT_PAGE_SIZE);
 
     return (
         <tr>

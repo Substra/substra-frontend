@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Works with orchestrator-powered backends only (#100)
 -   Removed the "Timeline" section for tasks and compute plan that was "coming soon" (#111)
 -   Use dedicated sub asset routes to retrieve compute plan tuples (#116, #120)
+-   Use dedicated sub asset routes to list all tuples from a compute plan (#127)
 
 ## [0.2.0] - 2021-09-02
 
