@@ -43,6 +43,17 @@ const RectRot = styled.div`
     left: 4px;
 `;
 
+const Rect = styled.div`
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border: 2px solid;
+
+    position: absolute;
+    top: 0;
+    left: 4px;
+`;
+
 interface PerfChartLegendMarkerProps {
     style: string;
 }
@@ -54,6 +65,7 @@ const PerfChartLegendMarker = ({
         <Line />
         {style === 'circle' && <Circle />}
         {style === 'rectRot' && <RectRot />}
+        {style === 'rect' && <Rect />}
     </Marker>
 );
 

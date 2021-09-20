@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Display short commit sha in user menu (#122)
 -   Listing of a compute plan's datasets when building series (#123)
 -   Default chart styles for unknown nodes (#132)
+-   Add missing marker to perf chart legend (#136)
 
 ### Changed
 
