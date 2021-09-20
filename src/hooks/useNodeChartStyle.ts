@@ -22,7 +22,12 @@ interface ChartStyle {
     pointStyle: string;
 }
 
-const useNodesChartStyles = (): Record<string, ChartStyle> => {
+const DEFAULT_CHART_STYLE: ChartStyle = {
+    color: CHART_COLORS[0],
+    pointStyle: POINT_STYLES[0],
+};
+
+const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
     // get nodes sorted alphabetically
     const nodeIds = useAppSelector((state) =>
         state.nodes.nodes.map((node) => node.id).sort()
@@ -31,6 +36,7 @@ const useNodesChartStyles = (): Record<string, ChartStyle> => {
     // memoize the node styles so that they won't change
     return useMemo(() => {
         const chartStyles: Record<string, ChartStyle> = {};
+
         for (let i = 0; i < nodeIds.length; i++) {
             const nodeId = nodeIds[i];
             chartStyles[nodeId] = {
@@ -38,8 +44,11 @@ const useNodesChartStyles = (): Record<string, ChartStyle> => {
                 pointStyle: POINT_STYLES[i % POINT_STYLES.length],
             };
         }
-        return chartStyles;
+
+        return (nodeId: string): ChartStyle => {
+            return chartStyles[nodeId] || DEFAULT_CHART_STYLE;
+        };
     }, nodeIds);
 };
 
-export default useNodesChartStyles;
+export default useNodeChartStyle;

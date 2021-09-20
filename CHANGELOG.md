@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed emotion warning about non-boolean attribute (#121)
 -   Display short commit sha in user menu (#122)
 -   Listing of a compute plan's datasets when building series (#123)
+-   Default chart styles for unknown nodes (#132)
 
 ### Changed
 

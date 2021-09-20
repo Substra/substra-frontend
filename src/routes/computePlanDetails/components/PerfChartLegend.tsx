@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
-import useNodesChartStyles from '@/hooks/useNodesChartStyles';
+import useNodeChartStyle from '@/hooks/useNodeChartStyle';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -35,7 +35,7 @@ interface PerfChartLegendProps {
     series: SerieT[];
 }
 const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
-    const nodesChartStyles = useNodesChartStyles();
+    const nodeChartStyle = useNodeChartStyle();
     const sortedSeries = [...series].sort((serieA, serieB) =>
         serieA.worker.localeCompare(serieB.worker)
     );
@@ -44,9 +44,9 @@ const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
         <ul>
             {sortedSeries.map((serie) => (
                 <Item key={serie.id}>
-                    <ItemTitle color={nodesChartStyles[serie.worker].color}>
+                    <ItemTitle color={nodeChartStyle(serie.worker).color}>
                         <PerfChartLegendMarker
-                            style={nodesChartStyles[serie.worker].pointStyle}
+                            style={nodeChartStyle(serie.worker).pointStyle}
                         />
                         {serie.worker}
                     </ItemTitle>

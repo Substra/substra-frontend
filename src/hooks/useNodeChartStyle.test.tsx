@@ -1,6 +1,6 @@
 import { StoreProviderProps } from '@/store';
 
-import useNodesChartsStyles from './useNodesChartStyles';
+import useNodeChartStyle from './useNodeChartStyle';
 import { configureStore } from '@reduxjs/toolkit';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
@@ -26,20 +26,20 @@ const StoreProviderBuilder = (nodes: NodeType[]) => {
 };
 
 test('styles do not depend on the order of nodes in store', () => {
-    const { result: resultA } = renderHook(() => useNodesChartsStyles(), {
+    const { result: resultA } = renderHook(() => useNodeChartStyle(), {
         wrapper: StoreProviderBuilder([
             { id: 'node-A', is_current: false },
             { id: 'node-B', is_current: false },
         ]),
     });
-    const { result: resultB } = renderHook(() => useNodesChartsStyles(), {
+    const { result: resultB } = renderHook(() => useNodeChartStyle(), {
         wrapper: StoreProviderBuilder([
             { id: 'node-B', is_current: false },
             { id: 'node-A', is_current: false },
         ]),
     });
-    expect(resultA.current['node-A']).toStrictEqual(resultB.current['node-A']);
-    expect(resultA.current['node-B']).toStrictEqual(resultB.current['node-B']);
+    expect(resultA.current('node-A')).toStrictEqual(resultB.current('node-A'));
+    expect(resultA.current('node-B')).toStrictEqual(resultB.current('node-B'));
 });
 
 test('same node always has same styles', () => {
@@ -47,11 +47,27 @@ test('same node always has same styles', () => {
         { id: 'node-B', is_current: false },
         { id: 'node-A', is_current: false },
     ]);
-    const { result, rerender } = renderHook(() => useNodesChartsStyles(), {
+    const { result, rerender } = renderHook(() => useNodeChartStyle(), {
         wrapper,
     });
 
-    const initialStyles = { ...result.current };
+    const initialStyleGetter = result.current;
     rerender();
-    expect(initialStyles).toStrictEqual(result.current);
+    expect(initialStyleGetter('node-A')).toStrictEqual(
+        result.current('node-A')
+    );
+    expect(initialStyleGetter('node-B')).toStrictEqual(
+        result.current('node-B')
+    );
+});
+
+test('provide default style for unknown nodes', () => {
+    const wrapper = StoreProviderBuilder([]);
+    const { result } = renderHook(() => useNodeChartStyle(), {
+        wrapper,
+    });
+
+    expect(result.current('unknown')).toBeDefined();
+    expect(result.current('unknown').color).toBeTruthy();
+    expect(result.current('unknown').pointStyle).toBeTruthy();
 });

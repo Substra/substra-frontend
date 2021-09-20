@@ -19,7 +19,7 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 import { useAppSelector } from '@/hooks';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useNodesChartStyles from '@/hooks/useNodesChartStyles';
+import useNodeChartStyle from '@/hooks/useNodeChartStyle';
 
 import { PATHS } from '@/routes';
 
@@ -159,7 +159,7 @@ const PerfChart = ({
         (state) => state.computePlans.computePlan
     );
 
-    const nodesChartStyles = useNodesChartStyles();
+    const nodeChartStyle = useNodeChartStyle();
 
     const maxRank = useMemo(
         () =>
@@ -223,14 +223,14 @@ const PerfChart = ({
                 })),
                 parsing: false,
                 // styles
-                backgroundColor: nodesChartStyles[serie.worker].color,
-                borderColor: nodesChartStyles[serie.worker].color,
+                backgroundColor: nodeChartStyle(serie.worker).color,
+                borderColor: nodeChartStyle(serie.worker).color,
                 // line styles
                 borderWidth: 2,
                 // point styles
-                pointStyle: nodesChartStyles[serie.worker].pointStyle,
+                pointStyle: nodeChartStyle(serie.worker).pointStyle,
                 pointBackgroundColor: 'white',
-                pointBorderColor: nodesChartStyles[serie.worker].color,
+                pointBorderColor: nodeChartStyle(serie.worker).color,
                 pointBorderWidth: 2,
             })),
         [series]
