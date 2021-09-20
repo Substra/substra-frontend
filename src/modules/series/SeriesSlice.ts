@@ -9,12 +9,7 @@ import { AxiosPromise } from 'axios';
 import MetricsApi from '@/modules//metrics/MetricsApi';
 import DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import {
-    AggregatetupleT,
-    CompositeTraintupleT,
-    TesttupleT,
-    TraintupleT,
-} from '@/modules/tasks/TuplesTypes';
+import { TesttupleT } from '@/modules/tasks/TuplesTypes';
 
 import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
@@ -51,46 +46,17 @@ export const loadSeries = createAsyncThunk<
     string,
     { rejectValue: string }
 >('series/loadData', async (computePlanKey, thunkAPI) => {
-    // load tuples
-    const tuplesPageSize = 100;
-    const tuplePromises: [
-        Promise<TesttupleT[]>,
-        Promise<TraintupleT[]>,
-        Promise<CompositeTraintupleT[]>,
-        Promise<AggregatetupleT[]>
-    ] = [
-        getAllPagesResults<TesttupleT, [string]>(
+    // load testtuples
+    let testtuples: TesttupleT[];
+    try {
+        testtuples = await getAllPagesResults<TesttupleT, [string]>(
             ComputePlansApi.listComputePlanTesttuples,
             [computePlanKey],
-            tuplesPageSize
-        ),
-        getAllPagesResults<TraintupleT, [string]>(
-            ComputePlansApi.listComputePlanTraintuples,
-            [computePlanKey],
-            tuplesPageSize
-        ),
-        getAllPagesResults<CompositeTraintupleT, [string]>(
-            ComputePlansApi.listComputePlanCompositeTraintuples,
-            [computePlanKey],
-            tuplesPageSize
-        ),
-        getAllPagesResults<AggregatetupleT, [string]>(
-            ComputePlansApi.listComputePlanAggregatetuples,
-            [computePlanKey],
-            tuplesPageSize
-        ),
-    ];
-    let tupleResponses;
-    try {
-        tupleResponses = await Promise.all(tuplePromises);
+            100
+        );
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
     }
-
-    const testtuples = tupleResponses[0];
-    const traintuples = tupleResponses[1];
-    const compositeTraintuples = tupleResponses[2];
-    const aggregatetuples = tupleResponses[3];
 
     // load datasets and metrics
 
@@ -141,14 +107,7 @@ export const loadSeries = createAsyncThunk<
 
     // build series
 
-    const series = buildSeries(
-        testtuples,
-        traintuples,
-        compositeTraintuples,
-        aggregatetuples,
-        datasets,
-        metrics
-    );
+    const series = buildSeries(testtuples, datasets, metrics);
 
     return {
         metrics,
