@@ -28,7 +28,8 @@ import { Colors, Fonts, Spaces } from '@/assets/theme';
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: ${Spaces.extraLarge} 0 ${Spaces.small} 0;
+    padding: ${Spaces.small};
+    margin: 0 -${Spaces.small};
 `;
 
 const LineContainer = styled.div`
@@ -67,7 +68,7 @@ const Header = styled.div`
     display: flex;
     align-items: baseline;
     width: 100%;
-    margin: 0 -${Spaces.small};
+    margin: 0 -${Spaces.small} ${Spaces.large};
 `;
 const Title = styled.div`
     font-size: ${Fonts.sizes.h2};
