@@ -40,7 +40,12 @@ import NodeSiderElement, {
 } from '@/components/NodeSiderElement';
 import ProgressBar from '@/components/ProgressBar';
 import Sider from '@/components/Sider';
-import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
+import {
+    SiderSection,
+    SiderSectionTitle,
+    SimpleLoadingSiderSection,
+    SimpleSiderSection,
+} from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
 import TaskSiderSection, {
     LoadingTaskSiderSection,
@@ -269,6 +274,14 @@ const ComputePlanSider = (): JSX.Element => {
             }
         >
             <KeySiderSection assetKey={key || ''} />
+
+            {computePlanLoading && <SimpleLoadingSiderSection title="Owner" />}
+            {!computePlanLoading && (
+                <SimpleSiderSection
+                    title="Owner"
+                    content={computePlan?.owner}
+                />
+            )}
 
             {computePlanLoading && <LoadingMetadataSiderSection />}
             {!computePlanLoading && computePlan && (

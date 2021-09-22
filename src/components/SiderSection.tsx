@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import Skeleton from '@/components/Skeleton';
+
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 export const SiderSection = styled.div`
@@ -33,6 +35,22 @@ export const SimpleSiderSection = ({
     </SiderSection>
 );
 
+interface SimpleLoadingSiderSectionProps {
+    title: string;
+    skeletonWidth?: number;
+    skeletonHeight?: number;
+}
+export const SimpleLoadingSiderSection = ({
+    title,
+    skeletonHeight,
+    skeletonWidth,
+}: SimpleLoadingSiderSectionProps): JSX.Element => (
+    <SiderSection>
+        <SiderSectionTitle>{title}</SiderSectionTitle>
+        <Skeleton width={skeletonWidth || 250} height={skeletonHeight || 16} />
+    </SiderSection>
+);
+
 export const SiderBottomSection = styled(SiderSection)`
     margin-top: auto;
 `;
@@ -41,5 +59,6 @@ export default {
     SiderSection,
     SiderSectionTitle,
     SimpleSiderSection,
+    SimpleLoadingSiderSection,
     SiderBottomSection,
 };

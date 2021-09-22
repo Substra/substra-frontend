@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Download button for models (#110)
 -   Add CSV export (#117)
 -   Compute Plans comparison page (#130)
+-   Owner section in compute plan sider (#140)
 
 ### Fixed
 
