@@ -93,6 +93,9 @@ export const nodesSlice = createSlice({
             .addCase(retrieveInfo.rejected, (state, { payload }) => {
                 state.infoLoading = false;
                 state.infoError = payload || 'Unknown error';
+            })
+            .addCase('USERS_LOGOUT/fulfilled', (state) => {
+                state.info = initialState.info;
             });
     },
 });

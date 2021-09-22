@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useLocation } from 'wouter';
 
-import { listNodes } from '@/modules/nodes/NodesSlice';
+import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn, logOut } from '@/modules/user/UserSlice';
 
@@ -69,6 +69,7 @@ const Login = (): JSX.Element => {
                 () => {
                     // Fetch current node name to update the page's header
                     dispatch(listNodes());
+                    dispatch(retrieveInfo());
                     setLocation(nextLocation);
                 },
                 // eslint-disable-next-line @typescript-eslint/no-empty-function

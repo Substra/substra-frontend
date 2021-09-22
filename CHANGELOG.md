@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Default chart styles for unknown nodes (#132)
 -   Add missing marker to perf chart legend (#136)
 -   Fix cropped Jpeg export (#138)
+-   Header now contains Node ID or channel name depending on logged in status (#137)
 
 ### Changed
 
