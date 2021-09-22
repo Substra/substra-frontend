@@ -8,6 +8,7 @@ export interface SerieFeaturesT {
     metricKey: string;
     metricName: string;
     objectiveName: string;
+    computePlanKey: string;
 }
 
 export interface PointT {

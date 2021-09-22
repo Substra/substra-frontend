@@ -1,47 +1,143 @@
+import { useEffect } from 'react';
+
+import ComparePerfChartBuilder from './ComparePerfChartBuilder';
 import styled from '@emotion/styled';
 import { useRoute } from 'wouter';
 
+import { loadComputePlansSeries } from '@/modules/series/SeriesSlice';
+
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useSelection from '@/hooks/useSelection';
+
 import { PATHS } from '@/routes';
+
+import Checkbox from '@/components/Checkbox';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const Container = styled.div`
-    border: 1px solid ${Colors.border};
-    border-radius: 8px;
-    background: white;
-    margin: 0 auto;
-    align-self: center;
-    padding: ${Spaces.extraLarge} ${Spaces.xxl};
-    width: 500px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: white;
 `;
 
-const H1 = styled.h1`
-    font-weight: bold;
-    font-size: ${Fonts.sizes.h1};
-    border-bottom: 1px solid ${Colors.border};
-    margin-bottom: ${Spaces.extraLarge};
-    padding-bottom: ${Spaces.small};
+const LeftSider = styled.div`
+    border-right: 1px solid ${Colors.border};
+    display: flex;
+    flex-direction: column;
+    width: 270px;
+    padding: ${Spaces.large};
 `;
 
-const Ul = styled.ul`
-    margin-top: ${Spaces.medium};
-    list-style: disc;
-    list-style-position: inside;
+const Metrics = styled.div`
+    padding: ${Spaces.large};
+`;
+
+const MetricsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+const Title = styled.h2`
+    font-weight: ${Fonts.weights.heavy};
+    font-size: ${Fonts.sizes.label};
+    text-transform: uppercase;
+    margin: ${Spaces.medium} 0;
+`;
+
+const ListItem = styled.li`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+const Item = styled.label`
+    margin-left: ${Spaces.medium};
+    margin-bottom: ${Spaces.small};
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const Compare = (): JSX.Element => {
+    const dispatch = useAppDispatch();
+
     const [, params] = useRoute(PATHS.COMPARE);
     const keys = decodeURIComponent(params?.keys || '').split(',');
+    useDocumentTitleEffect(
+        (setDocumentTitle) =>
+            setDocumentTitle(`Compare Compute Plans - ${keys.join(' - ')}`),
+        []
+    );
+
+    useEffect(() => {
+        setSelectedNodeKeys(nodes.map((node) => node.id));
+        setSelectedComputePlanKeys(keys);
+        dispatch(loadComputePlansSeries(keys));
+    }, []);
+
+    const nodes = useAppSelector((state) => state.nodes.nodes);
+
+    const [
+        selectedNodeKeys,
+        onSelectionNodeKeysChange,
+        ,
+        setSelectedNodeKeys,
+    ] = useSelection();
+    const [
+        selectedComputePlanKeys,
+        onSelectionComputePlanKeysChange,
+        ,
+        setSelectedComputePlanKeys,
+    ] = useSelection();
 
     return (
         <Container>
-            <H1>Coming soon</H1>
-            Comparison of the following compute plans:
-            <Ul>
-                {keys.map((key) => (
-                    <li key={key}>{key}</li>
-                ))}
-            </Ul>
+            <LeftSider>
+                <Title>Nodes</Title>
+                <ul>
+                    {nodes.map((node) => (
+                        <ListItem key={node.id}>
+                            <Checkbox
+                                id={node.id}
+                                onChange={onSelectionNodeKeysChange(node.id)}
+                                value={node.id}
+                                checked={selectedNodeKeys.includes(node.id)}
+                            />
+                            <Item htmlFor={node.id}>{node.id}</Item>
+                        </ListItem>
+                    ))}
+                </ul>
+
+                <Title>Compute Plans</Title>
+                <ul>
+                    {keys.map((key) => (
+                        <ListItem key={key}>
+                            <Checkbox
+                                onChange={onSelectionComputePlanKeysChange(key)}
+                                value={key}
+                                id={key}
+                                checked={selectedComputePlanKeys.includes(key)}
+                            />
+                            <Item htmlFor={key}>{key}</Item>
+                        </ListItem>
+                    ))}
+                </ul>
+            </LeftSider>
+            <Metrics>
+                <Title>Metrics</Title>
+                <MetricsContainer>
+                    <ComparePerfChartBuilder
+                        selectedComputePlanKeys={selectedComputePlanKeys}
+                        selectedNodeKeys={selectedNodeKeys}
+                    />
+                </MetricsContainer>
+            </Metrics>
         </Container>
     );
 };

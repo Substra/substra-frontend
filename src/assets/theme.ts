@@ -4,7 +4,7 @@ export const Colors = {
     primaryPressed: '#284483',
     primaryBoxShadow: '#9091bf',
     primaryDisabled: '#9BA3BF',
-    border: '#e5eaea',
+    border: '#E2E8F0',
     background: '#f7f7f7',
     darkBackground: '#E6EAEA',
     darkerBackground: '#f7f9f8',

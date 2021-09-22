@@ -8,9 +8,7 @@ import PerfChartLegend from './PerfChartLegend';
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Chart } from 'chart.js';
-import zoomPlugin from 'chartjs-plugin-zoom';
 import { toJpeg } from 'html-to-image';
-import { Line } from 'react-chartjs-2';
 import CsvDownloader, { ICsvProps } from 'react-csv-downloader';
 import { RiDownloadLine } from 'react-icons/ri';
 
@@ -19,9 +17,10 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 import { useAppSelector } from '@/hooks';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useNodeChartStyle from '@/hooks/useNodeChartStyle';
 
 import { PATHS } from '@/routes';
+
+import BasePerfChart from '@/components/BasePerfChart';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -30,21 +29,6 @@ const Container = styled.div`
     flex-wrap: wrap;
     padding: ${Spaces.small};
     margin: 0 -${Spaces.small};
-`;
-
-const LineContainer = styled.div`
-    width: 500px;
-    margin-right: ${Spaces.extraLarge};
-    position: relative;
-
-    & > button {
-        opacity: 0;
-        transition: opacity 0.1s ease-out;
-    }
-
-    &:hover > button {
-        opacity: 1;
-    }
 `;
 
 const ResetZoom = styled.button`
@@ -140,10 +124,6 @@ const DownloadItem = styled.li<DownloadItemProps>`
     }
 `;
 
-const average = (values: number[]): number => {
-    return values.reduce((sum, value) => sum + value, 0) / values.length;
-};
-
 interface PerfChartProps {
     series: SerieT[];
     displayAverage: boolean;
@@ -159,158 +139,6 @@ const PerfChart = ({
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
-
-    const nodeChartStyle = useNodeChartStyle();
-
-    const maxRank = useMemo(
-        () =>
-            series.reduce((max, serie) => {
-                const serieMax = serie.points.reduce(
-                    (max, point) => Math.max(max, point.rank),
-                    0
-                );
-                return Math.max(max, serieMax);
-            }, 0),
-        [series]
-    );
-
-    const averageDataset = useMemo(() => {
-        if (series.length < 2) {
-            return null;
-        }
-
-        const ranksPerfs: Record<number, number[]> = {};
-        for (const serie of series) {
-            for (const point of serie.points) {
-                if (point.perf !== null) {
-                    ranksPerfs[point.rank] = ranksPerfs[point.rank]
-                        ? [...ranksPerfs[point.rank], point.perf]
-                        : [point.perf];
-                }
-            }
-        }
-
-        return {
-            label: 'Average',
-            data: Object.entries(ranksPerfs)
-                .filter(([, perfs]) => perfs.length === series.length)
-                .map(([rank, perfs]) => ({
-                    x: parseInt(rank),
-                    y: average(perfs),
-                    testTaskKey: `average for rank ${rank}`,
-                })),
-            parsing: false,
-            // styles
-            backgroundColor: '#000',
-            borderColor: '#000',
-            // line styles
-            borderWidth: 3,
-            // point styles
-            pointStyle: 'circle',
-            pointBackgroundColor: 'white',
-            pointBorderColor: '#000',
-            pointBorderWidth: 3,
-        };
-    }, [series]);
-
-    const seriesDatasets = useMemo(
-        () =>
-            series.map((serie) => ({
-                label: serie.id,
-                data: serie.points.map((point) => ({
-                    x: point.rank,
-                    y: point.perf,
-                    testTaskKey: point.testTaskKey,
-                })),
-                parsing: false,
-                // styles
-                backgroundColor: nodeChartStyle(serie.worker).color,
-                borderColor: nodeChartStyle(serie.worker).color,
-                // line styles
-                borderWidth: 2,
-                // point styles
-                pointStyle: nodeChartStyle(serie.worker).pointStyle,
-                pointBackgroundColor: 'white',
-                pointBorderColor: nodeChartStyle(serie.worker).color,
-                pointBorderWidth: 2,
-            })),
-        [series]
-    );
-    const data = useMemo(
-        () => ({
-            labels: [...Array(maxRank + 1).keys()],
-            datasets: [
-                ...seriesDatasets,
-                ...(averageDataset && displayAverage ? [averageDataset] : []),
-            ],
-        }),
-        [maxRank, seriesDatasets, averageDataset, displayAverage]
-    );
-
-    const options = {
-        animation: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                callbacks: {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    title: (items) => `Rank ${items[0].raw.x}`,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    label: (item) => `Perf: ${item.raw.y.toFixed(3)}`,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    afterLabel: (item) => `Test task ${item.raw.testTaskKey}`,
-                },
-            },
-            zoom: {
-                zoom: {
-                    drag: {
-                        enabled: false,
-                    },
-                    wheel: {
-                        enabled: true,
-                        speed: 0.1,
-                    },
-                    pinch: {
-                        enabled: true,
-                    },
-                    mode: 'xy',
-                    overScaleMode: 'xy',
-                },
-                pan: {
-                    enabled: true,
-                    mode: 'xy',
-                    threshold: 0.01,
-                    modifierKey: 'shift',
-                },
-            },
-        },
-        scales: {
-            x: {
-                type: 'category',
-                title: {
-                    display: true,
-                    text: 'RANK',
-                },
-                grid: {
-                    display: false,
-                },
-            },
-            y: {
-                type: 'linear',
-                title: {
-                    display: true,
-                    text: series.length
-                        ? series[0].metricName.toUpperCase()
-                        : 'PERF',
-                },
-            },
-        },
-    };
 
     const downloadRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
@@ -420,16 +248,13 @@ const PerfChart = ({
                 </DownloadButton>
             </Header>
             <Container ref={downloadRef}>
-                <LineContainer>
-                    <Line
-                        type="line"
-                        data={data}
-                        options={options}
-                        plugins={[zoomPlugin]}
-                        ref={chartRef}
-                    />
+                <BasePerfChart
+                    series={series}
+                    displayAverage={displayAverage}
+                    getSerieLabel={(serie) => serie.id.toString()}
+                >
                     <ResetZoom onClick={onResetZoomClick}>Reset zoom</ResetZoom>
-                </LineContainer>
+                </BasePerfChart>
                 <PerfChartLegend series={series} />
             </Container>
         </Fragment>

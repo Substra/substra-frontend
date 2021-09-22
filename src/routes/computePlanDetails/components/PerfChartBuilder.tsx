@@ -1,7 +1,6 @@
 import { Fragment, useMemo, useState } from 'react';
 import { useEffect } from 'react';
 
-import LoadingState from './LoadingState';
 import MetricKeysSelector from './MetricKeysSelector';
 import PerfChart from './PerfChart';
 import styled from '@emotion/styled';
@@ -15,6 +14,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 
 import Checkbox from '@/components/Checkbox';
+import LoadingState from '@/components/LoadingState';
 
 import { Spaces } from '@/assets/theme';
 

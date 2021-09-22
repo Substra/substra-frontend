@@ -20,7 +20,12 @@ interface SeriesState {
     series: SerieT[];
     metrics: MetricType[];
 
+    computePlansSeries: SerieT[];
+    computePlansMetrics: MetricType[];
+
     selectedMetricKeys: string[];
+    selectedComputePlanKeys: string[];
+    selectedNodeKeys: string[];
 
     loading: boolean;
     error: string;
@@ -32,22 +37,24 @@ const initialState: SeriesState = {
     series: [],
     metrics: [],
 
+    computePlansSeries: [],
+    computePlansMetrics: [],
+
     selectedMetricKeys: [],
+    selectedComputePlanKeys: [],
+    selectedNodeKeys: [],
 
     loading: true,
     error: '',
 };
 
-export const loadSeries = createAsyncThunk<
-    {
-        metrics: MetricType[];
-        series: SerieT[];
-    },
-    string,
-    { rejectValue: string }
->('series/loadData', async (computePlanKey, thunkAPI) => {
-    // load testtuples
+const getComputePlanSeries = async (
+    computePlanKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rejectWithValue: (value: string) => any
+) => {
     let testtuples: TesttupleT[];
+
     try {
         testtuples = await getAllPagesResults<TesttupleT, [string]>(
             ComputePlansApi.listComputePlanTesttuples,
@@ -55,7 +62,7 @@ export const loadSeries = createAsyncThunk<
             100
         );
     } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+        return rejectWithValue(err.response.data);
     }
 
     // load datasets and metrics
@@ -98,7 +105,7 @@ export const loadSeries = createAsyncThunk<
         try {
             responses = await Promise.all(promises);
         } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+            return rejectWithValue(err.response.data);
         }
 
         metrics = responses[0].data.results;
@@ -109,9 +116,52 @@ export const loadSeries = createAsyncThunk<
 
     const series = buildSeries(testtuples, datasets, metrics);
 
+    return { series, metrics };
+};
+
+export const loadComputePlansSeries = createAsyncThunk<
+    {
+        computePlansMetrics: MetricType[];
+        computePlansSeries: SerieT[];
+    },
+    string[],
+    { rejectValue: string }
+>('series/loadComputePlansSeries', async (computePlanKeys, thunkAPI) => {
+    // Load tuples for each computePlan
+    let computePlansSeries: SerieT[] = [];
+    let computePlansMetrics: MetricType[] = [];
+
+    for (const computePlanKey of computePlanKeys) {
+        const { series, metrics } = await getComputePlanSeries(
+            computePlanKey,
+            thunkAPI.rejectWithValue
+        );
+
+        computePlansSeries = [...computePlansSeries, ...series];
+        computePlansMetrics = [...computePlansMetrics, ...metrics];
+    }
+
     return {
-        metrics,
+        computePlansSeries,
+        computePlansMetrics,
+    };
+});
+
+export const loadSeries = createAsyncThunk<
+    {
+        metrics: MetricType[];
+        series: SerieT[];
+    },
+    string,
+    { rejectValue: string }
+>('series/loadData', async (computePlanKey, thunkAPI) => {
+    const { series, metrics } = await getComputePlanSeries(
+        computePlanKey,
+        thunkAPI.rejectWithValue
+    );
+    return {
         series,
+        metrics,
     };
 });
 
@@ -149,6 +199,24 @@ export const seriesSlice = createSlice({
                 state.series = [];
                 state.metrics = [];
                 state.selectedMetricKeys = [];
+                state.loading = false;
+                state.error = payload || 'Unknown error';
+            })
+            .addCase(loadComputePlansSeries.pending, (state) => {
+                state.computePlansSeries = [];
+                state.computePlansMetrics = [];
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(loadComputePlansSeries.fulfilled, (state, { payload }) => {
+                state.computePlansSeries = payload.computePlansSeries;
+                state.computePlansMetrics = payload.computePlansMetrics;
+                state.loading = false;
+                state.error = '';
+            })
+            .addCase(loadComputePlansSeries.rejected, (state, { payload }) => {
+                state.computePlansSeries = [];
+                state.computePlansMetrics = [];
                 state.loading = false;
                 state.error = payload || 'Unknown error';
             });

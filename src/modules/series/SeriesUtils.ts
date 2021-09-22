@@ -19,6 +19,7 @@ function buildSerieFeatures(
         metricKey: metric.key,
         objectiveName: metric.name,
         metricName: metric.metrics_name,
+        computePlanKey: testtuple.compute_plan_key,
     };
 }
 
@@ -142,4 +143,17 @@ export function buildSeriesGroups(
         }
     }
     return groups;
+}
+
+export function groupSeriesByMetric(
+    computePlansSeries: SerieT[],
+    selectedComputePlanKeys: string[],
+    selectedNodeKeys: string[]
+): SerieT[][] {
+    const filteredSeries = computePlansSeries.filter(
+        (serie) =>
+            selectedNodeKeys.includes(serie.worker) &&
+            selectedComputePlanKeys.includes(serie.computePlanKey)
+    );
+    return buildSeriesGroups(filteredSeries, false);
 }
