@@ -1,5 +1,11 @@
 {
     "name": "connect-frontend",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/owkin/connect-frontend.git"
+    },
+    "license": "UNLICENSED",
+    "private": "true",
     "version": "0.2.0",
     "scripts": {
         "dev": "vite",
@@ -19,14 +25,14 @@
         "@emotion/styled": "11.3.0",
         "@reduxjs/toolkit": "1.5.1",
         "@welldone-software/why-did-you-render": "6.1.1",
-        "axios": "0.21.1",
+        "axios": "0.21.4",
         "chart.js": "3.3.2",
         "chartjs-plugin-zoom": "1.1.1",
         "copy-to-clipboard": "3.3.1",
         "framer-motion": "4.1.17",
         "github-markdown-css": "4.0.0",
         "html-to-image": "1.7.0",
-        "immer": "9.0.2",
+        "immer": "9.0.6",
         "react": "17.0.0",
         "react-chartjs-2": "3.0.3",
         "react-csv-downloader": "2.7.0",
