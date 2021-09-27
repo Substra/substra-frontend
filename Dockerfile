@@ -5,7 +5,6 @@ ARG APP_VERSION
 WORKDIR /workspace
 
 COPY package.json .
-COPY patches ./patches
 RUN npm install --unsafe-perm
 
 COPY . .

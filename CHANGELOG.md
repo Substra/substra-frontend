@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix cropped Jpeg export (#138)
 -   Header now contains Node ID or channel name depending on logged in status (#137)
 -   Security issues in dependencies (#139)
+-   Fix Markdown style in production (#141)
 
 ### Changed
 
