@@ -23,6 +23,7 @@ const initialState: NodesState = {
 
     info: {
         host: API_URL,
+        version: '',
         channel: '',
         config: {
             model_export_enabled: false,

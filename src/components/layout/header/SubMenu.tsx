@@ -22,7 +22,7 @@ const Container = styled.ul`
     top: 65px;
     right: ${Spaces.large};
     box-shadow: 0 0 8px ${Colors.border};
-    width: 150px;
+    width: 250px;
     border-radius: 16px;
     background-color: white;
     z-index: 1;
@@ -105,6 +105,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
     // prevent clicks in the component from bubbling up
     const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
     const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+    const backendVersion = useAppSelector((state) => state.nodes.info.version);
 
     return (
         <Container
@@ -122,7 +123,10 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
                     Logout
                 </LogOutButton>
             </Li>
-            <Version>{`Owkin Connect build nº${__APP_VERSION__}`}</Version>
+            <Version>
+                {`Frontend build ${__APP_VERSION__}`} <br />
+                {`Backend build ${backendVersion}`}
+            </Version>
         </Container>
     );
 };
