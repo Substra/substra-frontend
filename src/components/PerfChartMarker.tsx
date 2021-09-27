@@ -2,11 +2,12 @@ import styled from '@emotion/styled';
 
 import { Spaces } from '@/assets/theme';
 
-const Marker = styled.div`
+const Marker = styled.div<{ color?: string }>`
     width: 16px;
     height: 8px;
     position: relative;
     margin-right: ${Spaces.small};
+    color: ${({ color }) => color || 'inherit'};
 `;
 
 const Line = styled.div`
@@ -56,12 +57,14 @@ const Rect = styled.div`
 
 interface PerfChartLegendMarkerProps {
     style: string;
+    color?: string;
 }
 
 const PerfChartLegendMarker = ({
     style,
+    color,
 }: PerfChartLegendMarkerProps): JSX.Element => (
-    <Marker>
+    <Marker color={color}>
         <Line />
         {style === 'circle' && <Circle />}
         {style === 'rectRot' && <RectRot />}

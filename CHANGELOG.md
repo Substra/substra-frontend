@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Use dedicated sub asset routes to retrieve compute plan tuples (#116, #120)
 -   Use dedicated sub asset routes to list all tuples from a compute plan (#127)
 -   Only fetch testtuples when building charts (#135)
+-   Chart tooltips are now interactive (#142)
 
 ## [0.2.0] - 2021-09-02
 

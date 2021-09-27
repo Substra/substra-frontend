@@ -3,11 +3,9 @@
 /** @jsx jsx */
 import { Fragment, RefObject, useMemo, useRef, useState } from 'react';
 
-import PerfChartLegend from './PerfChartLegend';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Chart } from 'chart.js';
 import { toJpeg } from 'html-to-image';
 import CsvDownloader, { ICsvProps } from 'react-csv-downloader';
 import { RiDownloadLine } from 'react-icons/ri';
@@ -20,7 +18,8 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 
 import { PATHS } from '@/routes';
 
-import BasePerfChart from '@/components/BasePerfChart';
+import BasePerfChart from '@/components/PerfChart';
+import PerfChartLegend from '@/components/PerfChartLegend';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -29,23 +28,6 @@ const Container = styled.div`
     flex-wrap: wrap;
     padding: ${Spaces.small};
     margin: 0 -${Spaces.small};
-`;
-
-const ResetZoom = styled.button`
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    border: 1px solid ${Colors.border};
-    border-radius: 4px;
-    padding: ${Spaces.extraSmall} ${Spaces.small};
-    background-color: ${Colors.background};
-    font-size: ${Fonts.sizes.smallBody};
-
-    &:hover {
-        border-color: ${Colors.primary};
-        color: ${Colors.primary};
-    }
 `;
 
 const Header = styled.div`
@@ -135,7 +117,6 @@ const PerfChart = ({
     displayMultiChart,
 }: PerfChartProps): JSX.Element => {
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-    const chartRef = useRef<Chart>();
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
@@ -177,13 +158,6 @@ const PerfChart = ({
         }
         return datas;
     }, [series]);
-
-    const onResetZoomClick = () => {
-        const chart = chartRef.current;
-        if (chart) {
-            chart.resetZoom();
-        }
-    };
 
     const closeDownloadMenu = () => {
         setShowDownloadMenu(false);
@@ -252,9 +226,9 @@ const PerfChart = ({
                     series={series}
                     displayAverage={displayAverage}
                     getSerieLabel={(serie) => serie.id.toString()}
-                >
-                    <ResetZoom onClick={onResetZoomClick}>Reset zoom</ResetZoom>
-                </BasePerfChart>
+                    zoom={true}
+                    tooltip={true}
+                />
                 <PerfChartLegend series={series} />
             </Container>
         </Fragment>

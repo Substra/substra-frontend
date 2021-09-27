@@ -1,4 +1,3 @@
-import PerfChartLegendMarker from './PerfChartLegendMarker';
 import styled from '@emotion/styled';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -7,6 +6,7 @@ import useNodeChartStyle from '@/hooks/useNodeChartStyle';
 
 import { compilePath, PATHS } from '@/routes';
 
+import PerfChartMarker from '@/components/PerfChartMarker';
 import StyledLink from '@/components/StyledLink';
 
 import { Fonts, Spaces } from '@/assets/theme';
@@ -45,7 +45,7 @@ const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
             {sortedSeries.map((serie) => (
                 <Item key={serie.id}>
                     <ItemTitle color={nodeChartStyle(serie.worker).color}>
-                        <PerfChartLegendMarker
+                        <PerfChartMarker
                             style={nodeChartStyle(serie.worker).pointStyle}
                         />
                         {serie.worker}

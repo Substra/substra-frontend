@@ -29,8 +29,8 @@ describe('Login page', () => {
         cy.url().should('include', '/datasets');
 
         // should have cookies
-        cy.getCookie('refresh').should('not.be.empty');
-        cy.getCookie('signature').should('not.be.empty');
-        cy.getCookie('header.payload').should('not.be.empty');
+        cy.getCookie('refresh').should('not.be.null');
+        cy.getCookie('signature').should('not.be.null');
+        cy.getCookie('header.payload').should('not.be.null');
     });
 });

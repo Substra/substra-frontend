@@ -7,8 +7,8 @@ import { groupSeriesByMetric } from '@/modules/series/SeriesUtils';
 
 import useAppSelector from '@/hooks/useAppSelector';
 
-import BasePerfChart from '@/components/BasePerfChart';
 import LoadingState from '@/components/LoadingState';
+import PerfChart from '@/components/PerfChart';
 import PerformanceCard from '@/components/PerformanceCard';
 
 import { Spaces } from '@/assets/theme';
@@ -54,10 +54,12 @@ const ComparePerfChartBuilder = ({
                         key={series.map((serie) => serie.id).join('-')}
                     >
                         <Container>
-                            <BasePerfChart
+                            <PerfChart
                                 series={series}
                                 getSerieLabel={(serie) => serie.computePlanKey}
                                 key={series.map((serie) => serie.id).join('-')}
+                                zoom={false}
+                                tooltip={false}
                             />
                         </Container>
                     </PerformanceCard>

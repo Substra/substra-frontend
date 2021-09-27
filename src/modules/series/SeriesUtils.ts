@@ -157,3 +157,49 @@ export function groupSeriesByMetric(
     );
     return buildSeriesGroups(filteredSeries, false);
 }
+
+const average = (values: number[]): number => {
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
+};
+
+export function buildAverageSerie(series: SerieT[]): SerieT | null {
+    if (series.length < 2) {
+        return null;
+    }
+
+    const ranksPerfs: Record<number, number[]> = {};
+
+    for (const serie of series) {
+        for (const point of serie.points) {
+            if (point.perf !== null) {
+                ranksPerfs[point.rank] = ranksPerfs[point.rank]
+                    ? [...ranksPerfs[point.rank], point.perf]
+                    : [point.perf];
+            }
+        }
+    }
+
+    // only includes points where we have values for all series
+    const points: PointT[] = Object.entries(ranksPerfs)
+        .filter(([, perfs]) => perfs.length === series.length)
+        .map(([rank, perfs]) => ({
+            rank: parseInt(rank),
+            perf: average(perfs),
+            testTaskKey: `average for rank ${rank}`,
+        }));
+
+    return {
+        id: 0,
+        points: points,
+        algoKey: 'average',
+        algoName: 'average',
+        datasetKey: 'average',
+        datasetName: 'average',
+        dataSampleKeys: [],
+        worker: 'average',
+        metricKey: 'average',
+        metricName: 'average',
+        objectiveName: 'average',
+        computePlanKey: 'average',
+    };
+}

@@ -17,14 +17,16 @@ const POINT_STYLES: string[] = [
     // 'triangle',
 ];
 
-interface ChartStyle {
+export interface ChartStyle {
     color: string;
     pointStyle: string;
+    borderWidth: number;
 }
 
 const DEFAULT_CHART_STYLE: ChartStyle = {
     color: CHART_COLORS[0],
     pointStyle: POINT_STYLES[0],
+    borderWidth: 2,
 };
 
 const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
@@ -42,6 +44,7 @@ const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
             chartStyles[nodeId] = {
                 color: CHART_COLORS[i % CHART_COLORS.length],
                 pointStyle: POINT_STYLES[i % POINT_STYLES.length],
+                borderWidth: 2,
             };
         }
 
