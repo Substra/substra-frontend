@@ -1,22 +1,14 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 
 import AlgoSider from './components/AlgoSider';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
-import styled from '@emotion/styled';
-import { AsyncThunkAction } from '@reduxjs/toolkit';
 
-import {
-    listAggregateAlgos,
-    listAlgosArgs,
-    listCompositeAlgos,
-    listStandardAlgos,
-} from '@/modules/algos/AlgosSlice';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { listAlgos } from '@/modules/algos/AlgosSlice';
+import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 
 import {
     useAppDispatch,
@@ -56,44 +48,9 @@ import TablePagination from '@/components/TablePagination';
 import PageLayout from '@/components/layout/PageLayout';
 import Navigation from '@/components/layout/navigation/Navigation';
 
-import { Colors, Spaces } from '@/assets/theme';
-
-interface TypeButtonProps {
-    active: boolean;
-}
-
-const TypeButton = styled.button<TypeButtonProps>`
-    background: ${({ active }) => (active ? Colors.primary : 'white')};
-    border-color: ${({ active }) => (active ? Colors.primary : Colors.border)};
-    border-radius: 4px;
-    border-width: 1px;
-    border-style: solid;
-    color: ${({ active }) => (active ? 'white' : Colors.lightContent)};
-    height: 38px;
-    margin-right: ${Spaces.medium};
-    padding: ${Spaces.small} ${Spaces.medium};
-    text-transform: uppercase;
+const categoryColWidth = css`
+    width: 100px;
 `;
-
-const AlgoButtonsContainer = styled.div`
-    display: flex;
-    margin: ${Spaces.medium} 0;
-`;
-
-interface selectedAlgoT {
-    id: number;
-    name: string;
-    searchLabel: string;
-    slug: AssetType;
-    loading: boolean;
-    list: AsyncThunkAction<
-        PaginatedApiResponse<AlgoT>,
-        listAlgosArgs,
-        { rejectValue: string }
-    >;
-    algos: AlgoT[];
-    count: number;
-}
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -102,70 +59,17 @@ const Algos = (): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
 
-    const [selectedAlgoType, setSelectedAlgoType] = useState(0);
-
-    const algoTypes: selectedAlgoT[] = [
-        {
-            id: 0,
-            name: 'Standard Algos',
-            searchLabel: 'Standard Algo',
-            slug: 'algo',
-            loading: useAppSelector(
-                (state) => state.algos.standardAlgosLoading
-            ),
-            list: listStandardAlgos({ filters: searchFilters, page }),
-            algos: useAppSelector((state) => state.algos.standardAlgos),
-            count: useAppSelector((state) => state.algos.standardAlgosCount),
-        },
-        {
-            id: 1,
-            name: 'Composite Algos',
-            searchLabel: 'Composite Algo',
-            slug: 'composite_algo',
-            loading: useAppSelector(
-                (state) => state.algos.compositeAlgosLoading
-            ),
-            list: listCompositeAlgos({ filters: searchFilters, page }),
-            algos: useAppSelector((state) => state.algos.compositeAlgos),
-            count: useAppSelector((state) => state.algos.compositeAlgosCount),
-        },
-        {
-            id: 2,
-            name: 'Aggregate Algos',
-            searchLabel: 'Aggregate Algo',
-            slug: 'aggregate_algo',
-            loading: useAppSelector(
-                (state) => state.algos.aggregateAlgosLoading
-            ),
-            list: listAggregateAlgos({ filters: searchFilters, page }),
-            algos: useAppSelector((state) => state.algos.aggregateAlgos),
-            count: useAppSelector((state) => state.algos.aggregateAlgosCount),
-        },
-    ];
+    const algos = useAppSelector((state) => state.algos.algos);
+    const algosLoading = useAppSelector((state) => state.algos.algosLoading);
+    const algosCount = useAppSelector((state) => state.algos.algosCount);
 
     useSearchFiltersEffect(() => {
-        dispatch(algoTypes[selectedAlgoType].list);
-    }, [searchFilters, selectedAlgoType]);
+        dispatch(listAlgos({ filters: searchFilters, page }));
+    }, [searchFilters, page]);
 
     const key = useKeyFromPath(PATHS.ALGO);
 
     useAssetListDocumentTitleEffect('Algorithms list', key);
-
-    const renderAlgosButtons = () => {
-        return (
-            <AlgoButtonsContainer>
-                {algoTypes.map((algoType) => (
-                    <TypeButton
-                        onClick={() => setSelectedAlgoType(algoType.id)}
-                        key={algoType.id}
-                        active={selectedAlgoType === algoType.id}
-                    >
-                        {algoType.name}
-                    </TypeButton>
-                ))}
-            </AlgoButtonsContainer>
-        );
-    };
 
     const pageTitleLinks = [
         { location: PATHS.ALGOS, title: 'Algorithms', active: true },
@@ -182,26 +86,20 @@ const Algos = (): JSX.Element => {
                     <SearchBar
                         assetOptions={[
                             {
-                                label: algoTypes[selectedAlgoType].name,
-                                value: algoTypes[selectedAlgoType].slug,
+                                label: 'Algorithm',
+                                value: 'algo',
                             },
                         ]}
                     />
-                    {renderAlgosButtons()}
                     <Table>
                         <Thead>
                             <Tr>
                                 <CreationDateTh />
+                                <Th css={categoryColWidth}>Category</Th>
                                 <Th css={nameColWidth}>Name</Th>
                                 <Th css={ownerColWidth}>
                                     Owner
-                                    <OwnerTableFilter
-                                        assets={[
-                                            'algo',
-                                            'composite_algo',
-                                            'aggregate_algo',
-                                        ]}
-                                    />
+                                    <OwnerTableFilter assets={['algo']} />
                                 </Th>
                                 <Th css={permissionsColWidth}>Permissions</Th>
                             </Tr>
@@ -217,7 +115,6 @@ const Algos = (): JSX.Element => {
                     pointer-events: none;
                 `}
             />
-            {renderAlgosButtons()}
             <Table>
                 <Thead
                     css={css`
@@ -227,22 +124,25 @@ const Algos = (): JSX.Element => {
                 >
                     <Tr>
                         <CreationDateTh />
+                        <Th css={categoryColWidth}>Category</Th>
                         <Th css={nameColWidth}>Name</Th>
                         <Th css={ownerColWidth}>Owner</Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {!algoTypes[selectedAlgoType].loading &&
-                        algoTypes[selectedAlgoType].algos.length === 0 && (
-                            <EmptyTr nbColumns={4} />
-                        )}
-                    {algoTypes[selectedAlgoType].loading ? (
+                    {!algosLoading && algosCount === 0 && (
+                        <EmptyTr nbColumns={5} />
+                    )}
+                    {algosLoading ? (
                         <TableSkeleton
-                            itemCount={algoTypes[selectedAlgoType].count}
+                            itemCount={algosCount}
                             currentPage={page}
                         >
                             <CreationDateSkeletonTd />
+                            <Td>
+                                <Skeleton width={80} height={12} />
+                            </Td>
                             <Td>
                                 <Skeleton width={500} height={12} />
                             </Td>
@@ -254,7 +154,7 @@ const Algos = (): JSX.Element => {
                             </Td>
                         </TableSkeleton>
                     ) : (
-                        algoTypes[selectedAlgoType].algos.map((algo) => (
+                        algos.map((algo) => (
                             <Tr
                                 key={algo.key}
                                 highlighted={algo.key === key}
@@ -269,6 +169,7 @@ const Algos = (): JSX.Element => {
                                 <CreationDateTd
                                     creationDate={algo.creation_date}
                                 />
+                                <Td>{getAlgoCategory(algo)}</Td>
                                 <Td>{algo.name}</Td>
                                 <Td>{algo.owner}</Td>
                                 <Td>
@@ -280,9 +181,9 @@ const Algos = (): JSX.Element => {
                         ))
                     )}
                     <TablePagination
-                        colSpan={4}
+                        colSpan={5}
                         currentPage={page}
-                        itemCount={algoTypes[selectedAlgoType].count}
+                        itemCount={algosCount}
                         asset="algo"
                     />
                 </Tbody>
