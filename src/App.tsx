@@ -36,12 +36,13 @@ const App = (): JSX.Element => {
          * Perform authentication check at init.
          * If the refreshToken is expired, then redirect to the login page.
          */
+        dispatch(retrieveInfo(false));
         dispatch(refreshToken())
             .then(unwrapResult)
             .then(
                 () => {
                     dispatch(listNodes());
-                    dispatch(retrieveInfo());
+                    dispatch(retrieveInfo(true));
                 },
                 () => {
                     if (!onLoginPage) {

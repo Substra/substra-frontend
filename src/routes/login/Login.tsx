@@ -69,7 +69,7 @@ const Login = (): JSX.Element => {
                 () => {
                     // Fetch current node name to update the page's header
                     dispatch(listNodes());
-                    dispatch(retrieveInfo());
+                    dispatch(retrieveInfo(true));
                     setLocation(nextLocation);
                 },
                 // eslint-disable-next-line @typescript-eslint/no-empty-function

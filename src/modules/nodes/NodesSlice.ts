@@ -8,7 +8,6 @@ interface NodesState {
     nodes: NodeType[];
     nodesLoading: boolean;
     nodesError: string;
-    currentNodeID: string;
 
     info: NodeInfoType;
     infoLoading: boolean;
@@ -19,15 +18,11 @@ const initialState: NodesState = {
     nodes: [],
     nodesLoading: false,
     nodesError: '',
-    currentNodeID: 'Owkin Connect',
 
     info: {
         host: API_URL,
-        version: '',
-        channel: '',
-        config: {
-            model_export_enabled: false,
-        },
+        node_id: '',
+        config: {},
     },
     infoLoading: false,
     infoError: '',
@@ -48,11 +43,11 @@ export const listNodes = createAsyncThunk<
 
 export const retrieveInfo = createAsyncThunk<
     NodeInfoType,
-    void,
+    boolean,
     { rejectValue: string }
->('nodes/info', async (_, thunkAPI) => {
+>('nodes/info', async (withCredentials, thunkAPI) => {
     try {
-        const response = await NodesAPI.retrieveInfo();
+        const response = await NodesAPI.retrieveInfo(withCredentials);
         return response.data;
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data);
@@ -73,10 +68,6 @@ export const nodesSlice = createSlice({
                 state.nodesLoading = false;
                 state.nodesError = '';
                 state.nodes = payload;
-                const currentNode = payload.find((node) => node.is_current);
-                if (currentNode) {
-                    state.currentNodeID = currentNode.id;
-                }
             })
             .addCase(listNodes.rejected, (state, { payload }) => {
                 state.nodesLoading = false;
@@ -96,7 +87,9 @@ export const nodesSlice = createSlice({
                 state.infoError = payload || 'Unknown error';
             })
             .addCase('USERS_LOGOUT/fulfilled', (state) => {
-                state.info = initialState.info;
+                state.info.version = undefined;
+                state.info.channel = undefined;
+                state.info.config.model_export_enabled = undefined;
             });
     },
 });

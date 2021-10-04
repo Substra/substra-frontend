@@ -102,7 +102,7 @@ const PermissionSiderSection = ({
     const modelExportEnabled = useAppSelector(
         (state) => state.nodes.info.config.model_export_enabled
     );
-    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+    const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);
 
     const canDownload =
         permissions.download.public ||

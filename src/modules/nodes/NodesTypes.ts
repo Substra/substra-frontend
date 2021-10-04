@@ -5,9 +5,10 @@ export interface NodeType {
 
 export interface NodeInfoType {
     host: string;
-    version: string;
-    channel: string;
+    node_id: string;
+    version?: string;
+    channel?: string;
     config: {
-        model_export_enabled: boolean;
+        model_export_enabled?: boolean;
     };
 }

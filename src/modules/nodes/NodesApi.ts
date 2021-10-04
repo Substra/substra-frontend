@@ -11,8 +11,15 @@ const URLS = {
 export const listNodes = (): AxiosPromise<NodeType[]> =>
     API.authenticatedGet(URLS.LIST);
 
-export const retrieveInfo = (): AxiosPromise<NodeInfoType> =>
-    API.authenticatedGet(URLS.INFO);
+export const retrieveInfo = (
+    withCredentials: boolean
+): AxiosPromise<NodeInfoType> => {
+    if (withCredentials) {
+        return API.authenticatedGet(URLS.INFO);
+    }
+
+    return API.anonymousGet(URLS.INFO);
+};
 
 export default {
     listNodes,

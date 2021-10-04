@@ -28,7 +28,7 @@ const Content = styled.div`
 `;
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
-    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+    const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);
     const channelName = useAppSelector((state) => state.nodes.info.channel);
 
     return (

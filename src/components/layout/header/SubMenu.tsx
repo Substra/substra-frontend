@@ -104,7 +104,7 @@ const SubMenu = ({ visible }: SubMenuProps): JSX.Element => {
 
     // prevent clicks in the component from bubbling up
     const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
-    const currentNodeID = useAppSelector((state) => state.nodes.currentNodeID);
+    const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);
     const backendVersion = useAppSelector((state) => state.nodes.info.version);
 
     return (

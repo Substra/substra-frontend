@@ -10,14 +10,16 @@ import {
 
 declare const API_URL: string;
 
-const instance = axios.create({
+const CONFIG = {
     baseURL: API_URL,
     timeout: 10000,
     headers: {
         Accept: 'application/json;version=0.0',
         'Content-Type': 'application/json;',
     },
-});
+};
+
+const instance = axios.create({ ...CONFIG });
 
 instance.interceptors.request.use((config) => {
     const cookies = new Cookies();
@@ -52,10 +54,13 @@ const withRetry = (instanceMethod: AxiosInstance['get']) => (
     });
 };
 
+const anonymousInstance = axios.create({ ...CONFIG, withCredentials: false });
+
 const API = {
     authenticatedGet: withRetry(instance.get),
     get: instance.get,
     post: instance.post,
+    anonymousGet: anonymousInstance.get,
 };
 
 declare const DEFAULT_PAGE_SIZE: number;
