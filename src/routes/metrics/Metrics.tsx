@@ -29,7 +29,7 @@ import {
     CreationDateTd,
     creationDateWidth,
 } from '@/components/CreationDateTableCells';
-import OwnerTableFilter from '@/components/OwnerTableFilter';
+import { OwnerTableFilter } from '@/components/NodeTableFilters';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';

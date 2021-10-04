@@ -38,6 +38,7 @@ import {
     CreationDateTd,
     creationDateWidth,
 } from '@/components/CreationDateTableCells';
+import { WorkerTableFilter } from '@/components/NodeTableFilters';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
@@ -218,7 +219,14 @@ const Tasks = (): JSX.Element => {
                                         asset={taskTypes[selectedTaskType].slug}
                                     />
                                 </Th>
-                                <Th css={ownerColWidth}>Worker</Th>
+                                <Th css={ownerColWidth}>
+                                    Worker
+                                    <WorkerTableFilter
+                                        assets={[
+                                            taskTypes[selectedTaskType].slug,
+                                        ]}
+                                    />
+                                </Th>
                                 <Th css={computePlanColWidth}>Compute Plan</Th>
                                 <Th css={rankColWidth}>Rank</Th>
                                 <Th css={perfColWidth}>Performance</Th>

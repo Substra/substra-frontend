@@ -56,11 +56,10 @@ const getComputePlanSeries = async (
     let testtuples: TesttupleT[];
 
     try {
-        testtuples = await getAllPagesResults<TesttupleT, [string]>(
-            ComputePlansApi.listComputePlanTesttuples,
-            [computePlanKey],
-            100
-        );
+        testtuples = await getAllPagesResults<
+            TesttupleT,
+            [string, SearchFilterType[]]
+        >(ComputePlansApi.listComputePlanTesttuples, [computePlanKey, []], 100);
     } catch (err) {
         return rejectWithValue(err.response.data);
     }

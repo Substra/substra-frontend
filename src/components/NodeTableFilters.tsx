@@ -10,21 +10,25 @@ import {
 import { useAppSelector } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-interface OwnerTableFilterProps {
+interface BaseNodeTableFilterProps {
+    assetKey: string;
     assets: AssetType[];
 }
-const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
+const BaseNodeTableFilter = ({
+    assets,
+    assetKey,
+}: BaseNodeTableFilterProps): JSX.Element => {
     const {
         params: { search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
 
     const nodes = useAppSelector((state) => state.nodes.nodes);
-    const ownerFilterOptions: string[] = nodes.map((node) => node.id);
+    const filterOptions: string[] = nodes.map((node) => node.id);
 
-    const ownerFilterValue: string[] = searchFilters
+    const filterValue: string[] = searchFilters
         .filter(
-            (filter) => assets.includes(filter.asset) && filter.key === 'owner'
+            (filter) => assets.includes(filter.asset) && filter.key === assetKey
         )
         .map((filter) => filter.value);
 
@@ -34,11 +38,11 @@ const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
     ): SearchFilterType[] => {
         return value.map((v) => ({
             asset: asset,
-            key: 'owner',
+            key: assetKey,
             value: v,
         }));
     };
-    const setOwnerFilterValue = (value: string[]) => {
+    const setFilterValue = (value: string[]) => {
         const filters = assets.reduce(
             (filters: SearchFilterType[], asset: AssetType) => {
                 return [...filters, ...buildAssetFilters(asset, value)];
@@ -52,11 +56,24 @@ const OwnerTableFilter = ({ assets }: OwnerTableFilterProps): JSX.Element => {
 
     return (
         <TableFilter
-            options={ownerFilterOptions}
-            value={ownerFilterValue}
-            setValue={setOwnerFilterValue}
+            options={filterOptions}
+            value={filterValue}
+            setValue={setFilterValue}
         />
     );
 };
 
-export default OwnerTableFilter;
+interface NodeTableFilterProps {
+    assets: AssetType[];
+}
+
+export const WorkerTableFilter = ({
+    assets,
+}: NodeTableFilterProps): JSX.Element => (
+    <BaseNodeTableFilter assetKey="worker" assets={assets} />
+);
+export const OwnerTableFilter = ({
+    assets,
+}: NodeTableFilterProps): JSX.Element => (
+    <BaseNodeTableFilter assetKey="owner" assets={assets} />
+);

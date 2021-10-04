@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Compute Plans comparison page (#130)
 -   Owner section in compute plan sider (#140)
 -   Display backend version (#143)
+-   Filters on worker in tasks and compute plan tasks pages (#144)
 
 ### Fixed
 

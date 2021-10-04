@@ -102,24 +102,28 @@ const ComputePlanSider = (): JSX.Element => {
                     dispatch(
                         retrieveComputePlanTrainTasks({
                             computePlanKey: computePlan.key,
+                            filters: [],
                             page: 1,
                         })
                     );
                     dispatch(
                         retrieveComputePlanTestTasks({
                             computePlanKey: computePlan.key,
+                            filters: [],
                             page: 1,
                         })
                     );
                     dispatch(
                         retrieveComputePlanAggregateTasks({
                             computePlanKey: computePlan.key,
+                            filters: [],
                             page: 1,
                         })
                     );
                     dispatch(
                         retrieveComputePlanCompositeTasks({
                             computePlanKey: computePlan.key,
+                            filters: [],
                             page: 1,
                         })
                     );

@@ -103,39 +103,48 @@ export const retrieveComputePlan = createAsyncThunk<
 export interface retrieveComputePlanTasksArgs {
     computePlanKey: string;
     page: number;
+    filters: SearchFilterType[];
 }
 
 export const retrieveComputePlanTrainTasks = createAsyncThunk<
     PaginatedApiResponse<TraintupleT>,
     retrieveComputePlanTasksArgs,
     { rejectValue: string }
->('computePlans/getTrainTasks', async ({ computePlanKey, page }, thunkAPI) => {
-    try {
-        const response = await ComputePlansApi.listComputePlanTraintuples(
-            computePlanKey,
-            page
-        );
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+>(
+    'computePlans/getTrainTasks',
+    async ({ computePlanKey, page, filters }, thunkAPI) => {
+        try {
+            const response = await ComputePlansApi.listComputePlanTraintuples(
+                computePlanKey,
+                filters.filter((sf) => sf.asset === 'traintuple'),
+                page
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const retrieveComputePlanTestTasks = createAsyncThunk<
     PaginatedApiResponse<TesttupleT>,
     retrieveComputePlanTasksArgs,
     { rejectValue: string }
->('computePlans/getTestTasks', async ({ computePlanKey, page }, thunkAPI) => {
-    try {
-        const response = await ComputePlansApi.listComputePlanTesttuples(
-            computePlanKey,
-            page
-        );
-        return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+>(
+    'computePlans/getTestTasks',
+    async ({ computePlanKey, page, filters }, thunkAPI) => {
+        try {
+            const response = await ComputePlansApi.listComputePlanTesttuples(
+                computePlanKey,
+                filters.filter((sf) => sf.asset === 'testtuple'),
+                page
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-});
+);
 
 export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     PaginatedApiResponse<AggregatetupleT>,
@@ -143,10 +152,11 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getAggregateTasks',
-    async ({ computePlanKey, page }, thunkAPI) => {
+    async ({ computePlanKey, page, filters }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanAggregatetuples(
                 computePlanKey,
+                filters.filter((sf) => sf.asset === 'aggregatetuple'),
                 page
             );
             return response.data;
@@ -162,10 +172,11 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getCompositeTasks',
-    async ({ computePlanKey, page }, thunkAPI) => {
+    async ({ computePlanKey, page, filters }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanCompositeTraintuples(
                 computePlanKey,
+                filters.filter((sf) => sf.asset === 'composite_traintuple'),
                 page
             );
             return response.data;

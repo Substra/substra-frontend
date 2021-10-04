@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
@@ -20,7 +20,11 @@ import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { isTesttupleT } from '@/libs/tuples';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersEffect,
+} from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -32,6 +36,7 @@ import {
     CreationDateTd,
     creationDateWidth,
 } from '@/components/CreationDateTableCells';
+import { WorkerTableFilter } from '@/components/NodeTableFilters';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
 import {
@@ -116,7 +121,7 @@ interface selectedTaskT {
 const Tasks = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const {
-        params: { page },
+        params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
 
@@ -134,7 +139,11 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.computePlans.computePlanTrainTasksLoading
             ),
-            list: retrieveComputePlanTrainTasks({ computePlanKey, page }),
+            list: retrieveComputePlanTrainTasks({
+                computePlanKey,
+                page,
+                filters: searchFilters,
+            }),
             tasks: useAppSelector(
                 (state) => state.computePlans.computePlanTrainTasks
             ),
@@ -150,7 +159,11 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.computePlans.computePlanTestTasksLoading
             ),
-            list: retrieveComputePlanTestTasks({ computePlanKey, page }),
+            list: retrieveComputePlanTestTasks({
+                computePlanKey,
+                page,
+                filters: searchFilters,
+            }),
             tasks: useAppSelector(
                 (state) => state.computePlans.computePlanTestTasks
             ),
@@ -166,7 +179,11 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.computePlans.computePlanCompositeTasksLoading
             ),
-            list: retrieveComputePlanCompositeTasks({ computePlanKey, page }),
+            list: retrieveComputePlanCompositeTasks({
+                computePlanKey,
+                page,
+                filters: searchFilters,
+            }),
             tasks: useAppSelector(
                 (state) => state.computePlans.computePlanCompositeTasks
             ),
@@ -182,7 +199,11 @@ const Tasks = (): JSX.Element => {
             loading: useAppSelector(
                 (state) => state.computePlans.computePlanAggregateTasksLoading
             ),
-            list: retrieveComputePlanAggregateTasks({ computePlanKey, page }),
+            list: retrieveComputePlanAggregateTasks({
+                computePlanKey,
+                page,
+                filters: searchFilters,
+            }),
             tasks: useAppSelector(
                 (state) => state.computePlans.computePlanAggregateTasks
             ),
@@ -192,11 +213,11 @@ const Tasks = (): JSX.Element => {
         },
     ];
 
-    useEffect(() => {
+    useSearchFiltersEffect(() => {
         if (computePlanKey) {
             dispatch(taskTypes[selectedTaskType].list);
         }
-    }, [computePlanKey, selectedTaskType, page]);
+    }, [computePlanKey, searchFilters, selectedTaskType, page]);
 
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_TASK, 'taskKey');
 
@@ -231,7 +252,12 @@ const Tasks = (): JSX.Element => {
                             Creation date
                         </Th>
                         <Th css={[thStyle, statusColWidth]}>Current status</Th>
-                        <Th css={[thStyle, ownerColWidth]}>Worker</Th>
+                        <Th css={[thStyle, ownerColWidth]}>
+                            Worker
+                            <WorkerTableFilter
+                                assets={[taskTypes[selectedTaskType].slug]}
+                            />
+                        </Th>
                         <Th css={[thStyle, rankColWidth]}>Rank</Th>
                         <Th css={[thStyle, perfColWidth]}>Performance</Th>
                     </Tr>

@@ -155,7 +155,6 @@ const tdStyle = css`
 
     & > div {
         position: relative;
-        z-index: 1;
         padding: ${Spaces.medium};
         white-space: nowrap;
         text-align: left;
@@ -174,7 +173,7 @@ export const nameColWidth = css`
     width: 600px;
 `;
 export const ownerColWidth = css`
-    width: 110px;
+    width: 150px;
 `;
 export const permissionsColWidth = css`
     width: 210px;
