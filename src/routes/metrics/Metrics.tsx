@@ -6,6 +6,7 @@ import { RootState } from '@/store';
 import { Fragment } from 'react';
 
 import MetricSider from './components/MetricSider';
+import { Flex } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -29,7 +30,6 @@ import {
     creationDateWidth,
 } from '@/components/CreationDateTableCells';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import PageTitle from '@/components/PageTitle';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
@@ -47,8 +47,8 @@ import {
     TableSkeleton,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
+import TableTitle from '@/components/TableTitle';
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -74,22 +74,20 @@ const Metrics = (): JSX.Element => {
 
     useAssetListDocumentTitleEffect('Metrics list', key);
 
-    const pageTitleLinks = [
-        { location: PATHS.ALGOS, title: 'Algorithms', active: false },
-        { location: PATHS.METRICS, title: 'Metrics', active: true },
-    ];
-
     return (
         <PageLayout
             siderVisible={!!key}
-            navigation={<Navigation />}
             sider={<MetricSider />}
             stickyHeader={
                 <Fragment>
-                    <PageTitle links={pageTitleLinks} />
-                    <SearchBar
-                        assetOptions={[{ label: 'Metric', value: 'objective' }]}
-                    />
+                    <Flex justifyContent="space-between" marginBottom="6">
+                        <TableTitle title="Metrics" />
+                        <SearchBar
+                            assetOptions={[
+                                { label: 'Metric', value: 'objective' },
+                            ]}
+                        />
+                    </Flex>
                     <Table>
                         <Thead>
                             <Tr>
@@ -106,14 +104,11 @@ const Metrics = (): JSX.Element => {
                 </Fragment>
             }
         >
-            <PageTitle
+            <Table
                 css={css`
-                    opacity: 0;
-                    pointer-events: none;
+                    margin-top: 55px;
                 `}
-                links={pageTitleLinks}
-            />
-            <Table>
+            >
                 <Thead
                     css={css`
                         opacity: 0;

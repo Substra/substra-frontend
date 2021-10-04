@@ -28,12 +28,10 @@ const Content = styled.div`
 `;
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
-    const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);
-    const channelName = useAppSelector((state) => state.nodes.info.channel);
-
+    const isAuthenticated = useAppSelector((state) => state.user.authenticated);
     return (
         <Container>
-            <Header title={channelName || currentNodeID} />
+            {isAuthenticated && <Header />}
             <Content>{children}</Content>
         </Container>
     );

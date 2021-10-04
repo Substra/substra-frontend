@@ -10,7 +10,6 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { PATHS } from '@/routes';
 
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
@@ -25,7 +24,7 @@ const ComputePlanChart = (): JSX.Element => {
     );
 
     return (
-        <PageLayout siderVisible={false} navigation={<Navigation />}>
+        <PageLayout siderVisible={false}>
             <Container>
                 <Header />
                 <TabsNav />

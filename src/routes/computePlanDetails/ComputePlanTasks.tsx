@@ -10,7 +10,6 @@ import { PATHS } from '@/routes';
 import TaskSider from '@/routes/tasks/components/TaskSider';
 
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 const ComputePlanTasks = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
@@ -23,11 +22,7 @@ const ComputePlanTasks = (): JSX.Element => {
     );
 
     return (
-        <PageLayout
-            siderVisible={!!taskKey}
-            sider={<TaskSider />}
-            navigation={<Navigation />}
-        >
+        <PageLayout siderVisible={!!taskKey} sider={<TaskSider />}>
             <Container>
                 <Header />
                 <TabsNav />

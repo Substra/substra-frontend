@@ -4,6 +4,7 @@
 import { Fragment } from 'react';
 
 import DatasetSider from './components/DatasetSider';
+import { Flex } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -27,7 +28,6 @@ import {
     CreationDateTh,
 } from '@/components/CreationDateTableCells';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import PageTitle from '@/components/PageTitle';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
@@ -45,8 +45,8 @@ import {
     TableSkeleton,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
+import TableTitle from '@/components/TableTitle';
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -72,21 +72,20 @@ const Datasets = (): JSX.Element => {
 
     useAssetListDocumentTitleEffect('Datasets list', key);
 
-    const pageTitleLinks = [
-        { location: PATHS.DATASETS, title: 'Datasets', active: true },
-    ];
-
     return (
         <PageLayout
-            navigation={<Navigation />}
             sider={<DatasetSider />}
             siderVisible={!!key}
             stickyHeader={
                 <Fragment>
-                    <PageTitle links={pageTitleLinks} />
-                    <SearchBar
-                        assetOptions={[{ label: 'Dataset', value: 'dataset' }]}
-                    />
+                    <Flex justifyContent="space-between" marginBottom="6">
+                        <TableTitle title="Datasets" />
+                        <SearchBar
+                            assetOptions={[
+                                { label: 'Dataset', value: 'dataset' },
+                            ]}
+                        />
+                    </Flex>
                     <Table>
                         <Thead>
                             <Tr>
@@ -103,14 +102,11 @@ const Datasets = (): JSX.Element => {
                 </Fragment>
             }
         >
-            <PageTitle
-                links={pageTitleLinks}
+            <Table
                 css={css`
-                    opacity: 0;
-                    pointer-events: none;
+                    margin-top: 55px;
                 `}
-            />
-            <Table>
+            >
                 <Thead
                     css={css`
                         opacity: 0;

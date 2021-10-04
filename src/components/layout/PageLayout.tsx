@@ -105,7 +105,6 @@ type PageLayoutProps = {
 
 const PageLayout = ({
     children,
-    navigation,
     sider,
     siderVisible,
     stickyHeader,
@@ -147,7 +146,6 @@ const PageLayout = ({
 
     return (
         <Container>
-            {navigation}
             <HorizontalScrollContainer ref={horizontalScrollContainerRef}>
                 <HorizontalScrollShadow ref={horizontalScrollShadowRef} />
                 {stickyHeader && (

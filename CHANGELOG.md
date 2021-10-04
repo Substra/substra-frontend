@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Chart tooltips are now interactive (#142)
 -   All algos are now listed in the same table (#128)
 -   Display current node id on login page (#148)
+-   New navigation menu (#150)
 
 ## [0.2.0] - 2021-09-02
 

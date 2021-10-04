@@ -13,7 +13,7 @@ import { Colors, zIndexes, Spaces, Fonts } from '@/assets/theme';
 
 const Container = styled.div`
     position: fixed;
-    top: 72px;
+    top: 0;
     right: 0;
     bottom: 0;
     width: 420px;

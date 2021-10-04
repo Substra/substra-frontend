@@ -32,12 +32,6 @@ const SearchForm = styled.form`
     background-color: white;
     display: flex;
     overflow: hidden;
-
-    // The position should be part of the parent component but since the SearchBar is always used
-    // in the same way it makes sense to mutualize the position here.
-    position: absolute;
-    right: 0;
-    top: ${Spaces.large};
 `;
 
 const InputContainer = styled.div`

@@ -5,13 +5,13 @@
 import { css, jsx } from '@emotion/react';
 
 import Skeleton from '@/components/Skeleton';
-import { FirstTabTh, Td } from '@/components/Table';
+import { Th, Td } from '@/components/Table';
 
 export const creationDateWidth = css`
     width: 190px;
 `;
 export const CreationDateTh = (): JSX.Element => (
-    <FirstTabTh css={creationDateWidth}>Creation date</FirstTabTh>
+    <Th css={creationDateWidth}>Creation date</Th>
 );
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {

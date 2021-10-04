@@ -4,6 +4,7 @@
 import { Fragment, useState } from 'react';
 
 import TaskSider from './components/TaskSider';
+import { Flex } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -37,7 +38,6 @@ import {
     CreationDateTd,
     creationDateWidth,
 } from '@/components/CreationDateTableCells';
-import PageTitle from '@/components/PageTitle';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
@@ -54,8 +54,8 @@ import {
     Tr,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
+import TableTitle from '@/components/TableTitle';
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 import { Colors, Spaces } from '@/assets/theme';
 
@@ -189,35 +189,24 @@ const Tasks = (): JSX.Element => {
         );
     };
 
-    const pageTitleLinks = [
-        {
-            location: PATHS.COMPUTE_PLANS,
-            title: 'Compute Plans',
-            active: false,
-        },
-        {
-            location: PATHS.TASKS,
-            title: 'Tasks',
-            active: true,
-        },
-    ];
-
     return (
         <PageLayout
             siderVisible={!!key}
-            navigation={<Navigation />}
             sider={<TaskSider />}
             stickyHeader={
                 <Fragment>
-                    <PageTitle links={pageTitleLinks} />
-                    <SearchBar
-                        assetOptions={[
-                            {
-                                label: taskTypes[selectedTaskType].searchLabel,
-                                value: taskTypes[selectedTaskType].slug,
-                            },
-                        ]}
-                    />
+                    <Flex justifyContent="space-between" marginBottom="6">
+                        <TableTitle title="Tasks" />
+                        <SearchBar
+                            assetOptions={[
+                                {
+                                    label:
+                                        taskTypes[selectedTaskType].searchLabel,
+                                    value: taskTypes[selectedTaskType].slug,
+                                },
+                            ]}
+                        />
+                    </Flex>
                     {renderTasksButtons()}
                     <Table>
                         <Thead>
@@ -239,15 +228,12 @@ const Tasks = (): JSX.Element => {
                 </Fragment>
             }
         >
-            <PageTitle
-                links={pageTitleLinks}
-                css={css`
-                    opacity: 0;
-                    pointer-events: none;
-                `}
-            />
             {renderTasksButtons()}
-            <Table>
+            <Table
+                css={css`
+                    margin-top: 55px;
+                `}
+            >
                 <Thead
                     css={css`
                         opacity: 0;

@@ -123,17 +123,6 @@ export const Th = ({ children, ...rest }: CellProps): JSX.Element => (
     </th>
 );
 
-const firstTabThStyles = css`
-    &:first-of-type > div {
-        border-top-left-radius: 0;
-    }
-`;
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const FirstTabTh = (props: CellProps): JSX.Element => (
-    <Th css={firstTabThStyles} {...props} />
-);
-
 const tdStyle = css`
     cursor: pointer;
     padding-bottom: ${Spaces.extraSmall};

@@ -4,6 +4,7 @@
 import { Fragment } from 'react';
 
 import AlgoSider from './components/AlgoSider';
+import { Flex } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -27,7 +28,6 @@ import {
     CreationDateTh,
 } from '@/components/CreationDateTableCells';
 import OwnerTableFilter from '@/components/OwnerTableFilter';
-import PageTitle from '@/components/PageTitle';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
@@ -45,8 +45,8 @@ import {
     Tr,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
+import TableTitle from '@/components/TableTitle';
 import PageLayout from '@/components/layout/PageLayout';
-import Navigation from '@/components/layout/navigation/Navigation';
 
 const categoryColWidth = css`
     width: 100px;
@@ -71,26 +71,23 @@ const Algos = (): JSX.Element => {
 
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
-    const pageTitleLinks = [
-        { location: PATHS.ALGOS, title: 'Algorithms', active: true },
-        { location: PATHS.METRICS, title: 'Metrics', active: false },
-    ];
     return (
         <PageLayout
             siderVisible={!!key}
-            navigation={<Navigation />}
             sider={<AlgoSider />}
             stickyHeader={
                 <Fragment>
-                    <PageTitle links={pageTitleLinks} />
-                    <SearchBar
-                        assetOptions={[
-                            {
-                                label: 'Algorithm',
-                                value: 'algo',
-                            },
-                        ]}
-                    />
+                    <Flex justifyContent="space-between" marginBottom="6">
+                        <TableTitle title="Algorithms" />
+                        <SearchBar
+                            assetOptions={[
+                                {
+                                    label: 'Algorithm',
+                                    value: 'algo',
+                                },
+                            ]}
+                        />
+                    </Flex>
                     <Table>
                         <Thead>
                             <Tr>
@@ -108,14 +105,11 @@ const Algos = (): JSX.Element => {
                 </Fragment>
             }
         >
-            <PageTitle
-                links={pageTitleLinks}
+            <Table
                 css={css`
-                    opacity: 0;
-                    pointer-events: none;
+                    margin-top: 55px;
                 `}
-            />
-            <Table>
+            >
                 <Thead
                     css={css`
                         opacity: 0;
