@@ -170,7 +170,7 @@ def upload(url, creds, chart_path, dry_run=False) -> None:
         p = command.run(
             [
                 "helm",
-                "push",
+                "cm-push",
                 chart_path,
                 url,
                 "--username",

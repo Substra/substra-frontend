@@ -9,6 +9,7 @@ from os import remove
 
 from cilib import command, file_system, helm
 
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 logger = logging.getLogger()
 
 script_desc = """
@@ -80,13 +81,13 @@ def main(verbose=True):
 
     # using github releases as a reference as to whether it has been released or not
     releases_per_tag = {r["tag_name"]: r for r in releases}
-    tags = [t for t in tags if t not in releases_per_tag]
-    if not tags:
-        logger.info("Nothing to do")
+    tags_to_release = [t for t in tags if t not in releases_per_tag]
+    if not tags_to_release:
+        logger.warning(f"Nothing to do, as releases already exist for {tags}")
         return 0
-    logger.info(f"Releasing: {tags}")
+    logger.info(f"Releasing: {tags_to_release}")
 
-    for tag in tags:
+    for tag in tags_to_release:
         unstable_version = command.get_output(
             [
                 "ci/version",
@@ -165,7 +166,7 @@ def main(verbose=True):
         try:
             if release.get("errors", False):
                 raise ReleaseException("Couldn't create Github release: ", release)
-            logger.info("Release created: ", release["html_url"])
+            logger.info(f"Release created: {release['html_url']}")
         except Exception as e:
             print(release)
             raise e

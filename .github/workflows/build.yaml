@@ -44,7 +44,7 @@ jobs:
               with:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
-            - run: sudo snap install helm --channel=3.6/stable --classic && helm plugin install https://github.com/chartmuseum/helm-push
+            - run: helm plugin install https://github.com/chartmuseum/helm-push
 
             - run: helm lint charts/connect-frontend
             - run: printf 'VERSION=%s\n' "$(ci/version)" >> $GITHUB_ENV
@@ -62,7 +62,7 @@ jobs:
             - run: |
                   helm repo add owkin-priv https://${{env.HELM_REPO_URL}} \
                   --username='${{secrets.HELM_REPO_USERNAME}}' --password='${{secrets.HELM_REPO_PASSWORD}}'
-                  helm push connect-frontend-${{ env.HELM_VERSION }}.tgz owkin-priv
+                  helm cm-push connect-frontend-${{ env.HELM_VERSION }}.tgz owkin-priv
 
     release:
         name: Trigger a release for each tag
