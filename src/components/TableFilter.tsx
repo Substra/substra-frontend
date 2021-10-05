@@ -3,6 +3,7 @@
 /** @jsx jsx */
 import { useState } from 'react';
 
+import { Button, ButtonGroup } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -68,39 +69,6 @@ const closeButtonPosition = css`
     position: absolute;
     top: ${Spaces.small};
     right: ${Spaces.small};
-`;
-
-const ApplyButton = styled.button`
-    display: block;
-    width: 100%;
-    padding: ${Spaces.small} ${Spaces.medium};
-    background-color: ${Colors.primary};
-    color: white;
-    text-transform: uppercase;
-    border: none;
-    border-radius: ${Spaces.small};
-    margin-top: ${Spaces.large};
-
-    &:disabled {
-        opacity: 0.23;
-    }
-`;
-
-const ClearButton = styled.button`
-    display: block;
-    padding: ${Spaces.small} ${Spaces.medium};
-    margin: ${Spaces.small} auto 0 auto;
-    color: ${Colors.primary};
-    border: none;
-    background: none;
-
-    &:not(:disabled):hover {
-        text-decoration: underline;
-    }
-
-    &:disabled {
-        opacity: 0.23;
-    }
 `;
 
 const Li = styled.li`
@@ -193,12 +161,24 @@ const TableFilter = ({
                         </Li>
                     ))}
                 </ul>
-                <ApplyButton onClick={onApplyClick} disabled={applyDisabled()}>
-                    Apply
-                </ApplyButton>
-                <ClearButton onClick={onClearClick} disabled={clearDisabled()}>
-                    Clear
-                </ClearButton>
+                <ButtonGroup size="xs">
+                    <Button
+                        onClick={onClearClick}
+                        variant="outline"
+                        isDisabled={clearDisabled()}
+                    >
+                        Clear
+                    </Button>
+                    <Button
+                        onClick={onApplyClick}
+                        variant="solid"
+                        isDisabled={applyDisabled()}
+                        color="white"
+                        background={`${Colors.primary}`}
+                    >
+                        Apply
+                    </Button>
+                </ButtonGroup>
             </FlyOutContainer>
         </Container>
     );

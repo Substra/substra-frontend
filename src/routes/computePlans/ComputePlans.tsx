@@ -1,10 +1,9 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment } from 'react';
-
 import ComputePlanSider from './components/ComputePlansSider';
 import { Flex } from '@chakra-ui/react';
+import { Tbody, Td } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -39,10 +38,8 @@ import {
     EmptyTr,
     Table,
     TableSkeleton,
-    Tbody,
-    Td,
-    Th,
     Thead,
+    Th,
     Tr,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
@@ -53,7 +50,6 @@ import { Colors, Fonts, Spaces } from '@/assets/theme';
 
 const SelectionContainer = styled.div`
     display: inline-block;
-    float: left;
     font-size: ${Fonts.sizes.smallBody};
 `;
 
@@ -141,58 +137,30 @@ const ComputePlans = (): JSX.Element => {
     };
 
     return (
-        <PageLayout
-            sider={<ComputePlanSider />}
-            siderVisible={!!key}
-            stickyHeader={
-                <Fragment>
-                    <Flex justifyContent="space-between" marginBottom="6">
-                        <TableTitle title="Compute Plans" />
-                        <SelectionContainer>
-                            <SelectionLabel>
-                                {selectedKeys.length === 1
-                                    ? '1 selected compute plan'
-                                    : `${selectedKeys.length} selected compute plans`}
-                            </SelectionLabel>
-                            <ClearSelectionButton
-                                onClick={onClear}
-                                disabled={selectedKeys.length === 0}
-                            >
-                                Clear
-                            </ClearSelectionButton>
-                            <CompareSelectionButton
-                                onClick={onCompare}
-                                disabled={selectedKeys.length < 2}
-                            >
-                                Compare
-                            </CompareSelectionButton>
-                        </SelectionContainer>
-                        <SearchBar
-                            assetOptions={[
-                                {
-                                    label: 'Compute Plan',
-                                    value: 'compute_plan',
-                                },
-                            ]}
-                        />
-                    </Flex>
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <Th css={checkboxColWidth}>&nbsp;</Th>
-                                <CreationDateTh />
-                                <Th css={tagColWidth}>Tag</Th>
-                                <Th css={statusColWidth}>
-                                    Status
-                                    <StatusTableFilter asset="compute_plan" />
-                                </Th>
-                                <Th css={taskColWidth}>Tasks</Th>
-                            </Tr>
-                        </Thead>
-                    </Table>
-                </Fragment>
-            }
-        >
+        <PageLayout sider={<ComputePlanSider />} siderVisible={!!key}>
+            <Flex justifyContent="space-between" marginBottom="6">
+                <TableTitle title="Compute Plans" />
+                <SelectionContainer>
+                    <SelectionLabel>
+                        {selectedKeys.length === 1
+                            ? '1 selected compute plan'
+                            : `${selectedKeys.length} selected compute plans`}
+                    </SelectionLabel>
+                    <ClearSelectionButton
+                        onClick={onClear}
+                        disabled={selectedKeys.length === 0}
+                    >
+                        Clear
+                    </ClearSelectionButton>
+                    <CompareSelectionButton
+                        onClick={onCompare}
+                        disabled={selectedKeys.length < 2}
+                    >
+                        Compare
+                    </CompareSelectionButton>
+                </SelectionContainer>
+                <SearchBar label="Compute Plan" asset="compute_plan" />
+            </Flex>
             <Table
                 css={css`
                     margin-top: 55px;
@@ -203,7 +171,10 @@ const ComputePlans = (): JSX.Element => {
                         <Th css={checkboxColWidth}>&nbsp;</Th>
                         <CreationDateTh />
                         <Th css={tagColWidth}>Tag</Th>
-                        <Th css={statusColWidth}>Status</Th>
+                        <Th css={statusColWidth}>
+                            Status
+                            <StatusTableFilter asset="compute_plan" />
+                        </Th>
                         <Th css={taskColWidth}>Tasks</Th>
                     </Tr>
                 </Thead>

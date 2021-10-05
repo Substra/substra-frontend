@@ -4,7 +4,7 @@ export const Colors = {
     primaryPressed: '#284483',
     primaryBoxShadow: '#9091bf',
     primaryDisabled: '#9BA3BF',
-    border: '#E2E8F0',
+    border: '#EDF2F7',
     background: '#f7f7f7',
     darkBackground: '#E6EAEA',
     darkerBackground: '#f7f9f8',
@@ -38,7 +38,7 @@ export const Fonts = {
         label: '12px',
         input: '14px',
         button: '14px',
-        tableContent: '12px',
+        tableContent: '14px',
     },
     weights: {
         heavy: 900,

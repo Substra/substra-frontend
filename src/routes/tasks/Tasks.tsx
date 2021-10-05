@@ -1,10 +1,11 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 import TaskSider from './components/TaskSider';
 import { Flex } from '@chakra-ui/react';
+import { Tbody, Td } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -48,10 +49,8 @@ import {
     ownerColWidth,
     Table,
     TableSkeleton,
-    Tbody,
-    Td,
-    Th,
     Thead,
+    Th,
     Tr,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
@@ -67,10 +66,10 @@ const computePlanColWidth = css`
     width: 270px;
 `;
 const rankColWidth = css`
-    width: 70px;
+    width: 90px;
 `;
 const perfColWidth = css`
-    width: 110px;
+    width: 150px;
 `;
 
 interface TypeButtonProps {
@@ -191,67 +190,35 @@ const Tasks = (): JSX.Element => {
     };
 
     return (
-        <PageLayout
-            siderVisible={!!key}
-            sider={<TaskSider />}
-            stickyHeader={
-                <Fragment>
-                    <Flex justifyContent="space-between" marginBottom="6">
-                        <TableTitle title="Tasks" />
-                        <SearchBar
-                            assetOptions={[
-                                {
-                                    label:
-                                        taskTypes[selectedTaskType].searchLabel,
-                                    value: taskTypes[selectedTaskType].slug,
-                                },
-                            ]}
-                        />
-                    </Flex>
-                    {renderTasksButtons()}
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <Th css={creationDateWidth}>Creation date</Th>
-                                <Th css={statusColWidth}>
-                                    Current status
-                                    <StatusTableFilter
-                                        asset={taskTypes[selectedTaskType].slug}
-                                    />
-                                </Th>
-                                <Th css={ownerColWidth}>
-                                    Worker
-                                    <WorkerTableFilter
-                                        assets={[
-                                            taskTypes[selectedTaskType].slug,
-                                        ]}
-                                    />
-                                </Th>
-                                <Th css={computePlanColWidth}>Compute Plan</Th>
-                                <Th css={rankColWidth}>Rank</Th>
-                                <Th css={perfColWidth}>Performance</Th>
-                            </Tr>
-                        </Thead>
-                    </Table>
-                </Fragment>
-            }
-        >
+        <PageLayout siderVisible={!!key} sider={<TaskSider />}>
+            <Flex justifyContent="space-between" marginBottom="6">
+                <TableTitle title="Tasks" />
+                <SearchBar
+                    label={taskTypes[selectedTaskType].searchLabel}
+                    asset={taskTypes[selectedTaskType].slug}
+                />
+            </Flex>
             {renderTasksButtons()}
             <Table
                 css={css`
                     margin-top: 55px;
                 `}
             >
-                <Thead
-                    css={css`
-                        opacity: 0;
-                        pointer-events: none;
-                    `}
-                >
+                <Thead>
                     <Tr>
                         <Th css={creationDateWidth}>Creation date</Th>
-                        <Th css={statusColWidth}>Current status</Th>
-                        <Th css={ownerColWidth}>Worker</Th>
+                        <Th css={statusColWidth}>
+                            Current status
+                            <StatusTableFilter
+                                asset={taskTypes[selectedTaskType].slug}
+                            />
+                        </Th>
+                        <Th css={ownerColWidth}>
+                            Worker
+                            <WorkerTableFilter
+                                assets={[taskTypes[selectedTaskType].slug]}
+                            />
+                        </Th>
                         <Th css={computePlanColWidth}>Compute Plan</Th>
                         <Th css={rankColWidth}>Rank</Th>
                         <Th css={perfColWidth}>Performance</Th>
@@ -277,7 +244,7 @@ const Tasks = (): JSX.Element => {
                                 <Skeleton width={60} height={12} />
                             </Td>
                             <Td>
-                                <Skeleton width={90} height={12} />
+                                <Skeleton width={110} height={12} />
                             </Td>
                         </TableSkeleton>
                     )}

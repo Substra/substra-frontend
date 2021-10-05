@@ -3,10 +3,9 @@
 /** @jsx jsx */
 import { RootState } from '@/store';
 
-import { Fragment } from 'react';
-
 import MetricSider from './components/MetricSider';
 import { Flex } from '@chakra-ui/react';
+import { Tbody, Td } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -39,10 +38,8 @@ import {
     ownerColWidth,
     permissionsColWidth,
     Table,
-    Tbody,
-    Td,
-    Th,
     Thead,
+    Th,
     Tr,
     TableSkeleton,
 } from '@/components/Table';
@@ -75,50 +72,24 @@ const Metrics = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Metrics list', key);
 
     return (
-        <PageLayout
-            siderVisible={!!key}
-            sider={<MetricSider />}
-            stickyHeader={
-                <Fragment>
-                    <Flex justifyContent="space-between" marginBottom="6">
-                        <TableTitle title="Metrics" />
-                        <SearchBar
-                            assetOptions={[
-                                { label: 'Metric', value: 'objective' },
-                            ]}
-                        />
-                    </Flex>
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <Th css={creationDateWidth}>Creation date</Th>
-                                <Th css={nameColWidth}>Name</Th>
-                                <Th css={ownerColWidth}>
-                                    Owner
-                                    <OwnerTableFilter assets={['objective']} />
-                                </Th>
-                                <Th css={permissionsColWidth}>Permissions</Th>
-                            </Tr>
-                        </Thead>
-                    </Table>
-                </Fragment>
-            }
-        >
+        <PageLayout siderVisible={!!key} sider={<MetricSider />}>
+            <Flex justifyContent="space-between" marginBottom="6">
+                <TableTitle title="Metrics" />
+                <SearchBar label="Metric" asset="objective" />
+            </Flex>
             <Table
                 css={css`
                     margin-top: 55px;
                 `}
             >
-                <Thead
-                    css={css`
-                        opacity: 0;
-                        pointer-events: none;
-                    `}
-                >
+                <Thead>
                     <Tr>
                         <Th css={creationDateWidth}>Creation date</Th>
                         <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>Owner</Th>
+                        <Th css={ownerColWidth}>
+                            Owner
+                            <OwnerTableFilter assets={['objective']} />
+                        </Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
                 </Thead>

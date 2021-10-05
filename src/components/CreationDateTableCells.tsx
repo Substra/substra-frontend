@@ -1,11 +1,11 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
+import { Td, Th } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
 import Skeleton from '@/components/Skeleton';
-import { Th, Td } from '@/components/Table';
 
 export const creationDateWidth = css`
     width: 190px;

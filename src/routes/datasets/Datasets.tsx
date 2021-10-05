@@ -1,10 +1,9 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment } from 'react';
-
 import DatasetSider from './components/DatasetSider';
 import { Flex } from '@chakra-ui/react';
+import { Tbody, Td } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -37,10 +36,8 @@ import {
     ownerColWidth,
     permissionsColWidth,
     Table,
-    Tbody,
-    Td,
-    Th,
     Thead,
+    Th,
     Tr,
     TableSkeleton,
 } from '@/components/Table';
@@ -73,50 +70,24 @@ const Datasets = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Datasets list', key);
 
     return (
-        <PageLayout
-            sider={<DatasetSider />}
-            siderVisible={!!key}
-            stickyHeader={
-                <Fragment>
-                    <Flex justifyContent="space-between" marginBottom="6">
-                        <TableTitle title="Datasets" />
-                        <SearchBar
-                            assetOptions={[
-                                { label: 'Dataset', value: 'dataset' },
-                            ]}
-                        />
-                    </Flex>
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <CreationDateTh />
-                                <Th css={nameColWidth}>Name</Th>
-                                <Th css={ownerColWidth}>
-                                    Owner
-                                    <OwnerTableFilter assets={['dataset']} />
-                                </Th>
-                                <Th css={permissionsColWidth}>Permissions</Th>
-                            </Tr>
-                        </Thead>
-                    </Table>
-                </Fragment>
-            }
-        >
+        <PageLayout sider={<DatasetSider />} siderVisible={!!key}>
+            <Flex justifyContent="space-between" marginBottom="6">
+                <TableTitle title="Datasets" />
+                <SearchBar label="Dataset" asset="dataset" />
+            </Flex>
             <Table
                 css={css`
                     margin-top: 55px;
                 `}
             >
-                <Thead
-                    css={css`
-                        opacity: 0;
-                        pointer-events: none;
-                    `}
-                >
+                <Thead>
                     <Tr>
                         <CreationDateTh />
                         <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>Owner</Th>
+                        <Th css={ownerColWidth}>
+                            Owner
+                            <OwnerTableFilter assets={['dataset']} />
+                        </Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
                 </Thead>

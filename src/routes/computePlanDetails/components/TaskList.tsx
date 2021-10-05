@@ -3,6 +3,7 @@
 /** @jsx jsx */
 import { useState } from 'react';
 
+import { Tbody, Td, Th } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -44,9 +45,6 @@ import {
     ownerColWidth,
     Table,
     TableSkeleton,
-    Tbody,
-    Td,
-    Th,
     Thead,
     Tr,
 } from '@/components/Table';

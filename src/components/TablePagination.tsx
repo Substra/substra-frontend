@@ -1,13 +1,14 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
+import { Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
 import { AssetType } from '@/modules/common/CommonTypes';
 
 import Pagination from '@/components/Pagination';
-import { Td } from '@/components/Table';
+import { Tr } from '@/components/Table';
 
 import { Spaces } from '@/assets/theme';
 
@@ -24,6 +25,12 @@ const assetLabel: Record<AssetType, string> = {
     compute_plan: 'compute plans',
 };
 
+const trStyle = css`
+    &:before {
+        border: none;
+    }
+`;
+
 const tdStyle = css`
     cursor: initial;
 
@@ -34,10 +41,6 @@ const tdStyle = css`
         padding-top: ${Spaces.extraSmall};
         padding-bottom: ${Spaces.extraSmall};
         padding-right: 0;
-    }
-
-    &:before {
-        display: none;
     }
 `;
 
@@ -61,12 +64,14 @@ const TablePagination = ({
     const lastPage = Math.ceil(itemCount / DEFAULT_PAGE_SIZE);
 
     return (
-        <tr>
+        <Tr css={trStyle}>
             <Td colSpan={colSpan} css={tdStyle}>
-                <span>{`Showing ${firstIndex}-${lastIndex} of ${itemCount} ${assetLabel[asset]}`}</span>
-                <Pagination currentPage={currentPage} lastPage={lastPage} />
+                <div>
+                    <span>{`Showing ${firstIndex}-${lastIndex} of ${itemCount} ${assetLabel[asset]}`}</span>
+                    <Pagination currentPage={currentPage} lastPage={lastPage} />
+                </div>
             </Td>
-        </tr>
+        </Tr>
     );
 };
 export default TablePagination;

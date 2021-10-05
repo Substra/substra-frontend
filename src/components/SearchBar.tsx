@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { Flex } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -16,13 +17,8 @@ import { useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import CloseButton from '@/components/CloseButton';
-import Select from '@/components/Select';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
-
-const selectWidth = css`
-    width: 180px;
-`;
 
 const SearchForm = styled.form`
     width: 530px;
@@ -75,15 +71,11 @@ const clearButton = css`
 `;
 
 interface SearchBarProps {
-    assetOptions: {
-        value: AssetType;
-        label: string;
-    }[];
+    asset: AssetType;
+    label: string;
 }
-const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
-    const defaultAsset = assetOptions.length > 0 ? assetOptions[0].value : '';
+const SearchBar = ({ asset, label }: SearchBarProps): JSX.Element => {
     const [value, setValue] = useState('');
-    const [asset, setAsset] = useState(defaultAsset);
 
     const { params, setLocationWithParams } = useLocationWithParams();
     const searchFilters = params.search;
@@ -93,20 +85,13 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
         // - only on key
         // - only for assets that can be selected
         const keySearchFilters = searchFilters.filter(
-            (sf) =>
-                sf.key === 'key' &&
-                assetOptions.find((option) => option.value === sf.asset)
+            (sf) => sf.key === 'key' && asset === sf.asset
         );
         if (keySearchFilters.length) {
             const keySearchFilter = keySearchFilters[0];
-            setAsset(keySearchFilter.asset);
             setValue(keySearchFilter.value);
         }
     }, [searchFilters]);
-
-    useEffect(() => {
-        onAssetChange(defaultAsset);
-    }, [defaultAsset]);
 
     const applySearchFilters = (asset: string) => {
         // preserve all filters that are not on asset key
@@ -121,11 +106,6 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
             });
         }
         setLocationWithParams({ search: newSearchFilters, page: 1 });
-    };
-
-    const onAssetChange = (asset: string) => {
-        setAsset(asset);
-        applySearchFilters(asset);
     };
 
     const onSubmit = (e: React.SyntheticEvent) => {
@@ -143,12 +123,16 @@ const SearchBar = ({ assetOptions }: SearchBarProps): JSX.Element => {
 
     return (
         <SearchForm onSubmit={onSubmit}>
-            <Select
-                css={selectWidth}
-                options={assetOptions}
-                value={asset}
-                onChange={onAssetChange}
-            />
+            <Flex
+                width="180px"
+                align="center"
+                paddingLeft="4"
+                pointerEvents="none"
+                color={Colors.lightContent}
+                fontSize={Fonts.sizes.input}
+            >
+                {label}
+            </Flex>
             <InputContainer>
                 <RiSearchLine css={searchIcon} aria-hidden={true} />
                 <Input

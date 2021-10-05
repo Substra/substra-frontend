@@ -3,13 +3,20 @@
 /** @jsx jsx */
 import { Fragment } from 'react';
 
+import {
+    Table as ChakraTable,
+    Tr as ChakraTr,
+    Thead as ChakraThead,
+    Th as ChakraTh,
+    Td as ChakraTd,
+} from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
-export const Table = styled.table`
+export const Table = styled(ChakraTable)`
     // the table won't be 1px wide, it'll instead be the cumulated width of all of its columns
     width: 1px;
     border-collapse: collapse;
@@ -18,43 +25,55 @@ export const Table = styled.table`
     table-layout: fixed;
 `;
 
-export const Thead = styled.thead``;
+export const Thead = styled(ChakraThead)`
+    & > tr:before {
+        border: none;
+    }
+`;
 
-export const Tbody = styled.tbody``;
+export const Th = styled(ChakraTh)`
+    white-space: nowrap;
+`;
 
 interface TrProps {
     highlighted?: boolean;
 }
-export const Tr = styled.tr<TrProps>`
-    & > td:before {
+export const Tr = styled(ChakraTr)<TrProps>`
+    position: relative;
+    background-color: ${({ highlighted }) =>
+        highlighted ? Colors.darkerBackground : 'transparent'};
+
+    & > td,
+    & > th {
+        border: none;
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        border-width: 1px;
+        border-style: solid;
         border-color: ${({ highlighted }) =>
             highlighted
-                ? `${Colors.primary} transparent`
-                : 'white transparent'};
-        background-color: ${({ highlighted }) =>
-            highlighted ? Colors.darkerBackground : 'white'};
+                ? `${Colors.primary}`
+                : `transparent transparent ${Colors.border}`};
     }
 
-    & > td:first-of-type:before {
-        border-left-color: ${({ highlighted }) =>
-            highlighted ? Colors.primary : 'transparent'};
+    &:nth-last-of-type(2):before,
+    &:last-of-type:before {
+        border-bottom-color: transparent;
     }
 
-    & > td:last-of-type:before {
-        border-right-color: ${({ highlighted }) =>
-            highlighted ? Colors.primary : 'transparent'};
+    &:not(:last-of-type) {
+        cursor: pointer;
     }
 
-    &:hover > td:before {
-        border-color: ${Colors.primary} transparent;
-    }
-
-    &:hover > td:first-of-type:before {
-        border-left-color: ${Colors.primary};
-    }
-
-    &:hover > td:last-of-type:before {
-        border-right-color: ${Colors.primary};
+    &:hover:before {
+        border-color: ${Colors.primary};
     }
 `;
 
@@ -77,96 +96,11 @@ interface EmptyTrProps {
 }
 
 export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
-    <tr>
-        <td colSpan={nbColumns} css={emptyTdStyle}>
+    <ChakraTr>
+        <ChakraTd colSpan={nbColumns} css={emptyTdStyle}>
             No data to display
-        </td>
-    </tr>
-);
-
-interface CellProps {
-    children: React.ReactNode;
-    colSpan?: number;
-}
-
-const thStyles = css`
-    padding-bottom: ${Spaces.extraSmall};
-
-    & > div {
-        border-width: 1px 0;
-        border-style: solid;
-        border-color: ${Colors.border} transparent;
-        background-color: white;
-        padding: ${Spaces.large} ${Spaces.medium};
-        white-space: nowrap;
-        font-weight: bold;
-        text-align: left;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    &:first-of-type > div {
-        border-radius: ${Spaces.medium} 0 0 ${Spaces.medium};
-        border-left: 1px solid ${Colors.border};
-    }
-
-    &:last-of-type > div {
-        border-radius: 0 ${Spaces.medium} ${Spaces.medium} 0;
-        border-right: 1px solid ${Colors.border};
-    }
-`;
-
-export const Th = ({ children, ...rest }: CellProps): JSX.Element => (
-    <th css={thStyles} {...rest}>
-        <div>{children}</div>
-    </th>
-);
-
-const tdStyle = css`
-    cursor: pointer;
-    padding-bottom: ${Spaces.extraSmall};
-    position: relative;
-
-    &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: ${Spaces.extraSmall};
-        border-width: 1px 0;
-        border-style: solid;
-        border-color: white transparent;
-        background-color: white;
-    }
-
-    &:first-of-type:before {
-        border-top-left-radius: ${Spaces.medium};
-        border-bottom-left-radius: ${Spaces.medium};
-        border-left: 1px solid white;
-    }
-
-    &:last-of-type:before {
-        border-top-right-radius: ${Spaces.medium};
-        border-bottom-right-radius: ${Spaces.medium};
-        border-right: 1px solid white;
-    }
-
-    & > div {
-        position: relative;
-        padding: ${Spaces.medium};
-        white-space: nowrap;
-        text-align: left;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-    }
-`;
-
-export const Td = ({ children, ...rest }: CellProps): JSX.Element => (
-    <td css={tdStyle} {...rest}>
-        <div>{children}</div>
-    </td>
+        </ChakraTd>
+    </ChakraTr>
 );
 
 export const nameColWidth = css`

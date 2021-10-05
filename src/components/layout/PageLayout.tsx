@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Colors, Mixins, Spaces, zIndexes } from '@/assets/theme';
+import { Spaces, zIndexes } from '@/assets/theme';
 
 const SIDER_WIDTH = 420;
 
@@ -65,57 +65,18 @@ const VerticalScrollContainer = styled.div<VerticalScrollContainerProps>`
     transition: all 0.2s ease-out;
 `;
 
-interface StickyHeaderContainerProps {
-    scrolled: boolean;
-}
-const StickyHeaderContainer = styled.div<StickyHeaderContainerProps>`
-    position: absolute;
-    top: 0;
-    left: 120px;
-    z-index: ${zIndexes.stickyHeader};
-    padding-top: ${Spaces.large};
-    background-image: linear-gradient(
-        ${Colors.background} 0% calc(100% - 20px),
-        transparent calc(100% - 20px) 100%
-    );
-
-    &:after {
-        display: block;
-        content: '';
-        position: absolute;
-        box-shadow: 0 0 8px 0 ${Colors.border};
-        left: 0;
-        right: 0;
-        bottom: ${Spaces.extraSmall};
-        height: ${Spaces.medium};
-        border-radius: 0 0 ${Spaces.medium} ${Spaces.medium};
-        z-index: -1;
-        opacity: ${({ scrolled }) => (scrolled ? 1 : 0)};
-        transition: ${Mixins.transitionStyle};
-    }
-`;
-
 type PageLayoutProps = {
     children: React.ReactNode;
     navigation?: React.ReactNode;
     sider?: React.ReactNode;
     siderVisible: boolean;
-    stickyHeader?: React.ReactNode;
 };
 
 const PageLayout = ({
     children,
     sider,
     siderVisible,
-    stickyHeader,
 }: PageLayoutProps): JSX.Element => {
-    // add/remove box shadow on header when sticky
-    const [verticallyScrolled, setVerticallyScrolled] = useState(false);
-    const onVerticalScroll = (e: React.UIEvent) => {
-        const target = e.target as HTMLDivElement;
-        setVerticallyScrolled(target.scrollTop > 0);
-    };
-
     // make sure left-side shadow is always positioned to the left of the viewport but still
     // within the HorizontalScrollContainer.
     const horizontalScrollContainerRef = useRef<HTMLDivElement>(null);
@@ -148,15 +109,7 @@ const PageLayout = ({
         <Container>
             <HorizontalScrollContainer ref={horizontalScrollContainerRef}>
                 <HorizontalScrollShadow ref={horizontalScrollShadowRef} />
-                {stickyHeader && (
-                    <StickyHeaderContainer scrolled={verticallyScrolled}>
-                        {stickyHeader}
-                    </StickyHeaderContainer>
-                )}
-                <VerticalScrollContainer
-                    siderVisible={siderVisible}
-                    onScroll={onVerticalScroll}
-                >
+                <VerticalScrollContainer siderVisible={siderVisible}>
                     {children}
                 </VerticalScrollContainer>
             </HorizontalScrollContainer>

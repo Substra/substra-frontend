@@ -1,10 +1,9 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { Fragment } from 'react';
-
 import AlgoSider from './components/AlgoSider';
 import { Flex } from '@chakra-ui/react';
+import { Tbody, Td } from '@chakra-ui/table';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -38,10 +37,8 @@ import {
     permissionsColWidth,
     Table,
     TableSkeleton,
-    Tbody,
-    Td,
-    Th,
     Thead,
+    Th,
     Tr,
 } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
@@ -72,55 +69,31 @@ const Algos = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
     return (
-        <PageLayout
-            siderVisible={!!key}
-            sider={<AlgoSider />}
-            stickyHeader={
-                <Fragment>
-                    <Flex justifyContent="space-between" marginBottom="6">
-                        <TableTitle title="Algorithms" />
-                        <SearchBar
-                            assetOptions={[
-                                {
-                                    label: 'Algorithm',
-                                    value: 'algo',
-                                },
-                            ]}
-                        />
-                    </Flex>
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <CreationDateTh />
-                                <Th css={categoryColWidth}>Category</Th>
-                                <Th css={nameColWidth}>Name</Th>
-                                <Th css={ownerColWidth}>
-                                    Owner
-                                    <OwnerTableFilter assets={['algo']} />
-                                </Th>
-                                <Th css={permissionsColWidth}>Permissions</Th>
-                            </Tr>
-                        </Thead>
-                    </Table>
-                </Fragment>
-            }
-        >
+        <PageLayout siderVisible={!!key} sider={<AlgoSider />}>
+            <Flex justifyContent="space-between" marginBottom="6">
+                <TableTitle title="Algorithms" />
+                <SearchBar label="Algorithm" asset="algo" />
+            </Flex>
             <Table
                 css={css`
                     margin-top: 55px;
                 `}
             >
-                <Thead
-                    css={css`
-                        opacity: 0;
-                        pointer-events: none;
-                    `}
-                >
+                <Thead>
                     <Tr>
                         <CreationDateTh />
                         <Th css={categoryColWidth}>Category</Th>
                         <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>Owner</Th>
+                        <Th css={ownerColWidth}>
+                            Owner
+                            <OwnerTableFilter
+                                assets={[
+                                    'algo',
+                                    'composite_algo',
+                                    'aggregate_algo',
+                                ]}
+                            />
+                        </Th>
                         <Th css={permissionsColWidth}>Permissions</Th>
                     </Tr>
                 </Thead>
