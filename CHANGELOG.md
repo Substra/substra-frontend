@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Include key in filename when downloading a model (#160)
 -   Made /compute_plans the landing page (#161)
 -   New visual style for navigation on compute plan page (#158)
+-   New style for searchbar (#164)
 
 ## [0.3.0] - 2021-10-04
 

@@ -4,7 +4,7 @@
 import { RootState } from '@/store';
 
 import MetricSider from './components/MetricSider';
-import { Flex, Tbody, Td } from '@chakra-ui/react';
+import { VStack, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -72,15 +72,11 @@ const Metrics = (): JSX.Element => {
 
     return (
         <PageLayout siderVisible={!!key} sider={<MetricSider />}>
-            <Flex justifyContent="space-between" marginBottom="6">
+            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Metrics" />
-                <SearchBar label="Metric" asset="objective" />
-            </Flex>
-            <Table
-                css={css`
-                    margin-top: 55px;
-                `}
-            >
+                <SearchBar asset="objective" />
+            </VStack>
+            <Table>
                 <Thead>
                     <Tr>
                         <Th css={creationDateWidth}>Creation date</Th>

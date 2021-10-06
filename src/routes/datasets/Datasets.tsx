@@ -2,7 +2,7 @@
 
 /** @jsx jsx */
 import DatasetSider from './components/DatasetSider';
-import { Flex, Tbody, Td } from '@chakra-ui/react';
+import { VStack, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -70,15 +70,11 @@ const Datasets = (): JSX.Element => {
 
     return (
         <PageLayout sider={<DatasetSider />} siderVisible={!!key}>
-            <Flex justifyContent="space-between" marginBottom="6">
+            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Datasets" />
-                <SearchBar label="Dataset" asset="dataset" />
-            </Flex>
-            <Table
-                css={css`
-                    margin-top: 55px;
-                `}
-            >
+                <SearchBar asset="dataset" />
+            </VStack>
+            <Table>
                 <Thead>
                     <Tr>
                         <CreationDateTh />

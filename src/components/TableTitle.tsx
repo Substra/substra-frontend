@@ -1,12 +1,12 @@
-import { Text } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 
 interface TableTitleProps {
     title: string;
 }
 const TableTitle = ({ title }: TableTitleProps): JSX.Element => (
-    <Text fontSize="xl" fontWeight="semibold" color="black">
+    <Heading size="xxs" color="gray.800" textTransform="uppercase">
         {title}
-    </Text>
+    </Heading>
 );
 
 export default TableTitle;

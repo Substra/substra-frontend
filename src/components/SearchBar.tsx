@@ -1,12 +1,6 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import { useState } from 'react';
 
-import { Flex } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
-import styled from '@emotion/styled';
+import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
 import { AssetType } from '@/modules/common/CommonTypes';
@@ -16,65 +10,10 @@ import { SearchFilterType } from '@/libs/searchFilter';
 import { useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-import CloseButton from '@/components/CloseButton';
-
-import { Colors, Fonts, Spaces } from '@/assets/theme';
-
-const SearchForm = styled.form`
-    width: 530px;
-    height: ${Spaces.extraLarge};
-    border: 1px solid ${Colors.border};
-    border-radius: 16px;
-    background-color: white;
-    display: flex;
-    overflow: hidden;
-`;
-
-const InputContainer = styled.div`
-    flex-grow: 1;
-    align-self: stretch;
-    position: relative;
-    border-left: 1px solid ${Colors.border};
-`;
-
-const searchIcon = css`
-    position: absolute;
-    top: ${Spaces.small};
-    left: ${Spaces.small};
-    z-index: 1;
-    width: 16px;
-    height: 16px;
-    color: ${Colors.lightContent};
-    pointer-events: none;
-`;
-
-const Input = styled.input`
-    line-height: 30px;
-    padding-left: ${Spaces.extraLarge};
-    padding-right: ${Spaces.medium};
-    width: 100%;
-    color: ${Colors.lightContent};
-    font-size: ${Fonts.sizes.input};
-`;
-
-const clearButton = css`
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-
-    & > svg {
-        width: 16px;
-        height: 16px;
-    }
-`;
-
 interface SearchBarProps {
     asset: AssetType;
-    label: string;
 }
-const SearchBar = ({ asset, label }: SearchBarProps): JSX.Element => {
+const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
     const [value, setValue] = useState('');
 
     const { params, setLocationWithParams } = useLocationWithParams();
@@ -113,42 +52,27 @@ const SearchBar = ({ asset, label }: SearchBarProps): JSX.Element => {
         applySearchFilters(asset);
     };
 
-    const onClear = () => {
-        setValue('');
-        setLocationWithParams({
-            search: searchFilters.filter((sf) => sf.key !== 'key'),
-            page: 1,
-        });
-    };
-
     return (
-        <SearchForm onSubmit={onSubmit}>
-            <Flex
-                width="180px"
-                align="center"
-                paddingLeft="4"
-                pointerEvents="none"
-                color={Colors.lightContent}
-                fontSize={Fonts.sizes.input}
-            >
-                {label}
-            </Flex>
-            <InputContainer>
-                <RiSearchLine css={searchIcon} aria-hidden={true} />
+        <form onSubmit={onSubmit}>
+            <InputGroup size="sm">
+                <InputLeftElement
+                    pointerEvents="none"
+                    children={
+                        <RiSearchLine fill="var(--chakra-colors-gray-400)" />
+                    }
+                />
                 <Input
-                    type="text"
+                    placeholder="Search key..."
+                    variant="outline"
+                    colorScheme="gray"
+                    width="320px"
+                    borderRadius="6px"
+                    borderColor="gray.200"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    placeholder="Search by key"
                 />
-                <CloseButton
-                    type="button"
-                    onClick={onClear}
-                    disabled={!value}
-                    css={clearButton}
-                />
-            </InputContainer>
-        </SearchForm>
+            </InputGroup>
+        </form>
     );
 };
 

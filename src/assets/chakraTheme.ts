@@ -1,15 +1,25 @@
 import { extendTheme } from '@chakra-ui/react';
 
 export default extendTheme({
-    styles: {
-        global: {
-            body: {
-                bg: 'gray.100',
+    components: {
+        Heading: {
+            sizes: {
+                xxs: {
+                    fontSize: 'xs',
+                    lineHeight: '1.2',
+                },
             },
         },
     },
     fonts: {
         heading: 'Inter',
         body: 'Inter',
+    },
+    styles: {
+        global: {
+            body: {
+                bg: 'gray.100',
+            },
+        },
     },
 });

@@ -2,7 +2,7 @@
 
 /** @jsx jsx */
 import ComputePlanSider from './components/ComputePlansSider';
-import { Flex, Tbody, Td } from '@chakra-ui/react';
+import { VStack, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -137,8 +137,9 @@ const ComputePlans = (): JSX.Element => {
 
     return (
         <PageLayout sider={<ComputePlanSider />} siderVisible={!!key}>
-            <Flex justifyContent="space-between" marginBottom="6">
-                <TableTitle title="Compute Plans" />
+            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
+                <TableTitle title="Compute plans" />
+                <SearchBar asset="compute_plan" />
                 <SelectionContainer>
                     <SelectionLabel>
                         {selectedKeys.length === 1
@@ -158,13 +159,8 @@ const ComputePlans = (): JSX.Element => {
                         Compare
                     </CompareSelectionButton>
                 </SelectionContainer>
-                <SearchBar label="Compute Plan" asset="compute_plan" />
-            </Flex>
-            <Table
-                css={css`
-                    margin-top: 55px;
-                `}
-            >
+            </VStack>
+            <Table>
                 <Thead>
                     <Tr>
                         <Th css={checkboxColWidth}>&nbsp;</Th>

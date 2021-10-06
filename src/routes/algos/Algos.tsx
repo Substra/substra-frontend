@@ -2,7 +2,7 @@
 
 /** @jsx jsx */
 import AlgoSider from './components/AlgoSider';
-import { Flex, Tbody, Td } from '@chakra-ui/react';
+import { VStack, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 
@@ -69,15 +69,11 @@ const Algos = (): JSX.Element => {
 
     return (
         <PageLayout siderVisible={!!key} sider={<AlgoSider />}>
-            <Flex justifyContent="space-between" marginBottom="6">
+            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Algorithms" />
-                <SearchBar label="Algorithm" asset="algo" />
-            </Flex>
-            <Table
-                css={css`
-                    margin-top: 55px;
-                `}
-            >
+                <SearchBar asset="algo" />
+            </VStack>
+            <Table>
                 <Thead>
                     <Tr>
                         <CreationDateTh />

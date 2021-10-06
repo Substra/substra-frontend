@@ -4,7 +4,7 @@
 import { useState } from 'react';
 
 import TaskSider from './components/TaskSider';
-import { Flex, Tbody, Td } from '@chakra-ui/react';
+import { VStack, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -190,19 +190,12 @@ const Tasks = (): JSX.Element => {
 
     return (
         <PageLayout siderVisible={!!key} sider={<TaskSider />}>
-            <Flex justifyContent="space-between" marginBottom="6">
+            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Tasks" />
-                <SearchBar
-                    label={taskTypes[selectedTaskType].searchLabel}
-                    asset={taskTypes[selectedTaskType].slug}
-                />
-            </Flex>
+                <SearchBar asset={taskTypes[selectedTaskType].slug} />
+            </VStack>
             {renderTasksButtons()}
-            <Table
-                css={css`
-                    margin-top: 55px;
-                `}
-            >
+            <Table>
                 <Thead>
                     <Tr>
                         <Th css={creationDateWidth}>Creation date</Th>
