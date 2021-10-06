@@ -1,5 +1,5 @@
+import Breadcrumbs from './components/BreadCrumbs';
 import Container from './components/Container';
-import Header from './components/Header';
 import TabsNav from './components/TabsNav';
 import TaskList from './components/TaskList';
 import { useRoute } from 'wouter';
@@ -22,13 +22,15 @@ const ComputePlanTasks = (): JSX.Element => {
     );
 
     return (
-        <PageLayout siderVisible={!!taskKey} sider={<TaskSider />}>
-            <Container>
-                <Header />
-                <TabsNav />
-                <TaskList />
-            </Container>
-        </PageLayout>
+        <>
+            <Breadcrumbs />
+            <TabsNav />
+            <PageLayout siderVisible={!!taskKey} sider={<TaskSider />}>
+                <Container>
+                    <TaskList />
+                </Container>
+            </PageLayout>
+        </>
     );
 };
 

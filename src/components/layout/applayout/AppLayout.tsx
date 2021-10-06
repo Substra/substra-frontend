@@ -21,7 +21,6 @@ const Container = styled.div`
 
 const Content = styled.div`
     flex-grow: 1;
-    display: flex;
     overflow-x: auto;
     overflow-y: auto;
 `;

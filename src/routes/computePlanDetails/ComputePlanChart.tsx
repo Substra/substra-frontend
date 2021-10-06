@@ -1,5 +1,5 @@
+import Breadcrumbs from './components/BreadCrumbs';
 import Container from './components/Container';
-import Header from './components/Header';
 import PerfChartBuilder from './components/PerfChartBuilder';
 import TabsNav from './components/TabsNav';
 
@@ -24,13 +24,17 @@ const ComputePlanChart = (): JSX.Element => {
     );
 
     return (
-        <PageLayout siderVisible={false}>
-            <Container>
-                <Header />
-                <TabsNav />
-                {computePlan && <PerfChartBuilder computePlan={computePlan} />}
-            </Container>
-        </PageLayout>
+        <>
+            <Breadcrumbs />
+            <TabsNav />
+            <PageLayout siderVisible={false}>
+                <Container>
+                    {computePlan && (
+                        <PerfChartBuilder computePlan={computePlan} />
+                    )}
+                </Container>
+            </PageLayout>
+        </>
     );
 };
 
