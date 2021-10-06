@@ -1,13 +1,13 @@
 import App from '@/App';
-import '@/index.css';
 import { StoreProvider } from '@/store';
 
 import { StrictMode } from 'react';
 
 import { ChakraProvider } from '@chakra-ui/react';
+import '@fontsource/inter';
 import ReactDOM from 'react-dom';
 
-import theme from '@/assets/chakraTheme/index';
+import theme from '@/assets/chakraTheme';
 
 ReactDOM.render(
     <StoreProvider>

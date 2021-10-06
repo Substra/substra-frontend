@@ -107,7 +107,7 @@ const Header = (): JSX.Element => {
             justifyContent="space-between"
             paddingLeft="8"
             paddingRight="8"
-            borderBottom="1px solid var(--chakra-colors-gray-100)"
+            borderBottom="1px solid var(--chakra-colors-gray-200)"
             backgroundColor="white"
             flexShrink={0}
             transition="height 300ms ease-in-out"
