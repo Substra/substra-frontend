@@ -38,7 +38,9 @@ export const Th = styled(ChakraTh)`
 interface TrProps {
     highlighted?: boolean;
 }
-export const Tr = styled(ChakraTr)<TrProps>`
+export const Tr = styled(ChakraTr, {
+    shouldForwardProp: (prop) => prop !== 'highlighted',
+})<TrProps>`
     position: relative;
     background-color: ${({ highlighted }) =>
         highlighted ? Colors.darkerBackground : 'transparent'};
