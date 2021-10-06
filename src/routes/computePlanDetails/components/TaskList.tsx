@@ -3,7 +3,7 @@
 /** @jsx jsx */
 import { useState } from 'react';
 
-import { Tbody, Td, Th } from '@chakra-ui/table';
+import { Tbody, Td, Th } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';

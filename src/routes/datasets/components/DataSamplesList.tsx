@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 
 /** @jsx jsx */
-import { IconButton } from '@chakra-ui/button';
+import { IconButton } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';

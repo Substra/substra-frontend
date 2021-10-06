@@ -2,8 +2,7 @@
 
 /** @jsx jsx */
 import ComputePlanSider from './components/ComputePlansSider';
-import { Flex } from '@chakra-ui/react';
-import { Tbody, Td } from '@chakra-ui/table';
+import { Flex, Tbody, Td } from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';

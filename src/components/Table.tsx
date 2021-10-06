@@ -9,7 +9,7 @@ import {
     Thead as ChakraThead,
     Th as ChakraTh,
     Td as ChakraTd,
-} from '@chakra-ui/table';
+} from '@chakra-ui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';

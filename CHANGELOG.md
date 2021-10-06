@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fix broken imports when using chakra UI components (#162)
+
 ### Changed
 
 ## [0.3.0] - 2021-10-04
