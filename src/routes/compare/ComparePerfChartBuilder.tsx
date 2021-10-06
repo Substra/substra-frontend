@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -6,6 +6,8 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 import { groupSeriesByMetric } from '@/modules/series/SeriesUtils';
 
 import useAppSelector from '@/hooks/useAppSelector';
+
+import CompareFullScreen from '@/routes/compare/CompareFullScreen';
 
 import LoadingState from '@/components/LoadingState';
 import PerfChart from '@/components/PerfChart';
@@ -27,6 +29,8 @@ const ComparePerfChartBuilder = ({
     selectedComputePlanKeys,
     selectedNodeKeys,
 }: ComparePerfChartBuilderProps): JSX.Element => {
+    const [fullScreenMetricName, setFullScreenMetricName] = useState('');
+
     const loading = useAppSelector((state) => state.series.loading);
     const series = useAppSelector((state) => state.series.computePlansSeries);
 
@@ -46,26 +50,45 @@ const ComparePerfChartBuilder = ({
             </p>
         );
     } else {
-        return (
-            <Fragment>
-                {seriesGroups.map((series) => (
-                    <PerformanceCard
-                        title={series[0]?.metricName}
-                        key={series.map((serie) => serie.id).join('-')}
-                    >
-                        <Container>
-                            <PerfChart
-                                series={series}
-                                getSerieLabel={(serie) => serie.computePlanKey}
-                                key={series.map((serie) => serie.id).join('-')}
-                                zoom={false}
-                                tooltip={false}
-                            />
-                        </Container>
-                    </PerformanceCard>
-                ))}
-            </Fragment>
-        );
+        if (fullScreenMetricName !== '') {
+            const [fullScreenSeries] = seriesGroups.filter(
+                (group) => group[0].metricName === fullScreenMetricName
+            );
+            return (
+                <CompareFullScreen
+                    onClickClose={() => setFullScreenMetricName('')}
+                    series={fullScreenSeries}
+                />
+            );
+        } else {
+            return (
+                <Fragment>
+                    {seriesGroups.map((series) => (
+                        <PerformanceCard
+                            title={series[0].metricName}
+                            key={series.map((serie) => serie.id).join('-')}
+                            onClickFullScreen={() =>
+                                setFullScreenMetricName(series[0].metricName)
+                            }
+                        >
+                            <Container>
+                                <PerfChart
+                                    series={series}
+                                    getSerieLabel={(serie) =>
+                                        serie.computePlanKey
+                                    }
+                                    key={series
+                                        .map((serie) => serie.id)
+                                        .join('-')}
+                                    zoom={false}
+                                    tooltip={false}
+                                />
+                            </Container>
+                        </PerformanceCard>
+                    ))}
+                </Fragment>
+            );
+        }
     }
 };
 

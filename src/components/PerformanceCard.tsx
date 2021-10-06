@@ -1,4 +1,6 @@
+import { IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { RiFullscreenFill } from 'react-icons/ri';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -29,17 +31,24 @@ const Row = styled.div`
 interface PerformanceCardProps {
     title: string;
     children: React.ReactNode;
+    onClickFullScreen: () => void;
 }
 
 const PerformanceCard = ({
     title,
     children,
+    onClickFullScreen,
 }: PerformanceCardProps): JSX.Element => {
     return (
         <Container>
             {children}
             <Row>
                 <Title>{title}</Title>
+                <IconButton
+                    aria-label="Toggle Fullscreen Mode"
+                    icon={<RiFullscreenFill />}
+                    onClick={onClickFullScreen}
+                />
             </Row>
         </Container>
     );

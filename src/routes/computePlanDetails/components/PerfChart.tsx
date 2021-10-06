@@ -28,6 +28,7 @@ const Container = styled.div`
     flex-wrap: wrap;
     padding: ${Spaces.small};
     margin: 0 -${Spaces.small};
+    width: 550px;
 `;
 
 const Header = styled.div`

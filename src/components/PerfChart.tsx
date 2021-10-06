@@ -16,10 +16,10 @@ import PerfChartResetZoom from '@/components/PerfChartResetZoom';
 import { Spaces } from '@/assets/theme';
 
 const LineContainer = styled.div`
-    width: 500px;
     margin-right: ${Spaces.extraLarge};
     position: relative;
 
+    width: 100%;
     & > button {
         opacity: 0;
         transition: opacity 0.1s ease-out;

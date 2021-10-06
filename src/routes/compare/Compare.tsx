@@ -34,6 +34,8 @@ const LeftSider = styled.div`
 
 const Metrics = styled.div`
     padding: ${Spaces.large};
+    width: 100%;
+    height: 100%;
 `;
 
 const MetricsContainer = styled.div`
