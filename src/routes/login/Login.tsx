@@ -41,7 +41,7 @@ const Login = (): JSX.Element => {
     const authenticated = useAppSelector((state) => state.user.authenticated);
 
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const nextLocation = urlSearchParams.get('next') || PATHS.DATASETS;
+    const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
     const forceLogout = !!urlSearchParams.get('logout');
 
     useDocumentTitleEffect((setDocumentTitle) => setDocumentTitle('Login'), []);

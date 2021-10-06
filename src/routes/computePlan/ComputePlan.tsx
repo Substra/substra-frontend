@@ -8,7 +8,7 @@ const ComputePlan = (): null => {
     const [, setLocation] = useLocation();
 
     useEffect(() => {
-        setLocation(PATHS.COMPUTE_PLANS);
+        setLocation(PATHS.COMPUTE_PLANS, { replace: true });
     }, []);
 
     return null;

@@ -15,7 +15,8 @@ const ComputePlanDetails = (): null => {
             setLocation(
                 compilePath(PATHS.COMPUTE_PLAN_CHART, {
                     key,
-                })
+                }),
+                { replace: true }
             );
         }
     }, [key]);

@@ -17,11 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Fix broken imports when using chakra UI components (#162)
 -   Removed console error about unknown component props (#163)
+-   Automated redirects now replace history state instead of creating a new one (#161)
 
 ### Changed
 
 -   Dropped CSS reset and Lato font in favor of a full Chakra theme (#159)
 -   Include key in filename when downloading a model (#160)
+-   Made /compute_plans the landing page (#161)
 
 ## [0.3.0] - 2021-10-04
 

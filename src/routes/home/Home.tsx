@@ -8,7 +8,7 @@ const Home = (): null => {
     const [, setLocation] = useLocation();
 
     useEffect(() => {
-        setLocation(PATHS.DATASETS);
+        setLocation(PATHS.COMPUTE_PLANS, { replace: true });
     }, []);
 
     return null;
