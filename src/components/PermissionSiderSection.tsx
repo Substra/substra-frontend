@@ -89,6 +89,7 @@ const Permission = ({ permission, title }: PermissionProps): JSX.Element => {
 type PermissionSiderSectionProps = {
     title?: string;
     permissions: PermissionsType;
+    modelKey?: string;
     modelUrl?: string;
     modelButtonTitle?: string;
 };
@@ -96,6 +97,7 @@ type PermissionSiderSectionProps = {
 const PermissionSiderSection = ({
     permissions,
     title,
+    modelKey,
     modelUrl,
     modelButtonTitle,
 }: PermissionSiderSectionProps): JSX.Element => {
@@ -118,7 +120,9 @@ const PermissionSiderSection = ({
             />
             {modelUrl && modelExportEnabled && canDownload && (
                 <DownloadButton
-                    onClick={() => downloadFromApi(modelUrl, 'model')}
+                    onClick={() =>
+                        downloadFromApi(modelUrl, `model_${modelKey}`)
+                    }
                 >
                     {modelButtonTitle}
                 </DownloadButton>

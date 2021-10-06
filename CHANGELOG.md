@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Dropped CSS reset and Lato font in favor of a full Chakra theme (#159)
+-   Include key in filename when downloading a model (#160)
 
 ## [0.3.0] - 2021-10-04
 

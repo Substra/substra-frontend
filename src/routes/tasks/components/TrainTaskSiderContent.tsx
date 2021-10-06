@@ -17,6 +17,7 @@ interface TrainTaskSiderContentProps {
 const TrainTaskSiderContent = ({
     task,
 }: TrainTaskSiderContentProps): JSX.Element => {
+    const model = getSimpleModel(task);
     return (
         <Fragment>
             <AlgoSiderSection task={task} />
@@ -29,7 +30,8 @@ const TrainTaskSiderContent = ({
             <PermissionSiderSection
                 title="Out model permissions"
                 permissions={task.train.model_permissions}
-                modelUrl={getSimpleModel(task)?.address?.storage_address}
+                modelKey={model?.key}
+                modelUrl={model?.address?.storage_address}
                 modelButtonTitle="Download out model"
             />
         </Fragment>

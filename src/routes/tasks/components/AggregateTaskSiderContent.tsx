@@ -16,6 +16,7 @@ interface AggregateTaskSiderContentProps {
 const AggregateTaskSiderContent = ({
     task,
 }: AggregateTaskSiderContentProps): JSX.Element => {
+    const model = getSimpleModel(task);
     return (
         <Fragment>
             <AlgoSiderSection task={task} />
@@ -27,7 +28,8 @@ const AggregateTaskSiderContent = ({
             <PermissionSiderSection
                 title="Out model permissions"
                 permissions={task.aggregate.model_permissions}
-                modelUrl={getSimpleModel(task)?.address?.storage_address}
+                modelKey={model?.key}
+                modelUrl={model?.address?.storage_address}
                 modelButtonTitle="Download out model"
             />
         </Fragment>

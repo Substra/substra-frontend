@@ -78,6 +78,9 @@ const CompositeTrainTaskSiderContent = ({
         }
     }, [task.parent_task_keys]);
 
+    const trunkModel = getSimpleModel(task);
+    const headModel = getHeadModel(task);
+
     return (
         <Fragment>
             <AlgoSiderSection task={task} />
@@ -109,13 +112,15 @@ const CompositeTrainTaskSiderContent = ({
             <PermissionSiderSection
                 title="Out trunk model permissions"
                 permissions={task.composite.trunk_permissions}
-                modelUrl={getSimpleModel(task)?.address?.storage_address}
+                modelKey={trunkModel?.key}
+                modelUrl={trunkModel?.address?.storage_address}
                 modelButtonTitle="Download out trunk model"
             />
             <PermissionSiderSection
                 title="Out head model permissions"
                 permissions={task.composite.head_permissions}
-                modelUrl={getHeadModel(task)?.address?.storage_address}
+                modelKey={headModel?.key}
+                modelUrl={headModel?.address?.storage_address}
                 modelButtonTitle="Download out head model"
             />
         </Fragment>
