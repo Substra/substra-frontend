@@ -98,7 +98,14 @@ const Header = (): JSX.Element => {
             .then(() => setLocation(PATHS.LOGIN));
     };
 
-    const isMainRouteActive = isActive(NAV_ITEMS.map(({ href }) => href));
+    const isMainRouteActive = !isActive([
+        PATHS.COMPARE,
+        PATHS.COMPUTE_PLAN,
+        PATHS.COMPUTE_PLAN_CHART,
+        PATHS.COMPUTE_PLAN_DETAILS,
+        PATHS.COMPUTE_PLAN_TASKS,
+        PATHS.COMPUTE_PLAN_TASK,
+    ]);
 
     return (
         <Flex
