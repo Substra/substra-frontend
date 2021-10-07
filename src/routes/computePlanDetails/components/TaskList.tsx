@@ -34,6 +34,7 @@ import {
 import { WorkerTableFilter } from '@/components/NodeTableFilters';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
+import StatusTableFilter from '@/components/StatusTableFilter';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 
@@ -220,7 +221,12 @@ const Tasks = (): JSX.Element => {
                     <Thead>
                         <Tr>
                             <Th>Creation date</Th>
-                            <Th>Current status</Th>
+                            <Th>
+                                Current status
+                                <StatusTableFilter
+                                    asset={taskTypes[selectedTaskType].slug}
+                                />
+                            </Th>
                             <Th>
                                 Worker
                                 <WorkerTableFilter
