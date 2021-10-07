@@ -1,18 +1,6 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
-import { Td, Th } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { Td } from '@chakra-ui/react';
 
 import Skeleton from '@/components/Skeleton';
-
-export const creationDateWidth = css`
-    width: 190px;
-`;
-export const CreationDateTh = (): JSX.Element => (
-    <Th css={creationDateWidth}>Creation date</Th>
-);
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',

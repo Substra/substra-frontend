@@ -1,10 +1,5 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import ComputePlanSider from './components/ComputePlansSider';
-import { VStack, Tbody, Td } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useLocation } from 'wouter';
 
@@ -27,23 +22,14 @@ import Checkbox from '@/components/Checkbox';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
-    CreationDateTh,
 } from '@/components/CreationDateTableCells';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
 import StatusTableFilter from '@/components/StatusTableFilter';
-import {
-    EmptyTr,
-    Table,
-    TableSkeleton,
-    Thead,
-    Th,
-    Tr,
-} from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
-import PageLayout from '@/components/layout/PageLayout';
 
 import { Colors, Fonts, Spaces } from '@/assets/theme';
 
@@ -80,19 +66,6 @@ const CompareSelectionButton = styled.button`
         background-color: ${Colors.primaryDisabled};
         cursor: not-allowed;
     }
-`;
-
-const checkboxColWidth = css`
-    width: 50px;
-`;
-const tagColWidth = css`
-    width: 200px;
-`;
-const statusColWidth = css`
-    width: 200px;
-`;
-const taskColWidth = css`
-    width: 550px;
 `;
 
 const ComputePlans = (): JSX.Element => {
@@ -136,7 +109,8 @@ const ComputePlans = (): JSX.Element => {
     };
 
     return (
-        <PageLayout sider={<ComputePlanSider />} siderVisible={!!key}>
+        <Box padding="6" marginLeft="auto" marginRight="auto">
+            <ComputePlanSider />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Compute plans" />
                 <SearchBar asset="compute_plan" />
@@ -159,94 +133,106 @@ const ComputePlans = (): JSX.Element => {
                         Compare
                     </CompareSelectionButton>
                 </SelectionContainer>
-            </VStack>
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th css={checkboxColWidth}>&nbsp;</Th>
-                        <CreationDateTh />
-                        <Th css={tagColWidth}>Tag</Th>
-                        <Th css={statusColWidth}>
-                            Status
-                            <StatusTableFilter asset="compute_plan" />
-                        </Th>
-                        <Th css={taskColWidth}>Tasks</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {!computePlansLoading && computePlans.length === 0 && (
-                        <EmptyTr nbColumns={5} />
-                    )}
-                    {computePlansLoading ? (
-                        <TableSkeleton
-                            itemCount={computePlansCount}
-                            currentPage={page}
-                        >
-                            <Td>
-                                <Skeleton width={16} height={16} />
-                            </Td>
-                            <CreationDateSkeletonTd />
-                            <Td>
-                                <Skeleton width={150} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={150} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={300} height={12} />
-                            </Td>
-                        </TableSkeleton>
-                    ) : (
-                        computePlans.map((computePlan) => (
-                            <Tr
-                                key={computePlan.key}
-                                highlighted={computePlan.key === key}
-                                onClick={() =>
-                                    setLocationWithParams(
-                                        compilePath(
-                                            PATHS.COMPUTE_PLANS_DETAILS,
-                                            {
-                                                key: computePlan.key,
-                                            }
-                                        )
-                                    )
-                                }
-                            >
-                                <Td>
-                                    <Checkbox
-                                        value={computePlan.key}
-                                        checked={selectedKeys.includes(
-                                            computePlan.key
-                                        )}
-                                        onChange={onSelectionChange(
-                                            computePlan.key
-                                        )}
-                                        onClick={(e) => e.stopPropagation()}
-                                    />
-                                </Td>
-                                <CreationDateTd
-                                    creationDate={computePlan.creation_date}
-                                />
-                                <Td>{computePlan.tag}</Td>
-                                <Td>
-                                    <Status status={computePlan.status} />
-                                </Td>
-                                <Td>
-                                    {computePlan.done_count}/
-                                    {computePlan.task_count}
-                                </Td>
+                <Box
+                    backgroundColor="white"
+                    borderRadius="lg"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
+                >
+                    <Table size="sm">
+                        <Thead>
+                            <Tr>
+                                <Th>&nbsp;</Th>
+                                <Th>Creation date</Th>
+                                <Th>Tag</Th>
+                                <Th>
+                                    Status
+                                    <StatusTableFilter asset="compute_plan" />
+                                </Th>
+                                <Th>Tasks</Th>
                             </Tr>
-                        ))
-                    )}
-                    <TablePagination
-                        colSpan={5}
-                        currentPage={page}
-                        itemCount={computePlansCount}
-                        asset="compute_plan"
-                    />
-                </Tbody>
-            </Table>
-        </PageLayout>
+                        </Thead>
+                        <Tbody>
+                            {!computePlansLoading &&
+                                computePlans.length === 0 && (
+                                    <EmptyTr nbColumns={5} />
+                                )}
+                            {computePlansLoading ? (
+                                <TableSkeleton
+                                    itemCount={computePlansCount}
+                                    currentPage={page}
+                                >
+                                    <Td>
+                                        <Skeleton width={16} height={16} />
+                                    </Td>
+                                    <CreationDateSkeletonTd />
+                                    <Td>
+                                        <Skeleton width={150} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={150} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={300} height={12} />
+                                    </Td>
+                                </TableSkeleton>
+                            ) : (
+                                computePlans.map((computePlan) => (
+                                    <ClickableTr
+                                        key={computePlan.key}
+                                        onClick={() =>
+                                            setLocationWithParams(
+                                                compilePath(
+                                                    PATHS.COMPUTE_PLANS_DETAILS,
+                                                    {
+                                                        key: computePlan.key,
+                                                    }
+                                                )
+                                            )
+                                        }
+                                    >
+                                        <Td>
+                                            <Checkbox
+                                                value={computePlan.key}
+                                                checked={selectedKeys.includes(
+                                                    computePlan.key
+                                                )}
+                                                onChange={onSelectionChange(
+                                                    computePlan.key
+                                                )}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            />
+                                        </Td>
+                                        <CreationDateTd
+                                            creationDate={
+                                                computePlan.creation_date
+                                            }
+                                        />
+                                        <Td>{computePlan.tag}</Td>
+                                        <Td>
+                                            <Status
+                                                status={computePlan.status}
+                                            />
+                                        </Td>
+                                        <Td>
+                                            {computePlan.done_count}/
+                                            {computePlan.task_count}
+                                        </Td>
+                                    </ClickableTr>
+                                ))
+                            )}
+                        </Tbody>
+                    </Table>
+                </Box>
+                <TablePagination
+                    currentPage={page}
+                    itemCount={computePlansCount}
+                />
+            </VStack>
+        </Box>
     );
 };
 

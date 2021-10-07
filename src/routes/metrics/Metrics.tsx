@@ -1,12 +1,7 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import { RootState } from '@/store';
 
 import MetricSider from './components/MetricSider';
-import { VStack, Tbody, Td } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
@@ -25,26 +20,14 @@ import { compilePath, PATHS } from '@/routes';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
-    creationDateWidth,
 } from '@/components/CreationDateTableCells';
 import { OwnerTableFilter } from '@/components/NodeTableFilters';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
-import {
-    EmptyTr,
-    nameColWidth,
-    ownerColWidth,
-    permissionsColWidth,
-    Table,
-    Thead,
-    Th,
-    Tr,
-    TableSkeleton,
-} from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
-import PageLayout from '@/components/layout/PageLayout';
 
 const Metrics = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -71,78 +54,81 @@ const Metrics = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Metrics list', key);
 
     return (
-        <PageLayout siderVisible={!!key} sider={<MetricSider />}>
+        <Box padding="6" marginLeft="auto" marginRight="auto">
+            <MetricSider />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Metrics" />
                 <SearchBar asset="objective" />
-            </VStack>
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th css={creationDateWidth}>Creation date</Th>
-                        <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>
-                            Owner
-                            <OwnerTableFilter assets={['objective']} />
-                        </Th>
-                        <Th css={permissionsColWidth}>Permissions</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {!metricsLoading && metrics.length === 0 && (
-                        <EmptyTr nbColumns={4} />
-                    )}
-                    {metricsLoading ? (
-                        <TableSkeleton
-                            itemCount={metricsCount}
-                            currentPage={page}
-                        >
-                            <CreationDateSkeletonTd />
-                            <Td>
-                                <Skeleton width={500} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={80} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={150} height={12} />
-                            </Td>
-                        </TableSkeleton>
-                    ) : (
-                        metrics.map((metric) => (
-                            <Tr
-                                key={metric.key}
-                                highlighted={metric.key === key}
-                                onClick={() =>
-                                    setLocationWithParams(
-                                        compilePath(PATHS.METRIC, {
-                                            key: metric.key,
-                                        })
-                                    )
-                                }
-                            >
-                                <CreationDateTd
-                                    creationDate={metric.creation_date}
-                                />
-                                <Td>{metric.name}</Td>
-                                <Td>{metric.owner}</Td>
-                                <Td>
-                                    <PermissionCellContent
-                                        permissions={metric.permissions}
-                                    />
-                                </Td>
+                <Box
+                    backgroundColor="white"
+                    borderRadius="lg"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
+                >
+                    <Table size="sm">
+                        <Thead>
+                            <Tr>
+                                <Th>Creation date</Th>
+                                <Th>Name</Th>
+                                <Th>
+                                    Owner
+                                    <OwnerTableFilter assets={['objective']} />
+                                </Th>
+                                <Th>Permissions</Th>
                             </Tr>
-                        ))
-                    )}
-                    <TablePagination
-                        colSpan={4}
-                        currentPage={page}
-                        itemCount={metricsCount}
-                        asset="objective"
-                    />
-                </Tbody>
-            </Table>
-        </PageLayout>
+                        </Thead>
+                        <Tbody>
+                            {!metricsLoading && metrics.length === 0 && (
+                                <EmptyTr nbColumns={4} />
+                            )}
+                            {metricsLoading ? (
+                                <TableSkeleton
+                                    itemCount={metricsCount}
+                                    currentPage={page}
+                                >
+                                    <CreationDateSkeletonTd />
+                                    <Td>
+                                        <Skeleton width={500} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={80} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={150} height={12} />
+                                    </Td>
+                                </TableSkeleton>
+                            ) : (
+                                metrics.map((metric) => (
+                                    <ClickableTr
+                                        key={metric.key}
+                                        onClick={() =>
+                                            setLocationWithParams(
+                                                compilePath(PATHS.METRIC, {
+                                                    key: metric.key,
+                                                })
+                                            )
+                                        }
+                                    >
+                                        <CreationDateTd
+                                            creationDate={metric.creation_date}
+                                        />
+                                        <Td>{metric.name}</Td>
+                                        <Td>{metric.owner}</Td>
+                                        <Td>
+                                            <PermissionCellContent
+                                                permissions={metric.permissions}
+                                            />
+                                        </Td>
+                                    </ClickableTr>
+                                ))
+                            )}
+                        </Tbody>
+                    </Table>
+                </Box>
+                <TablePagination currentPage={page} itemCount={metricsCount} />
+            </VStack>
+        </Box>
     );
 };
 

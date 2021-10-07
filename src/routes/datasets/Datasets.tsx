@@ -1,10 +1,5 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import DatasetSider from './components/DatasetSider';
-import { VStack, Tbody, Td } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
@@ -23,26 +18,14 @@ import { compilePath, PATHS } from '@/routes';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
-    CreationDateTh,
 } from '@/components/CreationDateTableCells';
 import { OwnerTableFilter } from '@/components/NodeTableFilters';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
-import {
-    EmptyTr,
-    nameColWidth,
-    ownerColWidth,
-    permissionsColWidth,
-    Table,
-    Thead,
-    Th,
-    Tr,
-    TableSkeleton,
-} from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
-import PageLayout from '@/components/layout/PageLayout';
 
 const Datasets = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -69,78 +52,83 @@ const Datasets = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Datasets list', key);
 
     return (
-        <PageLayout sider={<DatasetSider />} siderVisible={!!key}>
+        <Box padding="6" marginLeft="auto" marginRight="auto">
+            <DatasetSider />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Datasets" />
                 <SearchBar asset="dataset" />
-            </VStack>
-            <Table>
-                <Thead>
-                    <Tr>
-                        <CreationDateTh />
-                        <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>
-                            Owner
-                            <OwnerTableFilter assets={['dataset']} />
-                        </Th>
-                        <Th css={permissionsColWidth}>Permissions</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {!datasetsLoading && datasets.length === 0 && (
-                        <EmptyTr nbColumns={4} />
-                    )}
-                    {datasetsLoading ? (
-                        <TableSkeleton
-                            itemCount={datasetsCount}
-                            currentPage={page}
-                        >
-                            <CreationDateSkeletonTd />
-                            <Td>
-                                <Skeleton width={500} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={80} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={120} height={12} />
-                            </Td>
-                        </TableSkeleton>
-                    ) : (
-                        datasets.map((dataset) => (
-                            <Tr
-                                key={dataset.key}
-                                highlighted={dataset.key === key}
-                                onClick={() =>
-                                    setLocationWithParams(
-                                        compilePath(PATHS.DATASET, {
-                                            key: dataset.key,
-                                        })
-                                    )
-                                }
-                            >
-                                <CreationDateTd
-                                    creationDate={dataset.creation_date}
-                                />
-                                <Td>{dataset.name}</Td>
-                                <Td>{dataset.owner}</Td>
-                                <Td>
-                                    <PermissionCellContent
-                                        permissions={dataset.permissions}
-                                    />
-                                </Td>
+                <Box
+                    backgroundColor="white"
+                    borderRadius="lg"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
+                >
+                    <Table size="sm">
+                        <Thead>
+                            <Tr>
+                                <Th>Creation date</Th>
+                                <Th>Name</Th>
+                                <Th>
+                                    Owner
+                                    <OwnerTableFilter assets={['dataset']} />
+                                </Th>
+                                <Th>Permissions</Th>
                             </Tr>
-                        ))
-                    )}
-                    <TablePagination
-                        colSpan={4}
-                        currentPage={page}
-                        itemCount={datasetsCount}
-                        asset="dataset"
-                    />
-                </Tbody>
-            </Table>
-        </PageLayout>
+                        </Thead>
+                        <Tbody>
+                            {!datasetsLoading && datasets.length === 0 && (
+                                <EmptyTr nbColumns={4} />
+                            )}
+                            {datasetsLoading ? (
+                                <TableSkeleton
+                                    itemCount={datasetsCount}
+                                    currentPage={page}
+                                >
+                                    <CreationDateSkeletonTd />
+                                    <Td>
+                                        <Skeleton width={500} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={80} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={120} height={12} />
+                                    </Td>
+                                </TableSkeleton>
+                            ) : (
+                                datasets.map((dataset) => (
+                                    <ClickableTr
+                                        key={dataset.key}
+                                        onClick={() =>
+                                            setLocationWithParams(
+                                                compilePath(PATHS.DATASET, {
+                                                    key: dataset.key,
+                                                })
+                                            )
+                                        }
+                                    >
+                                        <CreationDateTd
+                                            creationDate={dataset.creation_date}
+                                        />
+                                        <Td>{dataset.name}</Td>
+                                        <Td>{dataset.owner}</Td>
+                                        <Td>
+                                            <PermissionCellContent
+                                                permissions={
+                                                    dataset.permissions
+                                                }
+                                            />
+                                        </Td>
+                                    </ClickableTr>
+                                ))
+                            )}
+                        </Tbody>
+                    </Table>
+                </Box>
+                <TablePagination currentPage={page} itemCount={datasetsCount} />
+            </VStack>
+        </Box>
     );
 };
 

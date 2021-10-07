@@ -1,11 +1,6 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import { useState } from 'react';
 
-import { Tbody, Td, Th } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 
@@ -35,49 +30,14 @@ import { compilePath, PATHS } from '@/routes';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
-    creationDateWidth,
 } from '@/components/CreationDateTableCells';
 import { WorkerTableFilter } from '@/components/NodeTableFilters';
 import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
-import {
-    EmptyTr,
-    ownerColWidth,
-    Table,
-    TableSkeleton,
-    Thead,
-    Tr,
-} from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 
 import { Colors, Spaces } from '@/assets/theme';
-
-const thStyle = css`
-    & > div {
-        background: ${Colors.darkBackground};
-        padding: ${Spaces.medium} ${Spaces.medium};
-    }
-
-    &:first-of-type > div {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 0;
-    }
-    &:last-of-type > div {
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 0;
-    }
-`;
-
-const statusColWidth = css`
-    width: 200px;
-`;
-
-const rankColWidth = css`
-    width: 70px;
-`;
-const perfColWidth = css`
-    width: 110px;
-`;
 
 interface TypeButtonProps {
     active: boolean;
@@ -241,91 +201,105 @@ const Tasks = (): JSX.Element => {
     };
 
     return (
-        <div>
+        <VStack
+            display="inline-block"
+            spacing="2.5"
+            padding="6"
+            marginLeft="auto"
+            marginRight="auto"
+        >
             {renderTasksButtons()}
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th css={[thStyle, creationDateWidth]}>
-                            Creation date
-                        </Th>
-                        <Th css={[thStyle, statusColWidth]}>Current status</Th>
-                        <Th css={[thStyle, ownerColWidth]}>
-                            Worker
-                            <WorkerTableFilter
-                                assets={[taskTypes[selectedTaskType].slug]}
-                            />
-                        </Th>
-                        <Th css={[thStyle, rankColWidth]}>Rank</Th>
-                        <Th css={[thStyle, perfColWidth]}>Performance</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {taskTypes[selectedTaskType].loading && (
-                        <TableSkeleton
-                            itemCount={taskTypes[selectedTaskType].count}
-                            currentPage={page}
-                        >
-                            <CreationDateSkeletonTd />
-                            <Td>
-                                <Skeleton width={150} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={80} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={60} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={90} height={12} />
-                            </Td>
-                        </TableSkeleton>
-                    )}
-                    {!taskTypes[selectedTaskType].loading &&
-                        taskTypes[selectedTaskType].tasks.length === 0 && (
-                            <EmptyTr nbColumns={7} />
-                        )}
-                    {!taskTypes[selectedTaskType].loading &&
-                        taskTypes[selectedTaskType].tasks.map((task) => (
-                            <Tr
-                                key={task.key}
-                                highlighted={task.key === key}
-                                onClick={() =>
-                                    setLocationWithParams(
-                                        compilePath(PATHS.COMPUTE_PLAN_TASK, {
-                                            key: task.compute_plan_key,
-                                            taskKey: task.key,
-                                        })
-                                    )
-                                }
-                            >
-                                <CreationDateTd
-                                    creationDate={task.creation_date}
+            <Box
+                backgroundColor="white"
+                borderRadius="lg"
+                borderWidth="1px"
+                borderStyle="solid"
+                borderColor="gray.100"
+            >
+                <Table size="sm">
+                    <Thead>
+                        <Tr>
+                            <Th>Creation date</Th>
+                            <Th>Current status</Th>
+                            <Th>
+                                Worker
+                                <WorkerTableFilter
+                                    assets={[taskTypes[selectedTaskType].slug]}
                                 />
+                            </Th>
+                            <Th>Rank</Th>
+                            <Th>Performance</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {taskTypes[selectedTaskType].loading && (
+                            <TableSkeleton
+                                itemCount={taskTypes[selectedTaskType].count}
+                                currentPage={page}
+                            >
+                                <CreationDateSkeletonTd />
                                 <Td>
-                                    <Status status={task.status} />
-                                </Td>
-                                <Td>{task.worker}</Td>
-                                <Td>
-                                    {task.compute_plan_key ? task.rank : '-'}
+                                    <Skeleton width={150} height={12} />
                                 </Td>
                                 <Td>
-                                    {isTesttupleT(task) &&
-                                    task.status === TupleStatus.done
-                                        ? task.test.perf
-                                        : 'N/A'}
+                                    <Skeleton width={80} height={12} />
                                 </Td>
-                            </Tr>
-                        ))}
-                    <TablePagination
-                        colSpan={5}
-                        currentPage={page}
-                        itemCount={taskTypes[selectedTaskType].count}
-                        asset={taskTypes[selectedTaskType].slug}
-                    />
-                </Tbody>
-            </Table>
-        </div>
+                                <Td>
+                                    <Skeleton width={60} height={12} />
+                                </Td>
+                                <Td>
+                                    <Skeleton width={90} height={12} />
+                                </Td>
+                            </TableSkeleton>
+                        )}
+                        {!taskTypes[selectedTaskType].loading &&
+                            taskTypes[selectedTaskType].tasks.length === 0 && (
+                                <EmptyTr nbColumns={7} />
+                            )}
+                        {!taskTypes[selectedTaskType].loading &&
+                            taskTypes[selectedTaskType].tasks.map((task) => (
+                                <ClickableTr
+                                    key={task.key}
+                                    onClick={() =>
+                                        setLocationWithParams(
+                                            compilePath(
+                                                PATHS.COMPUTE_PLAN_TASK,
+                                                {
+                                                    key: task.compute_plan_key,
+                                                    taskKey: task.key,
+                                                }
+                                            )
+                                        )
+                                    }
+                                >
+                                    <CreationDateTd
+                                        creationDate={task.creation_date}
+                                    />
+                                    <Td>
+                                        <Status status={task.status} />
+                                    </Td>
+                                    <Td>{task.worker}</Td>
+                                    <Td>
+                                        {task.compute_plan_key
+                                            ? task.rank
+                                            : '-'}
+                                    </Td>
+                                    <Td>
+                                        {isTesttupleT(task) &&
+                                        task.status === TupleStatus.done
+                                            ? task.test.perf
+                                            : 'N/A'}
+                                    </Td>
+                                </ClickableTr>
+                            ))}
+                    </Tbody>
+                </Table>
+            </Box>
+            <TablePagination
+                currentPage={page}
+                itemCount={taskTypes[selectedTaskType].count}
+            />
+        </VStack>
     );
 };
 

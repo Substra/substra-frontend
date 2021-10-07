@@ -23,6 +23,7 @@ const Content = styled.div`
     flex-grow: 1;
     overflow-x: auto;
     overflow-y: auto;
+    display: flex;
 `;
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {

@@ -1,15 +1,13 @@
 import Breadcrumbs from './components/BreadCrumbs';
-import Container from './components/Container';
 import PerfChartBuilder from './components/PerfChartBuilder';
 import TabsNav from './components/TabsNav';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 
 import { PATHS } from '@/routes';
-
-import PageLayout from '@/components/layout/PageLayout';
 
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
@@ -24,17 +22,20 @@ const ComputePlanChart = (): JSX.Element => {
     );
 
     return (
-        <>
-            <Breadcrumbs />
-            <TabsNav />
-            <PageLayout siderVisible={false}>
-                <Container>
-                    {computePlan && (
-                        <PerfChartBuilder computePlan={computePlan} />
-                    )}
-                </Container>
-            </PageLayout>
-        </>
+        <Flex direction="column" alignItems="stretch" flexGrow={1}>
+            <Box background="white">
+                <Breadcrumbs />
+                <TabsNav />
+            </Box>
+            <Box
+                paddingLeft="8"
+                paddingRight="8"
+                paddingTop="6"
+                paddingBottom="6"
+            >
+                {computePlan && <PerfChartBuilder computePlan={computePlan} />}
+            </Box>
+        </Flex>
     );
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import styled from '@emotion/styled';
+import { Flex } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
@@ -14,16 +14,6 @@ import NotFound from '@/routes/notfound/NotFound';
 
 import Spinner from '@/components/Spinner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
-
-import { Colors } from '@/assets/theme';
-
-const SpinnerContainer = styled.div`
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 72px;
-    color: ${Colors.veryLightContent};
-`;
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -60,11 +50,16 @@ const App = (): JSX.Element => {
 
     if (checkingCredentials) {
         return (
-            <AppLayout>
-                <SpinnerContainer>
-                    <Spinner />
-                </SpinnerContainer>
-            </AppLayout>
+            <Flex
+                width="100vw"
+                height="100vh"
+                alignItems="center"
+                justifyContent="center"
+                fontSize="72px"
+                color="gray.400"
+            >
+                <Spinner />
+            </Flex>
         );
     }
 

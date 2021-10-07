@@ -1,10 +1,5 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import AlgoSider from './components/AlgoSider';
-import { VStack, Tbody, Td } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
+import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 
 import { listAlgos } from '@/modules/algos/AlgosSlice';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
@@ -23,30 +18,14 @@ import { compilePath, PATHS } from '@/routes';
 import {
     CreationDateSkeletonTd,
     CreationDateTd,
-    CreationDateTh,
 } from '@/components/CreationDateTableCells';
 import { OwnerTableFilter } from '@/components/NodeTableFilters';
 import PermissionCellContent from '@/components/PermissionCellContent';
 import SearchBar from '@/components/SearchBar';
 import Skeleton from '@/components/Skeleton';
-import {
-    EmptyTr,
-    nameColWidth,
-    ownerColWidth,
-    permissionsColWidth,
-    Table,
-    TableSkeleton,
-    Thead,
-    Th,
-    Tr,
-} from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
-import PageLayout from '@/components/layout/PageLayout';
-
-const categoryColWidth = css`
-    width: 100px;
-`;
 
 const Algos = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -68,89 +47,92 @@ const Algos = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
     return (
-        <PageLayout siderVisible={!!key} sider={<AlgoSider />}>
+        <Box marginLeft="auto" marginRight="auto" padding="6">
+            <AlgoSider />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Algorithms" />
                 <SearchBar asset="algo" />
-            </VStack>
-            <Table>
-                <Thead>
-                    <Tr>
-                        <CreationDateTh />
-                        <Th css={categoryColWidth}>Category</Th>
-                        <Th css={nameColWidth}>Name</Th>
-                        <Th css={ownerColWidth}>
-                            Owner
-                            <OwnerTableFilter
-                                assets={[
-                                    'algo',
-                                    'composite_algo',
-                                    'aggregate_algo',
-                                ]}
-                            />
-                        </Th>
-                        <Th css={permissionsColWidth}>Permissions</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {!algosLoading && algosCount === 0 && (
-                        <EmptyTr nbColumns={5} />
-                    )}
-                    {algosLoading ? (
-                        <TableSkeleton
-                            itemCount={algosCount}
-                            currentPage={page}
-                        >
-                            <CreationDateSkeletonTd />
-                            <Td>
-                                <Skeleton width={80} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={500} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={80} height={12} />
-                            </Td>
-                            <Td>
-                                <Skeleton width={150} height={12} />
-                            </Td>
-                        </TableSkeleton>
-                    ) : (
-                        algos.map((algo) => (
-                            <Tr
-                                key={algo.key}
-                                highlighted={algo.key === key}
-                                onClick={() =>
-                                    setLocationWithParams(
-                                        compilePath(PATHS.ALGO, {
-                                            key: algo.key,
-                                        })
-                                    )
-                                }
-                            >
-                                <CreationDateTd
-                                    creationDate={algo.creation_date}
-                                />
-                                <Td>{getAlgoCategory(algo)}</Td>
-                                <Td>{algo.name}</Td>
-                                <Td>{algo.owner}</Td>
-                                <Td>
-                                    <PermissionCellContent
-                                        permissions={algo.permissions}
+                <Box
+                    backgroundColor="white"
+                    borderRadius="lg"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
+                >
+                    <Table size="sm">
+                        <Thead>
+                            <Tr>
+                                <Th>Creation date</Th>
+                                <Th>Category</Th>
+                                <Th>Name</Th>
+                                <Th>
+                                    Owner
+                                    <OwnerTableFilter
+                                        assets={[
+                                            'algo',
+                                            'composite_algo',
+                                            'aggregate_algo',
+                                        ]}
                                     />
-                                </Td>
+                                </Th>
+                                <Th>Permissions</Th>
                             </Tr>
-                        ))
-                    )}
-                    <TablePagination
-                        colSpan={5}
-                        currentPage={page}
-                        itemCount={algosCount}
-                        asset="algo"
-                    />
-                </Tbody>
-            </Table>
-        </PageLayout>
+                        </Thead>
+                        <Tbody>
+                            {!algosLoading && algosCount === 0 && (
+                                <EmptyTr nbColumns={5} />
+                            )}
+                            {algosLoading ? (
+                                <TableSkeleton
+                                    itemCount={algosCount}
+                                    currentPage={page}
+                                >
+                                    <CreationDateSkeletonTd />
+                                    <Td>
+                                        <Skeleton width={80} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={500} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={80} height={12} />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width={150} height={12} />
+                                    </Td>
+                                </TableSkeleton>
+                            ) : (
+                                algos.map((algo) => (
+                                    <ClickableTr
+                                        key={algo.key}
+                                        onClick={() =>
+                                            setLocationWithParams(
+                                                compilePath(PATHS.ALGO, {
+                                                    key: algo.key,
+                                                })
+                                            )
+                                        }
+                                    >
+                                        <CreationDateTd
+                                            creationDate={algo.creation_date}
+                                        />
+                                        <Td>{getAlgoCategory(algo)}</Td>
+                                        <Td>{algo.name}</Td>
+                                        <Td>{algo.owner}</Td>
+                                        <Td>
+                                            <PermissionCellContent
+                                                permissions={algo.permissions}
+                                            />
+                                        </Td>
+                                    </ClickableTr>
+                                ))
+                            )}
+                        </Tbody>
+                    </Table>
+                </Box>
+                <TablePagination currentPage={page} itemCount={algosCount} />
+            </VStack>
+        </Box>
     );
 };
 
