@@ -39,7 +39,11 @@ const StatusTableFilter = ({ asset }: StatusTableFilterProps): JSX.Element => {
         );
 
     const setValue = (value: string[]) => {
-        const filters = buildAssetFilters(asset, value);
+        const statusFilters = buildAssetFilters(asset, value);
+        const otherFilters = searchFilters.filter(
+            (sf) => 'status' !== sf.key || asset !== sf.asset
+        );
+        const filters = [...statusFilters, ...otherFilters];
         if (!areSearchFiltersListsEqual(searchFilters, filters)) {
             setLocationWithParams({ search: filters, page: 1 });
         }

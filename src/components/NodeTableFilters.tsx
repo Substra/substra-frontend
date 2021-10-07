@@ -43,12 +43,16 @@ const BaseNodeTableFilter = ({
         }));
     };
     const setFilterValue = (value: string[]) => {
-        const filters = assets.reduce(
+        const assetKeyFilters = assets.reduce(
             (filters: SearchFilterType[], asset: AssetType) => {
                 return [...filters, ...buildAssetFilters(asset, value)];
             },
             []
         );
+        const otherFilters = searchFilters.filter(
+            (sf) => assetKey !== sf.key || !assets.includes(sf.asset)
+        );
+        const filters = [...assetKeyFilters, ...otherFilters];
         if (!areSearchFiltersListsEqual(searchFilters, filters)) {
             setLocationWithParams({ search: filters, page: 1 });
         }

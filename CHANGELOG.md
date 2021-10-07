@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix broken imports when using chakra UI components (#162)
 -   Removed console error about unknown component props (#163)
 -   Automated redirects now replace history state instead of creating a new one (#161)
+-   Table filters do not cancel each other (#168)
 
 ### Changed
 
