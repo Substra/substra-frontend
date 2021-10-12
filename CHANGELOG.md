@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add download button for the data sample keys in dataset sider (#151)
 -   Add Fullscreen mode on the charts in the Compute Plans comparison page (#149)
 -   Filter by status on compute plan tasks page (#169)
+-   Download model button in chart tooltip (#145)
 
 ### Fixed
 

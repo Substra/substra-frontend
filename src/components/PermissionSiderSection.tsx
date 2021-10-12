@@ -4,7 +4,7 @@ import { PermissionsType, PermissionType } from '@/modules/common/CommonTypes';
 
 import { downloadFromApi } from '@/libs/request';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 
 import { SiderSection, SiderSectionTitle } from '@/components/SiderSection';
 import Skeleton from '@/components/Skeleton';
@@ -101,14 +101,7 @@ const PermissionSiderSection = ({
     modelUrl,
     modelButtonTitle,
 }: PermissionSiderSectionProps): JSX.Element => {
-    const modelExportEnabled = useAppSelector(
-        (state) => state.nodes.info.config.model_export_enabled
-    );
-    const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);
-
-    const canDownload =
-        permissions.download.public ||
-        permissions.download.authorized_ids.includes(currentNodeID);
+    const canDownloadModel = useCanDownloadModel();
 
     return (
         <SiderSection>
@@ -118,7 +111,7 @@ const PermissionSiderSection = ({
                 title="Downloadable"
                 permission={permissions.download}
             />
-            {modelUrl && modelExportEnabled && canDownload && (
+            {modelUrl && canDownloadModel(permissions) && (
                 <DownloadButton
                     onClick={() =>
                         downloadFromApi(modelUrl, `model_${modelKey}`)

@@ -7,6 +7,7 @@ export interface DataPoint {
     y: number | null;
     testTaskKey: string;
     worker: string;
+    parentTaskKeys: string[];
 }
 
 export type PerfChartDataset = Record<string, unknown>;
@@ -35,6 +36,7 @@ const useBuildPerfChartDataset = (): ((
                     y: point.perf,
                     testTaskKey: point.testTaskKey,
                     worker: serie.worker,
+                    parentTaskKeys: point.parentTaskKeys,
                 })
             ),
             parsing: false,

@@ -15,6 +15,7 @@ const rotate = keyframes`
 `;
 
 const rotation = css`
+    display: inline-block;
     animation: ${rotate} 2s linear infinite;
 `;
 
