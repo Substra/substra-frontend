@@ -17,8 +17,7 @@ function buildSerieFeatures(
         dataSampleKeys: testtuple.test.data_sample_keys,
         worker: testtuple.worker,
         metricKey: metric.key,
-        objectiveName: metric.name,
-        metricName: metric.metrics_name,
+        metricName: metric.name,
         computePlanKey: testtuple.compute_plan_key,
     };
 }
@@ -72,32 +71,35 @@ export function buildSeries(
     const series: SerieT[] = [];
 
     for (const testtuple of testtuples) {
-        const point: PointT = {
-            rank: testtuple.rank,
-            perf:
-                testtuple.status === TupleStatus.done
-                    ? testtuple.test.perf
-                    : null,
-            testTaskKey: testtuple.key,
-            parentTaskKeys: testtuple.parent_task_keys,
-        };
+        console.log(testtuple);
+        for (const metricKey of testtuple.test.metric_keys) {
+            const point: PointT = {
+                rank: testtuple.rank,
+                perf:
+                    testtuple.status === TupleStatus.done
+                        ? testtuple.test.perfs[metricKey]
+                        : null,
+                testTaskKey: testtuple.key,
+                parentTaskKeys: testtuple.parent_task_keys,
+            };
 
-        const serieFeatures = buildSerieFeatures(
-            testtuple,
-            datasetIndex[testtuple.test.data_manager_key],
-            metricIndex[testtuple.test.objective_key]
-        );
+            const serieFeatures = buildSerieFeatures(
+                testtuple,
+                datasetIndex[testtuple.test.data_manager_key],
+                metricIndex[metricKey]
+            );
 
-        const serie = findSerie(series, serieFeatures);
-        if (serie) {
-            serie.points.push(point);
-        } else {
-            series.push({
-                // ID is an incremented number
-                id: series.length,
-                points: [point],
-                ...serieFeatures,
-            });
+            const serie = findSerie(series, serieFeatures);
+            if (serie) {
+                serie.points.push(point);
+            } else {
+                series.push({
+                    // ID is an incremented number
+                    id: series.length,
+                    points: [point],
+                    ...serieFeatures,
+                });
+            }
         }
     }
 
@@ -201,7 +203,6 @@ export function buildAverageSerie(series: SerieT[]): SerieT | null {
         worker: 'average',
         metricKey: 'average',
         metricName: 'average',
-        objectiveName: 'average',
         computePlanKey: 'average',
     };
 }

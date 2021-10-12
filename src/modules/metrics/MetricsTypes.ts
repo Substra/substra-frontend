@@ -10,10 +10,7 @@ export interface MetricType {
     owner: string;
     permissions: PermissionsType;
     description: FileT;
-    metrics_name: string;
-    metrics: FileT;
-    data_manager_key: string;
-    data_sample_keys: string[];
+    address: FileT;
     metadata: MetadataT;
     creation_date: string;
 }

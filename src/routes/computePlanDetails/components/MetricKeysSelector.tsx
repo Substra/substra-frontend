@@ -75,7 +75,7 @@ const MetricKeysSelector = (): JSX.Element => {
                                     )}
                                     onChange={onChange(metric.key)}
                                 />
-                                <Spacer>{metric.metrics_name}</Spacer>
+                                <Spacer>{metric.name}</Spacer>
                                 <StyledLink
                                     href={compilePath(PATHS.METRIC, {
                                         key: metric.key,

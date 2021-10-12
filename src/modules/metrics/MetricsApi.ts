@@ -6,8 +6,8 @@ import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
-    LIST: '/objective/',
-    RETRIEVE: '/objective/__KEY__/',
+    LIST: '/metric/',
+    RETRIEVE: '/metric/__KEY__/',
 };
 
 export const listMetrics = (

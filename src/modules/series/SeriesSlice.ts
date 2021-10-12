@@ -72,8 +72,10 @@ const getComputePlanSeries = async (
         const metricKeys: string[] = [];
         const datasetKeys: string[] = [];
         for (const testtuple of testtuples) {
-            if (!metricKeys.includes(testtuple.test.objective_key)) {
-                metricKeys.push(testtuple.test.objective_key);
+            for (const metricKey of testtuple.test.metric_keys) {
+                if (!metricKeys.includes(metricKey)) {
+                    metricKeys.push(metricKey);
+                }
             }
             if (!datasetKeys.includes(testtuple.test.data_manager_key)) {
                 datasetKeys.push(testtuple.test.data_manager_key);
@@ -81,7 +83,7 @@ const getComputePlanSeries = async (
         }
         const metricSearchFilters = metricKeys.map(
             (key: string): SearchFilterType => ({
-                asset: 'objective',
+                asset: 'metric',
                 key: 'key',
                 value: key,
             })
@@ -153,7 +155,7 @@ export const loadSeries = createAsyncThunk<
     },
     string,
     { rejectValue: string }
->('series/loadData', async (computePlanKey, thunkAPI) => {
+>('series/loadSeries', async (computePlanKey, thunkAPI) => {
     const { series, metrics } = await getComputePlanSeries(
         computePlanKey,
         thunkAPI.rejectWithValue

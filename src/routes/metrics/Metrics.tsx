@@ -65,7 +65,7 @@ const Metrics = (): JSX.Element => {
             <MetricDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Metrics" />
-                <SearchBar asset="objective" />
+                <SearchBar asset="metric" />
                 <Box
                     backgroundColor="white"
                     borderRadius="lg"

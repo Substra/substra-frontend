@@ -55,9 +55,8 @@ export interface TesttupleT extends BaseTupleT {
     test: {
         data_manager_key: string;
         data_sample_keys: string[];
-        objective_key: string;
-        certified: boolean;
-        perf: number;
+        metric_keys: string[];
+        perfs: Record<string, number>;
     };
 }
 

@@ -13,9 +13,7 @@ import {
     listTestTasks,
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
-import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
-
-import { isTesttupleT } from '@/libs/tuples';
+import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
 import {
     useAppDispatch,
@@ -194,7 +192,6 @@ const Tasks = (): JSX.Element => {
                                 </Th>
                                 <Th>Compute Plan</Th>
                                 <Th>Rank</Th>
-                                <Th>Performance</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -218,14 +215,11 @@ const Tasks = (): JSX.Element => {
                                     <Td>
                                         <Skeleton width={60} height={12} />
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={110} height={12} />
-                                    </Td>
                                 </TableSkeleton>
                             )}
                             {!taskTypes[selectedTaskType].loading &&
                                 taskTypes[selectedTaskType].tasks.length ===
-                                    0 && <EmptyTr nbColumns={7} />}
+                                    0 && <EmptyTr nbColumns={5} />}
                             {!taskTypes[selectedTaskType].loading &&
                                 taskTypes[selectedTaskType].tasks.map(
                                     (task) => (
@@ -255,12 +249,6 @@ const Tasks = (): JSX.Element => {
                                                 {task.compute_plan_key
                                                     ? task.rank
                                                     : '-'}
-                                            </Td>
-                                            <Td>
-                                                {isTesttupleT(task) &&
-                                                task.status === TupleStatus.done
-                                                    ? task.test.perf
-                                                    : 'N/A'}
                                             </Td>
                                         </ClickableTr>
                                     )

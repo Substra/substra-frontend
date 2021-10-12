@@ -148,7 +148,7 @@ const PerfChart = ({
                         computePlan?.metadata || {}
                     ),
                     worker: serie.worker,
-                    objectiveKey: serie.metricKey,
+                    metricKey: serie.metricKey,
                     datasetKey: serie.datasetKey,
                     metricName: serie.metricName,
                     testtupleKey: point.testTaskKey,

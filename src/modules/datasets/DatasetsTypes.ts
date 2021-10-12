@@ -10,7 +10,6 @@ export interface DatasetStubType {
     name: string;
     owner: string;
     permissions: PermissionsType;
-    objective_key: string;
     description: FileT;
     opener: FileT;
     type: string;

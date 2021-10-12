@@ -83,7 +83,7 @@ const MetricSider = (): JSX.Element => {
                 <DrawerHeader
                     title={metric?.name}
                     loading={metricLoading}
-                    storageAddress={metric?.metrics.storage_address}
+                    storageAddress={metric?.address.storage_address}
                     filename={`metric-${key}.zip`}
                     onClose={() => {
                         setLocationWithParams(PATHS.METRICS);

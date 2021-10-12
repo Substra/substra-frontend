@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 
 import DatasetSiderSection from './DatasetSiderSection';
-import MetricSiderSection from './MetricSiderSection';
+import PerfSiderSection from './PerfSiderSection';
 import TraintupleSiderSection from './TraintupleSiderSection';
 
 import { TesttupleT } from '@/modules/tasks/TuplesTypes';
@@ -16,7 +16,7 @@ const TestTaskSiderContent = ({
     return (
         <Fragment>
             <TraintupleSiderSection task={task} />
-            <MetricSiderSection task={task} />
+            <PerfSiderSection task={task} />
             <DatasetSiderSection task={task} />
         </Fragment>
     );
