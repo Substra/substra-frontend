@@ -1,9 +1,4 @@
-/** @jsxRuntime classic */
-
-/** @jsx jsx */
 import { IconButton } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { RiFileDownloadLine } from 'react-icons/ri';
 
@@ -23,12 +18,6 @@ const ActionsContainer = styled.div`
     justify-content: flex-end;
     align-items: center;
     border-bottom: 1px solid ${Colors.border};
-`;
-
-const copyButtonStyles = css`
-    position: absolute;
-    top: -${Spaces.small};
-    right: -${Spaces.small};
 `;
 
 const Title = styled.div`
@@ -73,9 +62,7 @@ const DataSamplesList = ({
     return (
         <Container>
             <Title>{title}</Title>
-            <CopyButton css={copyButtonStyles} value={JSON.stringify(keys)}>
-                copy as json array
-            </CopyButton>
+            <CopyButton value={JSON.stringify(keys)} />
             <ActionsContainer>
                 {keys.length > 0 && (
                     <IconButton

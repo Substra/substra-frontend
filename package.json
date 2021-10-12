@@ -28,7 +28,6 @@
         "axios": "0.21.4",
         "chart.js": "3.3.2",
         "chartjs-plugin-zoom": "1.1.1",
-        "copy-to-clipboard": "3.3.1",
         "framer-motion": "4.1.17",
         "github-markdown-css": "4.0.0",
         "html-to-image": "1.7.0",

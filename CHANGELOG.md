@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New style for searchbar (#164)
 -   Simplify layout (no more vertical/horizontal scroll wrappers) and tables (#166)
 -   Only collapse header height for deep routes (#167)
+-   New design for metrics table (#170)
 
 ## [0.3.0] - 2021-10-04
 

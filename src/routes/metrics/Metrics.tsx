@@ -1,10 +1,23 @@
 import { RootState } from '@/store';
 
-import MetricSider from './components/MetricSider';
-import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
+import MetricDrawer from './components/MetricDrawer';
+import {
+    VStack,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    Td,
+    Box,
+    Text,
+    Skeleton,
+} from '@chakra-ui/react';
 
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+
+import { formatDate } from '@/libs/utils';
 
 import {
     useAppDispatch,
@@ -17,14 +30,8 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-} from '@/components/CreationDateTableCells';
-import { OwnerTableFilter } from '@/components/NodeTableFilters';
-import PermissionCellContent from '@/components/PermissionCellContent';
+import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
-import Skeleton from '@/components/Skeleton';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
@@ -55,7 +62,7 @@ const Metrics = (): JSX.Element => {
 
     return (
         <Box padding="6" marginLeft="auto" marginRight="auto">
-            <MetricSider />
+            <MetricDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Metrics" />
                 <SearchBar asset="objective" />
@@ -66,16 +73,24 @@ const Metrics = (): JSX.Element => {
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="sm">
+                    <Table size="md" minWidth="870px">
                         <Thead>
                             <Tr>
-                                <Th>Creation date</Th>
-                                <Th>Name</Th>
-                                <Th>
-                                    Owner
-                                    <OwnerTableFilter assets={['objective']} />
+                                <Th>Name / Creation / Owner</Th>
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Processable by
                                 </Th>
-                                <Th>Permissions</Th>
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Downloadable by
+                                </Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -87,15 +102,22 @@ const Metrics = (): JSX.Element => {
                                     itemCount={metricsCount}
                                     currentPage={page}
                                 >
-                                    <CreationDateSkeletonTd />
                                     <Td>
-                                        <Skeleton width={500} height={12} />
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum dolor sit amet
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                Created on YYYY-MM-DD HH:MM:SS
+                                                by Foo
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={80} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={150} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                 </TableSkeleton>
                             ) : (
@@ -110,14 +132,26 @@ const Metrics = (): JSX.Element => {
                                             )
                                         }
                                     >
-                                        <CreationDateTd
-                                            creationDate={metric.creation_date}
-                                        />
-                                        <Td>{metric.name}</Td>
-                                        <Td>{metric.owner}</Td>
                                         <Td>
-                                            <PermissionCellContent
-                                                permissions={metric.permissions}
+                                            <Text fontSize="sm">
+                                                {metric.name}
+                                            </Text>
+                                            <Text fontSize="xs">{`Created on ${formatDate(
+                                                metric.creation_date
+                                            )} by ${metric.owner}`}</Text>
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    metric.permissions.process
+                                                }
+                                            />
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    metric.permissions.download
+                                                }
                                             />
                                         </Td>
                                     </ClickableTr>

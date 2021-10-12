@@ -1,20 +1,8 @@
 import { Td } from '@chakra-ui/react';
 
+import { formatDate } from '@/libs/utils';
+
 import Skeleton from '@/components/Skeleton';
-
-const dateFormatter = new Intl.DateTimeFormat('en-GB', {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-});
-
-const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return dateFormatter.format(date);
-};
 
 interface CreationDateTdProps {
     creationDate: string;
