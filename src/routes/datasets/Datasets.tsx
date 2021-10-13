@@ -1,8 +1,21 @@
-import DatasetSider from './components/DatasetSider';
-import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
+import DatasetDrawer from './components/DatasetDrawer';
+import {
+    VStack,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    Td,
+    Box,
+    Text,
+    Skeleton,
+} from '@chakra-ui/react';
 
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+
+import { formatDate } from '@/libs/utils';
 
 import {
     useAppDispatch,
@@ -15,14 +28,8 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-} from '@/components/CreationDateTableCells';
-import { OwnerTableFilter } from '@/components/NodeTableFilters';
-import PermissionCellContent from '@/components/PermissionCellContent';
+import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
-import Skeleton from '@/components/Skeleton';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
@@ -53,7 +60,7 @@ const Datasets = (): JSX.Element => {
 
     return (
         <Box padding="6" marginLeft="auto" marginRight="auto">
-            <DatasetSider />
+            <DatasetDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Datasets" />
                 <SearchBar asset="dataset" />
@@ -64,36 +71,51 @@ const Datasets = (): JSX.Element => {
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="sm">
+                    <Table size="md" minWidth="870px">
                         <Thead>
                             <Tr>
-                                <Th>Creation date</Th>
-                                <Th>Name</Th>
-                                <Th>
-                                    Owner
-                                    <OwnerTableFilter assets={['dataset']} />
+                                <Th>Name / Creation / Owner</Th>
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Processable by
                                 </Th>
-                                <Th>Permissions</Th>
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Downloadable by
+                                </Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             {!datasetsLoading && datasets.length === 0 && (
-                                <EmptyTr nbColumns={4} />
+                                <EmptyTr nbColumns={3} />
                             )}
                             {datasetsLoading ? (
                                 <TableSkeleton
                                     itemCount={datasetsCount}
                                     currentPage={page}
                                 >
-                                    <CreationDateSkeletonTd />
                                     <Td>
-                                        <Skeleton width={500} height={12} />
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum dolor sit amet
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                Created on YYYY-MM-DD HH:MM:SS
+                                                by Foo
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={80} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={120} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                 </TableSkeleton>
                             ) : (
@@ -108,15 +130,25 @@ const Datasets = (): JSX.Element => {
                                             )
                                         }
                                     >
-                                        <CreationDateTd
-                                            creationDate={dataset.creation_date}
-                                        />
-                                        <Td>{dataset.name}</Td>
-                                        <Td>{dataset.owner}</Td>
                                         <Td>
-                                            <PermissionCellContent
-                                                permissions={
-                                                    dataset.permissions
+                                            <Text fontSize="sm">
+                                                {dataset.name}
+                                            </Text>
+                                            <Text fontSize="xs">{`Created on ${formatDate(
+                                                dataset.creation_date
+                                            )} by ${dataset.owner}`}</Text>
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    dataset.permissions.process
+                                                }
+                                            />
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    dataset.permissions.download
                                                 }
                                             />
                                         </Td>

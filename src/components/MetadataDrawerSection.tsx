@@ -1,7 +1,7 @@
 import {
     TableDrawerSection,
     TableDrawerSectionEntry,
-} from './TableDrawerSection';
+} from '@/components/TableDrawerSection';
 
 export default ({
     metadata,

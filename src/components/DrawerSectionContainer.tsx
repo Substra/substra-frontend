@@ -1,5 +1,6 @@
-import DrawerSectionHeading from './DrawerSectionHeading';
 import { VStack } from '@chakra-ui/react';
+
+import DrawerSectionHeading from '@/components/DrawerSectionHeading';
 
 export default ({
     title,

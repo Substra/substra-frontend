@@ -1,6 +1,6 @@
-import DrawerSectionContainer from './DrawerSectionContainer';
 import { Skeleton, Text } from '@chakra-ui/react';
 
+import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import MarkdownSection from '@/components/MarkdownSection';
 
 interface DescriptionDrawerSectionProps {

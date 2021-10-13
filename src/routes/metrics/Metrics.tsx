@@ -95,7 +95,7 @@ const Metrics = (): JSX.Element => {
                         </Thead>
                         <Tbody>
                             {!metricsLoading && metrics.length === 0 && (
-                                <EmptyTr nbColumns={4} />
+                                <EmptyTr nbColumns={3} />
                             )}
                             {metricsLoading ? (
                                 <TableSkeleton

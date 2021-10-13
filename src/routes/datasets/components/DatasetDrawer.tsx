@@ -11,10 +11,10 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import {
-    retrieveMetric,
+    retrieveDataset,
     retrieveDescription,
-} from '@/modules/metrics/MetricsSlice';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
+} from '@/modules/datasets/DatasetsSlice';
+import { DatasetType } from '@/modules/datasets/DatasetsTypes';
 
 import { formatDate } from '@/libs/utils';
 
@@ -35,10 +35,10 @@ import {
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
 
-const MetricSider = (): JSX.Element => {
+const DatasetDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const key = useKeyFromPath(PATHS.METRIC);
+    const key = useKeyFromPath(PATHS.DATASET);
 
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -47,33 +47,33 @@ const MetricSider = (): JSX.Element => {
                 onOpen();
             }
 
-            dispatch(retrieveMetric(key))
+            dispatch(retrieveDataset(key))
                 .then(unwrapResult)
-                .then((metric: MetricType) => {
+                .then((dataset: DatasetType) => {
                     dispatch(
-                        retrieveDescription(metric.description.storage_address)
+                        retrieveDescription(dataset.description.storage_address)
                     );
                 });
         }
     }, [key]);
 
-    const metric = useAppSelector((state) => state.metrics.metric);
-    const metricLoading = useAppSelector(
-        (state) => state.metrics.metricLoading
+    const dataset = useAppSelector((state) => state.datasets.dataset);
+    const datasetLoading = useAppSelector(
+        (state) => state.datasets.datasetLoading
     );
-    const description = useAppSelector((state) => state.metrics.description);
+    const description = useAppSelector((state) => state.datasets.description);
     const descriptionLoading = useAppSelector(
-        (state) => state.metrics.descriptionLoading
+        (state) => state.datasets.descriptionLoading
     );
 
-    useAssetSiderDocumentTitleEffect(key, metric, 'metric');
+    useAssetSiderDocumentTitleEffect(key, dataset, 'dataset');
 
     return (
         <Drawer
             isOpen={isOpen}
             placement="right"
             onClose={() => {
-                setLocationWithParams(PATHS.METRICS);
+                setLocationWithParams(PATHS.DATASETS);
                 onClose();
             }}
             size="md"
@@ -81,39 +81,39 @@ const MetricSider = (): JSX.Element => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerHeader
-                    title={metric?.name}
-                    loading={metricLoading}
-                    storageAddress={metric?.address.storage_address}
-                    filename={`metric-${key}.zip`}
+                    title={dataset?.name}
+                    loading={datasetLoading}
+                    storageAddress={dataset?.opener.storage_address}
+                    filename={`dataset-opener-${key}.py`}
                     onClose={() => {
-                        setLocationWithParams(PATHS.METRICS);
+                        setLocationWithParams(PATHS.DATASETS);
                         onClose();
                     }}
                 />
-                {metric && (
+                {dataset && (
                     <DrawerBody as={VStack} alignItems="stretch" spacing="8">
                         <TableDrawerSection title="General">
-                            <TableDrawerSectionKeyEntry value={metric.key} />
+                            <TableDrawerSectionKeyEntry value={dataset.key} />
                             <TableDrawerSectionEntry title="Created">
-                                {formatDate(metric.creation_date)}
+                                {formatDate(dataset.creation_date)}
                             </TableDrawerSectionEntry>
                             <TableDrawerSectionEntry title="Owner">
-                                {metric.owner}
+                                {dataset.owner}
                             </TableDrawerSectionEntry>
                             <TableDrawerSectionEntry title="Processable by">
                                 <PermissionTag
-                                    permission={metric.permissions.process}
+                                    permission={dataset.permissions.process}
                                     listNodes={true}
                                 />
                             </TableDrawerSectionEntry>
                             <TableDrawerSectionEntry title="Downloadable by">
                                 <PermissionTag
-                                    permission={metric.permissions.download}
+                                    permission={dataset.permissions.download}
                                     listNodes={true}
                                 />
                             </TableDrawerSectionEntry>
                         </TableDrawerSection>
-                        <MetadataDrawerSection metadata={metric.metadata} />
+                        <MetadataDrawerSection metadata={dataset.metadata} />
                         <DescriptionDrawerSection
                             loading={descriptionLoading}
                             description={description}
@@ -125,4 +125,4 @@ const MetricSider = (): JSX.Element => {
     );
 };
 
-export default MetricSider;
+export default DatasetDrawer;
