@@ -1,4 +1,3 @@
-import DatasetDrawer from './components/DatasetDrawer';
 import {
     VStack,
     Table,
@@ -22,8 +21,7 @@ import {
     useAppSelector,
     useSearchFiltersEffect,
 } from '@/hooks';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
@@ -54,13 +52,14 @@ const Datasets = (): JSX.Element => {
     const datasetsCount = useAppSelector(
         (state) => state.datasets.datasetsCount
     );
-    const key = useKeyFromPath(PATHS.DATASET);
 
-    useAssetListDocumentTitleEffect('Datasets list', key);
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle('Datasets list'),
+        []
+    );
 
     return (
         <Box padding="6" marginLeft="auto" marginRight="auto">
-            <DatasetDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Datasets" />
                 <SearchBar asset="dataset" />

@@ -7,6 +7,7 @@ import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
 import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
+import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
 import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
@@ -74,9 +75,12 @@ export const ROUTES: Record<string, IRoute> = {
         path: PATHS.COMPUTE_PLAN,
         component: ComputePlan,
     },
+    DATASET: {
+        path: PATHS.DATASET,
+        component: Dataset,
+    },
     DATASETS: {
-        // the following path matches both PATHS.DATASETS and PATHS.DATASET
-        path: '/datasets/:key?',
+        path: PATHS.DATASETS,
         component: Datasets,
     },
     ALGOS: {

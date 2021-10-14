@@ -1,6 +1,8 @@
 import DrawerSectionContainer from './DrawerSectionContainer';
 import { HStack, Table, Tbody, Td, Tr } from '@chakra-ui/react';
 
+import { formatDate } from '@/libs/utils';
+
 import CopyButton from '@/components/CopyButton';
 
 const TableDrawerSection = ({
@@ -51,8 +53,19 @@ const TableDrawerSectionKeyEntry = ({
     </TableDrawerSectionEntry>
 );
 
+const TableDrawerSectionCreatedEntry = ({
+    date,
+}: {
+    date: string;
+}): JSX.Element => (
+    <TableDrawerSectionEntry title="Created">
+        {formatDate(date)}
+    </TableDrawerSectionEntry>
+);
+
 export {
     TableDrawerSection,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
+    TableDrawerSectionCreatedEntry,
 };

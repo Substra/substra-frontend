@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Only collapse header height for deep routes (#167)
 -   New design for metrics table (#170)
 -   New design for datasets table (#171)
+-   Dataset sider replaced by independant page (#175)
 
 ## [0.3.0] - 2021-10-04
 

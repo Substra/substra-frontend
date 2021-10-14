@@ -94,7 +94,7 @@ export const getApiOptions = (
     return options;
 };
 
-const downloadBlob = (blob: Blob, filename: string): void => {
+export const downloadBlob = (blob: Blob, filename: string): void => {
     /**
      * Download method from
      * https://blog.logrocket.com/programmatic-file-downloads-in-the-browser-9a5186298d5c/
