@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Add nodePort config for K8s service (#174)
 -   Refactor tables with Chakra (#147)
 -   Add missing dependency `buffer` (#156)
 -   Add download button for the data sample keys in dataset sider (#151)
