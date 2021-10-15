@@ -1,77 +1,64 @@
-import styled from '@emotion/styled';
-import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
+import { Tag, TagLabel, TagLeftIcon, TagProps } from '@chakra-ui/react';
+import { IconType } from 'react-icons';
+import {
+    RiAlertLine,
+    RiCheckLine,
+    RiIndeterminateCircleLine,
+    RiPlayMiniLine,
+    RiTimeLine,
+} from 'react-icons/ri';
 
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { getStatusLabel } from '@/libs/status';
 
-import Spinner from '@/components/Spinner';
-
-import { Colors, Fonts, Spaces } from '@/assets/theme';
-
-const StatusContainer = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-interface StatusTextProps {
-    type: string;
-}
-const StatusText = styled.span<StatusTextProps>`
-    font-size: ${Fonts.sizes.input};
-    color: ${({ type }) => (type ? type : '')};
-`;
-
-const StatusIcon = styled.div`
-    margin-right: ${Spaces.small};
-`;
-
 interface StatusProps {
     status: ComputePlanStatus | TupleStatus;
+    size: TagProps['size'];
 }
 
-const Status = ({ status }: StatusProps): JSX.Element => {
-    let type = '';
-    let icon: JSX.Element | null = null;
+const Status = ({ status, size }: StatusProps): JSX.Element => {
+    let colorScheme = '';
+    let icon: IconType | undefined = undefined;
 
     switch (status) {
         case TupleStatus.canceled:
         case ComputePlanStatus.canceled:
-            icon = <RiCloseLine color={Colors.veryLightContent} />;
-            type = Colors.veryLightContent;
+            icon = RiIndeterminateCircleLine;
+            colorScheme = 'gray';
             break;
         case TupleStatus.waiting:
         case ComputePlanStatus.waiting:
         case TupleStatus.todo:
         case ComputePlanStatus.todo:
-            icon = <Spinner color={Colors.running} />;
-            type = Colors.running;
+            icon = RiTimeLine;
+            colorScheme = 'yellow';
             break;
         case TupleStatus.doing:
         case ComputePlanStatus.doing:
-            icon = <Spinner color={Colors.success} />;
-            type = Colors.success;
+            icon = RiPlayMiniLine;
+            colorScheme = 'blue';
             break;
         case TupleStatus.failed:
         case ComputePlanStatus.failed:
-            icon = <RiCloseLine color={Colors.error} />;
-            type = Colors.error;
+            icon = RiAlertLine;
+            colorScheme = 'red';
             break;
         case TupleStatus.done:
         case ComputePlanStatus.done:
-            icon = <RiCheckLine color={Colors.success} />;
-            type = Colors.success;
+            icon = RiCheckLine;
+            colorScheme = 'green';
             break;
         default:
             break;
     }
 
     return (
-        <StatusContainer>
-            <StatusIcon>{icon}</StatusIcon>
-            <StatusText type={type}>{getStatusLabel(status)}</StatusText>
-        </StatusContainer>
+        <Tag size={size} colorScheme={colorScheme}>
+            <TagLeftIcon as={icon} />
+            <TagLabel>{getStatusLabel(status)}</TagLabel>
+        </Tag>
     );
 };
 

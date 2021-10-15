@@ -2,9 +2,7 @@ import { FC } from 'react';
 
 import Algos from '@/routes/algos/Algos';
 import Compare from '@/routes/compare/Compare';
-import ComputePlan from '@/routes/computePlan/ComputePlan';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
-import ComputePlanDetails from '@/routes/computePlanDetails/ComputePlanDetails';
 import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
@@ -24,9 +22,6 @@ export const PATHS = {
     LOGIN: '/login',
     COMPARE: '/compare/:keys',
     COMPUTE_PLANS: '/compute_plans',
-    COMPUTE_PLANS_DETAILS: '/compute_plans/:key',
-    COMPUTE_PLAN: '/compute_plan',
-    COMPUTE_PLAN_DETAILS: '/compute_plan/:key',
     COMPUTE_PLAN_CHART: '/compute_plan/:key/chart',
     COMPUTE_PLAN_TASKS: '/compute_plan/:key/tasks',
     COMPUTE_PLAN_TASK: '/compute_plan/:key/tasks/:taskKey',
@@ -54,13 +49,8 @@ export const ROUTES: Record<string, IRoute> = {
         component: Compare,
     },
     COMPUTE_PLANS: {
-        // the following path matches both PATHS.COMPUTE_PLANS and PATHS.COMPUTE_PLANS_DETAILS
-        path: '/compute_plans/:key?',
+        path: PATHS.COMPUTE_PLANS,
         component: ComputePlans,
-    },
-    COMPUTE_PLAN_DETAILS: {
-        path: PATHS.COMPUTE_PLAN_DETAILS,
-        component: ComputePlanDetails,
     },
     COMPUTE_PLAN_CHART: {
         path: PATHS.COMPUTE_PLAN_CHART,
@@ -70,10 +60,6 @@ export const ROUTES: Record<string, IRoute> = {
         // the following path matches both PATHS.COMPUTE_PLAN_TASKS and PATHS.COMPUTE_PLAN_TASK
         path: '/compute_plan/:key/tasks/:taskKey?',
         component: ComputePlanTasks,
-    },
-    COMPUTE_PLAN: {
-        path: PATHS.COMPUTE_PLAN,
-        component: ComputePlan,
     },
     DATASET: {
         path: PATHS.DATASET,

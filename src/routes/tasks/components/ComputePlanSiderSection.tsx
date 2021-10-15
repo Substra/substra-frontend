@@ -29,7 +29,7 @@ const ComputePlanSiderSection = (): JSX.Element => {
                 (task.compute_plan_key ? (
                     <Fragment>
                         <StyledLink
-                            href={PATHS.COMPUTE_PLANS_DETAILS.replace(
+                            href={PATHS.COMPUTE_PLAN_CHART.replace(
                                 ':key',
                                 task.compute_plan_key
                             )}

@@ -1,9 +1,13 @@
+import { useEffect } from 'react';
+
 import Breadcrumbs from './components/BreadCrumbs';
 import PerfChartBuilder from './components/PerfChartBuilder';
 import TabsNav from './components/TabsNav';
 import { Box, Flex } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 
@@ -16,6 +20,14 @@ const ComputePlanChart = (): JSX.Element => {
         (setDocumentTitle) => setDocumentTitle(`${key} (compute plan)`),
         []
     );
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (key && computePlan?.key !== key) {
+            dispatch(retrieveComputePlan(key));
+        }
+    }, [key]);
 
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan

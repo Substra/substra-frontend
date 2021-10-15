@@ -239,7 +239,10 @@ const Tasks = (): JSX.Element => {
                                                 }
                                             />
                                             <Td>
-                                                <Status status={task.status} />
+                                                <Status
+                                                    size="sm"
+                                                    status={task.status}
+                                                />
                                             </Td>
                                             <Td>{task.worker}</Td>
                                             <Td>

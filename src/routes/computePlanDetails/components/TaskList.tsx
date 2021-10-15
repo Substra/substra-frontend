@@ -276,7 +276,10 @@ const Tasks = (): JSX.Element => {
                                         creationDate={task.creation_date}
                                     />
                                     <Td>
-                                        <Status status={task.status} />
+                                        <Status
+                                            size="sm"
+                                            status={task.status}
+                                        />
                                     </Td>
                                     <Td>{task.worker}</Td>
                                     <Td>

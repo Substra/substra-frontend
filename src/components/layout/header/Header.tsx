@@ -45,12 +45,10 @@ const NAV_ITEMS = [
         label: 'Compute plans',
         href: PATHS.COMPUTE_PLANS,
         paths: [
-            PATHS.COMPUTE_PLAN,
             PATHS.COMPUTE_PLAN_CHART,
             PATHS.COMPUTE_PLAN_TASK,
             PATHS.COMPUTE_PLAN_TASKS,
             PATHS.COMPUTE_PLANS,
-            PATHS.COMPUTE_PLANS_DETAILS,
             PATHS.COMPARE,
         ],
     },
@@ -100,9 +98,7 @@ const Header = (): JSX.Element => {
 
     const isMainRouteActive = !isActive([
         PATHS.COMPARE,
-        PATHS.COMPUTE_PLAN,
         PATHS.COMPUTE_PLAN_CHART,
-        PATHS.COMPUTE_PLAN_DETAILS,
         PATHS.COMPUTE_PLAN_TASKS,
         PATHS.COMPUTE_PLAN_TASK,
     ]);

@@ -1,6 +1,19 @@
-import ComputePlanSider from './components/ComputePlansSider';
-import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import {
+    VStack,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    Td,
+    Box,
+    Button,
+    HStack,
+    Text,
+    Progress,
+    Flex,
+    Skeleton,
+} from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
@@ -11,8 +24,7 @@ import {
     useAppSelector,
     useSearchFiltersEffect,
 } from '@/hooks';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSelection from '@/hooks/useSelection';
 
@@ -24,49 +36,10 @@ import {
     CreationDateTd,
 } from '@/components/CreationDateTableCells';
 import SearchBar from '@/components/SearchBar';
-import Skeleton from '@/components/Skeleton';
 import Status from '@/components/Status';
 import StatusTableFilter from '@/components/StatusTableFilter';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
-
-import { Colors, Fonts, Spaces } from '@/assets/theme';
-
-const SelectionContainer = styled.div`
-    display: inline-block;
-    font-size: ${Fonts.sizes.smallBody};
-`;
-
-const SelectionLabel = styled.span`
-    font-style: italic;
-`;
-
-const ClearSelectionButton = styled.button`
-    padding: ${Spaces.extraSmall} ${Spaces.small};
-    margin: 0 ${Spaces.extraSmall};
-    color: ${Colors.primary};
-    cursor: pointer;
-    text-decoration: underline;
-
-    &:disabled {
-        color: ${Colors.veryLightContent};
-        cursor: not-allowed;
-    }
-`;
-
-const CompareSelectionButton = styled.button`
-    padding: ${Spaces.extraSmall} ${Spaces.small};
-    background: ${Colors.primary};
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-
-    &:disabled {
-        background-color: ${Colors.primaryDisabled};
-        cursor: not-allowed;
-    }
-`;
 
 const ComputePlans = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -92,9 +65,10 @@ const ComputePlans = (): JSX.Element => {
         (state) => state.computePlans.computePlansCount
     );
 
-    const key = useKeyFromPath(PATHS.COMPUTE_PLANS_DETAILS);
-
-    useAssetListDocumentTitleEffect('Compute plans list', key);
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle('Compute plans list'),
+        []
+    );
 
     const [selectedKeys, onSelectionChange, resetSelection] = useSelection();
 
@@ -109,48 +83,68 @@ const ComputePlans = (): JSX.Element => {
     };
 
     return (
-        <Box padding="6" marginLeft="auto" marginRight="auto">
-            <ComputePlanSider />
-            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
-                <TableTitle title="Compute plans" />
-                <SearchBar asset="compute_plan" />
-                <SelectionContainer>
-                    <SelectionLabel>
-                        {selectedKeys.length === 1
-                            ? '1 selected compute plan'
-                            : `${selectedKeys.length} selected compute plans`}
-                    </SelectionLabel>
-                    <ClearSelectionButton
-                        onClick={onClear}
-                        disabled={selectedKeys.length === 0}
-                    >
-                        Clear
-                    </ClearSelectionButton>
-                    <CompareSelectionButton
-                        onClick={onCompare}
-                        disabled={selectedKeys.length < 2}
-                    >
-                        Compare
-                    </CompareSelectionButton>
-                </SelectionContainer>
+        <Box width="100%">
+            <VStack
+                padding="6"
+                marginBottom="2.5"
+                spacing="2.5"
+                alignItems="flex-start"
+                width="100%"
+                bg="white"
+            >
+                <Flex width="100%" justifyContent="space-between">
+                    <SearchBar asset="compute_plan" />
+                    <HStack spacing="4">
+                        {selectedKeys.length > 0 && (
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={onClear}
+                                disabled={selectedKeys.length === 0}
+                            >
+                                Clear
+                            </Button>
+                        )}
+                        <Button
+                            marginLeft={16}
+                            size="sm"
+                            colorScheme="teal"
+                            onClick={onCompare}
+                            disabled={selectedKeys.length < 2}
+                        >
+                            {selectedKeys.length < 2
+                                ? 'Select compute plans to Compare'
+                                : `Compare ${selectedKeys.length} compute plans`}
+                        </Button>
+                    </HStack>
+                </Flex>
                 <Box
                     backgroundColor="white"
-                    borderRadius="lg"
-                    borderWidth="1px"
+                    width="100%"
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="sm">
-                        <Thead>
+                    <Table
+                        height={`calc(100vh - 190px)`}
+                        size="md"
+                        overflowX="auto"
+                        overflowY="auto"
+                        display="block"
+                    >
+                        <Thead
+                            position="sticky"
+                            top={0}
+                            backgroundColor="white"
+                            zIndex={1}
+                        >
                             <Tr>
                                 <Th>&nbsp;</Th>
-                                <Th>Creation date</Th>
-                                <Th>Tag</Th>
+                                <Th>Title</Th>
                                 <Th>
-                                    Status
+                                    Status / Tasks
                                     <StatusTableFilter asset="compute_plan" />
                                 </Th>
-                                <Th>Tasks</Th>
+                                <Th>Creation</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -164,17 +158,22 @@ const ComputePlans = (): JSX.Element => {
                                     currentPage={page}
                                 >
                                     <Td>
-                                        <Skeleton width={16} height={16} />
+                                        <Skeleton width="16px" height="16px" />
+                                    </Td>
+                                    <Td>
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum dolor sit amet
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
                                     <CreationDateSkeletonTd />
                                     <Td>
-                                        <Skeleton width={150} height={12} />
-                                    </Td>
-                                    <Td>
-                                        <Skeleton width={150} height={12} />
-                                    </Td>
-                                    <Td>
-                                        <Skeleton width={300} height={12} />
+                                        <Skeleton>
+                                            <Text fontSize="xs">
+                                                YYYY-MM-DD HH:MM:SS
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
                                 </TableSkeleton>
                             ) : (
@@ -184,7 +183,7 @@ const ComputePlans = (): JSX.Element => {
                                         onClick={() =>
                                             setLocationWithParams(
                                                 compilePath(
-                                                    PATHS.COMPUTE_PLANS_DETAILS,
+                                                    PATHS.COMPUTE_PLAN_CHART,
                                                     {
                                                         key: computePlan.key,
                                                     }
@@ -206,21 +205,49 @@ const ComputePlans = (): JSX.Element => {
                                                 }
                                             />
                                         </Td>
+                                        <Td maxWidth="350px">
+                                            <Text size="sm">
+                                                {computePlan.tag}
+                                            </Text>
+                                        </Td>
+                                        <Td minWidth="255px">
+                                            <Flex
+                                                alignItems="center"
+                                                justifyContent="space-between"
+                                            >
+                                                <Status
+                                                    status={computePlan.status}
+                                                    size="sm"
+                                                />
+                                                <Text
+                                                    fontSize="xs"
+                                                    color="gray.600"
+                                                >
+                                                    {computePlan.done_count}/
+                                                    {computePlan.task_count}
+                                                </Text>
+                                            </Flex>
+                                            <Progress
+                                                size="xs"
+                                                colorScheme="teal"
+                                                marginY="2"
+                                                borderRadius="8"
+                                                hasStripe={
+                                                    computePlan.done_count !==
+                                                    computePlan.task_count
+                                                }
+                                                value={
+                                                    (computePlan.done_count /
+                                                        computePlan.task_count) *
+                                                    100
+                                                }
+                                            />
+                                        </Td>
                                         <CreationDateTd
                                             creationDate={
                                                 computePlan.creation_date
                                             }
                                         />
-                                        <Td>{computePlan.tag}</Td>
-                                        <Td>
-                                            <Status
-                                                status={computePlan.status}
-                                            />
-                                        </Td>
-                                        <Td>
-                                            {computePlan.done_count}/
-                                            {computePlan.task_count}
-                                        </Td>
                                     </ClickableTr>
                                 ))
                             )}

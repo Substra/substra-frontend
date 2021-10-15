@@ -72,7 +72,7 @@ type TaskSiderSectionProps = {
 const TaskSiderSection = ({ task }: TaskSiderSectionProps): JSX.Element => {
     return (
         <TaskSiderSectionContainer>
-            <Status status={task.status} />
+            <Status size="sm" status={task.status} />
             <Key>{task.key}</Key>
             {task.status === TupleStatus.failed && (
                 <TaskType>type: {task.category}</TaskType>
