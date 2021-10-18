@@ -39,18 +39,18 @@ const TabsNav = (): JSX.Element => {
     return (
         <HStack paddingLeft={8} paddingRight={8} spacing={5}>
             <TabsNavItem
+                href={compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                    key: computePlanKey,
+                })}
+                label="Details"
+                active={isTasks}
+            />
+            <TabsNavItem
                 href={compilePath(PATHS.COMPUTE_PLAN_CHART, {
                     key: computePlanKey,
                 })}
                 label="Performances"
                 active={isChart}
-            />
-            <TabsNavItem
-                href={compilePath(PATHS.COMPUTE_PLAN_TASKS, {
-                    key: computePlanKey,
-                })}
-                label="Tasks"
-                active={isTasks}
             />
         </HStack>
     );

@@ -35,7 +35,11 @@ const ComputePlanBreadcrumbs = (): JSX.Element => {
                             (computePlan.tag || 'Untagged compute plan')}
                     </Text>
                     {!computePlanLoading && computePlan && (
-                        <Status size="sm" status={computePlan.status} />
+                        <Status
+                            size="sm"
+                            status={computePlan.status}
+                            variant="solid"
+                        />
                     )}
                 </HStack>
             </BreadcrumbItem>

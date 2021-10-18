@@ -13,50 +13,65 @@ import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { getStatusLabel } from '@/libs/status';
 
-interface StatusProps {
-    status: ComputePlanStatus | TupleStatus;
-    size: TagProps['size'];
+interface StatusStyle {
+    colorScheme: string;
+    icon: IconType;
 }
 
-const Status = ({ status, size }: StatusProps): JSX.Element => {
-    let colorScheme = '';
-    let icon: IconType | undefined = undefined;
-
+export const getStatusStyle = (
+    status: TupleStatus | ComputePlanStatus
+): StatusStyle => {
     switch (status) {
         case TupleStatus.canceled:
         case ComputePlanStatus.canceled:
-            icon = RiIndeterminateCircleLine;
-            colorScheme = 'gray';
-            break;
+            return {
+                icon: RiIndeterminateCircleLine,
+                colorScheme: 'gray',
+            };
+
         case TupleStatus.waiting:
         case ComputePlanStatus.waiting:
         case TupleStatus.todo:
         case ComputePlanStatus.todo:
-            icon = RiTimeLine;
-            colorScheme = 'yellow';
-            break;
+            return {
+                icon: RiTimeLine,
+                colorScheme: 'yellow',
+            };
         case TupleStatus.doing:
         case ComputePlanStatus.doing:
-            icon = RiPlayMiniLine;
-            colorScheme = 'blue';
-            break;
+            return {
+                icon: RiPlayMiniLine,
+                colorScheme: 'blue',
+            };
         case TupleStatus.failed:
         case ComputePlanStatus.failed:
-            icon = RiAlertLine;
-            colorScheme = 'red';
-            break;
+            return {
+                icon: RiAlertLine,
+                colorScheme: 'red',
+            };
         case TupleStatus.done:
         case ComputePlanStatus.done:
-            icon = RiCheckLine;
-            colorScheme = 'green';
-            break;
+            return {
+                icon: RiCheckLine,
+                colorScheme: 'teal',
+            };
         default:
-            break;
+            throw 'Unknown status';
     }
+};
+
+interface StatusProps {
+    status: ComputePlanStatus | TupleStatus;
+    size: TagProps['size'];
+    variant?: TagProps['variant'];
+}
+
+const Status = ({ status, size, variant }: StatusProps): JSX.Element => {
+    const { icon, colorScheme } = getStatusStyle(status);
 
     return (
-        <Tag size={size} colorScheme={colorScheme}>
-            <TagLeftIcon as={icon} />
+        <Tag size={size} colorScheme={colorScheme} variant={variant}>
+            <TagLeftIcon as={icon} marginRight={1} />
             <TagLabel>{getStatusLabel(status)}</TagLabel>
         </Tag>
     );

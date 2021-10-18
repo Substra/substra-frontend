@@ -71,7 +71,6 @@ export function buildSeries(
     const series: SerieT[] = [];
 
     for (const testtuple of testtuples) {
-        console.log(testtuple);
         for (const metricKey of testtuple.test.metric_keys) {
             const point: PointT = {
                 rank: testtuple.rank,

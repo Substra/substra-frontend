@@ -9,7 +9,7 @@ export default ({
     title: string;
     children: React.ReactNode;
 }): JSX.Element => (
-    <VStack spacing={5} alignItems="flex-start">
+    <VStack spacing={2.5} alignItems="flex-start">
         <DrawerSectionHeading title={title} />
         {children}
     </VStack>
