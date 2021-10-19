@@ -1,4 +1,4 @@
-import { IconButton } from '@chakra-ui/react';
+import { IconButton, Tooltip } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { RiFullscreenFill } from 'react-icons/ri';
 
@@ -20,6 +20,9 @@ const Container = styled.div`
 const Title = styled.h2`
     font-size: ${Fonts.sizes.h3};
     font-weight: ${Fonts.weights.heavy};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const Row = styled.div`
@@ -43,8 +46,16 @@ const PerformanceCard = ({
         <Container>
             {children}
             <Row>
-                <Title>{title}</Title>
+                <Tooltip
+                    label={title}
+                    fontSize="xs"
+                    hasArrow
+                    placement="bottom"
+                >
+                    <Title>{title}</Title>
+                </Tooltip>
                 <IconButton
+                    marginLeft="1"
                     aria-label="Toggle Fullscreen Mode"
                     icon={<RiFullscreenFill />}
                     onClick={onClickFullScreen}
