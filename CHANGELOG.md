@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New style for the Compute Plans page (#172)
 -   Dataset sider replaced by independent page (#175)
 -   New layout for compute plan tasks (#177)
+-   New design for compute plan tasks table (#178)
 
 ## [0.3.0] - 2021-10-04
 

@@ -64,14 +64,20 @@ interface StatusProps {
     status: ComputePlanStatus | TupleStatus;
     size: TagProps['size'];
     variant?: TagProps['variant'];
+    withIcon?: boolean;
 }
 
-const Status = ({ status, size, variant }: StatusProps): JSX.Element => {
+const Status = ({
+    status,
+    size,
+    variant,
+    withIcon,
+}: StatusProps): JSX.Element => {
     const { icon, colorScheme } = getStatusStyle(status);
 
     return (
         <Tag size={size} colorScheme={colorScheme} variant={variant}>
-            <TagLeftIcon as={icon} marginRight={1} />
+            {withIcon !== false && <TagLeftIcon as={icon} marginRight={1} />}
             <TagLabel>{getStatusLabel(status)}</TagLabel>
         </Tag>
     );

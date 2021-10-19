@@ -43,7 +43,7 @@ const DetailsSidebar = (): JSX.Element => {
                                     fontWeight="semibold"
                                 >
                                     {`${
-                                        computePlan.done_count /
+                                        (100 * computePlan.done_count) /
                                         computePlan.task_count
                                     }%`}
                                 </Text>

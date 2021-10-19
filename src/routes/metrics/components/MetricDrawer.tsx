@@ -16,8 +16,6 @@ import {
 } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 
-import { formatDate } from '@/libs/utils';
-
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
@@ -31,6 +29,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
 import {
     TableDrawerSection,
+    TableDrawerSectionCreatedEntry,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
@@ -94,9 +93,9 @@ const MetricSider = (): JSX.Element => {
                     <DrawerBody as={VStack} alignItems="stretch" spacing="8">
                         <TableDrawerSection title="General">
                             <TableDrawerSectionKeyEntry value={metric.key} />
-                            <TableDrawerSectionEntry title="Created">
-                                {formatDate(metric.creation_date)}
-                            </TableDrawerSectionEntry>
+                            <TableDrawerSectionCreatedEntry
+                                date={metric.creation_date}
+                            />
                             <TableDrawerSectionEntry title="Owner">
                                 {metric.owner}
                             </TableDrawerSectionEntry>
