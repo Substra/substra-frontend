@@ -230,6 +230,7 @@ const Tasks = (): JSX.Element => {
                                             taskTypes[selectedTaskType].count
                                         }
                                         currentPage={page}
+                                        rowHeight="37px"
                                     >
                                         <Td>
                                             <Skeleton>

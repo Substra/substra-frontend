@@ -98,6 +98,7 @@ const Datasets = (): JSX.Element => {
                                 <TableSkeleton
                                     itemCount={datasetsCount}
                                     currentPage={page}
+                                    rowHeight="73px"
                                 >
                                     <Td>
                                         <Skeleton>

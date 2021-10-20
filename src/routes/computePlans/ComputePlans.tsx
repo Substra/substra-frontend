@@ -156,6 +156,7 @@ const ComputePlans = (): JSX.Element => {
                                 <TableSkeleton
                                     itemCount={computePlansCount}
                                     currentPage={page}
+                                    rowHeight="73px"
                                 >
                                     <Td>
                                         <Skeleton width="16px" height="16px" />

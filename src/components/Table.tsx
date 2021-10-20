@@ -30,11 +30,13 @@ interface TableSkeletonProps {
     children: React.ReactNode;
     currentPage: number;
     itemCount: number;
+    rowHeight: string;
 }
 export const TableSkeleton = ({
     children,
     currentPage,
     itemCount,
+    rowHeight,
 }: TableSkeletonProps): JSX.Element => {
     let nbRows = DEFAULT_PAGE_SIZE;
     const lastPage = Math.ceil(itemCount / DEFAULT_PAGE_SIZE);
@@ -47,7 +49,9 @@ export const TableSkeleton = ({
     return (
         <Fragment>
             {[...Array(nbRows)].map((_, index) => (
-                <Tr key={index}>{children}</Tr>
+                <Tr key={index} height={rowHeight}>
+                    {children}
+                </Tr>
             ))}
         </Fragment>
     );

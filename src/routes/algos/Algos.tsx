@@ -86,6 +86,7 @@ const Algos = (): JSX.Element => {
                                 <TableSkeleton
                                     itemCount={algosCount}
                                     currentPage={page}
+                                    rowHeight="49px"
                                 >
                                     <CreationDateSkeletonTd />
                                     <Td>

@@ -101,6 +101,7 @@ const Metrics = (): JSX.Element => {
                                 <TableSkeleton
                                     itemCount={metricsCount}
                                     currentPage={page}
+                                    rowHeight="73px"
                                 >
                                     <Td>
                                         <Skeleton>
