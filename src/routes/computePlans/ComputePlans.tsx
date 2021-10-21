@@ -184,7 +184,7 @@ const ComputePlans = (): JSX.Element => {
                                         onClick={() =>
                                             setLocationWithParams(
                                                 compilePath(
-                                                    PATHS.COMPUTE_PLAN_CHART,
+                                                    PATHS.COMPUTE_PLAN_TASKS,
                                                     {
                                                         key: computePlan.key,
                                                     }
