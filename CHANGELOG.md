@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New layout for compute plan tasks (#177)
 -   New design for compute plan tasks table (#178)
 -   New design for algos table and drawer (#187)
+-   New design for tasks table (#186)
 
 ## [0.3.0] - 2021-10-04
 
