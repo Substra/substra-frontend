@@ -1,8 +1,21 @@
-import AlgoSider from './components/AlgoSider';
-import { VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
+import AlgoDrawer from './components/AlgoDrawer';
+import {
+    VStack,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    Td,
+    Box,
+    Text,
+    Skeleton,
+} from '@chakra-ui/react';
 
 import { listAlgos } from '@/modules/algos/AlgosSlice';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
+
+import { formatDate } from '@/libs/utils';
 
 import {
     useAppDispatch,
@@ -15,14 +28,8 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-} from '@/components/CreationDateTableCells';
-import { OwnerTableFilter } from '@/components/NodeTableFilters';
-import PermissionCellContent from '@/components/PermissionCellContent';
+import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
-import Skeleton from '@/components/Skeleton';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
@@ -48,7 +55,7 @@ const Algos = (): JSX.Element => {
 
     return (
         <Box marginLeft="auto" marginRight="auto" padding="6">
-            <AlgoSider />
+            <AlgoDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Algorithms" />
                 <SearchBar asset="algo" />
@@ -59,47 +66,60 @@ const Algos = (): JSX.Element => {
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="sm">
+                    <Table size="md" minWidth="870px">
                         <Thead>
                             <Tr>
-                                <Th>Creation date</Th>
+                                <Th>Name / Creation / Owner</Th>
                                 <Th>Category</Th>
-                                <Th>Name</Th>
-                                <Th>
-                                    Owner
-                                    <OwnerTableFilter
-                                        assets={[
-                                            'algo',
-                                            'composite_algo',
-                                            'aggregate_algo',
-                                        ]}
-                                    />
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Processable by
                                 </Th>
-                                <Th>Permissions</Th>
+                                <Th
+                                    textAlign="right"
+                                    width="1px"
+                                    whiteSpace="nowrap"
+                                >
+                                    Downloadable by
+                                </Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={5} />
+                                <EmptyTr nbColumns={4} />
                             )}
                             {algosLoading ? (
                                 <TableSkeleton
                                     itemCount={algosCount}
                                     currentPage={page}
-                                    rowHeight="49px"
+                                    rowHeight="73px"
                                 >
-                                    <CreationDateSkeletonTd />
                                     <Td>
-                                        <Skeleton width={80} height={12} />
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum dolor sit amet
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                Created on YYYY-MM-DD HH:MM:SS
+                                                by Foo
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
                                     <Td>
-                                        <Skeleton width={500} height={12} />
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum
+                                            </Text>
+                                        </Skeleton>
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={80} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
-                                    <Td>
-                                        <Skeleton width={150} height={12} />
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                 </TableSkeleton>
                             ) : (
@@ -114,15 +134,31 @@ const Algos = (): JSX.Element => {
                                             )
                                         }
                                     >
-                                        <CreationDateTd
-                                            creationDate={algo.creation_date}
-                                        />
-                                        <Td>{getAlgoCategory(algo)}</Td>
-                                        <Td>{algo.name}</Td>
-                                        <Td>{algo.owner}</Td>
                                         <Td>
-                                            <PermissionCellContent
-                                                permissions={algo.permissions}
+                                            <Text fontSize="sm">
+                                                {algo.name}
+                                            </Text>
+                                            <Text fontSize="xs">{`Created on ${formatDate(
+                                                algo.creation_date
+                                            )} by ${algo.owner}`}</Text>
+                                        </Td>
+                                        <Td>
+                                            <Text fontSize="sm">
+                                                {getAlgoCategory(algo)}
+                                            </Text>
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    algo.permissions.process
+                                                }
+                                            />
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    algo.permissions.download
+                                                }
                                             />
                                         </Td>
                                     </ClickableTr>
