@@ -1,38 +1,41 @@
 import { PaginatedApiResponse } from '../common/CommonTypes';
 import TasksApi from './TasksApi';
 import {
-    AggregatetupleT,
-    AnyTupleT,
-    CompositeTraintupleT,
-    TesttupleT,
-    TraintupleT,
+    Aggregatetuple,
+    AggregatetupleStub,
+    CompositeTraintuple,
+    CompositeTraintupleStub,
+    Testtuple,
+    TesttupleStub,
+    Traintuple,
+    TraintupleStub,
 } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface TasksState {
-    trainTasks: TraintupleT[];
+    trainTasks: TraintupleStub[];
     trainTasksCount: number;
     trainTasksLoading: boolean;
     trainTasksError: string;
 
-    testTasks: TesttupleT[];
+    testTasks: TesttupleStub[];
     testTasksCount: number;
     testTasksLoading: boolean;
     testTasksError: string;
 
-    compositeTasks: CompositeTraintupleT[];
+    compositeTasks: CompositeTraintupleStub[];
     compositeTasksCount: number;
     compositeTasksLoading: boolean;
     compositeTasksError: string;
 
-    aggregateTasks: AggregatetupleT[];
+    aggregateTasks: AggregatetupleStub[];
     aggregateTasksCount: number;
     aggregateTasksLoading: boolean;
     aggregateTasksError: string;
 
-    task: AnyTupleT | null;
+    task: Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple | null;
     taskLoading: boolean;
     taskError: string;
 }
@@ -68,7 +71,7 @@ export interface listTasksArgs {
     page?: number;
 }
 export const listTrainTasks = createAsyncThunk<
-    PaginatedApiResponse<TraintupleT>,
+    PaginatedApiResponse<TraintupleStub>,
     listTasksArgs,
     { rejectValue: string }
 >(
@@ -91,7 +94,7 @@ export const listTrainTasks = createAsyncThunk<
 );
 
 export const listTestTasks = createAsyncThunk<
-    PaginatedApiResponse<TesttupleT>,
+    PaginatedApiResponse<TesttupleStub>,
     listTasksArgs,
     { rejectValue: string }
 >('tasks/listTestTasks', async ({ filters, page }: listTasksArgs, thunkAPI) => {
@@ -108,7 +111,7 @@ export const listTestTasks = createAsyncThunk<
 });
 
 export const listCompositeTasks = createAsyncThunk<
-    PaginatedApiResponse<CompositeTraintupleT>,
+    PaginatedApiResponse<CompositeTraintupleStub>,
     listTasksArgs,
     { rejectValue: string }
 >(
@@ -135,7 +138,7 @@ export const listCompositeTasks = createAsyncThunk<
 );
 
 export const listAggregateTasks = createAsyncThunk<
-    PaginatedApiResponse<AggregatetupleT>,
+    PaginatedApiResponse<AggregatetupleStub>,
     listTasksArgs,
     { rejectValue: string }
 >(
@@ -162,7 +165,7 @@ export const listAggregateTasks = createAsyncThunk<
 );
 
 export const retrieveTask = createAsyncThunk<
-    AnyTupleT,
+    Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple,
     string,
     { rejectValue: string }
 >('tasks/get', async (key: string, thunkAPI) => {

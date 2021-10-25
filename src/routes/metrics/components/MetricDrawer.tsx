@@ -34,7 +34,7 @@ import {
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
 
-const MetricSider = (): JSX.Element => {
+const MetricDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const key = useKeyFromPath(PATHS.METRIC);
@@ -124,4 +124,4 @@ const MetricSider = (): JSX.Element => {
     );
 };
 
-export default MetricSider;
+export default MetricDrawer;

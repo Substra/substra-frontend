@@ -1,3 +1,5 @@
+import { DatasetStubType } from '../datasets/DatasetsTypes';
+import { MetricType } from '../metrics/MetricsTypes';
 import { Model } from './ModelsTypes';
 
 import { AlgoT } from '@/modules/algos/AlgosTypes';
@@ -19,7 +21,7 @@ export enum TaskCategory {
     aggregate = 'TASK_AGGREGATE',
 }
 
-interface BaseTupleT {
+interface BaseTupleStub {
     key: string;
     category: TaskCategory;
     creation_date: string;
@@ -34,43 +36,92 @@ interface BaseTupleT {
     worker: string;
 }
 
-export interface CompositeTraintupleT extends BaseTupleT {
-    composite: {
-        data_manager_key: string;
-        data_sample_keys: string[];
-        head_permissions: PermissionsType;
-        trunk_permissions: PermissionsType;
-        models?: Model[];
-    };
+interface BaseTuple extends BaseTupleStub {
+    parent_tasks: (
+        | TraintupleStub
+        | CompositeTraintupleStub
+        | AggregatetupleStub
+    )[];
 }
 
-export interface AggregatetupleT extends BaseTupleT {
-    aggregate: {
-        model_permissions: PermissionsType;
-        models?: Model[];
-    };
+export interface CompositeDetailsStub {
+    data_manager_key: string;
+    data_sample_keys: string[];
+    head_permissions: PermissionsType;
+    trunk_permissions: PermissionsType;
+    models?: Model[];
 }
 
-export interface TesttupleT extends BaseTupleT {
-    test: {
-        data_manager_key: string;
-        data_sample_keys: string[];
-        metric_keys: string[];
-        perfs: Record<string, number>;
-    };
+export interface CompositeDetails extends CompositeDetailsStub {
+    data_manager: DatasetStubType;
 }
 
-export interface TraintupleT extends BaseTupleT {
-    train: {
-        data_manager_key: string;
-        data_sample_keys: string[];
-        model_permissions: PermissionsType;
-        models?: Model[];
-    };
+export interface CompositeTraintupleStub extends BaseTupleStub {
+    composite: CompositeDetailsStub;
+}
+
+export interface CompositeTraintuple extends BaseTuple {
+    composite: CompositeDetails;
+}
+
+export interface AggregateDetails {
+    model_permissions: PermissionsType;
+    models?: Model[];
+}
+
+export interface AggregatetupleStub extends BaseTupleStub {
+    aggregate: AggregateDetails;
+}
+
+export interface Aggregatetuple extends BaseTuple {
+    aggregate: AggregateDetails;
+}
+
+export interface TestDetailsStub {
+    data_manager_key: string;
+    data_sample_keys: string[];
+    metric_keys: string[];
+    perfs: Record<string, number>;
+}
+
+export interface TestDetails extends TestDetailsStub {
+    data_manager: DatasetStubType;
+    metrics: MetricType[];
+}
+
+export interface TesttupleStub extends BaseTupleStub {
+    test: TestDetailsStub;
+}
+
+export interface Testtuple extends BaseTuple {
+    test: TestDetails;
+}
+
+export interface TrainDetailsStub {
+    data_manager_key: string;
+    data_sample_keys: string[];
+    model_permissions: PermissionsType;
+    models?: Model[];
+}
+
+export interface TrainDetails extends TrainDetailsStub {
+    data_manager: DatasetStubType;
+}
+
+export interface TraintupleStub extends BaseTupleStub {
+    train: TrainDetailsStub;
+}
+
+export interface Traintuple extends BaseTuple {
+    train: TrainDetails;
 }
 
 export type AnyTupleT =
-    | TraintupleT
-    | CompositeTraintupleT
-    | AggregatetupleT
-    | TesttupleT;
+    | TraintupleStub
+    | Traintuple
+    | CompositeTraintupleStub
+    | CompositeTraintuple
+    | AggregatetupleStub
+    | Aggregatetuple
+    | TesttupleStub
+    | Testtuple;

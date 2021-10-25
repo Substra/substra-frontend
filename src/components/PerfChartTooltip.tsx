@@ -10,10 +10,10 @@ import {
     retrieveTraintuple,
 } from '@/modules/tasks/TasksApi';
 import {
-    AggregatetupleT,
-    CompositeTraintupleT,
+    Aggregatetuple,
+    CompositeTraintupleStub,
     TaskCategory,
-    TraintupleT,
+    TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
 import { downloadFromApi } from '@/libs/request';
@@ -128,7 +128,7 @@ const DownloadModel = ({
 
 async function retrieveTask(
     key: string
-): Promise<TraintupleT | CompositeTraintupleT | AggregatetupleT> {
+): Promise<TraintupleStub | CompositeTraintupleStub | Aggregatetuple> {
     let response;
     try {
         response = await retrieveTraintuple(key);

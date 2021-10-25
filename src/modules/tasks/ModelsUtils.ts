@@ -1,25 +1,28 @@
 import { Model, ModelCategory } from './ModelsTypes';
 import {
-    AggregatetupleT,
-    CompositeTraintupleT,
-    TraintupleT,
+    Aggregatetuple,
+    CompositeTraintupleStub,
+    TraintupleStub,
 } from './TuplesTypes';
 
 import {
-    isAggregatetupleT,
-    isCompositeTraintupleT,
-    isTraintupleT,
+    isAggregatetuple,
+    isCompositeTraintupleStub,
+    isTraintupleStub,
 } from '@/libs/tuples';
 
-type TupleWithModels = TraintupleT | CompositeTraintupleT | AggregatetupleT;
+type TupleWithModels =
+    | TraintupleStub
+    | CompositeTraintupleStub
+    | Aggregatetuple;
 
 export function getModels(task: TupleWithModels): Model[] {
     let models;
-    if (isAggregatetupleT(task)) {
+    if (isAggregatetuple(task)) {
         models = task.aggregate.models;
-    } else if (isCompositeTraintupleT(task)) {
+    } else if (isCompositeTraintupleStub(task)) {
         models = task.composite.models;
-    } else if (isTraintupleT(task)) {
+    } else if (isTraintupleStub(task)) {
         models = task.train.models;
     }
     return models || [];

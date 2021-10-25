@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New design for algos table and drawer (#187)
 -   New design for tasks table (#186)
 -   Make tasks the default compute plan tab (#195)
+-   New design for compute plan tasks drawer (#179)
 
 ## [0.3.0] - 2021-10-04
 

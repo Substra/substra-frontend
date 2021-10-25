@@ -32,7 +32,7 @@ import {
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
 
-const AlgoSider = (): JSX.Element => {
+const AlgoDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const key = useKeyFromPath(PATHS.ALGO);
@@ -123,4 +123,4 @@ const AlgoSider = (): JSX.Element => {
     );
 };
 
-export default AlgoSider;
+export default AlgoDrawer;

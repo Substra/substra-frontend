@@ -3,10 +3,10 @@ import { AxiosPromise } from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
-    AggregatetupleT,
-    CompositeTraintupleT,
-    TesttupleT,
-    TraintupleT,
+    Aggregatetuple,
+    CompositeTraintupleStub,
+    TesttupleStub,
+    TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
 import API, { getApiOptions } from '@/libs/request';
@@ -35,7 +35,7 @@ export const listComputePlanTesttuples = (
     searchFilters: SearchFilterType[],
     page: number,
     pageSize?: number
-): AxiosPromise<PaginatedApiResponse<TesttupleT>> => {
+): AxiosPromise<PaginatedApiResponse<TesttupleStub>> => {
     return API.authenticatedGet(
         URLS.LIST_TESTTUPLES.replace('__KEY__', key),
         getApiOptions(searchFilters, page, pageSize)
@@ -46,7 +46,7 @@ export const listComputePlanTraintuples = (
     searchFilters: SearchFilterType[],
     page: number,
     pageSize?: number
-): AxiosPromise<PaginatedApiResponse<TraintupleT>> => {
+): AxiosPromise<PaginatedApiResponse<TraintupleStub>> => {
     return API.authenticatedGet(
         URLS.LIST_TRAINTUPLES.replace('__KEY__', key),
         getApiOptions(searchFilters, page, pageSize)
@@ -57,7 +57,7 @@ export const listComputePlanCompositeTraintuples = (
     searchFilters: SearchFilterType[],
     page: number,
     pageSize?: number
-): AxiosPromise<PaginatedApiResponse<CompositeTraintupleT>> => {
+): AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>> => {
     return API.authenticatedGet(
         URLS.LIST_COMPOSITE_TRAINTUPLES.replace('__KEY__', key),
         getApiOptions(searchFilters, page, pageSize)
@@ -68,7 +68,7 @@ export const listComputePlanAggregatetuples = (
     searchFilters: SearchFilterType[],
     page: number,
     pageSize?: number
-): AxiosPromise<PaginatedApiResponse<AggregatetupleT>> => {
+): AxiosPromise<PaginatedApiResponse<Aggregatetuple>> => {
     return API.authenticatedGet(
         URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
         getApiOptions(searchFilters, page, pageSize)

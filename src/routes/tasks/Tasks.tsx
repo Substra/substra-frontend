@@ -1,4 +1,4 @@
-import TaskSider from './components/TaskSider';
+import TaskDrawer from './components/TaskDrawer';
 import { VStack, Box } from '@chakra-ui/react';
 
 import {
@@ -73,7 +73,7 @@ const Tasks = (): JSX.Element => {
 
     return (
         <Box padding="6" marginLeft="auto" marginRight="auto">
-            <TaskSider />
+            <TaskDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Tasks" />
                 <TasksTable

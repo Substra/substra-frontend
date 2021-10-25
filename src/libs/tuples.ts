@@ -1,10 +1,14 @@
 import {
-    AggregatetupleT,
+    Aggregatetuple,
+    AggregatetupleStub,
     AnyTupleT,
-    CompositeTraintupleT,
+    CompositeTraintuple,
+    CompositeTraintupleStub,
     TaskCategory,
-    TesttupleT,
-    TraintupleT,
+    Testtuple,
+    TesttupleStub,
+    Traintuple,
+    TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
 const isTuple = (task: unknown): task is AnyTupleT => {
@@ -27,7 +31,7 @@ const isTuple = (task: unknown): task is AnyTupleT => {
     );
 };
 
-export const isTraintupleT = (task: unknown): task is TraintupleT => {
+export const isTraintupleStub = (task: unknown): task is TraintupleStub => {
     if (!isTuple(task)) {
         return false;
     }
@@ -35,7 +39,15 @@ export const isTraintupleT = (task: unknown): task is TraintupleT => {
     return task.category === TaskCategory.train;
 };
 
-export const isTesttupleT = (task: unknown): task is TesttupleT => {
+export const isTraintuple = (task: unknown): task is Traintuple => {
+    if (!isTraintupleStub(task)) {
+        return false;
+    }
+
+    return (task as Traintuple).train.data_manager !== undefined;
+};
+
+export const isTesttupleStub = (task: unknown): task is TesttupleStub => {
     if (!isTuple(task)) {
         return false;
     }
@@ -43,9 +55,19 @@ export const isTesttupleT = (task: unknown): task is TesttupleT => {
     return task.category === TaskCategory.test;
 };
 
-export const isCompositeTraintupleT = (
+export const isTesttuple = (task: unknown): task is Testtuple => {
+    if (!isTesttupleStub(task)) {
+        return false;
+    }
+    return (
+        (task as Testtuple).test.data_manager !== undefined &&
+        (task as Testtuple).test.metrics !== undefined
+    );
+};
+
+export const isCompositeTraintupleStub = (
     task: unknown
-): task is CompositeTraintupleT => {
+): task is CompositeTraintupleStub => {
     if (!isTuple(task)) {
         return false;
     }
@@ -53,10 +75,29 @@ export const isCompositeTraintupleT = (
     return task.category === TaskCategory.composite;
 };
 
-export const isAggregatetupleT = (task: unknown): task is AggregatetupleT => {
+export const isCompositeTraintuple = (
+    task: unknown
+): task is CompositeTraintuple => {
+    if (!isCompositeTraintupleStub(task)) {
+        return false;
+    }
+
+    return (task as CompositeTraintuple).composite.data_manager !== undefined;
+};
+
+export const isAggregatetupleStub = (
+    task: unknown
+): task is AggregatetupleStub => {
     if (!isTuple(task)) {
         return false;
     }
 
     return task.category === TaskCategory.aggregate;
+};
+
+export const isAggregatetuple = (task: unknown): task is Aggregatetuple => {
+    if (!isAggregatetupleStub(task)) {
+        return false;
+    }
+    return (task as Aggregatetuple).parent_tasks !== undefined;
 };

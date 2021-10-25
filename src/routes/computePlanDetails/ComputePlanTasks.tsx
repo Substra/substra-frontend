@@ -13,11 +13,18 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
-import TaskSider from '@/routes/tasks/components/TaskSider';
+import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 const ComputePlanTasks = (): JSX.Element => {
-    const [, params] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
-    const key = params?.key;
+    const [isTasks, tasksParams] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
+    const [isTask, taskParams] = useRoute(PATHS.COMPUTE_PLAN_TASK);
+
+    let key: string | undefined;
+    if (isTasks) {
+        key = tasksParams?.key;
+    } else if (isTask) {
+        key = taskParams?.key;
+    }
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle(`${key} (compute plan)`),
@@ -37,7 +44,7 @@ const ComputePlanTasks = (): JSX.Element => {
 
     return (
         <Flex direction="column" alignItems="stretch" flexGrow={1}>
-            <TaskSider />
+            <TaskDrawer />
             <Box
                 background="white"
                 borderBottomColor="gray.100"

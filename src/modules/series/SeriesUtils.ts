@@ -2,10 +2,10 @@ import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import { TesttupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TesttupleStub, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 function buildSerieFeatures(
-    testtuple: TesttupleT,
+    testtuple: TesttupleStub,
     dataset: DatasetStubType,
     metric: MetricType
 ): SerieFeaturesT {
@@ -59,7 +59,7 @@ function findSerie(
 }
 
 export function buildSeries(
-    testtuples: TesttupleT[],
+    testtuples: TesttupleStub[],
     datasets: DatasetStubType[],
     metrics: MetricType[]
 ): SerieT[] {

@@ -9,7 +9,7 @@ import { AxiosPromise } from 'axios';
 import MetricsApi from '@/modules//metrics/MetricsApi';
 import DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import { TesttupleT } from '@/modules/tasks/TuplesTypes';
+import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
 import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
@@ -53,11 +53,11 @@ const getComputePlanSeries = async (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rejectWithValue: (value: string) => any
 ) => {
-    let testtuples: TesttupleT[];
+    let testtuples: TesttupleStub[];
 
     try {
         testtuples = await getAllPagesResults<
-            TesttupleT,
+            TesttupleStub,
             [string, SearchFilterType[]]
         >(ComputePlansApi.listComputePlanTesttuples, [computePlanKey, []], 100);
     } catch (err) {
