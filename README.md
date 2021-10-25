@@ -2,7 +2,9 @@
 
 ## Running the frontend in a local kubernetes cluster in prod mode
 
-1. Make sure `substra-frontend.node-1.com` and `substra-frontend.node-2.com` are pointing to the cluster's ip (`minikube ip`) in your `/etc/hosts`
+1. Make sure `substra-frontend.node-1.com` and `substra-frontend.node-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
+   a. If you use minikube, `minikube ip` will give you the cluster's ip
+   b. If you use k3s, the cluster ip is `127.0.0.1`
 2. Run `skaffold run`
 3. Access the frontend at `http://substra-frontend.node-1.com`
 
@@ -14,54 +16,38 @@
 4. Run `npm run dev`
 5. Access the frontend at `http://substra-frontend.node-1.com:3000`
 
-## Using a specific branch / commit of the backend and/or chaincode
+## Using a specific branch / commit of the backend and/or orchestrator
 
-Many developments done in the frontend go hand in hand with API changes coming from either the backend or the chaincode. These changes aren't always available in the last release and sometimes aren't even merged in the `master`/`main` branches. In order to use them, you'll need to:
+Many developments done in the frontend go hand in hand with API changes coming from either the backend or the orchestrator. These changes aren't always available in the last release and sometimes aren't even merged in the `master` branches. In order to use them, you'll need to:
 
-### Backend
+1. Check out the branches / commits in your local clones of the repos
+2. In each repo, run `skaffold run` (with your usual options, for example `-p single-org` for `connect-backend`)
 
-1. Check out the branch / commit in your local `connect-backend` folder
-2. Run `skaffold run` (with your usual options, for example `-p single-org`) in the `connect-backend` folder
+## Dumping / restoring data
 
-### Chaincode
+To **dump** the orchestrator DB into `orchestrator.sql`:
 
-1. Check out the branch / commit in your local `connect-chaincode` folder
-2. Make sure there is already a minikube cluster running
-3. Run `eval $(minikube -p minikube docker-env)`
-4. Build the chaincode image: in the `connect-chaincode` folder, run `docker build -t substrafoundation/substra-chaincode:TAG ./`, replacing `TAG` with the tag
+```sh
+kubectl exec -n org-1 -i owkin-orchestrator-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/orchestrator > orchestrator.sql
+```
 
-    For example:
+To **dump** the backend DB of org-1 into `connect-backend.sql`:
 
-    ```sh
-    docker build -t substrafoundation/substra-chaincode:update-date ./
-    ```
+```sh
+kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/substra > connect-backend.sql
+```
 
-5. In the `connect-hlf-k8s` folder, replace the `tag` value of the `substrafoundation/substra-chaincode` image entries in the value files that match you deployment.
+To **restore** the orchestrator DB from `orchestrator.sql`:
 
-    For 1 and 2 orgs setup, this means updating the files:
+```sh
+cat orchestrator.sql| kubectl exec -n org-1 -i owkin-orchestrator-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/orchestrator
+```
 
-    - `examples/2-orgs-policy-any-no-ca/values/org-1-peer-1.yaml`
-    - `examples/2-orgs-policy-any-no-ca/values/org-2-peer-1.yaml`
-    - `examples/2-orgs-policy-any/values/org-1-peer-1.yaml`
-    - `examples/2-orgs-policy-any/values/org-2-peer-1.yaml`
+To **restore** the backend DB of org-1 from `connect-backend.sql`:
 
-    Example for the update:
-
-    ```diff
-    diff --git a/examples/2-orgs-policy-any-no-ca/values/org-1-peer-1.yaml b/examples/2-orgs-policy-any-no-ca/values/org-1-peer-1.yaml
-    index b11635f..298ca60 100644
-    --- a/examples/2-orgs-policy-any-no-ca/values/org-1-peer-1.yaml
-    +++ b/examples/2-orgs-policy-any-no-ca/values/org-1-peer-1.yaml
-    @@ -30,7 +30,7 @@ chaincodes:
-         version: "1.0"
-         image:
-           repository: substrafoundation/substra-chaincode
-    -      tag: 0.3.0
-    +      tag: update-date
-           pullPolicy: IfNotPresent
-       - name: yourcc
-         address: network-org-1-peer-1-hlf-k8s-chaincode-yourcc.org-1.svc.cluster.local
-    ```
+```sh
+cat connect-backend.sql| kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/substra
+```
 
 ## Development setup
 
