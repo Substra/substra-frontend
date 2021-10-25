@@ -25,8 +25,8 @@ describe('Login page', () => {
         cy.get('input[type=password').type(Cypress.env('PASSWORD'));
         cy.get('button[type=submit]').click();
 
-        // should be redirects to datasets pages
-        cy.url().should('include', '/datasets');
+        // should be redirects to compute plans page
+        cy.url().should('include', '/compute_plans');
 
         // should have cookies
         cy.getCookie('refresh').should('not.be.null');

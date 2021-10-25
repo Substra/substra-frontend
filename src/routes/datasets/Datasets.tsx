@@ -104,7 +104,7 @@ const Datasets = (): JSX.Element => {
                                 </Th>
                             </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody data-cy={datasetsLoading ? 'loading' : 'loaded'}>
                             {!datasetsLoading && datasets.length === 0 && (
                                 <EmptyTr nbColumns={3} />
                             )}

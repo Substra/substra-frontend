@@ -78,7 +78,7 @@ const MetricDrawer = (): JSX.Element => {
             size="md"
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={metric?.name}
                     loading={metricLoading}

@@ -58,7 +58,7 @@ export const ROUTES: Record<string, IRoute> = {
     },
     COMPUTE_PLAN_TASKS: {
         // the following path matches both PATHS.COMPUTE_PLAN_TASKS and PATHS.COMPUTE_PLAN_TASK
-        path: '/compute_plan/:key/tasks/:taskKey?',
+        path: '/compute_plans/:key/tasks/:taskKey?',
         component: ComputePlanTasks,
     },
     DATASET: {

@@ -74,7 +74,7 @@ const AlgoDrawer = (): JSX.Element => {
             size="md"
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={algo?.name}
                     loading={algoLoading}

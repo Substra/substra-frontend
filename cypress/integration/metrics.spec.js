@@ -3,13 +3,15 @@
 describe('Metrics page', () => {
     it('lists metrics', () => {
         cy.visit('/metrics');
-        cy.get('tbody').contains('MyOrg1MSP');
+        cy.get('tbody[data-cy=loaded]')
+            .get('tr')
+            .should('have.length.greaterThan', 2);
     });
 
-    it('displays a metric sider', () => {
+    it('displays a metric drawer', () => {
         cy.visit('/metrics');
-        cy.contains('Metric details').should('not.be.visible');
-        cy.get('tbody').contains('MyOrg1MSP').click({ force: true });
-        cy.contains('Metric details').should('be.visible');
+        cy.get('[data-cy=drawer]').should('not.exist');
+        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
+        cy.get('[data-cy=drawer]').should('exist');
     });
 });

@@ -160,7 +160,9 @@ const ComputePlans = (): JSX.Element => {
                                 <Th>Tasks</Th>
                             </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody
+                            data-cy={computePlansLoading ? 'loading' : 'loaded'}
+                        >
                             {!computePlansLoading &&
                                 computePlans.length === 0 && (
                                     <EmptyTr nbColumns={5} />

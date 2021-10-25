@@ -140,7 +140,13 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                     </Th>
                                 </Tr>
                             </Thead>
-                            <Tbody>
+                            <Tbody
+                                data-cy={
+                                    taskTypes[selectedTaskType].loading
+                                        ? 'loading'
+                                        : 'loaded'
+                                }
+                            >
                                 {taskTypes[selectedTaskType].loading && (
                                     <TableSkeleton
                                         itemCount={

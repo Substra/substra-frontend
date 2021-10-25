@@ -3,13 +3,14 @@
 describe('Compute plans page', () => {
     it('lists compute plans', () => {
         cy.visit('/compute_plans');
-        cy.get('tbody').contains('FAILED');
+        cy.get('tbody[data-cy=loaded]')
+            .get('tr')
+            .should('have.length.greaterThan', 2);
     });
 
-    it('displays a compute plan sider', () => {
+    it('navigates to the dedicated compute plan page', () => {
         cy.visit('/compute_plans');
-        cy.contains('Compute plan details').should('not.be.visible');
-        cy.get('tbody').contains('FAILED').click({ force: true });
-        cy.contains('Compute plan details').should('be.visible');
+        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
+        cy.url().should('match', /compute_plans\/.{36}\/tasks/);
     });
 });

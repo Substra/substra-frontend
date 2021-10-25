@@ -107,7 +107,7 @@ const Metrics = (): JSX.Element => {
                                 </Th>
                             </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody data-cy={metricsLoading ? 'loading' : 'loaded'}>
                             {!metricsLoading && metrics.length === 0 && (
                                 <EmptyTr nbColumns={3} />
                             )}

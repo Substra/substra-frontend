@@ -108,7 +108,7 @@ const Algos = (): JSX.Element => {
                                 </Th>
                             </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
                             {!algosLoading && algosCount === 0 && (
                                 <EmptyTr nbColumns={4} />
                             )}

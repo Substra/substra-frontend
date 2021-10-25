@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Automated redirects now replace history state instead of creating a new one (#161)
 -   Table filters do not cancel each other (#168)
 -   Add ellipsis to the Performance card title when it is too long (#182)
+-   Fix routing issue with deprecated /compute_plan/ route (#197)
 
 ### Changed
 

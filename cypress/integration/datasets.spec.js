@@ -3,13 +3,14 @@
 describe('Datasets page', () => {
     it('lists datasets', () => {
         cy.visit('/datasets');
-        cy.get('tbody').contains('MyOrg1MSP');
+        cy.get('tbody[data-cy=loaded]')
+            .get('tr')
+            .should('have.length.greaterThan', 2);
     });
 
-    it('displays a dataset sider', () => {
+    it('navigates to the dedicated dataset page', () => {
         cy.visit('/datasets');
-        cy.contains('Dataset details').should('not.be.visible');
-        cy.get('tbody').contains('MyOrg1MSP').click({ force: true });
-        cy.contains('Dataset details').should('be.visible');
+        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
+        cy.url().should('match', /datasets\/.{36}/);
     });
 });
