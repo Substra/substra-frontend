@@ -1,5 +1,6 @@
 import {
     VStack,
+    HStack,
     Table,
     Thead,
     Tr,
@@ -29,6 +30,11 @@ import { compilePath, PATHS } from '@/routes';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import {
+    OwnerTableFilterTag,
+    TableFilterTags,
+} from '@/components/TableFilterTags';
+import { OwnerTableFilter, TableFilters } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
@@ -62,7 +68,15 @@ const Datasets = (): JSX.Element => {
         <Box padding="6" marginLeft="auto" marginRight="auto">
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Datasets" />
-                <SearchBar asset="dataset" />
+                <HStack spacing="2.5">
+                    <TableFilters asset="dataset">
+                        <OwnerTableFilter />
+                    </TableFilters>
+                    <SearchBar asset="dataset" />
+                </HStack>
+                <TableFilterTags asset="dataset">
+                    <OwnerTableFilterTag />
+                </TableFilterTags>
                 <Box
                     backgroundColor="white"
                     borderRadius="lg"

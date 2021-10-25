@@ -37,8 +37,15 @@ import {
 } from '@/components/CreationDateTableCells';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
-import StatusTableFilter from '@/components/StatusTableFilter';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import {
+    StatusTableFilterTag,
+    TableFilterTags,
+} from '@/components/TableFilterTags';
+import {
+    TableFilters,
+    ComputePlanStatusTableFilter,
+} from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
 const ComputePlans = (): JSX.Element => {
@@ -93,7 +100,12 @@ const ComputePlans = (): JSX.Element => {
                 bg="white"
             >
                 <Flex width="100%" justifyContent="space-between">
-                    <SearchBar asset="compute_plan" />
+                    <HStack spacing="2.5">
+                        <TableFilters asset="compute_plan">
+                            <ComputePlanStatusTableFilter />
+                        </TableFilters>
+                        <SearchBar asset="compute_plan" />
+                    </HStack>
                     <HStack spacing="4">
                         {selectedKeys.length > 0 && (
                             <Button
@@ -118,6 +130,9 @@ const ComputePlans = (): JSX.Element => {
                         </Button>
                     </HStack>
                 </Flex>
+                <TableFilterTags asset="compute_plan">
+                    <StatusTableFilterTag />
+                </TableFilterTags>
                 <Box
                     backgroundColor="white"
                     width="100%"
@@ -139,12 +154,10 @@ const ComputePlans = (): JSX.Element => {
                         >
                             <Tr>
                                 <Th>&nbsp;</Th>
-                                <Th>Title</Th>
-                                <Th>
-                                    Status / Tasks
-                                    <StatusTableFilter asset="compute_plan" />
-                                </Th>
-                                <Th>Creation</Th>
+                                <Th>Creation date</Th>
+                                <Th>Tag</Th>
+                                <Th>Status</Th>
+                                <Th>Tasks</Th>
                             </Tr>
                         </Thead>
                         <Tbody>

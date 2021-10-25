@@ -10,6 +10,7 @@ import {
     Box,
     Text,
     Skeleton,
+    HStack,
 } from '@chakra-ui/react';
 
 import { listAlgos } from '@/modules/algos/AlgosSlice';
@@ -31,6 +32,16 @@ import { compilePath, PATHS } from '@/routes';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import {
+    AlgoCategoryTableFilterTag,
+    OwnerTableFilterTag,
+    TableFilterTags,
+} from '@/components/TableFilterTags';
+import {
+    TableFilters,
+    OwnerTableFilter,
+    AlgoCategoryTableFilter,
+} from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
@@ -58,7 +69,17 @@ const Algos = (): JSX.Element => {
             <AlgoDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Algorithms" />
-                <SearchBar asset="algo" />
+                <HStack spacing="2.5">
+                    <TableFilters asset="algo">
+                        <OwnerTableFilter />
+                        <AlgoCategoryTableFilter />
+                    </TableFilters>
+                    <SearchBar asset="algo" />
+                </HStack>
+                <TableFilterTags asset="algo">
+                    <AlgoCategoryTableFilterTag />
+                    <OwnerTableFilterTag />
+                </TableFilterTags>
                 <Box
                     backgroundColor="white"
                     borderRadius="lg"

@@ -3,6 +3,7 @@ import { RootState } from '@/store';
 import MetricDrawer from './components/MetricDrawer';
 import {
     VStack,
+    HStack,
     Table,
     Thead,
     Tr,
@@ -33,6 +34,11 @@ import { compilePath, PATHS } from '@/routes';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import {
+    OwnerTableFilterTag,
+    TableFilterTags,
+} from '@/components/TableFilterTags';
+import { OwnerTableFilter, TableFilters } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
@@ -65,7 +71,15 @@ const Metrics = (): JSX.Element => {
             <MetricDrawer />
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Metrics" />
-                <SearchBar asset="metric" />
+                <HStack spacing="2.5">
+                    <TableFilters asset="metric">
+                        <OwnerTableFilter />
+                    </TableFilters>
+                    <SearchBar asset="metric" />
+                </HStack>
+                <TableFilterTags asset="metric">
+                    <OwnerTableFilterTag />
+                </TableFilterTags>
                 <Box
                     backgroundColor="white"
                     borderRadius="lg"

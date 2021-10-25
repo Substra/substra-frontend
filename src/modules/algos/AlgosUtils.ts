@@ -1,6 +1,6 @@
 import { AlgoCategory, AlgoT } from './AlgosTypes';
 
-const CATEGORY_LABEL: Record<AlgoCategory, string> = {
+export const CATEGORY_LABEL: Record<AlgoCategory, string> = {
     ALGO_SIMPLE: 'Simple',
     ALGO_AGGREGATE: 'Aggregate',
     ALGO_COMPOSITE: 'Composite',

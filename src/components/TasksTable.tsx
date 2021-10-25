@@ -2,6 +2,11 @@ import { useState } from 'react';
 
 import SearchBar from './SearchBar';
 import {
+    StatusTableFilterTag,
+    TableFilterTags,
+    WorkerTableFilterTag,
+} from './TableFilterTags';
+import {
     VStack,
     Table,
     Thead,
@@ -15,6 +20,7 @@ import {
     TabList,
     Tab,
     Skeleton,
+    HStack,
 } from '@chakra-ui/react';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 
@@ -29,6 +35,11 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import {
+    TableFilters,
+    TaskStatusTableFilter,
+    WorkerTableFilter,
+} from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
 export interface selectedTaskT {
@@ -67,7 +78,17 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
 
     return (
         <>
-            <SearchBar asset={taskTypes[selectedTaskType].slug} />
+            <HStack spacing="2.5">
+                <TableFilters asset={taskTypes[selectedTaskType].slug}>
+                    <TaskStatusTableFilter />
+                    <WorkerTableFilter />
+                </TableFilters>
+                <SearchBar asset={taskTypes[selectedTaskType].slug} />
+            </HStack>
+            <TableFilterTags asset={taskTypes[selectedTaskType].slug}>
+                <StatusTableFilterTag />
+                <WorkerTableFilterTag />
+            </TableFilterTags>
             <Box>
                 <Tabs
                     index={selectedTaskType}
