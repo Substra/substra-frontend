@@ -97,20 +97,13 @@ const Algos = (): JSX.Element => {
                                     width="1px"
                                     whiteSpace="nowrap"
                                 >
-                                    Processable by
-                                </Th>
-                                <Th
-                                    textAlign="right"
-                                    width="1px"
-                                    whiteSpace="nowrap"
-                                >
-                                    Downloadable by
+                                    Permissions
                                 </Th>
                             </Tr>
                         </Thead>
                         <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
                             {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={4} />
+                                <EmptyTr nbColumns={3} />
                             )}
                             {algosLoading ? (
                                 <TableSkeleton
@@ -135,9 +128,6 @@ const Algos = (): JSX.Element => {
                                                 Lorem ipsum
                                             </Text>
                                         </Skeleton>
-                                    </Td>
-                                    <Td textAlign="right">
-                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                     <Td textAlign="right">
                                         <Skeleton width="100px" height="20px" />
@@ -172,13 +162,6 @@ const Algos = (): JSX.Element => {
                                             <PermissionTag
                                                 permission={
                                                     algo.permissions.process
-                                                }
-                                            />
-                                        </Td>
-                                        <Td textAlign="right">
-                                            <PermissionTag
-                                                permission={
-                                                    algo.permissions.download
                                                 }
                                             />
                                         </Td>

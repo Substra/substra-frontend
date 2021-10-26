@@ -98,15 +98,9 @@ const AlgoDrawer = (): JSX.Element => {
                             <TableDrawerSectionEntry title="Owner">
                                 {algo.owner}
                             </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Processable by">
+                            <TableDrawerSectionEntry title="Permissions">
                                 <PermissionTag
                                     permission={algo.permissions.process}
-                                    listNodes={true}
-                                />
-                            </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Downloadable by">
-                                <PermissionTag
-                                    permission={algo.permissions.download}
                                     listNodes={true}
                                 />
                             </TableDrawerSectionEntry>

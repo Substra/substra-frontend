@@ -96,20 +96,13 @@ const Metrics = (): JSX.Element => {
                                     width="1px"
                                     whiteSpace="nowrap"
                                 >
-                                    Processable by
-                                </Th>
-                                <Th
-                                    textAlign="right"
-                                    width="1px"
-                                    whiteSpace="nowrap"
-                                >
-                                    Downloadable by
+                                    Permissions
                                 </Th>
                             </Tr>
                         </Thead>
                         <Tbody data-cy={metricsLoading ? 'loading' : 'loaded'}>
                             {!metricsLoading && metrics.length === 0 && (
-                                <EmptyTr nbColumns={3} />
+                                <EmptyTr nbColumns={2} />
                             )}
                             {metricsLoading ? (
                                 <TableSkeleton
@@ -127,9 +120,6 @@ const Metrics = (): JSX.Element => {
                                                 by Foo
                                             </Text>
                                         </Skeleton>
-                                    </Td>
-                                    <Td textAlign="right">
-                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                     <Td textAlign="right">
                                         <Skeleton width="100px" height="20px" />
@@ -159,13 +149,6 @@ const Metrics = (): JSX.Element => {
                                             <PermissionTag
                                                 permission={
                                                     metric.permissions.process
-                                                }
-                                            />
-                                        </Td>
-                                        <Td textAlign="right">
-                                            <PermissionTag
-                                                permission={
-                                                    metric.permissions.download
                                                 }
                                             />
                                         </Td>

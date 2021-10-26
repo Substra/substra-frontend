@@ -99,15 +99,9 @@ const MetricDrawer = (): JSX.Element => {
                             <TableDrawerSectionEntry title="Owner">
                                 {metric.owner}
                             </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Processable by">
+                            <TableDrawerSectionEntry title="Permissions">
                                 <PermissionTag
                                     permission={metric.permissions.process}
-                                    listNodes={true}
-                                />
-                            </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Downloadable by">
-                                <PermissionTag
-                                    permission={metric.permissions.download}
                                     listNodes={true}
                                 />
                             </TableDrawerSectionEntry>
