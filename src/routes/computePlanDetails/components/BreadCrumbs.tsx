@@ -1,4 +1,4 @@
-import { BreadcrumbItem, HStack, Text } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
 import { useAppSelector } from '@/hooks';
@@ -21,28 +21,26 @@ const ComputePlanBreadcrumbs = (): JSX.Element => {
             rootLabel="Compute plans"
             rootIcon={RiStackshareLine}
         >
-            <BreadcrumbItem isCurrentPage>
-                <HStack spacing="2.5">
-                    <Text
-                        color="black"
-                        fontSize="sm"
-                        fontWeight="medium"
-                        lineHeight="5"
-                    >
-                        {computePlanLoading && 'Loading'}
-                        {!computePlanLoading &&
-                            computePlan &&
-                            (computePlan.tag || 'Untagged compute plan')}
-                    </Text>
-                    {!computePlanLoading && computePlan && (
-                        <Status
-                            size="sm"
-                            status={computePlan.status}
-                            variant="solid"
-                        />
-                    )}
-                </HStack>
-            </BreadcrumbItem>
+            <HStack spacing="2.5">
+                <Text
+                    color="black"
+                    fontSize="sm"
+                    fontWeight="medium"
+                    lineHeight="5"
+                >
+                    {computePlanLoading && 'Loading'}
+                    {!computePlanLoading &&
+                        computePlan &&
+                        (computePlan.tag || 'Untagged compute plan')}
+                </Text>
+                {!computePlanLoading && computePlan && (
+                    <Status
+                        size="sm"
+                        status={computePlan.status}
+                        variant="solid"
+                    />
+                )}
+            </HStack>
         </Breadcrumbs>
     );
 };

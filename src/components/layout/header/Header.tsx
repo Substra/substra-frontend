@@ -145,21 +145,23 @@ const Header = (): JSX.Element => {
                         {nodeId} • {channel}
                     </Text>
                 </Box>
-                <Menu>
-                    <MenuButton
-                        as={IconButton}
-                        aria-label="Options"
-                        icon={<Icon as={RiUser3Fill} color="gray.400" />}
-                        variant="solid"
-                        colorScheme="gray"
-                        size="sm"
-                    />
-                    <MenuList zIndex="popover">
-                        <MenuItem onClick={handleLogOut}>Logout</MenuItem>
-                        <MenuDivider color="gray.200" />
-                        <HeaderVersions />
-                    </MenuList>
-                </Menu>
+                <Box>
+                    <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label="Options"
+                            icon={<Icon as={RiUser3Fill} color="gray.400" />}
+                            variant="solid"
+                            colorScheme="gray"
+                            size="sm"
+                        />
+                        <MenuList zIndex="popover">
+                            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                            <MenuDivider color="gray.200" />
+                            <HeaderVersions />
+                        </MenuList>
+                    </Menu>
+                </Box>
             </HStack>
         </Flex>
     );

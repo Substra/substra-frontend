@@ -19,7 +19,7 @@
         "test:e2e": "npx cypress run"
     },
     "dependencies": {
-        "@chakra-ui/react": "1.6.6",
+        "@chakra-ui/react": "1.6.10",
         "@emotion/react": "11.4.1",
         "@emotion/styled": "11.3.0",
         "@fontsource/inter": "4.5.0",

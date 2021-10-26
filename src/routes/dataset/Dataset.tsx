@@ -78,6 +78,7 @@ const Dataset = (): JSX.Element => {
                 justifyContent="center"
                 alignItems="flex-start"
                 overflow="auto"
+                flexGrow={1}
             >
                 <VStack spacing="16" width="870px" alignItems="stretch">
                     <Box
