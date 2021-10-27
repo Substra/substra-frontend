@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Download model button in chart tooltip (#145)
 -   Support for multi-metric testtuples (#119)
 -   New filters (#180)
+-   Focus on first tab when opening filters (#207)
 
 ### Fixed
 

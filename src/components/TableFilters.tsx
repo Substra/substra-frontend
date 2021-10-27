@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
     Button,
@@ -47,6 +47,8 @@ export const TableFilters = ({
     const { context, clearAll, applyAll, resetAll } = useTableFilters(asset);
     const { onOpen, onClose, isOpen } = useDisclosure();
 
+    const initialFocusRef = useRef(null);
+
     useEffect(() => {
         resetAll();
     }, [isOpen]);
@@ -72,6 +74,7 @@ export const TableFilters = ({
 
     return (
         <Popover
+            initialFocusRef={initialFocusRef}
             placement="bottom-start"
             isOpen={isOpen}
             onClose={onClose}
@@ -102,7 +105,7 @@ export const TableFilters = ({
                                 boxShadow="xl"
                                 minWidth="160px"
                             >
-                                {tabTitles.map((title) => (
+                                {tabTitles.map((title, index) => (
                                     <Tab
                                         _selected={{
                                             backgroundColor: 'teal.50',
@@ -112,6 +115,9 @@ export const TableFilters = ({
                                         borderRadius="md"
                                         justifyContent="flex-start"
                                         key={title}
+                                        ref={
+                                            index === 0 ? initialFocusRef : null
+                                        }
                                     >
                                         {title}
                                     </Tab>
