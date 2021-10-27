@@ -19,6 +19,8 @@ import { useLocation } from 'wouter';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
+import { formatDate } from '@/libs/utils';
+
 import {
     useAppDispatch,
     useAppSelector,
@@ -31,10 +33,6 @@ import useSelection from '@/hooks/useSelection';
 import { compilePath, PATHS } from '@/routes';
 
 import Checkbox from '@/components/Checkbox';
-import {
-    CreationDateSkeletonTd,
-    CreationDateTd,
-} from '@/components/CreationDateTableCells';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
@@ -154,10 +152,9 @@ const ComputePlans = (): JSX.Element => {
                         >
                             <Tr>
                                 <Th>&nbsp;</Th>
-                                <Th>Creation date</Th>
                                 <Th>Tag</Th>
-                                <Th>Status</Th>
-                                <Th>Tasks</Th>
+                                <Th>Status / Tasks</Th>
+                                <Th>Creation</Th>
                             </Tr>
                         </Thead>
                         <Tbody
@@ -165,7 +162,7 @@ const ComputePlans = (): JSX.Element => {
                         >
                             {!computePlansLoading &&
                                 computePlans.length === 0 && (
-                                    <EmptyTr nbColumns={5} />
+                                    <EmptyTr nbColumns={4} />
                                 )}
                             {computePlansLoading ? (
                                 <TableSkeleton
@@ -183,7 +180,6 @@ const ComputePlans = (): JSX.Element => {
                                             </Text>
                                         </Skeleton>
                                     </Td>
-                                    <CreationDateSkeletonTd />
                                     <Td>
                                         <Skeleton>
                                             <Text fontSize="xs">
@@ -259,11 +255,11 @@ const ComputePlans = (): JSX.Element => {
                                                 }
                                             />
                                         </Td>
-                                        <CreationDateTd
-                                            creationDate={
+                                        <Td>
+                                            {formatDate(
                                                 computePlan.creation_date
-                                            }
-                                        />
+                                            )}
+                                        </Td>
                                     </ClickableTr>
                                 ))
                             )}

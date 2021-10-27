@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix routing issue with deprecated /compute_plan/ route (#197)
 -   Dataset details page now takes full available height (#202)
 -   Removed warning and errors in the console (#202)
+-   Fix number of columns in the compute plan table (#199)
 
 ### Changed
 
