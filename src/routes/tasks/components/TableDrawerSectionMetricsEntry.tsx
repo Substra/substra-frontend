@@ -1,4 +1,4 @@
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, List, ListItem } from '@chakra-ui/react';
 import { Link } from 'wouter';
 
 import { Testtuple } from '@/modules/tasks/TuplesTypes';
@@ -13,19 +13,20 @@ const TableDrawerSectionMetricsEntry = ({
     task: Testtuple;
 }): JSX.Element => (
     <TableDrawerSectionEntry title="Metrics">
-        {task.test.metrics.map((metric, index) => (
-            <>
-                <Link
-                    key={metric.key}
-                    href={compilePath(PATHS.METRIC, {
-                        key: metric.key,
-                    })}
-                >
-                    <ChakraLink color="teal.500">{metric.name}</ChakraLink>
-                </Link>
-                {index !== task.test.metrics.length - 1 && ', '}
-            </>
-        ))}
+        <List>
+            {task.test.metrics.map((metric) => (
+                <ListItem>
+                    <Link
+                        key={metric.key}
+                        href={compilePath(PATHS.METRIC, {
+                            key: metric.key,
+                        })}
+                    >
+                        <ChakraLink color="teal.500">{metric.name}</ChakraLink>
+                    </Link>
+                </ListItem>
+            ))}
+        </List>
     </TableDrawerSectionEntry>
 );
 

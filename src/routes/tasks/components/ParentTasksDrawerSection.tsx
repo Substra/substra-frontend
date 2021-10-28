@@ -46,7 +46,7 @@ const ParenTasksDrawerSection = ({
 
     return (
         <TableDrawerSection title="Parent tasks">
-            <List>
+            <List spacing="1.5">
                 {parentTasks.map((parentTask) => (
                     <ListItem
                         key={parentTask.key}

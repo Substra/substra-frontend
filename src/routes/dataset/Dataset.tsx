@@ -80,7 +80,7 @@ const Dataset = (): JSX.Element => {
                 overflow="auto"
                 flexGrow={1}
             >
-                <VStack spacing="16" width="870px" alignItems="stretch">
+                <VStack spacing="8" width="870px" alignItems="stretch">
                     <Box
                         backgroundColor="white"
                         borderRadius="lg"
