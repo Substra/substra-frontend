@@ -1,6 +1,12 @@
 import { useState } from 'react';
 
-import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
+import {
+    InputGroup,
+    InputLeftElement,
+    Input,
+    InputRightElement,
+    CloseButton,
+} from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
 import { AssetType } from '@/modules/common/CommonTypes';
@@ -29,17 +35,19 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
         if (keySearchFilters.length) {
             const keySearchFilter = keySearchFilters[0];
             setValue(keySearchFilter.value);
+        } else {
+            setValue('');
         }
     }, [searchFilters]);
 
-    const applySearchFilters = (asset: string) => {
+    const applySearchFilters = (value: string) => {
         // preserve all filters that are not on asset key
         const newSearchFilters: SearchFilterType[] = searchFilters.filter(
             (sf) => sf.key !== 'key'
         );
         if (value) {
             newSearchFilters.push({
-                asset: asset as AssetType,
+                asset,
                 key: 'key',
                 value,
             });
@@ -49,7 +57,15 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
 
     const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        applySearchFilters(asset);
+        applySearchFilters(value);
+    };
+
+    const onClear = () => {
+        applySearchFilters('');
+    };
+
+    const onBlur = () => {
+        applySearchFilters(value);
     };
 
     return (
@@ -65,12 +81,16 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
                     placeholder="Search key..."
                     variant="outline"
                     colorScheme="gray"
-                    width="320px"
+                    width="350px"
                     borderRadius="6px"
                     borderColor="gray.200"
                     value={value}
+                    onBlur={onBlur}
                     onChange={(e) => setValue(e.target.value)}
                 />
+                <InputRightElement>
+                    {value && <CloseButton size="sm" onClick={onClear} />}
+                </InputRightElement>
             </InputGroup>
         </form>
     );

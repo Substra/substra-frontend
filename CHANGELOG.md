@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New design for compute plan tasks drawer (#179)
 -   Switch to "Permissions" from "Downloadable by / Processable by" (#200)
 -   Layout improvements on Compute Plans page (#206)
+-   Add clear button to searchbar (#209)
 
 ## [0.3.0] - 2021-10-04
 
