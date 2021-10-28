@@ -97,8 +97,9 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                     }}
                     variant="enclosed"
                     size="sm"
+                    position="relative"
                 >
-                    <TabList marginBottom="0" borderBottomColor="gray.100">
+                    <TabList borderBottom="none">
                         {taskTypes.map((taskType) => (
                             <Tab
                                 key={taskType.id}
@@ -118,12 +119,12 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                     <Box
                         backgroundColor="white"
                         borderRadius="lg"
-                        borderTopLeftRadius="0"
-                        borderTopRightRadius="0"
+                        borderTopLeftRadius={
+                            selectedTaskType === 0 ? 0 : undefined
+                        }
                         borderWidth="1px"
                         borderStyle="solid"
                         borderColor="gray.100"
-                        borderTop="none"
                     >
                         <Table size="md" minWidth="870px">
                             <Thead>

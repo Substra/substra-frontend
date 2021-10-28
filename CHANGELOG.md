@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed warning and errors in the console (#202)
 -   Fix number of columns in the compute plan table (#199)
 -   Removed double borders at the bottom of tables (#210)
+-   Added rounded top corners in tasks table (#211)
 
 ### Changed
 
