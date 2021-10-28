@@ -30,7 +30,7 @@ interface TableSkeletonProps {
     children: React.ReactNode;
     currentPage: number;
     itemCount: number;
-    rowHeight: string;
+    rowHeight?: string;
 }
 export const TableSkeleton = ({
     children,
