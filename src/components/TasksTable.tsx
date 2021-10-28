@@ -12,7 +12,6 @@ import {
     Thead,
     Tr,
     Th,
-    Tbody,
     Td,
     Box,
     Text,
@@ -34,7 +33,7 @@ import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import Status from '@/components/Status';
-import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     TableFilters,
     TaskStatusTableFilter,

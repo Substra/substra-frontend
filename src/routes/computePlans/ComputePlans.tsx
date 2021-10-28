@@ -4,7 +4,6 @@ import {
     Thead,
     Tr,
     Th,
-    Tbody,
     Td,
     Box,
     Button,
@@ -38,7 +37,7 @@ import { compilePath, PATHS } from '@/routes';
 import Checkbox from '@/components/Checkbox';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
-import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     StatusTableFilterTag,
     TableFilterTags,

@@ -5,7 +5,6 @@ import {
     Thead,
     Tr,
     Th,
-    Tbody,
     Td,
     Box,
     Text,
@@ -31,7 +30,7 @@ import { compilePath, PATHS } from '@/routes';
 
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton } from '@/components/Table';
+import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     AlgoCategoryTableFilterTag,
     OwnerTableFilterTag,

@@ -1,9 +1,10 @@
 import DrawerSectionContainer from './DrawerSectionContainer';
-import { HStack, Table, Tbody, Td, Tr } from '@chakra-ui/react';
+import { HStack, Table, Td, Tr } from '@chakra-ui/react';
 
 import { formatDate } from '@/libs/utils';
 
 import CopyButton from '@/components/CopyButton';
+import { Tbody } from '@/components/Table';
 
 const TableDrawerSection = ({
     title,

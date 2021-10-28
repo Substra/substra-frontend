@@ -1,11 +1,18 @@
 import { Fragment } from 'react';
 
-import { Tr, Td } from '@chakra-ui/react';
+import { Tr, Td, Tbody as ChakraTbody } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 interface EmptyTrProps {
     nbColumns: number;
 }
+
+// This component removes the border bottom of cells in the last row of the table
+export const Tbody = styled(ChakraTbody)`
+    & > tr:last-of-type > td {
+        border-bottom: none;
+    }
+`;
 
 export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
     <Tr>
