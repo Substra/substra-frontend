@@ -74,15 +74,6 @@ const NAV_ITEMS = [
     },
 ];
 
-const iconLinkHref = (): string => {
-    // we cannot use .find in this method as it would make the number of calls to useRoute vary
-    const activeNavItems = NAV_ITEMS.filter(({ paths }) => isActive(paths));
-    if (activeNavItems.length) {
-        return activeNavItems[0].href;
-    }
-    return PATHS.HOME;
-};
-
 const Header = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
@@ -115,7 +106,7 @@ const Header = (): JSX.Element => {
             flexShrink={0}
             transition="height 300ms ease-in-out"
         >
-            <IconLink href={iconLinkHref()}>
+            <IconLink href={PATHS.HOME}>
                 <a>
                     <OwkinConnectIconSvg />
                 </a>

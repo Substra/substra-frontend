@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Dataset sider replaced by independent page (#175)
 -   New layout for compute plan tasks (#177)
 -   New design for compute plan tasks table (#178)
+-   Owkin logo link now points to homepage (#184)
 -   New design for algos table and drawer (#187)
 -   New design for tasks table (#186)
 -   Make tasks the default compute plan tab (#195)
