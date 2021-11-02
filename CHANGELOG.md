@@ -7,25 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2021-11-02
+
 ### Added
 
--   Add nodePort config for K8s service (#174)
--   Refactor tables with Chakra (#147)
--   Add missing dependency `buffer` (#156)
--   Add download button for the data sample keys in dataset sider (#151)
--   Add Fullscreen mode on the charts in the Compute Plans comparison page (#149)
--   Filter by status on compute plan tasks page (#169)
--   Download model button in chart tooltip (#145)
--   Support for multi-metric testtuples (#119)
 -   New filters (#180)
 -   Focus on first tab when opening filters (#207)
 
 ### Fixed
 
--   Fix broken imports when using chakra UI components (#162)
--   Removed console error about unknown component props (#163)
--   Automated redirects now replace history state instead of creating a new one (#161)
--   Table filters do not cancel each other (#168)
 -   Add ellipsis to the Performance card title when it is too long (#182)
 -   Fix routing issue with deprecated /compute_plan/ route (#197)
 -   Dataset details page now takes full available height (#202)
@@ -36,14 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   Dropped CSS reset and Lato font in favor of a full Chakra theme (#159)
--   Include key in filename when downloading a model (#160)
--   Made /compute_plans the landing page (#161)
--   New visual style for navigation on compute plan page (#158)
--   New style for searchbar (#164)
--   Simplify layout (no more vertical/horizontal scroll wrappers) and tables (#166)
--   Only collapse header height for deep routes (#167)
--   New design for metrics table (#170)
 -   New design for datasets table (#171)
 -   New style for the Compute Plans page (#172)
 -   Dataset sider replaced by independent page (#175)
@@ -58,6 +40,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Layout improvements on Compute Plans page (#206)
 -   Add clear button to searchbar (#209)
 -   Small visual changes (#208)
+
+## [0.4.0] - 2021-10-19
+
+### Added
+
+-   Add nodePort config for K8s service (#174)
+-   Refactor tables with Chakra (#147)
+-   Add missing dependency `buffer` (#156)
+-   Add download button for the data sample keys in dataset sider (#151)
+-   Add Fullscreen mode on the charts in the Compute Plans comparison page (#149)
+-   Filter by status on compute plan tasks page (#169)
+-   Download model button in chart tooltip (#145)
+-   Support for multi-metric testtuples (#119)
+
+### Fixed
+
+-   Fix broken imports when using chakra UI components (#162)
+-   Removed console error about unknown component props (#163)
+-   Automated redirects now replace history state instead of creating a new one (#161)
+-   Table filters do not cancel each other (#168)
+
+### Changed
+
+-   Dropped CSS reset and Lato font in favor of a full Chakra theme (#159)
+-   Include key in filename when downloading a model (#160)
+-   Made /compute_plans the landing page (#161)
+-   New visual style for navigation on compute plan page (#158)
+-   New style for searchbar (#164)
+-   Simplify layout (no more vertical/horizontal scroll wrappers) and tables (#166)
+-   Only collapse header height for deep routes (#167)
+-   New design for metrics table (#170)
 
 ## [0.3.0] - 2021-10-04
 
