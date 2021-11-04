@@ -9,9 +9,9 @@ import {
     Button,
     HStack,
     Text,
-    Progress,
     Flex,
     Skeleton,
+    Progress,
 } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
@@ -35,6 +35,7 @@ import useSelection from '@/hooks/useSelection';
 import { compilePath, PATHS } from '@/routes';
 
 import Checkbox from '@/components/Checkbox';
+import ComputeProgressBar from '@/components/ComputeProgressBar';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -271,20 +272,8 @@ const ComputePlans = (): JSX.Element => {
                                                 {computePlan.task_count}
                                             </Text>
                                         </Flex>
-                                        <Progress
-                                            size="xs"
-                                            colorScheme="teal"
-                                            marginTop="2"
-                                            borderRadius="8"
-                                            hasStripe={
-                                                computePlan.done_count !==
-                                                computePlan.task_count
-                                            }
-                                            value={
-                                                (computePlan.done_count /
-                                                    computePlan.task_count) *
-                                                100
-                                            }
+                                        <ComputeProgressBar
+                                            computePlan={computePlan}
                                         />
                                     </Td>
                                     <Td>
