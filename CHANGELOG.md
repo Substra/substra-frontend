@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Fix rounding for progression percentage (#218)
 -   Fix error in console due to bad markup (#213)
+-   Removed warning in the console (#221)
 
 ### Changed
 

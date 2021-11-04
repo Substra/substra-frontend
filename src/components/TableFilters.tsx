@@ -16,6 +16,7 @@ import {
     TabPanels,
     Tabs,
     useDisclosure,
+    Box,
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
@@ -73,92 +74,100 @@ export const TableFilters = ({
     };
 
     return (
-        <Popover
-            initialFocusRef={initialFocusRef}
-            placement="bottom-start"
-            isOpen={isOpen}
-            onClose={onClose}
-            onOpen={onOpen}
-        >
-            <PopoverTrigger>
-                <Button
-                    size="sm"
-                    backgroundColor="secondary"
-                    leftIcon={<RiAddLine />}
-                >
-                    Add Filter
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent rounded="10px" minWidth="670px" boxShadow="xl">
-                <PopoverArrow />
-                <PopoverCloseButton onClick={onClose} />
-                <PopoverBody padding="0" overflow="hidden">
-                    <TableFiltersContext.Provider value={context}>
-                        <Tabs
-                            variant="soft-rounded"
-                            colorScheme="teal"
-                            orientation="vertical"
-                            isLazy={false}
-                        >
-                            <TabList
-                                padding="2.5"
-                                boxShadow="xl"
-                                minWidth="160px"
+        <Box>
+            <Popover
+                initialFocusRef={initialFocusRef}
+                placement="bottom-start"
+                isOpen={isOpen}
+                onClose={onClose}
+                onOpen={onOpen}
+            >
+                <PopoverTrigger>
+                    <Button
+                        size="sm"
+                        backgroundColor="secondary"
+                        leftIcon={<RiAddLine />}
+                    >
+                        Add Filter
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent rounded="10px" minWidth="670px" boxShadow="xl">
+                    <PopoverArrow />
+                    <PopoverCloseButton onClick={onClose} />
+                    <PopoverBody padding="0" overflow="hidden">
+                        <TableFiltersContext.Provider value={context}>
+                            <Tabs
+                                variant="soft-rounded"
+                                colorScheme="teal"
+                                orientation="vertical"
+                                isLazy={false}
                             >
-                                {tabTitles.map((title, index) => (
-                                    <Tab
-                                        _selected={{
-                                            backgroundColor: 'teal.50',
-                                            color: 'teal.500',
-                                        }}
-                                        fontSize="sm"
-                                        borderRadius="md"
-                                        justifyContent="flex-start"
-                                        key={title}
-                                        ref={
-                                            index === 0 ? initialFocusRef : null
-                                        }
-                                    >
-                                        {title}
-                                    </Tab>
-                                ))}
-                            </TabList>
-                            <TabPanels padding="0">
-                                {React.Children.toArray(children).map(
-                                    (child, index) => (
-                                        <TabPanel
-                                            padding="0"
-                                            key={tabTitles[index]}
+                                <TabList
+                                    padding="2.5"
+                                    boxShadow="xl"
+                                    minWidth="160px"
+                                >
+                                    {tabTitles.map((title, index) => (
+                                        <Tab
+                                            _selected={{
+                                                backgroundColor: 'teal.50',
+                                                color: 'teal.500',
+                                            }}
+                                            fontSize="sm"
+                                            borderRadius="md"
+                                            justifyContent="flex-start"
+                                            key={title}
+                                            ref={
+                                                index === 0
+                                                    ? initialFocusRef
+                                                    : null
+                                            }
                                         >
-                                            {child}
-                                        </TabPanel>
-                                    )
-                                )}
-                            </TabPanels>
-                        </Tabs>
-                    </TableFiltersContext.Provider>
-                </PopoverBody>
-                <PopoverFooter
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    padding="2.5"
-                >
-                    <ButtonGroup size="sm">
-                        <Button bg="white" variant="outline" onClick={onClear}>
-                            Clear
-                        </Button>
-                        <Button
-                            color="white"
-                            colorScheme="teal"
-                            onClick={onApply}
-                        >
-                            Apply
-                        </Button>
-                    </ButtonGroup>
-                </PopoverFooter>
-            </PopoverContent>
-        </Popover>
+                                            {title}
+                                        </Tab>
+                                    ))}
+                                </TabList>
+                                <TabPanels padding="0">
+                                    {React.Children.toArray(children).map(
+                                        (child, index) => (
+                                            <TabPanel
+                                                padding="0"
+                                                key={tabTitles[index]}
+                                            >
+                                                {child}
+                                            </TabPanel>
+                                        )
+                                    )}
+                                </TabPanels>
+                            </Tabs>
+                        </TableFiltersContext.Provider>
+                    </PopoverBody>
+                    <PopoverFooter
+                        display="flex"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        padding="2.5"
+                    >
+                        <ButtonGroup size="sm">
+                            <Button
+                                bg="white"
+                                variant="outline"
+                                onClick={onClear}
+                            >
+                                Clear
+                            </Button>
+                            <Button
+                                color="white"
+                                colorScheme="teal"
+                                onClick={onApply}
+                            >
+                                Apply
+                            </Button>
+                        </ButtonGroup>
+                    </PopoverFooter>
+                </PopoverContent>
+            </Popover>
+        </Box>
     );
 };
 
