@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Fixed
+
+-   Fix rounding for progression percentage (#218)
+-   Fix error in console due to bad markup (#213)
+
+### Changed
+
 ## [0.5.0] - 2021-11-02
 
 ### Added
@@ -23,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix number of columns in the compute plan table (#199)
 -   Removed double borders at the bottom of tables (#210)
 -   Added rounded top corners in tasks table (#211)
--   Fix rounding for progression percentage (#218)
 
 ### Changed
 

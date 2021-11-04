@@ -15,13 +15,8 @@ const TableDrawerSectionMetricsEntry = ({
     <TableDrawerSectionEntry title="Metrics">
         <List>
             {task.test.metrics.map((metric) => (
-                <ListItem>
-                    <Link
-                        key={metric.key}
-                        href={compilePath(PATHS.METRIC, {
-                            key: metric.key,
-                        })}
-                    >
+                <ListItem key={metric.key}>
+                    <Link href={compilePath(PATHS.METRIC, { key: metric.key })}>
                         <ChakraLink color="teal.500">{metric.name}</ChakraLink>
                     </Link>
                 </ListItem>

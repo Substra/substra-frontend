@@ -17,9 +17,9 @@ import {
 
 import { compilePath, PATHS } from '@/routes';
 
+import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import IconTag from '@/components/IconTag';
 import Status from '@/components/Status';
-import { TableDrawerSection } from '@/components/TableDrawerSection';
 
 const ParenTasksDrawerSection = ({
     parentTasks,
@@ -45,8 +45,8 @@ const ParenTasksDrawerSection = ({
     };
 
     return (
-        <TableDrawerSection title="Parent tasks">
-            <List spacing="1.5">
+        <DrawerSectionContainer title="Parent tasks">
+            <List width="100%" spacing="1.5">
                 {parentTasks.map((parentTask) => (
                     <ListItem
                         key={parentTask.key}
@@ -78,7 +78,7 @@ const ParenTasksDrawerSection = ({
                     </ListItem>
                 ))}
             </List>
-        </TableDrawerSection>
+        </DrawerSectionContainer>
     );
 };
 export default ParenTasksDrawerSection;
