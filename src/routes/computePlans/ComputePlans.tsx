@@ -220,17 +220,34 @@ const ComputePlans = (): JSX.Element => {
                                         )
                                     }
                                 >
-                                    <Td>
-                                        <Checkbox
-                                            value={computePlan.key}
-                                            checked={selectedKeys.includes(
-                                                computePlan.key
-                                            )}
-                                            onChange={onSelectionChange(
-                                                computePlan.key
-                                            )}
+                                    <Td position="relative">
+                                        <Box
+                                            as="label"
+                                            position="absolute"
+                                            left="0"
+                                            right="0"
+                                            bottom="0"
+                                            top="0"
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            paddingTop="3px" // Visually center the checkbox
+                                            // @ts-expect-error Box as label expects a weird type for onClick
                                             onClick={(e) => e.stopPropagation()}
-                                        />
+                                        >
+                                            <Checkbox
+                                                value={computePlan.key}
+                                                checked={selectedKeys.includes(
+                                                    computePlan.key
+                                                )}
+                                                onChange={onSelectionChange(
+                                                    computePlan.key
+                                                )}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            />
+                                        </Box>
                                     </Td>
                                     <Td maxWidth="350px">
                                         <Text fontSize="xs">
