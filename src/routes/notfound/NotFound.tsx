@@ -1,55 +1,54 @@
-import styled from '@emotion/styled';
+import { Button, Flex, Text } from '@chakra-ui/react';
+import { RiFileWarningLine } from 'react-icons/ri';
+import { Link } from 'wouter';
 
-import { useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
 
-import StyledLink from '@/components/StyledLink';
-import { H1 } from '@/components/Typography';
-
-import OwkinConnectLogo from '@/assets/svg/owkin-connect-logo';
-import { Spaces } from '@/assets/theme';
-
-const Container = styled.div`
-    // center in the viewport and not just in the container
-    margin-left: auto;
-    margin-right: auto;
-    align-self: center;
-    margin-top: -72px;
-
-    text-align: center;
-
-    svg {
-        width: 500px;
-        margin-bottom: ${Spaces.extraLarge};
-    }
-
-    h1 {
-        margin-bottom: ${Spaces.extraLarge};
-    }
-`;
-
 const NotFound = (): JSX.Element => {
-    const authenticated = useAppSelector((state) => state.user.authenticated);
-
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Page not found'),
         []
     );
 
     return (
-        <Container>
-            <OwkinConnectLogo />
-            <H1>Page not found</H1>
-            {authenticated ? (
-                <StyledLink href={PATHS.DATASETS}>
-                    Go to datasets page
-                </StyledLink>
-            ) : (
-                <StyledLink href={PATHS.LOGIN}>Go to login page</StyledLink>
-            )}
-        </Container>
+        <Flex
+            backgroundColor="white"
+            flexGrow={1}
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+        >
+            <Flex
+                backgroundColor="gray.100"
+                marginBottom="5"
+                width={20}
+                height={20}
+                borderRadius="full"
+                fontSize="30px"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <RiFileWarningLine fill="var(--chakra-colors-gray-300)" />
+            </Flex>
+            <Text
+                fontSize="sm"
+                color="gray.500"
+                fontWeight="semibold"
+                lineHeight="5"
+            >
+                Oops this page does not exist
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+                You may have mistyped the address or the page may have moved
+            </Text>
+            <Link href={PATHS.HOME}>
+                <Button as="a" variant="outline" marginTop="6" size="sm">
+                    Go back to home
+                </Button>
+            </Link>
+        </Flex>
     );
 };
 
