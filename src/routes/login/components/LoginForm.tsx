@@ -1,78 +1,145 @@
-/** @jsxRuntime classic */
+import { useState } from 'react';
 
-/** @jsx jsx */
-import { Fragment, useState } from 'react';
+import {
+    Button,
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    Text,
+    HStack,
+    Icon,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+} from '@chakra-ui/react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
+import { useLocation } from 'wouter';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { jsx, css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
+import { loginPayload } from '@/modules/user/UserApi';
+import { logIn } from '@/modules/user/UserSlice';
 
-import Button from '@/components/Button';
-import Card from '@/components/Card';
-import FormItem from '@/components/FormItem';
-import { H2, BodySmall } from '@/components/Typography';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
-import { Colors, Spaces } from '@/assets/theme';
+import { PATHS } from '@/routes';
 
-type LoginFormProps = {
-    submitLogin: (login: string, password: string) => void;
-    error: string;
-};
+const LoginForm = (): JSX.Element => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useAppDispatch();
+    const [, setLocation] = useLocation();
 
-const ErrorContainer = styled.div`
-    width: 100%;
-    margin-top: ${Spaces.medium};
-    & > p {
-        color: ${Colors.error};
-        margin-top: 8px;
-    }
-`;
+    const nodeId = useAppSelector((state) => state.nodes.info.node_id);
+    const userLoading = useAppSelector((state) => state.user.loading);
+    const userError = useAppSelector((state) => state.user.error);
 
-const cardStyle = css`
-    width: 50%;
-    max-width: 420px;
-    padding: 48px 32px;
-`;
+    const submitLogin = async (username: string, password: string) => {
+        const payload: loginPayload = {
+            username,
+            password,
+        };
+        const urlSearchParams = new URLSearchParams(window.location.search);
 
-const LoginForm = ({ submitLogin, error }: LoginFormProps): JSX.Element => {
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+        const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
+
+        dispatch(logIn(payload))
+            .then(unwrapResult)
+            .then(
+                () => {
+                    // Fetch current node name to update the page's header
+                    dispatch(listNodes());
+                    dispatch(retrieveInfo(true));
+                    setLocation(nextLocation);
+                },
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                () => {
+                    // do nothing if login failed
+                }
+            );
+    };
 
     return (
-        <Fragment>
-            <Card css={cardStyle}>
-                <H2 style={{ marginBottom: Spaces.medium }}>
-                    Login to Connect
-                </H2>
-                <FormItem
-                    label="Username"
-                    placeholder="Enter username"
-                    css={{ marginBottom: Spaces.medium }}
-                    value={username}
-                    onChange={setUsername}
-                />
-                <FormItem
-                    label="Password"
-                    type="password"
-                    placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-                    css={{ marginBottom: Spaces.medium }}
-                    value={password}
-                    onChange={setPassword}
-                />
+        <Box width="300px" marginX="auto">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    submitLogin(username, password);
+                }}
+            >
+                <Text fontWeight="semibold" fontSize="3xl" marginBottom="4">
+                    Login to {nodeId}
+                </Text>
+                {userError && (
+                    <Alert
+                        marginY="4"
+                        status="error"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                    >
+                        <AlertIcon as={RiErrorWarningLine} color="red.900" />
+                        <Box flex="1">
+                            <AlertTitle color="red.900">
+                                Wrong username / password
+                            </AlertTitle>
+                            <AlertDescription color="red.900">
+                                {userError}
+                            </AlertDescription>
+                        </Box>
+                    </Alert>
+                )}
+                <FormControl id="username">
+                    <FormLabel>Username</FormLabel>
+                    <Input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        disabled={userLoading}
+                        isRequired
+                    />
+                </FormControl>
+                <FormControl id="password" marginY="4">
+                    <HStack
+                        justifyContent="space-between"
+                        alignItems="flex-start"
+                    >
+                        <FormLabel>Password</FormLabel>
+                        <Button
+                            leftIcon={
+                                <Icon
+                                    as={showPassword ? RiEyeOffLine : RiEyeLine}
+                                />
+                            }
+                            colorScheme="teal"
+                            variant="link"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? 'Hide' : 'Show'}
+                        </Button>
+                    </HStack>
+                    <Input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={userLoading}
+                        isRequired
+                    />
+                </FormControl>
+
                 <Button
-                    onClick={() => submitLogin(username, password)}
-                    disabled={!username || !password}
+                    disabled={userLoading}
+                    isLoading={userLoading}
                     type="submit"
+                    colorScheme="teal"
+                    isFullWidth
                 >
                     Login
                 </Button>
-                {error && (
-                    <ErrorContainer>
-                        <BodySmall>{error}</BodySmall>
-                    </ErrorContainer>
-                )}
-            </Card>
-        </Fragment>
+            </form>
+        </Box>
     );
 };
 

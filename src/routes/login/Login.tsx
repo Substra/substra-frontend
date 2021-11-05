@@ -1,38 +1,28 @@
 import { useEffect } from 'react';
 
 import LoginForm from './components/LoginForm';
-import styled from '@emotion/styled';
-import { unwrapResult } from '@reduxjs/toolkit';
+import {
+    AspectRatio,
+    Box,
+    HStack,
+    Text,
+    VStack,
+    Link,
+    Button,
+} from '@chakra-ui/react';
+import ReactPlayer from 'react-player';
 import { useLocation } from 'wouter';
 
-import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
-import { loginPayload } from '@/modules/user/UserApi';
-import { logIn, logOut } from '@/modules/user/UserSlice';
+import { logOut } from '@/modules/user/UserSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import { PATHS } from '@/routes';
 
-import { H1 } from '@/components/Typography';
+import OwkinLogoBlack from '@/assets/svg/owkin-logo-black';
 
-import LoginPageSvg from '@/assets/svg/illustrations/illustration-login-page.svg';
-
-const LeftSideContainer = styled.div`
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    padding-right: 32px;
-`;
-
-const LoginPageContainer = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    max-width: 1280px;
-    margin: 120px auto;
-    align-items: flex-start;
-`;
+declare const __APP_VERSION__: string;
 
 const Login = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -57,40 +47,55 @@ const Login = (): JSX.Element => {
         }
     });
 
-    const submitLogin = async (username: string, password: string) => {
-        const payload: loginPayload = {
-            username,
-            password,
-        };
-
-        dispatch(logIn(payload))
-            .then(unwrapResult)
-            .then(
-                () => {
-                    // Fetch current node name to update the page's header
-                    dispatch(listNodes());
-                    dispatch(retrieveInfo(true));
-                    setLocation(nextLocation);
-                },
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                () => {
-                    // do nothing if login failed
-                }
-            );
-    };
-
-    const error = useAppSelector((state) => state.user.error);
-
     return (
-        <LoginPageContainer>
-            <LeftSideContainer>
-                <LoginPageSvg />
-                <H1 style={{ margin: '16px 0 8px' }}>
-                    Welcome to Owkin Connect
-                </H1>
-            </LeftSideContainer>
-            <LoginForm submitLogin={submitLogin} error={error} />
-        </LoginPageContainer>
+        <HStack backgroundColor="#F7FAFC" flex="1">
+            <VStack
+                height="100vh"
+                width="500px"
+                backgroundColor="white"
+                alignItems="flex-start"
+                justifyContent="space-between"
+                paddingX="6"
+                paddingY="8"
+            >
+                <OwkinLogoBlack />
+                <Box alignItems="center" width="100%">
+                    <LoginForm />
+                </Box>
+                <Text color="gray.500" fontSize="xs">
+                    © Owkin - All rights reserved. Frontend vers.
+                    {__APP_VERSION__}
+                </Text>
+            </VStack>
+            <Box padding="12" flex="auto">
+                <AspectRatio ratio={16 / 9}>
+                    <ReactPlayer
+                        url="https://vimeo.com/541687596"
+                        controls
+                        width="100%"
+                        height="100%"
+                        config={{
+                            vimeo: {
+                                playerOptions: {
+                                    byline: true,
+                                    portrait: true,
+                                    title: true,
+                                },
+                            },
+                        }}
+                    />
+                </AspectRatio>
+                <Text marginY="4" fontSize="2xl">
+                    Unlock AI, break data silos, and protect privacy with our
+                    Federated Learning software
+                </Text>
+                <Link href="https://owkin.com/owkin-connect/" isExternal>
+                    <Button variant="outline" colorScheme="black">
+                        <Text>Tell me more!</Text>
+                    </Button>
+                </Link>
+            </Box>
+        </HStack>
     );
 };
 
