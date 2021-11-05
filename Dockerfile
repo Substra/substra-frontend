@@ -1,4 +1,4 @@
-FROM node:14.17.1-alpine AS build
+FROM node:16.13.0-alpine AS build
 
 ARG APP_VERSION
 

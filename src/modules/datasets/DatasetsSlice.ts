@@ -1,6 +1,7 @@
 import DatasetAPI from './DatasetsApi';
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -57,8 +58,12 @@ export const listDatasets = createAsyncThunk<
     try {
         const response = await DatasetAPI.listDatasets(filters, page);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -70,8 +75,12 @@ export const retrieveDataset = createAsyncThunk<
     try {
         const response = await DatasetAPI.retrieveDataset(key);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -83,8 +92,12 @@ export const retrieveDescription = createAsyncThunk<
     try {
         const response = await CommonApi.retrieveDescription(descriptionURL);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -96,8 +109,12 @@ export const retrieveOpener = createAsyncThunk<
     try {
         const response = await DatasetAPI.retrieveOpener(openerURL);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 

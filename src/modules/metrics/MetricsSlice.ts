@@ -1,6 +1,7 @@
 import MetricsAPI from './MetricsApi';
 import { MetricType } from './MetricsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -49,8 +50,12 @@ export const listMetrics = createAsyncThunk<
     try {
         const response = await MetricsAPI.listMetrics(filters, page);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -62,8 +67,12 @@ export const retrieveMetric = createAsyncThunk<
     try {
         const response = await MetricsAPI.retrieveMetric(key);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -75,8 +84,12 @@ export const retrieveDescription = createAsyncThunk<
     try {
         const response = await CommonApi.retrieveDescription(descriptionURL);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 

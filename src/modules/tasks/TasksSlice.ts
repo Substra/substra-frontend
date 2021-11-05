@@ -11,6 +11,7 @@ import {
     TraintupleStub,
 } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -87,8 +88,12 @@ export const listTrainTasks = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -105,8 +110,12 @@ export const listTestTasks = createAsyncThunk<
     try {
         const response = await TasksApi.listTesttuples(nonTypeFilters, page);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -131,8 +140,12 @@ export const listCompositeTasks = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -158,8 +171,12 @@ export const listAggregateTasks = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );

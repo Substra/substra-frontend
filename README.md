@@ -11,7 +11,7 @@
 ## Running the frontend locally in dev mode
 
 1. Make sure `substra-frontend.node-1.com` and `substra-frontend.node-2.com` are pointing to `127.0.0.1` in your `/etc/hosts`
-2. Make sure you're using node 14.17.1 (`nvm install 14.17.1` and `nvm use 14.17.1`)
+2. Make sure you're using node 16.13.0 (`nvm install 16.13.0` and `nvm use 16.13.0`)
 3. Install dependencies: `npm install --dev`
 4. Run `npm run dev`
 5. Access the frontend at `http://substra-frontend.node-1.com:3000`

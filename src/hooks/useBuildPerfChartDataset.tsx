@@ -1,16 +1,18 @@
+import { ChartDataset, ScatterDataPoint } from 'chart.js';
+
 import { SerieT } from '@/modules/series/SeriesTypes';
 
 import useNodeChartStyle, { ChartStyle } from '@/hooks/useNodeChartStyle';
 
-export interface DataPoint {
+export interface DataPoint extends ScatterDataPoint {
     x: number;
-    y: number | null;
+    y: number;
     testTaskKey: string;
     worker: string;
     parentTaskKeys: string[];
 }
 
-export type PerfChartDataset = Record<string, unknown>;
+export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 
 const useBuildPerfChartDataset = (): ((
     serie: SerieT,
@@ -33,7 +35,7 @@ const useBuildPerfChartDataset = (): ((
             data: serie.points.map(
                 (point): DataPoint => ({
                     x: point.rank,
-                    y: point.perf,
+                    y: point.perf as number,
                     testTaskKey: point.testTaskKey,
                     worker: serie.worker,
                     parentTaskKeys: point.parentTaskKeys,

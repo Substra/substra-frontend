@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   On compute plan table, the click area for the checkboxes is the full cell (#214)
+-   Updated all dependencies to latest versions (#216)
 
 ## [0.5.0] - 2021-11-02
 

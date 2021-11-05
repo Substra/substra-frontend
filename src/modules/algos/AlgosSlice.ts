@@ -2,6 +2,7 @@ import { PaginatedApiResponse } from '../common/CommonTypes';
 import AlgosApi from './AlgosApi';
 import { AlgoT } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import CommonApi from '@/modules/common/CommonApi';
 
@@ -53,8 +54,12 @@ export const listAlgos = createAsyncThunk<
         const response = await AlgosApi.listAlgos(standardFilters, page);
 
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -66,8 +71,12 @@ export const retrieveAlgo = createAsyncThunk<
     try {
         const response = await AlgosApi.retrieveAlgo(key);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -79,8 +88,12 @@ export const retrieveDescription = createAsyncThunk<
     try {
         const response = await CommonApi.retrieveDescription(descriptionURL);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 

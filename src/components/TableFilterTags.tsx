@@ -94,12 +94,8 @@ const CounterFilterTag = ({
     label,
     assetKey,
 }: CounterFilterTagProps): JSX.Element | null => {
-    const {
-        searchFilters,
-        tagFilters,
-        isTagFilter,
-        applySearchFilters,
-    } = useTagFilter(assetKey);
+    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
+        useTagFilter(assetKey);
 
     const clear = () => {
         const newFilters = searchFilters.filter((sf) => !isTagFilter(sf));
@@ -131,12 +127,8 @@ export const StatusTableFilterTag = (): JSX.Element | null => (
 );
 
 export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
-    const {
-        searchFilters,
-        tagFilters,
-        isTagFilter,
-        applySearchFilters,
-    } = useTagFilter('category');
+    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
+        useTagFilter('category');
 
     const clear = (value: string) => () => {
         const newFilters = searchFilters.filter(

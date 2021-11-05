@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 
 import {
     postLogIn,
@@ -55,12 +55,12 @@ export const logIn = createAsyncThunk<
     try {
         const response = await postLogIn(payload);
         return response.data;
-    } catch (err) {
-        const error: AxiosError<loginError> = err;
-        if (!error.response) {
-            throw err;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
-        return thunkAPI.rejectWithValue(error.response.data);
     }
 });
 
@@ -68,12 +68,12 @@ export const logOut = createAsyncThunk('USERS_LOGOUT', async (_, thunkAPI) => {
     try {
         const response = await getLogOut();
         return response.data;
-    } catch (err) {
-        if (err.isAxiosError) {
-            return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
-
-        return thunkAPI.rejectWithValue(err);
     }
 });
 
@@ -85,12 +85,12 @@ export const refreshToken = createAsyncThunk<
     try {
         const response = await getRefreshToken();
         return response.data;
-    } catch (err) {
-        if (err.isAxiosError) {
-            return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
-
-        return thunkAPI.rejectWithValue(err);
     }
 });
 

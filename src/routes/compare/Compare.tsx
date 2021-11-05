@@ -85,12 +85,8 @@ const Compare = (): JSX.Element => {
 
     const nodes = useAppSelector((state) => state.nodes.nodes);
 
-    const [
-        selectedNodeKeys,
-        onSelectionNodeKeysChange,
-        ,
-        setSelectedNodeKeys,
-    ] = useSelection();
+    const [selectedNodeKeys, onSelectionNodeKeysChange, , setSelectedNodeKeys] =
+        useSelection();
     const [
         selectedComputePlanKeys,
         onSelectionComputePlanKeysChange,

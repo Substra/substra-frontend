@@ -1,6 +1,7 @@
 import NodesAPI from './NodesApi';
 import { NodeInfoType, NodeType } from './NodesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 declare const API_URL: string;
 
@@ -36,8 +37,12 @@ export const listNodes = createAsyncThunk<
     try {
         const response = await NodesAPI.listNodes();
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -49,8 +54,12 @@ export const retrieveInfo = createAsyncThunk<
     try {
         const response = await NodesAPI.retrieveInfo(withCredentials);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 

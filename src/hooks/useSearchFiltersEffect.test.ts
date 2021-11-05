@@ -1,6 +1,5 @@
 import useSearchFiltersEffect from './useSearchFiltersEffect';
 import { renderHook } from '@testing-library/react-hooks';
-import jest from 'jest-mock';
 
 test('triggers effect when non searchFilter deps update', () => {
     const dummyEffect = jest.fn();

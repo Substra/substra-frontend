@@ -1,14 +1,17 @@
 import { useMemo, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { Chart } from 'chart.js';
+import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
 import { Line } from 'react-chartjs-2';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { buildAverageSerie } from '@/modules/series/SeriesUtils';
 
-import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
+import useBuildPerfChartDataset, {
+    DataPoint,
+} from '@/hooks/useBuildPerfChartDataset';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 
 import PerfChartResetZoom from '@/components/PerfChartResetZoom';
@@ -45,7 +48,7 @@ const PerfChart = ({
     zoom: zoomEnabled,
     tooltip: tooltipEnabled,
 }: PerfChartProps): JSX.Element => {
-    const chartRef = useRef<Chart>();
+    const chartRef = useRef<Chart<'line'>>();
     const buildPerfChartDataset = useBuildPerfChartDataset();
     const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
 
@@ -81,7 +84,7 @@ const PerfChart = ({
         [series]
     );
 
-    const data = useMemo(
+    const data = useMemo<ChartData<'line', DataPoint[]>>(
         () => ({
             labels: [...Array(maxRank + 1).keys()],
             datasets: [
@@ -91,7 +94,7 @@ const PerfChart = ({
         }),
         [maxRank, seriesDatasets, averageDataset, displayAverage]
     );
-    const zoomPluginOptions = {
+    const zoomPluginOptions: ZoomPluginOptions = {
         zoom: {
             drag: {
                 enabled: false,
@@ -114,7 +117,7 @@ const PerfChart = ({
         },
     };
 
-    const options = {
+    const options: ChartOptions<'line'> = {
         animation: false,
         plugins: {
             legend: {
@@ -155,13 +158,17 @@ const PerfChart = ({
         }
     };
 
+    const plugins: Plugin<'line'>[] = [];
+    if (zoomEnabled) {
+        plugins.push(zoomPlugin as Plugin<'line'>);
+    }
+
     const chart = useMemo(
         () => (
             <Line
-                type="line"
                 data={data}
                 options={options}
-                plugins={[zoomEnabled && zoomPlugin]}
+                plugins={plugins}
                 ref={chartRef}
             />
         ),

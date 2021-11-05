@@ -41,24 +41,25 @@ const MetricKeysSelector = (): JSX.Element => {
         (state) => state.series.selectedMetricKeys
     );
 
-    const onChange = (metricKey: string) => (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const checked = event.target.checked;
-        const inList = selectedMetricKeys.includes(metricKey);
+    const onChange =
+        (metricKey: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+            const checked = event.target.checked;
+            const inList = selectedMetricKeys.includes(metricKey);
 
-        if (checked && !inList) {
-            dispatch(setSelectedMetricKeys([...selectedMetricKeys, metricKey]));
-        }
+            if (checked && !inList) {
+                dispatch(
+                    setSelectedMetricKeys([...selectedMetricKeys, metricKey])
+                );
+            }
 
-        if (!checked && inList) {
-            dispatch(
-                setSelectedMetricKeys(
-                    selectedMetricKeys.filter((v) => v !== metricKey)
-                )
-            );
-        }
-    };
+            if (!checked && inList) {
+                dispatch(
+                    setSelectedMetricKeys(
+                        selectedMetricKeys.filter((v) => v !== metricKey)
+                    )
+                );
+            }
+        };
 
     return (
         <div>

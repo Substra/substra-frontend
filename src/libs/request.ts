@@ -33,26 +33,25 @@ instance.interceptors.request.use((config) => {
     };
 });
 
-const withRetry = (instanceMethod: AxiosInstance['get']) => (
-    url: string,
-    config?: AxiosRequestConfig
-) => {
-    return instanceMethod(url, config).catch((error) => {
-        if (error.response && error.response.status === 401) {
-            return instance.post('/user/refresh/').then(
-                () => instanceMethod(url, config),
-                () => {
-                    const url = encodeURI(
-                        `/login?logout=true&next=${window.location.pathname}${window.location.search}`
-                    );
-                    history.pushState({}, '', url);
-                    throw error;
-                }
-            );
-        }
-        throw error;
-    });
-};
+const withRetry =
+    (instanceMethod: AxiosInstance['get']) =>
+    (url: string, config?: AxiosRequestConfig) => {
+        return instanceMethod(url, config).catch((error) => {
+            if (error.response && error.response.status === 401) {
+                return instance.post('/user/refresh/').then(
+                    () => instanceMethod(url, config),
+                    () => {
+                        const url = encodeURI(
+                            `/login?logout=true&next=${window.location.pathname}${window.location.search}`
+                        );
+                        history.pushState({}, '', url);
+                        throw error;
+                    }
+                );
+            }
+            throw error;
+        });
+    };
 
 const anonymousInstance = axios.create({ ...CONFIG, withCredentials: false });
 

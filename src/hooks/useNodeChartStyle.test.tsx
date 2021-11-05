@@ -14,7 +14,19 @@ const StoreProviderBuilder = (nodes: NodeType[]) => {
             nodes: nodesSlice,
         },
         preloadedState: {
-            nodes: { nodes },
+            nodes: {
+                nodes,
+                nodesLoading: false,
+                nodesError: '',
+
+                info: {
+                    host: '',
+                    node_id: '',
+                    config: {},
+                },
+                infoLoading: false,
+                infoError: '',
+            },
         },
     });
 

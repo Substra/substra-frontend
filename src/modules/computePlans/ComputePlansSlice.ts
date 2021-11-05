@@ -1,6 +1,7 @@
 import ComputePlansApi from './ComputePlansApi';
 import { ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
@@ -81,8 +82,12 @@ export const listComputePlans = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -95,8 +100,12 @@ export const retrieveComputePlan = createAsyncThunk<
     try {
         const response = await ComputePlansApi.retrieveComputePlan(key);
         return response.data;
-    } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 });
 
@@ -120,8 +129,12 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -140,8 +153,12 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
                 page
             );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -154,14 +171,19 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     'computePlans/getAggregateTasks',
     async ({ computePlanKey, page, filters }, thunkAPI) => {
         try {
-            const response = await ComputePlansApi.listComputePlanAggregatetuples(
-                computePlanKey,
-                filters.filter((sf) => sf.asset === 'aggregatetuple'),
-                page
-            );
+            const response =
+                await ComputePlansApi.listComputePlanAggregatetuples(
+                    computePlanKey,
+                    filters.filter((sf) => sf.asset === 'aggregatetuple'),
+                    page
+                );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );
@@ -174,14 +196,19 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     'computePlans/getCompositeTasks',
     async ({ computePlanKey, page, filters }, thunkAPI) => {
         try {
-            const response = await ComputePlansApi.listComputePlanCompositeTraintuples(
-                computePlanKey,
-                filters.filter((sf) => sf.asset === 'composite_traintuple'),
-                page
-            );
+            const response =
+                await ComputePlansApi.listComputePlanCompositeTraintuples(
+                    computePlanKey,
+                    filters.filter((sf) => sf.asset === 'composite_traintuple'),
+                    page
+                );
             return response.data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
 );

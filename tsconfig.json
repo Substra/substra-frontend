@@ -7,6 +7,7 @@
         "target": "ESNext",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "types": [
+            "node",
             "vite/client",
             "@emotion/react/types/css-prop",
             "@types/testing-library__jest-dom",

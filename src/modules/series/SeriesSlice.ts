@@ -4,7 +4,7 @@ import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { AxiosPromise } from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
 import MetricsApi from '@/modules//metrics/MetricsApi';
 import DatasetsApi from '@/modules/datasets/DatasetsApi';
@@ -60,8 +60,12 @@ const getComputePlanSeries = async (
             TesttupleStub,
             [string, SearchFilterType[]]
         >(ComputePlansApi.listComputePlanTesttuples, [computePlanKey, []], 100);
-    } catch (err) {
-        return rejectWithValue(err.response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
 
     // load datasets and metrics
@@ -105,8 +109,12 @@ const getComputePlanSeries = async (
         let responses;
         try {
             responses = await Promise.all(promises);
-        } catch (err) {
-            return rejectWithValue(err.response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
 
         metrics = responses[0].data.results;
