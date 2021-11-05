@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const PerfChartContainer = styled.div`
     margin-top: ${Spaces.large};
-    width: calc(100vw - 300px);
+    width: calc(100vw - 380px);
 `;
 
 const Header = styled.div`
@@ -29,15 +29,15 @@ const Title = styled.h2`
     font-weight: 500;
 `;
 
-interface CompareFullScreenProps {
+interface PerfFullScreenProps {
     onClickClose: () => void;
     series: SerieT[];
 }
 
-const CompareFullScreen = ({
+const PerfFullScreen = ({
     onClickClose,
     series,
-}: CompareFullScreenProps): JSX.Element => {
+}: PerfFullScreenProps): JSX.Element => {
     return (
         <Container>
             <Header>
@@ -60,4 +60,4 @@ const CompareFullScreen = ({
     );
 };
 
-export default CompareFullScreen;
+export default PerfFullScreen;

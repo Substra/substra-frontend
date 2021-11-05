@@ -7,10 +7,9 @@ import { groupSeriesByMetric } from '@/modules/series/SeriesUtils';
 
 import useAppSelector from '@/hooks/useAppSelector';
 
-import CompareFullScreen from '@/routes/compare/CompareFullScreen';
-
 import LoadingState from '@/components/LoadingState';
 import PerfChart from '@/components/PerfChart';
+import PerfFullScreen from '@/components/PerfFullScreen';
 import PerformanceCard from '@/components/PerformanceCard';
 
 import { Spaces } from '@/assets/theme';
@@ -55,7 +54,7 @@ const ComparePerfChartBuilder = ({
                 (group) => group[0].metricName === fullScreenMetricName
             );
             return (
-                <CompareFullScreen
+                <PerfFullScreen
                     onClickClose={() => setFullScreenMetricName('')}
                     series={fullScreenSeries}
                 />
@@ -67,7 +66,7 @@ const ComparePerfChartBuilder = ({
                         <PerformanceCard
                             title={series[0].metricName}
                             key={series.map((serie) => serie.id).join('-')}
-                            onClickFullScreen={() =>
+                            onClick={() =>
                                 setFullScreenMetricName(series[0].metricName)
                             }
                         >

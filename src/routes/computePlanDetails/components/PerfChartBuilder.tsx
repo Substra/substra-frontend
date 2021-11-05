@@ -1,9 +1,6 @@
-import { Fragment, useMemo, useState } from 'react';
-import { useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 
-import MetricKeysSelector from './MetricKeysSelector';
-import PerfChart from './PerfChart';
-import styled from '@emotion/styled';
+import { Wrap, WrapItem } from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
@@ -13,26 +10,23 @@ import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 
-import Checkbox from '@/components/Checkbox';
 import LoadingState from '@/components/LoadingState';
-
-import { Spaces } from '@/assets/theme';
-
-const LabelContainer = styled.div`
-    margin-bottom: ${Spaces.medium};
-
-    & > label > div {
-        margin-right: ${Spaces.medium};
-    }
-`;
+import PerfChart from '@/components/PerfChart';
+import PerfFullScreen from '@/components/PerfFullScreen';
+import PerformanceCard from '@/components/PerformanceCard';
 
 interface PerfChartBuilderProps {
     computePlan: ComputePlanT;
+    displayAverage: boolean;
+    selectedNodeKeys: string[];
 }
 const PerfChartBuilder = ({
     computePlan,
+    displayAverage,
+    selectedNodeKeys,
 }: PerfChartBuilderProps): JSX.Element => {
     const dispatch = useAppDispatch();
+    const [fullScreenMetricName, setFullScreenMetricName] = useState('');
 
     useEffect(() => {
         dispatch(loadSeries(computePlan.key));
@@ -41,31 +35,12 @@ const PerfChartBuilder = ({
     const loading = useAppSelector((state) => state.series.loading);
     const series = useAppSelector((state) => state.series.series);
 
-    const selectedMetricKeys = useAppSelector(
-        (state) => state.series.selectedMetricKeys
-    );
-
-    const [multiChart, setMultiChart] = useState(false);
-    const [displayAverage, setDisplayAverage] = useState(true);
-
-    const seriesGroups: SerieT[][] = useMemo(
-        () =>
-            buildSeriesGroups(
-                series.filter((serie) =>
-                    selectedMetricKeys.includes(serie.metricKey)
-                ),
-                multiChart
-            ),
-        [series, multiChart, selectedMetricKeys]
-    );
-
-    const maxNumberOfSeriesPerGroup: number = useMemo(() => {
-        let max = 0;
-        for (const series of seriesGroups) {
-            max = Math.max(max, series.length);
-        }
-        return max;
-    }, [seriesGroups]);
+    const seriesGroups: SerieT[][] = useMemo(() => {
+        const filteredSeries = series.filter((serie) =>
+            selectedNodeKeys.includes(serie.worker)
+        );
+        return buildSeriesGroups(filteredSeries);
+    }, [series, selectedNodeKeys]);
 
     if (loading) {
         return <LoadingState message="Loading compute plan data..." />;
@@ -76,38 +51,40 @@ const PerfChartBuilder = ({
                 done.
             </p>
         );
+    } else if (seriesGroups.length === 0) {
+        return <p>Select at least one node to display the data</p>;
+    } else if (fullScreenMetricName !== '') {
+        const [fullScreenSerie] = seriesGroups.filter(
+            (group) => group[0].metricName === fullScreenMetricName
+        );
+        return (
+            <PerfFullScreen
+                onClickClose={() => setFullScreenMetricName('')}
+                series={fullScreenSerie}
+            />
+        );
     } else {
         return (
-            <Fragment>
-                <MetricKeysSelector />
-                <LabelContainer>
-                    <label>
-                        <Checkbox
-                            checked={multiChart}
-                            onChange={() => setMultiChart(!multiChart)}
-                        />
-                        Display each node on a separate chart
-                    </label>
-                </LabelContainer>
-                <LabelContainer>
-                    <label>
-                        <Checkbox
-                            checked={displayAverage}
-                            onChange={() => setDisplayAverage(!displayAverage)}
-                            disabled={maxNumberOfSeriesPerGroup < 2}
-                        />
-                        Display average perf
-                    </label>
-                </LabelContainer>
+            <Wrap width="80%">
                 {seriesGroups.map((series) => (
-                    <PerfChart
-                        series={series}
-                        displayAverage={displayAverage}
-                        displayMultiChart={multiChart}
-                        key={series.map((serie) => serie.id).join('-')}
-                    />
+                    <WrapItem key={series[0].id}>
+                        <PerformanceCard
+                            title={series[0].metricName}
+                            onClick={() =>
+                                setFullScreenMetricName(series[0].metricName)
+                            }
+                        >
+                            <PerfChart
+                                series={series}
+                                displayAverage={displayAverage}
+                                getSerieLabel={(serie) => serie.id.toString()}
+                                zoom={false}
+                                tooltip={false}
+                            />
+                        </PerformanceCard>
+                    </WrapItem>
                 ))}
-            </Fragment>
+            </Wrap>
         );
     }
 };

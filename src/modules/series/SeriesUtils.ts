@@ -120,10 +120,7 @@ function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
     return index;
 }
 
-export function buildSeriesGroups(
-    series: SerieT[],
-    multiChart: boolean
-): SerieT[][] {
+export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     const groups = [];
 
     const metricNames = new Set(
@@ -133,16 +130,8 @@ export function buildSeriesGroups(
         const metricGroup = series.filter(
             (serie) => serie.metricName.toLowerCase() === metricName
         );
-        if (multiChart) {
-            const workers = new Set(metricGroup.map((serie) => serie.worker));
-            for (const worker of workers) {
-                groups.push(
-                    metricGroup.filter((serie) => serie.worker === worker)
-                );
-            }
-        } else {
-            groups.push(metricGroup);
-        }
+
+        groups.push(metricGroup);
     }
     return groups;
 }
@@ -157,7 +146,7 @@ export function groupSeriesByMetric(
             selectedNodeKeys.includes(serie.worker) &&
             selectedComputePlanKeys.includes(serie.computePlanKey)
     );
-    return buildSeriesGroups(filteredSeries, false);
+    return buildSeriesGroups(filteredSeries);
 }
 
 const average = (values: number[]): number => {
