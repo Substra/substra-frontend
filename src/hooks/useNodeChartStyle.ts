@@ -2,30 +2,27 @@ import { useMemo } from 'react';
 
 import useAppSelector from './useAppSelector';
 
-const CHART_COLORS = ['#115CDF', '#DF1167', '#11DF5E', '#DFBF11'];
-const POINT_STYLES: string[] = [
-    'circle',
-    'rectRot',
-    'rect',
-    // other available styles in ChartJS:
-    // 'cross',
-    // 'crossRot',
-    // 'dash',
-    // 'line',
-    // 'rectRounded',
-    // 'star',
-    // 'triangle',
+import chakraTheme from '@/assets/chakraTheme';
+
+const CHART_COLORS = [
+    chakraTheme.colors.red['500'],
+    chakraTheme.colors.orange['500'],
+    chakraTheme.colors.yellow['500'],
+    chakraTheme.colors.green['500'],
+    chakraTheme.colors.teal['500'],
+    chakraTheme.colors.blue['500'],
+    chakraTheme.colors.cyan['500'],
+    chakraTheme.colors.purple['500'],
+    chakraTheme.colors.pink['500'],
 ];
 
 export interface ChartStyle {
     color: string;
-    pointStyle: string;
     borderWidth: number;
 }
 
 const DEFAULT_CHART_STYLE: ChartStyle = {
     color: CHART_COLORS[0],
-    pointStyle: POINT_STYLES[0],
     borderWidth: 2,
 };
 
@@ -43,7 +40,6 @@ const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
             const nodeId = nodeIds[i];
             chartStyles[nodeId] = {
                 color: CHART_COLORS[i % CHART_COLORS.length],
-                pointStyle: POINT_STYLES[i % POINT_STYLES.length],
                 borderWidth: 2,
             };
         }

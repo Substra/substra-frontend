@@ -45,9 +45,7 @@ const PerfChartLegend = ({ series }: PerfChartLegendProps): JSX.Element => {
             {sortedSeries.map((serie) => (
                 <Item key={serie.id}>
                     <ItemTitle color={nodeChartStyle(serie.worker).color}>
-                        <PerfChartMarker
-                            style={nodeChartStyle(serie.worker).pointStyle}
-                        />
+                        <PerfChartMarker />
                         {serie.worker}
                     </ItemTitle>
                     <Ul>

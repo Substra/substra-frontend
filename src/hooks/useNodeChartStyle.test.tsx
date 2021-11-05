@@ -81,5 +81,4 @@ test('provide default style for unknown nodes', () => {
 
     expect(result.current('unknown')).toBeDefined();
     expect(result.current('unknown').color).toBeTruthy();
-    expect(result.current('unknown').pointStyle).toBeTruthy();
 });

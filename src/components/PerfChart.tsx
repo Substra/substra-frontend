@@ -23,6 +23,8 @@ const LineContainer = styled.div`
     position: relative;
 
     width: 100%;
+    min-height: 300px;
+
     & > button {
         opacity: 0;
         transition: opacity 0.1s ease-out;
@@ -69,7 +71,6 @@ const PerfChart = ({
         if (averageSerie) {
             return buildPerfChartDataset(averageSerie, 'Average', {
                 color: '#000000',
-                pointStyle: 'circle',
                 borderWidth: 3,
             });
         }
@@ -119,6 +120,7 @@ const PerfChart = ({
 
     const options: ChartOptions<'line'> = {
         animation: false,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -133,19 +135,48 @@ const PerfChart = ({
                 type: 'category',
                 title: {
                     display: true,
-                    text: 'RANK',
+                    text: 'Rank',
+                    align: 'end',
+                    color: '#718096',
+                    font: {
+                        family: 'Inter',
+                        size: 10,
+                    },
                 },
                 grid: {
-                    display: false,
+                    borderColor: '#E2E8F0',
+                    color: '#EDF2F7',
+                },
+                ticks: {
+                    color: '#A0AEC0',
+                    font: {
+                        family: 'Inter',
+                        size: 10,
+                    },
                 },
             },
             y: {
                 type: 'linear',
                 title: {
                     display: true,
-                    text: series.length
-                        ? series[0].metricName.toUpperCase()
-                        : 'PERF',
+                    text: 'Performance',
+                    align: 'end',
+                    color: '#718096',
+                    font: {
+                        family: 'Inter',
+                        size: 10,
+                    },
+                },
+                grid: {
+                    borderColor: '#E2E8F0',
+                    color: '#EDF2F7',
+                },
+                ticks: {
+                    color: '#A0AEC0',
+                    font: {
+                        family: 'Inter',
+                        size: 10,
+                    },
                 },
             },
         },

@@ -32,43 +32,16 @@ const Circle = styled.div`
     left: 4px;
 `;
 
-const RectRot = styled.div`
-    width: 7px;
-    height: 7px;
-    background-color: white;
-    border: 2px solid;
-    transform: rotate(45deg);
-
-    position: absolute;
-    top: 0;
-    left: 4px;
-`;
-
-const Rect = styled.div`
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border: 2px solid;
-
-    position: absolute;
-    top: 0;
-    left: 4px;
-`;
-
 interface PerfChartLegendMarkerProps {
-    style: string;
     color?: string;
 }
 
 const PerfChartLegendMarker = ({
-    style,
     color,
 }: PerfChartLegendMarkerProps): JSX.Element => (
     <Marker color={color}>
         <Line />
-        {style === 'circle' && <Circle />}
-        {style === 'rectRot' && <RectRot />}
-        {style === 'rect' && <Rect />}
+        <Circle />
     </Marker>
 );
 

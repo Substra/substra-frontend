@@ -48,7 +48,6 @@ const useBuildPerfChartDataset = (): ((
             // line styles
             borderWidth: chartStyle.borderWidth,
             // point styles
-            pointStyle: chartStyle.pointStyle,
             pointBackgroundColor: 'white',
             pointBorderColor: chartStyle.color,
             pointBorderWidth: chartStyle.borderWidth,

@@ -263,7 +263,6 @@ const PerfChartTooltip = ({
             {points.map((point) => (
                 <TooltipLi key={point.testTaskKey}>
                     <PerfChartMarker
-                        style={nodeChartStyle(point.worker).pointStyle}
                         color={nodeChartStyle(point.worker).color}
                     />
                     <Dl>
