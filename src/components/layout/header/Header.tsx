@@ -1,5 +1,5 @@
+import About from './About';
 import HeaderNavigation from './HeaderNavigation';
-import HeaderVersions from './HeaderVersions';
 import {
     Flex,
     Text,
@@ -147,9 +147,9 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
-                            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                            <About />
                             <MenuDivider color="gray.200" />
-                            <HeaderVersions />
+                            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
