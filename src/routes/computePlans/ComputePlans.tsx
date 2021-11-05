@@ -1,3 +1,4 @@
+import ComputePlanTr from './components/ComputePlanTr';
 import {
     VStack,
     Table,
@@ -5,6 +6,7 @@ import {
     Tr,
     Th,
     Td,
+    Tbody as ChakraTbody,
     Box,
     Button,
     HStack,
@@ -21,8 +23,6 @@ import {
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
 
-import { formatDate } from '@/libs/utils';
-
 import {
     useAppDispatch,
     useAppSelector,
@@ -30,15 +30,14 @@ import {
 } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import usePinnedComputePlans from '@/hooks/usePinnedComputePlans';
 import useSelection from '@/hooks/useSelection';
 
 import { compilePath, PATHS } from '@/routes';
 
-import Checkbox from '@/components/Checkbox';
-import ComputeProgressBar from '@/components/ComputeProgressBar';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
+import { EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     StatusTableFilterTag,
     TableFilterTags,
@@ -53,7 +52,6 @@ const ComputePlans = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const {
         params: { page, search: searchFilters },
-        setLocationWithParams,
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
 
@@ -88,6 +86,17 @@ const ComputePlans = (): JSX.Element => {
         setLocation(
             compilePath(PATHS.COMPARE, { keys: selectedKeys.join(',') })
         );
+    };
+
+    const { pinnedItems, pinItem, unpinItem } = usePinnedComputePlans();
+    const pinnedKeys = pinnedItems.map((cp) => cp.key);
+
+    const onPinChange = (computePlan: ComputePlanT) => () => {
+        if (pinnedKeys.includes(computePlan.key)) {
+            unpinItem(computePlan);
+        } else {
+            pinItem(computePlan);
+        }
     };
 
     return (
@@ -146,22 +155,38 @@ const ComputePlans = (): JSX.Element => {
                         zIndex={1}
                     >
                         <Tr>
-                            <Th>&nbsp;</Th>
+                            <Th padding="0"></Th>
+                            <Th padding="0"></Th>
                             <Th>Tag</Th>
                             <Th>Status / Tasks</Th>
                             <Th width="100%">Creation</Th>
                         </Tr>
                     </Thead>
+                    <ChakraTbody>
+                        {pinnedItems.map((computePlan) => (
+                            <ComputePlanTr
+                                key={computePlan.key}
+                                computePlan={computePlan}
+                                selectedKeys={selectedKeys}
+                                onSelectionChange={onSelectionChange}
+                                pinnedKeys={pinnedKeys}
+                                onPinChange={onPinChange}
+                            />
+                        ))}
+                    </ChakraTbody>
                     <Tbody data-cy={computePlansLoading ? 'loading' : 'loaded'}>
                         {!computePlansLoading && computePlans.length === 0 && (
-                            <EmptyTr nbColumns={4} />
+                            <EmptyTr nbColumns={5} />
                         )}
                         {computePlansLoading ? (
                             <TableSkeleton
                                 itemCount={computePlansCount}
                                 currentPage={page}
                             >
-                                <Td>
+                                <Td paddingRight="2.5">
+                                    <Skeleton width="16px" height="16px" />
+                                </Td>
+                                <Td paddingX="2.5">
                                     <Skeleton width="16px" height="16px" />
                                 </Td>
                                 <Td>
@@ -207,84 +232,21 @@ const ComputePlans = (): JSX.Element => {
                                 </Td>
                             </TableSkeleton>
                         ) : (
-                            computePlans.map((computePlan) => (
-                                <ClickableTr
-                                    key={computePlan.key}
-                                    onClick={() =>
-                                        setLocationWithParams(
-                                            compilePath(
-                                                PATHS.COMPUTE_PLAN_TASKS,
-                                                {
-                                                    key: computePlan.key,
-                                                }
-                                            )
-                                        )
-                                    }
-                                >
-                                    <Td position="relative">
-                                        <Box
-                                            as="label"
-                                            position="absolute"
-                                            left="0"
-                                            right="0"
-                                            bottom="0"
-                                            top="0"
-                                            display="flex"
-                                            alignItems="center"
-                                            justifyContent="center"
-                                            paddingTop="3px" // Visually center the checkbox
-                                            // @ts-expect-error Box as label expects a weird type for onClick
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <Checkbox
-                                                value={computePlan.key}
-                                                checked={selectedKeys.includes(
-                                                    computePlan.key
-                                                )}
-                                                onChange={onSelectionChange(
-                                                    computePlan.key
-                                                )}
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                            />
-                                        </Box>
-                                    </Td>
-                                    <Td maxWidth="350px">
-                                        <Text fontSize="xs">
-                                            {computePlan.tag}
-                                        </Text>
-                                    </Td>
-                                    <Td minWidth="255px">
-                                        <Flex
-                                            alignItems="center"
-                                            justifyContent="space-between"
-                                        >
-                                            <Status
-                                                status={computePlan.status}
-                                                size="sm"
-                                            />
-                                            <Text
-                                                fontSize="xs"
-                                                color="gray.600"
-                                            >
-                                                {computePlan.done_count}/
-                                                {computePlan.task_count}
-                                            </Text>
-                                        </Flex>
-                                        <ComputeProgressBar
-                                            computePlan={computePlan}
-                                        />
-                                    </Td>
-                                    <Td>
-                                        <Text fontSize="xs">
-                                            {formatDate(
-                                                computePlan.creation_date
-                                            )}
-                                        </Text>
-                                    </Td>
-                                </ClickableTr>
-                            ))
+                            computePlans
+                                .filter(
+                                    (computePlan) =>
+                                        !pinnedKeys.includes(computePlan.key)
+                                )
+                                .map((computePlan) => (
+                                    <ComputePlanTr
+                                        key={computePlan.key}
+                                        computePlan={computePlan}
+                                        selectedKeys={selectedKeys}
+                                        onSelectionChange={onSelectionChange}
+                                        pinnedKeys={pinnedKeys}
+                                        onPinChange={onPinChange}
+                                    />
+                                ))
                         )}
                     </Tbody>
                 </Table>

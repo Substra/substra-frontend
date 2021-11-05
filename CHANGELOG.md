@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   New login page (#220)
+-   Ability to pin compute plans to the top of the table (#222)
 
 ### Fixed
 

@@ -26,3 +26,17 @@ export interface ComputePlanT {
     metadata: { [key: string]: string };
     failed_task?: { key: string; category: TaskCategory };
 }
+
+export const isComputePlan = (
+    computePlan: unknown
+): computePlan is ComputePlanT => {
+    if (typeof computePlan !== 'object') {
+        return false;
+    }
+
+    // task_count and delete_intermediary_models props only exist for compute plan objects
+    return (
+        (computePlan as ComputePlanT).task_count !== undefined &&
+        (computePlan as ComputePlanT).delete_intermediary_models !== undefined
+    );
+};
