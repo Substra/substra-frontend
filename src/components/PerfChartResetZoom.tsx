@@ -8,7 +8,6 @@ const PerfChartResetZoom = styled.button`
     right: 0;
     cursor: pointer;
     border: 1px solid ${Colors.border};
-    border-radius: 4px;
     padding: ${Spaces.extraSmall} ${Spaces.small};
     background-color: ${Colors.background};
     font-size: ${Fonts.sizes.smallBody};

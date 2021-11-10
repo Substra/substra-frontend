@@ -29,7 +29,6 @@ const DetailsSidebar = (): JSX.Element => {
                     borderWidth="1px"
                     borderStyle="solid"
                     borderColor="gray.100"
-                    borderRadius="lg"
                     spacing="1.5"
                     padding="5"
                     alignItems="stretch"

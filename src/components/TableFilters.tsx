@@ -91,7 +91,7 @@ export const TableFilters = ({
                         Add Filter
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent rounded="10px" minWidth="670px" boxShadow="xl">
+                <PopoverContent minWidth="670px" boxShadow="xl">
                     <PopoverArrow />
                     <PopoverCloseButton onClick={onClose} />
                     <PopoverBody padding="0" overflow="hidden">
@@ -114,7 +114,6 @@ export const TableFilters = ({
                                                 color: 'teal.500',
                                             }}
                                             fontSize="sm"
-                                            borderRadius="md"
                                             justifyContent="flex-start"
                                             key={title}
                                             ref={

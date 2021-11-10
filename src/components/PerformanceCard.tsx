@@ -21,7 +21,6 @@ const PerformanceCard = ({
             padding={2}
             backgroundColor="white"
             justifyContent="space-between"
-            rounded="md"
             border="2px solid transparent"
             _hover={{ borderColor: 'teal.500', borderWidth: 2 }}
             onClick={onClick}

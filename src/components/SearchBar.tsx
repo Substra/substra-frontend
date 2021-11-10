@@ -82,7 +82,6 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
                     variant="outline"
                     colorScheme="gray"
                     width="350px"
-                    borderRadius="6px"
                     borderColor="gray.200"
                     value={value}
                     onBlur={onBlur}

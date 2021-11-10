@@ -19,13 +19,7 @@ const CopyIconButton = ({
     const { hasCopied, onCopy } = useClipboard(value);
 
     return (
-        <Tooltip
-            label={label}
-            fontSize="xs"
-            hasArrow={true}
-            placement="top"
-            borderRadius="base"
-        >
+        <Tooltip label={label} fontSize="xs" hasArrow={true} placement="top">
             <IconButton
                 aria-label={label}
                 variant={variant}

@@ -26,7 +26,6 @@ const PinBox = ({ checked, onChange }: PinBoxProps): JSX.Element => {
         <Box
             cursor="pointer"
             boxShadow={focus ? 'outline' : undefined}
-            borderRadius="sm"
             transitionProperty="box-shadow"
             transitionDuration="normal"
         >

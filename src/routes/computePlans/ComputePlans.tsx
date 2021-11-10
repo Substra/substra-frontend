@@ -210,7 +210,6 @@ const ComputePlans = (): JSX.Element => {
                                             size="xs"
                                             colorScheme="teal"
                                             marginTop="2"
-                                            borderRadius="8"
                                             hasStripe={false}
                                             value={100}
                                         />

@@ -127,10 +127,6 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                 <VStack display="inline-block" spacing="2.5">
                     <Box
                         backgroundColor="white"
-                        borderRadius="lg"
-                        borderTopLeftRadius={
-                            selectedTaskType === 0 ? 0 : undefined
-                        }
                         borderWidth="1px"
                         borderStyle="solid"
                         borderColor="gray.100"

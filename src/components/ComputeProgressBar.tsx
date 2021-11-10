@@ -12,7 +12,6 @@ const Container = styled.div<{
     width: 100%;
     height: 0.5rem;
     background-color: ${({ task_count }) => (task_count ? '#CBD5E0' : '#fff')};
-    border-radius: 20px !important;
     margin-top: var(--chakra-space-2);
     margin-bottom: var(--chakra-space-2);
     display: flex;
@@ -21,10 +20,6 @@ const Container = styled.div<{
         &:after {
             display: none;
         }
-    }
-
-    & div:first-of-type {
-        border-radius: 4px;
     }
 `;
 
@@ -37,17 +32,12 @@ const Item = styled.div<{
     height: 100%;
     background-color: ${({ color }) => (color ? color : '#CBD5E0')};
     left: calc(50% - 225px / 2 + 0px);
-    border-radius: 0px 4px 4px 0px;
     width: ${({ task_count, value }) => (value / task_count) * 100}%;
 
     &:after {
         position: relative;
         content: ' ';
         color: transparent;
-        border-radius: 0 0 10px 0;
-        -moz-border-radius: 0 0 10px 0;
-        -webkit-border-radius: 0 10px 10px 0;
-        -webkit-box-shadow: 10px 0 0 0 #fff;
         box-shadow: 2px 0 0 0 #fff;
         display: block;
         height: 0.5rem;

@@ -83,7 +83,6 @@ const Dataset = (): JSX.Element => {
                 <VStack spacing="8" width="870px" alignItems="stretch">
                     <Box
                         backgroundColor="white"
-                        borderRadius="lg"
                         borderWidth="1px"
                         borderStyle="solid"
                         borderColor="gray.100"
@@ -121,7 +120,6 @@ const Dataset = (): JSX.Element => {
                     </Box>
                     <Box
                         backgroundColor="white"
-                        borderRadius="lg"
                         borderWidth="1px"
                         borderStyle="solid"
                         borderColor="gray.100"

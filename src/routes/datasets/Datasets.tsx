@@ -78,7 +78,6 @@ const Datasets = (): JSX.Element => {
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"
-                    borderRadius="lg"
                     borderWidth="1px"
                     borderStyle="solid"
                     borderColor="gray.100"

@@ -82,7 +82,6 @@ const DownloadButton = ({
                     right="0px"
                     width="175px"
                     boxShadow="md"
-                    rounded="md"
                 >
                     <Box
                         onClick={() => {

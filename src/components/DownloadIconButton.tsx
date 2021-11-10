@@ -27,13 +27,7 @@ const DownloadIconButton = ({
         }
     };
     return (
-        <Tooltip
-            label={label}
-            hasArrow={true}
-            placement="top"
-            borderRadius="base"
-            fontSize="xs"
-        >
+        <Tooltip label={label} hasArrow={true} placement="top" fontSize="xs">
             <IconButton
                 aria-label={label}
                 variant={variant}

@@ -25,7 +25,6 @@ const NotFound = (): JSX.Element => {
                 marginBottom="5"
                 width={20}
                 height={20}
-                borderRadius="full"
                 fontSize="30px"
                 alignItems="center"
                 justifyContent="center"

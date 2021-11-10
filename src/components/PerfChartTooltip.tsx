@@ -44,7 +44,6 @@ const Tooltip = styled.ul<TooltipProps>`
     width: ${TOOLTIP_WIDTH}px;
     border: 1px solid ${Colors.border};
     background-color: ${Colors.darkerBackground};
-    border-radius: 4px;
     padding: ${Spaces.extraSmall} ${Spaces.small};
     font-size: ${Fonts.sizes.smallBody};
     z-index: 1;
@@ -70,7 +69,6 @@ const DownloadButton = styled.button`
     color: ${Colors.primary};
     background: none;
     border: 1px solid ${Colors.border};
-    border-radius: 20px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
