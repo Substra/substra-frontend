@@ -23,7 +23,7 @@ import {
 const CATEGORY_LABEL: Record<TaskCategory, string> = {
     TASK_TEST: 'Test',
     TASK_AGGREGATE: 'Aggregate',
-    TASK_COMPOSITE: 'Composite',
+    TASK_COMPOSITE: 'Composite train',
     TASK_TRAIN: 'Train',
 };
 

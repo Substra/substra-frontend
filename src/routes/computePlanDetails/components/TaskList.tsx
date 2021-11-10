@@ -77,7 +77,7 @@ const Tasks = (): JSX.Element => {
         },
         {
             id: 2,
-            name: 'Composite',
+            name: 'Composite train',
             slug: 'composite_traintuple',
             loading: useAppSelector(
                 (state) => state.computePlans.computePlanCompositeTasksLoading
