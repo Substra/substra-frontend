@@ -155,10 +155,10 @@ const ComputePlans = (): JSX.Element => {
                         zIndex={1}
                     >
                         <Tr>
-                            <Th padding="0"></Th>
-                            <Th padding="0"></Th>
-                            <Th>Tag</Th>
-                            <Th>Status / Tasks</Th>
+                            <Th padding="0" minWidth="50px"></Th>
+                            <Th padding="0" minWidth="36px"></Th>
+                            <Th minWidth="100px">Tag</Th>
+                            <Th minWidth="255px">Status / Tasks</Th>
                             <Th width="100%">Creation</Th>
                         </Tr>
                     </Thead>
