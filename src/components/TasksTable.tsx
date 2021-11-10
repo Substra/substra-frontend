@@ -29,7 +29,11 @@ import { listTasksArgs } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useSearchFiltersEffect,
+} from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import Status from '@/components/Status';
@@ -67,13 +71,18 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
 
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
+
     const dispatch = useAppDispatch();
     useSearchFiltersEffect(() => {
         const action = taskTypes[selectedTaskType].list();
         if (action) {
             dispatch(action);
         }
-    }, [searchFilters, selectedTaskType, page]);
+        // The computePlan is needed to trigger a list call once it has been fetched
+    }, [searchFilters, selectedTaskType, page, computePlan]);
 
     return (
         <>
