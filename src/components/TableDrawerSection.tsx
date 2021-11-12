@@ -1,5 +1,5 @@
 import DrawerSectionContainer from './DrawerSectionContainer';
-import { HStack, Table, Td, Tr } from '@chakra-ui/react';
+import { HStack, Table, Td, Tr, Text } from '@chakra-ui/react';
 
 import { formatDate } from '@/libs/utils';
 
@@ -48,7 +48,9 @@ const TableDrawerSectionKeyEntry = ({
 }): JSX.Element => (
     <TableDrawerSectionEntry title="Key">
         <HStack spacing={1.5} justifyContent="flex-end">
-            <span>{value}</span>
+            <Text isTruncated maxWidth="250px">
+                {value}
+            </Text>
             <CopyButton value={value} />
         </HStack>
     </TableDrawerSectionEntry>

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed warning in the console (#221)
 -   Fix infinite load on the train tasks compute plan on first load (#225)
 -   Added min width to compute plans table columns to fix display when there are no results (#229)
+-   Truncate TableDrawerSectionKeyEntry value when too long (#234)
 
 ### Changed
 
