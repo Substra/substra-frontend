@@ -57,7 +57,7 @@ const ComputePlanTr = ({
                     onChange={onPinChange(computePlan)}
                 />
             </CheckboxTd>
-            <Td maxWidth="350px">
+            <Td minWidth="250px">
                 <Text fontSize="xs">{computePlan.tag}</Text>
             </Td>
             <Td minWidth="255px">

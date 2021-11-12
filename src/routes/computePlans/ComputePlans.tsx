@@ -157,7 +157,7 @@ const ComputePlans = (): JSX.Element => {
                         <Tr>
                             <Th padding="0" minWidth="50px"></Th>
                             <Th padding="0" minWidth="36px"></Th>
-                            <Th minWidth="100px">Tag</Th>
+                            <Th minWidth="250px">Tag</Th>
                             <Th minWidth="255px">Status / Tasks</Th>
                             <Th width="100%">Creation</Th>
                         </Tr>
