@@ -72,6 +72,7 @@ const AlgoDrawer = (): JSX.Element => {
                 onClose();
             }}
             size="md"
+            autoFocus={false}
         >
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">

@@ -106,6 +106,7 @@ const TaskDrawer = (): JSX.Element => {
             placement="right"
             onClose={handleOnClose}
             size="md"
+            autoFocus={false}
         >
             <DrawerOverlay />
             <DrawerContent>
