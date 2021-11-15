@@ -1,6 +1,6 @@
 import {
+    Box,
     List,
-    ListIcon,
     ListItem,
     Text,
     Link,
@@ -8,11 +8,7 @@ import {
     HStack,
     Badge,
 } from '@chakra-ui/react';
-import {
-    RiArrowRightSFill,
-    RiDatabase2Fill,
-    RiDatabase2Line,
-} from 'react-icons/ri';
+import { RiDatabase2Fill, RiDatabase2Line } from 'react-icons/ri';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 
@@ -20,6 +16,8 @@ import { compilePath, PATHS } from '@/routes';
 
 import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import IconTag from '@/components/IconTag';
+
+import AngleIcon from '@/assets/svg/angle-icon.svg';
 
 interface DataSampleDrawerSection {
     dataset: DatasetStubType;
@@ -65,13 +63,9 @@ const DataSampleDrawerSection = ({
                 <List spacing={2.5}>
                     {dataSampleKeys.map((dataSampleKey) => (
                         <ListItem display="flex" key={dataSampleKey}>
-                            <ListIcon
-                                as={RiArrowRightSFill}
-                                color="gray.500"
-                                width="22px"
-                                height="22px"
-                                padding="2px"
-                            />
+                            <Box margin="3px 16px 0px 8px">
+                                <AngleIcon />
+                            </Box>
                             <HStack spacing="2.5">
                                 <IconTag
                                     icon={RiDatabase2Line}
