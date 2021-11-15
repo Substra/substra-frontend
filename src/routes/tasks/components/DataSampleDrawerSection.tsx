@@ -3,7 +3,7 @@ import {
     ListIcon,
     ListItem,
     Text,
-    Link as ChakraLink,
+    Link,
     VStack,
     HStack,
     Badge,
@@ -13,7 +13,6 @@ import {
     RiDatabase2Fill,
     RiDatabase2Line,
 } from 'react-icons/ri';
-import { Link } from 'wouter';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 
@@ -37,24 +36,22 @@ const DataSampleDrawerSection = ({
                 <HStack spacing="1.5">
                     <Link
                         href={compilePath(PATHS.DATASET, { key: dataset.key })}
+                        fontSize="xs"
+                        lineHeight="4"
+                        fontWeight="normal"
+                        color="teal.500"
+                        display="inline-flex"
+                        alignItems="center"
+                        isExternal
                     >
-                        <ChakraLink
-                            fontSize="xs"
-                            lineHeight="4"
-                            fontWeight="normal"
-                            color="teal.500"
-                            display="inline-flex"
-                            alignItems="center"
-                        >
-                            <HStack spacing="2.5">
-                                <IconTag
-                                    icon={RiDatabase2Fill}
-                                    backgroundColor="teal.100"
-                                    fill="teal.500"
-                                />
-                                <span>{dataset.name}</span>
-                            </HStack>
-                        </ChakraLink>
+                        <HStack spacing="2.5">
+                            <IconTag
+                                icon={RiDatabase2Fill}
+                                backgroundColor="teal.100"
+                                fill="teal.500"
+                            />
+                            <span>{dataset.name}</span>
+                        </HStack>
                     </Link>
                     <Badge
                         variant="solid"

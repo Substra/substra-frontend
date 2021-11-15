@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Ability to pin compute plans to the top of the table (#222)
 -   About modal that opens from the user menu (#223)
 -   New page not found page (#224)
+-   Open assets links in task drawer in a new tab (#232)
 
 ### Fixed
 

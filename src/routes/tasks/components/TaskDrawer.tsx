@@ -16,9 +16,9 @@ import {
     Tab,
     TabPanels,
     TabPanel,
-    Link as ChakraLink,
+    Link,
 } from '@chakra-ui/react';
-import { Link, useRoute } from 'wouter';
+import { useRoute } from 'wouter';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
@@ -63,7 +63,6 @@ const TaskDrawer = (): JSX.Element => {
     } else if (isComputePlanTask) {
         key = computePlanTaskParams?.taskKey;
     }
-
     const dispatch = useAppDispatch();
     useEffect(() => {
         if (key) {
@@ -175,10 +174,10 @@ const TaskDrawer = (): JSX.Element => {
                                                 href={compilePath(PATHS.ALGO, {
                                                     key: task.algo.key,
                                                 })}
+                                                color="teal.500"
+                                                isExternal
                                             >
-                                                <ChakraLink color="teal.500">
-                                                    {task.algo.name}
-                                                </ChakraLink>
+                                                {task.algo.name}
                                             </Link>
                                         </TableDrawerSectionEntry>
                                         {(isTraintuple(task) ||
