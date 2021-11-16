@@ -17,9 +17,12 @@ const DetailsSidebar = (): JSX.Element => {
         (state) => state.computePlans.computePlan
     );
 
-    const percentageDisplay = computePlan
-        ? ((100 * computePlan.done_count) / computePlan.task_count).toFixed(0)
-        : 0;
+    const percentageDisplay =
+        computePlan && computePlan.task_count > 0
+            ? ((100 * computePlan.done_count) / computePlan.task_count).toFixed(
+                  0
+              )
+            : 0;
 
     return (
         <VStack spacing="8" width="xs" alignItems="stretch">
