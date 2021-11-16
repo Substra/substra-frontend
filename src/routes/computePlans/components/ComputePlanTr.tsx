@@ -1,6 +1,7 @@
 import CheckboxTd from './CheckboxTd';
 import PinBox from './PinBox';
-import { Td, Checkbox, Flex, Text } from '@chakra-ui/react';
+import StatusCell from './StatusCell';
+import { Td, Checkbox, Text } from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
@@ -10,8 +11,6 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
-import ComputeProgressBar from '@/components/ComputeProgressBar';
-import Status from '@/components/Status';
 import { ClickableTr } from '@/components/Table';
 
 interface ComputePlanTrProps {
@@ -61,13 +60,7 @@ const ComputePlanTr = ({
                 <Text fontSize="xs">{computePlan.tag}</Text>
             </Td>
             <Td minWidth="255px">
-                <Flex alignItems="center" justifyContent="space-between">
-                    <Status status={computePlan.status} size="sm" />
-                    <Text fontSize="xs" color="gray.600">
-                        {computePlan.done_count}/{computePlan.task_count}
-                    </Text>
-                </Flex>
-                <ComputeProgressBar computePlan={computePlan} />
+                <StatusCell computePlan={computePlan} />
             </Td>
             <Td>
                 <Text fontSize="xs">

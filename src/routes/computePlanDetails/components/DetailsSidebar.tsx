@@ -1,10 +1,11 @@
-import { VStack, Flex, Text, Progress } from '@chakra-ui/react';
+import { VStack, Flex, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
 
+import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
 import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
-import Status, { getStatusStyle } from '@/components/Status';
+import Status from '@/components/Status';
 import {
     TableDrawerSection,
     TableDrawerSectionCreatedEntry,
@@ -39,10 +40,7 @@ const DetailsSidebar = (): JSX.Element => {
                 >
                     {computePlan && (
                         <>
-                            <Flex
-                                justifyContent="space-between"
-                                alignItems="flex-end"
-                            >
+                            <Flex justifyContent="space-between">
                                 <Text
                                     fontSize="md"
                                     lineHeight="6"
@@ -56,15 +54,7 @@ const DetailsSidebar = (): JSX.Element => {
                                     fontWeight="normal"
                                 >{`${computePlan.done_count}/${computePlan.task_count}`}</Text>
                             </Flex>
-                            <Progress
-                                size="xs"
-                                max={computePlan.task_count}
-                                value={computePlan.done_count}
-                                colorScheme={
-                                    getStatusStyle(computePlan.status)
-                                        .colorScheme
-                                }
-                            />
+                            <ComputePlanProgressBar computePlan={computePlan} />
                         </>
                     )}
                 </VStack>

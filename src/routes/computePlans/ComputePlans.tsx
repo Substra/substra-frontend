@@ -191,28 +191,31 @@ const ComputePlans = (): JSX.Element => {
                                 </Td>
                                 <Td>
                                     <Skeleton>
-                                        <Flex
-                                            alignItems="center"
-                                            justifyContent="space-between"
-                                        >
-                                            <Status
-                                                status={ComputePlanStatus.done}
-                                                size="sm"
-                                            />
-                                            <Text
-                                                fontSize="xs"
-                                                color="gray.600"
+                                        <VStack spacing="1">
+                                            <Flex
+                                                alignItems="center"
+                                                justifyContent="space-between"
                                             >
-                                                foo/bar
-                                            </Text>
-                                        </Flex>
-                                        <Progress
-                                            size="xs"
-                                            colorScheme="teal"
-                                            marginTop="2"
-                                            hasStripe={false}
-                                            value={100}
-                                        />
+                                                <Status
+                                                    status={
+                                                        ComputePlanStatus.done
+                                                    }
+                                                    size="sm"
+                                                />
+                                                <Text
+                                                    fontSize="xs"
+                                                    color="gray.600"
+                                                >
+                                                    foo/bar
+                                                </Text>
+                                            </Flex>
+                                            <Progress
+                                                size="xs"
+                                                colorScheme="teal"
+                                                hasStripe={false}
+                                                value={100}
+                                            />
+                                        </VStack>
                                     </Skeleton>
                                 </Td>
                                 <Td>

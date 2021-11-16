@@ -1,70 +1,16 @@
-import { Tag, TagLabel, TagLeftIcon, TagProps } from '@chakra-ui/react';
-import { IconType } from 'react-icons';
-import {
-    RiAlertLine,
-    RiCheckLine,
-    RiIndeterminateCircleLine,
-    RiPlayMiniLine,
-    RiTimeLine,
-} from 'react-icons/ri';
+import { Tag, TagLabel, TagLeftIcon, TagProps, Text } from '@chakra-ui/react';
 
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { getStatusLabel } from '@/libs/status';
-
-interface StatusStyle {
-    colorScheme: string;
-    icon: IconType;
-}
-
-export const getStatusStyle = (
-    status: TupleStatus | ComputePlanStatus
-): StatusStyle => {
-    switch (status) {
-        case TupleStatus.canceled:
-        case ComputePlanStatus.canceled:
-            return {
-                icon: RiIndeterminateCircleLine,
-                colorScheme: 'gray',
-            };
-
-        case TupleStatus.waiting:
-        case ComputePlanStatus.waiting:
-        case TupleStatus.todo:
-        case ComputePlanStatus.todo:
-            return {
-                icon: RiTimeLine,
-                colorScheme: 'yellow',
-            };
-        case TupleStatus.doing:
-        case ComputePlanStatus.doing:
-            return {
-                icon: RiPlayMiniLine,
-                colorScheme: 'blue',
-            };
-        case TupleStatus.failed:
-        case ComputePlanStatus.failed:
-            return {
-                icon: RiAlertLine,
-                colorScheme: 'red',
-            };
-        case TupleStatus.done:
-        case ComputePlanStatus.done:
-            return {
-                icon: RiCheckLine,
-                colorScheme: 'teal',
-            };
-        default:
-            throw 'Unknown status';
-    }
-};
+import { getStatusLabel, getStatusStyle } from '@/libs/status';
 
 interface StatusProps {
     status: ComputePlanStatus | TupleStatus;
     size: TagProps['size'];
     variant?: TagProps['variant'];
     withIcon?: boolean;
+    count?: number;
 }
 
 const Status = ({
@@ -72,13 +18,34 @@ const Status = ({
     size,
     variant,
     withIcon,
+    count,
 }: StatusProps): JSX.Element => {
-    const { icon, colorScheme } = getStatusStyle(status);
+    const {
+        icon,
+        tagColor,
+        tagBackgroundColor,
+        tagSolidColor,
+        tagSolidBackgroundColor,
+    } = getStatusStyle(status);
+    const label = getStatusLabel(status);
+    const color = variant === 'solid' ? tagSolidColor : tagColor;
+    const backgroundColor =
+        variant === 'solid' ? tagSolidBackgroundColor : tagBackgroundColor;
 
     return (
-        <Tag size={size} colorScheme={colorScheme} variant={variant}>
+        <Tag
+            size={size}
+            color={color}
+            backgroundColor={backgroundColor}
+            variant={variant}
+        >
             {withIcon !== false && <TagLeftIcon as={icon} marginRight={1} />}
-            <TagLabel>{getStatusLabel(status)}</TagLabel>
+            <TagLabel>
+                <Text fontWeight="semibold" as="span">
+                    {label}
+                </Text>
+                {count !== undefined && ` • ${count}`}
+            </TagLabel>
         </Tag>
     );
 };

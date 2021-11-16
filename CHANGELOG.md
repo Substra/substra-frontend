@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   About modal that opens from the user menu (#223)
 -   New page not found page (#224)
 -   Open assets links in task drawer in a new tab (#232)
+-   Tasks details popover in compute plans table (#233)
 
 ### Fixed
 
