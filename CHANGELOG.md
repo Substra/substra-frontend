@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Improve chart style (#215)
 -   Wording update composite tasks now labeled as "Composite train" (#230)
 -   New branding (#231)
+-   Display N/A when there is no parent task in the drawer (#239)
 
 ## [0.5.0] - 2021-11-02
 

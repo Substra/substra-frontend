@@ -21,7 +21,7 @@ import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import IconTag from '@/components/IconTag';
 import Status from '@/components/Status';
 
-const ParenTasksDrawerSection = ({
+const ParentTasksDrawerSection = ({
     parentTasks,
 }: {
     parentTasks: (
@@ -47,6 +47,7 @@ const ParenTasksDrawerSection = ({
     return (
         <DrawerSectionContainer title="Parent tasks">
             <List width="100%" spacing="1.5">
+                {parentTasks.length === 0 && <Text fontSize="sm">N/A</Text>}
                 {parentTasks.map((parentTask) => (
                     <ListItem
                         key={parentTask.key}
@@ -81,4 +82,4 @@ const ParenTasksDrawerSection = ({
         </DrawerSectionContainer>
     );
 };
-export default ParenTasksDrawerSection;
+export default ParentTasksDrawerSection;
