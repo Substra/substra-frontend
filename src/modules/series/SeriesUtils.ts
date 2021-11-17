@@ -93,7 +93,8 @@ export function buildSeries(
                 serie.points.push(point);
             } else {
                 series.push({
-                    // ID is an incremented number
+                    // The couple (computePlanKey, id) should be unique
+                    // id is an incremented number
                     id: series.length,
                     points: [point],
                     ...serieFeatures,
@@ -134,19 +135,6 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
         groups.push(metricGroup);
     }
     return groups;
-}
-
-export function groupSeriesByMetric(
-    computePlansSeries: SerieT[],
-    selectedComputePlanKeys: string[],
-    selectedNodeKeys: string[]
-): SerieT[][] {
-    const filteredSeries = computePlansSeries.filter(
-        (serie) =>
-            selectedNodeKeys.includes(serie.worker) &&
-            selectedComputePlanKeys.includes(serie.computePlanKey)
-    );
-    return buildSeriesGroups(filteredSeries);
 }
 
 const average = (values: number[]): number => {

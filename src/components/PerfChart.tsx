@@ -1,10 +1,25 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, forwardRef } from 'react';
 
-import styled from '@emotion/styled';
+import {
+    Box,
+    HStack,
+    IconButton,
+    Kbd,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    PopoverCloseButton,
+    Text,
+    PopoverHeader,
+    PopoverBody,
+    VStack,
+    Button,
+} from '@chakra-ui/react';
 import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
 import { Line } from 'react-chartjs-2';
+import { RiQuestionMark } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { buildAverageSerie } from '@/modules/series/SeriesUtils';
@@ -14,209 +29,247 @@ import useBuildPerfChartDataset, {
 } from '@/hooks/useBuildPerfChartDataset';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 
-import PerfChartResetZoom from '@/components/PerfChartResetZoom';
-
-import { Spaces } from '@/assets/theme';
-
-const LineContainer = styled.div`
-    margin-right: ${Spaces.extraLarge};
-    position: relative;
-
-    width: 100%;
-    min-height: 300px;
-
-    & > button {
-        opacity: 0;
-        transition: opacity 0.1s ease-out;
-    }
-
-    &:hover > button {
-        opacity: 1;
-    }
-`;
-
 interface PerfChartProps {
     series: SerieT[];
-    getSerieLabel: (serie: SerieT) => string;
     displayAverage?: boolean;
-    zoom: boolean;
-    tooltip: boolean;
+    interactive: boolean;
 }
 
-const PerfChart = ({
-    series,
-    getSerieLabel,
-    displayAverage,
-    zoom: zoomEnabled,
-    tooltip: tooltipEnabled,
-}: PerfChartProps): JSX.Element => {
-    const chartRef = useRef<Chart<'line'>>();
-    const buildPerfChartDataset = useBuildPerfChartDataset();
-    const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
+const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
+    (
+        { series, displayAverage, interactive }: PerfChartProps,
+        ref
+    ): JSX.Element => {
+        const chartRef = useRef<Chart<'line'>>();
+        const buildPerfChartDataset = useBuildPerfChartDataset();
+        const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
 
-    const maxRank = useMemo(
-        () =>
-            series.reduce((max, serie) => {
-                const serieMax = serie.points.reduce(
-                    (max, point) => Math.max(max, point.rank),
-                    0
-                );
-                return Math.max(max, serieMax);
-            }, 0),
-        [series]
-    );
+        const maxRank = useMemo(
+            () =>
+                series.reduce((max, serie) => {
+                    const serieMax = serie.points.reduce(
+                        (max, point) => Math.max(max, point.rank),
+                        0
+                    );
+                    return Math.max(max, serieMax);
+                }, 0),
+            [series]
+        );
 
-    const averageDataset = useMemo(() => {
-        const averageSerie = buildAverageSerie(series);
-        if (averageSerie) {
-            return buildPerfChartDataset(averageSerie, 'Average', {
-                color: '#000000',
-                borderWidth: 3,
-            });
+        const averageDataset = useMemo(() => {
+            const averageSerie = buildAverageSerie(series);
+            if (averageSerie) {
+                return buildPerfChartDataset(averageSerie, 'Average', {
+                    color: '#000000',
+                    colorScheme: 'black',
+                    borderWidth: 3,
+                });
+            }
+            return null;
+        }, [series]);
+
+        const seriesDatasets = useMemo(
+            () =>
+                series.map((serie) =>
+                    buildPerfChartDataset(
+                        serie,
+                        `${serie.computePlanKey}-${serie.id}`
+                    )
+                ),
+            [series]
+        );
+
+        const data = useMemo<ChartData<'line', DataPoint[]>>(
+            () => ({
+                labels: [...Array(maxRank + 1).keys()],
+                datasets: [
+                    ...seriesDatasets,
+                    ...(averageDataset && displayAverage
+                        ? [averageDataset]
+                        : []),
+                ],
+            }),
+            [maxRank, seriesDatasets, averageDataset, displayAverage]
+        );
+        const zoomPluginOptions: ZoomPluginOptions = {
+            zoom: {
+                drag: {
+                    enabled: false,
+                },
+                wheel: {
+                    enabled: true,
+                    speed: 0.1,
+                },
+                pinch: {
+                    enabled: true,
+                },
+                mode: 'xy',
+            },
+            pan: {
+                enabled: true,
+                mode: 'xy',
+                threshold: 0.01,
+                modifierKey: 'shift',
+            },
+        };
+
+        const options: ChartOptions<'line'> = {
+            animation: false,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                ...(interactive
+                    ? { tooltip: tooltipPluginOptions }
+                    : { tooltip: { enabled: false } }),
+                ...(interactive ? { zoom: zoomPluginOptions } : {}),
+            },
+            scales: {
+                x: {
+                    type: 'category',
+                    title: {
+                        display: true,
+                        text: 'Rank',
+                        align: 'end',
+                        color: '#718096',
+                        font: {
+                            family: 'Inter',
+                            size: 10,
+                        },
+                    },
+                    grid: {
+                        borderColor: '#E2E8F0',
+                        color: '#EDF2F7',
+                    },
+                    ticks: {
+                        color: '#A0AEC0',
+                        font: {
+                            family: 'Inter',
+                            size: 10,
+                        },
+                    },
+                },
+                y: {
+                    type: 'linear',
+                    title: {
+                        display: true,
+                        text: 'Performance',
+                        align: 'end',
+                        color: '#718096',
+                        font: {
+                            family: 'Inter',
+                            size: 10,
+                        },
+                    },
+                    grid: {
+                        borderColor: '#E2E8F0',
+                        color: '#EDF2F7',
+                    },
+                    ticks: {
+                        color: '#A0AEC0',
+                        font: {
+                            family: 'Inter',
+                            size: 10,
+                        },
+                    },
+                },
+            },
+        };
+
+        const onResetZoomClick = () => {
+            const chart = chartRef.current;
+            if (chart) {
+                chart.resetZoom();
+            }
+        };
+
+        const plugins: Plugin<'line'>[] = [];
+        if (interactive) {
+            plugins.push(zoomPlugin as Plugin<'line'>);
         }
-        return null;
-    }, [series]);
 
-    const seriesDatasets = useMemo(
-        () =>
-            series.map((serie) =>
-                buildPerfChartDataset(serie, getSerieLabel(serie))
+        const chart = useMemo(
+            () => (
+                <Line
+                    data={data}
+                    options={options}
+                    plugins={plugins}
+                    ref={chartRef}
+                />
             ),
-        [series]
-    );
+            [data]
+        );
 
-    const data = useMemo<ChartData<'line', DataPoint[]>>(
-        () => ({
-            labels: [...Array(maxRank + 1).keys()],
-            datasets: [
-                ...seriesDatasets,
-                ...(averageDataset && displayAverage ? [averageDataset] : []),
-            ],
-        }),
-        [maxRank, seriesDatasets, averageDataset, displayAverage]
-    );
-    const zoomPluginOptions: ZoomPluginOptions = {
-        zoom: {
-            drag: {
-                enabled: false,
-            },
-            wheel: {
-                enabled: true,
-                speed: 0.1,
-            },
-            pinch: {
-                enabled: true,
-            },
-            mode: 'xy',
-            overScaleMode: 'xy',
-        },
-        pan: {
-            enabled: true,
-            mode: 'xy',
-            threshold: 0.01,
-            modifierKey: 'shift',
-        },
-    };
-
-    const options: ChartOptions<'line'> = {
-        animation: false,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-            ...(tooltipEnabled
-                ? { tooltip: tooltipPluginOptions }
-                : { tooltip: { enabled: false } }),
-            ...(zoomEnabled ? { zoom: zoomPluginOptions } : {}),
-        },
-        scales: {
-            x: {
-                type: 'category',
-                title: {
-                    display: true,
-                    text: 'Rank',
-                    align: 'end',
-                    color: '#718096',
-                    font: {
-                        family: 'Inter',
-                        size: 10,
-                    },
-                },
-                grid: {
-                    borderColor: '#E2E8F0',
-                    color: '#EDF2F7',
-                },
-                ticks: {
-                    color: '#A0AEC0',
-                    font: {
-                        family: 'Inter',
-                        size: 10,
-                    },
-                },
-            },
-            y: {
-                type: 'linear',
-                title: {
-                    display: true,
-                    text: 'Performance',
-                    align: 'end',
-                    color: '#718096',
-                    font: {
-                        family: 'Inter',
-                        size: 10,
-                    },
-                },
-                grid: {
-                    borderColor: '#E2E8F0',
-                    color: '#EDF2F7',
-                },
-                ticks: {
-                    color: '#A0AEC0',
-                    font: {
-                        family: 'Inter',
-                        size: 10,
-                    },
-                },
-            },
-        },
-    };
-
-    const onResetZoomClick = () => {
-        const chart = chartRef.current;
-        if (chart) {
-            chart.resetZoom();
-        }
-    };
-
-    const plugins: Plugin<'line'>[] = [];
-    if (zoomEnabled) {
-        plugins.push(zoomPlugin as Plugin<'line'>);
+        return (
+            <Box position="relative" width="100%" height="100%" ref={ref}>
+                {chart}
+                {interactive && tooltip}
+                {interactive && (
+                    <HStack position="absolute" bottom="14" right="2.5">
+                        <Button
+                            onClick={onResetZoomClick}
+                            variant="outline"
+                            size="sm"
+                            backgroundColor="white"
+                        >
+                            Reset zoom
+                        </Button>
+                        <Box>
+                            <Popover placement="top-end">
+                                <PopoverTrigger>
+                                    <IconButton
+                                        variant="solid"
+                                        isRound
+                                        size="sm"
+                                        backgroundColor="gray.600"
+                                        icon={<RiQuestionMark fill="white" />}
+                                        aria-label="How to use"
+                                    />
+                                </PopoverTrigger>
+                                <PopoverContent width="240px">
+                                    <PopoverCloseButton top="5" right="5" />
+                                    <PopoverHeader
+                                        textTransform="uppercase"
+                                        borderBottom="none"
+                                        paddingX="5"
+                                        paddingTop="5"
+                                        paddingBottom="0"
+                                        fontSize="xs"
+                                        fontWeight="bold"
+                                    >
+                                        How to use
+                                    </PopoverHeader>
+                                    <PopoverBody padding="5">
+                                        <VStack spacing="5">
+                                            <Text fontSize="xs">
+                                                Hover the chart to display
+                                                values into this right column.
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                Click somewhere on the chart to
+                                                fix value and be able to
+                                                interact with them.
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                To zoom into the chart, use your
+                                                mousewheel.
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                To move into the chart, use{' '}
+                                                <Kbd>shift</Kbd> +{' '}
+                                                <Kbd>Left click</Kbd>
+                                            </Text>
+                                        </VStack>
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Popover>
+                        </Box>
+                    </HStack>
+                )}
+            </Box>
+        );
     }
-
-    const chart = useMemo(
-        () => (
-            <Line
-                data={data}
-                options={options}
-                plugins={plugins}
-                ref={chartRef}
-            />
-        ),
-        [data]
-    );
-
-    return (
-        <LineContainer>
-            {chart}
-            {tooltipEnabled && tooltip}
-            {zoomEnabled && (
-                <PerfChartResetZoom onClick={onResetZoomClick}>
-                    Reset zoom
-                </PerfChartResetZoom>
-            )}
-        </LineContainer>
-    );
-};
+);
 
 export default PerfChart;

@@ -16,13 +16,27 @@ const CHART_COLORS = [
     chakraTheme.colors.pink['500'],
 ];
 
+const CHART_COLOR_SCHEMES = [
+    'red',
+    'orange',
+    'yellow',
+    'green',
+    'teal',
+    'blue',
+    'cyan',
+    'purple',
+    'pink',
+];
+
 export interface ChartStyle {
     color: string;
+    colorScheme: string;
     borderWidth: number;
 }
 
 const DEFAULT_CHART_STYLE: ChartStyle = {
     color: CHART_COLORS[0],
+    colorScheme: CHART_COLOR_SCHEMES[0],
     borderWidth: 2,
 };
 
@@ -40,6 +54,8 @@ const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
             const nodeId = nodeIds[i];
             chartStyles[nodeId] = {
                 color: CHART_COLORS[i % CHART_COLORS.length],
+                colorScheme:
+                    CHART_COLOR_SCHEMES[i % CHART_COLOR_SCHEMES.length],
                 borderWidth: 2,
             };
         }
@@ -47,7 +63,7 @@ const useNodeChartStyle = (): ((nodeId: string) => ChartStyle) => {
         return (nodeId: string): ChartStyle => {
             return chartStyles[nodeId] || DEFAULT_CHART_STYLE;
         };
-    }, nodeIds);
+    }, [nodeIds]);
 };
 
 export default useNodeChartStyle;

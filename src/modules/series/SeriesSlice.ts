@@ -3,7 +3,7 @@ import ComputePlansApi from '../computePlans/ComputePlansApi';
 import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise } from 'axios';
 
 import MetricsApi from '@/modules//metrics/MetricsApi';
@@ -15,35 +15,13 @@ import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface SeriesState {
-    computePlanKey: string;
-
     series: SerieT[];
-    metrics: MetricType[];
-
-    computePlansSeries: SerieT[];
-    computePlansMetrics: MetricType[];
-
-    selectedMetricKeys: string[];
-    selectedComputePlanKeys: string[];
-    selectedNodeKeys: string[];
-
     loading: boolean;
     error: string;
 }
 
 const initialState: SeriesState = {
-    computePlanKey: '',
-
     series: [],
-    metrics: [],
-
-    computePlansSeries: [],
-    computePlansMetrics: [],
-
-    selectedMetricKeys: [],
-    selectedComputePlanKeys: [],
-    selectedNodeKeys: [],
-
     loading: true,
     error: '',
 };
@@ -52,7 +30,7 @@ const getComputePlanSeries = async (
     computePlanKey: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rejectWithValue: (value: string) => any
-) => {
+): Promise<SerieT[]> => {
     let testtuples: TesttupleStub[];
 
     try {
@@ -123,115 +101,56 @@ const getComputePlanSeries = async (
 
     // build series
 
-    const series = buildSeries(testtuples, datasets, metrics);
-
-    return { series, metrics };
+    return buildSeries(testtuples, datasets, metrics);
 };
 
-export const loadComputePlansSeries = createAsyncThunk<
-    {
-        computePlansMetrics: MetricType[];
-        computePlansSeries: SerieT[];
-    },
-    string[],
+export const loadSeries = createAsyncThunk<
+    SerieT[],
+    string | string[],
     { rejectValue: string }
->('series/loadComputePlansSeries', async (computePlanKeys, thunkAPI) => {
-    // Load tuples for each computePlan
-    let computePlansSeries: SerieT[] = [];
-    let computePlansMetrics: MetricType[] = [];
+>('series/loadComputePlansSeries', async (computePlanKeyOrKeys, thunkAPI) => {
+    // if computePlanKeyOrKeys is a string, make it a list
+    const computePlanKeys =
+        typeof computePlanKeyOrKeys === 'string'
+            ? [computePlanKeyOrKeys]
+            : computePlanKeyOrKeys;
 
+    // load series for each compute plan
+    let series: SerieT[] = [];
     for (const computePlanKey of computePlanKeys) {
-        const { series, metrics } = await getComputePlanSeries(
+        const computePlanSeries = await getComputePlanSeries(
             computePlanKey,
             thunkAPI.rejectWithValue
         );
 
-        computePlansSeries = [...computePlansSeries, ...series];
-        computePlansMetrics = [...computePlansMetrics, ...metrics];
+        series = [...series, ...computePlanSeries];
     }
 
-    return {
-        computePlansSeries,
-        computePlansMetrics,
-    };
-});
-
-export const loadSeries = createAsyncThunk<
-    {
-        metrics: MetricType[];
-        series: SerieT[];
-    },
-    string,
-    { rejectValue: string }
->('series/loadSeries', async (computePlanKey, thunkAPI) => {
-    const { series, metrics } = await getComputePlanSeries(
-        computePlanKey,
-        thunkAPI.rejectWithValue
-    );
-    return {
-        series,
-        metrics,
-    };
+    return series;
 });
 
 export const seriesSlice = createSlice({
     name: 'series',
     initialState,
-    reducers: {
-        setSelectedMetricKeys(
-            state: SeriesState,
-            action: PayloadAction<string[]>
-        ) {
-            state.selectedMetricKeys = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(loadSeries.pending, (state, action) => {
-                state.computePlanKey = action.meta.arg;
+            .addCase(loadSeries.pending, (state) => {
                 state.series = [];
-                state.metrics = [];
-                state.selectedMetricKeys = [];
                 state.loading = true;
                 state.error = '';
             })
             .addCase(loadSeries.fulfilled, (state, { payload }) => {
-                state.series = payload.series;
-                state.metrics = payload.metrics;
-                state.selectedMetricKeys = payload.metrics.map(
-                    (metric) => metric.key
-                );
+                state.series = payload;
                 state.loading = false;
                 state.error = '';
             })
             .addCase(loadSeries.rejected, (state, { payload }) => {
                 state.series = [];
-                state.metrics = [];
-                state.selectedMetricKeys = [];
-                state.loading = false;
-                state.error = payload || 'Unknown error';
-            })
-            .addCase(loadComputePlansSeries.pending, (state) => {
-                state.computePlansSeries = [];
-                state.computePlansMetrics = [];
-                state.loading = true;
-                state.error = '';
-            })
-            .addCase(loadComputePlansSeries.fulfilled, (state, { payload }) => {
-                state.computePlansSeries = payload.computePlansSeries;
-                state.computePlansMetrics = payload.computePlansMetrics;
-                state.loading = false;
-                state.error = '';
-            })
-            .addCase(loadComputePlansSeries.rejected, (state, { payload }) => {
-                state.computePlansSeries = [];
-                state.computePlansMetrics = [];
                 state.loading = false;
                 state.error = payload || 'Unknown error';
             });
     },
 });
-
-export const { setSelectedMetricKeys } = seriesSlice.actions;
 
 export default seriesSlice.reducer;

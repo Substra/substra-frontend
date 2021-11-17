@@ -1,4 +1,4 @@
-import { Tooltip, Flex, Text } from '@chakra-ui/react';
+import { Tooltip, Flex, Text, Box } from '@chakra-ui/react';
 
 interface PerformanceCardProps {
     title: string;
@@ -6,7 +6,7 @@ interface PerformanceCardProps {
     onClick: () => void;
 }
 
-const PerformanceCard = ({
+const PerfCard = ({
     title,
     children,
     onClick,
@@ -26,21 +26,14 @@ const PerformanceCard = ({
             onClick={onClick}
             cursor="pointer"
         >
-            <div>{children}</div>
-            <Flex justifyContent="space-between" alignItems="flex-end">
-                <Tooltip
-                    label={title}
-                    fontSize="xs"
-                    hasArrow
-                    placement="bottom"
-                >
-                    <Text isTruncated fontWeight="medium" fontSize="sm">
-                        {title}
-                    </Text>
-                </Tooltip>
-            </Flex>
+            <Box flexGrow={1}>{children}</Box>
+            <Tooltip label={title} fontSize="xs" hasArrow placement="bottom">
+                <Text isTruncated fontWeight="medium" fontSize="sm">
+                    {title}
+                </Text>
+            </Tooltip>
         </Flex>
     );
 };
 
-export default PerformanceCard;
+export default PerfCard;

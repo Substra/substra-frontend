@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New page not found page (#224)
 -   Open assets links in task drawer in a new tab (#232)
 -   Tasks details popover in compute plans table (#233)
+-   New layout for performance charts (#226)
+-   Help popover on charts (#228)
 
 ### Fixed
 
@@ -36,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Wording update composite tasks now labeled as "Composite train" (#230)
 -   New branding (#231)
 -   Display N/A when there is no parent task in the drawer (#239)
+-   Zoom on charts works on full chart and not just axes (#228)
 
 ## [0.5.0] - 2021-11-02
 
