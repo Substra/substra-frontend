@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { Box, Button, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
 
 import PerfChart from '@/components/PerfChart';
@@ -13,15 +12,11 @@ interface PerfDetailsProps {
     metricName: string;
     onBack: () => void;
     series: SerieT[];
-    computePlan: ComputePlanT | null;
-    displayAverage: boolean;
 }
 const PerfDetails = ({
     metricName,
     onBack,
     series,
-    computePlan,
-    displayAverage,
 }: PerfDetailsProps): JSX.Element => {
     const perfChartRef = useRef<HTMLDivElement>(null);
     return (
@@ -47,7 +42,6 @@ const PerfDetails = ({
                 <PerfDownloadButton
                     series={series}
                     downloadRef={perfChartRef}
-                    computePlan={computePlan}
                 />
             </Flex>
             <HStack
@@ -65,7 +59,6 @@ const PerfDetails = ({
                         ref={perfChartRef}
                         series={series}
                         interactive={true}
-                        displayAverage={displayAverage}
                     />
                 </Box>
                 <Box

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Tasks details popover in compute plans table (#233)
 -   New layout for performance charts (#226)
 -   Help popover on charts (#228)
+-   New filters on compare compute plans (#243)
 
 ### Fixed
 

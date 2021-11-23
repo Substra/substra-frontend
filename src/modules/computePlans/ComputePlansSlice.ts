@@ -92,6 +92,33 @@ export const listComputePlans = createAsyncThunk<
     }
 );
 
+interface retrieveComputePlansArgs {
+    computePlanKeys: string[];
+}
+export const retrieveComputePlans = createAsyncThunk<
+    ComputePlanT[],
+    retrieveComputePlansArgs,
+    { rejectValue: string }
+>(
+    'computePlans/getMultiple',
+    async ({ computePlanKeys }: retrieveComputePlansArgs, thunkAPI) => {
+        const promises = computePlanKeys.map((computePlanKey) =>
+            ComputePlansApi.retrieveComputePlan(computePlanKey)
+        );
+        let responses;
+        try {
+            responses = await Promise.all(promises);
+            return responses.map((response) => response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
+        }
+    }
+);
+
 export const retrieveComputePlan = createAsyncThunk<
     ComputePlanT,
     string,
@@ -230,6 +257,19 @@ export const computePlansSlice = createSlice({
                 state.computePlansError = '';
             })
             .addCase(listComputePlans.rejected, (state, { payload }) => {
+                state.computePlansLoading = false;
+                state.computePlansError = payload || 'Unknown error';
+            })
+            .addCase(retrieveComputePlans.pending, (state) => {
+                state.computePlansLoading = true;
+                state.computePlansError = '';
+            })
+            .addCase(retrieveComputePlans.fulfilled, (state, { payload }) => {
+                state.computePlans = payload;
+                state.computePlansLoading = false;
+                state.computePlansError = '';
+            })
+            .addCase(retrieveComputePlans.rejected, (state, { payload }) => {
                 state.computePlansLoading = false;
                 state.computePlansError = payload || 'Unknown error';
             })

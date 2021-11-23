@@ -2,6 +2,7 @@ import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+import { NodeType } from '@/modules/nodes/NodesTypes';
 import { TesttupleStub, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 function buildSerieFeatures(
@@ -113,7 +114,7 @@ export function buildSeries(
 interface HasKey {
     key: string;
 }
-function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
+export function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
     const index: Record<string, Type> = {};
     for (const asset of assets) {
         index[asset.key] = asset;
@@ -182,3 +183,13 @@ export function buildAverageSerie(series: SerieT[]): SerieT | null {
         computePlanKey: 'average',
     };
 }
+
+export const getSeriesNodes = (series: SerieT[]): NodeType[] => {
+    const nodes: string[] = [];
+    for (const serie of series) {
+        if (!nodes.includes(serie.worker)) {
+            nodes.push(serie.worker);
+        }
+    }
+    return nodes.map((node) => ({ id: node, is_current: false }));
+};

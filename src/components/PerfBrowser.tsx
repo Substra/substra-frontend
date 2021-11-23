@@ -1,49 +1,58 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { Flex, HStack, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+    Box,
+    Flex,
+    HStack,
+    Text,
+    VStack,
+    Wrap,
+    WrapItem,
+} from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { listNodes } from '@/modules/nodes/NodesSlice';
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import useSelection from '@/hooks/useSelection';
+import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import LoadingState from '@/components/LoadingState';
 import PerfCard from '@/components/PerfCard';
 import PerfChart from '@/components/PerfChart';
 import PerfDetails from '@/components/PerfDetails';
-import PerfSidebar from '@/components/PerfSidebar';
+import PerfSidebarSection from '@/components/PerfSidebarSection';
 
 interface PerfBrowserProps {
     series: SerieT[];
     loading: boolean;
-    computePlan: ComputePlanT | null;
+    computePlans: ComputePlanT[];
+    settingsComponents: React.FunctionComponent[];
+    sectionComponents: React.FunctionComponent[];
 }
 
-const PerfBrowser = ({ loading, series, computePlan }: PerfBrowserProps) => {
-    const [displayAverage, setDisplayAverage] = useState(false);
-    const [selectedNodeKeys, onNodeKeysSelectionChange, , setSelectedNodeKeys] =
-        useSelection();
-    const nodes = useAppSelector((state) => state.nodes.nodes);
+const PerfBrowser = ({
+    loading,
+    series,
+    computePlans,
+    settingsComponents,
+    sectionComponents,
+}: PerfBrowserProps) => {
     const [selectedMetricName, setSelectedMetricName] = useState('');
 
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-        if (nodes.length) {
-            setSelectedNodeKeys(nodes.map((node) => node.id));
-        } else {
-            dispatch(listNodes());
-        }
-    }, [nodes.length]);
+    const { context } = usePerfBrowser(series, computePlans);
+    const {
+        selectedNodeIds,
+        selectedComputePlanKeys,
+        selectedComputePlanNodes,
+    } = context;
 
-    const seriesGroups: SerieT[][] = useMemo(() => {
-        const filteredSeries = series.filter((serie) =>
-            selectedNodeKeys.includes(serie.worker)
-        );
-        return buildSeriesGroups(filteredSeries);
-    }, [series, selectedNodeKeys]); // TODO: these deps seem wrong (references to lists of complex objects)
+    const filteredSeries = series.filter(
+        (serie) =>
+            selectedComputePlanKeys.includes(serie.computePlanKey) &&
+            selectedNodeIds.includes(serie.worker) &&
+            selectedComputePlanNodes[serie.computePlanKey][serie.worker]
+    );
+    const seriesGroups = buildSeriesGroups(filteredSeries);
 
     const selectedSeriesGroup = useMemo(() => {
         if (!selectedMetricName) {
@@ -62,72 +71,92 @@ const PerfBrowser = ({ loading, series, computePlan }: PerfBrowserProps) => {
     }, [seriesGroups, selectedMetricName]);
 
     return (
-        <HStack flexGrow={1} spacing="0" alignItems="stretch" overflow="hidden">
-            <PerfSidebar
-                displayAverage={displayAverage}
-                setDisplayAverage={setDisplayAverage}
-                nodes={nodes}
-                selectedNodeKeys={selectedNodeKeys}
-                onNodeKeysSelectionChange={onNodeKeysSelectionChange}
-            />
-            <Flex
+        <PerfBrowserContext.Provider value={context}>
+            <HStack
                 flexGrow={1}
-                flexWrap="wrap"
-                flexDirection="row"
-                justifyContent="center"
-                alignItems="center"
-                overflowX="hidden"
-                overflowY="auto"
+                spacing="0"
+                alignItems="stretch"
+                overflow="hidden"
             >
-                {loading && <LoadingState message="Loading performance data" />}
-                {!loading && (
-                    <>
-                        {series.length === 0 && (
-                            <Text padding="8">
-                                There is no data to display: there are no test
-                                tasks in status done.
-                            </Text>
-                        )}
-                        {seriesGroups.length === 0 && (
-                            <Text padding="8">
-                                Select at least one node to display the data
-                            </Text>
-                        )}
-                        {selectedMetricName && (
-                            <PerfDetails
-                                metricName={selectedMetricName}
-                                onBack={() => setSelectedMetricName('')}
-                                series={selectedSeriesGroup}
-                                computePlan={computePlan}
-                                displayAverage={displayAverage}
-                            />
-                        )}
-                        {!selectedMetricName && (
-                            <Wrap padding="8">
-                                {seriesGroups.map((series) => (
-                                    <WrapItem key={series[0].id}>
-                                        <PerfCard
-                                            title={series[0].metricName}
-                                            onClick={() =>
-                                                setSelectedMetricName(
-                                                    series[0].metricName
-                                                )
-                                            }
-                                        >
-                                            <PerfChart
-                                                series={series}
-                                                displayAverage={displayAverage}
-                                                interactive={false}
-                                            />
-                                        </PerfCard>
-                                    </WrapItem>
+                <Box
+                    flexGrow={0}
+                    flexShrink={0}
+                    width="300px"
+                    backgroundColor="white"
+                >
+                    {settingsComponents.length && (
+                        <PerfSidebarSection title="Settings">
+                            <VStack spacing="5" alignItems="stretch">
+                                {settingsComponents.map((SettingsComponent) => (
+                                    <SettingsComponent
+                                        key={SettingsComponent.name}
+                                    />
                                 ))}
-                            </Wrap>
-                        )}
-                    </>
-                )}
-            </Flex>
-        </HStack>
+                            </VStack>
+                        </PerfSidebarSection>
+                    )}
+                    {sectionComponents.map((SectionComponent) => (
+                        <SectionComponent key={SectionComponent.name} />
+                    ))}
+                </Box>
+                <Flex
+                    flexGrow={1}
+                    flexWrap="wrap"
+                    flexDirection="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    overflowX="hidden"
+                    overflowY="auto"
+                >
+                    {loading && (
+                        <LoadingState message="Loading performance data" />
+                    )}
+                    {!loading && (
+                        <>
+                            {series.length === 0 && (
+                                <Text padding="8">
+                                    There is no data to display: there are no
+                                    test tasks in status done.
+                                </Text>
+                            )}
+                            {seriesGroups.length === 0 && (
+                                <Text padding="8">
+                                    Select at least one node to display the data
+                                </Text>
+                            )}
+                            {selectedMetricName && (
+                                <PerfDetails
+                                    metricName={selectedMetricName}
+                                    onBack={() => setSelectedMetricName('')}
+                                    series={selectedSeriesGroup}
+                                />
+                            )}
+                            {!selectedMetricName && (
+                                <Wrap padding="8">
+                                    {seriesGroups.map((series) => (
+                                        <WrapItem key={series[0].id}>
+                                            <PerfCard
+                                                title={series[0].metricName}
+                                                onClick={() =>
+                                                    setSelectedMetricName(
+                                                        series[0].metricName
+                                                    )
+                                                }
+                                            >
+                                                <PerfChart
+                                                    series={series}
+                                                    interactive={false}
+                                                />
+                                            </PerfCard>
+                                        </WrapItem>
+                                    ))}
+                                </Wrap>
+                            )}
+                        </>
+                    )}
+                </Flex>
+            </HStack>
+        </PerfBrowserContext.Provider>
     );
 };
 

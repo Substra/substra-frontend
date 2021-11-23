@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import { RefObject, useContext } from 'react';
 
 import {
     Icon,
@@ -13,26 +13,29 @@ import { ICsvProps, toCsv } from 'react-csv-downloader';
 import { RiDownloadLine } from 'react-icons/ri';
 
 import { csvPerfChartColumns } from '@/modules/computePlans/ComputePlansConstants';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
 
 import { downloadBlob } from '@/libs/request';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+
 interface PerfDownloadButtonProps {
     series: SerieT[];
     downloadRef: RefObject<HTMLDivElement>;
-    computePlan: ComputePlanT | null;
 }
 
 const PerfDownloadButton = ({
     series,
     downloadRef,
-    computePlan,
 }: PerfDownloadButtonProps): JSX.Element => {
+    const { computePlans } = useContext(PerfBrowserContext);
     const getCsvData = (): ICsvProps['datas'] => {
         const data = [];
         for (const serie of series) {
             for (const point of serie.points) {
+                const computePlan = computePlans.find(
+                    (cp) => cp.key === serie.computePlanKey
+                );
                 data.push({
                     computePlanTag: computePlan?.tag || '',
                     computePlanMetadata: JSON.stringify(
@@ -64,7 +67,7 @@ const PerfDownloadButton = ({
         const blob = new Blob([`${bomCode}${csv}`], {
             type: 'text/csv;charset=utf-8',
         });
-        downloadBlob(blob, `cp_${computePlan?.key}.csv`);
+        downloadBlob(blob, `cp_${computePlans[0].key}.csv`);
     };
 
     const onDownloadImage = () => {
@@ -72,9 +75,10 @@ const PerfDownloadButton = ({
             toJpeg(downloadRef.current, { backgroundColor: '#fff' }).then(
                 (dataUrl) => {
                     const link = document.createElement('a');
-                    link.download = computePlan
-                        ? `cp_${computePlan.key}.jpeg`
-                        : 'cp_comparison.jpeg';
+                    link.download =
+                        computePlans.length === 1
+                            ? `cp_${computePlans[0].key}.jpeg`
+                            : 'cp_comparison.jpeg';
                     link.href = dataUrl;
                     link.click();
                 }
@@ -94,7 +98,7 @@ const PerfDownloadButton = ({
             />
             <MenuList zIndex="popover">
                 <MenuItem onClick={onDownloadImage}>Download as Jpeg</MenuItem>
-                {computePlan && (
+                {computePlans.length === 1 && (
                     <MenuItem onClick={onDownloadCsv}>Download as CSV</MenuItem>
                 )}
             </MenuList>

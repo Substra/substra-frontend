@@ -14,6 +14,8 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { PATHS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
+import PerfSidebarSectionNodes from '@/components/PerfSidebarSectionNodes';
+import PerfSidebarSettingsAverage from '@/components/PerfSidebarSettingsAverage';
 
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
@@ -56,7 +58,9 @@ const ComputePlanChart = (): JSX.Element => {
             <PerfBrowser
                 series={series}
                 loading={loading}
-                computePlan={computePlan}
+                computePlans={computePlan ? [computePlan] : []}
+                settingsComponents={[PerfSidebarSettingsAverage]}
+                sectionComponents={[PerfSidebarSectionNodes]}
             />
         </Flex>
     );

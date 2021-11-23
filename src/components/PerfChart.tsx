@@ -1,4 +1,4 @@
-import { useMemo, useRef, forwardRef } from 'react';
+import { useMemo, useRef, forwardRef, useContext } from 'react';
 
 import {
     Box,
@@ -27,19 +27,17 @@ import { buildAverageSerie } from '@/modules/series/SeriesUtils';
 import useBuildPerfChartDataset, {
     DataPoint,
 } from '@/hooks/useBuildPerfChartDataset';
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 
 interface PerfChartProps {
     series: SerieT[];
-    displayAverage?: boolean;
     interactive: boolean;
 }
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
-    (
-        { series, displayAverage, interactive }: PerfChartProps,
-        ref
-    ): JSX.Element => {
+    ({ series, interactive }: PerfChartProps, ref): JSX.Element => {
+        const { displayAverage } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
