@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Truncate TableDrawerSectionKeyEntry value when too long (#234)
 -   Set minWidth on a compute plan tag in order to avoid to many multilines (#235)
 -   Avoid NaN progression percentage (#238)
--   Fix the Inter font (#244)
+-   Fix the Inter font (#244 & #245)
 
 ### Changed
 
