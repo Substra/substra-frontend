@@ -22,7 +22,7 @@ import { Line } from 'react-chartjs-2';
 import { RiQuestionMark } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { buildAverageSerie } from '@/modules/series/SeriesUtils';
+import { buildAverageSerie, getMaxRank } from '@/modules/series/SeriesUtils';
 
 import useBuildPerfChartDataset, {
     DataPoint,
@@ -33,26 +33,20 @@ import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 interface PerfChartProps {
     series: SerieT[];
     interactive: boolean;
+    highlightedSerie?: { id: number; computePlanKey: string } | undefined;
 }
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
-    ({ series, interactive }: PerfChartProps, ref): JSX.Element => {
+    (
+        { series, interactive, highlightedSerie }: PerfChartProps,
+        ref
+    ): JSX.Element => {
         const { displayAverage } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
 
-        const maxRank = useMemo(
-            () =>
-                series.reduce((max, serie) => {
-                    const serieMax = serie.points.reduce(
-                        (max, point) => Math.max(max, point.rank),
-                        0
-                    );
-                    return Math.max(max, serieMax);
-                }, 0),
-            [series]
-        );
+        const maxRank = getMaxRank(series);
 
         const averageDataset = useMemo(() => {
             const averageSerie = buildAverageSerie(series);
@@ -71,10 +65,12 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 series.map((serie) =>
                     buildPerfChartDataset(
                         serie,
-                        `${serie.computePlanKey}-${serie.id}`
+                        `${serie.computePlanKey}-${serie.id}`,
+                        undefined,
+                        highlightedSerie
                     )
                 ),
-            [series]
+            [series, highlightedSerie]
         );
 
         const data = useMemo<ChartData<'line', DataPoint[]>>(

@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
-import { Box, Button, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
+import PerfRankDetails from './PerfRankDetails';
+import { Box, Button, Flex, HStack, VStack } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -19,6 +20,9 @@ const PerfDetails = ({
     series,
 }: PerfDetailsProps): JSX.Element => {
     const perfChartRef = useRef<HTMLDivElement>(null);
+    const [highlightedSerie, setHighlightedSerie] =
+        useState<{ id: number; computePlanKey: string }>();
+
     return (
         <VStack
             flexGrow={1}
@@ -59,25 +63,13 @@ const PerfDetails = ({
                         ref={perfChartRef}
                         series={series}
                         interactive={true}
+                        highlightedSerie={highlightedSerie}
                     />
                 </Box>
-                <Box
-                    backgroundColor="white"
-                    borderRadius="lg"
-                    width="300px"
-                    flexGrow={0}
-                    flexShrink={0}
-                    padding="5"
-                >
-                    <Heading
-                        size="xxs"
-                        fontWeight="bold"
-                        textTransform="uppercase"
-                        marginBottom="5"
-                    >
-                        Rank details
-                    </Heading>
-                </Box>
+                <PerfRankDetails
+                    series={series}
+                    setHighlightedSerie={setHighlightedSerie}
+                />
             </HStack>
         </VStack>
     );

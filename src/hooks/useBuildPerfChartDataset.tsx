@@ -17,14 +17,22 @@ export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 const useBuildPerfChartDataset = (): ((
     serie: SerieT,
     label: string,
-    chartStyle?: ChartStyle
+    chartStyle?: ChartStyle,
+    highlightedSerie?: {
+        id: number;
+        computePlanKey: string;
+    }
 ) => PerfChartDataset) => {
     const nodeChartStyle = useNodeChartStyle();
 
     return (
         serie: SerieT,
         label: string,
-        chartStyle?: ChartStyle
+        chartStyle?: ChartStyle,
+        highlightedSerie?: {
+            id: number;
+            computePlanKey: string;
+        }
     ): PerfChartDataset => {
         if (!chartStyle) {
             chartStyle = nodeChartStyle(serie.worker);
@@ -46,7 +54,12 @@ const useBuildPerfChartDataset = (): ((
             backgroundColor: chartStyle.color,
             borderColor: chartStyle.color,
             // line styles
-            borderWidth: chartStyle.borderWidth,
+            borderWidth:
+                highlightedSerie !== undefined &&
+                serie.id === highlightedSerie.id &&
+                serie.computePlanKey === highlightedSerie.computePlanKey
+                    ? 3
+                    : chartStyle.borderWidth,
             // point styles
             pointBackgroundColor: 'white',
             pointBorderColor: chartStyle.color,

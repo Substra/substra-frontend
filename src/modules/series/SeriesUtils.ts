@@ -193,3 +193,13 @@ export const getSeriesNodes = (series: SerieT[]): NodeType[] => {
     }
     return nodes.map((node) => ({ id: node, is_current: false }));
 };
+
+export const getMaxRank = (series: SerieT[]): number => {
+    return series.reduce((max, serie) => {
+        const serieMax = serie.points.reduce(
+            (max, point) => Math.max(max, point.rank),
+            0
+        );
+        return Math.max(max, serieMax);
+    }, 0);
+};
