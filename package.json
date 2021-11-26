@@ -46,6 +46,7 @@
         "wouter": "2.7.5"
     },
     "devDependencies": {
+        "@cypress/request": "2.88.7",
         "@testing-library/jest-dom": "5.15.0",
         "@testing-library/react": "12.1.2",
         "@testing-library/react-hooks": "7.0.2",

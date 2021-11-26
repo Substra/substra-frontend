@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Set minWidth on a compute plan tag in order to avoid to many multilines (#235)
 -   Avoid NaN progression percentage (#238)
 -   Fix the Inter font (#244 & #245)
+-   Add fixed version package for `@cypress/request` (#247)
 
 ### Changed
 

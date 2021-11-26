@@ -4,8 +4,6 @@ dist
 dist-ssr
 *.local
 
-package-lock.json
-
 *.pyc
 .idea
 .vscode
