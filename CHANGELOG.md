@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Avoid NaN progression percentage (#238)
 -   Fix the Inter font (#244 & #245)
 -   Add fixed version package for `@cypress/request` (#247)
+-   Fix filter tags behavior (#248)
 
 ### Changed
 

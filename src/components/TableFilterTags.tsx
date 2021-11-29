@@ -102,7 +102,9 @@ const CounterFilterTag = ({
         applySearchFilters(newFilters);
     };
 
-    if (tagFilters.length) {
+    if (tagFilters.length === 1) {
+        return <FilterTag label={tagFilters[0].value} clear={clear} />;
+    } else if (tagFilters.length > 1) {
         return (
             <FilterTag
                 label={`${label} (${tagFilters.length})`}
