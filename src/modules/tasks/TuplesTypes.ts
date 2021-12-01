@@ -34,6 +34,8 @@ interface BaseTupleStub {
     tag: string;
     parent_task_keys: string[];
     worker: string;
+    start_date?: string;
+    end_date?: string;
 }
 
 interface BaseTuple extends BaseTupleStub {

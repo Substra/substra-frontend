@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New layout for performance charts (#226)
 -   Help popover on charts (#228)
 -   New filters on compare compute plans (#243)
+-   Add start date and end date on compute plan's tasks (#227)
 
 ### Fixed
 

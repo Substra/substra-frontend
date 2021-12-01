@@ -29,6 +29,8 @@ import { listTasksArgs } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
+import { formatDate } from '@/libs/utils';
+
 import {
     useAppDispatch,
     useAppSelector,
@@ -212,6 +214,39 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                     )} on ${
                                                         task.worker
                                                     }`}</Text>
+                                                    <Text
+                                                        fontSize="xs"
+                                                        color={
+                                                            !task.start_date
+                                                                ? 'gray.500'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        {!task.start_date &&
+                                                            'Not started yet'}
+                                                        {task.start_date &&
+                                                            `${formatDate(
+                                                                task.start_date
+                                                            )} ->`}
+                                                    </Text>
+                                                    <Text
+                                                        fontSize="xs"
+                                                        color={
+                                                            !task.start_date ||
+                                                            !task.end_date
+                                                                ? 'gray.500'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        {task.start_date &&
+                                                            !task.end_date &&
+                                                            'Not ended yet'}
+                                                        {task.start_date &&
+                                                            task.end_date &&
+                                                            formatDate(
+                                                                task.end_date
+                                                            )}
+                                                    </Text>
                                                 </Td>
                                                 <Td textAlign="right">
                                                     <Text
