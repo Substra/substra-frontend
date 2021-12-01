@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Changed
+
+## [0.6.0] - 2021-12-01
+
+### Added
+
 -   New login page (#220)
 -   Ability to pin compute plans to the top of the table (#222)
 -   About modal that opens from the user menu (#223)
