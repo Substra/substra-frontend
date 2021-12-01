@@ -20,8 +20,10 @@ import {
     Tab,
     Skeleton,
     HStack,
+    Icon,
 } from '@chakra-ui/react';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
+import { RiTimeLine } from 'react-icons/ri';
 
 import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { retrieveComputePlanTasksArgs } from '@/modules/computePlans/ComputePlansSlice';
@@ -29,7 +31,7 @@ import { listTasksArgs } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { formatDate } from '@/libs/utils';
+import { getDiffDates, shortFormatDate } from '@/libs/utils';
 
 import {
     useAppDispatch,
@@ -225,7 +227,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                         {!task.start_date &&
                                                             'Not started yet'}
                                                         {task.start_date &&
-                                                            `${formatDate(
+                                                            `${shortFormatDate(
                                                                 task.start_date
                                                             )} ->`}
                                                     </Text>
@@ -243,10 +245,28 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                             'Not ended yet'}
                                                         {task.start_date &&
                                                             task.end_date &&
-                                                            formatDate(
+                                                            shortFormatDate(
                                                                 task.end_date
                                                             )}
                                                     </Text>
+                                                    {task.start_date && (
+                                                        <HStack>
+                                                            <Icon
+                                                                as={RiTimeLine}
+                                                                fill="gray.500"
+                                                            />
+                                                            <Text
+                                                                fontSize="xs"
+                                                                color="gray.500"
+                                                                alignItems="center"
+                                                            >
+                                                                {getDiffDates(
+                                                                    task.start_date,
+                                                                    task.end_date
+                                                                )}
+                                                            </Text>
+                                                        </HStack>
+                                                    )}
                                                 </Td>
                                                 <Td textAlign="right">
                                                     <Text

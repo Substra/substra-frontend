@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add start date and end date on compute plan's tasks (#227)
 -   Start and end dates for compute plans (#249)
 -   Description for status in table filters (#251)
+-   Display tasks' duration (#252)
 
 ### Fixed
 
