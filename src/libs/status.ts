@@ -8,8 +8,16 @@ import {
 } from 'react-icons/ri';
 
 import { AssetType } from '@/modules/common/CommonTypes';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import {
+    ComputePlanStatus,
+    ComputePlanStatusDescription,
+    statusDescriptionByComputePlanStatus,
+} from '@/modules/computePlans/ComputePlansTypes';
+import {
+    statusDescriptionByTupleStatus,
+    TupleStatus,
+    TupleStatusDescription,
+} from '@/modules/tasks/TuplesTypes';
 
 export enum StatusLabel {
     canceled = 'Canceled',
@@ -79,6 +87,24 @@ const getComputePlanStatusFromLabel = (
 
 const getTupleStatusFromLabel = (label: StatusLabel): TupleStatus => {
     return tupleStatusByStatusLabel[label];
+};
+
+export const getStatusDescription = (
+    status: TupleStatus | ComputePlanStatus
+): TupleStatusDescription | ComputePlanStatusDescription => {
+    if (Object.values(TupleStatus).includes(status as TupleStatus)) {
+        return statusDescriptionByTupleStatus[status as TupleStatus];
+    }
+
+    if (
+        Object.values(ComputePlanStatus).includes(status as ComputePlanStatus)
+    ) {
+        return statusDescriptionByComputePlanStatus[
+            status as ComputePlanStatus
+        ];
+    }
+
+    throw `Unknown status: '${status}'`;
 };
 
 export const getStatusFromLabel = (

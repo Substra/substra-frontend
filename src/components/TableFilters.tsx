@@ -26,7 +26,7 @@ import { AssetType } from '@/modules/common/CommonTypes';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { getStatusLabel } from '@/libs/status';
+import { getStatusDescription, getStatusLabel } from '@/libs/status';
 
 import { useAppSelector } from '@/hooks';
 import {
@@ -208,6 +208,7 @@ export const TaskStatusTableFilter = (): JSX.Element => {
     const options = Object.values(TupleStatus).map((status) => ({
         value: status,
         label: getStatusLabel(status),
+        description: getStatusDescription(status),
     }));
 
     return (
@@ -227,6 +228,7 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
     const options = Object.values(ComputePlanStatus).map((status) => ({
         value: status,
         label: getStatusLabel(status),
+        description: getStatusDescription(status),
     }));
 
     return (

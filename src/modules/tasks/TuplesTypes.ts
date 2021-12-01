@@ -6,13 +6,34 @@ import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { MetadataT, PermissionsType } from '@/modules/common/CommonTypes';
 
 export enum TupleStatus {
+    waiting = 'STATUS_WAITING',
+    todo = 'STATUS_TODO',
     doing = 'STATUS_DOING',
     done = 'STATUS_DONE',
-    failed = 'STATUS_FAILED',
-    todo = 'STATUS_TODO',
-    waiting = 'STATUS_WAITING',
     canceled = 'STATUS_CANCELED',
+    failed = 'STATUS_FAILED',
 }
+
+export enum TupleStatusDescription {
+    waiting = 'Task is waiting for parent tasks to end',
+    todo = 'Task is ready and waiting for available space to run',
+    doing = 'Task is processing',
+    done = 'Task finished without error',
+    canceled = 'Task was prematurely ended',
+    failed = 'Task has error',
+}
+
+export const statusDescriptionByTupleStatus: Record<
+    TupleStatus,
+    TupleStatusDescription
+> = {
+    [TupleStatus.waiting]: TupleStatusDescription.waiting,
+    [TupleStatus.todo]: TupleStatusDescription.todo,
+    [TupleStatus.doing]: TupleStatusDescription.doing,
+    [TupleStatus.done]: TupleStatusDescription.done,
+    [TupleStatus.canceled]: TupleStatusDescription.canceled,
+    [TupleStatus.failed]: TupleStatusDescription.failed,
+};
 
 export enum TaskCategory {
     train = 'TASK_TRAIN',

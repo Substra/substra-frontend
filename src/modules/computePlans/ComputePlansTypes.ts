@@ -9,6 +9,27 @@ export enum ComputePlanStatus {
     failed = 'PLAN_STATUS_FAILED',
 }
 
+export enum ComputePlanStatusDescription {
+    waiting = 'Compute plan is waiting for parent tasks to end',
+    todo = 'Compute plan is ready and waiting for available space to run',
+    doing = 'Compute plan is processing',
+    done = 'Compute plan finished without error',
+    canceled = 'Compute plan was prematurely ended',
+    failed = 'Compute plan has error',
+}
+
+export const statusDescriptionByComputePlanStatus: Record<
+    ComputePlanStatus,
+    ComputePlanStatusDescription
+> = {
+    [ComputePlanStatus.waiting]: ComputePlanStatusDescription.waiting,
+    [ComputePlanStatus.todo]: ComputePlanStatusDescription.todo,
+    [ComputePlanStatus.doing]: ComputePlanStatusDescription.doing,
+    [ComputePlanStatus.done]: ComputePlanStatusDescription.done,
+    [ComputePlanStatus.canceled]: ComputePlanStatusDescription.canceled,
+    [ComputePlanStatus.failed]: ComputePlanStatusDescription.failed,
+};
+
 export interface ComputePlanT {
     key: string;
     owner: string;

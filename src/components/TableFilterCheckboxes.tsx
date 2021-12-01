@@ -1,13 +1,16 @@
 import { Box, VStack, Text } from '@chakra-ui/react';
 import { Checkbox } from '@chakra-ui/react';
 
-type Option = { value: string; label: string } | string;
+type Option = { value: string; label: string; description?: string } | string;
 
 const getOptionValue = (option: Option) =>
     typeof option === 'string' ? option : option.value;
 
 const getOptionLabel = (option: Option) =>
     typeof option === 'string' ? option : option.label;
+
+const getOptionDescription = (option: Option) =>
+    typeof option === 'string' ? null : option.description;
 
 interface TableFilterCheckboxesProps {
     value: string[];
@@ -23,7 +26,7 @@ const TableFilterCheckboxes = ({
     options,
 }: TableFilterCheckboxesProps): JSX.Element => {
     return (
-        <Box w="100%" paddingY="2.5" paddingX="5">
+        <Box w="100%" paddingY="5" paddingX="30px">
             <Text color="gray.500" fontSize="xs" mb="2.5">
                 Filter by
             </Text>
@@ -35,8 +38,16 @@ const TableFilterCheckboxes = ({
                         onChange={onChange(getOptionValue(option))}
                         colorScheme="teal"
                         key={getOptionValue(option)}
+                        alignItems="start"
                     >
-                        <Text fontSize="sm">{getOptionLabel(option)}</Text>
+                        <Text fontSize="sm" lineHeight="1.2">
+                            {getOptionLabel(option)}
+                        </Text>
+                        {getOptionDescription(option) && (
+                            <Text color="gray.500" fontSize="xs">
+                                {getOptionDescription(option)}
+                            </Text>
+                        )}
                     </Checkbox>
                 ))}
             </VStack>
