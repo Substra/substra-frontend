@@ -45,7 +45,7 @@ import Status from '@/components/Status';
 import {
     TableDrawerSection,
     TableDrawerSectionEntry,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
 
@@ -148,7 +148,8 @@ const TaskDrawer = (): JSX.Element => {
                                         <TableDrawerSectionKeyEntry
                                             value={task.key}
                                         />
-                                        <TableDrawerSectionCreatedEntry
+                                        <TableDrawerSectionDateEntry
+                                            title="Created"
                                             date={task.creation_date}
                                         />
                                         <TableDrawerSectionEntry title="Owner">

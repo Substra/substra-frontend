@@ -56,12 +56,14 @@ const TableDrawerSectionKeyEntry = ({
     </TableDrawerSectionEntry>
 );
 
-const TableDrawerSectionCreatedEntry = ({
+const TableDrawerSectionDateEntry = ({
     date,
+    title,
 }: {
     date: string;
+    title: string;
 }): JSX.Element => (
-    <TableDrawerSectionEntry title="Created">
+    <TableDrawerSectionEntry title={title}>
         {formatDate(date)}
     </TableDrawerSectionEntry>
 );
@@ -70,5 +72,5 @@ export {
     TableDrawerSection,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
 };

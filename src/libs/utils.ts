@@ -13,7 +13,36 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     second: 'numeric',
 });
 
+const shortDateFormatter = new Intl.DateTimeFormat('en-GB', {
+    year: '2-digit',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+});
+
 export const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return dateFormatter.format(date);
+};
+
+export const shortFormatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return shortDateFormatter.format(date);
+};
+
+export const getDiffDates = (start: string, end: string | null = null) => {
+    const startDate = new Date(start);
+    const endDate = end === null ? new Date() : new Date(end);
+    const diff = endDate.getTime() - startDate.getTime();
+
+    let seconds: number | string = Math.floor((diff / 1000) % 60);
+    let minutes: number | string = Math.floor((diff / (1000 * 60)) % 60);
+    let hours: number | string = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    return `${hours}h ${minutes}min ${seconds}s`;
 };

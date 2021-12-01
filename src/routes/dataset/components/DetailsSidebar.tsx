@@ -8,7 +8,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
 import {
     TableDrawerSection,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
@@ -21,7 +21,8 @@ const DetailsSidebar = (): JSX.Element => {
                 {dataset && (
                     <>
                         <TableDrawerSectionKeyEntry value={dataset.key} />
-                        <TableDrawerSectionCreatedEntry
+                        <TableDrawerSectionDateEntry
+                            title="Created"
                             date={dataset.creation_date}
                         />
                         <TableDrawerSectionEntry title="Owner">

@@ -7,6 +7,7 @@ export enum ComputePlanStatus {
     done = 'PLAN_STATUS_DONE',
     canceled = 'PLAN_STATUS_CANCELED',
     failed = 'PLAN_STATUS_FAILED',
+    unknown = 'PLAN_STATUS_UNKNOWN',
 }
 
 export enum ComputePlanStatusDescription {
@@ -16,6 +17,7 @@ export enum ComputePlanStatusDescription {
     done = 'Compute plan finished without error',
     canceled = 'Compute plan was prematurely ended',
     failed = 'Compute plan has error',
+    unknown = 'Compute plan has an unknown status',
 }
 
 export const statusDescriptionByComputePlanStatus: Record<
@@ -28,6 +30,7 @@ export const statusDescriptionByComputePlanStatus: Record<
     [ComputePlanStatus.done]: ComputePlanStatusDescription.done,
     [ComputePlanStatus.canceled]: ComputePlanStatusDescription.canceled,
     [ComputePlanStatus.failed]: ComputePlanStatusDescription.failed,
+    [ComputePlanStatus.unknown]: ComputePlanStatusDescription.unknown,
 };
 
 export interface ComputePlanT {
@@ -46,6 +49,8 @@ export interface ComputePlanT {
     creation_date: string;
     metadata: { [key: string]: string };
     failed_task?: { key: string; category: TaskCategory };
+    start_date: string;
+    end_date: string;
 }
 
 export const isComputePlan = (

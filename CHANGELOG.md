@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Help popover on charts (#228)
 -   New filters on compare compute plans (#243)
 -   Add start date and end date on compute plan's tasks (#227)
+-   Start and end dates for compute plans (#249)
 -   Description for status in table filters (#251)
 
 ### Fixed
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix the Inter font (#244 & #245)
 -   Add fixed version package for `@cypress/request` (#247)
 -   Fix filter tags behavior (#248)
+-   Fix missing "unknown" status for compute plans (#249)
 
 ### Changed
 

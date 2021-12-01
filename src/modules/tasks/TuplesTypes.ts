@@ -12,6 +12,7 @@ export enum TupleStatus {
     done = 'STATUS_DONE',
     canceled = 'STATUS_CANCELED',
     failed = 'STATUS_FAILED',
+    unknown = 'STATUS_UNKNOWN',
 }
 
 export enum TupleStatusDescription {
@@ -21,6 +22,7 @@ export enum TupleStatusDescription {
     done = 'Task finished without error',
     canceled = 'Task was prematurely ended',
     failed = 'Task has error',
+    unknown = 'Task has an unknown status',
 }
 
 export const statusDescriptionByTupleStatus: Record<
@@ -33,6 +35,7 @@ export const statusDescriptionByTupleStatus: Record<
     [TupleStatus.done]: TupleStatusDescription.done,
     [TupleStatus.canceled]: TupleStatusDescription.canceled,
     [TupleStatus.failed]: TupleStatusDescription.failed,
+    [TupleStatus.unknown]: TupleStatusDescription.unknown,
 };
 
 export enum TaskCategory {

@@ -1,11 +1,12 @@
 import CheckboxTd from './CheckboxTd';
 import PinBox from './PinBox';
 import StatusCell from './StatusCell';
-import { Td, Checkbox, Text } from '@chakra-ui/react';
+import { Td, Checkbox, Text, HStack, Icon } from '@chakra-ui/react';
+import { RiTimeLine } from 'react-icons/ri';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import { formatDate } from '@/libs/utils';
+import { getDiffDates, shortFormatDate } from '@/libs/utils';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -31,6 +32,7 @@ const ComputePlanTr = ({
     onPinChange,
 }: ComputePlanTrProps): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
+
     return (
         <ClickableTr
             key={computePlan.key}
@@ -64,8 +66,50 @@ const ComputePlanTr = ({
             </Td>
             <Td>
                 <Text fontSize="xs">
-                    {formatDate(computePlan.creation_date)}
+                    {shortFormatDate(computePlan.creation_date)}
                 </Text>
+            </Td>
+            <Td minWidth="255px">
+                <HStack>
+                    <Text
+                        fontSize="xs"
+                        color={!computePlan.start_date ? 'gray.500' : ''}
+                    >
+                        {!computePlan.start_date && 'Not started yet'}
+                        {computePlan.start_date &&
+                            `${shortFormatDate(computePlan.start_date)} ->`}
+                    </Text>
+                    <Text
+                        fontSize="xs"
+                        color={
+                            !computePlan.start_date || !computePlan.end_date
+                                ? 'gray.500'
+                                : ''
+                        }
+                    >
+                        {computePlan.start_date &&
+                            !computePlan.end_date &&
+                            'Not ended yet'}
+                        {computePlan.start_date &&
+                            computePlan.end_date &&
+                            shortFormatDate(computePlan.end_date)}
+                    </Text>
+                </HStack>
+                {computePlan.start_date && (
+                    <HStack>
+                        <Icon as={RiTimeLine} fill="gray.500" />
+                        <Text
+                            fontSize="xs"
+                            color="gray.500"
+                            alignItems="center"
+                        >
+                            {getDiffDates(
+                                computePlan.start_date,
+                                computePlan.end_date
+                            )}
+                        </Text>
+                    </HStack>
+                )}
             </Td>
         </ClickableTr>
     );

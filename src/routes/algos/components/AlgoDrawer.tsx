@@ -27,7 +27,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
 import {
     TableDrawerSection,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
@@ -93,7 +93,8 @@ const AlgoDrawer = (): JSX.Element => {
                                 {getAlgoCategory(algo)}
                             </TableDrawerSectionEntry>
                             <TableDrawerSectionKeyEntry value={algo.key} />
-                            <TableDrawerSectionCreatedEntry
+                            <TableDrawerSectionDateEntry
+                                title="Created"
                                 date={algo.creation_date}
                             />
                             <TableDrawerSectionEntry title="Owner">

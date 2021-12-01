@@ -8,7 +8,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import {
     TableDrawerSection,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
@@ -70,9 +70,22 @@ const DetailsSidebar = (): JSX.Element => {
                             />
                         </TableDrawerSectionEntry>
                         <TableDrawerSectionKeyEntry value={computePlan.key} />
-                        <TableDrawerSectionCreatedEntry
+                        <TableDrawerSectionDateEntry
+                            title="Created"
                             date={computePlan.creation_date}
                         />
+                        {computePlan.start_date && (
+                            <TableDrawerSectionDateEntry
+                                title="Started"
+                                date={computePlan.start_date}
+                            />
+                        )}
+                        {computePlan.end_date && (
+                            <TableDrawerSectionDateEntry
+                                title="Ended"
+                                date={computePlan.end_date}
+                            />
+                        )}
                         <TableDrawerSectionEntry title="Owner">
                             {computePlan.owner}
                         </TableDrawerSectionEntry>

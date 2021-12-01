@@ -29,7 +29,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
 import {
     TableDrawerSection,
-    TableDrawerSectionCreatedEntry,
+    TableDrawerSectionDateEntry,
     TableDrawerSectionEntry,
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
@@ -94,7 +94,8 @@ const MetricDrawer = (): JSX.Element => {
                     <DrawerBody as={VStack} alignItems="stretch" spacing="8">
                         <TableDrawerSection title="General">
                             <TableDrawerSectionKeyEntry value={metric.key} />
-                            <TableDrawerSectionCreatedEntry
+                            <TableDrawerSectionDateEntry
+                                title="Created"
                                 date={metric.creation_date}
                             />
                             <TableDrawerSectionEntry title="Owner">

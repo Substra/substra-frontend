@@ -159,7 +159,8 @@ const ComputePlans = (): JSX.Element => {
                             <Th padding="0" minWidth="36px"></Th>
                             <Th minWidth="250px">Tag</Th>
                             <Th minWidth="255px">Status / Tasks</Th>
-                            <Th width="100%">Creation</Th>
+                            <Th minWidth="255px">Creation</Th>
+                            <Th minWidth="255px">Dates / Duration</Th>
                         </Tr>
                     </Thead>
                     <ChakraTbody>
@@ -222,6 +223,13 @@ const ComputePlans = (): JSX.Element => {
                                     <Skeleton>
                                         <Text fontSize="xs" whiteSpace="nowrap">
                                             Lorem ipsum dolor sit amet
+                                        </Text>
+                                    </Skeleton>
+                                </Td>
+                                <Td>
+                                    <Skeleton>
+                                        <Text fontSize="xs">
+                                            YYYY-MM-DD HH:MM:SS
                                         </Text>
                                     </Skeleton>
                                 </Td>

@@ -4,6 +4,7 @@ import {
     RiCheckLine,
     RiIndeterminateCircleLine,
     RiPlayMiniLine,
+    RiQuestionLine,
     RiTimeLine,
 } from 'react-icons/ri';
 
@@ -26,6 +27,7 @@ export enum StatusLabel {
     failed = 'Failed',
     todo = 'Todo',
     waiting = 'Waiting',
+    unknown = 'Unknown',
 }
 
 const statusLabelByTupleStatus: Record<TupleStatus, StatusLabel> = {
@@ -35,6 +37,7 @@ const statusLabelByTupleStatus: Record<TupleStatus, StatusLabel> = {
     [TupleStatus.failed]: StatusLabel.failed,
     [TupleStatus.todo]: StatusLabel.todo,
     [TupleStatus.waiting]: StatusLabel.waiting,
+    [TupleStatus.unknown]: StatusLabel.unknown,
 };
 
 const statusLabelByComputePlanStatus: Record<ComputePlanStatus, StatusLabel> = {
@@ -44,6 +47,7 @@ const statusLabelByComputePlanStatus: Record<ComputePlanStatus, StatusLabel> = {
     [ComputePlanStatus.failed]: StatusLabel.failed,
     [ComputePlanStatus.todo]: StatusLabel.todo,
     [ComputePlanStatus.waiting]: StatusLabel.waiting,
+    [ComputePlanStatus.unknown]: StatusLabel.unknown,
 };
 
 const tupleStatusByStatusLabel: Record<StatusLabel, TupleStatus> = {
@@ -53,6 +57,7 @@ const tupleStatusByStatusLabel: Record<StatusLabel, TupleStatus> = {
     [StatusLabel.failed]: TupleStatus.failed,
     [StatusLabel.todo]: TupleStatus.todo,
     [StatusLabel.waiting]: TupleStatus.waiting,
+    [StatusLabel.unknown]: TupleStatus.unknown,
 };
 
 const computePlanStatusByStatusLabel: Record<StatusLabel, ComputePlanStatus> = {
@@ -62,6 +67,7 @@ const computePlanStatusByStatusLabel: Record<StatusLabel, ComputePlanStatus> = {
     [StatusLabel.failed]: ComputePlanStatus.failed,
     [StatusLabel.todo]: ComputePlanStatus.todo,
     [StatusLabel.waiting]: ComputePlanStatus.waiting,
+    [StatusLabel.unknown]: ComputePlanStatus.unknown,
 };
 
 export const getStatusLabel = (
@@ -193,6 +199,17 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'teal.500',
                 progressColor: 'teal.500',
             };
+        case ComputePlanStatus.unknown:
+        case TupleStatus.unknown:
+            return {
+                icon: RiQuestionLine,
+                tagColor: 'gray.500',
+                tagBackgroundColor: 'gray.50',
+                tagSolidColor: 'white',
+                tagSolidBackgroundColor: 'gray.300',
+                progressColor: 'gray.300',
+            };
+
         default:
             throw 'Unknown status';
     }
