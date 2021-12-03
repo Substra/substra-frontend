@@ -1,5 +1,5 @@
 import ComputePlansApi from './ComputePlansApi';
-import { ComputePlanT } from './ComputePlansTypes';
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ import {
 import { SearchFilterType } from '@/libs/searchFilter';
 
 interface ComputePlansState {
-    computePlans: ComputePlanT[];
+    computePlans: ComputePlanStub[];
     computePlansLoading: boolean;
     computePlansError: string;
     computePlansCount: number;
@@ -70,7 +70,7 @@ interface listComputePlansArgs {
     page: number;
 }
 export const listComputePlans = createAsyncThunk<
-    PaginatedApiResponse<ComputePlanT>,
+    PaginatedApiResponse<ComputePlanStub>,
     listComputePlansArgs,
     { rejectValue: string }
 >(

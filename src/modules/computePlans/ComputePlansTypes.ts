@@ -33,7 +33,7 @@ export const statusDescriptionByComputePlanStatus: Record<
     [ComputePlanStatus.unknown]: ComputePlanStatusDescription.unknown,
 };
 
-export interface ComputePlanT {
+export interface ComputePlanStub {
     key: string;
     owner: string;
     task_count: number;
@@ -48,9 +48,12 @@ export interface ComputePlanT {
     tag: string;
     creation_date: string;
     metadata: { [key: string]: string };
-    failed_task?: { key: string; category: TaskCategory };
     start_date: string;
     end_date: string;
+}
+
+export interface ComputePlanT extends ComputePlanStub {
+    failed_task?: { key: string; category: TaskCategory };
 }
 
 export const isComputePlan = (

@@ -1,4 +1,4 @@
-import { ComputePlanT } from './ComputePlansTypes';
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 import { AxiosPromise } from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -24,7 +24,7 @@ const URLS = {
 export const listComputePlans = (
     searchFilters: SearchFilterType[],
     page: number
-): AxiosPromise<PaginatedApiResponse<ComputePlanT>> =>
+): AxiosPromise<PaginatedApiResponse<ComputePlanStub>> =>
     API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
 
 export const retrieveComputePlan = (key: string): AxiosPromise<ComputePlanT> =>
