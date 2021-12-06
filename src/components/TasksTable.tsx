@@ -145,7 +145,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                         textAlign="right"
                                         whiteSpace="nowrap"
                                     >
-                                        Rank / Parent tasks
+                                        Rank / Parent tasks / Duration
                                     </Th>
                                 </Tr>
                             </Thead>
@@ -216,58 +216,41 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                     )} on ${
                                                         task.worker
                                                     }`}</Text>
-                                                    <HStack>
-                                                        <Text
-                                                            fontSize="xs"
-                                                            color={
-                                                                !task.start_date
-                                                                    ? 'gray.500'
-                                                                    : ''
-                                                            }
-                                                        >
-                                                            {!task.start_date &&
-                                                                'Not started yet'}
-                                                            {task.start_date &&
-                                                                `${shortFormatDate(
-                                                                    task.start_date
-                                                                )} ->`}
-                                                        </Text>
-                                                        <Text
-                                                            fontSize="xs"
-                                                            color={
-                                                                !task.end_date
-                                                                    ? 'gray.500'
-                                                                    : ''
-                                                            }
-                                                        >
-                                                            {task.start_date &&
-                                                                !task.end_date &&
-                                                                'Not ended yet'}
-                                                            {task.start_date &&
-                                                                task.end_date &&
-                                                                shortFormatDate(
-                                                                    task.end_date
-                                                                )}
-                                                        </Text>
-                                                    </HStack>
-                                                    {task.start_date && (
-                                                        <HStack>
-                                                            <Icon
-                                                                as={RiTimeLine}
-                                                                fill="gray.500"
-                                                            />
-                                                            <Text
-                                                                fontSize="xs"
-                                                                color="gray.500"
-                                                                alignItems="center"
-                                                            >
-                                                                {getDiffDates(
-                                                                    task.start_date,
-                                                                    task.end_date
-                                                                )}
-                                                            </Text>
-                                                        </HStack>
-                                                    )}
+                                                    <Text
+                                                        as="span"
+                                                        fontSize="xs"
+                                                        color={
+                                                            !task.start_date
+                                                                ? 'gray.500'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        {!task.start_date &&
+                                                            'Not started yet'}
+                                                        {task.start_date &&
+                                                            `${shortFormatDate(
+                                                                task.start_date
+                                                            )} ->`}
+                                                    </Text>
+                                                    <Text
+                                                        as="span"
+                                                        fontSize="xs"
+                                                        color={
+                                                            !task.start_date ||
+                                                            !task.end_date
+                                                                ? 'gray.500'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        {task.start_date &&
+                                                            !task.end_date &&
+                                                            'Not ended yet'}
+                                                        {task.start_date &&
+                                                            task.end_date &&
+                                                            shortFormatDate(
+                                                                task.end_date
+                                                            )}
+                                                    </Text>
                                                 </Td>
                                                 <Td textAlign="right">
                                                     <Text
@@ -285,6 +268,24 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                             .length > 1 &&
                                                             `${task.parent_task_keys.length} parent tasks`}
                                                     </Text>
+                                                    {task.start_date && (
+                                                        <HStack justifyContent="flex-end">
+                                                            <Icon
+                                                                as={RiTimeLine}
+                                                                fill="gray.500"
+                                                            />
+                                                            <Text
+                                                                fontSize="xs"
+                                                                color="gray.500"
+                                                                alignItems="center"
+                                                            >
+                                                                {getDiffDates(
+                                                                    task.start_date,
+                                                                    task.end_date
+                                                                )}
+                                                            </Text>
+                                                        </HStack>
+                                                    )}
                                                 </Td>
                                             </ClickableTr>
                                         )

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fixed status filter displayed value and date/duration layout (#257)
+
 ### Changed
 
 -   Update internal type for compute plan list (#254)

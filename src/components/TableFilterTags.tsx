@@ -10,6 +10,7 @@ import {
     areSearchFiltersListsEqual,
     SearchFilterType,
 } from '@/libs/searchFilter';
+import { getStatusLabel } from '@/libs/status';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -89,10 +90,13 @@ const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
 interface CounterFilterTagProps {
     label: string;
     assetKey: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formatter?: (value: any) => string;
 }
 const CounterFilterTag = ({
     label,
     assetKey,
+    formatter,
 }: CounterFilterTagProps): JSX.Element | null => {
     const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
         useTagFilter(assetKey);
@@ -103,7 +107,16 @@ const CounterFilterTag = ({
     };
 
     if (tagFilters.length === 1) {
-        return <FilterTag label={tagFilters[0].value} clear={clear} />;
+        return (
+            <FilterTag
+                label={
+                    formatter
+                        ? formatter(tagFilters[0].value)
+                        : tagFilters[0].value
+                }
+                clear={clear}
+            />
+        );
     } else if (tagFilters.length > 1) {
         return (
             <FilterTag
@@ -125,7 +138,11 @@ export const WorkerTableFilterTag = (): JSX.Element | null => (
 );
 
 export const StatusTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag label="Status" assetKey="status" />
+    <CounterFilterTag
+        label="Status"
+        assetKey="status"
+        formatter={getStatusLabel}
+    />
 );
 
 export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
