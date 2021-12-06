@@ -216,39 +216,40 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                     )} on ${
                                                         task.worker
                                                     }`}</Text>
-                                                    <Text
-                                                        fontSize="xs"
-                                                        color={
-                                                            !task.start_date
-                                                                ? 'gray.500'
-                                                                : ''
-                                                        }
-                                                    >
-                                                        {!task.start_date &&
-                                                            'Not started yet'}
-                                                        {task.start_date &&
-                                                            `${shortFormatDate(
-                                                                task.start_date
-                                                            )} ->`}
-                                                    </Text>
-                                                    <Text
-                                                        fontSize="xs"
-                                                        color={
-                                                            !task.start_date ||
-                                                            !task.end_date
-                                                                ? 'gray.500'
-                                                                : ''
-                                                        }
-                                                    >
-                                                        {task.start_date &&
-                                                            !task.end_date &&
-                                                            'Not ended yet'}
-                                                        {task.start_date &&
-                                                            task.end_date &&
-                                                            shortFormatDate(
-                                                                task.end_date
-                                                            )}
-                                                    </Text>
+                                                    <HStack>
+                                                        <Text
+                                                            fontSize="xs"
+                                                            color={
+                                                                !task.start_date
+                                                                    ? 'gray.500'
+                                                                    : ''
+                                                            }
+                                                        >
+                                                            {!task.start_date &&
+                                                                'Not started yet'}
+                                                            {task.start_date &&
+                                                                `${shortFormatDate(
+                                                                    task.start_date
+                                                                )} ->`}
+                                                        </Text>
+                                                        <Text
+                                                            fontSize="xs"
+                                                            color={
+                                                                !task.end_date
+                                                                    ? 'gray.500'
+                                                                    : ''
+                                                            }
+                                                        >
+                                                            {task.start_date &&
+                                                                !task.end_date &&
+                                                                'Not ended yet'}
+                                                            {task.start_date &&
+                                                                task.end_date &&
+                                                                shortFormatDate(
+                                                                    task.end_date
+                                                                )}
+                                                        </Text>
+                                                    </HStack>
                                                     {task.start_date && (
                                                         <HStack>
                                                             <Icon

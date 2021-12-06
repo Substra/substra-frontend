@@ -152,6 +152,18 @@ const TaskDrawer = (): JSX.Element => {
                                             title="Created"
                                             date={task.creation_date}
                                         />
+                                        {task.start_date && (
+                                            <TableDrawerSectionDateEntry
+                                                title="Started"
+                                                date={task.start_date}
+                                            />
+                                        )}
+                                        {task.end_date && (
+                                            <TableDrawerSectionDateEntry
+                                                title="Ended"
+                                                date={task.end_date}
+                                            />
+                                        )}
                                         <TableDrawerSectionEntry title="Owner">
                                             {task.owner}
                                         </TableDrawerSectionEntry>
