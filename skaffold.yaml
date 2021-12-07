@@ -4,6 +4,8 @@ build:
     artifacts:
         - image: &imageref eu.gcr.io/connect-314908/connect-frontend
           context: .
+          docker:
+              dockerfile: docker/connect-frontend/Dockerfile
 
 deploy:
     helm:

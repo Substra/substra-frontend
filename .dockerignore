@@ -9,6 +9,7 @@ dist/
 
 # Docker configuration
 .dockerignore
+docker/
 Dockerfile
 skaffold.yaml
 
