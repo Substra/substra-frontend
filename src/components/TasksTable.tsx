@@ -230,7 +230,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                         {task.start_date &&
                                                             `${shortFormatDate(
                                                                 task.start_date
-                                                            )} ->`}
+                                                            )} -> `}
                                                     </Text>
                                                     <Text
                                                         as="span"
