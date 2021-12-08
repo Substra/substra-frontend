@@ -1,4 +1,4 @@
-import { HStack, Tag, TagLabel, TagRightIcon } from '@chakra-ui/react';
+import { Tag, TagLabel, TagRightIcon, Wrap, WrapItem } from '@chakra-ui/react';
 import {
     RiGlobalLine,
     RiGroupLine,
@@ -35,14 +35,16 @@ const PermissionTag = ({
 
     if (listNodes) {
         return (
-            <HStack spacing="2.5" display="inline-flex">
+            <Wrap spacing="2.5" justify="flex-end">
                 {permission.authorized_ids.map((nodeId) => (
-                    <Tag size="sm" key={nodeId}>
-                        <TagLabel>{nodeId}</TagLabel>
-                        <TagRightIcon as={RiUserLine} />
-                    </Tag>
+                    <WrapItem key={nodeId}>
+                        <Tag size="sm" key={nodeId}>
+                            <TagLabel>{nodeId}</TagLabel>
+                            <TagRightIcon as={RiUserLine} />
+                        </Tag>
+                    </WrapItem>
                 ))}
-            </HStack>
+            </Wrap>
         );
     } else {
         return (
