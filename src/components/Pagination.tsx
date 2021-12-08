@@ -13,8 +13,13 @@ const ellipsis = (
 interface PageLinkProps {
     page: number;
     activePage: number;
+    isDisabled?: boolean;
 }
-const PageLink = ({ page, activePage }: PageLinkProps): JSX.Element => {
+const PageLink = ({
+    page,
+    activePage,
+    isDisabled,
+}: PageLinkProps): JSX.Element => {
     const { buildLocationWithParams } = useLocationWithParams();
     return (
         <Link href={buildLocationWithParams({ page })}>
@@ -23,6 +28,7 @@ const PageLink = ({ page, activePage }: PageLinkProps): JSX.Element => {
                 backgroundColor={activePage === page ? 'gray.200' : 'white'}
                 variant="outline"
                 size="sm"
+                disabled={isDisabled}
             >
                 {page}
             </Button>
@@ -98,7 +104,15 @@ const Pagination = ({
     currentPage,
     lastPage,
 }: PaginationProps): JSX.Element => {
-    if (lastPage <= 9) {
+    if (lastPage === 0) {
+        return (
+            <Stack spacing={1} direction="row">
+                <PreviousPage page={currentPage - 1} />
+                <PageLink page={1} activePage={0} isDisabled={true} />
+                <NextPage page={currentPage + 1} lastPage={lastPage} />
+            </Stack>
+        );
+    } else if (lastPage <= 9) {
         return (
             <Stack spacing={1} direction="row">
                 <PreviousPage page={currentPage - 1} />

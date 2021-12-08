@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed race condition that resulted in an infinite redirect loop (#259)
 -   Fixed spacing around permissions (#262)
 -   Fix vertical align in drawer (#266)
+-   Fixed pagination when there are no results (#267)
 
 ### Changed
 

@@ -20,7 +20,11 @@ const TablePagination = ({
     return (
         <Flex justifyContent="space-between" alignItems="center" width="100%">
             <Text color="gray.500" fontSize="xs" lineHeight="4">
-                {`${itemCount} results • ${firstIndex}-${lastIndex} shown`}
+                {itemCount === 0 && `0 results`}
+                {itemCount === 1 &&
+                    `1 result • ${firstIndex}-${lastIndex} shown`}
+                {itemCount > 1 &&
+                    `${itemCount} results • ${firstIndex}-${lastIndex} shown`}
             </Text>
             <Pagination currentPage={currentPage} lastPage={lastPage} />
         </Flex>
