@@ -88,6 +88,21 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [searchFilters, selectedTaskType, page, computePlan]);
 
+    const onTabsChange = (newSelectedTaskType: number) => {
+        const currentType = taskTypes[selectedTaskType].slug;
+        const newType = taskTypes[newSelectedTaskType].slug;
+        setLocationWithParams({
+            page: 1,
+            search: searchFilters.map((searchFilter) => {
+                if (searchFilter.asset === currentType) {
+                    return { ...searchFilter, asset: newType };
+                }
+                return searchFilter;
+            }),
+        });
+        setSelectedTaskType(newSelectedTaskType);
+    };
+
     return (
         <>
             <HStack spacing="2.5">
@@ -104,10 +119,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
             <Box>
                 <Tabs
                     index={selectedTaskType}
-                    onChange={(newSelectedTaskType) => {
-                        setLocationWithParams({ page: 1 });
-                        setSelectedTaskType(newSelectedTaskType);
-                    }}
+                    onChange={onTabsChange}
                     variant="enclosed"
                     size="sm"
                     position="relative"
