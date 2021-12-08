@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fixed status filter displayed value and date/duration layout (#257)
+-   Fixed race condition that resulted in an infinite redirect loop (#259)
 
 ### Changed
 

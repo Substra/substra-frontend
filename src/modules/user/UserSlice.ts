@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 import {
     postLogIn,
@@ -65,6 +66,12 @@ export const logIn = createAsyncThunk<
 });
 
 export const logOut = createAsyncThunk('USERS_LOGOUT', async (_, thunkAPI) => {
+    // clean cookies
+    const cookies = new Cookies();
+    cookies.remove('header.payload');
+    cookies.remove('signature');
+    cookies.remove('refresh');
+
     try {
         const response = await getLogOut();
         return response.data;
@@ -121,7 +128,7 @@ export const userSlice = createSlice({
                 state.expiration = null;
                 state.payload = defaultPayload;
             })
-            .addCase(logOut.fulfilled, (state) => {
+            .addCase(logOut.pending, (state) => {
                 state.authenticated = false;
             })
             .addCase(refreshToken.pending, (state) => {
