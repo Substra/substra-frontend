@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update internal type for compute plan list (#254)
 -   Changed file structure for dockerfile (#256)
+-   Better empty table message (#270)
 
 ## [0.6.0] - 2021-12-01
 

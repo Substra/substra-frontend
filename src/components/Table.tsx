@@ -16,7 +16,12 @@ export const Tbody = styled(ChakraTbody)`
 
 export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
     <Tr>
-        <Td colSpan={nbColumns} textAlign="center">
+        <Td
+            colSpan={nbColumns}
+            textAlign="center"
+            fontSize="sm"
+            color="gray.500"
+        >
             No data to display
         </Td>
     </Tr>
