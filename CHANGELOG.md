@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Preserve filters across task types (#265)
+-   Explicit messages for why models cannot be downloaded (#263)
 
 ### Fixed
 
