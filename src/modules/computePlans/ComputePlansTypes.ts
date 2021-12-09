@@ -17,7 +17,7 @@ export enum ComputePlanStatusDescription {
     done = 'Compute plan finished without error',
     canceled = 'Compute plan was prematurely ended',
     failed = 'Compute plan has error',
-    unknown = 'Compute plan has an unknown status',
+    unknown = 'Compute plan contains no tasks',
 }
 
 export const statusDescriptionByComputePlanStatus: Record<

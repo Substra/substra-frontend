@@ -20,59 +20,72 @@ import {
     TupleStatusDescription,
 } from '@/modules/tasks/TuplesTypes';
 
-export enum StatusLabel {
+enum ComputePlanStatusLabel {
     canceled = 'Canceled',
     doing = 'Doing',
     done = 'Done',
     failed = 'Failed',
     todo = 'Todo',
     waiting = 'Waiting',
-    unknown = 'Unknown',
+    unknown = 'Empty',
 }
 
-const statusLabelByTupleStatus: Record<TupleStatus, StatusLabel> = {
-    [TupleStatus.canceled]: StatusLabel.canceled,
-    [TupleStatus.doing]: StatusLabel.doing,
-    [TupleStatus.done]: StatusLabel.done,
-    [TupleStatus.failed]: StatusLabel.failed,
-    [TupleStatus.todo]: StatusLabel.todo,
-    [TupleStatus.waiting]: StatusLabel.waiting,
-    [TupleStatus.unknown]: StatusLabel.unknown,
+enum TupleStatusLabel {
+    canceled = 'Canceled',
+    doing = 'Doing',
+    done = 'Done',
+    failed = 'Failed',
+    todo = 'Todo',
+    waiting = 'Waiting',
+}
+
+const statusLabelByTupleStatus: Record<TupleStatus, TupleStatusLabel> = {
+    [TupleStatus.canceled]: TupleStatusLabel.canceled,
+    [TupleStatus.doing]: TupleStatusLabel.doing,
+    [TupleStatus.done]: TupleStatusLabel.done,
+    [TupleStatus.failed]: TupleStatusLabel.failed,
+    [TupleStatus.todo]: TupleStatusLabel.todo,
+    [TupleStatus.waiting]: TupleStatusLabel.waiting,
 };
 
-const statusLabelByComputePlanStatus: Record<ComputePlanStatus, StatusLabel> = {
-    [ComputePlanStatus.canceled]: StatusLabel.canceled,
-    [ComputePlanStatus.doing]: StatusLabel.doing,
-    [ComputePlanStatus.done]: StatusLabel.done,
-    [ComputePlanStatus.failed]: StatusLabel.failed,
-    [ComputePlanStatus.todo]: StatusLabel.todo,
-    [ComputePlanStatus.waiting]: StatusLabel.waiting,
-    [ComputePlanStatus.unknown]: StatusLabel.unknown,
+const statusLabelByComputePlanStatus: Record<
+    ComputePlanStatus,
+    ComputePlanStatusLabel
+> = {
+    [ComputePlanStatus.canceled]: ComputePlanStatusLabel.canceled,
+    [ComputePlanStatus.doing]: ComputePlanStatusLabel.doing,
+    [ComputePlanStatus.done]: ComputePlanStatusLabel.done,
+    [ComputePlanStatus.failed]: ComputePlanStatusLabel.failed,
+    [ComputePlanStatus.todo]: ComputePlanStatusLabel.todo,
+    [ComputePlanStatus.waiting]: ComputePlanStatusLabel.waiting,
+    [ComputePlanStatus.unknown]: ComputePlanStatusLabel.unknown,
 };
 
-const tupleStatusByStatusLabel: Record<StatusLabel, TupleStatus> = {
-    [StatusLabel.canceled]: TupleStatus.canceled,
-    [StatusLabel.doing]: TupleStatus.doing,
-    [StatusLabel.done]: TupleStatus.done,
-    [StatusLabel.failed]: TupleStatus.failed,
-    [StatusLabel.todo]: TupleStatus.todo,
-    [StatusLabel.waiting]: TupleStatus.waiting,
-    [StatusLabel.unknown]: TupleStatus.unknown,
+const tupleStatusByStatusLabel: Record<TupleStatusLabel, TupleStatus> = {
+    [TupleStatusLabel.canceled]: TupleStatus.canceled,
+    [TupleStatusLabel.doing]: TupleStatus.doing,
+    [TupleStatusLabel.done]: TupleStatus.done,
+    [TupleStatusLabel.failed]: TupleStatus.failed,
+    [TupleStatusLabel.todo]: TupleStatus.todo,
+    [TupleStatusLabel.waiting]: TupleStatus.waiting,
 };
 
-const computePlanStatusByStatusLabel: Record<StatusLabel, ComputePlanStatus> = {
-    [StatusLabel.canceled]: ComputePlanStatus.canceled,
-    [StatusLabel.doing]: ComputePlanStatus.doing,
-    [StatusLabel.done]: ComputePlanStatus.done,
-    [StatusLabel.failed]: ComputePlanStatus.failed,
-    [StatusLabel.todo]: ComputePlanStatus.todo,
-    [StatusLabel.waiting]: ComputePlanStatus.waiting,
-    [StatusLabel.unknown]: ComputePlanStatus.unknown,
+const computePlanStatusByStatusLabel: Record<
+    ComputePlanStatusLabel,
+    ComputePlanStatus
+> = {
+    [ComputePlanStatusLabel.canceled]: ComputePlanStatus.canceled,
+    [ComputePlanStatusLabel.doing]: ComputePlanStatus.doing,
+    [ComputePlanStatusLabel.done]: ComputePlanStatus.done,
+    [ComputePlanStatusLabel.failed]: ComputePlanStatus.failed,
+    [ComputePlanStatusLabel.todo]: ComputePlanStatus.todo,
+    [ComputePlanStatusLabel.waiting]: ComputePlanStatus.waiting,
+    [ComputePlanStatusLabel.unknown]: ComputePlanStatus.unknown,
 };
 
 export const getStatusLabel = (
     status: TupleStatus | ComputePlanStatus
-): StatusLabel => {
+): TupleStatusLabel | ComputePlanStatusLabel => {
     if (Object.values(TupleStatus).includes(status as TupleStatus)) {
         return statusLabelByTupleStatus[status as TupleStatus];
     }
@@ -86,12 +99,12 @@ export const getStatusLabel = (
 };
 
 const getComputePlanStatusFromLabel = (
-    label: StatusLabel
+    label: ComputePlanStatusLabel
 ): ComputePlanStatus => {
     return computePlanStatusByStatusLabel[label];
 };
 
-const getTupleStatusFromLabel = (label: StatusLabel): TupleStatus => {
+const getTupleStatusFromLabel = (label: TupleStatusLabel): TupleStatus => {
     return tupleStatusByStatusLabel[label];
 };
 
@@ -115,10 +128,10 @@ export const getStatusDescription = (
 
 export const getStatusFromLabel = (
     asset: AssetType,
-    label: StatusLabel
+    label: ComputePlanStatusLabel | TupleStatusLabel
 ): ComputePlanStatus | TupleStatus => {
     if (asset === 'compute_plan') {
-        return getComputePlanStatusFromLabel(label);
+        return getComputePlanStatusFromLabel(label as ComputePlanStatusLabel);
     }
     if (
         [
@@ -128,7 +141,7 @@ export const getStatusFromLabel = (
             'aggregatetuple',
         ].includes(asset)
     ) {
-        return getTupleStatusFromLabel(label);
+        return getTupleStatusFromLabel(label as TupleStatusLabel);
     }
     throw `Unknown asset with status: '${asset}'`;
 };
@@ -200,7 +213,6 @@ export const getStatusStyle = (
                 progressColor: 'teal.500',
             };
         case ComputePlanStatus.unknown:
-        case TupleStatus.unknown:
             return {
                 icon: RiQuestionLine,
                 tagColor: 'gray.500',
