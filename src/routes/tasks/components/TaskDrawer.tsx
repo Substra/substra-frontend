@@ -126,7 +126,7 @@ const TaskDrawer = (): JSX.Element => {
                         </Tab>
                     </TabList>
                     <TabPanels>
-                        <TabPanel>
+                        <TabPanel paddingX="5">
                             {task && (
                                 <DrawerBody
                                     as={VStack}
@@ -174,7 +174,7 @@ const TaskDrawer = (): JSX.Element => {
                                 </DrawerBody>
                             )}
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel paddingX="5">
                             {task && (
                                 <DrawerBody
                                     as={VStack}

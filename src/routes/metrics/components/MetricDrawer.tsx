@@ -91,7 +91,12 @@ const MetricDrawer = (): JSX.Element => {
                     }}
                 />
                 {metric && (
-                    <DrawerBody as={VStack} alignItems="stretch" spacing="8">
+                    <DrawerBody
+                        as={VStack}
+                        alignItems="stretch"
+                        spacing="8"
+                        paddingX="5"
+                    >
                         <TableDrawerSection title="General">
                             <TableDrawerSectionKeyEntry value={metric.key} />
                             <TableDrawerSectionDateEntry

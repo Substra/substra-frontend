@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed spacing around permissions (#262)
 -   Fix vertical align in drawer (#266)
 -   Fixed pagination when there are no results (#267)
+-   Fixed padding in drawers (#268)
 
 ### Changed
 

@@ -87,7 +87,12 @@ const AlgoDrawer = (): JSX.Element => {
                     }}
                 />
                 {algo && (
-                    <DrawerBody as={VStack} alignItems="stretch" spacing="8">
+                    <DrawerBody
+                        as={VStack}
+                        alignItems="stretch"
+                        spacing="8"
+                        paddingX="5"
+                    >
                         <TableDrawerSection title="General">
                             <TableDrawerSectionEntry title="Category">
                                 {getAlgoCategory(algo)}

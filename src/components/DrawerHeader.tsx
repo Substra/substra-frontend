@@ -24,7 +24,12 @@ const DrawerHeader = ({
     storageAddress,
     filename,
 }: DrawerHeaderProps): JSX.Element => (
-    <ChakraDrawerHeader display="flex" justifyContent="space-between">
+    <ChakraDrawerHeader
+        display="flex"
+        justifyContent="space-between"
+        paddingX="5"
+        alignItems="center"
+    >
         {loading && <Skeleton />}
         {!loading && (
             <Heading fontSize="md" lineHeight="6" fontWeight="semibold">
