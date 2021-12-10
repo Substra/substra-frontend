@@ -13,7 +13,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     second: 'numeric',
 });
 
-const shortDateFormatter = new Intl.DateTimeFormat('en-GB', {
+export const shortDateFormatter = new Intl.DateTimeFormat('en-GB', {
     year: '2-digit',
     month: 'short',
     day: 'numeric',

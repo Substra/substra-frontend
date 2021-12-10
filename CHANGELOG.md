@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Preserve filters across task types (#265)
 -   Explicit messages for why models cannot be downloaded (#263)
+-   New help & feedback modal (#273)
 
 ### Fixed
 
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix vertical align in drawer (#266)
 -   Fixed pagination when there are no results (#267)
 -   Fixed padding in drawers (#268)
+-   Fix dark theme issue by disabling it (#271)
 
 ### Changed
 
