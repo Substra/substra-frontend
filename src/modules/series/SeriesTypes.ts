@@ -14,7 +14,6 @@ export interface PointT {
     rank: number;
     perf: number | null;
     testTaskKey: string;
-    parentTaskKeys: string[];
 }
 
 export interface SerieT extends SerieFeaturesT {

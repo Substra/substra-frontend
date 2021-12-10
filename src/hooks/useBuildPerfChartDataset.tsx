@@ -9,7 +9,8 @@ export interface DataPoint extends ScatterDataPoint {
     y: number;
     testTaskKey: string;
     worker: string;
-    parentTaskKeys: string[];
+    computePlanKey: string;
+    serieId: number;
 }
 
 export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
@@ -46,7 +47,8 @@ const useBuildPerfChartDataset = (): ((
                     y: point.perf as number,
                     testTaskKey: point.testTaskKey,
                     worker: serie.worker,
-                    parentTaskKeys: point.parentTaskKeys,
+                    computePlanKey: serie.computePlanKey,
+                    serieId: serie.id,
                 })
             ),
             parsing: false,

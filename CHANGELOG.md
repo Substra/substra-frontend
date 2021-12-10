@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Changed file structure for dockerfile (#256)
 -   Better empty table message (#270)
 -   Removed "unknown" task status and renamed "unknown" compute plan status in "empty" (#269)
+-   Hovering charts highlights rank instead of points (#272)
 
 ## [0.6.0] - 2021-12-01
 

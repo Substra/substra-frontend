@@ -80,7 +80,6 @@ export function buildSeries(
                         ? testtuple.test.perfs[metricKey]
                         : null,
                 testTaskKey: testtuple.key,
-                parentTaskKeys: testtuple.parent_task_keys,
             };
 
             const serieFeatures = buildSerieFeatures(
@@ -166,7 +165,6 @@ export function buildAverageSerie(series: SerieT[]): SerieT | null {
             rank: parseInt(rank),
             perf: average(perfs),
             testTaskKey: `average for rank ${rank}`,
-            parentTaskKeys: [],
         }));
 
     return {

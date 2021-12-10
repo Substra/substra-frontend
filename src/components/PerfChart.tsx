@@ -30,15 +30,25 @@ import useBuildPerfChartDataset, {
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 
+import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
+
 interface PerfChartProps {
     series: SerieT[];
     interactive: boolean;
     highlightedSerie?: { id: number; computePlanKey: string } | undefined;
+    setHoveredRank: (rank: number | null) => void;
+    setSelectedRank: (rank: number | null) => void;
 }
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
     (
-        { series, interactive, highlightedSerie }: PerfChartProps,
+        {
+            series,
+            interactive,
+            highlightedSerie,
+            setHoveredRank,
+            setSelectedRank,
+        }: PerfChartProps,
         ref
     ): JSX.Element => {
         const { displayAverage } = useContext(PerfBrowserContext);
@@ -109,6 +119,14 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
 
         const options: ChartOptions<'line'> = {
             animation: false,
+            ...(interactive
+                ? {
+                      hover: {
+                          mode: 'index',
+                          intersect: false,
+                      },
+                  }
+                : {}),
             maintainAspectRatio: false,
             plugins: {
                 legend: {
@@ -181,6 +199,12 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const plugins: Plugin<'line'>[] = [];
         if (interactive) {
             plugins.push(zoomPlugin as Plugin<'line'>);
+            plugins.push(
+                highlightRankPlugin({
+                    setHoveredRank,
+                    setSelectedRank,
+                }) as Plugin<'line'>
+            );
         }
 
         const chart = useMemo(

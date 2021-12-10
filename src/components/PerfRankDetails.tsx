@@ -11,7 +11,7 @@ import {
     ListItem,
     Text,
 } from '@chakra-ui/react';
-import { RiArrowRightSLine, RiGitCommitLine } from 'react-icons/ri';
+import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { getMaxRank } from '@/modules/series/SeriesUtils';
@@ -20,14 +20,16 @@ import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 interface PerfRankDetailsProps {
     series: SerieT[];
-    rank?: number;
+    hoveredRank: number | null;
+    selectedRank: number | null;
     setHighlightedSerie: (
         highlightedSerie: { id: number; computePlanKey: string } | undefined
     ) => void;
 }
 const PerfRankDetails = ({
     series,
-    rank,
+    hoveredRank,
+    selectedRank,
     setHighlightedSerie,
 }: PerfRankDetailsProps): JSX.Element => {
     const { computePlans } = useContext(PerfBrowserContext);
@@ -35,38 +37,42 @@ const PerfRankDetails = ({
     const computePlanKeys = computePlans.map((computePlan) => computePlan.key);
     computePlanKeys.sort();
 
-    const maxRank = getMaxRank(series);
-
-    const getRankData = (): {
+    const getRankData = (
+        rank: number
+    ): {
         id: number;
         computePlanKey: string;
         cpId: string;
         worker: string;
         perf: string;
     }[] => {
-        if (!rank) {
-            return series.map((serie) => {
-                const lastPoint = serie.points[serie.points.length - 1];
+        return series.map((serie) => {
+            const lastPoint = serie.points[serie.points.length - 1];
 
-                let perf = 'N/A';
-                if (lastPoint.rank === maxRank && lastPoint.perf !== null) {
-                    perf = lastPoint.perf.toFixed(2);
-                }
+            let perf = 'N/A';
+            if (lastPoint.rank === rank && lastPoint.perf !== null) {
+                perf = lastPoint.perf.toFixed(2);
+            }
 
-                return {
-                    id: serie.id,
-                    computePlanKey: serie.computePlanKey,
-                    cpId: `CP${
-                        computePlanKeys.indexOf(serie.computePlanKey) + 1
-                    }`,
-                    worker: serie.worker,
-                    perf,
-                };
-            });
-        }
-        return [];
+            return {
+                id: serie.id,
+                computePlanKey: serie.computePlanKey,
+                cpId: `CP${computePlanKeys.indexOf(serie.computePlanKey) + 1}`,
+                worker: serie.worker,
+                perf,
+            };
+        });
     };
-    const rankData = getRankData();
+
+    let rankData = [];
+    if (selectedRank !== null) {
+        rankData = getRankData(selectedRank);
+    } else if (hoveredRank !== null) {
+        rankData = getRankData(hoveredRank);
+    } else {
+        const maxRank = getMaxRank(series);
+        rankData = getRankData(maxRank);
+    }
 
     return (
         <Box
@@ -81,8 +87,15 @@ const PerfRankDetails = ({
                 fontWeight="bold"
                 textTransform="uppercase"
                 marginBottom="5"
+                display="flex"
+                alignItems="center"
             >
-                Last rank
+                {hoveredRank !== null || selectedRank !== null
+                    ? `Rank ${selectedRank || hoveredRank}`
+                    : 'Last rank'}
+                {selectedRank !== null && (
+                    <Icon as={RiLockLine} marginLeft="1" />
+                )}
             </Heading>
             <List>
                 {rankData.map(({ id, cpId, worker, perf, computePlanKey }) => (

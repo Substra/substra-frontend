@@ -146,6 +146,10 @@ const PerfBrowser = ({
                                                 <PerfChart
                                                     series={series}
                                                     interactive={false}
+                                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                                    setHoveredRank={() => {}}
+                                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                                    setSelectedRank={() => {}}
                                                 />
                                             </PerfCard>
                                         </WrapItem>

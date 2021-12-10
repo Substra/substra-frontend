@@ -22,6 +22,8 @@ const PerfDetails = ({
     const perfChartRef = useRef<HTMLDivElement>(null);
     const [highlightedSerie, setHighlightedSerie] =
         useState<{ id: number; computePlanKey: string }>();
+    const [hoveredRank, setHoveredRank] = useState<number | null>(null);
+    const [selectedRank, setSelectedRank] = useState<number | null>(null);
 
     return (
         <VStack
@@ -64,10 +66,14 @@ const PerfDetails = ({
                         series={series}
                         interactive={true}
                         highlightedSerie={highlightedSerie}
+                        setHoveredRank={setHoveredRank}
+                        setSelectedRank={setSelectedRank}
                     />
                 </Box>
                 <PerfRankDetails
                     series={series}
+                    hoveredRank={hoveredRank}
+                    selectedRank={selectedRank}
                     setHighlightedSerie={setHighlightedSerie}
                 />
             </HStack>
