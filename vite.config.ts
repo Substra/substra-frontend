@@ -6,13 +6,17 @@ import reactSvgPlugin from 'vite-plugin-react-svg';
 import reactJsx from 'vite-react-jsx';
 
 const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
+const MICROSOFT_CLARITY_ID = process.env['MICROSOFT_CLARITY_ID'] || '';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     define: {
         __APP_VERSION__: `'${APP_VERSION}'`,
         ...(process.env.NODE_ENV !== 'production'
-            ? { API_URL: `'http://substra-backend.node-1.com'` }
+            ? {
+                  API_URL: `'http://substra-backend.node-1.com'`,
+                  MICROSOFT_CLARITY_ID: `'${MICROSOFT_CLARITY_ID}'`,
+              }
             : {}),
         DEFAULT_PAGE_SIZE: '10',
         'process.env': {},

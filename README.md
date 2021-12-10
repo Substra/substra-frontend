@@ -120,3 +120,17 @@ To run these tests in dev mode:
 ```sh
 npx cypress open
 ```
+
+## Microsoft Clarity
+
+In order to use microsoft clarity, you need to have a clarity ID that you can then use as such.
+
+Locally:
+
+```sh
+MICROSOFT_CLARITY_ID=xxxxxxxxxx npm run dev
+```
+
+In production:
+
+You'll have to define the `microsoftClarity.id` value.

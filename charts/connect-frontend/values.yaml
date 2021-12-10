@@ -70,3 +70,6 @@ affinity: {}
 
 api:
   url: "http://connect-backend.local:8000"
+
+microsoftClarity:
+  id: ""

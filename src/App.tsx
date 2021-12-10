@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import CookieBanner from './components/CookieBanner';
 import { Flex } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
@@ -77,6 +78,7 @@ const App = (): JSX.Element => {
                 </>
                 <Route component={NotFound} />
             </Switch>
+            <CookieBanner />
         </AppLayout>
     );
 };
