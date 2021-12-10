@@ -27,8 +27,12 @@ const ComputePlanTasks = (): JSX.Element => {
     }
 
     useDocumentTitleEffect(
-        (setDocumentTitle) => setDocumentTitle(`${key} (compute plan)`),
-        []
+        (setDocumentTitle) => {
+            if (isTasks) {
+                setDocumentTitle(`Compute plan ${key}`);
+            }
+        },
+        [isTasks, key]
     );
 
     const computePlan = useAppSelector(

@@ -17,7 +17,7 @@ import {
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -65,7 +65,14 @@ const MetricDrawer = (): JSX.Element => {
         (state) => state.metrics.descriptionLoading
     );
 
-    useAssetSiderDocumentTitleEffect(key, metric, 'metric');
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (metric?.name) {
+                setDocumentTitle(metric.name);
+            }
+        },
+        [metric?.name]
+    );
 
     return (
         <Drawer

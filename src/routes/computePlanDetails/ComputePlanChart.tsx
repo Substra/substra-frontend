@@ -37,7 +37,7 @@ const ComputePlanChart = (): JSX.Element => {
     }, [key]);
 
     useDocumentTitleEffect(
-        (setDocumentTitle) => setDocumentTitle(`${key} (compute plan)`),
+        (setDocumentTitle) => setDocumentTitle(`Compute plan ${key}`),
         []
     );
 

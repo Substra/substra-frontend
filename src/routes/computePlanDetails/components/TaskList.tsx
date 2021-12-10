@@ -8,8 +8,6 @@ import {
 } from '@/modules/computePlans/ComputePlansSlice';
 
 import { useAppSelector } from '@/hooks';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
@@ -124,10 +122,6 @@ const Tasks = (): JSX.Element => {
             ),
         },
     ];
-
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_TASK, 'taskKey');
-
-    useAssetListDocumentTitleEffect('Tasks list', key);
 
     return (
         <VStack display="inline-block" spacing="2.5">

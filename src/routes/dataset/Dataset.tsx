@@ -28,11 +28,6 @@ const Dataset = (): JSX.Element => {
     const [, params] = useRoute(PATHS.DATASET);
     const key = params?.key;
 
-    useDocumentTitleEffect(
-        (setDocumentTitle) => setDocumentTitle(`${key} (dataset)`),
-        []
-    );
-
     const dataset = useAppSelector((state) => state.datasets.dataset);
     const description = useAppSelector((state) => state.datasets.description);
     const descriptionLoading = useAppSelector(
@@ -56,6 +51,15 @@ const Dataset = (): JSX.Element => {
                 });
         }
     }, [key, dataset?.key]);
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (dataset?.name) {
+                setDocumentTitle(dataset.name);
+            }
+        },
+        [dataset?.name]
+    );
 
     return (
         <Flex

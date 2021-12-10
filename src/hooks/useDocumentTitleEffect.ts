@@ -26,20 +26,3 @@ export const useAssetListDocumentTitleEffect = (
         [key]
     );
 };
-
-export const useAssetSiderDocumentTitleEffect = (
-    key: null | string,
-    asset: null | { key: string; name: string },
-    suffix: string
-): void => {
-    useDocumentTitleEffect(
-        (setDocumentTitle) => {
-            if (asset && key === asset.key) {
-                setDocumentTitle(`${asset.name} (${suffix})`);
-            } else if (key) {
-                setDocumentTitle(`${key} (${suffix})`);
-            }
-        },
-        [key, asset]
-    );
-};

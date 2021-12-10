@@ -15,7 +15,7 @@ import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useAssetSiderDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -61,7 +61,14 @@ const AlgoDrawer = (): JSX.Element => {
         (state) => state.algos.descriptionLoading
     );
 
-    useAssetSiderDocumentTitleEffect(key, algo, 'algo');
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (algo?.name) {
+                setDocumentTitle(algo.name);
+            }
+        },
+        [algo?.name]
+    );
 
     return (
         <Drawer

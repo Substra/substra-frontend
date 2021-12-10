@@ -79,11 +79,11 @@ const TaskDrawer = (): JSX.Element => {
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
-            if (key) {
-                setDocumentTitle(`${key} (task)`);
+            if (key && task?.key === key) {
+                setDocumentTitle(`${getTaskCategory(task)} task ${key}`);
             }
         },
-        [key]
+        [key, task?.category]
     );
 
     const handleOnClose = () => {
