@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed pagination when there are no results (#267)
 -   Fixed padding in drawers (#268)
 -   Fix dark theme issue by disabling it (#271)
+-   Reduce font size on "download as" menu items (#261)
 
 ### Changed
 
