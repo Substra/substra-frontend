@@ -47,7 +47,7 @@ const About = () => {
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="5">
                             <TableDrawerSection title="Version">
-                                <TableDrawerSectionEntry title="frontend">
+                                <TableDrawerSectionEntry title="Frontend">
                                     {__APP_VERSION__}
                                 </TableDrawerSectionEntry>
                                 <TableDrawerSectionEntry title="Backend">

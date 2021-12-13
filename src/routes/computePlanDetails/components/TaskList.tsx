@@ -27,30 +27,6 @@ const Tasks = (): JSX.Element => {
     const taskTypes: selectedTaskT[] = [
         {
             id: 0,
-            name: 'Train',
-            slug: 'traintuple',
-            loading: useAppSelector(
-                (state) => state.computePlans.computePlanTrainTasksLoading
-            ),
-            list: () => {
-                if (!computePlanKey) {
-                    return null;
-                }
-                return retrieveComputePlanTrainTasks({
-                    computePlanKey,
-                    page,
-                    filters: searchFilters,
-                });
-            },
-            tasks: useAppSelector(
-                (state) => state.computePlans.computePlanTrainTasks
-            ),
-            count: useAppSelector(
-                (state) => state.computePlans.computePlanTrainTasksCount
-            ),
-        },
-        {
-            id: 1,
             name: 'Test',
             slug: 'testtuple',
             loading: useAppSelector(
@@ -71,6 +47,30 @@ const Tasks = (): JSX.Element => {
             ),
             count: useAppSelector(
                 (state) => state.computePlans.computePlanTestTasksCount
+            ),
+        },
+        {
+            id: 1,
+            name: 'Train',
+            slug: 'traintuple',
+            loading: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasksLoading
+            ),
+            list: () => {
+                if (!computePlanKey) {
+                    return null;
+                }
+                return retrieveComputePlanTrainTasks({
+                    computePlanKey,
+                    page,
+                    filters: searchFilters,
+                });
+            },
+            tasks: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasks
+            ),
+            count: useAppSelector(
+                (state) => state.computePlans.computePlanTrainTasksCount
             ),
         },
         {

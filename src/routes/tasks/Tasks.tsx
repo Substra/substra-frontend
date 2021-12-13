@@ -27,21 +27,21 @@ const Tasks = (): JSX.Element => {
     const taskTypes: selectedTaskT[] = [
         {
             id: 0,
-            name: 'Train',
-            slug: 'traintuple',
-            loading: useAppSelector((state) => state.tasks.trainTasksLoading),
-            list: () => listTrainTasks({ filters: searchFilters, page }),
-            tasks: useAppSelector((state) => state.tasks.trainTasks),
-            count: useAppSelector((state) => state.tasks.trainTasksCount),
-        },
-        {
-            id: 1,
             name: 'Test',
             slug: 'testtuple',
             loading: useAppSelector((state) => state.tasks.testTasksLoading),
             list: () => listTestTasks({ filters: searchFilters, page }),
             tasks: useAppSelector((state) => state.tasks.testTasks),
             count: useAppSelector((state) => state.tasks.testTasksCount),
+        },
+        {
+            id: 1,
+            name: 'Train',
+            slug: 'traintuple',
+            loading: useAppSelector((state) => state.tasks.trainTasksLoading),
+            list: () => listTrainTasks({ filters: searchFilters, page }),
+            tasks: useAppSelector((state) => state.tasks.trainTasks),
+            count: useAppSelector((state) => state.tasks.trainTasksCount),
         },
         {
             id: 2,

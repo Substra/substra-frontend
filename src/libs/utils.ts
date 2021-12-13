@@ -46,3 +46,8 @@ export const getDiffDates = (start: string, end: string | null = null) => {
 
     return `${hours}h ${minutes}min ${seconds}s`;
 };
+
+export const capitalize = (word: string) => {
+    const lower = word.toLowerCase();
+    return word.charAt(0).toUpperCase() + lower.slice(1);
+};

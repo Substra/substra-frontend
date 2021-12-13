@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Better page titles (#275)
 -   Update Cypress version (#276)
 -   Remove number of parent tasks in TaskTable (#277)
+-   Switch train and test tasks tabs (#278)
+-   Add capital letter to frontend in the about modal (#278)
 
 ## [0.6.0] - 2021-12-01
 

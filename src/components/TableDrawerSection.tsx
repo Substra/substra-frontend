@@ -1,7 +1,7 @@
 import DrawerSectionContainer from './DrawerSectionContainer';
 import { HStack, Table, Td, Tr, Text } from '@chakra-ui/react';
 
-import { formatDate } from '@/libs/utils';
+import { capitalize, formatDate } from '@/libs/utils';
 
 import CopyButton from '@/components/CopyButton';
 import { Tbody } from '@/components/Table';
@@ -32,7 +32,7 @@ const TableDrawerSectionEntry = ({
     return (
         <Tr>
             <Td paddingLeft="0" fontSize="xs" verticalAlign="top">
-                {title}
+                {capitalize(title)}
             </Td>
             <Td textAlign="right" paddingRight="0" fontSize="xs">
                 {children}
