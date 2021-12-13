@@ -32,7 +32,7 @@ const DataSamplesListItem = ({
                     value={keysAsJson}
                 />
                 <DownloadIconButton
-                    label={`Download ${type} data samples keys as json`}
+                    label={`Download ${type} data samples keys as JSON`}
                     variant="ghost"
                     blob={keysAsBlob}
                     filename={`${type}_data_sample_keys.json`}

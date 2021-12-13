@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed padding in drawers (#268)
 -   Fix dark theme issue by disabling it (#271)
 -   Reduce font size on "download as" menu items (#261)
+-   Uniformize file extension across the app (#264)
 
 ### Changed
 
