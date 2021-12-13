@@ -157,7 +157,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                         textAlign="right"
                                         whiteSpace="nowrap"
                                     >
-                                        Rank / Parent tasks / Duration
+                                        Rank / Duration
                                     </Th>
                                 </Tr>
                             </Thead>
@@ -198,7 +198,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                     fontSize="xs"
                                                     whiteSpace="nowrap"
                                                 >
-                                                    42 • 2 parent tasks
+                                                    42
                                                 </Text>
                                             </Skeleton>
                                         </Td>
@@ -269,16 +269,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                         fontSize="xs"
                                                         whiteSpace="nowrap"
                                                     >
-                                                        {`${task.rank} • `}
-                                                        {task.parent_task_keys
-                                                            .length === 0 &&
-                                                            'no parent task'}
-                                                        {task.parent_task_keys
-                                                            .length === 1 &&
-                                                            '1 parent task'}
-                                                        {task.parent_task_keys
-                                                            .length > 1 &&
-                                                            `${task.parent_task_keys.length} parent tasks`}
+                                                        {`${task.rank}`}
                                                     </Text>
                                                     {task.start_date && (
                                                         <HStack justifyContent="flex-end">
