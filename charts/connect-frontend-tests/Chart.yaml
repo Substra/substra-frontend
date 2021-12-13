@@ -1,0 +1,7 @@
+apiVersion: v2
+name: connect-frontend-tests
+description: Tests for the Connect Frontend
+
+type: application
+
+version: 0.0.1

@@ -108,7 +108,7 @@ const TaskDrawer = (): JSX.Element => {
             autoFocus={false}
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={
                         task ? `${getTaskCategory(task)} on ${task.worker}` : ''

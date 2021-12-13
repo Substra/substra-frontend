@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+build:
+    artifacts:
+        - image: &imageref eu.gcr.io/connect-314908/connect-frontend-tests
+          context: ..
+          docker:
+              dockerfile: 'docker/connect-frontend-tests/Dockerfile'
+
+deploy:
+    helm:
+        releases:
+            - name: test
+              chartPath: ../charts/connect-frontend-tests
+              namespace: org-1
+              createNamespace: true
+              artifactOverrides:
+                  image: *imageref
+              imageStrategy:
+                  helm:
+                      explicitRegistry: true
+              setValues:
+                  cypress.config.baseUrl: ''
+                  cypress.config.env.BACKEND_API_URL: ''

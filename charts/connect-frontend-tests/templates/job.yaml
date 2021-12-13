@@ -1,0 +1,152 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "connect-frontend-tests.fullname" . }}
+  labels:
+    {{- include "connect-frontend-tests.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "connect-frontend-tests.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "connect-frontend-tests.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default (.Chart.AppVersion | replace "+" "_")}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          workingDir: /e2e
+          command: [cypress]
+          args:
+            - run
+          {{- if .Values.cypress.config }}
+            - --config
+            - '{{ toJson .Values.cypress.config }}'
+            # https://docs.cypress.io/guides/references/configuration#Overriding-Options
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: NO_COLOR # https://docs.cypress.io/guides/continuous-integration/introduction#Colors
+              value: "1"
+            - name: JSON_CYPRESS_CONFIG
+              value: '{{ toJson .Values.cypress.config }}'
+            {{- if .Values.cypress.env }}
+            # https://docs.cypress.io/guides/guides/environment-variables#Option-3-CYPRESS_
+            {{- range $k, $v := .Values.cypress.env }}
+            - name: 'CYPRESS_{{ $k }}'
+              value: {{ $v | quote }}
+            {{- end }}
+            {{- end }}
+          {{- if .Values.cypress.screenshotsPvc.enabled }}
+          volumeMounts:
+            - mountPath: "/e2e/cypress/screenshots"
+              name: screenshots
+          {{- end }}
+      {{- if .Values.cypress.screenshotsPvc.enabled }}
+      volumes:
+        - name: screenshots
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name | trunc 30 | trimSuffix "-" }}-cypress-screenshots
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+  backoffLimit: 1
+
+---
+
+{{- if .Values.cypress.screenshotsPvc.enabled }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name | trunc 30 | trimSuffix "-" }}-cypress-screenshots
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+{{- end }}
+
+---
+
+{{- if .Values.cypress.screenshotsPvc.retrieverEnabled }}
+
+apiVersion: v1
+kind: Pod
+metadata:
+{{- with .Values.podAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+  labels:
+    {{- include "connect-frontend-tests.selectorLabels" . | nindent 4 }}
+    role: cypress-screenshots-retriever
+  name: {{ .Release.Name | trunc 30 | trimSuffix "-" }}-cypress-screenshots-retriever
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  serviceAccountName: {{ include "connect-frontend-tests.serviceAccountName" . }}
+  securityContext:
+    {{- toYaml .Values.podSecurityContext | nindent 4 }}
+  containers:
+    - name: {{ .Chart.Name }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      image: ubuntu:20.04
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      command: [sh]
+      args:
+        - -c
+        - while true; do sleep 120; done
+      resources:
+        {{- toYaml .Values.resources | nindent 8 }}
+      {{- if .Values.cypress.screenshotsPvc.enabled }}
+      volumeMounts:
+        - mountPath: "/screenshots"
+          name: screenshots
+      {{- end }}
+  {{- if .Values.cypress.screenshotsPvc.enabled }}
+  volumes:
+    - name: screenshots
+      persistentVolumeClaim:
+        claimName: {{ .Release.Name | trunc 30 | trimSuffix "-" }}-cypress-screenshots
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
