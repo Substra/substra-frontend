@@ -32,7 +32,8 @@ const PerfDetails = ({
             justifyContent="flex-start"
             alignItems="stretch"
             spacing="4"
-            padding="8"
+            paddingX="8"
+            paddingY="4"
             overflow="hidden"
         >
             <Flex justifyContent="space-between" alignItems="center">

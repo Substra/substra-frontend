@@ -1,10 +1,14 @@
 import { useRef, useState } from 'react';
 
+import { SerieT } from '@/modules/series/SeriesTypes';
+
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 
 import PerfChartTooltip from '@/components/PerfChartTooltip';
 
-const usePerfChartTooltip = (): {
+const usePerfChartTooltip = (
+    series: SerieT[]
+): {
     tooltip: React.ReactNode;
     tooltipPluginOptions: Record<string, unknown>;
 } => {
@@ -26,6 +30,7 @@ const usePerfChartTooltip = (): {
 
     const tooltip = displayed && (
         <PerfChartTooltip
+            series={series}
             hideTooltip={hideTooltip}
             showTooltip={showTooltip}
             x={position.x}

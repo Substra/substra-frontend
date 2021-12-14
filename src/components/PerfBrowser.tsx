@@ -1,14 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import {
-    Box,
-    Flex,
-    HStack,
-    Text,
-    VStack,
-    Wrap,
-    WrapItem,
-} from '@chakra-ui/react';
+import { Flex, HStack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -28,6 +20,7 @@ interface PerfBrowserProps {
     computePlans: ComputePlanT[];
     settingsComponents: React.FunctionComponent[];
     sectionComponents: React.FunctionComponent[];
+    colorMode: 'computePlan' | 'node';
 }
 
 const PerfBrowser = ({
@@ -36,10 +29,11 @@ const PerfBrowser = ({
     computePlans,
     settingsComponents,
     sectionComponents,
+    colorMode,
 }: PerfBrowserProps) => {
     const [selectedMetricName, setSelectedMetricName] = useState('');
 
-    const { context } = usePerfBrowser(series, computePlans);
+    const { context } = usePerfBrowser(series, computePlans, colorMode);
     const {
         selectedNodeIds,
         selectedComputePlanKeys,
@@ -78,11 +72,14 @@ const PerfBrowser = ({
                 alignItems="stretch"
                 overflow="hidden"
             >
-                <Box
+                <Flex
                     flexGrow={0}
                     flexShrink={0}
+                    flexDirection="column"
                     width="300px"
                     backgroundColor="white"
+                    overflowX="hidden"
+                    overflowY="auto"
                 >
                     {settingsComponents.length && (
                         <PerfSidebarSection title="Settings">
@@ -98,7 +95,7 @@ const PerfBrowser = ({
                     {sectionComponents.map((SectionComponent) => (
                         <SectionComponent key={SectionComponent.name} />
                     ))}
-                </Box>
+                </Flex>
                 <Flex
                     flexGrow={1}
                     flexWrap="wrap"

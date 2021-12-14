@@ -54,7 +54,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const { displayAverage } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
-        const { tooltip, tooltipPluginOptions } = usePerfChartTooltip();
+        const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(series);
 
         const maxRank = getMaxRank(series);
 
@@ -220,7 +220,13 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         );
 
         return (
-            <Box position="relative" width="100%" height="100%" ref={ref}>
+            <Box
+                position="relative"
+                width="100%"
+                height="100%"
+                padding="2"
+                ref={ref}
+            >
                 {chart}
                 {interactive && tooltip}
                 {interactive && (

@@ -48,6 +48,7 @@ const Compare = (): JSX.Element => {
                 PerfSidebarSettingsAverage,
             ]}
             sectionComponents={[PerfSidebarSectionComputePlans]}
+            colorMode="computePlan"
         />
     );
 };

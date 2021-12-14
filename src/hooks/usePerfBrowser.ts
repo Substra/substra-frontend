@@ -12,10 +12,14 @@ type ComputePlanNodes = Record<string, Record<string, boolean>>;
 interface PerfBrowserContext {
     // List of all compute plans we're browsing series for
     computePlans: ComputePlanT[];
+    // List of all compute plan keys sorted alphabetically
+    sortedComputePlanKeys: string[];
     // List of all the series that can be extracted from the computePlans
     series: SerieT[];
     // List of the nodes references by all the series
     nodes: NodeType[];
+    // How colors should be determined
+    colorMode: 'computePlan' | 'node';
     // Whether to display an average serie on charts with more than one line
     displayAverage: boolean;
     setDisplayAverage: (displayAverage: boolean) => void;
@@ -42,8 +46,10 @@ interface PerfBrowserContext {
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 export const PerfBrowserContext = createContext<PerfBrowserContext>({
     computePlans: [],
+    sortedComputePlanKeys: [],
     series: [],
     nodes: [],
+    colorMode: 'node',
     displayAverage: false,
     setDisplayAverage: (displayAverage) => {},
     selectedNodeIds: [],
@@ -63,7 +69,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
 
 const usePerfBrowser = (
     series: SerieT[],
-    computePlans: ComputePlanT[]
+    computePlans: ComputePlanT[],
+    colorMode: 'computePlan' | 'node'
 ): {
     context: PerfBrowserContext;
 } => {
@@ -205,11 +212,18 @@ const usePerfBrowser = (
         }
     }, [series.length, computePlans.length]);
 
+    const sortedComputePlanKeys = computePlans.map(
+        (computePlan) => computePlan.key
+    );
+    sortedComputePlanKeys.sort();
+
     return {
         context: {
             series,
             computePlans,
+            sortedComputePlanKeys,
             nodes,
+            colorMode,
             // average
             displayAverage,
             setDisplayAverage,

@@ -2,7 +2,13 @@ import { ChartDataset, ScatterDataPoint } from 'chart.js';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
-import useNodeChartStyle, { ChartStyle } from '@/hooks/useNodeChartStyle';
+import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
+
+interface ChartStyle {
+    color: string;
+    colorScheme: string;
+    borderWidth: number;
+}
 
 export interface DataPoint extends ScatterDataPoint {
     x: number;
@@ -24,7 +30,7 @@ const useBuildPerfChartDataset = (): ((
         computePlanKey: string;
     }
 ) => PerfChartDataset) => {
-    const nodeChartStyle = useNodeChartStyle();
+    const { getColor, getColorScheme } = usePerfBrowserColors();
 
     return (
         serie: SerieT,
@@ -36,7 +42,11 @@ const useBuildPerfChartDataset = (): ((
         }
     ): PerfChartDataset => {
         if (!chartStyle) {
-            chartStyle = nodeChartStyle(serie.worker);
+            chartStyle = {
+                colorScheme: getColorScheme(serie),
+                color: getColor(serie, '500'),
+                borderWidth: 2,
+            };
         }
 
         return {

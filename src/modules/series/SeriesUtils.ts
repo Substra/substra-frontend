@@ -137,7 +137,7 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     return groups;
 }
 
-const average = (values: number[]): number => {
+export const average = (values: number[]): number => {
     return values.reduce((sum, value) => sum + value, 0) / values.length;
 };
 

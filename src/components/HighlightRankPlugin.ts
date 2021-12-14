@@ -72,7 +72,12 @@ export const highlightRankPlugin = ({
         }
 
         ctx.save();
-        ctx.strokeStyle = chakraTheme.colors.teal['300'];
+
+        if (state.selectedRank) {
+            ctx.strokeStyle = chakraTheme.colors.teal['500'];
+        } else {
+            ctx.strokeStyle = chakraTheme.colors.teal['300'];
+        }
         ctx.strokeRect(
             scales.x.getPixelForValue(rank),
             chartArea.top,

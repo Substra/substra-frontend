@@ -3,22 +3,60 @@ import { useContext } from 'react';
 import { Checkbox, List, ListItem, Text } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
 import PerfSidebarSection from '@/components/PerfSidebarSection';
 
-const PerfSidebarSectionComputePlans = (): JSX.Element => {
+import { lightenColorName } from '@/assets/chakraTheme';
+
+const ComputePlanCheckbox = ({
+    computePlanKey,
+    index,
+}: {
+    computePlanKey: string;
+    index: number;
+}): JSX.Element => {
     const {
         computePlans,
+        selectedComputePlanKeys,
+        onComputePlanKeySelectionChange,
+    } = useContext(PerfBrowserContext);
+    const { getColorScheme } = usePerfBrowserColors();
+
+    const computePlan = computePlans.find((cp) => cp.key === computePlanKey);
+    return (
+        <Checkbox
+            colorScheme={getColorScheme({ computePlanKey, worker: '' })}
+            onChange={onComputePlanKeySelectionChange(computePlanKey)}
+            isChecked={selectedComputePlanKeys.includes(computePlanKey)}
+        >
+            <Text as="span" fontSize="xs" fontWeight="semibold">
+                {`CP${index + 1}`}
+            </Text>
+            {computePlan?.tag && (
+                <>
+                    <Text as="span" fontSize="xs" marginX="1">
+                        •
+                    </Text>
+                    <Text as="span" fontSize="xs">
+                        {computePlan.tag}
+                    </Text>
+                </>
+            )}
+        </Checkbox>
+    );
+};
+
+const PerfSidebarSectionComputePlans = (): JSX.Element => {
+    const {
+        sortedComputePlanKeys,
         nodes,
         selectedNodeIds,
         selectedComputePlanKeys,
-        onComputePlanKeySelectionChange,
         selectedComputePlanNodes,
         onComputePlanNodeSelectionChange,
     } = useContext(PerfBrowserContext);
-
-    const computePlanKeys = computePlans.map((computePlan) => computePlan.key);
-    computePlanKeys.sort();
+    const { getColorScheme } = usePerfBrowserColors();
 
     const nodeIds = nodes.map((node) => node.id);
     nodeIds.sort();
@@ -29,34 +67,14 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
 
     return (
         <PerfSidebarSection title="Compute plans">
-            <List>
-                {computePlanKeys.map((computePlanKey, index) => (
+            <List spacing="6">
+                {sortedComputePlanKeys.map((computePlanKey, index) => (
                     <ListItem key={computePlanKey}>
-                        <Checkbox
-                            colorScheme="teal"
-                            onChange={onComputePlanKeySelectionChange(
-                                computePlanKey
-                            )}
-                            isChecked={selectedComputePlanKeys.includes(
-                                computePlanKey
-                            )}
-                        >
-                            <Text as="span" fontSize="xs" fontWeight="semibold">
-                                {`CP${index + 1}`}
-                            </Text>
-                            <Text as="span" fontSize="xs" marginX="1">
-                                •
-                            </Text>
-                            <Text as="span" fontSize="xs">
-                                {
-                                    computePlans.find(
-                                        (computePlan) =>
-                                            computePlan.key === computePlanKey
-                                    )?.tag
-                                }
-                            </Text>
-                        </Checkbox>
-                        <List paddingLeft="6">
+                        <ComputePlanCheckbox
+                            computePlanKey={computePlanKey}
+                            index={index}
+                        />
+                        <List paddingLeft="6" spacing="2.5" marginTop="2.5">
                             {nodeIds
                                 .filter(
                                     (nodeId) =>
@@ -68,7 +86,12 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                         key={`${computePlanKey}-${nodeId}`}
                                     >
                                         <Checkbox
-                                            colorScheme="teal"
+                                            colorScheme={lightenColorName(
+                                                getColorScheme({
+                                                    computePlanKey,
+                                                    worker: nodeId,
+                                                })
+                                            )}
                                             onChange={onComputePlanNodeSelectionChange(
                                                 computePlanKey,
                                                 nodeId

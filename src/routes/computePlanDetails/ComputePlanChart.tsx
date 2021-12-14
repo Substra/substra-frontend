@@ -61,6 +61,7 @@ const ComputePlanChart = (): JSX.Element => {
                 computePlans={computePlan ? [computePlan] : []}
                 settingsComponents={[PerfSidebarSettingsAverage]}
                 sectionComponents={[PerfSidebarSectionNodes]}
+                colorMode="node"
             />
         </Flex>
     );

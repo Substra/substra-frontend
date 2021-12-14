@@ -3,20 +3,26 @@ import { useContext } from 'react';
 import IconTag from './IconTag';
 import {
     Box,
-    Flex,
+    Button,
     Heading,
     HStack,
     Icon,
     List,
+    Flex,
     ListItem,
     Text,
+    Tooltip,
 } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
+import { Link } from 'wouter';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { getMaxRank } from '@/modules/series/SeriesUtils';
+import { average, getMaxRank } from '@/modules/series/SeriesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
+
+import { compilePath, PATHS } from '@/routes';
 
 interface PerfRankDetailsProps {
     series: SerieT[];
@@ -32,46 +38,76 @@ const PerfRankDetails = ({
     selectedRank,
     setHighlightedSerie,
 }: PerfRankDetailsProps): JSX.Element => {
-    const { computePlans } = useContext(PerfBrowserContext);
-
-    const computePlanKeys = computePlans.map((computePlan) => computePlan.key);
-    computePlanKeys.sort();
+    const { sortedComputePlanKeys, displayAverage } =
+        useContext(PerfBrowserContext);
+    const { getColorScheme } = usePerfBrowserColors();
 
     const getRankData = (
         rank: number
     ): {
         id: number;
         computePlanKey: string;
+        testTaskKey?: string;
         cpId: string;
+        lineId: string;
         worker: string;
         perf: string;
     }[] => {
+        const sortedSerieIds = series.map((s) => s.id);
+        sortedSerieIds.sort();
+
         return series.map((serie) => {
-            const lastPoint = serie.points[serie.points.length - 1];
+            const point = serie.points.find((p) => p.rank === rank);
 
             let perf = 'N/A';
-            if (lastPoint.rank === rank && lastPoint.perf !== null) {
-                perf = lastPoint.perf.toFixed(2);
+            if (point?.perf) {
+                perf = point.perf.toFixed(2);
             }
 
             return {
                 id: serie.id,
                 computePlanKey: serie.computePlanKey,
-                cpId: `CP${computePlanKeys.indexOf(serie.computePlanKey) + 1}`,
+                testTaskKey: point?.testTaskKey,
+                cpId: `CP${
+                    sortedComputePlanKeys.indexOf(serie.computePlanKey) + 1
+                }`,
+                lineId: `L${sortedSerieIds.indexOf(serie.id) + 1}`,
                 worker: serie.worker,
                 perf,
             };
         });
     };
 
+    const getAveragePerf = (rank: number): string => {
+        if (displayAverage) {
+            const rankPerformances = series
+                .map((serie) => serie.points.find((p) => p.rank === rank))
+                .map((point) => point?.perf)
+                .filter(
+                    (perf): perf is number =>
+                        perf !== undefined && perf !== null
+                );
+
+            if (rankPerformances.length === series.length) {
+                return average(rankPerformances).toFixed(2);
+            }
+        }
+
+        return 'N/A';
+    };
+
     let rankData = [];
+    let averagePerf = 'N/A';
     if (selectedRank !== null) {
         rankData = getRankData(selectedRank);
+        averagePerf = getAveragePerf(selectedRank);
     } else if (hoveredRank !== null) {
         rankData = getRankData(hoveredRank);
+        averagePerf = getAveragePerf(hoveredRank);
     } else {
         const maxRank = getMaxRank(series);
         rankData = getRankData(maxRank);
+        averagePerf = getAveragePerf(maxRank);
     }
 
     return (
@@ -80,7 +116,7 @@ const PerfRankDetails = ({
             width="300px"
             flexGrow={0}
             flexShrink={0}
-            padding="5"
+            paddingY="5"
         >
             <Heading
                 size="xxs"
@@ -89,6 +125,7 @@ const PerfRankDetails = ({
                 marginBottom="5"
                 display="flex"
                 alignItems="center"
+                paddingX="5"
             >
                 {hoveredRank !== null || selectedRank !== null
                     ? `Rank ${selectedRank || hoveredRank}`
@@ -98,41 +135,122 @@ const PerfRankDetails = ({
                 )}
             </Heading>
             <List>
-                {rankData.map(({ id, cpId, worker, perf, computePlanKey }) => (
-                    <ListItem
-                        key={id}
-                        paddingY="2.5"
-                        onMouseEnter={() =>
-                            setHighlightedSerie({ id, computePlanKey })
-                        }
-                        onMouseLeave={() => setHighlightedSerie(undefined)}
-                    >
+                {displayAverage && (
+                    <ListItem>
                         <Flex
                             justifyContent="space-between"
                             alignItems="center"
+                            paddingX="5"
+                            height="10"
                         >
                             <HStack spacing="2.5">
                                 <IconTag
                                     icon={RiGitCommitLine}
-                                    backgroundColor="teal.100"
-                                    fill="teal.500"
+                                    backgroundColor="black.100"
+                                    fill="black.500"
                                 />
-                                <HStack spacing="1">
-                                    <Text fontSize="xs" fontWeight="semibold">
-                                        {`${cpId} • ${worker}`}
-                                    </Text>
-                                    <Text as="span" fontSize="xs">
-                                        {`• L${id}`}
-                                    </Text>
-                                </HStack>
+                                <Text fontSize="xs" fontWeight="semibold">
+                                    Average
+                                </Text>
                             </HStack>
-                            <Text fontSize="xs">
-                                {perf}
-                                <Icon as={RiArrowRightSLine} />
+                            <Text fontSize="xs" paddingRight="18px">
+                                {averagePerf}
                             </Text>
                         </Flex>
                     </ListItem>
-                ))}
+                )}
+                {rankData.map(
+                    ({
+                        id,
+                        cpId,
+                        lineId,
+                        worker,
+                        perf,
+                        computePlanKey,
+                        testTaskKey,
+                    }) => (
+                        <ListItem
+                            key={id}
+                            onMouseEnter={() =>
+                                setHighlightedSerie({ id, computePlanKey })
+                            }
+                            onMouseLeave={() => setHighlightedSerie(undefined)}
+                        >
+                            <Link
+                                href={
+                                    testTaskKey
+                                        ? compilePath(PATHS.TASK, {
+                                              key: testTaskKey,
+                                          })
+                                        : ''
+                                }
+                            >
+                                <Button
+                                    as="a"
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    variant="ghost"
+                                    target="_blank"
+                                    paddingX="5"
+                                >
+                                    <HStack spacing="2.5">
+                                        <IconTag
+                                            icon={RiGitCommitLine}
+                                            backgroundColor={`${getColorScheme({
+                                                worker,
+                                                computePlanKey,
+                                            })}.100`}
+                                            fill={`${getColorScheme({
+                                                worker,
+                                                computePlanKey,
+                                            })}.500`}
+                                        />
+                                        <Tooltip
+                                            label={
+                                                sortedComputePlanKeys.length > 1
+                                                    ? `${cpId} • ${worker} • ${lineId}`
+                                                    : `${worker} • ${lineId}`
+                                            }
+                                            placement="top"
+                                        >
+                                            <HStack spacing="1">
+                                                <Text
+                                                    fontSize="xs"
+                                                    fontWeight="semibold"
+                                                    maxWidth="150px"
+                                                    isTruncated
+                                                >
+                                                    {sortedComputePlanKeys.length >
+                                                    1
+                                                        ? `${cpId} • ${worker}`
+                                                        : worker}
+                                                </Text>
+                                                <Text
+                                                    as="span"
+                                                    fontSize="xs"
+                                                    fontWeight="normal"
+                                                >
+                                                    {`• ${lineId}`}
+                                                </Text>
+                                            </HStack>
+                                        </Tooltip>
+                                    </HStack>
+                                    <HStack spacing="1">
+                                        <Text fontSize="xs" fontWeight="normal">
+                                            {perf}
+                                        </Text>
+                                        <Icon
+                                            as={RiArrowRightSLine}
+                                            width="14px"
+                                            height="14px"
+                                        />
+                                    </HStack>
+                                </Button>
+                            </Link>
+                        </ListItem>
+                    )
+                )}
             </List>
         </Box>
     );
