@@ -17,6 +17,7 @@ import {
     TabPanels,
     TabPanel,
     Link,
+    Text,
 } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
@@ -183,15 +184,25 @@ const TaskDrawer = (): JSX.Element => {
                                 >
                                     <TableDrawerSection title="Assets">
                                         <TableDrawerSectionEntry title="Algorithm">
-                                            <Link
-                                                href={compilePath(PATHS.ALGO, {
-                                                    key: task.algo.key,
-                                                })}
-                                                color="teal.500"
-                                                isExternal
+                                            <Text
+                                                isTruncated
+                                                maxWidth="370px"
+                                                textAlign="right"
+                                                marginLeft="auto"
                                             >
-                                                {task.algo.name}
-                                            </Link>
+                                                <Link
+                                                    href={compilePath(
+                                                        PATHS.ALGO,
+                                                        {
+                                                            key: task.algo.key,
+                                                        }
+                                                    )}
+                                                    color="teal.500"
+                                                    isExternal
+                                                >
+                                                    {task.algo.name}
+                                                </Link>
+                                            </Text>
                                         </TableDrawerSectionEntry>
                                         {(isTraintuple(task) ||
                                             isAggregatetuple(task) ||

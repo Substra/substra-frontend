@@ -31,7 +31,12 @@ const TableDrawerSectionEntry = ({
 }): JSX.Element => {
     return (
         <Tr>
-            <Td paddingLeft="0" fontSize="xs" verticalAlign="top">
+            <Td
+                paddingLeft="0"
+                fontSize="xs"
+                verticalAlign="top"
+                whiteSpace="nowrap"
+            >
                 {capitalize(title)}
             </Td>
             <Td textAlign="right" paddingRight="0" fontSize="xs">

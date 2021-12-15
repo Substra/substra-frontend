@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Switch train and test tasks tabs (#278)
 -   Add capital letter to frontend in the about modal (#278)
 -   General improvements of the perf browser component (#279)
+-   Added ellipsis to too long links (#274)
 
 ## [0.6.0] - 2021-12-01
 

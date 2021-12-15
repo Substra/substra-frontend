@@ -42,14 +42,19 @@ const DataSampleDrawerSection = ({
                         alignItems="center"
                         isExternal
                     >
-                        <HStack spacing="2.5">
-                            <IconTag
-                                icon={RiDatabase2Fill}
-                                backgroundColor="teal.100"
-                                fill="teal.500"
-                            />
-                            <span>{dataset.name}</span>
-                        </HStack>
+                        <IconTag
+                            icon={RiDatabase2Fill}
+                            backgroundColor="teal.100"
+                            fill="teal.500"
+                        />
+                        <Text
+                            as="span"
+                            marginLeft="2.5"
+                            maxWidth="410px"
+                            isTruncated
+                        >
+                            {dataset.name}
+                        </Text>
                     </Link>
                     <Badge
                         variant="solid"
