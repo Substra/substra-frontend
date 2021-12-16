@@ -247,6 +247,7 @@ export const computePlansSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(listComputePlans.pending, (state) => {
+                state.computePlan = null;
                 state.computePlansLoading = true;
                 state.computePlansError = '';
             })

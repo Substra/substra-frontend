@@ -3,12 +3,11 @@ import PinBox from './PinBox';
 import StatusCell from './StatusCell';
 import { Td, Checkbox, Text, HStack, Icon } from '@chakra-ui/react';
 import { RiTimeLine } from 'react-icons/ri';
+import { useLocation } from 'wouter';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { getDiffDates, shortFormatDate } from '@/libs/utils';
-
-import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -31,13 +30,13 @@ const ComputePlanTr = ({
     pinnedKeys,
     onPinChange,
 }: ComputePlanTrProps): JSX.Element => {
-    const { setLocationWithParams } = useLocationWithParams();
+    const [, setLocation] = useLocation();
 
     return (
         <ClickableTr
             key={computePlan.key}
             onClick={() =>
-                setLocationWithParams(
+                setLocation(
                     compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                         key: computePlan.key,
                     })
