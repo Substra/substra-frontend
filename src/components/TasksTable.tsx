@@ -271,24 +271,27 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                                     >
                                                         {`${task.rank}`}
                                                     </Text>
-                                                    {task.start_date && (
-                                                        <HStack justifyContent="flex-end">
-                                                            <Icon
-                                                                as={RiTimeLine}
-                                                                fill="gray.500"
-                                                            />
-                                                            <Text
-                                                                fontSize="xs"
-                                                                color="gray.500"
-                                                                alignItems="center"
-                                                            >
-                                                                {getDiffDates(
-                                                                    task.start_date,
-                                                                    task.end_date
-                                                                )}
-                                                            </Text>
-                                                        </HStack>
-                                                    )}
+                                                    {task.start_date &&
+                                                        task.end_date && (
+                                                            <HStack justifyContent="flex-end">
+                                                                <Icon
+                                                                    as={
+                                                                        RiTimeLine
+                                                                    }
+                                                                    fill="gray.500"
+                                                                />
+                                                                <Text
+                                                                    fontSize="xs"
+                                                                    color="gray.500"
+                                                                    alignItems="center"
+                                                                >
+                                                                    {getDiffDates(
+                                                                        task.start_date,
+                                                                        task.end_date
+                                                                    )}
+                                                                </Text>
+                                                            </HStack>
+                                                        )}
                                                 </Td>
                                             </ClickableTr>
                                         )

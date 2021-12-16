@@ -31,9 +31,9 @@ export const shortFormatDate = (dateString: string): string => {
     return shortDateFormatter.format(date);
 };
 
-export const getDiffDates = (start: string, end: string | null = null) => {
-    const startDate = new Date(start);
-    const endDate = end === null ? new Date() : new Date(end);
+export const getDiffDates = (start: string | 'now', end: string | 'now') => {
+    const startDate = start === 'now' ? new Date() : new Date(start);
+    const endDate = end === 'now' ? new Date() : new Date(end);
     const diff = endDate.getTime() - startDate.getTime();
 
     let seconds: number | string = Math.floor((diff / 1000) % 60);

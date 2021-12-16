@@ -50,6 +50,7 @@ export interface ComputePlanStub {
     metadata: { [key: string]: string };
     start_date: string;
     end_date: string;
+    estimated_end_date?: string;
 }
 
 export interface ComputePlanT extends ComputePlanStub {

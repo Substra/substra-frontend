@@ -1,5 +1,9 @@
 import { VStack, Flex, Text } from '@chakra-ui/react';
 
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+
+import { getDiffDates } from '@/libs/utils';
+
 import { useAppSelector } from '@/hooks';
 
 import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
@@ -55,6 +59,37 @@ const DetailsSidebar = (): JSX.Element => {
                                 >{`${computePlan.done_count}/${computePlan.task_count}`}</Text>
                             </Flex>
                             <ComputePlanProgressBar computePlan={computePlan} />
+                            {computePlan.status === ComputePlanStatus.doing &&
+                                computePlan.estimated_end_date && (
+                                    <>
+                                        <Flex
+                                            width="100%"
+                                            fontSize="xs"
+                                            justifyContent="space-between"
+                                        >
+                                            <Text>Duration</Text>
+                                            <Text>
+                                                {getDiffDates(
+                                                    computePlan.start_date,
+                                                    'now'
+                                                )}
+                                            </Text>
+                                        </Flex>
+                                        <Flex
+                                            width="100%"
+                                            fontSize="xs"
+                                            justifyContent="space-between"
+                                        >
+                                            <Text>Remaining</Text>
+                                            <Text>
+                                                {getDiffDates(
+                                                    'now',
+                                                    computePlan.estimated_end_date
+                                                )}
+                                            </Text>
+                                        </Flex>
+                                    </>
+                                )}
                         </>
                     )}
                 </VStack>

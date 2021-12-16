@@ -14,7 +14,7 @@ const TableDrawerSection = ({
     children: React.ReactNode;
 }): JSX.Element => {
     return (
-        <DrawerSectionContainer title={title}>
+        <DrawerSectionContainer title={capitalize(title)}>
             <Table size="sm">
                 <Tbody>{children}</Tbody>
             </Table>
@@ -68,7 +68,7 @@ const TableDrawerSectionDateEntry = ({
     date: string;
     title: string;
 }): JSX.Element => (
-    <TableDrawerSectionEntry title={title}>
+    <TableDrawerSectionEntry title={capitalize(title)}>
         {formatDate(date)}
     </TableDrawerSectionEntry>
 );

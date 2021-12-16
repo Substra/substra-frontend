@@ -5,7 +5,10 @@ import { Td, Checkbox, Text, HStack, Icon } from '@chakra-ui/react';
 import { RiTimeLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import {
+    ComputePlanStatus,
+    ComputePlanT,
+} from '@/modules/computePlans/ComputePlansTypes';
 
 import { getDiffDates, shortFormatDate } from '@/libs/utils';
 
@@ -107,6 +110,24 @@ const ComputePlanTr = ({
                                 computePlan.end_date
                             )}
                         </Text>
+                        {computePlan.status === ComputePlanStatus.doing &&
+                            computePlan.estimated_end_date && (
+                                <>
+                                    <Text fontSize="xs" color="gray.500">
+                                        •
+                                    </Text>
+                                    <Text
+                                        fontSize="xs"
+                                        color="gray.500"
+                                        alignItems="center"
+                                    >
+                                        {`${getDiffDates(
+                                            'now',
+                                            computePlan.estimated_end_date
+                                        )} remaining`}
+                                    </Text>
+                                </>
+                            )}
                     </HStack>
                 )}
             </Td>
