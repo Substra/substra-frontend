@@ -55,14 +55,14 @@ const Login = (): JSX.Element => {
                 backgroundColor="white"
                 alignItems="flex-start"
                 justifyContent="space-between"
-                paddingX="6"
-                paddingY="8"
             >
-                <OwkinLogoBlack />
+                <Box padding="8">
+                    <OwkinLogoBlack />
+                </Box>
                 <Box alignItems="center" width="100%">
                     <LoginForm />
                 </Box>
-                <Text color="gray.500" fontSize="xs">
+                <Text color="gray.500" fontSize="xs" paddingX="5" paddingY="8">
                     © Owkin - All rights reserved. Frontend vers.
                     {__APP_VERSION__}
                 </Text>
