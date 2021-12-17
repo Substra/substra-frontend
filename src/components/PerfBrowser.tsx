@@ -131,7 +131,9 @@ const PerfBrowser = ({
                             {!selectedMetricName && (
                                 <Wrap padding="8">
                                     {seriesGroups.map((series) => (
-                                        <WrapItem key={series[0].id}>
+                                        <WrapItem
+                                            key={`${series[0].metricKey}-${series[0].id}`}
+                                        >
                                             <PerfCard
                                                 title={series[0].metricName}
                                                 onClick={() =>

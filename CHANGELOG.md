@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Reduce font size on "download as" menu items (#261)
 -   Uniformize file extension across the app (#264)
 -   Prevents URL params to leak from computeplan list page to computeplan details page (#282)
+-   Fixed warning in console (#284)
 
 ### Changed
 
