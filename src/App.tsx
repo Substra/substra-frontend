@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import CookieBanner from './components/CookieBanner';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
@@ -13,7 +13,6 @@ import { useAppDispatch } from '@/hooks';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
-import Spinner from '@/components/Spinner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
 
 const App = (): JSX.Element => {
@@ -56,10 +55,13 @@ const App = (): JSX.Element => {
                 height="100vh"
                 alignItems="center"
                 justifyContent="center"
-                fontSize="72px"
-                color="gray.400"
             >
-                <Spinner />
+                <Spinner
+                    color="gray.400"
+                    size="xl"
+                    thickness="4px"
+                    label="Loading app"
+                />
             </Flex>
         );
     }

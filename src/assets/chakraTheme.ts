@@ -22,7 +22,7 @@ type ColorScheme = {
 };
 
 const colors: Record<string, ColorScheme> = {
-    grey: {
+    gray: {
         '50': '#fafafa',
         '100': '#f1f1f1',
         '200': '#e7e7e7',

@@ -1,27 +1,18 @@
-import styled from '@emotion/styled';
-
-import Spinner from '@/components/Spinner';
-
-import { Colors, Spaces } from '@/assets/theme';
-
-const SpinnerContainer = styled.div`
-    display: flex;
-    align-items: center;
-    color: ${Colors.lightContent};
-
-    & > svg {
-        margin-right: ${Spaces.small};
-    }
-`;
+import { Spinner, Flex } from '@chakra-ui/react';
 
 interface LoadingStateProps {
     message: string;
 }
 const LoadingState = ({ message }: LoadingStateProps): JSX.Element => (
-    <SpinnerContainer>
-        <Spinner />
+    <Flex align="center">
+        <Spinner
+            color="gray.400"
+            marginRight="2"
+            size="sm"
+            label="Loading performance data"
+        />
         {message}
-    </SpinnerContainer>
+    </Flex>
 );
 
 export default LoadingState;
