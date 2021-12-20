@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New help & feedback modal (#273)
 -   Add support for Microsoft Clarity (optional) with a cookie banner (#241)
 -   Display estimation end date for compute plan (#280)
+-   Highlight task category containing failed tasks in compute plan details (#285)
 
 ### Fixed
 

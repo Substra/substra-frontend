@@ -23,13 +23,17 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
-import { RiTimeLine } from 'react-icons/ri';
+import { RiAlertLine, RiTimeLine } from 'react-icons/ri';
 
 import { AssetType, PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { retrieveComputePlanTasksArgs } from '@/modules/computePlans/ComputePlansSlice';
 import { listTasksArgs } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
-import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import {
+    AnyTupleT,
+    TupleStatus,
+    assetTypeByTaskCategory,
+} from '@/modules/tasks/TuplesTypes';
 
 import { getDiffDates, shortFormatDate } from '@/libs/utils';
 
@@ -79,6 +83,10 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
         (state) => state.computePlans.computePlan
     );
 
+    const failedTasksCategory = computePlan?.failed_task?.category
+        ? assetTypeByTaskCategory[computePlan?.failed_task?.category]
+        : null;
+
     const dispatch = useAppDispatch();
     useSearchFiltersEffect(() => {
         const action = taskTypes[selectedTaskType].list();
@@ -125,19 +133,39 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                     position="relative"
                 >
                     <TabList borderBottom="none">
-                        {taskTypes.map((taskType) => (
-                            <Tab
-                                key={taskType.id}
-                                _selected={{
-                                    color: 'teal.600',
-                                    bg: 'white',
-                                    borderColor: 'gray.100',
-                                    borderBottomColor: 'white',
-                                }}
-                            >
-                                {taskType.name}
-                            </Tab>
-                        ))}
+                        {taskTypes.map((taskType) => {
+                            return failedTasksCategory !== taskType.slug ? (
+                                <Tab
+                                    key={taskType.id}
+                                    _selected={{
+                                        color: 'teal.600',
+                                        bg: 'white',
+                                        borderColor: 'gray.100',
+                                        borderBottomColor: 'white',
+                                    }}
+                                >
+                                    {taskType.name}
+                                </Tab>
+                            ) : (
+                                <Tab
+                                    key={taskType.id}
+                                    _selected={{
+                                        bg: 'white',
+                                        borderColor: 'gray.100',
+                                        borderBottomColor: 'white',
+                                    }}
+                                    color="red.500"
+                                    fontWeight="semibold"
+                                >
+                                    {taskType.name}
+                                    <Icon
+                                        as={RiAlertLine}
+                                        fill="red.500"
+                                        marginLeft={1}
+                                    />
+                                </Tab>
+                            );
+                        })}
                     </TabList>
                 </Tabs>
                 <VStack display="inline-block" spacing="2.5">

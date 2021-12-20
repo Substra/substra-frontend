@@ -3,7 +3,11 @@ import { MetricType } from '../metrics/MetricsTypes';
 import { Model } from './ModelsTypes';
 
 import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { MetadataT, PermissionsType } from '@/modules/common/CommonTypes';
+import {
+    AssetType,
+    MetadataT,
+    PermissionsType,
+} from '@/modules/common/CommonTypes';
 
 export enum TupleStatus {
     waiting = 'STATUS_WAITING',
@@ -41,6 +45,13 @@ export enum TaskCategory {
     test = 'TASK_TEST',
     aggregate = 'TASK_AGGREGATE',
 }
+
+export const assetTypeByTaskCategory: Record<TaskCategory, AssetType> = {
+    [TaskCategory.train]: 'traintuple',
+    [TaskCategory.composite]: 'composite_traintuple',
+    [TaskCategory.test]: 'testtuple',
+    [TaskCategory.aggregate]: 'aggregatetuple',
+};
 
 interface BaseTupleStub {
     key: string;
