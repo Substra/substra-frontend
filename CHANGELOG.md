@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Prevents URL params to leak from computeplan list page to computeplan details page (#282)
 -   Fixed warning in console (#284)
 -   Remove old theme used before chakra (#286)
+-   Removed "Other" label in compute plan settings when not necessary (#260)
 
 ### Changed
 

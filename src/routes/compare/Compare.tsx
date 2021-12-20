@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import PerfSidebarSettingsAverage from './components/PerfSidebarSettingsAverage';
 import { useRoute } from 'wouter';
 
 import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
@@ -13,7 +14,6 @@ import { PATHS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionComputePlans from '@/components/PerfSidebarSectionComputePlans';
-import PerfSidebarSettingsAverage from '@/components/PerfSidebarSettingsAverage';
 import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
 
 const Compare = (): JSX.Element => {
