@@ -18,7 +18,8 @@ import {
     HStack,
 } from '@chakra-ui/react';
 import { RiExternalLinkLine } from 'react-icons/ri';
-import Cookies from 'universal-cookie';
+
+import useCookieSettings from '@/hooks/useCookieSettings';
 
 declare const MICROSOFT_CLARITY_ID: string;
 
@@ -37,46 +38,35 @@ const installClarity = () => {
     }
 };
 
-const toBool = (value: string | undefined): boolean | undefined => {
-    if (value === undefined) {
-        return undefined;
-    }
-
-    if (value === 'true') {
-        return true;
-    }
-
-    if (value === 'false') {
-        return false;
-    }
-    throw `Cannot convert value to boolean: ${value}`;
-};
-
 const CookieBanner = (): JSX.Element | null => {
-    const cookies = new Cookies();
-    const isclarityAccepted = toBool(cookies.get('isClarityAccepted'));
+    const { isClarityAccepted, acceptClarity, rejectClarity } =
+        useCookieSettings();
 
     useEffect(() => {
-        if (isclarityAccepted) {
+        if (isClarityAccepted) {
             installClarity();
         }
-    }, [isclarityAccepted]);
+    }, [isClarityAccepted]);
 
     const [isOpen, setIsOpen] = useState<boolean>(
-        isclarityAccepted === undefined
+        isClarityAccepted === undefined
     );
     const [clarityChecked, setClarityChecked] = useState<boolean>(true);
 
     const acceptAll = () => {
-        cookies.set('isClarityAccepted', true);
+        acceptClarity();
         setIsOpen(false);
     };
     const rejectAll = () => {
-        cookies.set('isClarityAccepted', false);
+        rejectClarity();
         setIsOpen(false);
     };
     const acceptSelection = () => {
-        cookies.set('isClarityAccepted', clarityChecked);
+        if (clarityChecked) {
+            acceptClarity();
+        } else {
+            rejectClarity();
+        }
         setIsOpen(false);
     };
 

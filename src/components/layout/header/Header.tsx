@@ -27,6 +27,8 @@ import { PATHS } from '@/routes';
 
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
 
+declare const MICROSOFT_CLARITY_ID: string;
+
 const IconLink = styled(Link)`
     cursor: pointer;
 `;
@@ -148,6 +150,13 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
+                            {MICROSOFT_CLARITY_ID && (
+                                <MenuItem
+                                    onClick={() => setLocation(PATHS.SETTINGS)}
+                                >
+                                    Settings
+                                </MenuItem>
+                            )}
                             <Help />
                             <About />
                             <MenuDivider color="gray.200" />

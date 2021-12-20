@@ -202,6 +202,22 @@ for (const colorName of HAS_LIGHT_COLORSCHEME) {
 export default extendTheme({
     colors,
     components: {
+        Alert: {
+            baseStyle: ({ colorScheme }: { colorScheme: string }) => {
+                return {
+                    container: {
+                        ...noBorderRadius,
+                        alignItems: 'flex-start',
+                        fontSize: 'xs',
+                        padding: 4,
+                        color: `${colorScheme}.900`,
+                    },
+                    icon: {
+                        marginEnd: 3.5,
+                    },
+                };
+            },
+        },
         Badge: {
             variants: {
                 solid: noBorderRadius,

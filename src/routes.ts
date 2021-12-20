@@ -10,6 +10,7 @@ import Datasets from '@/routes/datasets/Datasets';
 import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
+import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
 
 export interface IRoute {
@@ -31,6 +32,7 @@ export const PATHS = {
     ALGO: '/algorithms/:key',
     METRICS: '/metrics',
     METRIC: '/metrics/:key',
+    SETTINGS: '/settings',
     TASKS: '/tasks',
     TASK: '/tasks/:key',
 };
@@ -76,6 +78,10 @@ export const ROUTES: Record<string, IRoute> = {
     METRICS: {
         path: '/metrics/:key?',
         component: Metrics,
+    },
+    SETTINGS: {
+        path: PATHS.SETTINGS,
+        component: Settings,
     },
     TASKS: {
         path: '/tasks/:key?',
