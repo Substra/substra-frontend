@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Display estimation end date for compute plan (#280)
 -   Highlight task category containing failed tasks in compute plan details (#285)
 -   Settings page (#283)
+-   Disable current page pagination button (#288)
 
 ### Fixed
 

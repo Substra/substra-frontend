@@ -28,7 +28,7 @@ const PageLink = ({
                 backgroundColor={activePage === page ? 'gray.200' : 'white'}
                 variant="outline"
                 size="sm"
-                disabled={isDisabled}
+                disabled={isDisabled || activePage === page}
             >
                 {page}
             </Button>
