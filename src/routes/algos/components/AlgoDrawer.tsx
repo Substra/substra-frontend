@@ -104,7 +104,10 @@ const AlgoDrawer = (): JSX.Element => {
                             <TableDrawerSectionEntry title="Category">
                                 {getAlgoCategory(algo)}
                             </TableDrawerSectionEntry>
-                            <TableDrawerSectionKeyEntry value={algo.key} />
+                            <TableDrawerSectionKeyEntry
+                                value={algo.key}
+                                maxWidth="300px"
+                            />
                             <TableDrawerSectionDateEntry
                                 title="Created"
                                 date={algo.creation_date}

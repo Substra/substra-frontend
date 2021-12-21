@@ -105,7 +105,10 @@ const MetricDrawer = (): JSX.Element => {
                         paddingX="5"
                     >
                         <TableDrawerSection title="General">
-                            <TableDrawerSectionKeyEntry value={metric.key} />
+                            <TableDrawerSectionKeyEntry
+                                value={metric.key}
+                                maxWidth="300px"
+                            />
                             <TableDrawerSectionDateEntry
                                 title="Created"
                                 date={metric.creation_date}

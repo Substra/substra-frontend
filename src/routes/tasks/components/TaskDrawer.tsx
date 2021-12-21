@@ -148,6 +148,7 @@ const TaskDrawer = (): JSX.Element => {
                                         </TableDrawerSectionEntry>
                                         <TableDrawerSectionKeyEntry
                                             value={task.key}
+                                            maxWidth="300px"
                                         />
                                         <TableDrawerSectionDateEntry
                                             title="Created"

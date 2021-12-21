@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed "Other" label in compute plan settings when not necessary (#260)
 -   Fix time collapsed on a CP when training - no end_date (#287)
 -   Fix outmodel message color when model is not downloadable (#289)
+-   Fix useless ellipsis on asset key in drawers (#291)
 
 ### Changed
 

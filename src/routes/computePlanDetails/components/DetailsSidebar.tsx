@@ -107,7 +107,10 @@ const DetailsSidebar = (): JSX.Element => {
                                 variant="solid"
                             />
                         </TableDrawerSectionEntry>
-                        <TableDrawerSectionKeyEntry value={computePlan.key} />
+                        <TableDrawerSectionKeyEntry
+                            value={computePlan.key}
+                            maxWidth="180px"
+                        />
                         <TableDrawerSectionDateEntry
                             title="Created"
                             date={computePlan.creation_date}

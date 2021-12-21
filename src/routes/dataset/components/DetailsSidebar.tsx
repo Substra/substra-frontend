@@ -20,7 +20,10 @@ const DetailsSidebar = (): JSX.Element => {
             <TableDrawerSection title="General">
                 {dataset && (
                     <>
-                        <TableDrawerSectionKeyEntry value={dataset.key} />
+                        <TableDrawerSectionKeyEntry
+                            value={dataset.key}
+                            maxWidth="180px"
+                        />
                         <TableDrawerSectionDateEntry
                             title="Created"
                             date={dataset.creation_date}

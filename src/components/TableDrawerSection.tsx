@@ -48,12 +48,14 @@ const TableDrawerSectionEntry = ({
 
 const TableDrawerSectionKeyEntry = ({
     value,
+    maxWidth,
 }: {
     value: string;
+    maxWidth: string;
 }): JSX.Element => (
     <TableDrawerSectionEntry title="Key">
         <HStack spacing={1.5} justifyContent="flex-end">
-            <Text isTruncated maxWidth="180px">
+            <Text isTruncated maxWidth={maxWidth}>
                 {value}
             </Text>
             <CopyButton value={value} />
