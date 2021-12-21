@@ -107,7 +107,7 @@ const ComputePlanTr = ({
                         >
                             {getDiffDates(
                                 computePlan.start_date,
-                                computePlan.end_date
+                                computePlan.end_date || 'now'
                             )}
                         </Text>
                         {computePlan.status === ComputePlanStatus.doing &&

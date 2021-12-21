@@ -48,8 +48,8 @@ export interface ComputePlanStub {
     tag: string;
     creation_date: string;
     metadata: { [key: string]: string };
-    start_date: string;
-    end_date: string;
+    start_date?: string;
+    end_date?: string;
     estimated_end_date?: string;
 }
 

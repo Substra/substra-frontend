@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed warning in console (#284)
 -   Remove old theme used before chakra (#286)
 -   Removed "Other" label in compute plan settings when not necessary (#260)
+-   Fix time collapsed on a CP when training - no end_date (#287)
 
 ### Changed
 

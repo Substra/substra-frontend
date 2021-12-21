@@ -59,9 +59,9 @@ const DetailsSidebar = (): JSX.Element => {
                                 >{`${computePlan.done_count}/${computePlan.task_count}`}</Text>
                             </Flex>
                             <ComputePlanProgressBar computePlan={computePlan} />
-                            {computePlan.status === ComputePlanStatus.doing &&
-                                computePlan.estimated_end_date && (
-                                    <>
+                            {computePlan.status === ComputePlanStatus.doing && (
+                                <>
+                                    {computePlan.start_date && (
                                         <Flex
                                             width="100%"
                                             fontSize="xs"
@@ -75,6 +75,8 @@ const DetailsSidebar = (): JSX.Element => {
                                                 )}
                                             </Text>
                                         </Flex>
+                                    )}
+                                    {computePlan.estimated_end_date && (
                                         <Flex
                                             width="100%"
                                             fontSize="xs"
@@ -88,8 +90,9 @@ const DetailsSidebar = (): JSX.Element => {
                                                 )}
                                             </Text>
                                         </Flex>
-                                    </>
-                                )}
+                                    )}
+                                </>
+                            )}
                         </>
                     )}
                 </VStack>
