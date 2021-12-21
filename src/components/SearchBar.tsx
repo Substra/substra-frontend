@@ -86,6 +86,7 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
                     value={value}
                     onBlur={onBlur}
                     onChange={(e) => setValue(e.target.value)}
+                    focusBorderColor="teal.500"
                 />
                 <InputRightElement>
                     {value && <CloseButton size="sm" onClick={onClear} />}
