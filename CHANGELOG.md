@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix time collapsed on a CP when training - no end_date (#287)
 -   Fix outmodel message color when model is not downloadable (#289)
 -   Fix useless ellipsis on asset key in drawers (#291)
+-   Add failed tasks to progress count in CP progression bar (#292)
 -   Center "No data to display" message on CPs page when it's empty (#293)
 -   Increased searchbar's width to prevent keys from being cutted (#294)
 -   Fix focus color on searchbar (#297)

@@ -24,9 +24,10 @@ const DetailsSidebar = (): JSX.Element => {
 
     const percentageDisplay =
         computePlan && computePlan.task_count > 0
-            ? ((100 * computePlan.done_count) / computePlan.task_count).toFixed(
-                  0
-              )
+            ? (
+                  (100 * (computePlan.done_count + computePlan.failed_count)) /
+                  computePlan.task_count
+              ).toFixed(0)
             : 0;
 
     return (
@@ -56,7 +57,10 @@ const DetailsSidebar = (): JSX.Element => {
                                     fontSize="xs"
                                     lineHeight="4"
                                     fontWeight="normal"
-                                >{`${computePlan.done_count}/${computePlan.task_count}`}</Text>
+                                >{`${
+                                    computePlan.done_count +
+                                    computePlan.failed_count
+                                }/${computePlan.task_count}`}</Text>
                             </Flex>
                             <ComputePlanProgressBar computePlan={computePlan} />
                             {computePlan.status === ComputePlanStatus.doing && (

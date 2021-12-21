@@ -25,7 +25,8 @@ const StatusCell = ({ computePlan }: StatusCellProps): JSX.Element => {
                     <Flex alignItems="center" justifyContent="space-between">
                         <Status status={computePlan.status} size="sm" />
                         <Text fontSize="xs" color="gray.600">
-                            {computePlan.done_count}/{computePlan.task_count}
+                            {computePlan.done_count + computePlan.failed_count}/
+                            {computePlan.task_count}
                         </Text>
                     </Flex>
                     <ComputePlanProgressBar computePlan={computePlan} />
