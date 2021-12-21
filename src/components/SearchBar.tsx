@@ -81,7 +81,7 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
                     placeholder="Search key..."
                     variant="outline"
                     colorScheme="gray"
-                    width="350px"
+                    width="360px"
                     borderColor="gray.200"
                     value={value}
                     onBlur={onBlur}
