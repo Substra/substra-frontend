@@ -33,13 +33,19 @@ const TableDrawerSectionEntry = ({
         <Tr>
             <Td
                 paddingLeft="0"
+                paddingRight="1"
                 fontSize="xs"
                 verticalAlign="top"
                 whiteSpace="nowrap"
             >
                 {capitalize(title)}
             </Td>
-            <Td textAlign="right" paddingRight="0" fontSize="xs">
+            <Td
+                textAlign="right"
+                paddingRight="0"
+                paddingLeft="1"
+                fontSize="xs"
+            >
                 {children}
             </Td>
         </Tr>
