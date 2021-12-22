@@ -1,7 +1,6 @@
 import AlgoDrawer from './components/AlgoDrawer';
 import {
     VStack,
-    Table,
     Thead,
     Tr,
     Th,
@@ -28,6 +27,11 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
+import {
+    AssetsTable,
+    AssetsTableCategoryTh,
+    AssetsTablePermissionsTh,
+} from '@/components/AssetsTable';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -85,18 +89,12 @@ const Algos = (): JSX.Element => {
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="md" minWidth="870px">
+                    <AssetsTable>
                         <Thead>
                             <Tr>
                                 <Th>Name / Creation / Owner</Th>
-                                <Th>Category</Th>
-                                <Th
-                                    textAlign="right"
-                                    width="1px"
-                                    whiteSpace="nowrap"
-                                >
-                                    Permissions
-                                </Th>
+                                <AssetsTableCategoryTh />
+                                <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
                         <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
@@ -167,7 +165,7 @@ const Algos = (): JSX.Element => {
                                 ))
                             )}
                         </Tbody>
-                    </Table>
+                    </AssetsTable>
                 </Box>
                 <TablePagination currentPage={page} itemCount={algosCount} />
             </VStack>

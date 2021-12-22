@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Increased searchbar's width to prevent keys from being cutted (#294)
 -   Fix focus color on searchbar (#297)
 -   Fixed unexpected zoom reset when hovering perf rank details (#290)
+-   Fix varying widthes for tables (#298)
 
 ### Changed
 

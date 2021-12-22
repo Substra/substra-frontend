@@ -8,7 +8,6 @@ import {
 } from './TableFilterTags';
 import {
     VStack,
-    Table,
     Thead,
     Tr,
     Th,
@@ -44,6 +43,11 @@ import {
 } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
+import {
+    AssetsTable,
+    AssetsTableRankDurationTh,
+    AssetsTableStatusTh,
+} from '@/components/AssetsTable';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
@@ -175,18 +179,12 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                         borderStyle="solid"
                         borderColor="gray.100"
                     >
-                        <Table size="md" minWidth="870px">
+                        <AssetsTable>
                             <Thead>
                                 <Tr>
-                                    <Th width="1px">Status</Th>
+                                    <AssetsTableStatusTh />
                                     <Th>Category / Worker</Th>
-                                    <Th
-                                        width="1px"
-                                        textAlign="right"
-                                        whiteSpace="nowrap"
-                                    >
-                                        Rank / Duration
-                                    </Th>
+                                    <AssetsTableRankDurationTh />
                                 </Tr>
                             </Thead>
                             <Tbody
@@ -325,7 +323,7 @@ const TasksTable = ({ taskTypes, onTrClick }: TasksTableProps): JSX.Element => {
                                         )
                                     )}
                             </Tbody>
-                        </Table>
+                        </AssetsTable>
                     </Box>
                     <TablePagination
                         currentPage={page}

@@ -4,7 +4,6 @@ import MetricDrawer from './components/MetricDrawer';
 import {
     VStack,
     HStack,
-    Table,
     Thead,
     Tr,
     Th,
@@ -30,6 +29,10 @@ import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
+import {
+    AssetsTable,
+    AssetsTablePermissionsTh,
+} from '@/components/AssetsTable';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -85,17 +88,11 @@ const Metrics = (): JSX.Element => {
                     borderStyle="solid"
                     borderColor="gray.100"
                 >
-                    <Table size="md" minWidth="870px">
+                    <AssetsTable>
                         <Thead>
                             <Tr>
                                 <Th>Name / Creation / Owner</Th>
-                                <Th
-                                    textAlign="right"
-                                    width="1px"
-                                    whiteSpace="nowrap"
-                                >
-                                    Permissions
-                                </Th>
+                                <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
                         <Tbody data-cy={metricsLoading ? 'loading' : 'loaded'}>
@@ -154,7 +151,7 @@ const Metrics = (): JSX.Element => {
                                 ))
                             )}
                         </Tbody>
-                    </Table>
+                    </AssetsTable>
                 </Box>
                 <TablePagination currentPage={page} itemCount={metricsCount} />
             </VStack>
