@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix focus color on searchbar (#297)
 -   Fixed unexpected zoom reset when hovering perf rank details (#290)
 -   Fix varying widthes for tables (#298)
+-   Do not display parent task section in drawers if there are no parent tasks (#304)
 
 ### Changed
 

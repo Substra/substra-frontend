@@ -29,7 +29,7 @@ const ParentTasksDrawerSection = ({
         | AggregatetupleStub
         | CompositeTraintupleStub
     )[];
-}): JSX.Element => {
+}): JSX.Element | null => {
     const [isTaskPath] = useRoute(PATHS.TASK);
 
     const getTaskHref = (
@@ -48,10 +48,13 @@ const ParentTasksDrawerSection = ({
         });
     };
 
+    if (parentTasks.length === 0) {
+        return null;
+    }
+
     return (
         <DrawerSectionContainer title="Parent tasks">
             <List width="100%" spacing="1.5">
-                {parentTasks.length === 0 && <Text fontSize="sm">N/A</Text>}
                 {parentTasks.map((parentTask) => (
                     <ListItem
                         key={parentTask.key}
