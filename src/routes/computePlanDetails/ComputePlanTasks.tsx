@@ -115,6 +115,9 @@ const TestTasks = ({
     const count = useAppSelector(
         (state) => state.computePlans.computePlanTestTasksCount
     );
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
 
     return (
         <GenericTasks
@@ -127,6 +130,7 @@ const TestTasks = ({
                     category={TaskCategory.test}
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
+                    computePlan={computePlan}
                 />
             }
             taskDrawer={
@@ -165,6 +169,9 @@ const TrainTasks = ({
     const count = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasksCount
     );
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
 
     return (
         <GenericTasks
@@ -177,6 +184,7 @@ const TrainTasks = ({
                     category={TaskCategory.train}
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
+                    computePlan={computePlan}
                 />
             }
             taskDrawer={
@@ -214,6 +222,9 @@ const CompositeTasks = ({
     const count = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasksCount
     );
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
 
     return (
         <GenericTasks
@@ -226,6 +237,7 @@ const CompositeTasks = ({
                     category={TaskCategory.composite}
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
+                    computePlan={computePlan}
                 />
             }
             taskDrawer={
@@ -263,6 +275,9 @@ const AggregateTasks = ({
     const count = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksCount
     );
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
 
     return (
         <GenericTasks
@@ -275,6 +290,7 @@ const AggregateTasks = ({
                     category={TaskCategory.aggregate}
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
+                    computePlan={computePlan}
                 />
             }
             taskDrawer={

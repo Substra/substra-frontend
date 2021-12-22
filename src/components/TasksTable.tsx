@@ -18,9 +18,11 @@ import {
     Skeleton,
     HStack,
     Icon,
+    Link as ChakraLink,
 } from '@chakra-ui/react';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { RiAlertLine, RiTimeLine } from 'react-icons/ri';
+import { Link } from 'wouter';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { retrieveComputePlanTasksArgs } from '@/modules/computePlans/ComputePlansSlice';
@@ -38,6 +40,8 @@ import { getDiffDates, shortFormatDate } from '@/libs/utils';
 
 import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+
+import { compilePath, PATHS } from '@/routes';
 
 import {
     AssetsTable,
@@ -63,7 +67,7 @@ interface TasksTableProps {
     tasks: AnyTupleT[];
     count: number;
     category: TaskCategory;
-    computePlan?: ComputePlanT;
+    computePlan?: ComputePlanT | null;
     compileListPath: (category: TaskCategory) => string;
     compileDetailsPath: (category: TaskCategory, key: string) => string;
 }
@@ -186,6 +190,7 @@ const TasksTable = ({
                                 <Tr>
                                     <AssetsTableStatusTh />
                                     <Th>Category / Worker</Th>
+                                    {!computePlan && <Th>Compute plan</Th>}
                                     <AssetsTableRankDurationTh />
                                 </Tr>
                             </Thead>
@@ -212,6 +217,15 @@ const TasksTable = ({
                                                 </Text>
                                             </Skeleton>
                                         </Td>
+                                        {!computePlan && (
+                                            <Th>
+                                                <Skeleton>
+                                                    <Text fontSize="sm">
+                                                        xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                                                    </Text>
+                                                </Skeleton>
+                                            </Th>
+                                        )}
                                         <Td textAlign="right">
                                             <Skeleton>
                                                 <Text
@@ -225,7 +239,7 @@ const TasksTable = ({
                                     </TableSkeleton>
                                 )}
                                 {!loading && tasks.length === 0 && (
-                                    <EmptyTr nbColumns={3} />
+                                    <EmptyTr nbColumns={computePlan ? 3 : 4} />
                                 )}
                                 {!loading &&
                                     tasks.map((task) => (
@@ -288,6 +302,31 @@ const TasksTable = ({
                                                         )}
                                                 </Text>
                                             </Td>
+                                            {!computePlan && (
+                                                <Td
+                                                    onClick={(e) =>
+                                                        e.stopPropagation()
+                                                    }
+                                                >
+                                                    <Link
+                                                        href={compilePath(
+                                                            PATHS.COMPUTE_PLAN_TASKS_ROOT,
+                                                            {
+                                                                key: task.compute_plan_key,
+                                                            }
+                                                        )}
+                                                    >
+                                                        <ChakraLink
+                                                            color="teal.500"
+                                                            fontSize="sm"
+                                                        >
+                                                            {
+                                                                task.compute_plan_key
+                                                            }
+                                                        </ChakraLink>
+                                                    </Link>
+                                                </Td>
+                                            )}
                                             <Td textAlign="right">
                                                 <Text
                                                     fontSize="xs"

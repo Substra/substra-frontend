@@ -159,6 +159,20 @@ const TaskDrawer = ({
                                         <TableDrawerSectionEntry title="Owner">
                                             {task.owner}
                                         </TableDrawerSectionEntry>
+                                        <TableDrawerSectionEntry title="Compute plan">
+                                            <Link
+                                                color="teal.500"
+                                                isExternal
+                                                href={compilePath(
+                                                    PATHS.COMPUTE_PLAN_TASKS_ROOT,
+                                                    {
+                                                        key: task.compute_plan_key,
+                                                    }
+                                                )}
+                                            >
+                                                {task.compute_plan_key}
+                                            </Link>
+                                        </TableDrawerSectionEntry>
                                     </TableDrawerSection>
                                     <ParentTasksDrawerSection
                                         parentTasks={task.parent_tasks}
@@ -167,6 +181,7 @@ const TaskDrawer = ({
                                         <TableDrawerSection title="Performances">
                                             {task.test.metrics.map((metric) => (
                                                 <TableDrawerSectionEntry
+                                                    key={metric.key}
                                                     title={metric.name}
                                                 >
                                                     {task.test.perfs[
