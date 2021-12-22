@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Center "No data to display" message on CPs page when it's empty (#293)
 -   Increased searchbar's width to prevent keys from being cutted (#294)
 -   Fix focus color on searchbar (#297)
+-   Fixed unexpected zoom reset when hovering perf rank details (#290)
 
 ### Changed
 

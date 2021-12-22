@@ -95,99 +95,101 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             }),
             [maxRank, seriesDatasets, averageDataset, displayAverage]
         );
-        const zoomPluginOptions: ZoomPluginOptions = {
-            zoom: {
-                drag: {
-                    enabled: false,
-                },
-                wheel: {
-                    enabled: true,
-                    speed: 0.1,
-                },
-                pinch: {
-                    enabled: true,
-                },
-                mode: 'xy',
-            },
-            pan: {
-                enabled: true,
-                mode: 'xy',
-                threshold: 0.01,
-                modifierKey: 'shift',
-            },
-        };
 
-        const options: ChartOptions<'line'> = {
-            animation: false,
-            ...(interactive
-                ? {
-                      hover: {
-                          mode: 'index',
-                          intersect: false,
-                      },
-                  }
-                : {}),
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false,
+        const options = useMemo<ChartOptions<'line'>>(() => {
+            const zoomPluginOptions: ZoomPluginOptions = {
+                zoom: {
+                    drag: {
+                        enabled: false,
+                    },
+                    wheel: {
+                        enabled: true,
+                        speed: 0.1,
+                    },
+                    pinch: {
+                        enabled: true,
+                    },
+                    mode: 'xy',
                 },
+                pan: {
+                    enabled: true,
+                    mode: 'xy',
+                    threshold: 0.01,
+                    modifierKey: 'shift',
+                },
+            };
+            return {
+                animation: false,
                 ...(interactive
-                    ? { tooltip: tooltipPluginOptions }
-                    : { tooltip: { enabled: false } }),
-                ...(interactive ? { zoom: zoomPluginOptions } : {}),
-            },
-            scales: {
-                x: {
-                    type: 'category',
-                    title: {
-                        display: true,
-                        text: 'Rank',
-                        align: 'end',
-                        color: '#718096',
-                        font: {
-                            family: 'Inter',
-                            size: 10,
+                    ? {
+                          hover: {
+                              mode: 'index',
+                              intersect: false,
+                          },
+                      }
+                    : {}),
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    ...(interactive
+                        ? { tooltip: tooltipPluginOptions }
+                        : { tooltip: { enabled: false } }),
+                    ...(interactive ? { zoom: zoomPluginOptions } : {}),
+                },
+                scales: {
+                    x: {
+                        type: 'category',
+                        title: {
+                            display: true,
+                            text: 'Rank',
+                            align: 'end',
+                            color: '#718096',
+                            font: {
+                                family: 'Inter',
+                                size: 10,
+                            },
+                        },
+                        grid: {
+                            borderColor: '#E2E8F0',
+                            color: '#EDF2F7',
+                        },
+                        ticks: {
+                            color: '#A0AEC0',
+                            font: {
+                                family: 'Inter',
+                                size: 10,
+                            },
                         },
                     },
-                    grid: {
-                        borderColor: '#E2E8F0',
-                        color: '#EDF2F7',
-                    },
-                    ticks: {
-                        color: '#A0AEC0',
-                        font: {
-                            family: 'Inter',
-                            size: 10,
+                    y: {
+                        type: 'linear',
+                        title: {
+                            display: true,
+                            text: 'Performance',
+                            align: 'end',
+                            color: '#718096',
+                            font: {
+                                family: 'Inter',
+                                size: 10,
+                            },
+                        },
+                        grid: {
+                            borderColor: '#E2E8F0',
+                            color: '#EDF2F7',
+                        },
+                        ticks: {
+                            color: '#A0AEC0',
+                            font: {
+                                family: 'Inter',
+                                size: 10,
+                            },
                         },
                     },
                 },
-                y: {
-                    type: 'linear',
-                    title: {
-                        display: true,
-                        text: 'Performance',
-                        align: 'end',
-                        color: '#718096',
-                        font: {
-                            family: 'Inter',
-                            size: 10,
-                        },
-                    },
-                    grid: {
-                        borderColor: '#E2E8F0',
-                        color: '#EDF2F7',
-                    },
-                    ticks: {
-                        color: '#A0AEC0',
-                        font: {
-                            family: 'Inter',
-                            size: 10,
-                        },
-                    },
-                },
-            },
-        };
+            };
+        }, [interactive]);
 
         const onResetZoomClick = () => {
             const chart = chartRef.current;
