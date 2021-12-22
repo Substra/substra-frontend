@@ -20,7 +20,7 @@ import {
     isTraintupleStub,
 } from '@/libs/tuples';
 
-const CATEGORY_LABEL: Record<TaskCategory, string> = {
+export const CATEGORY_LABEL: Record<TaskCategory, string> = {
     TASK_TEST: 'Test',
     TASK_AGGREGATE: 'Aggregate',
     TASK_COMPOSITE: 'Composite train',

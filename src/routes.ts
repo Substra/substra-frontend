@@ -1,9 +1,13 @@
 import { FC } from 'react';
 
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
+
 import Algos from '@/routes/algos/Algos';
 import Compare from '@/routes/compare/Compare';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
+import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
 import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
+import ComputePlanTasksRoot from '@/routes/computePlanDetails/ComputePlanTasksRoot';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
@@ -12,6 +16,7 @@ import Login from '@/routes/login/Login';
 import Metrics from '@/routes/metrics/Metrics';
 import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
+import TasksRoot from '@/routes/tasks/TasksRoot';
 
 export interface IRoute {
     path: string;
@@ -23,9 +28,11 @@ export const PATHS = {
     LOGIN: '/login',
     COMPARE: '/compare/:keys',
     COMPUTE_PLANS: '/compute_plans',
+    COMPUTE_PLAN: '/compute_plans/:key',
     COMPUTE_PLAN_CHART: '/compute_plans/:key/chart',
-    COMPUTE_PLAN_TASKS: '/compute_plans/:key/tasks',
-    COMPUTE_PLAN_TASK: '/compute_plans/:key/tasks/:taskKey',
+    COMPUTE_PLAN_TASKS_ROOT: '/compute_plans/:key/tasks',
+    COMPUTE_PLAN_TASKS: '/compute_plans/:key/tasks/:category',
+    COMPUTE_PLAN_TASK: '/compute_plans/:key/tasks/:category/:taskKey',
     DATASETS: '/datasets',
     DATASET: '/datasets/:key',
     ALGOS: '/algorithms',
@@ -33,8 +40,16 @@ export const PATHS = {
     METRICS: '/metrics',
     METRIC: '/metrics/:key',
     SETTINGS: '/settings',
-    TASKS: '/tasks',
-    TASK: '/tasks/:key',
+    TASKS_ROOT: '/tasks',
+    TASKS: '/tasks/:category',
+    TASK: '/tasks/:category/:key',
+};
+
+export const TASK_CATEGORY_SLUGS: Record<TaskCategory, string> = {
+    [TaskCategory.test]: 'test',
+    [TaskCategory.train]: 'train',
+    [TaskCategory.composite]: 'composite_train',
+    [TaskCategory.aggregate]: 'aggregate',
 };
 
 export const ROUTES: Record<string, IRoute> = {
@@ -54,13 +69,21 @@ export const ROUTES: Record<string, IRoute> = {
         path: PATHS.COMPUTE_PLANS,
         component: ComputePlans,
     },
+    COMPUTE_PLAN: {
+        path: PATHS.COMPUTE_PLAN,
+        component: ComputePlanRoot,
+    },
     COMPUTE_PLAN_CHART: {
         path: PATHS.COMPUTE_PLAN_CHART,
         component: ComputePlanChart,
     },
+    COMPUTE_PLAN_TASKS_ROOT: {
+        path: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+        component: ComputePlanTasksRoot,
+    },
     COMPUTE_PLAN_TASKS: {
         // the following path matches both PATHS.COMPUTE_PLAN_TASKS and PATHS.COMPUTE_PLAN_TASK
-        path: '/compute_plans/:key/tasks/:taskKey?',
+        path: '/compute_plans/:key/tasks/:category/:taskKey?',
         component: ComputePlanTasks,
     },
     DATASET: {
@@ -83,8 +106,12 @@ export const ROUTES: Record<string, IRoute> = {
         path: PATHS.SETTINGS,
         component: Settings,
     },
+    TASKS_ROOT: {
+        path: PATHS.TASKS_ROOT,
+        component: TasksRoot,
+    },
     TASKS: {
-        path: '/tasks/:key?',
+        path: '/tasks/:category/:key?',
         component: Tasks,
     },
 };

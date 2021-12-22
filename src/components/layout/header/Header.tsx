@@ -57,8 +57,8 @@ const NAV_ITEMS = [
     },
     {
         label: 'Tasks',
-        href: PATHS.TASKS,
-        paths: [PATHS.TASK, PATHS.TASKS],
+        href: PATHS.TASKS_ROOT,
+        paths: [PATHS.TASKS_ROOT, PATHS.TASK, PATHS.TASKS],
     },
     {
         label: 'Datasets',

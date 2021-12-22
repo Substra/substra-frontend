@@ -19,14 +19,15 @@ import {
     Link,
     Text,
 } from '@chakra-ui/react';
-import { useRoute } from 'wouter';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
+    CATEGORY_LABEL,
     getTaskCategory,
     getTaskDataSampleKeys,
     getTaskDataset,
 } from '@/modules/tasks/TasksUtils';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import {
     isAggregatetuple,
@@ -50,53 +51,42 @@ import {
     TableDrawerSectionKeyEntry,
 } from '@/components/TableDrawerSection';
 
-const TaskDrawer = (): JSX.Element => {
+interface TaskDrawerProps {
+    category: TaskCategory;
+    compileListPath: (category: TaskCategory) => string;
+    taskKey: string | undefined;
+}
+const TaskDrawer = ({
+    category,
+    compileListPath,
+    taskKey,
+}: TaskDrawerProps): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [isTaskPath, taskParams] = useRoute(PATHS.TASK);
-    const [isComputePlanTask, computePlanTaskParams] = useRoute(
-        PATHS.COMPUTE_PLAN_TASK
-    );
-    let key: string | undefined;
-    if (isTaskPath) {
-        key = taskParams?.key;
-    } else if (isComputePlanTask) {
-        key = computePlanTaskParams?.taskKey;
-    }
     const dispatch = useAppDispatch();
     useEffect(() => {
-        if (key) {
+        if (taskKey) {
             if (!isOpen) {
                 onOpen();
             }
 
-            dispatch(retrieveTask(key));
+            dispatch(retrieveTask({ category, key: taskKey }));
         }
-    }, [key]);
+    }, [taskKey]);
 
     const task = useAppSelector((state) => state.tasks.task);
     const taskLoading = useAppSelector((state) => state.tasks.taskLoading);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
-            if (key && task?.key === key) {
-                setDocumentTitle(`${getTaskCategory(task)} task ${key}`);
-            }
+            setDocumentTitle(`${CATEGORY_LABEL[category]} task ${taskKey}`);
         },
-        [key, task?.category]
+        [taskKey, category]
     );
 
     const handleOnClose = () => {
-        if (isTaskPath) {
-            setLocationWithParams(PATHS.TASKS);
-        } else if (isComputePlanTask && computePlanTaskParams) {
-            setLocationWithParams(
-                compilePath(PATHS.COMPUTE_PLAN_TASKS, {
-                    key: computePlanTaskParams.key,
-                })
-            );
-        }
+        setLocationWithParams(compileListPath(category));
         onClose();
     };
 

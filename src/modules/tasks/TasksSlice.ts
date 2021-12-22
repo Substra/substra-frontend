@@ -5,13 +5,14 @@ import {
     AggregatetupleStub,
     CompositeTraintuple,
     CompositeTraintupleStub,
+    TaskCategory,
     Testtuple,
     TesttupleStub,
     Traintuple,
     TraintupleStub,
 } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -181,38 +182,35 @@ export const listAggregateTasks = createAsyncThunk<
     }
 );
 
+const retrieveMethods: Record<
+    TaskCategory,
+    (
+        key: string
+    ) => AxiosPromise<
+        Testtuple | Traintuple | CompositeTraintuple | Aggregatetuple
+    >
+> = {
+    [TaskCategory.test]: TasksApi.retrieveTesttuple,
+    [TaskCategory.train]: TasksApi.retrieveTraintuple,
+    [TaskCategory.composite]: TasksApi.retrieveCompositeTraintuple,
+    [TaskCategory.aggregate]: TasksApi.retrieveAggregateTuple,
+};
 export const retrieveTask = createAsyncThunk<
     Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple,
-    string,
+    { category: TaskCategory; key: string },
     { rejectValue: string }
->('tasks/get', async (key: string, thunkAPI) => {
-    const errors = [];
+>('tasks/get', async ({ category, key }, thunkAPI) => {
+    const method = retrieveMethods[category];
     try {
-        const response = await TasksApi.retrieveTraintuple(key);
+        const response = await method(key);
         return response.data;
-    } catch (err) {
-        errors.push(err);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
     }
-    try {
-        const response = await TasksApi.retrieveCompositeTraintuple(key);
-        return response.data;
-    } catch (err) {
-        errors.push(err);
-    }
-    try {
-        const response = await TasksApi.retrieveAggregateTuple(key);
-        return response.data;
-    } catch (err) {
-        errors.push(err);
-    }
-    try {
-        const response = await TasksApi.retrieveTesttuple(key);
-        return response.data;
-    } catch (err) {
-        errors.push(err);
-    }
-
-    return thunkAPI.rejectWithValue(errors.join(', '));
 });
 
 export const tasksSlice = createSlice({

@@ -1,7 +1,9 @@
 import { HStack, Text } from '@chakra-ui/react';
 import { Link, useRoute } from 'wouter';
 
-import { compilePath, PATHS, ROUTES } from '@/routes';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
+
+import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
 
 interface TabsNavItemProps {
     href: string;
@@ -40,6 +42,9 @@ const TabsNav = (): JSX.Element => {
         <HStack paddingLeft={8} paddingRight={8} spacing={5}>
             <TabsNavItem
                 href={compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                    category: tasksParams
+                        ? tasksParams.category
+                        : TASK_CATEGORY_SLUGS[TaskCategory.test],
                     key: computePlanKey,
                 })}
                 label="Details"

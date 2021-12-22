@@ -1,5 +1,6 @@
 import TaskDrawer from './components/TaskDrawer';
 import { VStack, Box } from '@chakra-ui/react';
+import { useRoute } from 'wouter';
 
 import {
     listAggregateTasks,
@@ -7,87 +8,213 @@ import {
     listTestTasks,
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { useAppSelector } from '@/hooks';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
+import NotFound from '@/routes/notfound/NotFound';
 
 import TableTitle from '@/components/TableTitle';
-import TasksTable, { selectedTaskT } from '@/components/TasksTable';
+import TasksTable from '@/components/TasksTable';
 
-const Tasks = (): JSX.Element => {
-    const {
-        params: { search: searchFilters, page },
-        setLocationWithParams,
-    } = useLocationWithParams();
-
-    const taskTypes: selectedTaskT[] = [
-        {
-            id: 0,
-            name: 'Test',
-            slug: 'testtuple',
-            loading: useAppSelector((state) => state.tasks.testTasksLoading),
-            list: () => listTestTasks({ filters: searchFilters, page }),
-            tasks: useAppSelector((state) => state.tasks.testTasks),
-            count: useAppSelector((state) => state.tasks.testTasksCount),
-        },
-        {
-            id: 1,
-            name: 'Train',
-            slug: 'traintuple',
-            loading: useAppSelector((state) => state.tasks.trainTasksLoading),
-            list: () => listTrainTasks({ filters: searchFilters, page }),
-            tasks: useAppSelector((state) => state.tasks.trainTasks),
-            count: useAppSelector((state) => state.tasks.trainTasksCount),
-        },
-        {
-            id: 2,
-            name: 'Composite train',
-            slug: 'composite_traintuple',
-            loading: useAppSelector(
-                (state) => state.tasks.compositeTasksLoading
-            ),
-            list: () => listCompositeTasks({ filters: searchFilters, page }),
-            tasks: useAppSelector((state) => state.tasks.compositeTasks),
-            count: useAppSelector((state) => state.tasks.compositeTasksCount),
-        },
-        {
-            id: 3,
-            name: 'Aggregate',
-            slug: 'aggregatetuple',
-            loading: useAppSelector(
-                (state) => state.tasks.aggregateTasksLoading
-            ),
-            list: () => listAggregateTasks({ filters: searchFilters, page }),
-            tasks: useAppSelector((state) => state.tasks.aggregateTasks),
-            count: useAppSelector((state) => state.tasks.aggregateTasksCount),
-        },
-    ];
-
+interface GenericTasksProps {
+    tasksTable: React.ReactNode;
+    taskDrawer: React.ReactNode;
+}
+const GenericTasks = ({
+    tasksTable,
+    taskDrawer,
+}: GenericTasksProps): JSX.Element => {
     const key = useKeyFromPath(PATHS.TASK);
 
     useAssetListDocumentTitleEffect('Tasks list', key);
 
     return (
         <Box padding="6" marginLeft="auto" marginRight="auto">
-            <TaskDrawer />
+            {taskDrawer}
             <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
                 <TableTitle title="Tasks" />
-                <TasksTable
-                    taskTypes={taskTypes}
-                    onTrClick={(taskKey) => () =>
-                        setLocationWithParams(
-                            compilePath(PATHS.TASK, {
-                                key: taskKey,
-                            })
-                        )}
-                />
+                {tasksTable}
             </VStack>
         </Box>
     );
+};
+
+const compileListPath = (category: TaskCategory): string => {
+    return compilePath(PATHS.TASKS, {
+        category: TASK_CATEGORY_SLUGS[category],
+    });
+};
+
+const compileDetailsPath = (category: TaskCategory, key: string): string => {
+    return compilePath(PATHS.TASK, {
+        category: TASK_CATEGORY_SLUGS[category],
+        key,
+    });
+};
+
+interface TasksProps {
+    taskKey: string | undefined;
+}
+
+const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector((state) => state.tasks.testTasksLoading);
+    const list = () => listTestTasks({ filters: searchFilters, page });
+    const tasks = useAppSelector((state) => state.tasks.testTasks);
+    const count = useAppSelector((state) => state.tasks.testTasksCount);
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.test}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.test}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
+    const list = () => listTrainTasks({ filters: searchFilters, page });
+    const tasks = useAppSelector((state) => state.tasks.trainTasks);
+    const count = useAppSelector((state) => state.tasks.trainTasksCount);
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.train}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.train}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.tasks.compositeTasksLoading
+    );
+    const list = () => listCompositeTasks({ filters: searchFilters, page });
+    const tasks = useAppSelector((state) => state.tasks.compositeTasks);
+    const count = useAppSelector((state) => state.tasks.compositeTasksCount);
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.composite}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.composite}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.tasks.aggregateTasksLoading
+    );
+    const list = () => listAggregateTasks({ filters: searchFilters, page });
+    const tasks = useAppSelector((state) => state.tasks.aggregateTasks);
+    const count = useAppSelector((state) => state.tasks.aggregateTasksCount);
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.aggregate}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.aggregate}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const Tasks = () => {
+    const [, params] = useRoute(ROUTES.TASKS.path);
+
+    if (params?.category === 'test') {
+        return <TestTasks taskKey={params?.key} />;
+    } else if (params?.category === 'train') {
+        return <TrainTasks taskKey={params?.key} />;
+    } else if (params?.category === 'composite_train') {
+        return <CompositeTrainTasks taskKey={params?.key} />;
+    } else if (params?.category === 'aggregate') {
+        return <AggregateTasks taskKey={params?.key} />;
+    } else {
+        return <NotFound />;
+    }
 };
 
 export default Tasks;

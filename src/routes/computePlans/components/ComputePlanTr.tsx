@@ -40,7 +40,7 @@ const ComputePlanTr = ({
             key={computePlan.key}
             onClick={() =>
                 setLocation(
-                    compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                    compilePath(PATHS.COMPUTE_PLAN_TASKS_ROOT, {
                         key: computePlan.key,
                     })
                 )

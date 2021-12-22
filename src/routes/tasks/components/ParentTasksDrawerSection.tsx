@@ -15,7 +15,7 @@ import {
     AggregatetupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import DrawerSectionContainer from '@/components/DrawerSectionContainer';
 import IconTag from '@/components/IconTag';
@@ -36,10 +36,14 @@ const ParentTasksDrawerSection = ({
         task: TraintupleStub | AggregatetupleStub | CompositeTraintupleStub
     ): string => {
         if (isTaskPath) {
-            return compilePath(PATHS.TASK, { key: task.key });
+            return compilePath(PATHS.TASK, {
+                key: task.key,
+                category: TASK_CATEGORY_SLUGS[task.category],
+            });
         }
         return compilePath(PATHS.COMPUTE_PLAN_TASK, {
             key: task.compute_plan_key,
+            category: TASK_CATEGORY_SLUGS[task.category],
             taskKey: task.key,
         });
     };

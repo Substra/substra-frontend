@@ -3,36 +3,42 @@ import { useEffect } from 'react';
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
 import TabsNav from './components/TabsNav';
-import TaskList from './components/TaskList';
-import { Box, Flex, HStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
-import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
+import {
+    retrieveComputePlan,
+    retrieveComputePlanAggregateTasks,
+    retrieveComputePlanCompositeTasks,
+    retrieveComputePlanTestTasks,
+    retrieveComputePlanTrainTasks,
+} from '@/modules/computePlans/ComputePlansSlice';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 
-import { PATHS } from '@/routes';
+import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
+import NotFound from '@/routes/notfound/NotFound';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
-const ComputePlanTasks = (): JSX.Element => {
-    const [isTasks, tasksParams] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
-    const [isTask, taskParams] = useRoute(PATHS.COMPUTE_PLAN_TASK);
+import TasksTable from '@/components/TasksTable';
 
-    let key: string | undefined;
-    if (isTasks) {
-        key = tasksParams?.key;
-    } else if (isTask) {
-        key = taskParams?.key;
-    }
+interface GenericTasksProps {
+    tasksTable: React.ReactNode;
+    taskDrawer: React.ReactNode;
+}
+const GenericTasks = ({
+    tasksTable,
+    taskDrawer,
+}: GenericTasksProps): JSX.Element => {
+    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
+    const key = params?.key;
 
-    useDocumentTitleEffect(
-        (setDocumentTitle) => {
-            if (isTasks) {
-                setDocumentTitle(`Compute plan ${key}`);
-            }
-        },
-        [isTasks, key]
+    useAssetListDocumentTitleEffect(
+        `Compute plan ${key}`,
+        params?.taskKey || null
     );
 
     const computePlan = useAppSelector(
@@ -48,7 +54,7 @@ const ComputePlanTasks = (): JSX.Element => {
 
     return (
         <Flex direction="column" alignItems="stretch" flexGrow={1}>
-            <TaskDrawer />
+            {taskDrawer}
             <Box
                 background="white"
                 borderBottomColor="gray.100"
@@ -65,11 +71,288 @@ const ComputePlanTasks = (): JSX.Element => {
                 alignItems="flex-start"
                 overflow="auto"
             >
-                <TaskList />
+                <VStack display="inline-block" spacing="2.5">
+                    <Heading size="xxs" textTransform="uppercase">
+                        Tasks
+                    </Heading>
+                    {tasksTable}
+                </VStack>
                 <DetailsSidebar />
             </HStack>
         </Flex>
     );
+};
+
+interface TasksProps {
+    computePlanKey: string;
+    taskKey: string | undefined;
+    compileListPath: (category: TaskCategory) => string;
+    compileDetailsPath: (category: TaskCategory, taskKey: string) => string;
+}
+
+const TestTasks = ({
+    taskKey,
+    computePlanKey,
+    compileListPath,
+    compileDetailsPath,
+}: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanTestTasksLoading
+    );
+    const list = () =>
+        retrieveComputePlanTestTasks({
+            computePlanKey,
+            page,
+            filters: searchFilters,
+        });
+    const tasks = useAppSelector(
+        (state) => state.computePlans.computePlanTestTasks
+    );
+    const count = useAppSelector(
+        (state) => state.computePlans.computePlanTestTasksCount
+    );
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.test}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.test}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const TrainTasks = ({
+    taskKey,
+    computePlanKey,
+    compileListPath,
+    compileDetailsPath,
+}: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanTrainTasksLoading
+    );
+    const list = () =>
+        retrieveComputePlanTrainTasks({
+            computePlanKey,
+            page,
+            filters: searchFilters,
+        });
+    const tasks = useAppSelector(
+        (state) => state.computePlans.computePlanTrainTasks
+    );
+    const count = useAppSelector(
+        (state) => state.computePlans.computePlanTrainTasksCount
+    );
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.train}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.train}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+const CompositeTasks = ({
+    taskKey,
+    computePlanKey,
+    compileListPath,
+    compileDetailsPath,
+}: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanCompositeTasksLoading
+    );
+    const list = () =>
+        retrieveComputePlanCompositeTasks({
+            computePlanKey,
+            page,
+            filters: searchFilters,
+        });
+    const tasks = useAppSelector(
+        (state) => state.computePlans.computePlanCompositeTasks
+    );
+    const count = useAppSelector(
+        (state) => state.computePlans.computePlanCompositeTasksCount
+    );
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.composite}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.composite}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+const AggregateTasks = ({
+    taskKey,
+    computePlanKey,
+    compileListPath,
+    compileDetailsPath,
+}: TasksProps): JSX.Element => {
+    const {
+        params: { search: searchFilters, page },
+    } = useLocationWithParams();
+
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanAggregateTasksLoading
+    );
+    const list = () =>
+        retrieveComputePlanAggregateTasks({
+            computePlanKey,
+            page,
+            filters: searchFilters,
+        });
+    const tasks = useAppSelector(
+        (state) => state.computePlans.computePlanAggregateTasks
+    );
+    const count = useAppSelector(
+        (state) => state.computePlans.computePlanAggregateTasksCount
+    );
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.aggregate}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.aggregate}
+                    compileListPath={compileListPath}
+                    taskKey={taskKey}
+                />
+            }
+        />
+    );
+};
+
+const ComputePlanTasks = () => {
+    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
+    const computePlanKey = params?.key;
+
+    if (!computePlanKey) {
+        return <NotFound />;
+    }
+
+    const compileListPath = (category: TaskCategory): string => {
+        return compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+            key: computePlanKey,
+            category: TASK_CATEGORY_SLUGS[category],
+        });
+    };
+
+    const compileDetailsPath = (
+        category: TaskCategory,
+        taskKey: string
+    ): string => {
+        return compilePath(PATHS.COMPUTE_PLAN_TASK, {
+            key: computePlanKey,
+            category: TASK_CATEGORY_SLUGS[category],
+            taskKey,
+        });
+    };
+
+    if (params?.category === 'test') {
+        return (
+            <TestTasks
+                computePlanKey={params?.key}
+                taskKey={params?.taskKey}
+                compileDetailsPath={compileDetailsPath}
+                compileListPath={compileListPath}
+            />
+        );
+    } else if (params?.category === 'train') {
+        return (
+            <TrainTasks
+                computePlanKey={params?.key}
+                taskKey={params?.taskKey}
+                compileDetailsPath={compileDetailsPath}
+                compileListPath={compileListPath}
+            />
+        );
+    } else if (params?.category === 'composite_train') {
+        return (
+            <CompositeTasks
+                computePlanKey={params?.key}
+                taskKey={params?.taskKey}
+                compileDetailsPath={compileDetailsPath}
+                compileListPath={compileListPath}
+            />
+        );
+    } else if (params?.category === 'aggregate') {
+        return (
+            <AggregateTasks
+                computePlanKey={params?.key}
+                taskKey={params?.taskKey}
+                compileDetailsPath={compileDetailsPath}
+                compileListPath={compileListPath}
+            />
+        );
+    } else {
+        return <NotFound />;
+    }
 };
 
 export default ComputePlanTasks;
