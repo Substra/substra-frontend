@@ -163,6 +163,19 @@ const TaskDrawer = ({
                                     <ParentTasksDrawerSection
                                         parentTasks={task.parent_tasks}
                                     />
+                                    {isTesttuple(task) && (
+                                        <TableDrawerSection title="Performances">
+                                            {task.test.metrics.map((metric) => (
+                                                <TableDrawerSectionEntry
+                                                    title={metric.name}
+                                                >
+                                                    {task.test.perfs[
+                                                        metric.key
+                                                    ].toFixed(2)}
+                                                </TableDrawerSectionEntry>
+                                            ))}
+                                        </TableDrawerSection>
+                                    )}
                                 </DrawerBody>
                             )}
                         </TabPanel>

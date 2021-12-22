@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Settings page (#283)
 -   Disable current page pagination button (#288)
 -   Added specific routes for each task category (#299)
+-   Display test task performances in task drawer (#303)
 
 ### Fixed
 
