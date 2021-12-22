@@ -96,7 +96,7 @@ const PerfDownloadButton = ({
                 colorScheme="gray"
                 size="sm"
             />
-            <MenuList zIndex="popover" fontSize="sm">
+            <MenuList zIndex="popover">
                 <MenuItem onClick={onDownloadImage}>Download as JPEG</MenuItem>
                 {computePlans.length === 1 && (
                     <MenuItem onClick={onDownloadCsv}>Download as CSV</MenuItem>

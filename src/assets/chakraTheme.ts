@@ -243,7 +243,10 @@ export default extendTheme({
         },
         Menu: {
             baseStyle: {
-                list: noBorderRadius,
+                list: {
+                    ...noBorderRadius,
+                    fontSize: 'sm',
+                },
             },
         },
         Modal: {
@@ -269,6 +272,11 @@ export default extendTheme({
                 sm: { container: noBorderRadius },
                 md: { container: noBorderRadius },
                 lg: { container: noBorderRadius },
+            },
+        },
+        Text: {
+            defaultStyle: {
+                fontSize: 'sm',
             },
         },
     },
