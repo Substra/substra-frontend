@@ -40,12 +40,7 @@ const TableDrawerSectionEntry = ({
             >
                 {capitalize(title)}
             </Td>
-            <Td
-                textAlign="right"
-                paddingRight="0"
-                paddingLeft="1"
-                fontSize="xs"
-            >
+            <Td paddingRight="0" paddingLeft="1" fontSize="xs">
                 {children}
             </Td>
         </Tr>
@@ -60,7 +55,7 @@ const TableDrawerSectionKeyEntry = ({
     maxWidth: string;
 }): JSX.Element => (
     <TableDrawerSectionEntry title="Key">
-        <HStack spacing={1.5} justifyContent="flex-end">
+        <HStack spacing={1.5}>
             <Text isTruncated maxWidth={maxWidth}>
                 {value}
             </Text>
