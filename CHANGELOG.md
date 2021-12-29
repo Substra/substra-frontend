@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed font size in popover menus (#300)
 -   Remove unnecessary padding in drawer tables (#295)
 -   Disable Dark theme for Markdown content (#306)
+-   Fix Header width in drawer + markdown width (#307)
 
 ### Changed
 

@@ -32,7 +32,12 @@ const DrawerHeader = ({
     >
         {loading && <Skeleton />}
         {!loading && (
-            <Heading fontSize="md" lineHeight="6" fontWeight="semibold">
+            <Heading
+                isTruncated
+                fontSize="md"
+                lineHeight="6"
+                fontWeight="semibold"
+            >
                 {title}
             </Heading>
         )}

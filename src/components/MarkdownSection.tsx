@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import 'github-markdown-css/github-markdown-light.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,7 +8,7 @@ interface MarkdownSectionProps {
 }
 
 const MarkdownSection = ({ source }: MarkdownSectionProps): JSX.Element => (
-    <div className="markdown-body">
+    <Box width="100%" className="markdown-body">
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             children={source}
@@ -17,7 +17,7 @@ const MarkdownSection = ({ source }: MarkdownSectionProps): JSX.Element => (
                 h2: () => <Heading fontSize="20px" />,
             }}
         />
-    </div>
+    </Box>
 );
 
 export default MarkdownSection;
