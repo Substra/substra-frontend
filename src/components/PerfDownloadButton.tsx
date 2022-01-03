@@ -1,8 +1,8 @@
 import { RefObject, useContext } from 'react';
 
 import {
+    Button,
     Icon,
-    IconButton,
     Menu,
     MenuButton,
     MenuItem,
@@ -89,13 +89,15 @@ const PerfDownloadButton = ({
     return (
         <Menu>
             <MenuButton
-                as={IconButton}
+                as={Button}
                 aria-label="Download chart"
-                icon={<Icon as={RiDownloadLine} />}
+                leftIcon={<Icon as={RiDownloadLine} />}
                 variant="solid"
-                colorScheme="gray"
+                colorScheme="teal"
                 size="sm"
-            />
+            >
+                Download...
+            </MenuButton>
             <MenuList zIndex="popover">
                 <MenuItem onClick={onDownloadImage}>Download as JPEG</MenuItem>
                 {computePlans.length === 1 && (
