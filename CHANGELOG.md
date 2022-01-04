@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove unnecessary padding in drawer tables (#295)
 -   Disable Dark theme for Markdown content (#306)
 -   Fix Header width in drawer + markdown width (#307)
+-   Fix broken link in perf chart rank details (#310)
 
 ### Changed
 

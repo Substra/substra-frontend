@@ -18,11 +18,12 @@ import { Link } from 'wouter';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { average, getMaxRank } from '@/modules/series/SeriesUtils';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 interface PerfRankDetailsProps {
     series: SerieT[];
@@ -181,6 +182,10 @@ const PerfRankDetails = ({
                                     testTaskKey
                                         ? compilePath(PATHS.TASK, {
                                               key: testTaskKey,
+                                              category:
+                                                  TASK_CATEGORY_SLUGS[
+                                                      TaskCategory.test
+                                                  ],
                                           })
                                         : ''
                                 }
