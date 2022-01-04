@@ -2,10 +2,14 @@ import { Fragment } from 'react';
 
 import { Tr, Td, Tbody as ChakraTbody } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { RiListCheck2 } from 'react-icons/ri';
 
-interface EmptyTrProps {
-    nbColumns: number;
-}
+import { AssetType } from '@/modules/common/CommonTypes';
+import { getAssetLabel } from '@/modules/common/CommonUtils';
+
+import useLocationWithParams from '@/hooks/useLocationWithParams';
+
+import EmptyState from '@/components/EmptyState';
 
 // This component removes the border bottom of cells in the last row of the table
 export const Tbody = styled(ChakraTbody)`
@@ -14,18 +18,45 @@ export const Tbody = styled(ChakraTbody)`
     }
 `;
 
-export const EmptyTr = ({ nbColumns }: EmptyTrProps): JSX.Element => (
-    <Tr>
-        <Td
-            colSpan={nbColumns}
-            textAlign="center"
-            fontSize="sm"
-            color="gray.500"
-        >
-            No data to display
-        </Td>
-    </Tr>
-);
+interface EmptyTrProps {
+    nbColumns: number;
+    asset: AssetType;
+}
+
+export const EmptyTr = ({ nbColumns, asset }: EmptyTrProps): JSX.Element => {
+    const {
+        params: { search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
+
+    const hasFilters = !!searchFilters.find((sf) => sf.asset === asset);
+
+    const clearAll = () => {
+        const newSearchFilters = searchFilters.filter(
+            (sf) => sf.asset !== asset
+        );
+        setLocationWithParams({ search: newSearchFilters, page: 1 });
+    };
+
+    const assetLabel = getAssetLabel(asset, { plural: true });
+    return (
+        <Tr>
+            <Td colSpan={nbColumns} textAlign="center" paddingY="20">
+                <EmptyState
+                    icon={<RiListCheck2 />}
+                    title="No data to display"
+                    subtitle={
+                        hasFilters
+                            ? `There are no ${assetLabel} matching the active filters.`
+                            : `There are no ${assetLabel} available to show.`
+                    }
+                    buttonOnClick={hasFilters ? clearAll : undefined}
+                    buttonLabel={hasFilters ? 'Clear all filters' : undefined}
+                />
+            </Td>
+        </Tr>
+    );
+};
 
 export const ClickableTr = styled(Tr)`
     td {

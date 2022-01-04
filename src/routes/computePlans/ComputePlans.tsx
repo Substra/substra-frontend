@@ -177,7 +177,7 @@ const ComputePlans = (): JSX.Element => {
                     </ChakraTbody>
                     <Tbody data-cy={computePlansLoading ? 'loading' : 'loaded'}>
                         {!computePlansLoading && computePlans.length === 0 && (
-                            <EmptyTr nbColumns={6} />
+                            <EmptyTr nbColumns={6} asset="compute_plan" />
                         )}
                         {computePlansLoading ? (
                             <TableSkeleton

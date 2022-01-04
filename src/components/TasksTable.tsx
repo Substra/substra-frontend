@@ -239,7 +239,12 @@ const TasksTable = ({
                                     </TableSkeleton>
                                 )}
                                 {!loading && tasks.length === 0 && (
-                                    <EmptyTr nbColumns={computePlan ? 3 : 4} />
+                                    <EmptyTr
+                                        nbColumns={computePlan ? 3 : 4}
+                                        asset={
+                                            assetTypeByTaskCategory[category]
+                                        }
+                                    />
                                 )}
                                 {!loading &&
                                     tasks.map((task) => (

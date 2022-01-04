@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added specific routes for each task category (#299)
 -   Display test task performances in task drawer (#303)
 -   Add link to compute plan in tasks list and tasks drawer (#302)
+-   New and improved empty table message (#309)
 
 ### Fixed
 

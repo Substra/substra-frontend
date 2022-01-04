@@ -99,7 +99,7 @@ const Algos = (): JSX.Element => {
                         </Thead>
                         <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
                             {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={3} />
+                                <EmptyTr nbColumns={3} asset="algo" />
                             )}
                             {algosLoading ? (
                                 <TableSkeleton

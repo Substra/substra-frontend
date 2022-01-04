@@ -94,7 +94,7 @@ const Datasets = (): JSX.Element => {
                         </Thead>
                         <Tbody data-cy={datasetsLoading ? 'loading' : 'loaded'}>
                             {!datasetsLoading && datasets.length === 0 && (
-                                <EmptyTr nbColumns={2} />
+                                <EmptyTr nbColumns={2} asset="dataset" />
                             )}
                             {datasetsLoading ? (
                                 <TableSkeleton
