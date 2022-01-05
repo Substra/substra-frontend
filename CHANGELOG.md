@@ -71,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Align TaskDrawer children to the left (#305)
 -   Change Download button appearance (#308)
 -   Added ellipsis to too long link (#314)
+-   Disable interpretation of dates on CP table (#313)
 
 ## [0.6.0] - 2021-12-01
 

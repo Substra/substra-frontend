@@ -71,64 +71,64 @@ const ComputePlanTr = ({
                     {shortFormatDate(computePlan.creation_date)}
                 </Text>
             </Td>
-            <Td minWidth="255px">
-                <HStack>
-                    <Text
-                        fontSize="xs"
-                        color={!computePlan.start_date ? 'gray.500' : ''}
-                    >
-                        {!computePlan.start_date && 'Not started yet'}
-                        {computePlan.start_date &&
-                            `${shortFormatDate(computePlan.start_date)} ->`}
+            <Td minWidth="255px" fontSize="xs">
+                {!computePlan.start_date && (
+                    <Text color="gray.500">
+                        {[
+                            ComputePlanStatus.todo,
+                            ComputePlanStatus.waiting,
+                        ].includes(computePlan.status)
+                            ? 'Not started yet'
+                            : 'Information not available'}
                     </Text>
-                    <Text
-                        fontSize="xs"
-                        color={
-                            !computePlan.start_date || !computePlan.end_date
-                                ? 'gray.500'
-                                : ''
-                        }
-                    >
-                        {computePlan.start_date &&
-                            !computePlan.end_date &&
-                            'Not ended yet'}
-                        {computePlan.start_date &&
-                            computePlan.end_date &&
-                            shortFormatDate(computePlan.end_date)}
-                    </Text>
-                </HStack>
+                )}
                 {computePlan.start_date && (
-                    <HStack>
-                        <Icon as={RiTimeLine} fill="gray.500" />
-                        <Text
-                            fontSize="xs"
-                            color="gray.500"
-                            alignItems="center"
-                        >
-                            {getDiffDates(
-                                computePlan.start_date,
-                                computePlan.end_date || 'now'
+                    <>
+                        <HStack>
+                            <Text>
+                                {`${shortFormatDate(
+                                    computePlan.start_date
+                                )} ->`}
+                            </Text>
+                            {computePlan.end_date && (
+                                <Text>
+                                    {shortFormatDate(computePlan.end_date)}
+                                </Text>
                             )}
-                        </Text>
-                        {computePlan.status === ComputePlanStatus.doing &&
-                            computePlan.estimated_end_date && (
-                                <>
-                                    <Text fontSize="xs" color="gray.500">
-                                        •
-                                    </Text>
-                                    <Text
-                                        fontSize="xs"
-                                        color="gray.500"
-                                        alignItems="center"
-                                    >
-                                        {`${getDiffDates(
-                                            'now',
-                                            computePlan.estimated_end_date
-                                        )} remaining`}
-                                    </Text>
-                                </>
+                            {!computePlan.end_date && (
+                                <Text color="gray.500">
+                                    {[
+                                        ComputePlanStatus.done,
+                                        ComputePlanStatus.canceled,
+                                        ComputePlanStatus.failed,
+                                    ].includes(computePlan.status)
+                                        ? 'Information not available'
+                                        : 'Not ended yet'}
+                                </Text>
                             )}
-                    </HStack>
+                        </HStack>
+                        <HStack color="gray.500">
+                            <Icon as={RiTimeLine} />
+                            <Text>
+                                {getDiffDates(
+                                    computePlan.start_date,
+                                    computePlan.end_date || 'now'
+                                )}
+                            </Text>
+                            {computePlan.status === ComputePlanStatus.doing &&
+                                computePlan.estimated_end_date && (
+                                    <>
+                                        <Text>•</Text>
+                                        <Text>
+                                            {`${getDiffDates(
+                                                'now',
+                                                computePlan.estimated_end_date
+                                            )} remaining`}
+                                        </Text>
+                                    </>
+                                )}
+                        </HStack>
+                    </>
                 )}
             </Td>
         </ClickableTr>
