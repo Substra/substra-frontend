@@ -207,6 +207,7 @@ const TaskDrawer = ({
                                                 isTruncated
                                                 maxWidth="370px"
                                                 textAlign="right"
+                                                marginLeft="auto"
                                             >
                                                 <Link
                                                     href={compilePath(

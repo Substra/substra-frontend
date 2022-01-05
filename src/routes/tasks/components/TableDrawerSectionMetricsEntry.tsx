@@ -1,4 +1,4 @@
-import { Link, List, ListItem } from '@chakra-ui/react';
+import { Link, List, ListItem, Text } from '@chakra-ui/react';
 
 import { Testtuple } from '@/modules/tasks/TuplesTypes';
 
@@ -15,15 +15,22 @@ const TableDrawerSectionMetricsEntry = ({
         <List>
             {task.test.metrics.map((metric) => (
                 <ListItem key={metric.key}>
-                    <Link
-                        href={compilePath(PATHS.METRIC, {
-                            key: metric.key,
-                        })}
-                        color="teal.500"
-                        isExternal
+                    <Text
+                        maxWidth="370px"
+                        isTruncated
+                        textAlign="right"
+                        marginLeft="auto"
                     >
-                        {metric.name}
-                    </Link>
+                        <Link
+                            href={compilePath(PATHS.METRIC, {
+                                key: metric.key,
+                            })}
+                            color="teal.500"
+                            isExternal
+                        >
+                            {metric.name}
+                        </Link>
+                    </Text>
                 </ListItem>
             ))}
         </List>

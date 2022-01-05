@@ -70,7 +70,11 @@ const ParentTasksDrawerSection = ({
                                         fill="teal.500"
                                         backgroundColor="teal.100"
                                     />
-                                    <Text fontSize="xs">
+                                    <Text
+                                        fontSize="xs"
+                                        isTruncated
+                                        maxWidth="370px"
+                                    >
                                         {`${getTaskCategory(parentTask)} on ${
                                             parentTask.worker
                                         }`}
