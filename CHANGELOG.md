@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Button to download the perfs of multiple charts at once (#312)
+
 ### Fixed
 
 ### Changed

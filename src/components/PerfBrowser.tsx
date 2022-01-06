@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Flex, HStack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -9,9 +9,8 @@ import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import LoadingState from '@/components/LoadingState';
-import PerfCard from '@/components/PerfCard';
-import PerfChart from '@/components/PerfChart';
 import PerfDetails from '@/components/PerfDetails';
+import PerfList from '@/components/PerfList';
 import PerfSidebarSection from '@/components/PerfSidebarSection';
 
 interface PerfBrowserProps {
@@ -129,31 +128,12 @@ const PerfBrowser = ({
                                 />
                             )}
                             {!selectedMetricName && (
-                                <Wrap padding="8">
-                                    {seriesGroups.map((series) => (
-                                        <WrapItem
-                                            key={`${series[0].metricKey}-${series[0].id}`}
-                                        >
-                                            <PerfCard
-                                                title={series[0].metricName}
-                                                onClick={() =>
-                                                    setSelectedMetricName(
-                                                        series[0].metricName
-                                                    )
-                                                }
-                                            >
-                                                <PerfChart
-                                                    series={series}
-                                                    interactive={false}
-                                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                                    setHoveredRank={() => {}}
-                                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                                    setSelectedRank={() => {}}
-                                                />
-                                            </PerfCard>
-                                        </WrapItem>
-                                    ))}
-                                </Wrap>
+                                <PerfList
+                                    seriesGroups={seriesGroups}
+                                    onCardClick={(metricName) =>
+                                        setSelectedMetricName(metricName)
+                                    }
+                                />
                             )}
                         </>
                     )}

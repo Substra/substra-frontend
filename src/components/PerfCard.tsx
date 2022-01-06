@@ -16,7 +16,6 @@ const PerfCard = ({
             flexDirection="column"
             width={480}
             height={360}
-            margin="10px"
             boxShadow="md"
             padding={2}
             backgroundColor="white"

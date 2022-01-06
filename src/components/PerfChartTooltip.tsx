@@ -4,6 +4,7 @@ import { HStack, List, ListItem, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
+import { getLineId } from '@/modules/series/SeriesUtils';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -33,8 +34,7 @@ const PerfChartTooltip = ({
     const { sortedComputePlanKeys } = useContext(PerfBrowserContext);
     const { getColorScheme } = usePerfBrowserColors();
 
-    const sortedSerieIds = series.map((s) => s.id);
-    sortedSerieIds.sort();
+    const lineId = getLineId(series);
 
     return (
         <List
@@ -87,11 +87,7 @@ const PerfChartTooltip = ({
                                             : point.worker}
                                     </Text>
                                     <Text as="span" fontSize="xs">
-                                        {`• L${
-                                            sortedSerieIds.indexOf(
-                                                point.serieId
-                                            ) + 1
-                                        }`}
+                                        {`• L${lineId(point.serieId)}`}
                                     </Text>
                                 </HStack>
                             </>

@@ -17,7 +17,7 @@ import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
 import { Link } from 'wouter';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { average, getMaxRank } from '@/modules/series/SeriesUtils';
+import { average, getLineId, getMaxRank } from '@/modules/series/SeriesUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -41,6 +41,7 @@ const PerfRankDetails = ({
 }: PerfRankDetailsProps): JSX.Element => {
     const { sortedComputePlanKeys, displayAverage } =
         useContext(PerfBrowserContext);
+    const lineId = getLineId(series);
     const { getColorScheme } = usePerfBrowserColors();
 
     const getRankData = (
@@ -54,9 +55,6 @@ const PerfRankDetails = ({
         worker: string;
         perf: string;
     }[] => {
-        const sortedSerieIds = series.map((s) => s.id);
-        sortedSerieIds.sort();
-
         return series.map((serie) => {
             const point = serie.points.find((p) => p.rank === rank);
 
@@ -72,7 +70,7 @@ const PerfRankDetails = ({
                 cpId: `CP${
                     sortedComputePlanKeys.indexOf(serie.computePlanKey) + 1
                 }`,
-                lineId: `L${sortedSerieIds.indexOf(serie.id) + 1}`,
+                lineId: `L${lineId(serie.id)}`,
                 worker: serie.worker,
                 perf,
             };

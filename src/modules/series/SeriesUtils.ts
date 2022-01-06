@@ -199,3 +199,9 @@ export const getMaxRank = (series: SerieT[]): number => {
         return Math.max(max, serieMax);
     }, 0);
 };
+
+export const getLineId = (series: SerieT[]): ((serieId: number) => number) => {
+    const sortedSerieIds = series.map((s) => s.id);
+    sortedSerieIds.sort();
+    return (serieId: number): number => sortedSerieIds.indexOf(serieId) + 1;
+};

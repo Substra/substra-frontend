@@ -57,11 +57,7 @@ const PerfDetails = ({
                 alignItems="stretch"
                 overflow="hidden"
             >
-                <Box
-                    backgroundColor="white"
-                    borderRadius="lg"
-                    width="calc(100% - 300px)"
-                >
+                <Box backgroundColor="white" width="calc(100% - 300px)">
                     <PerfChart
                         ref={perfChartRef}
                         series={series}
