@@ -3,43 +3,40 @@ import { VStack, Badge, List } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
 
-import DrawerSectionHeading from '@/components/DrawerSectionHeading';
+import {
+    DrawerSection,
+    DrawerSectionDateEntry,
+    DrawerSectionEntry,
+    DrawerSectionKeyEntry,
+} from '@/components/DrawerSection';
+import { DrawerSectionHeading } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
-import {
-    TableDrawerSection,
-    TableDrawerSectionDateEntry,
-    TableDrawerSectionEntry,
-    TableDrawerSectionKeyEntry,
-} from '@/components/TableDrawerSection';
 
 const DetailsSidebar = (): JSX.Element => {
     const dataset = useAppSelector((state) => state.datasets.dataset);
     return (
-        <VStack spacing="8" width="xs" alignItems="stretch">
-            <TableDrawerSection title="General">
+        <VStack spacing="8" width="md" alignItems="stretch">
+            <DrawerSection title="General">
                 {dataset && (
                     <>
-                        <TableDrawerSectionKeyEntry
-                            value={dataset.key}
-                            maxWidth="180px"
-                        />
-                        <TableDrawerSectionDateEntry
+                        <DrawerSectionKeyEntry value={dataset.key} />
+                        <DrawerSectionDateEntry
                             title="Created"
                             date={dataset.creation_date}
                         />
-                        <TableDrawerSectionEntry title="Owner">
+                        <DrawerSectionEntry title="Owner">
                             {dataset.owner}
-                        </TableDrawerSectionEntry>
-                        <TableDrawerSectionEntry title="Permissions">
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Permissions">
                             <PermissionTag
                                 permission={dataset.permissions.process}
                                 listNodes={true}
                             />
-                        </TableDrawerSectionEntry>
+                        </DrawerSectionEntry>
                     </>
                 )}
-            </TableDrawerSection>
+            </DrawerSection>
             {dataset && <MetadataDrawerSection metadata={dataset.metadata} />}
             {dataset && (
                 <VStack spacing={5} alignItems="flex-start">

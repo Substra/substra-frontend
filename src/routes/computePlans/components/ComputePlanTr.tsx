@@ -1,20 +1,18 @@
 import CheckboxTd from './CheckboxTd';
 import PinBox from './PinBox';
 import StatusCell from './StatusCell';
-import { Td, Checkbox, Text, HStack, Icon } from '@chakra-ui/react';
-import { RiTimeLine } from 'react-icons/ri';
+import { Td, Checkbox, Text } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
-import {
-    ComputePlanStatus,
-    ComputePlanT,
-} from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import { getDiffDates, shortFormatDate } from '@/libs/utils';
+import { shortFormatDate } from '@/libs/utils';
 
 import { compilePath, PATHS } from '@/routes';
 
+import Duration from '@/components/Duration';
 import { ClickableTr } from '@/components/Table';
+import Timing from '@/components/Timing';
 
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;
@@ -72,64 +70,8 @@ const ComputePlanTr = ({
                 </Text>
             </Td>
             <Td minWidth="255px" fontSize="xs">
-                {!computePlan.start_date && (
-                    <Text color="gray.500">
-                        {[
-                            ComputePlanStatus.todo,
-                            ComputePlanStatus.waiting,
-                        ].includes(computePlan.status)
-                            ? 'Not started yet'
-                            : 'Information not available'}
-                    </Text>
-                )}
-                {computePlan.start_date && (
-                    <>
-                        <HStack>
-                            <Text>
-                                {`${shortFormatDate(
-                                    computePlan.start_date
-                                )} ->`}
-                            </Text>
-                            {computePlan.end_date && (
-                                <Text>
-                                    {shortFormatDate(computePlan.end_date)}
-                                </Text>
-                            )}
-                            {!computePlan.end_date && (
-                                <Text color="gray.500">
-                                    {[
-                                        ComputePlanStatus.done,
-                                        ComputePlanStatus.canceled,
-                                        ComputePlanStatus.failed,
-                                    ].includes(computePlan.status)
-                                        ? 'Information not available'
-                                        : 'Not ended yet'}
-                                </Text>
-                            )}
-                        </HStack>
-                        <HStack color="gray.500">
-                            <Icon as={RiTimeLine} />
-                            <Text>
-                                {getDiffDates(
-                                    computePlan.start_date,
-                                    computePlan.end_date || 'now'
-                                )}
-                            </Text>
-                            {computePlan.status === ComputePlanStatus.doing &&
-                                computePlan.estimated_end_date && (
-                                    <>
-                                        <Text>•</Text>
-                                        <Text>
-                                            {`${getDiffDates(
-                                                'now',
-                                                computePlan.estimated_end_date
-                                            )} remaining`}
-                                        </Text>
-                                    </>
-                                )}
-                        </HStack>
-                    </>
-                )}
+                <Timing asset={computePlan} />
+                <Duration asset={computePlan} />
             </Td>
         </ClickableTr>
     );

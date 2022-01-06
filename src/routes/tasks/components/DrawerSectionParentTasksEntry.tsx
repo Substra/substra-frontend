@@ -1,12 +1,6 @@
-import {
-    List,
-    ListItem,
-    Link as ChakraLink,
-    HStack,
-    Text,
-} from '@chakra-ui/react';
+import { List, ListItem, Link, HStack, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
-import { Link, useRoute } from 'wouter';
+import { useRoute } from 'wouter';
 
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
@@ -17,11 +11,13 @@ import {
 
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
-import DrawerSectionContainer from '@/components/DrawerSectionContainer';
+import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
 import Status from '@/components/Status';
 
-const ParentTasksDrawerSection = ({
+import AngleIcon from '@/assets/svg/angle-icon.svg';
+
+const DrawerSectionParentTasksEntry = ({
     parentTasks,
 }: {
     parentTasks: (
@@ -53,7 +49,14 @@ const ParentTasksDrawerSection = ({
     }
 
     return (
-        <DrawerSectionContainer title="Parent tasks">
+        <DrawerSectionCollapsibleEntry
+            title="Parent tasks"
+            aboveFold={
+                parentTasks.length === 1
+                    ? '1 parent task'
+                    : `${parentTasks.length} parent tasks`
+            }
+        >
             <List width="100%" spacing="1.5">
                 {parentTasks.map((parentTask) => (
                     <ListItem
@@ -62,26 +65,26 @@ const ParentTasksDrawerSection = ({
                         justifyContent="space-between"
                         alignItems="center"
                     >
-                        <Link href={getTaskHref(parentTask)}>
-                            <ChakraLink color="teal.500">
-                                <HStack spacing="2.5">
-                                    <IconTag
-                                        icon={RiGitCommitLine}
-                                        fill="teal.500"
-                                        backgroundColor="teal.100"
-                                    />
-                                    <Text
-                                        fontSize="xs"
-                                        isTruncated
-                                        maxWidth="370px"
-                                    >
-                                        {`${getTaskCategory(parentTask)} on ${
-                                            parentTask.worker
-                                        }`}
-                                    </Text>
-                                </HStack>
-                            </ChakraLink>
-                        </Link>
+                        <HStack spacing="2.5">
+                            <AngleIcon />
+                            <IconTag
+                                icon={RiGitCommitLine}
+                                backgroundColor="gray.100"
+                                fill="gray.500"
+                            />
+                            <Text isTruncated maxWidth="300px">
+                                <Link
+                                    color="teal.500"
+                                    fontWeight="semibold"
+                                    href={getTaskHref(parentTask)}
+                                    isExternal
+                                >
+                                    {`${getTaskCategory(parentTask)} on ${
+                                        parentTask.worker
+                                    }`}
+                                </Link>
+                            </Text>
+                        </HStack>
                         <Status
                             withIcon={false}
                             status={parentTask.status}
@@ -90,7 +93,7 @@ const ParentTasksDrawerSection = ({
                     </ListItem>
                 ))}
             </List>
-        </DrawerSectionContainer>
+        </DrawerSectionCollapsibleEntry>
     );
 };
-export default ParentTasksDrawerSection;
+export default DrawerSectionParentTasksEntry;

@@ -4,28 +4,30 @@ import { Testtuple } from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
 
-import { TableDrawerSectionEntry } from '@/components/TableDrawerSection';
+import {
+    DrawerSectionEntry,
+    DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH,
+} from '@/components/DrawerSection';
 
-const TableDrawerSectionMetricsEntry = ({
+const DrawerSectionMetricsEntry = ({
     task,
 }: {
     task: Testtuple;
 }): JSX.Element => (
-    <TableDrawerSectionEntry title="Metrics">
+    <DrawerSectionEntry title="Metrics" alignItems="flex-start">
         <List>
             {task.test.metrics.map((metric) => (
                 <ListItem key={metric.key}>
                     <Text
-                        maxWidth="370px"
                         isTruncated
-                        textAlign="right"
-                        marginLeft="auto"
+                        maxWidth={DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH}
                     >
                         <Link
                             href={compilePath(PATHS.METRIC, {
                                 key: metric.key,
                             })}
                             color="teal.500"
+                            fontWeight="semibold"
                             isExternal
                         >
                             {metric.name}
@@ -34,7 +36,7 @@ const TableDrawerSectionMetricsEntry = ({
                 </ListItem>
             ))}
         </List>
-    </TableDrawerSectionEntry>
+    </DrawerSectionEntry>
 );
 
-export default TableDrawerSectionMetricsEntry;
+export default DrawerSectionMetricsEntry;

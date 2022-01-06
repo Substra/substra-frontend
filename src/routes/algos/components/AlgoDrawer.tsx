@@ -23,14 +23,14 @@ import { PATHS } from '@/routes';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
 import DrawerHeader from '@/components/DrawerHeader';
+import {
+    DrawerSection,
+    DrawerSectionDateEntry,
+    DrawerSectionEntry,
+    DrawerSectionKeyEntry,
+} from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
-import {
-    TableDrawerSection,
-    TableDrawerSectionDateEntry,
-    TableDrawerSectionEntry,
-    TableDrawerSectionKeyEntry,
-} from '@/components/TableDrawerSection';
 
 const AlgoDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
@@ -99,29 +99,27 @@ const AlgoDrawer = (): JSX.Element => {
                         alignItems="stretch"
                         spacing="8"
                         paddingX="5"
+                        paddingY="8"
                     >
-                        <TableDrawerSection title="General">
-                            <TableDrawerSectionEntry title="Category">
+                        <DrawerSection title="General">
+                            <DrawerSectionEntry title="Category">
                                 {getAlgoCategory(algo)}
-                            </TableDrawerSectionEntry>
-                            <TableDrawerSectionKeyEntry
-                                value={algo.key}
-                                maxWidth="300px"
-                            />
-                            <TableDrawerSectionDateEntry
+                            </DrawerSectionEntry>
+                            <DrawerSectionKeyEntry value={algo.key} />
+                            <DrawerSectionDateEntry
                                 title="Created"
                                 date={algo.creation_date}
                             />
-                            <TableDrawerSectionEntry title="Owner">
+                            <DrawerSectionEntry title="Owner">
                                 {algo.owner}
-                            </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Permissions">
+                            </DrawerSectionEntry>
+                            <DrawerSectionEntry title="Permissions">
                                 <PermissionTag
                                     permission={algo.permissions.process}
                                     listNodes={true}
                                 />
-                            </TableDrawerSectionEntry>
-                        </TableDrawerSection>
+                            </DrawerSectionEntry>
+                        </DrawerSection>
                         <MetadataDrawerSection metadata={algo.metadata} />
                         <DescriptionDrawerSection
                             loading={descriptionLoading}

@@ -35,7 +35,7 @@ const PermissionTag = ({
 
     if (listNodes) {
         return (
-            <Wrap spacing="2.5" justify="flex-end">
+            <Wrap spacing="2.5" justify="flex-start">
                 {permission.authorized_ids.map((nodeId) => (
                     <WrapItem key={nodeId}>
                         <Tag size="sm" key={nodeId}>

@@ -1,9 +1,3 @@
-import SearchBar from './SearchBar';
-import {
-    StatusTableFilterTag,
-    TableFilterTags,
-    WorkerTableFilterTag,
-} from './TableFilterTags';
 import {
     VStack,
     Thead,
@@ -21,7 +15,7 @@ import {
     Link as ChakraLink,
 } from '@chakra-ui/react';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
-import { RiAlertLine, RiTimeLine } from 'react-icons/ri';
+import { RiAlertLine } from 'react-icons/ri';
 import { Link } from 'wouter';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -36,7 +30,7 @@ import {
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
 
-import { getDiffDates, shortFormatDate } from '@/libs/utils';
+import { shortFormatDate } from '@/libs/utils';
 
 import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -48,8 +42,15 @@ import {
     AssetsTableRankDurationTh,
     AssetsTableStatusTh,
 } from '@/components/AssetsTable';
+import Duration from '@/components/Duration';
+import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
+import {
+    StatusTableFilterTag,
+    TableFilterTags,
+    WorkerTableFilterTag,
+} from '@/components/TableFilterTags';
 import {
     TableFilters,
     TaskStatusTableFilter,
@@ -332,32 +333,9 @@ const TasksTable = ({
                                                     </Link>
                                                 </Td>
                                             )}
-                                            <Td textAlign="right">
-                                                <Text
-                                                    fontSize="xs"
-                                                    whiteSpace="nowrap"
-                                                >
-                                                    {`${task.rank}`}
-                                                </Text>
-                                                {task.start_date &&
-                                                    task.end_date && (
-                                                        <HStack justifyContent="flex-end">
-                                                            <Icon
-                                                                as={RiTimeLine}
-                                                                fill="gray.500"
-                                                            />
-                                                            <Text
-                                                                fontSize="xs"
-                                                                color="gray.500"
-                                                                alignItems="center"
-                                                            >
-                                                                {getDiffDates(
-                                                                    task.start_date,
-                                                                    task.end_date
-                                                                )}
-                                                            </Text>
-                                                        </HStack>
-                                                    )}
+                                            <Td textAlign="right" fontSize="xs">
+                                                <Text>{`${task.rank}`}</Text>
+                                                <Duration asset={task} />
                                             </Td>
                                         </ClickableTr>
                                     ))}

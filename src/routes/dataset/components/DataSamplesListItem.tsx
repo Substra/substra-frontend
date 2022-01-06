@@ -27,12 +27,13 @@ const DataSamplesListItem = ({
             </HStack>
             <HStack spacing="0.5">
                 <CopyIconButton
-                    label={`Copy ${type} data samples keys as JSON`}
+                    aria-label={`Copy ${type} data samples keys as JSON`}
                     variant="ghost"
                     value={keysAsJson}
+                    size="sm"
                 />
                 <DownloadIconButton
-                    label={`Download ${type} data samples keys as JSON`}
+                    aria-label={`Download ${type} data samples keys as JSON`}
                     variant="ghost"
                     blob={keysAsBlob}
                     filename={`${type}_data_sample_keys.json`}

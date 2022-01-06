@@ -16,10 +16,7 @@ import {
 import { useAppSelector } from '@/hooks';
 
 import CopyButton from '@/components/CopyButton';
-import {
-    TableDrawerSection,
-    TableDrawerSectionEntry,
-} from '@/components/TableDrawerSection';
+import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
 declare const __APP_VERSION__: string;
 declare const API_URL: string;
@@ -46,24 +43,24 @@ const About = () => {
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="5">
-                            <TableDrawerSection title="Version">
-                                <TableDrawerSectionEntry title="Frontend">
+                            <DrawerSection title="Version">
+                                <DrawerSectionEntry title="Frontend">
                                     {__APP_VERSION__}
-                                </TableDrawerSectionEntry>
-                                <TableDrawerSectionEntry title="Backend">
+                                </DrawerSectionEntry>
+                                <DrawerSectionEntry title="Backend">
                                     {backendVersion}
-                                </TableDrawerSectionEntry>
-                                <TableDrawerSectionEntry title="Orchestrator">
+                                </DrawerSectionEntry>
+                                <DrawerSectionEntry title="Orchestrator">
                                     {orchestratorVersion}
-                                </TableDrawerSectionEntry>
+                                </DrawerSectionEntry>
                                 {chaincodeVersion && (
-                                    <TableDrawerSectionEntry title="Chaincode">
+                                    <DrawerSectionEntry title="Chaincode">
                                         {chaincodeVersion}
-                                    </TableDrawerSectionEntry>
+                                    </DrawerSectionEntry>
                                 )}
-                            </TableDrawerSection>
-                            <TableDrawerSection title="Backend">
-                                <TableDrawerSectionEntry title="URL">
+                            </DrawerSection>
+                            <DrawerSection title="Backend">
+                                <DrawerSectionEntry title="URL">
                                     <HStack
                                         spacing={1.5}
                                         justifyContent="flex-end"
@@ -71,8 +68,8 @@ const About = () => {
                                         <span>{API_URL}</span>
                                         <CopyButton value={API_URL} />
                                     </HStack>
-                                </TableDrawerSectionEntry>
-                            </TableDrawerSection>
+                                </DrawerSectionEntry>
+                            </DrawerSection>
                         </VStack>
                     </ModalBody>
 

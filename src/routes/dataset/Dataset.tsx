@@ -84,7 +84,7 @@ const Dataset = (): JSX.Element => {
                 overflow="auto"
                 flexGrow={1}
             >
-                <VStack spacing="8" width="870px" alignItems="stretch">
+                <VStack spacing="8" flexGrow={1} alignItems="stretch">
                     <Box
                         backgroundColor="white"
                         borderWidth="1px"
@@ -145,7 +145,8 @@ const Dataset = (): JSX.Element => {
                             <HStack>
                                 <CopyIconButton
                                     value={opener}
-                                    label="Copy code"
+                                    size="sm"
+                                    aria-label="Copy code"
                                 />
                                 <DownloadIconButton
                                     storageAddress={
@@ -154,7 +155,7 @@ const Dataset = (): JSX.Element => {
                                             : ''
                                     }
                                     filename="opener.py"
-                                    label="Download opener.py"
+                                    aria-label="Download opener.py"
                                 />
                             </HStack>
                         </Heading>

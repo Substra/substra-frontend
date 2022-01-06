@@ -1,21 +1,25 @@
-import { IconButton, IconButtonProps, Tooltip } from '@chakra-ui/react';
+import {
+    IconButton,
+    IconButtonProps,
+    Tooltip,
+    TooltipProps,
+} from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
 import { downloadBlob, downloadFromApi } from '@/libs/request';
 
-interface DownloadIconButtonProps {
+interface DownloadIconButtonProps extends IconButtonProps {
     storageAddress?: string;
     blob?: Blob;
     filename: string;
-    label: string;
-    variant?: IconButtonProps['variant'];
+    placement?: TooltipProps['placement'];
 }
 const DownloadIconButton = ({
     storageAddress,
     blob,
     filename,
-    label,
-    variant = 'solid',
+    placement,
+    ...props
 }: DownloadIconButtonProps): JSX.Element => {
     const download = () => {
         if (storageAddress) {
@@ -27,14 +31,18 @@ const DownloadIconButton = ({
         }
     };
     return (
-        <Tooltip label={label} hasArrow={true} placement="top" fontSize="xs">
+        <Tooltip
+            label={props['aria-label']}
+            hasArrow={true}
+            placement={placement || 'top-end'}
+            fontSize="xs"
+        >
             <IconButton
-                aria-label={label}
-                variant={variant}
                 size="sm"
                 color="gray.500"
                 icon={<RiDownloadLine />}
                 onClick={download}
+                {...props}
             />
         </Tooltip>
     );

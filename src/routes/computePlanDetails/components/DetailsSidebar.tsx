@@ -7,15 +7,15 @@ import { getDiffDates } from '@/libs/utils';
 import { useAppSelector } from '@/hooks';
 
 import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
-import DrawerSectionContainer from '@/components/DrawerSectionContainer';
+import {
+    DrawerSection,
+    DrawerSectionDateEntry,
+    DrawerSectionEntry,
+    DrawerSectionKeyEntry,
+} from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
-import {
-    TableDrawerSection,
-    TableDrawerSectionDateEntry,
-    TableDrawerSectionEntry,
-    TableDrawerSectionKeyEntry,
-} from '@/components/TableDrawerSection';
+import Timing from '@/components/Timing';
 
 const DetailsSidebar = (): JSX.Element => {
     const computePlan = useAppSelector(
@@ -31,8 +31,14 @@ const DetailsSidebar = (): JSX.Element => {
             : 0;
 
     return (
-        <VStack spacing="8" width="xs" alignItems="stretch">
-            <DrawerSectionContainer title="Progression">
+        <VStack
+            spacing="8"
+            minWidth="420px"
+            maxWidth="md"
+            flexGrow={1}
+            alignItems="stretch"
+        >
+            <DrawerSection title="Progression">
                 <VStack
                     backgroundColor="white"
                     borderWidth="1px"
@@ -100,43 +106,31 @@ const DetailsSidebar = (): JSX.Element => {
                         </>
                     )}
                 </VStack>
-            </DrawerSectionContainer>
-            <TableDrawerSection title="General">
+            </DrawerSection>
+            <DrawerSection title="General">
                 {computePlan && (
                     <>
-                        <TableDrawerSectionEntry title="Status">
+                        <DrawerSectionEntry title="Status">
                             <Status
                                 status={computePlan.status}
                                 size="sm"
                                 variant="solid"
                             />
-                        </TableDrawerSectionEntry>
-                        <TableDrawerSectionKeyEntry
-                            value={computePlan.key}
-                            maxWidth="180px"
-                        />
-                        <TableDrawerSectionDateEntry
+                        </DrawerSectionEntry>
+                        <DrawerSectionKeyEntry value={computePlan.key} />
+                        <DrawerSectionDateEntry
                             title="Created"
                             date={computePlan.creation_date}
                         />
-                        {computePlan.start_date && (
-                            <TableDrawerSectionDateEntry
-                                title="Started"
-                                date={computePlan.start_date}
-                            />
-                        )}
-                        {computePlan.end_date && (
-                            <TableDrawerSectionDateEntry
-                                title="Ended"
-                                date={computePlan.end_date}
-                            />
-                        )}
-                        <TableDrawerSectionEntry title="Owner">
+                        <DrawerSectionEntry title="Duration">
+                            <Timing asset={computePlan} />
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Owner">
                             {computePlan.owner}
-                        </TableDrawerSectionEntry>
+                        </DrawerSectionEntry>
                     </>
                 )}
-            </TableDrawerSection>
+            </DrawerSection>
             {computePlan && (
                 <MetadataDrawerSection metadata={computePlan.metadata} />
             )}

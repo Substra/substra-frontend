@@ -6,24 +6,24 @@ import {
 } from '@chakra-ui/react';
 import { RiCheckLine, RiFileCopyLine } from 'react-icons/ri';
 
-interface CopyIconButtonProps {
+interface CopyIconButtonProps extends IconButtonProps {
     value: string;
-    label: string;
-    variant?: IconButtonProps['variant'];
 }
 const CopyIconButton = ({
     value,
-    label,
-    variant = 'solid',
+    ...props
 }: CopyIconButtonProps): JSX.Element => {
     const { hasCopied, onCopy } = useClipboard(value);
 
     return (
-        <Tooltip label={label} fontSize="xs" hasArrow={true} placement="top">
+        <Tooltip
+            label={props['aria-label']}
+            fontSize="xs"
+            hasArrow={true}
+            placement="top"
+        >
             <IconButton
-                aria-label={label}
-                variant={variant}
-                size="sm"
+                {...props}
                 color="gray.500"
                 icon={hasCopied ? <RiCheckLine /> : <RiFileCopyLine />}
                 onClick={onCopy}

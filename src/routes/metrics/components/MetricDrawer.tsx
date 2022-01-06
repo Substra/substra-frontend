@@ -25,14 +25,14 @@ import { PATHS } from '@/routes';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
 import DrawerHeader from '@/components/DrawerHeader';
+import {
+    DrawerSection,
+    DrawerSectionDateEntry,
+    DrawerSectionEntry,
+    DrawerSectionKeyEntry,
+} from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
-import {
-    TableDrawerSection,
-    TableDrawerSectionDateEntry,
-    TableDrawerSectionEntry,
-    TableDrawerSectionKeyEntry,
-} from '@/components/TableDrawerSection';
 
 const MetricDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
@@ -103,26 +103,24 @@ const MetricDrawer = (): JSX.Element => {
                         alignItems="stretch"
                         spacing="8"
                         paddingX="5"
+                        paddingY="8"
                     >
-                        <TableDrawerSection title="General">
-                            <TableDrawerSectionKeyEntry
-                                value={metric.key}
-                                maxWidth="300px"
-                            />
-                            <TableDrawerSectionDateEntry
+                        <DrawerSection title="General">
+                            <DrawerSectionKeyEntry value={metric.key} />
+                            <DrawerSectionDateEntry
                                 title="Created"
                                 date={metric.creation_date}
                             />
-                            <TableDrawerSectionEntry title="Owner">
+                            <DrawerSectionEntry title="Owner">
                                 {metric.owner}
-                            </TableDrawerSectionEntry>
-                            <TableDrawerSectionEntry title="Permissions">
+                            </DrawerSectionEntry>
+                            <DrawerSectionEntry title="Permissions">
                                 <PermissionTag
                                     permission={metric.permissions.process}
                                     listNodes={true}
                                 />
-                            </TableDrawerSectionEntry>
-                        </TableDrawerSection>
+                            </DrawerSectionEntry>
+                        </DrawerSection>
                         <MetadataDrawerSection metadata={metric.metadata} />
                         <DescriptionDrawerSection
                             loading={descriptionLoading}

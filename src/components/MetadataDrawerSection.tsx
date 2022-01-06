@@ -1,10 +1,6 @@
 import { Text } from '@chakra-ui/react';
 
-import DrawerSectionContainer from '@/components/DrawerSectionContainer';
-import {
-    TableDrawerSection,
-    TableDrawerSectionEntry,
-} from '@/components/TableDrawerSection';
+import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
 export default ({
     metadata,
@@ -13,18 +9,18 @@ export default ({
 }): JSX.Element => {
     if (Object.keys(metadata).length === 0) {
         return (
-            <DrawerSectionContainer title="Metadata">
+            <DrawerSection title="Metadata">
                 <Text fontSize="sm">N/A</Text>
-            </DrawerSectionContainer>
+            </DrawerSection>
         );
     }
     return (
-        <TableDrawerSection title="Metadata">
+        <DrawerSection title="Metadata">
             {Object.entries(metadata).map(([key, value]) => (
-                <TableDrawerSectionEntry title={key} key={key}>
+                <DrawerSectionEntry title={key} key={key}>
                     {value}
-                </TableDrawerSectionEntry>
+                </DrawerSectionEntry>
             ))}
-        </TableDrawerSection>
+        </DrawerSection>
     );
 };

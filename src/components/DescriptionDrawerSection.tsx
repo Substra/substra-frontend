@@ -1,6 +1,6 @@
 import { Skeleton, Text } from '@chakra-ui/react';
 
-import DrawerSectionContainer from '@/components/DrawerSectionContainer';
+import { DrawerSection } from '@/components/DrawerSection';
 import MarkdownSection from '@/components/MarkdownSection';
 
 interface DescriptionDrawerSectionProps {
@@ -13,13 +13,13 @@ const DescriptionDrawerSection = ({
     loading,
 }: DescriptionDrawerSectionProps): JSX.Element => {
     return (
-        <DrawerSectionContainer title="Description">
+        <DrawerSection title="Description">
             {loading && <Skeleton></Skeleton>}
             {!loading && !description && <Text fontSize="sm">N/A</Text>}
             {!loading && description && (
                 <MarkdownSection source={description} />
             )}
-        </DrawerSectionContainer>
+        </DrawerSection>
     );
 };
 export default DescriptionDrawerSection;

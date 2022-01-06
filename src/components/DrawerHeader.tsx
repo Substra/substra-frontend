@@ -28,7 +28,10 @@ const DrawerHeader = ({
         display="flex"
         justifyContent="space-between"
         paddingX="5"
+        paddingY="3"
         alignItems="center"
+        borderBottom="1px solid"
+        borderBottomColor="gray.100"
     >
         {loading && <Skeleton />}
         {!loading && (
