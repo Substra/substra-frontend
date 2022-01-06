@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Disable Dark theme for Markdown content (#306)
 -   Fix Header width in drawer + markdown width (#307)
 -   Fix broken link in perf chart rank details (#310)
+-   Handle non available perfs on testtuples (#316)
 
 ### Changed
 

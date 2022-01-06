@@ -115,7 +115,7 @@ export interface TestDetailsStub {
     data_manager_key: string;
     data_sample_keys: string[];
     metric_keys: string[];
-    perfs: Record<string, number>;
+    perfs?: Record<string, number>;
 }
 
 export interface TestDetails extends TestDetailsStub {

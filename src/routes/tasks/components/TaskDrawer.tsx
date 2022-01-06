@@ -23,6 +23,7 @@ import {
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
+    getPerf,
     getTaskCategory,
     getTaskDataSampleKeys,
     getTaskDataset,
@@ -179,16 +180,22 @@ const TaskDrawer = ({
                                     />
                                     {isTesttuple(task) && (
                                         <TableDrawerSection title="Performances">
-                                            {task.test.metrics.map((metric) => (
-                                                <TableDrawerSectionEntry
-                                                    key={metric.key}
-                                                    title={metric.name}
-                                                >
-                                                    {task.test.perfs[
-                                                        metric.key
-                                                    ].toFixed(2)}
-                                                </TableDrawerSectionEntry>
-                                            ))}
+                                            {task.test.metrics.map((metric) => {
+                                                const perf = getPerf(
+                                                    task,
+                                                    metric.key
+                                                );
+                                                return (
+                                                    <TableDrawerSectionEntry
+                                                        key={metric.key}
+                                                        title={metric.name}
+                                                    >
+                                                        {perf === null
+                                                            ? 'N/A'
+                                                            : perf.toFixed(2)}
+                                                    </TableDrawerSectionEntry>
+                                                );
+                                            })}
                                         </TableDrawerSection>
                                     )}
                                 </DrawerBody>

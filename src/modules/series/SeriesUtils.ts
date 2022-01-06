@@ -3,7 +3,8 @@ import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
-import { TesttupleStub, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { getPerf } from '@/modules/tasks/TasksUtils';
+import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
 function buildSerieFeatures(
     testtuple: TesttupleStub,
@@ -75,10 +76,7 @@ export function buildSeries(
         for (const metricKey of testtuple.test.metric_keys) {
             const point: PointT = {
                 rank: testtuple.rank,
-                perf:
-                    testtuple.status === TupleStatus.done
-                        ? testtuple.test.perfs[metricKey]
-                        : null,
+                perf: getPerf(testtuple, metricKey),
                 testTaskKey: testtuple.key,
             };
 
