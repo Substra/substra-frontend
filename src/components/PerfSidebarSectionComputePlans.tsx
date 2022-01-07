@@ -79,6 +79,26 @@ const LoadingState = (): JSX.Element => {
     );
 };
 
+const hierarchyBackgrounds = ({
+    vlBottom,
+    hlTop,
+    hlSpacing,
+}: {
+    vlBottom: number;
+    hlTop: number;
+    hlSpacing: number;
+}) => ({
+    backgroundImage:
+        'linear-gradient(var(--chakra-colors-gray-300), var(--chakra-colors-gray-300)), ' +
+        `repeating-linear-gradient(transparent 0, transparent ${hlTop}px, var(--chakra-colors-gray-300) ${hlTop}px, var(--chakra-colors-gray-300) ${
+            hlTop + 1
+        }px, transparent ${hlTop + 1}px, transparent ${hlSpacing}px);`,
+
+    backgroundSize: `1px calc(100% - ${vlBottom}px), 10px 100%`,
+    backgroundPosition: '7px 0, 7px 0',
+    backgroundRepeat: 'no-repeat, repeat-y',
+});
+
 const PerfSidebarSectionComputePlans = (): JSX.Element => {
     const {
         sortedComputePlanKeys,
@@ -109,7 +129,16 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                 computePlanKey={computePlanKey}
                                 index={index}
                             />
-                            <List paddingLeft="6" spacing="2.5" marginTop="2.5">
+                            <List
+                                paddingLeft="6"
+                                spacing="2.5"
+                                marginTop="2.5"
+                                {...hierarchyBackgrounds({
+                                    vlBottom: 10,
+                                    hlTop: 13,
+                                    hlSpacing: 34,
+                                })}
+                            >
                                 {nodeIds
                                     .filter(
                                         (nodeId) =>
@@ -148,16 +177,27 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                             </Checkbox>
                                         </ListItem>
                                     ))}
-                                {nodeIds.filter(
-                                    (nodeId) =>
-                                        hasStatus(computePlanKey, nodeId) &&
-                                        selectedNodeIds.includes(nodeId)
-                                ).length === 0 && (
+                            </List>
+                            {nodeIds.filter(
+                                (nodeId) =>
+                                    hasStatus(computePlanKey, nodeId) &&
+                                    selectedNodeIds.includes(nodeId)
+                            ).length === 0 && (
+                                <List
+                                    paddingLeft="6"
+                                    spacing="2.5"
+                                    marginTop="2.5"
+                                    {...hierarchyBackgrounds({
+                                        vlBottom: 8,
+                                        hlTop: 9,
+                                        hlSpacing: 0,
+                                    })}
+                                >
                                     <ListItem fontSize="xs">
                                         No node to display
                                     </ListItem>
-                                )}
-                            </List>
+                                </List>
+                            )}
                         </ListItem>
                     ))}
             </List>
