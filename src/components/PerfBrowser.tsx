@@ -8,9 +8,9 @@ import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-import LoadingState from '@/components/LoadingState';
 import PerfDetails from '@/components/PerfDetails';
 import PerfList from '@/components/PerfList';
+import PerfLoadingState from '@/components/PerfLoadingState';
 import PerfSidebarSection from '@/components/PerfSidebarSection';
 
 interface PerfBrowserProps {
@@ -32,7 +32,12 @@ const PerfBrowser = ({
 }: PerfBrowserProps) => {
     const [selectedMetricName, setSelectedMetricName] = useState('');
 
-    const { context } = usePerfBrowser(series, computePlans, colorMode);
+    const { context } = usePerfBrowser(
+        series,
+        computePlans,
+        colorMode,
+        loading
+    );
     const {
         selectedNodeIds,
         selectedComputePlanKeys,
@@ -104,9 +109,7 @@ const PerfBrowser = ({
                     overflowX="hidden"
                     overflowY="auto"
                 >
-                    {loading && (
-                        <LoadingState message="Loading performance data" />
-                    )}
+                    {loading && <PerfLoadingState />}
                     {!loading && (
                         <>
                             {series.length === 0 && (

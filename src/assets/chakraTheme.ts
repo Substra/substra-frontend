@@ -260,7 +260,13 @@ export default extendTheme({
                 closeButton: noBorderRadius,
             },
         },
-        Skeleton: noDefaultBorderRadius,
+        Skeleton: {
+            ...noDefaultBorderRadius,
+            defaultProps: {
+                startColor: 'gray.50',
+                endColor: 'gray.200',
+            },
+        },
         Tabs: {
             variants: {
                 'soft-rounded': { tab: noBorderRadius },

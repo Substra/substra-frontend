@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Updated drawers and sidebars look and feel (#315)
+-   Improved look for the PerfBrowser loading state (#318)
 
 ## [0.7.0] - 2022-01-06
 

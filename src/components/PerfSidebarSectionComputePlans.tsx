@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Checkbox, List, ListItem, Text } from '@chakra-ui/react';
+import { Checkbox, List, ListItem, Skeleton, Text } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -47,6 +47,38 @@ const ComputePlanCheckbox = ({
     );
 };
 
+const LoadingState = (): JSX.Element => {
+    return (
+        <>
+            <ListItem>
+                <Skeleton width="100px" height="16px" />
+                <List paddingLeft="6" spacing="2.5" marginTop="2.5">
+                    <ListItem>
+                        <Skeleton width="200px" height="16px" />
+                    </ListItem>
+                    <ListItem>
+                        <Skeleton width="200px" height="16px" />
+                    </ListItem>
+                    <ListItem>
+                        <Skeleton width="200px" height="16px" />
+                    </ListItem>
+                </List>
+            </ListItem>
+            <ListItem>
+                <Skeleton width="100px" height="16px" />
+                <List paddingLeft="6" spacing="2.5" marginTop="2.5">
+                    <ListItem>
+                        <Skeleton width="200px" height="16px" />
+                    </ListItem>
+                    <ListItem>
+                        <Skeleton width="200px" height="16px" />
+                    </ListItem>
+                </List>
+            </ListItem>
+        </>
+    );
+};
+
 const PerfSidebarSectionComputePlans = (): JSX.Element => {
     const {
         sortedComputePlanKeys,
@@ -55,6 +87,7 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
         selectedComputePlanKeys,
         selectedComputePlanNodes,
         onComputePlanNodeSelectionChange,
+        loading,
     } = useContext(PerfBrowserContext);
     const { getColorScheme } = usePerfBrowserColors();
 
@@ -68,63 +101,65 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
     return (
         <PerfSidebarSection title="Compute plans">
             <List spacing="6">
-                {sortedComputePlanKeys.map((computePlanKey, index) => (
-                    <ListItem key={computePlanKey}>
-                        <ComputePlanCheckbox
-                            computePlanKey={computePlanKey}
-                            index={index}
-                        />
-                        <List paddingLeft="6" spacing="2.5" marginTop="2.5">
-                            {nodeIds
-                                .filter(
+                {loading && <LoadingState />}
+                {!loading &&
+                    sortedComputePlanKeys.map((computePlanKey, index) => (
+                        <ListItem key={computePlanKey}>
+                            <ComputePlanCheckbox
+                                computePlanKey={computePlanKey}
+                                index={index}
+                            />
+                            <List paddingLeft="6" spacing="2.5" marginTop="2.5">
+                                {nodeIds
+                                    .filter(
+                                        (nodeId) =>
+                                            hasStatus(computePlanKey, nodeId) &&
+                                            selectedNodeIds.includes(nodeId)
+                                    )
+                                    .map((nodeId) => (
+                                        <ListItem
+                                            key={`${computePlanKey}-${nodeId}`}
+                                        >
+                                            <Checkbox
+                                                colorScheme={lightenColorName(
+                                                    getColorScheme({
+                                                        computePlanKey,
+                                                        worker: nodeId,
+                                                    })
+                                                )}
+                                                onChange={onComputePlanNodeSelectionChange(
+                                                    computePlanKey,
+                                                    nodeId
+                                                )}
+                                                isChecked={
+                                                    selectedComputePlanNodes[
+                                                        computePlanKey
+                                                    ][nodeId]
+                                                }
+                                                isDisabled={
+                                                    !selectedComputePlanKeys.includes(
+                                                        computePlanKey
+                                                    )
+                                                }
+                                            >
+                                                <Text as="span" fontSize="xs">
+                                                    {nodeId}
+                                                </Text>
+                                            </Checkbox>
+                                        </ListItem>
+                                    ))}
+                                {nodeIds.filter(
                                     (nodeId) =>
                                         hasStatus(computePlanKey, nodeId) &&
                                         selectedNodeIds.includes(nodeId)
-                                )
-                                .map((nodeId) => (
-                                    <ListItem
-                                        key={`${computePlanKey}-${nodeId}`}
-                                    >
-                                        <Checkbox
-                                            colorScheme={lightenColorName(
-                                                getColorScheme({
-                                                    computePlanKey,
-                                                    worker: nodeId,
-                                                })
-                                            )}
-                                            onChange={onComputePlanNodeSelectionChange(
-                                                computePlanKey,
-                                                nodeId
-                                            )}
-                                            isChecked={
-                                                selectedComputePlanNodes[
-                                                    computePlanKey
-                                                ][nodeId]
-                                            }
-                                            isDisabled={
-                                                !selectedComputePlanKeys.includes(
-                                                    computePlanKey
-                                                )
-                                            }
-                                        >
-                                            <Text as="span" fontSize="xs">
-                                                {nodeId}
-                                            </Text>
-                                        </Checkbox>
+                                ).length === 0 && (
+                                    <ListItem fontSize="xs">
+                                        No node to display
                                     </ListItem>
-                                ))}
-                            {nodeIds.filter(
-                                (nodeId) =>
-                                    hasStatus(computePlanKey, nodeId) &&
-                                    selectedNodeIds.includes(nodeId)
-                            ).length === 0 && (
-                                <ListItem fontSize="xs">
-                                    No node to display
-                                </ListItem>
-                            )}
-                        </List>
-                    </ListItem>
-                ))}
+                                )}
+                            </List>
+                        </ListItem>
+                    ))}
             </List>
         </PerfSidebarSection>
     );

@@ -10,6 +10,7 @@ import {
     MenuGroup,
     MenuItem,
     MenuList,
+    Skeleton,
     Tag,
     TagCloseButton,
     TagLabel,
@@ -19,7 +20,7 @@ import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsNodes = (): JSX.Element => {
-    const { nodes, selectedNodeIds, setSelectedNodeIds } =
+    const { nodes, selectedNodeIds, setSelectedNodeIds, loading } =
         useContext(PerfBrowserContext);
 
     const remove = (nodeId: string) => () => {
@@ -91,19 +92,35 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         </MenuList>
                     </Menu>
                 </Flex>
-                {selectedNodeIds.map((nodeId) => {
-                    return (
-                        <Tag
-                            size="sm"
-                            colorScheme="teal"
-                            variant="solid"
-                            key={nodeId}
-                        >
-                            <TagLabel>{nodeId}</TagLabel>
-                            <TagCloseButton onClick={remove(nodeId)} />
-                        </Tag>
-                    );
-                })}
+                {loading && (
+                    <>
+                        <Skeleton
+                            height="20px"
+                            width="160px"
+                            marginBottom="1"
+                        />
+                        <Skeleton
+                            height="20px"
+                            width="160px"
+                            marginBottom="1"
+                        />
+                        <Skeleton height="20px" width="130px" />
+                    </>
+                )}
+                {!loading &&
+                    selectedNodeIds.map((nodeId) => {
+                        return (
+                            <Tag
+                                size="sm"
+                                colorScheme="teal"
+                                variant="solid"
+                                key={nodeId}
+                            >
+                                <TagLabel>{nodeId}</TagLabel>
+                                <TagCloseButton onClick={remove(nodeId)} />
+                            </Tag>
+                        );
+                    })}
                 <Box style={{ clear: 'both' }} />
             </Box>
         </Box>

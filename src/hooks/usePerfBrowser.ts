@@ -10,6 +10,7 @@ import { OnOptionChange } from '@/hooks/useSelection';
 type ComputePlanNodes = Record<string, Record<string, boolean>>;
 
 interface PerfBrowserContext {
+    loading: boolean;
     // List of all compute plans we're browsing series for
     computePlans: ComputePlanT[];
     // List of all compute plan keys sorted alphabetically
@@ -45,6 +46,7 @@ interface PerfBrowserContext {
 
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 export const PerfBrowserContext = createContext<PerfBrowserContext>({
+    loading: true,
     computePlans: [],
     sortedComputePlanKeys: [],
     series: [],
@@ -70,7 +72,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
 const usePerfBrowser = (
     series: SerieT[],
     computePlans: ComputePlanT[],
-    colorMode: 'computePlan' | 'node'
+    colorMode: 'computePlan' | 'node',
+    loading: boolean
 ): {
     context: PerfBrowserContext;
 } => {
@@ -219,6 +222,7 @@ const usePerfBrowser = (
 
     return {
         context: {
+            loading,
             series,
             computePlans,
             sortedComputePlanKeys,
