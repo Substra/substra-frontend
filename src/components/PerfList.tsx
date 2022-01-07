@@ -13,6 +13,7 @@ import { compilePath, PATHS } from '@/routes';
 
 import PerfCard from '@/components/PerfCard';
 import PerfChart from '@/components/PerfChart';
+import PerfEmptyState from '@/components/PerfEmptyState';
 
 interface PerfListProps {
     seriesGroups: SerieT[][];
@@ -57,10 +58,12 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                     colorScheme="teal"
                     size="sm"
                     onClick={downloadPerfCsv}
+                    isDisabled={seriesGroups.length === 0}
                 >
                     Download as CSV
                 </Button>
             </Flex>
+            <PerfEmptyState seriesGroups={seriesGroups} />
             <Wrap spacing="3">
                 {seriesGroups.map((series) => (
                     <WrapItem key={`${series[0].metricKey}-${series[0].id}`}>

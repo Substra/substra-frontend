@@ -53,6 +53,7 @@ const PerfDownloadButton = ({
                 variant="solid"
                 colorScheme="teal"
                 size="sm"
+                isDisabled={series.length === 0}
             >
                 Download...
             </MenuButton>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -112,17 +112,6 @@ const PerfBrowser = ({
                     {loading && <PerfLoadingState />}
                     {!loading && (
                         <>
-                            {series.length === 0 && (
-                                <Text padding="8">
-                                    There is no data to display: there are no
-                                    test tasks in status done.
-                                </Text>
-                            )}
-                            {seriesGroups.length === 0 && (
-                                <Text padding="8">
-                                    Select at least one node to display the data
-                                </Text>
-                            )}
                             {selectedMetricName && (
                                 <PerfDetails
                                     metricName={selectedMetricName}
