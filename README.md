@@ -134,3 +134,17 @@ MICROSOFT_CLARITY_ID=xxxxxxxxxx npm run dev
 In production:
 
 You'll have to define the `microsoftClarity.id` value.
+
+## MELLODDY
+
+To run the frontend with the MELLODDY-specific devs, you have to set the MELLODDY variable env:
+
+Locally:
+
+```sh
+MELLODDY=true npm run dev
+```
+
+In production:
+
+You'll have to define the `melloddy` value.

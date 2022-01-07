@@ -4,6 +4,7 @@ import StatusCell from './StatusCell';
 import { Td, Checkbox, Text } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { shortFormatDate } from '@/libs/utils';
@@ -23,6 +24,8 @@ interface ComputePlanTrProps {
     pinnedKeys: string[];
     onPinChange: (computePlan: ComputePlanT) => () => void;
 }
+
+declare const MELLODDY: boolean;
 
 const ComputePlanTr = ({
     computePlan,
@@ -59,7 +62,9 @@ const ComputePlanTr = ({
                 />
             </CheckboxTd>
             <Td minWidth="250px">
-                <Text fontSize="xs">{computePlan.tag}</Text>
+                <Text fontSize="xs">
+                    {MELLODDY ? getMelloddyName(computePlan) : computePlan.tag}
+                </Text>
             </Td>
             <Td minWidth="255px">
                 <StatusCell computePlan={computePlan} />

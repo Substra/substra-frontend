@@ -48,6 +48,8 @@ import {
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
+declare const MELLODDY: boolean;
+
 const ComputePlans = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const {
@@ -157,7 +159,9 @@ const ComputePlans = (): JSX.Element => {
                         <Tr>
                             <Th padding="0" minWidth="50px"></Th>
                             <Th padding="0" minWidth="36px"></Th>
-                            <Th minWidth="250px">Tag</Th>
+                            <Th minWidth="250px">
+                                {MELLODDY ? 'Name' : 'Tag'}
+                            </Th>
                             <Th minWidth="255px">Status / Tasks</Th>
                             <Th minWidth="255px">Creation</Th>
                             <Th minWidth="255px">Dates / Duration</Th>
@@ -207,7 +211,9 @@ const ComputePlans = (): JSX.Element => {
                                                     fontSize="xs"
                                                     color="gray.600"
                                                 >
-                                                    foo/bar
+                                                    {MELLODDY
+                                                        ? 'CP56-SP-CLS-PH1'
+                                                        : 'foo/bar'}
                                                 </Text>
                                             </Flex>
                                             <Progress

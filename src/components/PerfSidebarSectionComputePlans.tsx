@@ -2,12 +2,16 @@ import { useContext } from 'react';
 
 import { Checkbox, List, ListItem, Skeleton, Text } from '@chakra-ui/react';
 
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
+
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
 import PerfSidebarSection from '@/components/PerfSidebarSection';
 
 import { lightenColorName } from '@/assets/chakraTheme';
+
+declare const MELLODDY: boolean;
 
 const ComputePlanCheckbox = ({
     computePlanKey,
@@ -33,7 +37,17 @@ const ComputePlanCheckbox = ({
             <Text as="span" fontSize="xs" fontWeight="semibold">
                 {`CP${index + 1}`}
             </Text>
-            {computePlan?.tag && (
+            {MELLODDY && computePlan && (
+                <>
+                    <Text as="span" fontSize="xs" marginX="1">
+                        •
+                    </Text>
+                    <Text as="span" fontSize="xs">
+                        {getMelloddyName(computePlan)}
+                    </Text>
+                </>
+            )}
+            {!MELLODDY && computePlan?.tag && (
                 <>
                     <Text as="span" fontSize="xs" marginX="1">
                         •

@@ -56,6 +56,8 @@ spec:
               value: {{ .Chart.AppVersion }}
             - name: MICROSOFT_CLARITY_ID
               value: {{ .Values.microsoftClarity.id | quote }}
+            - name: MELLODDY
+              value: {{ .Values.melloddy | quote}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

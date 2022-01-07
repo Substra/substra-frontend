@@ -7,6 +7,7 @@ import reactJsx from 'vite-react-jsx';
 
 const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
 const MICROSOFT_CLARITY_ID = process.env['MICROSOFT_CLARITY_ID'] || '';
+const MELLODDY = process.env['MELLODDY'] || '';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,7 @@ export default defineConfig({
             ? {
                   API_URL: `'http://substra-backend.node-1.com'`,
                   MICROSOFT_CLARITY_ID: `'${MICROSOFT_CLARITY_ID}'`,
+                  MELLODDY: MELLODDY === 'true',
               }
             : {}),
         DEFAULT_PAGE_SIZE: '10',

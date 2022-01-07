@@ -1,4 +1,4 @@
-import { ComputePlanT } from './ComputePlansTypes';
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
@@ -21,4 +21,17 @@ export const getStatusCount = (
     }
 
     throw `Invalid status ${status}`;
+};
+
+declare const MELLODDY: boolean;
+
+export const getMelloddyName = (
+    computePlan: ComputePlanT | ComputePlanStub
+): string => {
+    if (MELLODDY) {
+        const name = computePlan.metadata['name'] || 'Unnamed compute plan';
+        return name;
+    }
+
+    throw 'Cannot get MELLODDY name if MELLODDY flag is not set';
 };

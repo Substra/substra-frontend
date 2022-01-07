@@ -1,12 +1,16 @@
 import { HStack, Text } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
+
 import { useAppSelector } from '@/hooks';
 
 import { PATHS } from '@/routes';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Status from '@/components/Status';
+
+declare const MELLODDY: boolean;
 
 const ComputePlanBreadcrumbs = (): JSX.Element => {
     const computePlan = useAppSelector(
@@ -31,7 +35,9 @@ const ComputePlanBreadcrumbs = (): JSX.Element => {
                     {computePlanLoading && 'Loading'}
                     {!computePlanLoading &&
                         computePlan &&
-                        (computePlan.tag || 'Untagged compute plan')}
+                        (MELLODDY
+                            ? getMelloddyName(computePlan)
+                            : computePlan.tag || 'Untagged compute plan')}
                 </Text>
                 {!computePlanLoading && computePlan && (
                     <Status
