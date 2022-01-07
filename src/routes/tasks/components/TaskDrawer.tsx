@@ -4,6 +4,7 @@ import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
 import DrawerSectionMetricsEntry from './DrawerSectionMetricsEntry';
 import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
 import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
+import DrawerSectionTestedModel from './DrawerSectionTestedModel';
 import {
     Drawer,
     DrawerContent,
@@ -174,7 +175,10 @@ const TaskDrawer = ({
                                 </Text>
                             </DrawerSectionEntry>
                             {isTesttuple(task) && (
-                                <DrawerSectionMetricsEntry task={task} />
+                                <>
+                                    <DrawerSectionTestedModel task={task} />
+                                    <DrawerSectionMetricsEntry task={task} />
+                                </>
                             )}
                             {(isTesttuple(task) ||
                                 isCompositeTraintuple(task) ||
