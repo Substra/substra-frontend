@@ -30,11 +30,16 @@ const EmptyState = ({
                 {icon}
             </Box>
             <Box>
-                <Text fontSize="sm" fontWeight="semibold" color="gray.500">
+                <Text
+                    fontSize="sm"
+                    fontWeight="semibold"
+                    color="gray.500"
+                    textAlign="center"
+                >
                     {title}
                 </Text>
                 {subtitle && (
-                    <Text fontSize="xs" color="gray.500">
+                    <Text fontSize="xs" color="gray.500" textAlign="center">
                         {subtitle}
                     </Text>
                 )}

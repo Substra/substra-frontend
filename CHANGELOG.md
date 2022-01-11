@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Do not include zoom and help buttons on chart JPEG export (#324)
+-   Misc alignment issues (#325)
 
 ### Changed
 

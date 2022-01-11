@@ -53,7 +53,10 @@ const DetailsSidebar = (): JSX.Element => {
                 >
                     {computePlan && (
                         <>
-                            <Flex justifyContent="space-between">
+                            <Flex
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
                                 <Text
                                     fontSize="md"
                                     lineHeight="6"

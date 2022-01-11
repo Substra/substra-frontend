@@ -61,10 +61,7 @@ const About = () => {
                             </DrawerSection>
                             <DrawerSection title="Backend">
                                 <DrawerSectionEntry title="URL">
-                                    <HStack
-                                        spacing={1.5}
-                                        justifyContent="flex-end"
-                                    >
+                                    <HStack spacing={1.5}>
                                         <span>{API_URL}</span>
                                         <CopyButton value={API_URL} />
                                     </HStack>
