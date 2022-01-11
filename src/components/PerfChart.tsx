@@ -211,24 +211,20 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
 
         const chart = useMemo(
             () => (
-                <Line
-                    data={data}
-                    options={options}
-                    plugins={plugins}
-                    ref={chartRef}
-                />
+                <Box ref={ref} padding="2" width="100%" height="100%">
+                    <Line
+                        data={data}
+                        options={options}
+                        plugins={plugins}
+                        ref={chartRef}
+                    />
+                </Box>
             ),
             [data]
         );
 
         return (
-            <Box
-                position="relative"
-                width="100%"
-                height="100%"
-                padding="2"
-                ref={ref}
-            >
+            <Box position="relative" width="100%" height="100%">
                 {chart}
                 {interactive && tooltip}
                 {interactive && (
