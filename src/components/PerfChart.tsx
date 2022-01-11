@@ -1,4 +1,4 @@
-import { useMemo, useRef, forwardRef, useContext } from 'react';
+import { useMemo, useRef, forwardRef, useContext, useState } from 'react';
 
 import {
     Box,
@@ -55,6 +55,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(series);
+        const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
         const maxRank = getMaxRank(series);
 
@@ -110,6 +111,9 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         enabled: true,
                     },
                     mode: 'xy',
+                    onZoom: () => {
+                        setIsZoomed(true);
+                    },
                 },
                 pan: {
                     enabled: true,
@@ -195,6 +199,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             const chart = chartRef.current;
             if (chart) {
                 chart.resetZoom();
+                setIsZoomed(false);
             }
         };
 
@@ -229,14 +234,16 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 {interactive && tooltip}
                 {interactive && (
                     <HStack position="absolute" bottom="14" right="2.5">
-                        <Button
-                            onClick={onResetZoomClick}
-                            variant="outline"
-                            size="sm"
-                            backgroundColor="white"
-                        >
-                            Reset zoom
-                        </Button>
+                        {isZoomed && (
+                            <Button
+                                onClick={onResetZoomClick}
+                                variant="outline"
+                                size="sm"
+                                backgroundColor="white"
+                            >
+                                Reset zoom
+                            </Button>
+                        )}
                         <Box>
                             <Popover placement="top-end">
                                 <PopoverTrigger>
