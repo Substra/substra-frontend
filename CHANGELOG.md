@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Only display "reset zoom" button when the chart is zoomed in (#326)
+-   Lazy load code highlighter and markdown formatter components (#328)
 
 ## [0.8.0] - 2022-01-07
 

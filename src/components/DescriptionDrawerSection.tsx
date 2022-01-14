@@ -1,7 +1,12 @@
+import React, { Suspense } from 'react';
+
 import { Skeleton, Text } from '@chakra-ui/react';
 
 import { DrawerSection } from '@/components/DrawerSection';
-import MarkdownSection from '@/components/MarkdownSection';
+
+const MarkdownSection = React.lazy(
+    () => import('@/components/MarkdownSection')
+);
 
 interface DescriptionDrawerSectionProps {
     description?: string;
@@ -14,10 +19,12 @@ const DescriptionDrawerSection = ({
 }: DescriptionDrawerSectionProps): JSX.Element => {
     return (
         <DrawerSection title="Description">
-            {loading && <Skeleton></Skeleton>}
+            {loading && <Skeleton />}
             {!loading && !description && <Text fontSize="sm">N/A</Text>}
             {!loading && description && (
-                <MarkdownSection source={description} />
+                <Suspense fallback={<Skeleton />}>
+                    <MarkdownSection source={description} />
+                </Suspense>
             )}
         </DrawerSection>
     );

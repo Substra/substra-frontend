@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { githubGist } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useRoute } from 'wouter';
 
 import {
@@ -22,7 +20,13 @@ import { PATHS } from '@/routes';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
-import MarkdownSection from '@/components/MarkdownSection';
+
+const CodeHighlighter = React.lazy(
+    () => import('./components/CodeHighlighter')
+);
+const MarkdownSection = React.lazy(
+    () => import('@/components/MarkdownSection')
+);
 
 const Dataset = (): JSX.Element => {
     const [, params] = useRoute(PATHS.DATASET);
@@ -118,7 +122,9 @@ const Dataset = (): JSX.Element => {
                                 <Text fontSize="sm">N/A</Text>
                             )}
                             {!descriptionLoading && description && (
-                                <MarkdownSection source={description} />
+                                <Suspense fallback={<Text>Loading</Text>}>
+                                    <MarkdownSection source={description} />
+                                </Suspense>
                             )}
                         </Box>
                     </Box>
@@ -183,13 +189,21 @@ const Dataset = (): JSX.Element => {
                                 </Text>
                             )}
                             {!openerLoading && opener && (
-                                <SyntaxHighlighter
-                                    language="python"
-                                    style={githubGist}
-                                    showLineNumbers={true}
+                                <Suspense
+                                    fallback={
+                                        <Text
+                                            paddingLeft="12"
+                                            paddingRight="12"
+                                            paddingTop="5"
+                                            paddingBottom="5"
+                                            fontSize="sm"
+                                        >
+                                            Loading
+                                        </Text>
+                                    }
                                 >
-                                    {opener}
-                                </SyntaxHighlighter>
+                                    <CodeHighlighter code={opener} />
+                                </Suspense>
                             )}
                         </Box>
                     </Box>
