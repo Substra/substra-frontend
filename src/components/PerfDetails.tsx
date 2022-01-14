@@ -64,7 +64,8 @@ const PerfDetails = ({
                         <PerfChart
                             ref={perfChartRef}
                             series={series}
-                            interactive={true}
+                            size="full"
+                            zoomEnabled={true}
                             highlightedSerie={highlightedSerie}
                             setHoveredRank={setHoveredRank}
                             setSelectedRank={setSelectedRank}

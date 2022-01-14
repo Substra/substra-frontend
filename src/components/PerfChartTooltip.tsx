@@ -1,16 +1,10 @@
-import { useContext } from 'react';
-
-import { HStack, List, ListItem, Text } from '@chakra-ui/react';
-import { RiGitCommitLine } from 'react-icons/ri';
+import PerfChartTooltipItem from './PerfChartTooltipItem';
+import { List } from '@chakra-ui/react';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { getLineId } from '@/modules/series/SeriesUtils';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
-
-import IconTag from '@/components/IconTag';
 
 const TOOLTIP_WIDTH = 340;
 
@@ -31,9 +25,6 @@ const PerfChartTooltip = ({
     hideTooltip,
     points,
 }: PerfChartTooltipProps): JSX.Element => {
-    const { sortedComputePlanKeys } = useContext(PerfBrowserContext);
-    const { getColorScheme } = usePerfBrowserColors();
-
     const lineId = getLineId(series);
 
     return (
@@ -46,55 +37,15 @@ const PerfChartTooltip = ({
             onMouseEnter={showTooltip}
             onMouseLeave={hideTooltip}
             padding="3"
+            spacing="3"
             boxShadow="md"
         >
             {points.map((point) => (
-                <ListItem
+                <PerfChartTooltipItem
+                    point={point}
+                    lineId={lineId}
                     key={point.testTaskKey}
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <HStack spacing="2.5">
-                        {point.worker === 'average' ? (
-                            <>
-                                <IconTag
-                                    icon={RiGitCommitLine}
-                                    backgroundColor="black.100"
-                                    fill="black.500"
-                                />
-                                <Text fontSize="xs" fontWeight="semibold">
-                                    {point.testTaskKey}
-                                </Text>
-                            </>
-                        ) : (
-                            <>
-                                <IconTag
-                                    icon={RiGitCommitLine}
-                                    backgroundColor={`${getColorScheme(
-                                        point
-                                    )}.100`}
-                                    fill={`${getColorScheme(point)}.500`}
-                                />
-                                <HStack spacing="1">
-                                    <Text fontSize="xs" fontWeight="semibold">
-                                        {sortedComputePlanKeys.length > 1
-                                            ? `CP${
-                                                  sortedComputePlanKeys.indexOf(
-                                                      point.computePlanKey
-                                                  ) + 1
-                                              } • ${point.worker}`
-                                            : point.worker}
-                                    </Text>
-                                    <Text as="span" fontSize="xs">
-                                        {`• L${lineId(point.serieId)}`}
-                                    </Text>
-                                </HStack>
-                            </>
-                        )}
-                    </HStack>
-                    <Text fontSize="xs">{point.y.toFixed(2)}</Text>
-                </ListItem>
+                />
             ))}
         </List>
     );

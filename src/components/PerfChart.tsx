@@ -34,7 +34,8 @@ import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 
 interface PerfChartProps {
     series: SerieT[];
-    interactive: boolean;
+    size: 'full' | 'thumbnail';
+    zoomEnabled: boolean;
     highlightedSerie?: { id: number; computePlanKey: string } | undefined;
     setHoveredRank: (rank: number | null) => void;
     setSelectedRank: (rank: number | null) => void;
@@ -44,7 +45,8 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
     (
         {
             series,
-            interactive,
+            size,
+            zoomEnabled,
             highlightedSerie,
             setHoveredRank,
             setSelectedRank,
@@ -54,7 +56,10 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const { displayAverage } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
-        const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(series);
+        const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
+            series,
+            size === 'thumbnail'
+        );
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
         const maxRank = getMaxRank(series);
@@ -124,23 +129,25 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             };
             return {
                 animation: false,
-                ...(interactive
+                ...(size === 'thumbnail'
                     ? {
-                          hover: {
+                          interaction: {
                               mode: 'index',
                               intersect: false,
                           },
                       }
                     : {}),
+                hover: {
+                    mode: 'index',
+                    intersect: false,
+                },
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false,
                     },
-                    ...(interactive
-                        ? { tooltip: tooltipPluginOptions }
-                        : { tooltip: { enabled: false } }),
-                    ...(interactive ? { zoom: zoomPluginOptions } : {}),
+                    tooltip: tooltipPluginOptions,
+                    ...(zoomEnabled ? { zoom: zoomPluginOptions } : {}),
                 },
                 scales: {
                     x: {
@@ -193,7 +200,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     },
                 },
             };
-        }, [interactive]);
+        }, [zoomEnabled, size]);
 
         const onResetZoomClick = () => {
             const chart = chartRef.current;
@@ -203,15 +210,15 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             }
         };
 
-        const plugins: Plugin<'line'>[] = [];
-        if (interactive) {
+        const plugins: Plugin<'line'>[] = [
+            highlightRankPlugin({
+                isRankSelectable: size === 'full',
+                setHoveredRank,
+                setSelectedRank,
+            }) as Plugin<'line'>,
+        ];
+        if (zoomEnabled) {
             plugins.push(zoomPlugin as Plugin<'line'>);
-            plugins.push(
-                highlightRankPlugin({
-                    setHoveredRank,
-                    setSelectedRank,
-                }) as Plugin<'line'>
-            );
         }
 
         const chart = useMemo(
@@ -231,8 +238,8 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         return (
             <Box position="relative" width="100%" height="100%">
                 {chart}
-                {interactive && tooltip}
-                {interactive && (
+                {tooltip}
+                {zoomEnabled && (
                     <HStack position="absolute" bottom="14" right="2.5">
                         {isZoomed && (
                             <Button

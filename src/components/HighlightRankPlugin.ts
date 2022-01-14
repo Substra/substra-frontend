@@ -55,10 +55,12 @@ const getRank = (chart: Chart, event: ChartEvent): number | null => {
 interface HighlightRankPluginProps {
     setHoveredRank: (rank: number | null) => void;
     setSelectedRank: (rank: number | null) => void;
+    isRankSelectable: boolean;
 }
 export const highlightRankPlugin = ({
     setHoveredRank,
     setSelectedRank,
+    isRankSelectable,
 }: HighlightRankPluginProps): Plugin => ({
     id: 'HighlightedLinePlugin',
     beforeDatasetDraw: (chart: Chart): void => {
@@ -101,7 +103,7 @@ export const highlightRankPlugin = ({
             newState.hoveredRank = null;
         } else if (event.type === 'mousemove') {
             newState.hoveredRank = getRank(chart, event);
-        } else if (event.type == 'click') {
+        } else if (event.type == 'click' && isRankSelectable) {
             if (state.selectedRank === null) {
                 newState.selectedRank = getRank(chart, event);
             } else {
@@ -126,7 +128,8 @@ export const highlightRankPlugin = ({
 
         if (
             newState.selectedRank !== undefined &&
-            newState.selectedRank !== state.selectedRank
+            newState.selectedRank !== state.selectedRank &&
+            isRankSelectable
         ) {
             state.selectedRank = newState.selectedRank;
 

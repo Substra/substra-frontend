@@ -4,10 +4,12 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 
+import PerfChartSummaryTooltip from '@/components/PerfChartSummaryTooltip';
 import PerfChartTooltip from '@/components/PerfChartTooltip';
 
 const usePerfChartTooltip = (
-    series: SerieT[]
+    series: SerieT[],
+    summary: boolean
 ): {
     tooltip: React.ReactNode;
     tooltipPluginOptions: Record<string, unknown>;
@@ -28,16 +30,25 @@ const usePerfChartTooltip = (
         timeout.current = setTimeout(() => setDisplayed(false), 1000);
     };
 
-    const tooltip = displayed && (
-        <PerfChartTooltip
-            series={series}
-            hideTooltip={hideTooltip}
-            showTooltip={showTooltip}
-            x={position.x}
-            y={position.y}
-            points={points}
-        />
-    );
+    const tooltip =
+        displayed &&
+        (summary ? (
+            <PerfChartSummaryTooltip
+                series={series}
+                hideTooltip={hideTooltip}
+                showTooltip={showTooltip}
+                points={points}
+            />
+        ) : (
+            <PerfChartTooltip
+                series={series}
+                hideTooltip={hideTooltip}
+                showTooltip={showTooltip}
+                x={position.x}
+                y={position.y}
+                points={points}
+            />
+        ));
 
     const tooltipPluginOptions = {
         enabled: false,
