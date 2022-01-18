@@ -13,6 +13,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -111,7 +112,7 @@ const AlgoDrawer = (): JSX.Element => {
                                 date={algo.creation_date}
                             />
                             <DrawerSectionEntry title="Owner">
-                                {algo.owner}
+                                {getNodeLabel(algo.owner)}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Permissions">
                                 <PermissionTag

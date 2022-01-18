@@ -16,6 +16,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
@@ -101,7 +102,11 @@ const TaskDrawer = ({
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={
-                        task ? `${getTaskCategory(task)} on ${task.worker}` : ''
+                        task
+                            ? `${getTaskCategory(task)} on ${getNodeLabel(
+                                  task.worker
+                              )}`
+                            : ''
                     }
                     loading={taskLoading}
                     onClose={handleOnClose}
@@ -132,7 +137,7 @@ const TaskDrawer = ({
                                 <Timing asset={task} />
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Owner">
-                                {task.owner}
+                                {getNodeLabel(task.owner)}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Compute plan">
                                 <Link

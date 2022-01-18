@@ -12,6 +12,7 @@ import {
 
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -135,7 +136,9 @@ const Datasets = (): JSX.Element => {
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 dataset.creation_date
-                                            )} by ${dataset.owner}`}</Text>
+                                            )} by ${getNodeLabel(
+                                                dataset.owner
+                                            )}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag

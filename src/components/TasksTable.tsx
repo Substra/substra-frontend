@@ -21,6 +21,7 @@ import { Link } from 'wouter';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { retrieveComputePlanTasksArgs } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { listTasksArgs } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
@@ -271,7 +272,9 @@ const TasksTable = ({
                                             <Td>
                                                 <Text fontSize="sm">{`${getTaskCategory(
                                                     task
-                                                )} on ${task.worker}`}</Text>
+                                                )} on ${getNodeLabel(
+                                                    task.worker
+                                                )}`}</Text>
                                                 <Text
                                                     as="span"
                                                     fontSize="xs"

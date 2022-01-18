@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Tooltips for chart thumbnails (#327)
+-   MELLODDY: add hardcoded node labels (#337)
 
 ### Fixed
 

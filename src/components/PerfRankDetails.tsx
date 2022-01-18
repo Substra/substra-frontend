@@ -16,6 +16,7 @@ import {
 import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
 import { Link } from 'wouter';
 
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { average, getLineId, getMaxRank } from '@/modules/series/SeriesUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
@@ -212,8 +213,12 @@ const PerfRankDetails = ({
                                         <Tooltip
                                             label={
                                                 sortedComputePlanKeys.length > 1
-                                                    ? `${cpId} • ${worker} • ${lineId}`
-                                                    : `${worker} • ${lineId}`
+                                                    ? `${cpId} • ${getNodeLabel(
+                                                          worker
+                                                      )} • ${lineId}`
+                                                    : `${getNodeLabel(
+                                                          worker
+                                                      )} • ${lineId}`
                                             }
                                             placement="top"
                                         >
@@ -226,8 +231,10 @@ const PerfRankDetails = ({
                                                 >
                                                     {sortedComputePlanKeys.length >
                                                     1
-                                                        ? `${cpId} • ${worker}`
-                                                        : worker}
+                                                        ? `${cpId} • ${getNodeLabel(
+                                                              worker
+                                                          )}`
+                                                        : getNodeLabel(worker)}
                                                 </Text>
                                                 <Text
                                                     as="span"

@@ -15,6 +15,7 @@ import {
     retrieveDescription,
 } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -112,7 +113,7 @@ const MetricDrawer = (): JSX.Element => {
                                 date={metric.creation_date}
                             />
                             <DrawerSectionEntry title="Owner">
-                                {metric.owner}
+                                {getNodeLabel(metric.owner)}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Permissions">
                                 <PermissionTag

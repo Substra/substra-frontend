@@ -3,6 +3,8 @@ import { useContext } from 'react';
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -51,8 +53,8 @@ const PerfChartTooltipItem = ({
                                           sortedComputePlanKeys.indexOf(
                                               point.computePlanKey
                                           ) + 1
-                                      } • ${point.worker}`
-                                    : point.worker}
+                                      } • ${getNodeLabel(point.worker)}`
+                                    : getNodeLabel(point.worker)}
                             </Text>
                             <Text as="span" fontSize="xs">
                                 {`• L${lineId(point.serieId)}`}

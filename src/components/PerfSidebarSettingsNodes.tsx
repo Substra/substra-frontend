@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsNodes = (): JSX.Element => {
@@ -85,7 +87,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                             onClick={add(node.id)}
                                             key={node.id}
                                         >
-                                            {node.id}
+                                            {getNodeLabel(node.id)}
                                         </MenuItem>
                                     ))}
                             </MenuGroup>
@@ -116,7 +118,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                 variant="solid"
                                 key={nodeId}
                             >
-                                <TagLabel>{nodeId}</TagLabel>
+                                <TagLabel>{getNodeLabel(nodeId)}</TagLabel>
                                 <TagCloseButton onClick={remove(nodeId)} />
                             </Tag>
                         );

@@ -2,6 +2,7 @@ import { List, ListItem, Link, HStack, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 import { useRoute } from 'wouter';
 
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
     CompositeTraintupleStub,
@@ -79,9 +80,9 @@ const DrawerSectionParentTasksEntry = ({
                                     href={getTaskHref(parentTask)}
                                     isExternal
                                 >
-                                    {`${getTaskCategory(parentTask)} on ${
-                                        parentTask.worker
-                                    }`}
+                                    {`${getTaskCategory(
+                                        parentTask
+                                    )} on ${getNodeLabel(parentTask.worker)}`}
                                 </Link>
                             </Text>
                         </HStack>

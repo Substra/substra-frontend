@@ -7,6 +7,7 @@ import {
 } from 'react-icons/ri';
 
 import { PermissionType } from '@/modules/common/CommonTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 interface PermissionTagProps {
     permission: PermissionType;
@@ -39,7 +40,7 @@ const PermissionTag = ({
                 {permission.authorized_ids.map((nodeId) => (
                     <WrapItem key={nodeId}>
                         <Tag size="sm" key={nodeId}>
-                            <TagLabel>{nodeId}</TagLabel>
+                            <TagLabel>{getNodeLabel(nodeId)}</TagLabel>
                             <TagRightIcon as={RiUserLine} />
                         </Tag>
                     </WrapItem>

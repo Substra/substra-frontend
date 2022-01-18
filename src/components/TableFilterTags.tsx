@@ -5,6 +5,7 @@ import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { AssetType } from '@/modules/common/CommonTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import {
     areSearchFiltersListsEqual,
@@ -130,11 +131,19 @@ const CounterFilterTag = ({
 };
 
 export const OwnerTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag label="Owners" assetKey="owner" />
+    <CounterFilterTag
+        label="Owners"
+        assetKey="owner"
+        formatter={getNodeLabel}
+    />
 );
 
 export const WorkerTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag label="Workers" assetKey="worker" />
+    <CounterFilterTag
+        label="Workers"
+        assetKey="worker"
+        formatter={getNodeLabel}
+    />
 );
 
 export const StatusTableFilterTag = (): JSX.Element | null => (

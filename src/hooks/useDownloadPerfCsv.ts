@@ -4,6 +4,7 @@ import { toCsv } from 'react-csv-downloader';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { getLineId } from '@/modules/series/SeriesUtils';
 
@@ -89,7 +90,7 @@ const getDatas = (series: SerieT[], computePlans: ComputePlanT[]): Datas => {
                 computePlanMetadata: escape(
                     JSON.stringify(computePlan?.metadata || {})
                 ),
-                worker: escape(serie.worker),
+                worker: escape(getNodeLabel(serie.worker)),
                 testtupleKey: escape(point.testTaskKey),
                 metricName: escape(serie.metricName),
                 lineId: escape(lineId(serie.id).toString()),

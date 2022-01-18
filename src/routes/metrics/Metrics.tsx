@@ -15,6 +15,7 @@ import {
 
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -138,7 +139,9 @@ const Metrics = (): JSX.Element => {
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 metric.creation_date
-                                            )} by ${metric.owner}`}</Text>
+                                            )} by ${getNodeLabel(
+                                                metric.owner
+                                            )}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag
