@@ -1,3 +1,5 @@
+import { NodeType } from './NodesTypes';
+
 declare const MELLODDY: boolean;
 
 const MELLODDY_ID_PSEUDONYMS: Record<string, string> = {
@@ -18,4 +20,17 @@ export const getNodeLabel = (nodeId: string): string => {
         return MELLODDY_ID_PSEUDONYMS[nodeId] || nodeId;
     }
     return nodeId;
+};
+
+export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
+    const nodeALabel = getNodeLabel(nodeA.id);
+    const nodeBLabel = getNodeLabel(nodeB.id);
+
+    if (nodeALabel < nodeBLabel) {
+        return -1;
+    } else if (nodeALabel === nodeBLabel) {
+        return 0;
+    } else {
+        return 1;
+    }
 };

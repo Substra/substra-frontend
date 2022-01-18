@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { List, ListItem, Checkbox, Text, Skeleton } from '@chakra-ui/react';
 
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+import { getNodeLabel, compareNodes } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -13,6 +13,8 @@ const PerfSidebarSectionNodes = (): JSX.Element => {
     const { nodes, selectedNodeIds, onNodeIdSelectionChange, loading } =
         useContext(PerfBrowserContext);
     const { getColorScheme } = usePerfBrowserColors();
+    nodes.sort(compareNodes);
+
     return (
         <PerfSidebarSection title="Nodes">
             <List spacing="2.5">
