@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Do not include zoom and help buttons on chart JPEG export (#324)
 -   Misc alignment issues (#325)
+-   Fix overflow on metric name (#334)
 
 ### Changed
 
@@ -33,10 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Buttons to download the tested models in a test task drawer (#319)
 -   Hierarchy background to PerfBrowser compute plan filters (#321)
 -   MELLODDY flag to extract compute plan name from metadata (#322)
-
-### Fixed
-
--   Fix overflow on metric name (#334)
 
 ### Changed
 
