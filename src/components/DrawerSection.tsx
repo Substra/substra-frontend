@@ -8,6 +8,7 @@ import {
     useDisclosure,
     Icon,
     Collapse,
+    StackProps,
 } from '@chakra-ui/react';
 import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine } from 'react-icons/ri';
@@ -47,6 +48,19 @@ export const DrawerSection = ({
     </VStack>
 );
 
+export const DrawerSectionEntryWrapper = (props: StackProps) => (
+    <HStack
+        spacing="2"
+        fontSize="xs"
+        borderBottom="1px solid"
+        borderBottomColor="gray.100"
+        paddingY="4"
+        width="100%"
+        _last={{ border: 'none' }}
+        {...props}
+    />
+);
+
 export const DrawerSectionEntry = ({
     title,
     children,
@@ -57,21 +71,12 @@ export const DrawerSectionEntry = ({
     alignItems?: 'flex-start' | 'center';
 }): JSX.Element => {
     return (
-        <HStack
-            spacing="2"
-            alignItems={alignItems || 'center'}
-            fontSize="xs"
-            borderBottom="1px solid"
-            borderBottomColor="gray.100"
-            paddingY="4"
-            width="100%"
-            _last={{ border: 'none' }}
-        >
+        <DrawerSectionEntryWrapper alignItems={alignItems || 'center'}>
             <Text whiteSpace="nowrap" width="120px" flexShrink="0">
                 {capitalize(title)}
             </Text>
             <Box flexGrow="1">{children}</Box>
-        </HStack>
+        </DrawerSectionEntryWrapper>
     );
 };
 

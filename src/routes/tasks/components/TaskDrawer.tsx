@@ -14,6 +14,7 @@ import {
     VStack,
     Link,
     Text,
+    Box,
 } from '@chakra-ui/react';
 
 import { getNodeLabel } from '@/modules/nodes/NodesUtils';
@@ -47,6 +48,7 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionKeyEntry,
     DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH,
+    DrawerSectionEntryWrapper,
 } from '@/components/DrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
@@ -211,16 +213,23 @@ const TaskDrawer = ({
                                 {task.test.metrics.map((metric) => {
                                     const perf = getPerf(task, metric.key);
                                     return (
-                                        <DrawerSectionEntry
+                                        <DrawerSectionEntryWrapper
                                             key={metric.key}
-                                            title={metric.name}
                                         >
-                                            <Text textAlign="right">
+                                            <Text
+                                                whiteSpace="nowrap"
+                                                width="410px"
+                                                isTruncated
+                                                flexShrink="0"
+                                            >
+                                                {metric.name}
+                                            </Text>
+                                            <Box flexGrow="1" textAlign="right">
                                                 {perf === null
                                                     ? 'N/A'
                                                     : perf.toFixed(2)}
-                                            </Text>
-                                        </DrawerSectionEntry>
+                                            </Box>
+                                        </DrawerSectionEntryWrapper>
                                     );
                                 })}
                             </DrawerSection>

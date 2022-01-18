@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fix overflow on metric name (#334)
+
 ### Changed
 
 -   Updated drawers and sidebars look and feel (#315)
