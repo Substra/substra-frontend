@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Flex, Switch, Text } from '@chakra-ui/react';
+import { Box, Flex, Switch, Text, Tooltip } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
@@ -10,11 +10,20 @@ const PerfSidebarSettingsAverage = (): JSX.Element => {
     return (
         <Flex justifyContent="space-between" alignItems="center">
             <Text fontSize="xs">Show average</Text>
-            <Switch
-                size="sm"
-                isChecked={displayAverage}
-                onChange={() => setDisplayAverage(!displayAverage)}
-            />
+            <Tooltip
+                label="Show average of all displayed values"
+                fontSize="xs"
+                hasArrow
+                placement="top"
+            >
+                <Box>
+                    <Switch
+                        size="sm"
+                        isChecked={displayAverage}
+                        onChange={() => setDisplayAverage(!displayAverage)}
+                    />
+                </Box>
+            </Tooltip>
         </Flex>
     );
 };
