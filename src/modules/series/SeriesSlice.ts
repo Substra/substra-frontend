@@ -2,17 +2,23 @@ import { PaginatedApiResponse } from '../common/CommonTypes';
 import ComputePlansApi from '../computePlans/ComputePlansApi';
 import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
-import { buildSeries } from './SeriesUtils';
+import { buildAverageSerie, buildSeries } from './SeriesUtils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise } from 'axios';
 
 import MetricsApi from '@/modules//metrics/MetricsApi';
 import DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+import {
+    MELLODDY_LARGE5_NODE_IDS,
+    MELLODDY_SMALL5_NODE_IDS,
+} from '@/modules/nodes/NodesUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
 import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
+
+declare const MELLODDY: boolean;
 
 interface SeriesState {
     series: SerieT[];
@@ -101,7 +107,72 @@ const getComputePlanSeries = async (
 
     // build series
 
-    return buildSeries(testtuples, datasets, metrics);
+    const series = buildSeries(testtuples, datasets, metrics);
+
+    if (MELLODDY) {
+        const melloddySeries: SerieT[] = [];
+
+        const metricNames = new Set(
+            series.map((serie) => serie.metricName.toLowerCase())
+        );
+        for (const metricName of metricNames) {
+            const sameMetricSeries = series.filter(
+                (serie) => serie.metricName.toLowerCase() === metricName
+            );
+
+            // small5_average
+            const small5AverageSerie = buildAverageSerie(
+                sameMetricSeries.filter((serie) =>
+                    MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
+                ),
+                true,
+                'small5_average'
+            );
+            if (small5AverageSerie) {
+                melloddySeries.push({
+                    ...small5AverageSerie,
+                    computePlanKey,
+                    metricName,
+                    id: series.length + 1,
+                });
+            }
+
+            // large5_average
+            const large5AverageSerie = buildAverageSerie(
+                sameMetricSeries.filter((serie) =>
+                    MELLODDY_LARGE5_NODE_IDS.includes(serie.worker)
+                ),
+                true,
+                'large5_average'
+            );
+            if (large5AverageSerie) {
+                melloddySeries.push({
+                    ...large5AverageSerie,
+                    computePlanKey,
+                    metricName,
+                    id: series.length + 2,
+                });
+            }
+
+            // average
+            const averageSerie = buildAverageSerie(
+                sameMetricSeries,
+                true,
+                'average'
+            );
+            if (averageSerie) {
+                melloddySeries.push({
+                    ...averageSerie,
+                    computePlanKey,
+                    metricName,
+                    id: series.length + 3,
+                });
+            }
+        }
+
+        return [...series, ...melloddySeries];
+    }
+    return series;
 };
 
 export const loadSeries = createAsyncThunk<

@@ -85,7 +85,7 @@ const PerfBrowser = ({
                     overflowX="hidden"
                     overflowY="auto"
                 >
-                    {settingsComponents.length && (
+                    {settingsComponents.length > 0 && (
                         <PerfSidebarSection title="Settings">
                             <VStack spacing="5" alignItems="stretch">
                                 {settingsComponents.map((SettingsComponent) => (

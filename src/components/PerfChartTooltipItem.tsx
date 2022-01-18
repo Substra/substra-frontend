@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+import { getNodeLabel, isAverageNode } from '@/modules/nodes/NodesUtils';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -28,7 +28,7 @@ const PerfChartTooltipItem = ({
             alignItems="center"
         >
             <HStack spacing="2.5">
-                {point.worker === 'average' ? (
+                {isAverageNode(point.worker) ? (
                     <>
                         <IconTag
                             icon={RiGitCommitLine}

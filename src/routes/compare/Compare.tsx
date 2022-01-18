@@ -16,6 +16,8 @@ import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionComputePlans from '@/components/PerfSidebarSectionComputePlans';
 import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
 
+declare const MELLODDY: boolean;
+
 const Compare = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
@@ -45,7 +47,7 @@ const Compare = (): JSX.Element => {
             computePlans={computePlans}
             settingsComponents={[
                 PerfSidebarSettingsNodes,
-                PerfSidebarSettingsAverage,
+                ...(MELLODDY ? [] : [PerfSidebarSettingsAverage]),
             ]}
             sectionComponents={[PerfSidebarSectionComputePlans]}
             colorMode="computePlan"

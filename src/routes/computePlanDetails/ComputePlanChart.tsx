@@ -17,6 +17,8 @@ import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionNodes from '@/components/PerfSidebarSectionNodes';
 import PerfSidebarSettingsAverage from '@/components/PerfSidebarSettingsAverage';
 
+declare const MELLODDY: boolean;
+
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
 
@@ -59,7 +61,9 @@ const ComputePlanChart = (): JSX.Element => {
                 series={series}
                 loading={loading}
                 computePlans={computePlan ? [computePlan] : []}
-                settingsComponents={[PerfSidebarSettingsAverage]}
+                settingsComponents={
+                    MELLODDY ? [] : [PerfSidebarSettingsAverage]
+                }
                 sectionComponents={[PerfSidebarSectionNodes]}
                 colorMode="node"
             />

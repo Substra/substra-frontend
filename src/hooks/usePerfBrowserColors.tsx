@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
+
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import chakraTheme, { HAS_LIGHT_COLORSCHEME } from '@/assets/chakraTheme';
@@ -23,6 +25,9 @@ const usePerfBrowserColors = () => {
         if (colorMode === 'computePlan') {
             index = sortedComputePlanKeys.indexOf(computePlanKey);
         } else {
+            if (isAverageNode(worker)) {
+                return 'blackAlpha';
+            }
             index = nodes.map((n) => n.id).indexOf(worker);
         }
 

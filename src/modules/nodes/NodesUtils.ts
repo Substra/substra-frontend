@@ -15,6 +15,21 @@ const MELLODDY_ID_PSEUDONYMS: Record<string, string> = {
     OrgastrazenecaMSP: 'pharma10',
 };
 
+export const MELLODDY_LARGE5_NODE_IDS: string[] = [
+    'OrgamgenMSP',
+    'OrgastellasMSP',
+    'OrgbayerMSP',
+    'OrgmerckMSP',
+    'OrgservierMSP',
+];
+export const MELLODDY_SMALL5_NODE_IDS: string[] = [
+    'OrgastrazenecaMSP',
+    'OrgbiMSP',
+    'OrggskMSP',
+    'OrgjnjMSP',
+    'OrgnovartisMSP',
+];
+
 export const getNodeLabel = (nodeId: string): string => {
     if (MELLODDY) {
         return MELLODDY_ID_PSEUDONYMS[nodeId] || nodeId;
@@ -33,4 +48,11 @@ export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
     } else {
         return 1;
     }
+};
+
+export const isAverageNode = (nodeId: string): boolean => {
+    if (!MELLODDY) {
+        return false;
+    }
+    return ['average', 'small5_average', 'large5_average'].includes(nodeId);
 };
