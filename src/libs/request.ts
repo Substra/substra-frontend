@@ -12,7 +12,7 @@ declare const API_URL: string;
 
 const CONFIG = {
     baseURL: API_URL,
-    timeout: 10000,
+    timeout: 2 * 60 * 1000, // 2 mins
     headers: {
         Accept: 'application/json;version=0.0',
         'Content-Type': 'application/json;',

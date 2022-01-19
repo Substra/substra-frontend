@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Only display "reset zoom" button when the chart is zoomed in (#326)
 -   Lazy load code highlighter and markdown formatter components (#328)
 -   Sort nodes alphabetically on perf browser (#333)
+-   Change request timeout from 10s to 2min (#340)
 
 ## [0.8.0] - 2022-01-07
 
