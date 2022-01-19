@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Tooltip over the average switch (#335)
 -   MELLODDY: add hardcoded average series (#338)
 -   Error logs (#329)
+-   Link to documentation in help modal (#330)
 
 ### Fixed
 

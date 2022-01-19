@@ -1,4 +1,8 @@
 import {
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
     Box,
     Button,
     HStack,
@@ -18,6 +22,7 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
+import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 import { shortDateFormatter } from '@/libs/utils';
 
@@ -63,6 +68,34 @@ Backend: ${backendVersion}
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="4">
+                            <Alert
+                                status="info"
+                                variant="subtle"
+                                overflow="visible"
+                                padding="var(--chakra-space-3) var(--chakra-space-4)"
+                            >
+                                <AlertIcon
+                                    as={RiCheckboxCircleLine}
+                                    fill="blue.900"
+                                />
+                                <Box>
+                                    <AlertTitle>Know more, do more</AlertTitle>
+                                    <AlertDescription lineHeight="4">
+                                        Get the most out of Owkin Connect! Learn
+                                        how to use our tools and concepts,
+                                        browse by topic or search by feature in
+                                        our{' '}
+                                        <Link
+                                            href="https://connect-docs.owkin.com"
+                                            isExternal
+                                            fontWeight="semibold"
+                                        >
+                                            documentation
+                                        </Link>
+                                        !
+                                    </AlertDescription>
+                                </Box>
+                            </Alert>
                             <Text fontSize="sm">
                                 Do you want some help or give us some feeedback?
                                 We will do our best to help you! Please send us
