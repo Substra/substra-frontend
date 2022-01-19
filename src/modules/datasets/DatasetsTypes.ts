@@ -2,6 +2,7 @@ import {
     FileT,
     MetadataT,
     PermissionsType,
+    PermissionType,
 } from '@/modules/common/CommonTypes';
 
 // DatasetStubType is returned when fetching a list of datasets
@@ -10,6 +11,7 @@ export interface DatasetStubType {
     name: string;
     owner: string;
     permissions: PermissionsType;
+    logs_permission: PermissionType;
     description: FileT;
     opener: FileT;
     type: string;

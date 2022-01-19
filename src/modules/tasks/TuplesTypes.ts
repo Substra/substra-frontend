@@ -7,6 +7,7 @@ import {
     AssetType,
     MetadataT,
     PermissionsType,
+    PermissionType,
 } from '@/modules/common/CommonTypes';
 
 export enum TupleStatus {
@@ -25,6 +26,12 @@ export enum TupleStatusDescription {
     done = 'Task finished without error',
     canceled = 'Task was prematurely ended',
     failed = 'Task has error',
+}
+
+export enum ErrorType {
+    build = 'BUILD_ERROR',
+    execution = 'EXECUTION_ERROR',
+    internal = 'INTERNAL_ERROR',
 }
 
 export const statusDescriptionByTupleStatus: Record<
@@ -68,6 +75,8 @@ interface BaseTupleStub {
     worker: string;
     start_date?: string;
     end_date?: string;
+    error_type?: ErrorType;
+    logs_permission?: PermissionType;
 }
 
 interface BaseTuple extends BaseTupleStub {

@@ -40,6 +40,10 @@ interface TasksState {
     task: Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple | null;
     taskLoading: boolean;
     taskError: string;
+
+    logs: string;
+    logsLoading: boolean;
+    logsError: string;
 }
 
 const initialState: TasksState = {
@@ -66,6 +70,10 @@ const initialState: TasksState = {
     task: null,
     taskLoading: true,
     taskError: '',
+
+    logs: '',
+    logsLoading: true,
+    logsError: '',
 };
 
 export interface listTasksArgs {
@@ -213,6 +221,23 @@ export const retrieveTask = createAsyncThunk<
     }
 });
 
+export const retrieveLogs = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string }
+>('tasks/logs', async (key: string, thunkAPI) => {
+    try {
+        const response = await TasksApi.retrieveLogs(key);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
 export const tasksSlice = createSlice({
     name: 'task',
     initialState,
@@ -297,6 +322,21 @@ export const tasksSlice = createSlice({
                 state.taskLoading = false;
                 state.taskError = payload || 'Unknown error';
                 state.task = null;
+            })
+            .addCase(retrieveLogs.pending, (state) => {
+                state.logsLoading = true;
+                state.logsError = '';
+                state.logs = '';
+            })
+            .addCase(retrieveLogs.fulfilled, (state, { payload }) => {
+                state.logsLoading = false;
+                state.logsError = '';
+                state.logs = payload;
+            })
+            .addCase(retrieveLogs.rejected, (state, { payload }) => {
+                state.logsLoading = false;
+                state.logsError = payload || 'Unknown error';
+                state.logs = '';
             });
     },
 });

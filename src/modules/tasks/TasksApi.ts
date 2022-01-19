@@ -14,7 +14,7 @@ import { AxiosPromise } from 'axios';
 import API, { getApiOptions } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
-const URLS = {
+export const URLS = {
     AGGREGATE_LIST: '/aggregatetuple/',
     COMPOSITE_LIST: '/composite_traintuple/',
     TEST_LIST: '/testtuple/',
@@ -24,6 +24,8 @@ const URLS = {
     COMPOSITE_RETRIEVE: '/composite_traintuple/__KEY__/',
     TEST_RETRIEVE: '/testtuple/__KEY__/',
     TRAIN_RETRIEVE: '/traintuple/__KEY__/',
+
+    LOGS_RETRIEVE: '/logs/__KEY__/file/',
 };
 
 export const listAggregatetuples = (
@@ -82,6 +84,9 @@ export const retrieveTesttuple = (key: string): AxiosPromise<Testtuple> =>
 export const retrieveTraintuple = (key: string): AxiosPromise<Traintuple> =>
     API.authenticatedGet(URLS.TRAIN_RETRIEVE.replace('__KEY__', key));
 
+export const retrieveLogs = (key: string): AxiosPromise<string> =>
+    API.authenticatedGet(URLS.LOGS_RETRIEVE.replace('__KEY__', key));
+
 export default {
     listAggregatetuples,
     listCompositeTraintuples,
@@ -92,4 +97,6 @@ export default {
     retrieveCompositeTraintuple,
     retrieveTesttuple,
     retrieveTraintuple,
+
+    retrieveLogs,
 };

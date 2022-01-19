@@ -5,6 +5,7 @@ import DrawerSectionMetricsEntry from './DrawerSectionMetricsEntry';
 import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
 import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
 import DrawerSectionTestedModel from './DrawerSectionTestedModel';
+import ErrorAlert from './ErrorAlert';
 import {
     Drawer,
     DrawerContent,
@@ -121,6 +122,7 @@ const TaskDrawer = ({
                         paddingX="5"
                         paddingY="8"
                     >
+                        <ErrorAlert task={task} />
                         <DrawerSection title="General">
                             <DrawerSectionEntry title="Status">
                                 <Status

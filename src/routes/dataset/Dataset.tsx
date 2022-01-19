@@ -22,7 +22,7 @@ import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
 
 const CodeHighlighter = React.lazy(
-    () => import('./components/CodeHighlighter')
+    () => import('@/components/CodeHighlighter')
 );
 const MarkdownSection = React.lazy(
     () => import('@/components/MarkdownSection')
@@ -202,7 +202,10 @@ const Dataset = (): JSX.Element => {
                                         </Text>
                                     }
                                 >
-                                    <CodeHighlighter code={opener} />
+                                    <CodeHighlighter
+                                        language="python"
+                                        code={opener}
+                                    />
                                 </Suspense>
                             )}
                         </Box>
