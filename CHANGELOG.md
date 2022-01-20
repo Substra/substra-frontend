@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Changed
+
+## [0.9.0] - 2022-01-20
+
+### Added
+
 -   Tooltips for chart thumbnails (#327)
 -   MELLODDY: add hardcoded node labels (#337)
 -   Tooltip over the average switch (#335)
