@@ -37,17 +37,28 @@ export const getNodeLabel = (nodeId: string): string => {
     return nodeId;
 };
 
-export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
-    const nodeALabel = getNodeLabel(nodeA.id);
-    const nodeBLabel = getNodeLabel(nodeB.id);
-
-    if (nodeALabel < nodeBLabel) {
+const compareString = (a: string, b: string): 1 | 0 | -1 => {
+    if (a < b) {
         return -1;
-    } else if (nodeALabel === nodeBLabel) {
+    } else if (a === b) {
         return 0;
     } else {
         return 1;
     }
+};
+
+export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
+    const nodeALabel = getNodeLabel(nodeA.id);
+    const nodeBLabel = getNodeLabel(nodeB.id);
+
+    const res = compareString(
+        nodeALabel.toLowerCase(),
+        nodeBLabel.toLowerCase()
+    );
+    if (res === 0) {
+        return compareString(nodeALabel, nodeBLabel);
+    }
+    return res;
 };
 
 export const isAverageNode = (nodeId: string): boolean => {

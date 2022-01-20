@@ -21,13 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Do not include zoom and help buttons on chart JPEG export (#324)
 -   Misc alignment issues (#325)
 -   Fix overflow on metric name (#334)
+-   Case insensitive sort of node labels (#340)
 
 ### Changed
 
 -   Only display "reset zoom" button when the chart is zoomed in (#326)
 -   Lazy load code highlighter and markdown formatter components (#328)
 -   Sort nodes alphabetically on perf browser (#333)
--   Change request timeout from 10s to 2min (#340)
+-   Change request timeout from 10s to 2min (#341)
 
 ## [0.8.0] - 2022-01-07
 
