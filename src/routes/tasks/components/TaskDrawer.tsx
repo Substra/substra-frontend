@@ -18,7 +18,7 @@ import {
     Box,
 } from '@chakra-ui/react';
 
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
@@ -179,7 +179,7 @@ const TaskDrawer = ({
                                         fontWeight="semibold"
                                         isExternal
                                     >
-                                        {task.algo.name}
+                                        {pseudonymize(task.algo.name)}
                                     </Link>
                                 </Text>
                             </DrawerSectionEntry>
@@ -224,7 +224,7 @@ const TaskDrawer = ({
                                                 isTruncated
                                                 flexShrink="0"
                                             >
-                                                {metric.name}
+                                                {pseudonymize(metric.name)}
                                             </Text>
                                             <Box flexGrow="1" textAlign="right">
                                                 {perf === null

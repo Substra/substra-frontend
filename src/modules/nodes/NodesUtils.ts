@@ -30,9 +30,22 @@ export const MELLODDY_SMALL5_NODE_IDS: string[] = [
     'OrgnovartisMSP',
 ];
 
+export const pseudonymize = (value: string): string => {
+    if (!MELLODDY) {
+        return value;
+    }
+
+    for (const name of Object.keys(MELLODDY_ID_PSEUDONYMS)) {
+        const pseudo = MELLODDY_ID_PSEUDONYMS[name];
+        value = value.replace(name, pseudo);
+    }
+
+    return value;
+};
+
 export const getNodeLabel = (nodeId: string): string => {
     if (MELLODDY) {
-        return MELLODDY_ID_PSEUDONYMS[nodeId] || nodeId;
+        return pseudonymize(nodeId);
     }
     return nodeId;
 };

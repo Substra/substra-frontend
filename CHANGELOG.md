@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   MELLODDY: add hardcoded average series (#338)
 -   Error logs (#329)
 -   Link to documentation in help modal (#330)
+-   Pseudonymize asset names (#342)
 
 ### Fixed
 

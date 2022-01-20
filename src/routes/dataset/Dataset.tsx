@@ -12,6 +12,7 @@ import {
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 import { DatasetType } from '@/modules/datasets/DatasetsTypes';
+import { pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -59,7 +60,7 @@ const Dataset = (): JSX.Element => {
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (dataset?.name) {
-                setDocumentTitle(dataset.name);
+                setDocumentTitle(pseudonymize(dataset.name));
             }
         },
         [dataset?.name]

@@ -15,7 +15,7 @@ import {
 
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -135,7 +135,7 @@ const Metrics = (): JSX.Element => {
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {metric.name}
+                                                {pseudonymize(metric.name)}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 metric.creation_date

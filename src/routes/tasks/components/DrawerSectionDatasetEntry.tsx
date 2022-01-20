@@ -2,6 +2,7 @@ import { List, ListItem, Text, Link, HStack } from '@chakra-ui/react';
 import { RiDatabase2Line } from 'react-icons/ri';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -41,7 +42,7 @@ const DrawerSectionDatasetEntry = ({
                             fontWeight="semibold"
                             isExternal
                         >
-                            {dataset.name}
+                            {pseudonymize(dataset.name)}
                         </Link>
                     </Text>
                     <Text color="gray.500">

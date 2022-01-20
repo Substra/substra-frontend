@@ -12,7 +12,7 @@ import {
 
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
+import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -132,7 +132,7 @@ const Datasets = (): JSX.Element => {
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {dataset.name}
+                                                {pseudonymize(dataset.name)}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 dataset.creation_date
