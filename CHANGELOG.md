@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+### Changed
+
+## [0.9.1] - 2022-01-21
+
+### Added
+
+### Fixed
+
 -   MELLODDY: Removed pseudonymization from frontend (it will be done on backend side) (#344)
 
 ### Changed
