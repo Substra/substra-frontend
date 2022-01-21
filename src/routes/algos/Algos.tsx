@@ -13,7 +13,6 @@ import {
 
 import { listAlgos } from '@/modules/algos/AlgosSlice';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
-import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -144,13 +143,11 @@ const Algos = (): JSX.Element => {
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {pseudonymize(algo.name)}
+                                                {algo.name}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 algo.creation_date
-                                            )} by ${getNodeLabel(
-                                                algo.owner
-                                            )}`}</Text>
+                                            )} by ${algo.owner}`}</Text>
                                         </Td>
                                         <Td>
                                             <Text fontSize="sm">

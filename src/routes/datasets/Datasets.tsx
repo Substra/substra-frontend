@@ -12,7 +12,6 @@ import {
 
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { formatDate } from '@/libs/utils';
 
@@ -132,13 +131,11 @@ const Datasets = (): JSX.Element => {
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {pseudonymize(dataset.name)}
+                                                {dataset.name}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 dataset.creation_date
-                                            )} by ${getNodeLabel(
-                                                dataset.owner
-                                            )}`}</Text>
+                                            )} by ${dataset.owner}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag

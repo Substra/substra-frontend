@@ -24,7 +24,6 @@ import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { AssetType } from '@/modules/common/CommonTypes';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
@@ -178,10 +177,7 @@ export const OwnerTableFilter = (): JSX.Element => {
 
     return (
         <TableFilterCheckboxes
-            options={nodes.map((node) => ({
-                value: node.id,
-                label: getNodeLabel(node.id),
-            }))}
+            options={nodes.map((node) => node.id)}
             value={checkboxesValue}
             onChange={onOptionChange}
         />
@@ -197,10 +193,7 @@ export const WorkerTableFilter = (): JSX.Element => {
 
     return (
         <TableFilterCheckboxes
-            options={nodes.map((node) => ({
-                value: node.id,
-                label: getNodeLabel(node.id),
-            }))}
+            options={nodes.map((node) => node.id)}
             value={checkboxesValue}
             onChange={onOptionChange}
         />

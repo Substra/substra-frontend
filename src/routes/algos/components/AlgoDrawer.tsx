@@ -13,7 +13,6 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
-import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -65,7 +64,7 @@ const AlgoDrawer = (): JSX.Element => {
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (algo?.name) {
-                setDocumentTitle(pseudonymize(algo.name));
+                setDocumentTitle(algo.name);
             }
         },
         [algo?.name]
@@ -85,7 +84,7 @@ const AlgoDrawer = (): JSX.Element => {
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
-                    title={algo ? pseudonymize(algo.name) : undefined}
+                    title={algo?.name}
                     loading={algoLoading}
                     storageAddress={algo?.algorithm.storage_address}
                     filename={`algo-${key}.zip`}
@@ -112,7 +111,7 @@ const AlgoDrawer = (): JSX.Element => {
                                 date={algo.creation_date}
                             />
                             <DrawerSectionEntry title="Owner">
-                                {getNodeLabel(algo.owner)}
+                                {algo.owner}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Permissions">
                                 <PermissionTag

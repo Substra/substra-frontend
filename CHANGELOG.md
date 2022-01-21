@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   MELLODDY: Removed pseudonymization from frontend (it will be done on backend side) (#344)
+
 ### Changed
 
 ## [0.9.0] - 2022-01-20
@@ -47,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Buttons to download the tested models in a test task drawer (#319)
 -   Hierarchy background to PerfBrowser compute plan filters (#321)
 -   MELLODDY flag to extract compute plan name from metadata (#322)
+
+### Fixed
 
 ### Changed
 

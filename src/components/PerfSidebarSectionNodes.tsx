@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { List, ListItem, Checkbox, Text, Skeleton } from '@chakra-ui/react';
 
-import { getNodeLabel, compareNodes } from '@/modules/nodes/NodesUtils';
+import { compareNodes } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -61,7 +61,7 @@ const PerfSidebarSectionNodes = (): JSX.Element => {
                                     fontSize="xs"
                                     fontWeight="semibold"
                                 >
-                                    {getNodeLabel(node.id)}
+                                    {node.id}
                                 </Text>
                             </Checkbox>
                         </ListItem>

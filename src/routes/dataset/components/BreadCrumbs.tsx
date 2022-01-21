@@ -1,8 +1,6 @@
 import { Text } from '@chakra-ui/react';
 import { RiDatabase2Line } from 'react-icons/ri';
 
-import { pseudonymize } from '@/modules/nodes/NodesUtils';
-
 import { useAppSelector } from '@/hooks';
 
 import { PATHS } from '@/routes';
@@ -27,9 +25,7 @@ const DatasetBreadcrumbs = (): JSX.Element => {
                 lineHeight="5"
             >
                 {datasetLoading && 'Loading'}
-                {!datasetLoading && dataset && (
-                    <>{pseudonymize(dataset.name)}</>
-                )}
+                {!datasetLoading && dataset && <>{dataset.name}</>}
             </Text>
         </Breadcrumbs>
     );

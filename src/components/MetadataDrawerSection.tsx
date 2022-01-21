@@ -1,7 +1,5 @@
 import { Text } from '@chakra-ui/react';
 
-import { pseudonymize } from '@/modules/nodes/NodesUtils';
-
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
 export default ({
@@ -20,8 +18,7 @@ export default ({
         <DrawerSection title="Metadata">
             {Object.entries(metadata).map(([key, value]) => (
                 <DrawerSectionEntry title={key} key={key}>
-                    {/* This handles the case where metadata contains NodeId, for example with "Debug_worker" and "Partner_id" */}
-                    {pseudonymize(value)}
+                    {value}
                 </DrawerSectionEntry>
             ))}
         </DrawerSection>

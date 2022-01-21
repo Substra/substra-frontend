@@ -2,53 +2,20 @@ import { NodeType } from './NodesTypes';
 
 declare const MELLODDY: boolean;
 
-const MELLODDY_ID_PSEUDONYMS: Record<string, string> = {
-    OrggskMSP: 'pharma1',
-    OrgmerckMSP: 'pharma2',
-    OrgamgenMSP: 'pharma3',
-    OrgastellasMSP: 'pharma4',
-    OrgjnjMSP: 'pharma5',
-    OrgnovartisMSP: 'pharma6',
-    OrgbayerMSP: 'pharma7',
-    OrgbiMSP: 'pharma8',
-    OrgservierMSP: 'pharma9',
-    OrgastrazenecaMSP: 'pharma10',
-};
-
 export const MELLODDY_LARGE5_NODE_IDS: string[] = [
-    'OrgamgenMSP',
-    'OrgastellasMSP',
-    'OrgbayerMSP',
-    'OrgmerckMSP',
-    'OrgservierMSP',
+    'pharma3',
+    'pharma4',
+    'pharma7',
+    'pharma2',
+    'pharma9',
 ];
 export const MELLODDY_SMALL5_NODE_IDS: string[] = [
-    'OrgastrazenecaMSP',
-    'OrgbiMSP',
-    'OrggskMSP',
-    'OrgjnjMSP',
-    'OrgnovartisMSP',
+    'pharma10',
+    'pharma8',
+    'pharma1',
+    'pharma5',
+    'pharma6',
 ];
-
-export const pseudonymize = (value: string): string => {
-    if (!MELLODDY) {
-        return value;
-    }
-
-    for (const name of Object.keys(MELLODDY_ID_PSEUDONYMS)) {
-        const pseudo = MELLODDY_ID_PSEUDONYMS[name];
-        value = value.replace(name, pseudo);
-    }
-
-    return value;
-};
-
-export const getNodeLabel = (nodeId: string): string => {
-    if (MELLODDY) {
-        return pseudonymize(nodeId);
-    }
-    return nodeId;
-};
 
 const compareString = (a: string, b: string): 1 | 0 | -1 => {
     if (a < b) {
@@ -61,8 +28,8 @@ const compareString = (a: string, b: string): 1 | 0 | -1 => {
 };
 
 export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
-    const nodeALabel = getNodeLabel(nodeA.id);
-    const nodeBLabel = getNodeLabel(nodeB.id);
+    const nodeALabel = nodeA.id;
+    const nodeBLabel = nodeB.id;
 
     const res = compareString(
         nodeALabel.toLowerCase(),

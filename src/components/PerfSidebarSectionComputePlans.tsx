@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Checkbox, List, ListItem, Skeleton, Text } from '@chakra-ui/react';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -187,7 +186,7 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                                 }
                                             >
                                                 <Text as="span" fontSize="xs">
-                                                    {getNodeLabel(nodeId)}
+                                                    {nodeId}
                                                 </Text>
                                             </Checkbox>
                                         </ListItem>

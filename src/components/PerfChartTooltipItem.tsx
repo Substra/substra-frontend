@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 
-import { getNodeLabel, isAverageNode } from '@/modules/nodes/NodesUtils';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -53,8 +53,8 @@ const PerfChartTooltipItem = ({
                                           sortedComputePlanKeys.indexOf(
                                               point.computePlanKey
                                           ) + 1
-                                      } • ${getNodeLabel(point.worker)}`
-                                    : getNodeLabel(point.worker)}
+                                      } • ${point.worker}`
+                                    : point.worker}
                             </Text>
                             <Text as="span" fontSize="xs">
                                 {`• L${lineId(point.serieId)}`}

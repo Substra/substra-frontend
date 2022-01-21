@@ -1,8 +1,6 @@
 import DataSamplesListItem from './DataSamplesListItem';
 import { VStack, Badge, List } from '@chakra-ui/react';
 
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
-
 import { useAppSelector } from '@/hooks';
 
 import {
@@ -28,7 +26,7 @@ const DetailsSidebar = (): JSX.Element => {
                             date={dataset.creation_date}
                         />
                         <DrawerSectionEntry title="Owner">
-                            {getNodeLabel(dataset.owner)}
+                            {dataset.owner}
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Permissions">
                             <PermissionTag

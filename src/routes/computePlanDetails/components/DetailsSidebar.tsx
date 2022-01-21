@@ -1,7 +1,6 @@
 import { VStack, Flex, Text } from '@chakra-ui/react';
 
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { getNodeLabel } from '@/modules/nodes/NodesUtils';
 
 import { getDiffDates } from '@/libs/utils';
 
@@ -137,7 +136,7 @@ const DetailsSidebar = (): JSX.Element => {
                             <Timing asset={computePlan} />
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Owner">
-                            {getNodeLabel(computePlan.owner)}
+                            {computePlan.owner}
                         </DrawerSectionEntry>
                     </>
                 )}

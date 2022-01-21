@@ -18,7 +18,6 @@ import {
     Box,
 } from '@chakra-ui/react';
 
-import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
@@ -105,11 +104,7 @@ const TaskDrawer = ({
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={
-                        task
-                            ? `${getTaskCategory(task)} on ${getNodeLabel(
-                                  task.worker
-                              )}`
-                            : ''
+                        task ? `${getTaskCategory(task)} on ${task.worker}` : ''
                     }
                     loading={taskLoading}
                     onClose={handleOnClose}
@@ -141,7 +136,7 @@ const TaskDrawer = ({
                                 <Timing asset={task} />
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Owner">
-                                {getNodeLabel(task.owner)}
+                                {task.owner}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Compute plan">
                                 <Link
@@ -179,7 +174,7 @@ const TaskDrawer = ({
                                         fontWeight="semibold"
                                         isExternal
                                     >
-                                        {pseudonymize(task.algo.name)}
+                                        {task.algo.name}
                                     </Link>
                                 </Text>
                             </DrawerSectionEntry>
@@ -224,7 +219,7 @@ const TaskDrawer = ({
                                                 isTruncated
                                                 flexShrink="0"
                                             >
-                                                {pseudonymize(metric.name)}
+                                                {metric.name}
                                             </Text>
                                             <Box flexGrow="1" textAlign="right">
                                                 {perf === null

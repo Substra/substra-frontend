@@ -15,7 +15,6 @@ import {
     retrieveDescription,
 } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
-import { getNodeLabel, pseudonymize } from '@/modules/nodes/NodesUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -69,7 +68,7 @@ const MetricDrawer = (): JSX.Element => {
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (metric?.name) {
-                setDocumentTitle(pseudonymize(metric.name));
+                setDocumentTitle(metric.name);
             }
         },
         [metric?.name]
@@ -89,7 +88,7 @@ const MetricDrawer = (): JSX.Element => {
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
-                    title={metric ? pseudonymize(metric.name) : undefined}
+                    title={metric?.name}
                     loading={metricLoading}
                     storageAddress={metric?.address.storage_address}
                     filename={`metric-${key}.zip`}
@@ -113,7 +112,7 @@ const MetricDrawer = (): JSX.Element => {
                                 date={metric.creation_date}
                             />
                             <DrawerSectionEntry title="Owner">
-                                {getNodeLabel(metric.owner)}
+                                {metric.owner}
                             </DrawerSectionEntry>
                             <DrawerSectionEntry title="Permissions">
                                 <PermissionTag

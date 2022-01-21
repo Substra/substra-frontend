@@ -16,7 +16,7 @@ import {
 import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
 import { Link } from 'wouter';
 
-import { getNodeLabel, isAverageNode } from '@/modules/nodes/NodesUtils';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { average, getLineId, getMaxRank } from '@/modules/series/SeriesUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
@@ -235,12 +235,8 @@ const PerfRankDetails = ({
                                                 label={
                                                     sortedComputePlanKeys.length >
                                                     1
-                                                        ? `${cpId} • ${getNodeLabel(
-                                                              worker
-                                                          )} • ${lineId}`
-                                                        : `${getNodeLabel(
-                                                              worker
-                                                          )} • ${lineId}`
+                                                        ? `${cpId} • ${worker} • ${lineId}`
+                                                        : `${worker} • ${lineId}`
                                                 }
                                                 placement="top"
                                             >
@@ -253,12 +249,8 @@ const PerfRankDetails = ({
                                                     >
                                                         {sortedComputePlanKeys.length >
                                                         1
-                                                            ? `${cpId} • ${getNodeLabel(
-                                                                  worker
-                                                              )}`
-                                                            : getNodeLabel(
-                                                                  worker
-                                                              )}
+                                                            ? `${cpId} • ${worker}`
+                                                            : worker}
                                                     </Text>
                                                     <Text
                                                         as="span"

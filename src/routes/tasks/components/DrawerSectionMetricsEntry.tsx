@@ -1,6 +1,5 @@
 import { Link, List, ListItem, Text } from '@chakra-ui/react';
 
-import { pseudonymize } from '@/modules/nodes/NodesUtils';
 import { Testtuple } from '@/modules/tasks/TuplesTypes';
 
 import { compilePath, PATHS } from '@/routes';
@@ -31,7 +30,7 @@ const DrawerSectionMetricsEntry = ({
                             fontWeight="semibold"
                             isExternal
                         >
-                            {pseudonymize(metric.name)}
+                            {metric.name}
                         </Link>
                     </Text>
                 </ListItem>

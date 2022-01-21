@@ -3,7 +3,6 @@ import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
-import { pseudonymize } from '@/modules/nodes/NodesUtils';
 import { getPerf } from '@/modules/tasks/TasksUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
@@ -14,13 +13,13 @@ function buildSerieFeatures(
 ): SerieFeaturesT {
     return {
         algoKey: testtuple.algo.key,
-        algoName: pseudonymize(testtuple.algo.name),
+        algoName: testtuple.algo.name,
         datasetKey: dataset.key,
-        datasetName: pseudonymize(dataset.name),
+        datasetName: dataset.name,
         dataSampleKeys: testtuple.test.data_sample_keys,
         worker: testtuple.worker,
         metricKey: metric.key,
-        metricName: pseudonymize(metric.name),
+        metricName: metric.name,
         computePlanKey: testtuple.compute_plan_key,
     };
 }
