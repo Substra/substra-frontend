@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useRef } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+
+import { useDisclosure } from '@chakra-ui/react';
 
 import { AssetType } from '@/modules/common/CommonTypes';
 
@@ -24,22 +32,34 @@ type Register = (
 interface TableFiltersContext {
     asset: AssetType;
     register: Register;
-}
-
-export const TableFiltersContext = createContext<TableFiltersContext>({
-    asset: 'dataset',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
-    register: (name, clear, apply, reset) => {},
-});
-
-export const useTableFilters = (
-    asset: AssetType
-): {
-    context: TableFiltersContext;
     clearAll: () => void;
     applyAll: () => void;
     resetAll: () => void;
-} => {
+    isPopoverOpen: boolean;
+    onPopoverOpen: (tabIndex?: number) => void;
+    onPopoverClose: () => void;
+    tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
+export const TableFiltersContext = createContext<TableFiltersContext>({
+    asset: 'dataset',
+    register: (name, clear, apply, reset) => {},
+    clearAll: () => {},
+    applyAll: () => {},
+    resetAll: () => {},
+    isPopoverOpen: false,
+    onPopoverOpen: (tabIndex?: number) => {},
+    onPopoverClose: () => {},
+    tabIndex: 0,
+    setTabIndex: (tabIndex: number) => {},
+});
+/* eslint-enable @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
+
+export const useTableFiltersContext = (
+    asset: AssetType
+): TableFiltersContext => {
     const tableFilters = useRef<
         Record<
             string,
@@ -96,16 +116,32 @@ export const useTableFilters = (
         }
     };
 
-    const context: TableFiltersContext = {
-        asset,
-        register,
+    const [tabIndex, setTabIndex] = useState(0);
+
+    const {
+        isOpen: isPopoverOpen,
+        onOpen,
+        onClose: onPopoverClose,
+    } = useDisclosure();
+
+    const onPopoverOpen = (tabIndex?: number) => {
+        if (tabIndex !== undefined) {
+            setTabIndex(tabIndex);
+        }
+        onOpen();
     };
 
     return {
-        context,
+        asset,
+        register,
         clearAll,
         applyAll,
         resetAll,
+        isPopoverOpen,
+        onPopoverOpen,
+        onPopoverClose,
+        tabIndex,
+        setTabIndex,
     };
 };
 

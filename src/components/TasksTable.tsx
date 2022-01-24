@@ -34,6 +34,10 @@ import { shortFormatDate } from '@/libs/utils';
 
 import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/hooks/useTableFilters';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -41,6 +45,7 @@ import {
     AssetsTable,
     AssetsTableRankDurationTh,
     AssetsTableStatusTh,
+    ClickableTh,
 } from '@/components/AssetsTable';
 import Duration from '@/components/Duration';
 import SearchBar from '@/components/SearchBar';
@@ -121,16 +126,19 @@ const TasksTable = ({
         });
     };
 
+    const context = useTableFiltersContext(assetTypeByTaskCategory[category]);
+    const { onPopoverOpen } = context;
+
     return (
-        <>
+        <TableFiltersContext.Provider value={context}>
             <HStack spacing="2.5">
-                <TableFilters asset={assetTypeByTaskCategory[category]}>
+                <TableFilters>
                     <TaskStatusTableFilter />
                     <WorkerTableFilter />
                 </TableFilters>
                 <SearchBar asset={assetTypeByTaskCategory[category]} />
             </HStack>
-            <TableFilterTags asset={assetTypeByTaskCategory[category]}>
+            <TableFilterTags>
                 <StatusTableFilterTag />
                 <WorkerTableFilterTag />
             </TableFilterTags>
@@ -189,10 +197,24 @@ const TasksTable = ({
                         <AssetsTable>
                             <Thead>
                                 <Tr>
-                                    <AssetsTableStatusTh />
-                                    <Th>Category / Worker</Th>
-                                    {!computePlan && <Th>Compute plan</Th>}
-                                    <AssetsTableRankDurationTh />
+                                    <AssetsTableStatusTh
+                                        onClick={() => onPopoverOpen(0)}
+                                    />
+                                    <ClickableTh
+                                        onClick={() => onPopoverOpen(1)}
+                                    >
+                                        Category / Worker
+                                    </ClickableTh>
+                                    {!computePlan && (
+                                        <ClickableTh
+                                            onClick={() => onPopoverOpen(0)}
+                                        >
+                                            Compute plan
+                                        </ClickableTh>
+                                    )}
+                                    <AssetsTableRankDurationTh
+                                        onClick={() => onPopoverOpen(0)}
+                                    />
                                 </Tr>
                             </Thead>
                             <Tbody data-cy={loading ? 'loading' : 'loaded'}>
@@ -345,7 +367,7 @@ const TasksTable = ({
                     <TablePagination currentPage={page} itemCount={count} />
                 </VStack>
             </Box>
-        </>
+        </TableFiltersContext.Provider>
     );
 };
 export default TasksTable;

@@ -3,7 +3,6 @@ import {
     VStack,
     Thead,
     Tr,
-    Th,
     Td,
     Box,
     Text,
@@ -24,6 +23,10 @@ import {
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/hooks/useTableFilters';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -31,6 +34,7 @@ import {
     AssetsTable,
     AssetsTableCategoryTh,
     AssetsTablePermissionsTh,
+    ClickableTh,
 } from '@/components/AssetsTable';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
@@ -65,110 +69,135 @@ const Algos = (): JSX.Element => {
 
     const key = useKeyFromPath(PATHS.ALGO);
 
+    const context = useTableFiltersContext('algo');
+    const { onPopoverOpen } = context;
+
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
     return (
         <Box marginLeft="auto" marginRight="auto" padding="6">
             <AlgoDrawer />
-            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
-                <TableTitle title="Algorithms" />
-                <HStack spacing="2.5">
-                    <TableFilters asset="algo">
-                        <OwnerTableFilter />
-                        <AlgoCategoryTableFilter />
-                    </TableFilters>
-                    <SearchBar asset="algo" />
-                </HStack>
-                <TableFilterTags asset="algo">
-                    <AlgoCategoryTableFilterTag />
-                    <OwnerTableFilterTag />
-                </TableFilterTags>
-                <Box
-                    backgroundColor="white"
-                    borderWidth="1px"
-                    borderStyle="solid"
-                    borderColor="gray.100"
+            <TableFiltersContext.Provider value={context}>
+                <VStack
+                    marginBottom="2.5"
+                    spacing="2.5"
+                    alignItems="flex-start"
                 >
-                    <AssetsTable>
-                        <Thead>
-                            <Tr>
-                                <Th>Name / Creation / Owner</Th>
-                                <AssetsTableCategoryTh />
-                                <AssetsTablePermissionsTh />
-                            </Tr>
-                        </Thead>
-                        <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
-                            {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={3} asset="algo" />
-                            )}
-                            {algosLoading ? (
-                                <TableSkeleton
-                                    itemCount={algosCount}
-                                    currentPage={page}
-                                    rowHeight="73px"
-                                >
-                                    <Td>
-                                        <Skeleton>
-                                            <Text fontSize="sm">
-                                                Lorem ipsum dolor sit amet
-                                            </Text>
-                                            <Text fontSize="xs">
-                                                Created on YYYY-MM-DD HH:MM:SS
-                                                by Foo
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <Text fontSize="sm">
-                                                Lorem ipsum
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td textAlign="right">
-                                        <Skeleton width="100px" height="20px" />
-                                    </Td>
-                                </TableSkeleton>
-                            ) : (
-                                algos.map((algo) => (
-                                    <ClickableTr
-                                        key={algo.key}
-                                        onClick={() =>
-                                            setLocationWithParams(
-                                                compilePath(PATHS.ALGO, {
-                                                    key: algo.key,
-                                                })
-                                            )
-                                        }
+                    <TableTitle title="Algorithms" />
+                    <HStack spacing="2.5">
+                        <TableFilters>
+                            <OwnerTableFilter />
+                            <AlgoCategoryTableFilter />
+                        </TableFilters>
+                        <SearchBar asset="algo" />
+                    </HStack>
+                    <TableFilterTags>
+                        <AlgoCategoryTableFilterTag />
+                        <OwnerTableFilterTag />
+                    </TableFilterTags>
+                    <Box
+                        backgroundColor="white"
+                        borderWidth="1px"
+                        borderStyle="solid"
+                        borderColor="gray.100"
+                    >
+                        <AssetsTable>
+                            <Thead>
+                                <Tr>
+                                    <ClickableTh
+                                        onClick={() => onPopoverOpen(0)}
+                                    >
+                                        Name / Creation / Owner
+                                    </ClickableTh>
+                                    <AssetsTableCategoryTh
+                                        onClick={() => onPopoverOpen(1)}
+                                    />
+                                    <AssetsTablePermissionsTh
+                                        onClick={() => onPopoverOpen(0)}
+                                    />
+                                </Tr>
+                            </Thead>
+                            <Tbody
+                                data-cy={algosLoading ? 'loading' : 'loaded'}
+                            >
+                                {!algosLoading && algosCount === 0 && (
+                                    <EmptyTr nbColumns={3} asset="algo" />
+                                )}
+                                {algosLoading ? (
+                                    <TableSkeleton
+                                        itemCount={algosCount}
+                                        currentPage={page}
+                                        rowHeight="73px"
                                     >
                                         <Td>
-                                            <Text fontSize="sm">
-                                                {algo.name}
-                                            </Text>
-                                            <Text fontSize="xs">{`Created on ${formatDate(
-                                                algo.creation_date
-                                            )} by ${algo.owner}`}</Text>
+                                            <Skeleton>
+                                                <Text fontSize="sm">
+                                                    Lorem ipsum dolor sit amet
+                                                </Text>
+                                                <Text fontSize="xs">
+                                                    Created on YYYY-MM-DD
+                                                    HH:MM:SS by Foo
+                                                </Text>
+                                            </Skeleton>
                                         </Td>
                                         <Td>
-                                            <Text fontSize="sm">
-                                                {getAlgoCategory(algo)}
-                                            </Text>
+                                            <Skeleton>
+                                                <Text fontSize="sm">
+                                                    Lorem ipsum
+                                                </Text>
+                                            </Skeleton>
                                         </Td>
                                         <Td textAlign="right">
-                                            <PermissionTag
-                                                permission={
-                                                    algo.permissions.process
-                                                }
+                                            <Skeleton
+                                                width="100px"
+                                                height="20px"
                                             />
                                         </Td>
-                                    </ClickableTr>
-                                ))
-                            )}
-                        </Tbody>
-                    </AssetsTable>
-                </Box>
-                <TablePagination currentPage={page} itemCount={algosCount} />
-            </VStack>
+                                    </TableSkeleton>
+                                ) : (
+                                    algos.map((algo) => (
+                                        <ClickableTr
+                                            key={algo.key}
+                                            onClick={() =>
+                                                setLocationWithParams(
+                                                    compilePath(PATHS.ALGO, {
+                                                        key: algo.key,
+                                                    })
+                                                )
+                                            }
+                                        >
+                                            <Td>
+                                                <Text fontSize="sm">
+                                                    {algo.name}
+                                                </Text>
+                                                <Text fontSize="xs">{`Created on ${formatDate(
+                                                    algo.creation_date
+                                                )} by ${algo.owner}`}</Text>
+                                            </Td>
+                                            <Td>
+                                                <Text fontSize="sm">
+                                                    {getAlgoCategory(algo)}
+                                                </Text>
+                                            </Td>
+                                            <Td textAlign="right">
+                                                <PermissionTag
+                                                    permission={
+                                                        algo.permissions.process
+                                                    }
+                                                />
+                                            </Td>
+                                        </ClickableTr>
+                                    ))
+                                )}
+                            </Tbody>
+                        </AssetsTable>
+                    </Box>
+                    <TablePagination
+                        currentPage={page}
+                        itemCount={algosCount}
+                    />
+                </VStack>
+            </TableFiltersContext.Provider>
         </Box>
     );
 };

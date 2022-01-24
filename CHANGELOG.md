@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Make table headers clickable (#332)
+
 ## [0.9.1] - 2022-01-21
 
 ### Added

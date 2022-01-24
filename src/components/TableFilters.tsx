@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import {
     Button,
@@ -15,44 +15,42 @@ import {
     TabPanel,
     TabPanels,
     Tabs,
-    useDisclosure,
     Box,
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
-import { AssetType } from '@/modules/common/CommonTypes';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
 
 import { useAppSelector } from '@/hooks';
-import {
-    TableFiltersContext,
-    useTableFilter,
-    useTableFilters,
-} from '@/hooks/useTableFilters';
+import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
 
 import TableFilterCheckboxes from '@/components/TableFilterCheckboxes';
 
 interface TableFiltersProps {
-    asset: AssetType;
     children: React.ReactNode | React.ReactNode[];
 }
-export const TableFilters = ({
-    asset,
-    children,
-}: TableFiltersProps): JSX.Element => {
-    const { context, clearAll, applyAll, resetAll } = useTableFilters(asset);
-    const { onOpen, onClose, isOpen } = useDisclosure();
+export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
+    const {
+        clearAll,
+        applyAll,
+        resetAll,
+        onPopoverClose,
+        onPopoverOpen,
+        isPopoverOpen,
+        tabIndex,
+        setTabIndex,
+    } = useContext(TableFiltersContext);
 
     const initialFocusRef = useRef(null);
 
     useEffect(() => {
         resetAll();
-    }, [isOpen]);
+    }, [isPopoverOpen]);
 
     const tabTitles: string[] = React.Children.toArray(children).map(
         (child) => {
@@ -65,12 +63,12 @@ export const TableFilters = ({
 
     const onClear = () => {
         clearAll();
-        onClose();
+        onPopoverClose();
     };
 
     const onApply = () => {
         applyAll();
-        onClose();
+        onPopoverClose();
     };
 
     return (
@@ -78,9 +76,9 @@ export const TableFilters = ({
             <Popover
                 initialFocusRef={initialFocusRef}
                 placement="bottom-start"
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpen={onOpen}
+                isOpen={isPopoverOpen}
+                onClose={onPopoverClose}
+                onOpen={onPopoverOpen}
             >
                 <PopoverTrigger>
                     <Button
@@ -93,53 +91,53 @@ export const TableFilters = ({
                 </PopoverTrigger>
                 <PopoverContent minWidth="670px" boxShadow="xl">
                     <PopoverArrow />
-                    <PopoverCloseButton onClick={onClose} />
+                    <PopoverCloseButton onClick={onPopoverClose} />
                     <PopoverBody padding="0" overflow="hidden">
-                        <TableFiltersContext.Provider value={context}>
-                            <Tabs
-                                variant="soft-rounded"
-                                colorScheme="teal"
-                                orientation="vertical"
-                                isLazy={false}
+                        <Tabs
+                            variant="soft-rounded"
+                            colorScheme="teal"
+                            orientation="vertical"
+                            isLazy={false}
+                            index={tabIndex}
+                            onChange={(index: number) => setTabIndex(index)}
+                        >
+                            <TabList
+                                padding="2.5"
+                                boxShadow="xl"
+                                minWidth="160px"
                             >
-                                <TabList
-                                    padding="2.5"
-                                    boxShadow="xl"
-                                    minWidth="160px"
-                                >
-                                    {tabTitles.map((title, index) => (
-                                        <Tab
-                                            _selected={{
-                                                backgroundColor: 'teal.50',
-                                                color: 'teal.500',
-                                            }}
-                                            fontSize="sm"
-                                            justifyContent="flex-start"
-                                            key={title}
-                                            ref={
-                                                index === 0
-                                                    ? initialFocusRef
-                                                    : null
-                                            }
+                                {tabTitles.map((title, index) => (
+                                    <Tab
+                                        _selected={{
+                                            backgroundColor: 'teal.50',
+                                            color: 'teal.500',
+                                        }}
+                                        fontSize="sm"
+                                        justifyContent="flex-start"
+                                        key={title}
+                                        ref={
+                                            index === tabIndex
+                                                ? initialFocusRef
+                                                : null
+                                        }
+                                    >
+                                        {title}
+                                    </Tab>
+                                ))}
+                            </TabList>
+                            <TabPanels padding="0">
+                                {React.Children.toArray(children).map(
+                                    (child, index) => (
+                                        <TabPanel
+                                            padding="0"
+                                            key={tabTitles[index]}
                                         >
-                                            {title}
-                                        </Tab>
-                                    ))}
-                                </TabList>
-                                <TabPanels padding="0">
-                                    {React.Children.toArray(children).map(
-                                        (child, index) => (
-                                            <TabPanel
-                                                padding="0"
-                                                key={tabTitles[index]}
-                                            >
-                                                {child}
-                                            </TabPanel>
-                                        )
-                                    )}
-                                </TabPanels>
-                            </Tabs>
-                        </TableFiltersContext.Provider>
+                                            {child}
+                                        </TabPanel>
+                                    )
+                                )}
+                            </TabPanels>
+                        </Tabs>
                     </PopoverBody>
                     <PopoverFooter
                         display="flex"

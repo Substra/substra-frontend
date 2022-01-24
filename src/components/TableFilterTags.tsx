@@ -1,10 +1,9 @@
-import { createContext, useContext, useCallback } from 'react';
+import { useContext, useCallback } from 'react';
 
 import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
-import { AssetType } from '@/modules/common/CommonTypes';
 
 import {
     areSearchFiltersListsEqual,
@@ -13,34 +12,18 @@ import {
 import { getStatusLabel } from '@/libs/status';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-
-interface TableFilterTagsContext {
-    asset: AssetType;
-}
-
-const TableFilterTagsContext = createContext<TableFilterTagsContext>({
-    asset: 'dataset',
-});
+import { TableFiltersContext } from '@/hooks/useTableFilters';
 
 interface TableFilterTagsProps {
-    asset: AssetType;
     children: React.ReactNode | React.ReactNode[];
 }
 
 export const TableFilterTags = ({
-    asset,
     children,
-}: TableFilterTagsProps): JSX.Element => {
-    const context: TableFilterTagsContext = { asset };
-    return (
-        <TableFilterTagsContext.Provider value={context}>
-            <HStack>{children}</HStack>
-        </TableFilterTagsContext.Provider>
-    );
-};
+}: TableFilterTagsProps): JSX.Element => <HStack>{children}</HStack>;
 
 const useTagFilter = (assetKey: string) => {
-    const { asset } = useContext(TableFilterTagsContext);
+    const { asset } = useContext(TableFiltersContext);
     const {
         params: { search: searchFilters },
         setLocationWithParams,
