@@ -11,7 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+### Changed
+
+## [0.9.2] - 2022-01-25
+
+### Added
+
+### Fixed
+
 -   Fix typos, textarea width and style on feedback & help modal (#301)
+-   Correct large5/small5 groups (#349)
 
 ### Changed
 
