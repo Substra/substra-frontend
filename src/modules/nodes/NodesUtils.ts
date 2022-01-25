@@ -3,18 +3,18 @@ import { NodeType } from './NodesTypes';
 declare const MELLODDY: boolean;
 
 export const MELLODDY_LARGE5_NODE_IDS: string[] = [
-    'pharma3',
-    'pharma4',
-    'pharma7',
-    'pharma2',
-    'pharma9',
-];
-export const MELLODDY_SMALL5_NODE_IDS: string[] = [
     'pharma10',
     'pharma8',
     'pharma1',
     'pharma5',
     'pharma6',
+];
+export const MELLODDY_SMALL5_NODE_IDS: string[] = [
+    'pharma3',
+    'pharma4',
+    'pharma7',
+    'pharma2',
+    'pharma9',
 ];
 
 const compareString = (a: string, b: string): 1 | 0 | -1 => {
