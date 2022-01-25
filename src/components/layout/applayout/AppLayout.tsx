@@ -13,7 +13,12 @@ const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
     return (
         <Flex direction="column" align="stretch" height="100vh" width="100vw">
             {isAuthenticated && <Header />}
-            <Flex grow="1" overflowX="auto" overflowY="auto">
+            <Flex
+                grow="1"
+                overflowX="auto"
+                overflowY="auto"
+                alignItems="flex-start"
+            >
                 {children}
             </Flex>
         </Flex>

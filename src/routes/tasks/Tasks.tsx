@@ -1,5 +1,5 @@
 import TaskDrawer from './components/TaskDrawer';
-import { VStack, Box } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
 import {
@@ -34,13 +34,17 @@ const GenericTasks = ({
     useAssetListDocumentTitleEffect('Tasks list', key);
 
     return (
-        <Box padding="6" marginLeft="auto" marginRight="auto">
+        <VStack
+            paddingX="6"
+            paddingY="8"
+            marginX="auto"
+            spacing="2.5"
+            alignItems="flex-start"
+        >
             {taskDrawer}
-            <VStack marginBottom="2.5" spacing="2.5" alignItems="flex-start">
-                <TableTitle title="Tasks" />
-                {tasksTable}
-            </VStack>
-        </Box>
+            <TableTitle title="Tasks" />
+            {tasksTable}
+        </VStack>
     );
 };
 

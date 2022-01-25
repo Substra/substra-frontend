@@ -76,114 +76,103 @@ const Metrics = (): JSX.Element => {
     const { onPopoverOpen } = context;
 
     return (
-        <Box padding="6" marginLeft="auto" marginRight="auto">
+        <VStack
+            paddingX="6"
+            paddingY="8"
+            marginX="auto"
+            spacing="2.5"
+            alignItems="flex-start"
+        >
             <MetricDrawer />
             <TableFiltersContext.Provider value={context}>
-                <VStack
-                    marginBottom="2.5"
-                    spacing="2.5"
-                    alignItems="flex-start"
+                <TableTitle title="Metrics" />
+                <HStack spacing="2.5">
+                    <TableFilters>
+                        <OwnerTableFilter />
+                    </TableFilters>
+                    <SearchBar asset="metric" />
+                </HStack>
+                <TableFilterTags>
+                    <OwnerTableFilterTag />
+                </TableFilterTags>
+                <Box
+                    backgroundColor="white"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
                 >
-                    <TableTitle title="Metrics" />
-                    <HStack spacing="2.5">
-                        <TableFilters>
-                            <OwnerTableFilter />
-                        </TableFilters>
-                        <SearchBar asset="metric" />
-                    </HStack>
-                    <TableFilterTags>
-                        <OwnerTableFilterTag />
-                    </TableFilterTags>
-                    <Box
-                        backgroundColor="white"
-                        borderWidth="1px"
-                        borderStyle="solid"
-                        borderColor="gray.100"
-                    >
-                        <AssetsTable>
-                            <Thead>
-                                <Tr>
-                                    <ClickableTh
-                                        onClick={() => onPopoverOpen(0)}
-                                    >
-                                        Name / Creation / Owner
-                                    </ClickableTh>
-                                    <AssetsTablePermissionsTh
-                                        onClick={() => onPopoverOpen(0)}
-                                    />
-                                </Tr>
-                            </Thead>
-                            <Tbody
-                                data-cy={metricsLoading ? 'loading' : 'loaded'}
-                            >
-                                {!metricsLoading && metrics.length === 0 && (
-                                    <EmptyTr nbColumns={2} asset="metric" />
-                                )}
-                                {metricsLoading ? (
-                                    <TableSkeleton
-                                        itemCount={metricsCount}
-                                        currentPage={page}
-                                        rowHeight="73px"
+                    <AssetsTable>
+                        <Thead>
+                            <Tr>
+                                <ClickableTh onClick={() => onPopoverOpen(0)}>
+                                    Name / Creation / Owner
+                                </ClickableTh>
+                                <AssetsTablePermissionsTh
+                                    onClick={() => onPopoverOpen(0)}
+                                />
+                            </Tr>
+                        </Thead>
+                        <Tbody data-cy={metricsLoading ? 'loading' : 'loaded'}>
+                            {!metricsLoading && metrics.length === 0 && (
+                                <EmptyTr nbColumns={2} asset="metric" />
+                            )}
+                            {metricsLoading ? (
+                                <TableSkeleton
+                                    itemCount={metricsCount}
+                                    currentPage={page}
+                                    rowHeight="73px"
+                                >
+                                    <Td>
+                                        <Skeleton>
+                                            <Text fontSize="sm">
+                                                Lorem ipsum dolor sit amet
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                Created on YYYY-MM-DD HH:MM:SS
+                                                by Foo
+                                            </Text>
+                                        </Skeleton>
+                                    </Td>
+                                    <Td textAlign="right">
+                                        <Skeleton width="100px" height="20px" />
+                                    </Td>
+                                </TableSkeleton>
+                            ) : (
+                                metrics.map((metric) => (
+                                    <ClickableTr
+                                        key={metric.key}
+                                        onClick={() =>
+                                            setLocationWithParams(
+                                                compilePath(PATHS.METRIC, {
+                                                    key: metric.key,
+                                                })
+                                            )
+                                        }
                                     >
                                         <Td>
-                                            <Skeleton>
-                                                <Text fontSize="sm">
-                                                    Lorem ipsum dolor sit amet
-                                                </Text>
-                                                <Text fontSize="xs">
-                                                    Created on YYYY-MM-DD
-                                                    HH:MM:SS by Foo
-                                                </Text>
-                                            </Skeleton>
+                                            <Text fontSize="sm">
+                                                {metric.name}
+                                            </Text>
+                                            <Text fontSize="xs">{`Created on ${formatDate(
+                                                metric.creation_date
+                                            )} by ${metric.owner}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
-                                            <Skeleton
-                                                width="100px"
-                                                height="20px"
+                                            <PermissionTag
+                                                permission={
+                                                    metric.permissions.process
+                                                }
                                             />
                                         </Td>
-                                    </TableSkeleton>
-                                ) : (
-                                    metrics.map((metric) => (
-                                        <ClickableTr
-                                            key={metric.key}
-                                            onClick={() =>
-                                                setLocationWithParams(
-                                                    compilePath(PATHS.METRIC, {
-                                                        key: metric.key,
-                                                    })
-                                                )
-                                            }
-                                        >
-                                            <Td>
-                                                <Text fontSize="sm">
-                                                    {metric.name}
-                                                </Text>
-                                                <Text fontSize="xs">{`Created on ${formatDate(
-                                                    metric.creation_date
-                                                )} by ${metric.owner}`}</Text>
-                                            </Td>
-                                            <Td textAlign="right">
-                                                <PermissionTag
-                                                    permission={
-                                                        metric.permissions
-                                                            .process
-                                                    }
-                                                />
-                                            </Td>
-                                        </ClickableTr>
-                                    ))
-                                )}
-                            </Tbody>
-                        </AssetsTable>
-                    </Box>
-                    <TablePagination
-                        currentPage={page}
-                        itemCount={metricsCount}
-                    />
-                </VStack>
+                                    </ClickableTr>
+                                ))
+                            )}
+                        </Tbody>
+                    </AssetsTable>
+                </Box>
+                <TablePagination currentPage={page} itemCount={metricsCount} />
             </TableFiltersContext.Provider>
-        </Box>
+        </VStack>
     );
 };
 

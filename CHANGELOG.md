@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Add spacing below navigation (#348)
+
 ## [0.9.2] - 2022-01-25
 
 ### Added
