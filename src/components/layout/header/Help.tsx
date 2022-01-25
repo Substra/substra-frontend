@@ -5,7 +5,6 @@ import {
     AlertTitle,
     Box,
     Button,
-    HStack,
     Link,
     ListItem,
     MenuItem,
@@ -17,7 +16,6 @@ import {
     ModalHeader,
     ModalOverlay,
     Text,
-    Textarea,
     UnorderedList,
     useDisclosure,
     VStack,
@@ -44,7 +42,7 @@ const Help = () => {
     const date = new Date();
 
     const bodyContent = `USER INFORMATION
-----
+
 Username: ${userId}
 Date: ${shortDateFormatter.format(date)}
 URL: ${window.location.href}
@@ -52,10 +50,10 @@ Browser: ${navigator.userAgent}
 
 ---
 PLATFORM
-Frontend: ${__APP_VERSION__}
-Orchestrator: ${orchestratorVersion}
-Backend: ${backendVersion}
-    `;
+
+Frontend: version ${__APP_VERSION__}
+Orchestrator: version ${orchestratorVersion}
+Backend: version ${backendVersion}`;
 
     return (
         <>
@@ -64,7 +62,9 @@ Backend: ${backendVersion}
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader fontSize="md">Help and feedback</ModalHeader>
+                    <ModalHeader fontSize="md" fontWeight="bold">
+                        Help and feedback
+                    </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="4">
@@ -96,8 +96,8 @@ Backend: ${backendVersion}
                                     </AlertDescription>
                                 </Box>
                             </Alert>
-                            <Text fontSize="sm">
-                                Do you want some help or give us some feeedback?
+                            <Text fontSize="sm" marginBottom="3">
+                                Do you want some help or give us some feedback?
                                 We will do our best to help you! Please send us
                                 an email with all the details at&nbsp;
                                 <Link
@@ -110,15 +110,20 @@ Backend: ${backendVersion}
                                 </Link>
                             </Text>
 
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" fontWeight="semibold">
                                 Help us understand your problem
                             </Text>
                             <Box>
-                                <UnorderedList marginLeft="7">
+                                <UnorderedList marginLeft="7" marginBottom="3">
                                     <ListItem>
                                         <Text fontSize="sm">
                                             Describe precisely your problem and
                                             explain how to reproduce it
+                                        </Text>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Text fontSize="sm">
+                                            Specify your Python version
                                         </Text>
                                     </ListItem>
                                     <ListItem>
@@ -130,33 +135,27 @@ Backend: ${backendVersion}
                                 </UnorderedList>
                             </Box>
 
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" fontWeight="semibold">
                                 Information to add to your message
                             </Text>
 
-                            <Box
-                                paddingY="2"
-                                paddingX="2"
-                                borderColor="gray.500"
-                                borderWidth="1px"
-                                borderStyle="solid"
-                            >
-                                <HStack
-                                    justifyContent="space-between"
-                                    alignItems="flex-start"
-                                    height="100%"
+                            <Box position="relative">
+                                <Text
+                                    fontSize="sm"
+                                    textColor="gray.500"
+                                    as="pre"
+                                    paddingY="2"
+                                    paddingX="2"
+                                    borderColor="gray.500"
+                                    borderWidth="1px"
+                                    borderStyle="solid"
+                                    whiteSpace="break-spaces"
                                 >
-                                    <Textarea
-                                        fontSize="sm"
-                                        textColor="gray.500"
-                                        height="350px"
-                                        border="none"
-                                        resize="none"
-                                        value={bodyContent}
-                                        isReadOnly
-                                    />
+                                    {bodyContent}
+                                </Text>
+                                <Box position="absolute" top="1" right="1">
                                     <CopyButton value={bodyContent} />
-                                </HStack>
+                                </Box>
                             </Box>
                         </VStack>
                     </ModalBody>

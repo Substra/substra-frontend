@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fix typos, textarea width and style on feedback & help modal (#301)
+
 ### Changed
 
 -   Make table headers clickable (#332)
