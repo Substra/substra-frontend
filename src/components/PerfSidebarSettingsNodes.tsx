@@ -119,6 +119,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                 colorScheme="teal"
                                 variant="solid"
                                 key={nodeId}
+                                marginRight="1"
                             >
                                 <TagLabel>{nodeId}</TagLabel>
                                 <TagCloseButton onClick={remove(nodeId)} />
