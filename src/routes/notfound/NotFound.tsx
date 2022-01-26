@@ -23,6 +23,7 @@ const NotFound = (): JSX.Element => {
             alignItems="center"
             justifyContent="center"
             flexDirection="column"
+            alignSelf="stretch"
         >
             <EmptyState
                 icon={<RiFileWarningLine />}

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Full height layout on NotFound, Compare and CP chart pages (#351)
+
 ### Changed
 
 -   Add spacing below navigation (#348)

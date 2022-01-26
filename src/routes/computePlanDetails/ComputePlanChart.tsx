@@ -49,6 +49,7 @@ const ComputePlanChart = (): JSX.Element => {
             alignItems="stretch"
             flexGrow={1}
             overflow="hidden"
+            alignSelf="stretch"
         >
             <Box
                 background="white"

@@ -75,6 +75,7 @@ const PerfBrowser = ({
                 spacing="0"
                 alignItems="stretch"
                 overflow="hidden"
+                alignSelf="stretch"
             >
                 <Flex
                     flexGrow={0}
