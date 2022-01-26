@@ -67,26 +67,23 @@ export const highlightRankPlugin = ({
         const { ctx, chartArea, scales } = chart;
         const state = getState(chart);
 
-        const rank: number | null = state.selectedRank || state.hoveredRank;
+        const highlightRank = (rank: number, color: string) => {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.strokeRect(
+                scales.x.getPixelForValue(rank),
+                chartArea.top,
+                0,
+                chartArea.height
+            );
+            ctx.restore();
+        };
 
-        if (rank === null) {
-            return;
+        if (state.selectedRank !== null) {
+            highlightRank(state.selectedRank, chakraTheme.colors.teal['500']);
+        } else if (state.hoveredRank !== null) {
+            highlightRank(state.hoveredRank, chakraTheme.colors.teal['300']);
         }
-
-        ctx.save();
-
-        if (state.selectedRank) {
-            ctx.strokeStyle = chakraTheme.colors.teal['500'];
-        } else {
-            ctx.strokeStyle = chakraTheme.colors.teal['300'];
-        }
-        ctx.strokeRect(
-            scales.x.getPixelForValue(rank),
-            chartArea.top,
-            0,
-            chartArea.height
-        );
-        ctx.restore();
     },
     beforeEvent: (chart: Chart, args): void => {
         const event = args.event;

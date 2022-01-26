@@ -158,12 +158,16 @@ const PerfRankDetails = ({
                 alignItems="center"
                 paddingX="5"
             >
-                {hoveredRank !== null || selectedRank !== null
-                    ? `Rank ${selectedRank || hoveredRank}`
-                    : 'Last rank'}
                 {selectedRank !== null && (
-                    <Icon as={RiLockLine} marginLeft="1" />
+                    <>
+                        {`Rank ${selectedRank}`}
+                        <Icon as={RiLockLine} marginLeft="1" />
+                    </>
                 )}
+                {selectedRank === null &&
+                    hoveredRank !== null &&
+                    `Rank ${hoveredRank}`}
+                {selectedRank === null && hoveredRank === null && 'Last rank'}
             </Heading>
             <List>
                 {displayAverage && (
