@@ -36,7 +36,7 @@ const PerfChartSummaryTooltip = ({
             padding="3"
             spacing="3"
             boxShadow="md"
-            zIndex="1"
+            zIndex="tooltip"
         >
             <ListItem
                 fontSize="xs"

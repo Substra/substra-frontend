@@ -39,6 +39,7 @@ const PerfChartTooltip = ({
             padding="3"
             spacing="3"
             boxShadow="md"
+            zIndex="tooltip"
         >
             {points.map((point) => (
                 <PerfChartTooltipItem
