@@ -58,7 +58,9 @@ const PerfBrowser = ({
         }
 
         const groupsMatchingMetric = seriesGroups.filter(
-            (series) => series[0].metricName === selectedMetricName
+            (series) =>
+                series[0].metricName.toLowerCase() ===
+                selectedMetricName.toLowerCase()
         );
 
         if (groupsMatchingMetric.length > 0) {
