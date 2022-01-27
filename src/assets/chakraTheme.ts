@@ -267,6 +267,30 @@ export default extendTheme({
                 endColor: 'gray.200',
             },
         },
+        Table: {
+            sizes: {
+                md: {
+                    td: {
+                        px: '3',
+                        _first: {
+                            paddingLeft: '6',
+                        },
+                        _last: {
+                            paddingRight: '6',
+                        },
+                    },
+                    th: {
+                        px: '3',
+                        _first: {
+                            paddingLeft: '6',
+                        },
+                        _last: {
+                            paddingRight: '6',
+                        },
+                    },
+                },
+            },
+        },
         Tabs: {
             variants: {
                 'soft-rounded': { tab: noBorderRadius },

@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add spacing below navigation (#348)
 -   No more delay before hiding tooltip on perf chart cards (#352)
+-   Removed redundant spaces in tables (#361)
 
 ## [0.9.2] - 2022-01-25
 

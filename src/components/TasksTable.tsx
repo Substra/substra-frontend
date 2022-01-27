@@ -2,7 +2,6 @@ import {
     VStack,
     Thead,
     Tr,
-    Th,
     Td,
     Box,
     Text,
@@ -29,8 +28,6 @@ import {
     assetTypeByTaskCategory,
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
-
-import { shortFormatDate } from '@/libs/utils';
 
 import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -62,6 +59,7 @@ import {
     WorkerTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
+import Timing from '@/components/Timing';
 
 interface TasksTableProps {
     loading: boolean;
@@ -203,18 +201,20 @@ const TasksTable = ({
                                     <ClickableTh
                                         onClick={() => onPopoverOpen(1)}
                                     >
-                                        Category / Worker
+                                        Category / Worker / Rank
                                     </ClickableTh>
+                                    <AssetsTableRankDurationTh
+                                        onClick={() => onPopoverOpen(0)}
+                                    />
                                     {!computePlan && (
                                         <ClickableTh
                                             onClick={() => onPopoverOpen(0)}
+                                            width="295px"
+                                            textAlign="right"
                                         >
                                             Compute plan
                                         </ClickableTh>
                                     )}
-                                    <AssetsTableRankDurationTh
-                                        onClick={() => onPopoverOpen(0)}
-                                    />
                                 </Tr>
                             </Thead>
                             <Tbody data-cy={loading ? 'loading' : 'loaded'}>
@@ -239,15 +239,24 @@ const TasksTable = ({
                                                     Train on LoremIpsum
                                                 </Text>
                                             </Skeleton>
+                                            <Skeleton
+                                                width="50px"
+                                                height="16px"
+                                                marginTop="0.5"
+                                            />
                                         </Td>
                                         {!computePlan && (
-                                            <Th>
+                                            <Td>
                                                 <Skeleton>
-                                                    <Text fontSize="sm">
+                                                    <Text
+                                                        fontSize="sm"
+                                                        isTruncated
+                                                        maxWidth="auto"
+                                                    >
                                                         xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                                                     </Text>
                                                 </Skeleton>
-                                            </Th>
+                                            </Td>
                                         )}
                                         <Td textAlign="right">
                                             <Skeleton>
@@ -294,41 +303,13 @@ const TasksTable = ({
                                                 <Text fontSize="sm">{`${getTaskCategory(
                                                     task
                                                 )} on ${task.worker}`}</Text>
-                                                <Text
-                                                    as="span"
-                                                    fontSize="xs"
-                                                    color={
-                                                        !task.start_date
-                                                            ? 'gray.500'
-                                                            : ''
-                                                    }
-                                                >
-                                                    {!task.start_date &&
-                                                        'Not started yet'}
-                                                    {task.start_date &&
-                                                        `${shortFormatDate(
-                                                            task.start_date
-                                                        )} -> `}
+                                                <Text fontSize="xs">
+                                                    {`Rank ${task.rank}`}
                                                 </Text>
-                                                <Text
-                                                    as="span"
-                                                    fontSize="xs"
-                                                    color={
-                                                        !task.start_date ||
-                                                        !task.end_date
-                                                            ? 'gray.500'
-                                                            : ''
-                                                    }
-                                                >
-                                                    {task.start_date &&
-                                                        !task.end_date &&
-                                                        'Not ended yet'}
-                                                    {task.start_date &&
-                                                        task.end_date &&
-                                                        shortFormatDate(
-                                                            task.end_date
-                                                        )}
-                                                </Text>
+                                            </Td>
+                                            <Td fontSize="xs">
+                                                <Timing asset={task} />
+                                                <Duration asset={task} />
                                             </Td>
                                             {!computePlan && (
                                                 <Td
@@ -336,29 +317,31 @@ const TasksTable = ({
                                                         e.stopPropagation()
                                                     }
                                                 >
-                                                    <Link
-                                                        href={compilePath(
-                                                            PATHS.COMPUTE_PLAN_TASKS_ROOT,
-                                                            {
-                                                                key: task.compute_plan_key,
-                                                            }
-                                                        )}
+                                                    <Text
+                                                        isTruncated
+                                                        maxWidth="auto"
+                                                        textAlign="right"
                                                     >
-                                                        <ChakraLink
-                                                            color="teal.500"
-                                                            fontSize="sm"
+                                                        <Link
+                                                            href={compilePath(
+                                                                PATHS.COMPUTE_PLAN_TASKS_ROOT,
+                                                                {
+                                                                    key: task.compute_plan_key,
+                                                                }
+                                                            )}
                                                         >
-                                                            {
-                                                                task.compute_plan_key
-                                                            }
-                                                        </ChakraLink>
-                                                    </Link>
+                                                            <ChakraLink
+                                                                color="teal.500"
+                                                                fontSize="xs"
+                                                            >
+                                                                {
+                                                                    task.compute_plan_key
+                                                                }
+                                                            </ChakraLink>
+                                                        </Link>
+                                                    </Text>
                                                 </Td>
                                             )}
-                                            <Td textAlign="right" fontSize="xs">
-                                                <Text>{`${task.rank}`}</Text>
-                                                <Duration asset={task} />
-                                            </Td>
                                         </ClickableTr>
                                     ))}
                             </Tbody>

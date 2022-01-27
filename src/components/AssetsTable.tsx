@@ -31,7 +31,7 @@ export const AssetsTablePermissionsTh = (props: TableColumnHeaderProps) => (
     <ClickableTh
         {...props}
         textAlign="right"
-        width="155px"
+        width="140px"
         whiteSpace="nowrap"
         title="Permissions"
     >
@@ -44,12 +44,12 @@ export const AssetsTableCategoryTh = (props: TableColumnHeaderProps) => (
     </ClickableTh>
 );
 export const AssetsTableStatusTh = (props: TableColumnHeaderProps) => (
-    <ClickableTh {...props} width="135px">
+    <ClickableTh {...props} width="120px">
         Status
     </ClickableTh>
 );
 export const AssetsTableRankDurationTh = (props: TableColumnHeaderProps) => (
-    <ClickableTh {...props} width="170px" textAlign="right" whiteSpace="nowrap">
-        Rank / Duration
+    <ClickableTh {...props} width="240px" whiteSpace="nowrap">
+        Dates / Duration
     </ClickableTh>
 );

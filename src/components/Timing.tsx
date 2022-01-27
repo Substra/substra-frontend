@@ -1,4 +1,4 @@
-import { HStack, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 
 import {
     ComputePlanStatus,
@@ -29,11 +29,13 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
     }
 
     return (
-        <HStack>
-            <Text>{`${shortFormatDate(asset.start_date)} ->`}</Text>
-            {asset.end_date && <Text>{shortFormatDate(asset.end_date)}</Text>}
+        <Text>
+            <Text as="span">{`${shortFormatDate(asset.start_date)} ->`}</Text>
+            {asset.end_date && (
+                <Text as="span">{shortFormatDate(asset.end_date)}</Text>
+            )}
             {!asset.end_date && (
-                <Text color="gray.500">
+                <Text color="gray.500" as="span">
                     {[
                         ComputePlanStatus.done,
                         ComputePlanStatus.canceled,
@@ -46,7 +48,7 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
                         : 'Not ended yet'}
                 </Text>
             )}
-        </HStack>
+        </Text>
     );
 };
 export default Timing;
