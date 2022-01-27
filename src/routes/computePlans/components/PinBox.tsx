@@ -17,10 +17,10 @@ const StyledInput = styled('input')`
 `;
 
 interface PinBoxProps {
-    checked: boolean;
+    isChecked: boolean;
     onChange: () => void;
 }
-const PinBox = ({ checked, onChange }: PinBoxProps): JSX.Element => {
+const PinBox = ({ isChecked, onChange }: PinBoxProps): JSX.Element => {
     const [focus, setFocus] = useState(false);
     return (
         <Box
@@ -29,8 +29,12 @@ const PinBox = ({ checked, onChange }: PinBoxProps): JSX.Element => {
             transitionProperty="box-shadow"
             transitionDuration="normal"
         >
-            {!checked && <RiPushpinLine fill="var(--chakra-colors-gray-300)" />}
-            {checked && <RiPushpinFill fill="var(--chakra-colors-teal-500)" />}
+            {!isChecked && (
+                <RiPushpinLine fill="var(--chakra-colors-gray-300)" />
+            )}
+            {isChecked && (
+                <RiPushpinFill fill="var(--chakra-colors-teal-500)" />
+            )}
             <StyledInput
                 type="checkbox"
                 onChange={onChange}

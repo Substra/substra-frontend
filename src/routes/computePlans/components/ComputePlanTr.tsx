@@ -50,14 +50,14 @@ const ComputePlanTr = ({
             <CheckboxTd firstCol={true}>
                 <Checkbox
                     value={computePlan.key}
-                    checked={selectedKeys.includes(computePlan.key)}
+                    isChecked={selectedKeys.includes(computePlan.key)}
                     onChange={onSelectionChange(computePlan.key)}
                     colorScheme="teal"
                 />
             </CheckboxTd>
             <CheckboxTd>
                 <PinBox
-                    checked={pinnedKeys.includes(computePlan.key)}
+                    isChecked={pinnedKeys.includes(computePlan.key)}
                     onChange={onPinChange(computePlan)}
                 />
             </CheckboxTd>
