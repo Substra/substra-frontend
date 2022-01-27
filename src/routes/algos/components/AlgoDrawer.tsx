@@ -7,6 +7,7 @@ import {
     useDisclosure,
     DrawerBody,
     VStack,
+    Skeleton,
 } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 
@@ -93,40 +94,58 @@ const AlgoDrawer = (): JSX.Element => {
                         onClose();
                     }}
                 />
-                {algo && (
-                    <DrawerBody
-                        as={VStack}
-                        alignItems="stretch"
-                        spacing="8"
-                        paddingX="5"
-                        paddingY="8"
-                    >
-                        <DrawerSection title="General">
-                            <DrawerSectionEntry title="Category">
-                                {getAlgoCategory(algo)}
-                            </DrawerSectionEntry>
-                            <DrawerSectionKeyEntry value={algo.key} />
-                            <DrawerSectionDateEntry
-                                title="Created"
-                                date={algo.creation_date}
-                            />
-                            <DrawerSectionEntry title="Owner">
-                                {algo.owner}
-                            </DrawerSectionEntry>
-                            <DrawerSectionEntry title="Permissions">
+
+                <DrawerBody
+                    as={VStack}
+                    alignItems="stretch"
+                    spacing="8"
+                    paddingX="5"
+                    paddingY="8"
+                >
+                    <DrawerSection title="General">
+                        <DrawerSectionEntry title="Category">
+                            {algoLoading || !algo ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                getAlgoCategory(algo)
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionKeyEntry
+                            value={algo?.key}
+                            loading={algoLoading}
+                        />
+                        <DrawerSectionDateEntry
+                            title="Created"
+                            date={algo?.creation_date}
+                            loading={algoLoading}
+                        />
+                        <DrawerSectionEntry title="Owner">
+                            {algoLoading || !algo ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                algo.owner
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Permissions">
+                            {algoLoading || !algo ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <PermissionTag
                                     permission={algo.permissions.process}
                                     listNodes={true}
                                 />
-                            </DrawerSectionEntry>
-                        </DrawerSection>
-                        <MetadataDrawerSection metadata={algo.metadata} />
-                        <DescriptionDrawerSection
-                            loading={descriptionLoading}
-                            description={description}
-                        />
-                    </DrawerBody>
-                )}
+                            )}
+                        </DrawerSectionEntry>
+                    </DrawerSection>
+                    <MetadataDrawerSection
+                        metadata={algo?.metadata}
+                        loading={algoLoading}
+                    />
+                    <DescriptionDrawerSection
+                        loading={descriptionLoading}
+                        description={description}
+                    />
+                </DrawerBody>
             </DrawerContent>
         </Drawer>
     );

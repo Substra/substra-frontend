@@ -9,6 +9,7 @@ import {
     Icon,
     Collapse,
     StackProps,
+    Skeleton,
 } from '@chakra-ui/react';
 import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine } from 'react-icons/ri';
@@ -131,31 +132,43 @@ export const DrawerSectionCollapsibleEntry = ({
 
 export const DrawerSectionKeyEntry = ({
     value,
+    loading,
 }: {
-    value: string;
+    value: string | undefined;
+    loading?: boolean;
 }): JSX.Element => (
     <DrawerSectionEntry title="Key">
-        <HStack spacing={1.5}>
-            <Text>{value}</Text>
-            <CopyIconButton
-                value={value}
-                aria-label={`Copy key`}
-                variant="solid"
-                size="xs"
-            />
-        </HStack>
+        {loading || !value ? (
+            <Skeleton height="4" width="250px" />
+        ) : (
+            <HStack spacing={1.5}>
+                <Text>{value}</Text>
+                <CopyIconButton
+                    value={value}
+                    aria-label={`Copy key`}
+                    variant="solid"
+                    size="xs"
+                />
+            </HStack>
+        )}
     </DrawerSectionEntry>
 );
 
 export const DrawerSectionDateEntry = ({
     date,
     title,
+    loading,
 }: {
-    date: string;
+    date: string | undefined;
     title: string;
+    loading?: boolean;
 }): JSX.Element => (
     <DrawerSectionEntry title={capitalize(title)}>
-        {formatDate(date)}
+        {loading || !date ? (
+            <Skeleton height="4" width="250px" />
+        ) : (
+            formatDate(date)
+        )}
     </DrawerSectionEntry>
 );
 

@@ -33,7 +33,7 @@ const DrawerHeader = ({
         borderBottom="1px solid"
         borderBottomColor="gray.100"
     >
-        {loading && <Skeleton />}
+        {loading && <Skeleton height="24px" width="250px" />}
         {!loading && (
             <Heading
                 isTruncated

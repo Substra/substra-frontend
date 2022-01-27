@@ -7,6 +7,7 @@ import {
     useDisclosure,
     DrawerBody,
     VStack,
+    Skeleton,
 } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 
@@ -97,37 +98,51 @@ const MetricDrawer = (): JSX.Element => {
                         onClose();
                     }}
                 />
-                {metric && (
-                    <DrawerBody
-                        as={VStack}
-                        alignItems="stretch"
-                        spacing="8"
-                        paddingX="5"
-                        paddingY="8"
-                    >
-                        <DrawerSection title="General">
-                            <DrawerSectionKeyEntry value={metric.key} />
-                            <DrawerSectionDateEntry
-                                title="Created"
-                                date={metric.creation_date}
-                            />
-                            <DrawerSectionEntry title="Owner">
-                                {metric.owner}
-                            </DrawerSectionEntry>
-                            <DrawerSectionEntry title="Permissions">
+
+                <DrawerBody
+                    as={VStack}
+                    alignItems="stretch"
+                    spacing="8"
+                    paddingX="5"
+                    paddingY="8"
+                >
+                    <DrawerSection title="General">
+                        <DrawerSectionKeyEntry
+                            value={metric?.key}
+                            loading={metricLoading}
+                        />
+                        <DrawerSectionDateEntry
+                            title="Created"
+                            date={metric?.creation_date}
+                            loading={metricLoading}
+                        />
+                        <DrawerSectionEntry title="Owner">
+                            {metricLoading || !metric ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                metric.owner
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Permissions">
+                            {metricLoading || !metric ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <PermissionTag
                                     permission={metric.permissions.process}
                                     listNodes={true}
                                 />
-                            </DrawerSectionEntry>
-                        </DrawerSection>
-                        <MetadataDrawerSection metadata={metric.metadata} />
-                        <DescriptionDrawerSection
-                            loading={descriptionLoading}
-                            description={description}
-                        />
-                    </DrawerBody>
-                )}
+                            )}
+                        </DrawerSectionEntry>
+                    </DrawerSection>
+                    <MetadataDrawerSection
+                        metadata={metric?.metadata}
+                        loading={metricLoading}
+                    />
+                    <DescriptionDrawerSection
+                        loading={descriptionLoading}
+                        description={description}
+                    />
+                </DrawerBody>
             </DrawerContent>
         </Drawer>
     );

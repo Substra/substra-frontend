@@ -16,6 +16,7 @@ import {
     Link,
     Text,
     Box,
+    Skeleton,
 } from '@chakra-ui/react';
 
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
@@ -58,6 +59,7 @@ interface TaskDrawerProps {
     compileListPath: (category: TaskCategory) => string;
     taskKey: string | undefined;
 }
+
 const TaskDrawer = ({
     category,
     compileListPath,
@@ -109,36 +111,54 @@ const TaskDrawer = ({
                     loading={taskLoading}
                     onClose={handleOnClose}
                 />
-                {task && (
-                    <DrawerBody
-                        as={VStack}
-                        alignItems="stretch"
-                        spacing="8"
-                        paddingX="5"
-                        paddingY="8"
-                    >
-                        <ErrorAlert task={task} />
-                        <DrawerSection title="General">
-                            <DrawerSectionEntry title="Status">
+                <DrawerBody
+                    as={VStack}
+                    alignItems="stretch"
+                    spacing="8"
+                    paddingX="5"
+                    paddingY="8"
+                >
+                    {task && <ErrorAlert task={task} />}
+                    <DrawerSection title="General">
+                        <DrawerSectionEntry title="Status">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <Status
                                     status={task.status}
                                     withIcon={false}
                                     variant="solid"
                                     size="sm"
                                 />
-                            </DrawerSectionEntry>
-                            <DrawerSectionKeyEntry value={task.key} />
-                            <DrawerSectionDateEntry
-                                title="Created"
-                                date={task.creation_date}
-                            />
-                            <DrawerSectionEntry title="Duration">
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionKeyEntry
+                            value={task?.key}
+                            loading={taskLoading}
+                        />
+                        <DrawerSectionDateEntry
+                            title="Created"
+                            date={task?.creation_date}
+                            loading={taskLoading}
+                        />
+                        <DrawerSectionEntry title="Duration">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <Timing asset={task} />
-                            </DrawerSectionEntry>
-                            <DrawerSectionEntry title="Owner">
-                                {task.owner}
-                            </DrawerSectionEntry>
-                            <DrawerSectionEntry title="Compute plan">
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Owner">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                task.owner
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Compute plan">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <Link
                                     color="teal.500"
                                     fontWeight="semibold"
@@ -152,14 +172,22 @@ const TaskDrawer = ({
                                 >
                                     {task.compute_plan_key}
                                 </Link>
-                            </DrawerSectionEntry>
-                            <DrawerSectionEntry title="Rank">
-                                {task.rank}
-                            </DrawerSectionEntry>
-                        </DrawerSection>
+                            )}
+                        </DrawerSectionEntry>
+                        <DrawerSectionEntry title="Rank">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                task.rank
+                            )}
+                        </DrawerSectionEntry>
+                    </DrawerSection>
 
-                        <DrawerSection title="Input">
-                            <DrawerSectionEntry title="Algorithm">
+                    <DrawerSection title="Input">
+                        <DrawerSectionEntry title="Algorithm">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
                                 <Text
                                     isTruncated
                                     maxWidth={
@@ -177,35 +205,52 @@ const TaskDrawer = ({
                                         {task.algo.name}
                                     </Link>
                                 </Text>
-                            </DrawerSectionEntry>
-                            {isTesttuple(task) && (
-                                <>
-                                    <DrawerSectionTestedModel task={task} />
-                                    <DrawerSectionMetricsEntry task={task} />
-                                </>
                             )}
-                            {(isTesttuple(task) ||
+                        </DrawerSectionEntry>
+                        {task && isTesttuple(task) && (
+                            <>
+                                <DrawerSectionTestedModel task={task} />
+                                <DrawerSectionMetricsEntry task={task} />
+                            </>
+                        )}
+                        {taskLoading || !task ? (
+                            <Skeleton height="4" width="250px" />
+                        ) : (
+                            (isTesttuple(task) ||
                                 isCompositeTraintuple(task) ||
                                 isTraintuple(task)) && (
                                 <DrawerSectionDatasetEntry
                                     dataset={getTaskDataset(task)}
                                     dataSampleKeys={getTaskDataSampleKeys(task)}
                                 />
-                            )}
+                            )
+                        )}
+
+                        {taskLoading || !task ? (
+                            <Skeleton height="4" width="250px" />
+                        ) : (
                             <DrawerSectionParentTasksEntry
                                 parentTasks={task.parent_tasks}
                             />
-                        </DrawerSection>
+                        )}
+                    </DrawerSection>
 
-                        {(isTraintuple(task) ||
-                            isAggregatetuple(task) ||
-                            isCompositeTraintuple(task)) && (
+                    {taskLoading || !task ? (
+                        <Skeleton height="4" width="250px" />
+                    ) : (
+                        (isTraintuple(task) ||
+                            isCompositeTraintuple(task) ||
+                            isAggregatetuple(task)) && (
                             <DrawerSection title="Output">
                                 <DrawerSectionOutModelEntry task={task} />
                             </DrawerSection>
-                        )}
+                        )
+                    )}
 
-                        {isTesttuple(task) && (
+                    {taskLoading || !task ? (
+                        <Skeleton height="4" width="250px" />
+                    ) : (
+                        isTesttuple(task) && (
                             <DrawerSection title="Performances">
                                 {task.test.metrics.map((metric) => {
                                     const perf = getPerf(task, metric.key);
@@ -230,9 +275,9 @@ const TaskDrawer = ({
                                     );
                                 })}
                             </DrawerSection>
-                        )}
-                    </DrawerBody>
-                )}
+                        )
+                    )}
+                </DrawerBody>
             </DrawerContent>
         </Drawer>
     );

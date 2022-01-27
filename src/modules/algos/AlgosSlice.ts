@@ -119,6 +119,7 @@ export const algosSlice = createSlice({
             })
             .addCase(retrieveAlgo.pending, (state) => {
                 state.algoLoading = true;
+                state.algo = null;
                 state.algoError = '';
             })
             .addCase(retrieveAlgo.fulfilled, (state, { payload }) => {

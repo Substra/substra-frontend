@@ -115,6 +115,7 @@ export const metricsSlice = createSlice({
             })
             .addCase(retrieveMetric.pending, (state) => {
                 state.metricLoading = true;
+                state.metric = null;
                 state.metricError = '';
             })
             .addCase(retrieveMetric.fulfilled, (state, { payload }) => {
