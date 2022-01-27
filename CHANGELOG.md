@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Broken metric name comparison causing perf browser to show as empty (#354)
 -   Broken highlight / selection of rank 0 in perf charts (#355)
 -   Broken clear button on compute plans page (#XXX)
+-   Browser's previous page fixed on compute plans list page (#356)
 
 ### Changed
 

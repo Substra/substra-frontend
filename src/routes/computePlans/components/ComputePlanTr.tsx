@@ -6,10 +6,11 @@ import { useLocation } from 'wouter';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { shortFormatDate } from '@/libs/utils';
 
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import Duration from '@/components/Duration';
 import { ClickableTr } from '@/components/Table';
@@ -41,8 +42,9 @@ const ComputePlanTr = ({
             key={computePlan.key}
             onClick={() =>
                 setLocation(
-                    compilePath(PATHS.COMPUTE_PLAN_TASKS_ROOT, {
+                    compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                         key: computePlan.key,
+                        category: TASK_CATEGORY_SLUGS[TaskCategory.test],
                     })
                 )
             }
