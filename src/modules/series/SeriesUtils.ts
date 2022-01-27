@@ -1,4 +1,5 @@
 import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
@@ -173,21 +174,21 @@ export function buildAverageSerie(
         .map(([rank, perfs]) => ({
             rank: parseInt(rank),
             perf: average(perfs),
-            testTaskKey: `${name || 'average'} for rank ${rank}`,
+            testTaskKey: uuidv4(),
         }));
 
     return {
         id: 0,
         points: points,
-        algoKey: name || 'average',
+        algoKey: uuidv4(),
         algoName: name || 'average',
-        datasetKey: name || 'average',
+        datasetKey: uuidv4(),
         datasetName: name || 'average',
         dataSampleKeys: [],
         worker: name || 'average',
-        metricKey: name || 'average',
+        metricKey: uuidv4(),
         metricName: name || 'average',
-        computePlanKey: name || 'average',
+        computePlanKey: uuidv4(),
     };
 }
 

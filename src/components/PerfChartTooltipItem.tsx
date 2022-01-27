@@ -36,7 +36,7 @@ const PerfChartTooltipItem = ({
                             fill="black.500"
                         />
                         <Text fontSize="xs" fontWeight="semibold">
-                            {point.testTaskKey}
+                            {`${point.worker} for rank ${point.x}`}
                         </Text>
                     </>
                 ) : (

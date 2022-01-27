@@ -175,8 +175,12 @@ const PerfRankDetails = ({
                 )}
                 {rankData
                     .filter(({ worker }) => isAverageNode(worker))
-                    .map(({ worker, perf, id }) => (
-                        <AverageListItem key={id} label={worker} perf={perf} />
+                    .map(({ worker, perf, id, computePlanKey }) => (
+                        <AverageListItem
+                            key={`${computePlanKey}-${id}`}
+                            label={worker}
+                            perf={perf}
+                        />
                     ))}
                 {rankData
                     .filter(({ worker }) => !isAverageNode(worker))
@@ -191,7 +195,7 @@ const PerfRankDetails = ({
                             testTaskKey,
                         }) => (
                             <ListItem
-                                key={id}
+                                key={`${computePlanKey}-${id}`}
                                 onMouseEnter={() =>
                                     setHighlightedSerie({ id, computePlanKey })
                                 }

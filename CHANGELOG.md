@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added space around nodes tags in PerfBrowser (#346)
 -   zIndex of perf chart tooltip (#347)
 -   Full height layout on NotFound, Compare and CP chart pages (#351)
+-   Repeating key in PerfList that was causing lots of bugs (#353)
 -   Broken metric name comparison causing perf browser to show as empty (#354)
 -   Broken highlight / selection of rank 0 in perf charts (#355)
 
