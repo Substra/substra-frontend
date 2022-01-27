@@ -16,6 +16,9 @@
 4. Run `npm run dev`
 5. Access the frontend at `http://substra-frontend.node-1.com:3000`
 
+Note: Backend is expected to be served at `http://substra-backend.node-1.com`on http port (80). In case you are using a development backend served on another url or port, you can set it using API_URL env var.
+ex: `API_URL=http://127.0.0.1:8000 npm run dev`
+
 ## Using a specific branch / commit of the backend and/or orchestrator
 
 Many developments done in the frontend go hand in hand with API changes coming from either the backend or the orchestrator. These changes aren't always available in the last release and sometimes aren't even merged in the `master` branches. In order to use them, you'll need to:
