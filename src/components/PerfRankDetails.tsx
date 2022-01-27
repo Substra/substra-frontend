@@ -99,7 +99,7 @@ const PerfRankDetails = ({
                 id: serie.id,
                 computePlanKey: serie.computePlanKey,
                 testTaskKey: point?.testTaskKey,
-                cpId: `CP${
+                cpId: `#${
                     sortedComputePlanKeys.indexOf(serie.computePlanKey) + 1
                 }`,
                 lineId: `L${lineId(serie.id)}`,

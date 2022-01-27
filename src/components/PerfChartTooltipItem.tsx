@@ -49,7 +49,7 @@ const PerfChartTooltipItem = ({
                         <HStack spacing="1">
                             <Text fontSize="xs" fontWeight="semibold">
                                 {sortedComputePlanKeys.length > 1
-                                    ? `CP${
+                                    ? `#${
                                           sortedComputePlanKeys.indexOf(
                                               point.computePlanKey
                                           ) + 1

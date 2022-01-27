@@ -35,7 +35,7 @@ const ComputePlanCheckbox = ({
             isChecked={selectedComputePlanKeys.includes(computePlanKey)}
         >
             <Text as="span" fontSize="xs" fontWeight="semibold">
-                {`CP${index + 1}`}
+                {`#${index + 1}`}
             </Text>
             {MELLODDY && computePlan && (
                 <>
