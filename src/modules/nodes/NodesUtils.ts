@@ -45,5 +45,10 @@ export const isAverageNode = (nodeId: string): boolean => {
     if (!MELLODDY) {
         return false;
     }
-    return ['average', 'small5_average', 'large5_average'].includes(nodeId);
+    return [
+        'average',
+        'small5_average',
+        'large5_average',
+        'pharma_average',
+    ].includes(nodeId);
 };

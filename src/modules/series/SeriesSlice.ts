@@ -154,6 +154,25 @@ const getComputePlanSeries = async (
                 });
             }
 
+            // pharma_average
+            const pharmaAverageSerie = buildAverageSerie(
+                sameMetricSeries.filter(
+                    (serie) =>
+                        MELLODDY_LARGE5_NODE_IDS.includes(serie.worker) ||
+                        MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
+                ),
+                true,
+                'pharma_average'
+            );
+            if (pharmaAverageSerie) {
+                melloddySeries.push({
+                    ...pharmaAverageSerie,
+                    computePlanKey,
+                    metricName,
+                    id: series.length + 3,
+                });
+            }
+
             // average
             const averageSerie = buildAverageSerie(
                 sameMetricSeries,
@@ -165,7 +184,7 @@ const getComputePlanSeries = async (
                     ...averageSerie,
                     computePlanKey,
                     metricName,
-                    id: series.length + 3,
+                    id: series.length + 4,
                 });
             }
         }

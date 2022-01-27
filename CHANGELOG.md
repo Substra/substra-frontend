@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Added API_URL env var (#358)
 -   UI: add loading state into drawers (#359)
+-   MELLODDY: new pharma_average series (#362)
 
 ### Fixed
 
