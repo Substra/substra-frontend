@@ -10,6 +10,7 @@ interface PerfChartTooltipProps {
     series: SerieT[];
     showTooltip: () => void;
     hideTooltip: () => void;
+    canvasBoundingRect: DOMRect | undefined;
     points: DataPoint[];
 }
 
@@ -17,6 +18,7 @@ const PerfChartSummaryTooltip = ({
     series,
     showTooltip,
     hideTooltip,
+    canvasBoundingRect,
     points,
 }: PerfChartTooltipProps): JSX.Element => {
     const lineId = getLineId(series);
@@ -24,11 +26,28 @@ const PerfChartSummaryTooltip = ({
     const firstFivePoints = points.slice(0, 5);
     const remainingCount = Math.max(points.length - 5, 0);
 
+    // Position
+    // defaults to tooltip below the canvas
+    let top = 'calc(100% - 30px)';
+
+    // check if there is enough space below the canvas to display the full tooltip
+    // if there isn't, then place tooltip above the canvas
+    if (canvasBoundingRect) {
+        const tooltipHeight =
+            18 + // header
+            firstFivePoints.length * 36 + // items
+            (remainingCount > 0 ? 30 : 0) + // footer
+            24; // padding
+        if (tooltipHeight + canvasBoundingRect.bottom > window.innerHeight) {
+            top = `calc(-${tooltipHeight}px - 10px)`;
+        }
+    }
+
     return (
         <List
             backgroundColor="white"
             position="absolute"
-            top="calc(100% - 30px)"
+            top={top}
             left="0"
             right="0"
             onMouseEnter={showTooltip}

@@ -17,6 +17,7 @@ const usePerfChartTooltip = (
     const [points, setPoints] = useState<DataPoint[]>([]);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [displayed, setDisplayed] = useState(false);
+    const [canvasBoundingRect, setCanvasBoundingRect] = useState<DOMRect>();
     const timeout = useRef<NodeJS.Timeout | null>(null);
 
     const showTooltip = () => {
@@ -27,7 +28,11 @@ const usePerfChartTooltip = (
     };
 
     const hideTooltip = () => {
-        timeout.current = setTimeout(() => setDisplayed(false), 1000);
+        if (summary) {
+            setDisplayed(false);
+        } else {
+            timeout.current = setTimeout(() => setDisplayed(false), 1000);
+        }
     };
 
     const tooltip =
@@ -37,6 +42,7 @@ const usePerfChartTooltip = (
                 series={series}
                 hideTooltip={hideTooltip}
                 showTooltip={showTooltip}
+                canvasBoundingRect={canvasBoundingRect}
                 points={points}
             />
         ) : (
@@ -52,8 +58,11 @@ const usePerfChartTooltip = (
 
     const tooltipPluginOptions = {
         enabled: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        external: function (context: { tooltip: any }) {
+        external: function (context: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            tooltip: any;
+            chart: { canvas: HTMLCanvasElement };
+        }) {
             const tooltipModel = context.tooltip;
             if (tooltipModel && tooltipModel.opacity) {
                 setPoints(
@@ -61,10 +70,16 @@ const usePerfChartTooltip = (
                         (dataPoint: { raw: DataPoint }) => dataPoint.raw
                     )
                 );
-                setPosition({
-                    x: parseInt(tooltipModel.caretX),
-                    y: parseInt(tooltipModel.caretY),
-                });
+                if (summary) {
+                    setCanvasBoundingRect(
+                        context.chart.canvas.getBoundingClientRect()
+                    );
+                } else {
+                    setPosition({
+                        x: parseInt(tooltipModel.caretX),
+                        y: parseInt(tooltipModel.caretY),
+                    });
+                }
                 showTooltip();
             } else {
                 hideTooltip();

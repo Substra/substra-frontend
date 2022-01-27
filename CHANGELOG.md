@@ -16,15 +16,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added space around nodes tags in PerfBrowser (#346)
 -   zIndex of perf chart tooltip (#347)
 -   Full height layout on NotFound, Compare and CP chart pages (#351)
+-   Perf tooltip position now depends on content size and position of canvas (#352)
 -   Repeating key in PerfList that was causing lots of bugs (#353)
 -   Broken metric name comparison causing perf browser to show as empty (#354)
 -   Broken highlight / selection of rank 0 in perf charts (#355)
--   Broken clear button on compute plans page (#XXX)
+-   Broken clear button on compute plans page (#357)
 -   Browser's previous page fixed on compute plans list page (#356)
 
 ### Changed
 
 -   Add spacing below navigation (#348)
+-   No more delay before hiding tooltip on perf chart cards (#352)
 
 ## [0.9.2] - 2022-01-25
 
