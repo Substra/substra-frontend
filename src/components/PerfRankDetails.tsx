@@ -147,16 +147,19 @@ const PerfRankDetails = ({
             width="300px"
             flexGrow={0}
             flexShrink={0}
-            paddingY="5"
+            overflowY="auto"
+            position="relative"
         >
             <Heading
                 size="xxs"
                 fontWeight="bold"
                 textTransform="uppercase"
-                marginBottom="5"
                 display="flex"
                 alignItems="center"
-                paddingX="5"
+                padding="5"
+                position="sticky"
+                top="0"
+                backgroundColor="white"
             >
                 {selectedRank !== null && (
                     <>

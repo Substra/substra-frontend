@@ -36,6 +36,7 @@ const PerfDetails = ({
             paddingX="8"
             paddingY="4"
             overflow="hidden"
+            height="100%"
         >
             <Flex justifyContent="space-between" alignItems="center">
                 <Button

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Handle perf rank detail Y overflow(#370)
+
 ### Changed
 
 -   Use 3 decimals instead of 2 for performance value (#366)
