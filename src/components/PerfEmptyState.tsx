@@ -24,8 +24,8 @@ const PerfEmptyState = ({
                 textAlign="center"
             >
                 <EmptyState
-                    title="No data to display"
-                    subtitle="There are no test tasks in status done."
+                    title="No performances to display"
+                    subtitle="Performances can't be shown because no test tasks are done"
                     icon={<RiFunctionLine />}
                 />
             </Flex>

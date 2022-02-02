@@ -11,10 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Handle perf rank detail Y overflow(#370)
+-   Handle perf rank detail Y overflow (#370)
 
 ### Changed
 
+-   Disable performance chart for waiting/todo CP (#365)
 -   Use 3 decimals instead of 2 for performance value (#366)
 -   Chart: hovering a legend item should highlight the related line and values (#369)
 

@@ -3,15 +3,18 @@ import { useEffect } from 'react';
 import Breadcrumbs from './components/BreadCrumbs';
 import TabsNav from './components/TabsNav';
 import { Box, Flex } from '@chakra-ui/react';
+import { useLocation } from 'wouter';
 
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 
-import { PATHS } from '@/routes';
+import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionNodes from '@/components/PerfSidebarSectionNodes';
@@ -27,6 +30,20 @@ const ComputePlanChart = (): JSX.Element => {
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
+    const [, setLocation] = useLocation();
+
+    useEffect(() => {
+        if (
+            computePlan?.status === ComputePlanStatus.todo ||
+            computePlan?.status === ComputePlanStatus.waiting
+        ) {
+            const url = compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                key: computePlan?.key,
+                category: TASK_CATEGORY_SLUGS[TaskCategory.test],
+            });
+            setLocation(url);
+        }
+    }, [computePlan?.status]);
 
     const dispatch = useAppDispatch();
     useEffect(() => {
