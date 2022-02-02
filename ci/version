@@ -1,30 +1,42 @@
 #!/usr/bin/env python3
 
 import argparse
-import os.path
-import sys
-from datetime import datetime
-from cilib.version import *
-from cilib.version_json import *
-from cilib.command import *
-from cilib import git
 
+from cilib import file_system, git
+from cilib.version import (parse_semver, produce_tag, produce_url,
+                           produce_version)
+from cilib.version_yaml import *
 
-helpMsg="This tool reads the version package.json and outputs it, with modifications depending on options"
+helpMsg = "This tool reads the version from files and outputs it, with modifications depending on options"
+
 
 def main():
+
+    # They use different formats but:
+    #  - we can just use a YAML parser for both
+    #  - both use a "version" field at the root
+    #  - both use semver
+    # so they can be treated the same
+    version_files = {
+        "app": "package.json",
+        "helm": "charts/connect-frontend/Chart.yaml",
+    }
 
     parser = argparse.ArgumentParser(description=helpMsg)
 
     parser.add_argument(
-        "verb",
+        "component",
+        choices=version_files.keys(),
+    )
+
+    parser.add_argument(
+        "output",
         choices=[
+            "semver",
             "tag",
-            "version",
             "url",
         ],
-        # yes I know those are not verbs
-        default="version",
+        default="semver",
         nargs="?",
         help="version: produce a final version string; tag: same but it's a docker tag; url: same but it's a k8s-compliant URL (what k8s calls DNS-1123)",
     )
@@ -35,17 +47,12 @@ def main():
     parser.add_argument(
         "--version", help="Use this SemVer2 string instead of parsing the version file"
     )
-    parser.add_argument(
-        "--insert-prerelease",
-        action="append",
-        help="Insert element into the prerelease field of the version",
-        default=[],
-    )
-    parser.add_argument(
-        "--version-file",
-        default="package.json",
-        help='Path of the file to parse; if --ref is given, from the root of the repo, else a regular FS path. Defaults to "{project root}/package.json".',
-    )
+    for name, path in version_files.items():
+        parser.add_argument(
+            f"--{name}-version-file",
+            default=path,
+            help=f'Path of the file to parse; if --ref is given, from the root of the repo, else a regular FS path. Defaults to "{{project root}}/{path}".',
+        )
     parser.add_argument(
         "--max-length",
         type=int,
@@ -56,6 +63,11 @@ def main():
         action="store_true",
         help="If the produced tag or URL is too long for --max-length, instead output (prefix-)commit_id(-suffix); commit_id will be as long as possible, but an error will be returned if it is less than 7 characters",
     )
+    parser.add_argument(
+        "--insert-dev-info",
+        action="store_true",
+        help="Append info such as commit ID into the prerelease and build metadata fields",
+    )
 
     args = parser.parse_args()
     file_system.set_wd_to_project_root()
@@ -64,28 +76,34 @@ def main():
         args.version = parse_semver(args.version)
     else:
         if args.ref:
-            args.version = get_version_from_ref(args.ref, args.version_file)
+            args.version = get_version_from_ref(
+                args.ref, getattr(args, f"{args.component}_version_file")
+            )
         else:
-            args.version = get_version_from_path(args.version_file)
+            args.version = get_version_from_path(
+                getattr(args, f"{args.component}_version_file")
+            )
 
-    if args.ref:
-        short_commit_id = git.short_id(args.ref)
-    else:
-        short_commit_id = git.short_id()
-    
-    to_insert = {}
-    if args.insert_prerelease:
-        to_insert["prerelease"] = []
-        for i in reversed(args.insert_prerelease):
-            to_insert["prerelease"].append({"prepend": i})
-        
-    to_insert.setdefault("buildmetadata", []).append({"append": f"{short_commit_id}"})
+    to_insert = {
+        "prerelease": [],
+        "buildmetadata": [],
+        "prefix": [],
+        "suffix": [],
+    }
+
+    if args.insert_dev_info:
+        ref = args.ref if args.ref else "HEAD"
+        to_insert["buildmetadata"].append({"append": git.short_id(ref)})
+        to_insert["prerelease"] += [
+            {"prepend": "dev"},
+            {"append": f"{git.date(ref):%Y%m%d}"},
+        ]
 
     final_version = produce_version(args.version, to_insert)
 
-    if args.verb == "version":
+    if args.output == "semver":
         print(final_version.semver)
-    if args.verb == "tag":
+    if args.output == "tag":
         print(
             produce_tag(
                 final_version,
@@ -93,7 +111,7 @@ def main():
                 length_fallback=args.length_fallback,
             )
         )
-    if args.verb == "url":
+    if args.output == "url":
         print(
             produce_url(
                 final_version,

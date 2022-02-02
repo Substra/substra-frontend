@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import logging
+from sys import exit
+
+from cilib import command, docker
+from cilib.file_system import get_repo_base_dir
+
+DOCKERFILE_PATH = "docker/connect-frontend/Dockerfile"
+DOCKER_REGISTRY = "gcr.io/connect-314908"
+DOCKER_IMAGE_NAME = "connect-frontend"
+
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
+logger = logging.getLogger()
+
+cleanup_steps = []
+
+script_desc = """
+Builds and pushes docker image. If --github-release is given, also edit the corresponding release description with the tag.
+
+Assumes you're already logged onto gcloud with the appropriate service account
+"""
+
+
+def main():
+    args = parse_args()
+    try:
+        version = command.get_output(["ci/version", "app"] + (["--insert-dev-info"] if args.dev else []))
+        
+        if args.tag:
+            tag = args.tag
+        else:
+            tag = command.get_output(["ci/version", "app", "tag"] + (["--insert-dev-info"] if args.dev else []))
+
+        if not args.dev:
+            check_tag_available(tag)
+
+        docker_tag = build(version, tag)
+
+        if not args.dry_run:
+            docker.push(docker_tag)
+        else:
+            logger.info("Skipping docker push (--dry-run)")
+    except Exception as e:
+        logger.error(f"{e}".replace("\n", " ").strip())
+        # this is because otherwise in the log the exception seems to occur during or after cleanup
+        raise
+    finally:
+        logger.info("Cleaning up")
+        for step in cleanup_steps:
+            step()
+
+
+class PackageAlreadyExistsError(Exception):
+    pass
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description=script_desc)
+
+    class ParseJsonFile(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            with open(values) as f:
+                setattr(namespace, self.dest, json.load(f))
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--dev",
+        action="store_true",
+        help="Insert unique dev info into the version field and skip version availability checks",
+    )
+    group.add_argument(
+        "--tag",
+        help="Tag the image with this string",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+    )
+
+    return parser.parse_args()
+
+def check_tag_available(tag: str) -> None:
+    logger.info(f"Checking docker {tag} is available")
+
+    final_docker_full_tag = docker.format_tag(
+        DOCKER_REGISTRY, DOCKER_IMAGE_NAME, tag
+    )
+    existing_image = docker.manifest_inspect(final_docker_full_tag)
+    if existing_image is not None:
+        raise PackageAlreadyExistsError(
+            f"A Docker image with identical tag already exists: {final_docker_full_tag}"
+        )
+
+
+def build(version, tag) -> str:
+    logger.info("Building docker image")
+
+    docker_full_tag = docker.format_tag(
+        DOCKER_REGISTRY, DOCKER_IMAGE_NAME, tag
+    )
+    docker.build(
+        get_repo_base_dir(),
+        DOCKERFILE_PATH,
+        docker_full_tag,
+        docker.BuildKitOptions(),
+        ["--build-arg", f"APP_VERSION={version}"],
+    )
+    cleanup_steps.append(lambda: docker.rmi(docker_full_tag))
+
+    return docker_full_tag
+
+if __name__ == "__main__":
+    exit(main())

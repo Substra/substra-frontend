@@ -1,9 +1,12 @@
 name: Build
+# this workflow builds and pushes the "dev" versions of image and helm chart
+# The versions are predictable:
+#  helm: ci/version helm --insert-dev-info [--ref COMMIT_ID]
+#  app: ci/version app --insert-dev-info [--ref COMMIT_ID]
+#  docker: ci/version app tag --insert-dev-info [--ref COMMIT_ID]
+#          (or just replacing + with _ in the app version, basically)
 env:
-    GCP_DOCKER_SERVER: 'gcr.io' # must be GCP
-    # pushing to american servers because that's how other teams do it
-    GCP_PROJECT: 'connect-314908'
-    HELM_REPO_URL: 'core.harbor.tooling.owkin.com/chartrepo/connect-frontend'
+    GCP_DOCKER_SERVER: gcr.io
 # secrets:
 #   GCP_SERVICE_ACCOUNT_KEY_JSON
 #   HELM_REPO_USERNAME
@@ -12,13 +15,10 @@ env:
 #   GH_PAT
 on:
     push:
-        branches: [main]
-        tags: ['*']
-        # FYI this isn't triggered when more than 3 tags are pushed at once
-        # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#push
+        branches: [master]
     workflow_dispatch: {} # For running by hand from the web UI
 jobs:
-    build:
+    build-image:
         name: Build Docker image
         runs-on: ubuntu-latest
         steps:
@@ -28,57 +28,24 @@ jobs:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
-            - run: printf 'IMAGE_FULL_TAG=%s/%s/connect-frontend:%s\n' $GCP_DOCKER_SERVER $GCP_PROJECT "$(ci/version tag)" >> $GITHUB_ENV
-
-            - run: DOCKER_BUILDKIT=1 docker build . -f docker/connect-frontend/Dockerfile -t '${{env.IMAGE_FULL_TAG}}' --build-arg APP_VERSION="$(ci/version version)"
             - run: printf '${{ secrets.GCP_SERVICE_ACCOUNT_KEY_JSON }}' | docker login -u _json_key --password-stdin https://$GCP_DOCKER_SERVER
-            - run: docker push $IMAGE_FULL_TAG
 
-    helm:
+            - run: ci/publish-docker --dev
+
+    build-helm:
         name: Package Helm chart
         runs-on: ubuntu-latest
-        needs: [build]
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-python@v2
               with:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
-            - run: helm plugin install https://github.com/chartmuseum/helm-push
 
             - run: helm lint charts/connect-frontend
-            - run: printf 'VERSION=%s\n' "$(ci/version)" >> $GITHUB_ENV
-            - run: printf 'HELM_VERSION=%s\n' "$(ci/version --insert-prerelease unstable)" >> $GITHUB_ENV
-            - run: |
-                  helm package charts/connect-frontend \
-                  --version '${{env.HELM_VERSION}}' \
-                  --app-version '${{env.VERSION}}'
+            - run: helm package charts/connect-frontend
             - uses: actions/upload-artifact@v2
               with:
-                  name: connect-frontend-${{ env.HELM_VERSION }}.tgz
-                  path: connect-frontend-${{ env.HELM_VERSION }}.tgz
+                  path: connect-frontend-*.tgz
                   if-no-files-found: error
-
-            - run: |
-                  helm repo add owkin-priv https://${{env.HELM_REPO_URL}} \
-                  --username='${{secrets.HELM_REPO_USERNAME}}' --password='${{secrets.HELM_REPO_PASSWORD}}'
-                  helm cm-push connect-frontend-${{ env.HELM_VERSION }}.tgz owkin-priv
-
-    release:
-        name: Trigger a release for each tag
-        runs-on: ubuntu-latest
-        needs: [helm]
-        steps:
-            - uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
-            - name: Trigger a release
-              run: |
-                  for tag in $(git tag --points-at HEAD)
-                  do
-                    curl -X POST --fail \
-                    https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yaml/dispatches \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    -d '{"ref":"'$tag'"}' \
-                    -u '${{ secrets.GH_PAT_USERNAME }}:${{ secrets.GH_PAT }}'
-                  done
+            - run: ci/publish-helm '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}' --dev

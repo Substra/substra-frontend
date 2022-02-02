@@ -3,9 +3,9 @@ Utility functions for CI scripts
 
 """
 
-import subprocess
 import os
 import re
+import subprocess
 from typing import List
 
 
@@ -51,7 +51,6 @@ def run(
     capture_output=False,
     cwd=None,
 ) -> subprocess.CompletedProcess:
-
     description = get_human_readable_command(command)
 
     env = {**os.environ, **additional_env}
@@ -62,8 +61,8 @@ def run(
     if handle_errors:
         _handle_subprocess_error(description, result)
     if capture_output:
-        result.stdout = result.stdout.decode("utf-8").strip()
-        result.stderr = result.stderr.decode("utf-8").strip()
+        result.stdout = result.stdout.decode("utf-8").strip()  # type: ignore
+        result.stderr = result.stderr.decode("utf-8").strip()  # type: ignore
     return result
 
 

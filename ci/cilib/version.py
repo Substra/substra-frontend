@@ -1,15 +1,12 @@
 """ Functions for manipulating the version file """
 
-import re
-import os.path
 import dataclasses
-from typing import Union
 import logging
+import os.path
+import re
+from typing import Union
 
-from . import command
-from . import git
-from . import file_system
-from . import docker
+from . import command, docker, file_system, git
 
 logger = logging.getLogger(__name__)
 
@@ -214,7 +211,7 @@ def produce_tag(version: Version, max_length: int = None, length_fallback=False)
     if max_length and len(result) > max_length:
         if length_fallback:
             return produce_fallback_tag(
-                max_length, git.id(), version.prefix, version.suffix
+                max_length, git.long_id(), version.prefix, version.suffix
             )
         raise InvalidDockerTagError(
             f"Produced tag is >{max_length} characters: {result}"
@@ -228,7 +225,7 @@ def produce_url(version: Version, max_length: int = None, length_fallback=False)
     if max_length and len(result) > max_length:
         if length_fallback:
             return produce_fallback_tag(
-                max_length, git.id(), version.prefix, version.suffix
+                max_length, git.long_id(), version.prefix, version.suffix
             )
         raise InvalidURLerror(f"Produced URL is >{max_length} characters: {result}")
 

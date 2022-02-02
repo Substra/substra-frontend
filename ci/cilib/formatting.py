@@ -18,3 +18,7 @@ def tabulate(table: list[list]) -> str:
 
     fmt = " ".join([r"{:<" + str(col_len) + "}" for col_len in max_col_len])
     return "\n".join([fmt.format(*[str(item) for item in row]) for row in table])
+
+
+def split_creds(creds) -> tuple:
+    return tuple(creds.split(":", 1))

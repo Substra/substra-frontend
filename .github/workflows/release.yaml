@@ -1,51 +1,29 @@
 name: Release
 on:
-    workflow_dispatch: {}
+    push:
+        tags: ['*']
+        # FYI this isn't triggered when more than 3 tags are pushed at once
+        # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#push
 env:
-    HELM_REPO_URL: 'core.harbor.tooling.owkin.com/chartrepo/connect-frontend'
-
-    # these are not crucial, they are used for reconstructing the full image tag
-    GCP_DOCKER_SERVER: 'gcr.io'
-    GCP_PROJECT: 'connect-314908'
+    GCP_DOCKER_SERVER: gcr.io
+# secrets:
+#   GCP_SERVICE_ACCOUNT_KEY_JSON
+#   HELM_REPO_USERNAME
+#   HELM_REPO_PASSWORD
+#   GH_PAT_USERNAME
+#   GH_PAT
 jobs:
     issue-release:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
             - uses: actions/setup-python@v2
               with:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
-            - run: printf 'UNSTABLE_VERSION=%s\n' $(ci/version --insert-prerelease unstable) >> $GITHUB_ENV
+            - run: printf '${{ secrets.GCP_SERVICE_ACCOUNT_KEY_JSON }}' | docker login -u _json_key --password-stdin https://$GCP_DOCKER_SERVER
 
-            - id: has_been_built
-              run: |
-                  curl --fail \
-                  'https://${{ env.HELM_REPO_URL }}/charts/connect-frontend-${{ env.UNSTABLE_VERSION }}.tgz' \
-                  --output 'connect-frontend-${{ env.UNSTABLE_VERSION }}.tgz' \
-                  -u '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}'
-              # this downloads the full archive even though it only checks whether it is on the server
-              # that is because the /api/charts/<chart>/<version> endpoint doesn't consider build metadata
-              # and the endpoint I am using here returns a 404 when using HEAD
-              continue-on-error: true
-
-            - run: printf 'IMAGE_FULL_TAG=%s/%s/connect-frontend:%s\n' $GCP_DOCKER_SERVER $GCP_PROJECT "$(ci/version tag)" >> $GITHUB_ENV
-
-            - if: ${{ steps.has_been_built.outcome == 'failure' }}
-              run: |
-                  curl -X POST --fail \
-                  https://api.github.com/repos/${{ github.repository }}/actions/workflows/build.yaml/dispatches \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  -d '{"ref":"${{ github.ref }}"}' \
-                  -u '${{ secrets.GH_PAT_USERNAME }}:${{ secrets.GH_PAT }}'
-
-            - if: ${{ steps.has_been_built.outcome == 'success' }}
-              run: |
-                  ci/issue-release --ref '${{ github.ref }}' \
-                  '${{ github.repository }}' connect-frontend \
-                  '${{ secrets.GH_PAT_USERNAME }}:${{ secrets.GH_PAT }}' \
-                  '${{ env.HELM_REPO_URL }}' '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}' \
-                  --docker-tag '${{ env.IMAGE_FULL_TAG }}'
+            # github.ref should be of the form "refs/tags/0.6.0"
+            - run: ci/publish-docker --tag "$( echo '${{ github.ref }}' | awk -F '/' '{print $3}')"
+            # this will rebuild docker image, independantly of the continuous build workflow

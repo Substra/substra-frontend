@@ -1,11 +1,11 @@
-from . import command
-from . import git
-from . import version
-import json
+import yaml
+
+from . import command, git, version
+
 
 def parse_version_file(contents: str, key="version") -> version.Version:
-    c = json.loads(contents)
-    m = version.parse_semver(c[key]) # can't handle nested keys
+    c = yaml.safe_load(contents)
+    m = version.parse_semver(c[key])  # can't handle nested keys
     if not m:
         raise version.InvalidVersionFileError(
             "The version file does not contain a valid SemVer2 string"

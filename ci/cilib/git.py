@@ -1,22 +1,19 @@
 from datetime import datetime
+
 from . import command
 
 SHORT_ID_LENGTH = 7
 
 
-def id(ref="HEAD"):
+def long_id(ref: str = "HEAD"):
     return resolve_ref(ref)
 
 
-def short_id(ref="HEAD"):
-    return id(ref)[:SHORT_ID_LENGTH]
+def short_id(ref: str = "HEAD"):
+    return long_id(ref)[:SHORT_ID_LENGTH]
 
 
-def rev_parse(ref):
-    return command.get_output(["git", "rev-parse", ref])
-
-
-def date(ref: str) -> datetime:
+def date(ref: str = "HEAD") -> datetime:
     return datetime.fromtimestamp(
         int(
             command.get_output(
@@ -26,30 +23,14 @@ def date(ref: str) -> datetime:
     )
 
 
-def show_ref(ref: str) -> str:
-    if ref == "HEAD":
-        raise Exception("git.show_ref can't handle HEAD")
-    return command.get_output(["git", "show-ref", "--hash", ref]).splitlines()[0]
-
-
 def resolve_ref(ref: str) -> str:
     """
-    tries to rev_parse, if it doesn't work try show_ref,
-    but also handles carets ^ and tildes ~
+    tries to rev_parse, if it doesn't work try show_ref.
     returns a commit hash
     """
     try:
-        return rev_parse(ref)
+        return command.get_output(["git", "rev-parse", ref])
     except command.SubProcessException:
-        pass
-
-    suffix = ""
-    if "^" in ref:
-        index = ref.find("^")
-        suffix = ref[index:]
-        ref = ref[:index]
-    if ref != "HEAD":
-        ref = show_ref(ref)
-    if ref == "HEAD" or suffix:
-        ref = rev_parse(ref + suffix)
-    return ref
+        if ref == "HEAD":
+            raise ValueError("git.show_ref can't handle HEAD")
+        return command.get_output(["git", "show-ref", "--hash", ref]).splitlines()[0]

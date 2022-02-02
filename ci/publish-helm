@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+
+import argparse
+import logging
+from os import remove
+from sys import exit
+
+from cilib import command, helm
+from cilib.file_system import get_from_repo_root
+
+HELM_REPOSITORY = "https://core.harbor.tooling.owkin.com/chartrepo/connect-frontend/"  # don't forget the final /
+HELM_CHART_NAME = "connect-frontend"
+
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
+logger = logging.getLogger()
+
+cleanup_steps = []
+
+script_desc = """
+- build helm chart
+- upload it
+"""
+
+
+def main():
+    args = parse_args()
+
+    try:
+        if args.dev:
+            version = command.get_output(["ci/version", "helm", "--insert-dev-info"])
+        else:
+            version = command.get_output(["ci/version", "helm"])
+            check_version_available(version, args.helm_repo_creds)
+
+        helm_path = package(version)
+
+        if not args.dry_run:
+            upload(version, args.helm_repo_creds, helm_path)
+        else:
+            logger.info("Skipping uploading chart (--dry-run)")
+    except Exception as e:
+        logger.error(f"{e}".replace("\n", " ").strip())
+        # this is because otherwise in the log the exception seems to occur during or after cleanup
+        raise
+    finally:
+        logger.info("Cleaning up")
+        for step in cleanup_steps:
+            step()
+
+
+class PackageAlreadyExistsError(Exception):
+    pass
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description=script_desc)
+
+    parser.add_argument(
+        "helm_repo_creds",
+        help="as uname:passw",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--dev",
+        action="store_true",
+        help="Insert unique dev info into the version field and skip version availability checks",
+    )
+
+    return parser.parse_args()
+
+
+def check_version_available(version: str, helm_repo_creds) -> None:
+    logger.info(f"Checking helm {version} is available")
+
+    existing_packages_same_version = helm.get_matching_urls(
+        HELM_REPOSITORY, helm_repo_creds, HELM_CHART_NAME, version
+    )
+    # making sure there isn't a package with the same version,
+    # only differing by build metadata
+    if len(existing_packages_same_version) > 0:
+        raise PackageAlreadyExistsError(
+            "A Helm chart with identical version already exists: "
+            + f"{existing_packages_same_version} (our version: {version})"
+        )
+
+
+def package(version: str) -> str:
+    logger.info("Building helm chart")
+
+    helm_filename = f"{HELM_CHART_NAME}-{version}.tgz"
+    command.run(
+        [
+            "helm",
+            "package",
+            get_from_repo_root("charts/" + HELM_CHART_NAME),
+            f"--version={version}",
+        ]
+    )
+    cleanup_steps.append(lambda: remove(helm_filename))
+
+    return helm_filename
+
+
+def upload(version: str, helm_creds: str, helm_path: str) -> str:
+    logger.info("Uploading artifacts")
+
+    helm.upload(HELM_REPOSITORY, helm_creds, helm_path)
+    helm_link = helm.get_url(HELM_REPOSITORY, helm_creds, HELM_CHART_NAME, version)
+
+    return helm_link
+
+
+if __name__ == "__main__":
+    exit(main())

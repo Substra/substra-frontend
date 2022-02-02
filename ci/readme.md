@@ -1,43 +1,42 @@
+## Version
+
+Packages are versioned using a Python script called `ci/version` which reads the version from:
+
+-   `package.json` for the app version
+-   `charts/connect-frontend/Chart.yaml` for the Helm chart version
+
+The `--insert-dev-info` option will also add info from the current commit, which is used to create "continuous" packages.
+
+Example usage:
+
+```sh
+python3 -m pip install -r ci/cilib/requirements.txt
+ci/version app --insert-dev-info
+```
+
 ## Build
 
-The `build.yaml` workflow can be triggered by:
+Docker images (containing the app) are built by `ci/publish-docker`, and Helm charts by `ci/publish-helm`.
 
--   pushing a commit on the `main` branch
+On the CI, they are built continuously by GitHub Actions workflow called [build.yaml](/.github/workflows/build.yaml), which gives them "dev" versions based on commit info. This workflow can be triggered by:
+
+-   pushing a commit on the `master` branch
 -   pushing a tag
 -   [running it manually](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) via the github interface or a HTTP API call
 
-It produces "packages", which are made out of a Docker image and a Helm chart. Very basically:
+The registry is `gcr.io/connect-314908` _(ie the registry for the `connect` project on GCP)_
 
--   the **Docker image** is the program itself
--   the **Helm chart** explains how to run it in a Kubernetes cluster
-
-Packages are versioned using a script called `ci/version` which reads the version from `package.json` (any valid [SemVer 2](https://semver.org/)) but also from the given Git reference. _(there is therefore a reproducible unique version number for every commit)_
-
-Let's say you push a commit with id `abc1234` to the `main` branch, with `package.json` set to version `0.0.1`:
-
--   the **Docker image** is tagged `0.0.1_abc1234`
--   the **Helm chart** is versioned `0.0.1-unstable+abc1234`
-    -   `unstable` because it is provisional, until you tag it (which triggers the release process) at which point the helm chart would be re-designated `0.0.1+abc1234`
-    -   however, the only thing that would change would be the _chart_ version, the _app_ version (most notably the docker image) would still be the same; that is why Helm provides us with an `appVersion` field
-    -   therefore, when you push your commit, the Helm chart has fields `version: 0.0.1-version+abc1234` and `appVersion: 0.0.1+abc1234`
-
-The current repositories are:
-
--   for **Docker images**, gcr.io/connect-314908 _(ie the registry for the `connect` project on GCP)_
--   for **Helm charts**, core.harbor.tooling.owkin.com/chartrepo/connect-frontend
+The helm chart repository is `core.harbor.tooling.owkin.com/chartrepo/connect-frontend`.
 
 ## Release
 
-Any commit with a Git tag pointing to it is considered a _release_.
+### App (docker images)
 
-The release workflow isn't triggered directly by pushing tags, rather they trigger the Build workflow which in turn triggers the Release workflow. It can also be triggered manually, but (at the time of writing) only via HTTP API calls since the Github interface can't allow you to run a workflow manually on a tag rather than a branch.
+When a tag is pushed, it triggers the [release.yaml](/.github/workflows/release.yaml) workflow, which builds an images with the same tag.
 
-All the release workflow does is:
+### Helm
 
--   re-designate the approprate Helm package, removing the `unstable` prefix
--   create a Github release which is prettier than just a tag
-
-The script that does this is `ci/issue-release`.
+Helm charts do not follow the regular release process. Any change to the `charts/` directory to the master branch will trigger a build and upload.
 
 ## PR validation (linting)
 
@@ -45,4 +44,4 @@ See [validate-pr.yaml](/.github/workflows/validate-pr.yaml)
 
 ## End-to-end tests
 
-See [connect-tests](https://github.com/owkin/connect-tests)
+End-to-end tests are hosted here, but the CI that runs them is on [connect-tests](https://github.com/owkin/connect-tests)

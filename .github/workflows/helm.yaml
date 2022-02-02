@@ -1,0 +1,29 @@
+name: Publish Helm
+# This workflow builds the 'master' helm
+# That is, any helm chart change that gets to master is immediately uploaded to the
+# chart repo (that is to say it is released without further ado)
+env: {}
+# secrets:
+#   GCP_SERVICE_ACCOUNT_KEY_JSON
+#   HELM_REPO_USERNAME
+#   HELM_REPO_PASSWORD
+#   GH_PAT_USERNAME
+#   GH_PAT
+on:
+    push:
+        branches: [master]
+        paths: ['charts/**']
+    workflow_dispatch: {} # For running by hand from the web UI
+jobs:
+    build-helm:
+        name: Package Helm chart
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: '>=3.9.0 <4.0.0'
+            - run: python3 -m pip install -r ci/cilib/requirements.txt
+
+            - run: helm lint charts/connect-frontend
+            - run: ci/publish-helm '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}'

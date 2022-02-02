@@ -1,17 +1,18 @@
-from typing import List, Union
-from urllib.parse import urljoin
+import filecmp
+import logging
 import re
+import tarfile
 from os import mkdir, remove
 from shutil import rmtree
 from time import sleep
-import tarfile
-import filecmp
-import logging
+from typing import List, Union
+from urllib.parse import urljoin
 
 import requests
 import yaml
 
 from . import command
+from .formatting import split_creds
 
 logger = logging.getLogger()
 
@@ -22,10 +23,6 @@ class NonextantChartException(Exception):
 
 class AlreadyExtantChartException(Exception):
     pass
-
-
-def split_creds(creds) -> tuple:
-    return tuple(creds.split(":", 1))
 
 
 def get_index(url, creds) -> dict:
@@ -60,24 +57,26 @@ def get_matching_urls(url, creds, chart_name, version, try_again=True) -> List[s
     Build metadata is ignored as per semver rules
     """
     version = version.split("+")[0]
-    matches = []
+    matches: List[str] = []
     i = get_index(url, creds)
     if not chart_name in i["entries"]:
         return matches
     for e in i["entries"][chart_name]:
         if e["version"].split("+")[0] == version:
-            had_valid_urls=False
+            had_valid_urls = False
             for u in e["urls"]:
                 if u.endswith(".tgz"):
                     matches.append(urljoin(url, u))
-                    had_valid_urls=True
+                    had_valid_urls = True
             if not had_valid_urls:
                 if try_again:
                     sleep(10)  # give the server time to settle
                     return get_matching_urls(
                         url, creds, chart_name, version, try_again=False
                     )
-                raise Exception(f"Chart is listed on the server (version {e['version']}) but has no valid URL")
+                raise Exception(
+                    f"Chart is listed on the server (version {e['version']}) but has no valid URL"
+                )
     return matches
 
 
@@ -87,21 +86,15 @@ def download(url, creds, chart_name, version, output_filename=None):
         output_filename = expected_name
     chart_url = get_url(url, creds, chart_name, version)
     if not chart_url:
-        raise NonextantChartException(urljoin(url, f"/charts/{expected_name}"))
-    return command.run(
-        [
-            "curl",
-            "-u",
-            creds,
-            "--fail",
-            "--silent",
-            "--show-error",
-            chart_url,
-            "--output",
-            output_filename,
-        ],
-        capture_output=True,
-    )
+        raise NonextantChartException(urljoin(url, f"charts/{expected_name}"))
+
+    with requests.get(chart_url, auth=split_creds(creds), stream=True) as r:
+        r.raise_for_status()
+        with open(output_filename, "wb") as f:
+            for chunk in r.iter_content():
+                f.write(chunk)
+
+    return output_filename
 
 
 def upload(url, creds, chart_path, dry_run=False) -> None:
@@ -112,7 +105,9 @@ def upload(url, creds, chart_path, dry_run=False) -> None:
             if re.search(r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?/Chart.yaml$", x.name)
         ]
         assert len(f) == 1
-        local_chart_metadata = yaml.safe_load(t.extractfile(f[0]))
+        data = t.extractfile(f[0])
+        assert data is not None
+        local_chart_metadata = yaml.safe_load(data)
     if already_extant_url := get_url(
         url, creds, local_chart_metadata["name"], local_chart_metadata["version"]
     ):
