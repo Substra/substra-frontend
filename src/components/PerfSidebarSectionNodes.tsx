@@ -16,7 +16,7 @@ const PerfSidebarSectionNodes = (): JSX.Element => {
     nodes.sort(compareNodes);
 
     return (
-        <PerfSidebarSection title="Nodes">
+        <PerfSidebarSection title="Organizations">
             <List spacing="2.5">
                 {loading &&
                     [...Array(3)].map((_, index) => (

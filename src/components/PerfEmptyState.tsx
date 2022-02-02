@@ -41,7 +41,7 @@ const PerfEmptyState = ({
             >
                 <EmptyState
                     title="No data to display"
-                    subtitle="Select at least one node to display the data"
+                    subtitle="Select at least one organization to display the data"
                     icon={<RiFunctionLine />}
                 />
             </Flex>

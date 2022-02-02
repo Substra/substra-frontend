@@ -41,7 +41,7 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
         return (
             <ErrorAlertBase
                 title="An internal error occurred"
-                description="Unable to fetch a model from another node or no GPU available. Please contact an administrator to check errors or give you logs access."
+                description="Unable to fetch a model from another organization or no GPU available. Please contact an administrator to check errors or give you logs access."
             />
         );
     } else if (task.error_type === ErrorType.build) {

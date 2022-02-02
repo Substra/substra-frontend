@@ -48,7 +48,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
     return (
         <Box>
             <Heading size="xs" marginBottom={4}>
-                Nodes
+                Organizations
             </Heading>
             <Box
                 borderStyle="solid"
@@ -59,7 +59,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
             >
                 <Flex float="right" marginRight="-7px" marginTop="-4px">
                     <IconButton
-                        aria-label="Clear nodes"
+                        aria-label="Clear organizations"
                         variant="ghost"
                         size="xs"
                         icon={<RiCloseLine />}
@@ -69,7 +69,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                     <Menu>
                         <MenuButton
                             as={IconButton}
-                            aria-label="Select nodes"
+                            aria-label="Select organizations"
                             variant="ghost"
                             size="xs"
                             icon={<RiArrowDownSLine />}

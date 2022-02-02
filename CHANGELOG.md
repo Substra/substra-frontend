@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Disable performance chart for waiting/todo CP (#365)
 -   Use 3 decimals instead of 2 for performance value (#366)
+-   Naming: display organization instead of node (#367)
 -   Chart: hovering a legend item should highlight the related line and values (#369)
 
 ## [0.10.0] - 2022-01-27

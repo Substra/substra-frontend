@@ -208,7 +208,7 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                     })}
                                 >
                                     <ListItem fontSize="xs">
-                                        No node to display
+                                        No organization to display
                                     </ListItem>
                                 </List>
                             )}
