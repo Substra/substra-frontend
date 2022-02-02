@@ -92,7 +92,7 @@ const PerfRankDetails = ({
 
             let perf = 'N/A';
             if (point?.perf) {
-                perf = point.perf.toFixed(2);
+                perf = point.perf.toFixed(3);
             }
 
             return {
@@ -120,7 +120,7 @@ const PerfRankDetails = ({
                 );
 
             if (rankPerformances.length === series.length) {
-                return average(rankPerformances).toFixed(2);
+                return average(rankPerformances).toFixed(3);
             }
         }
 

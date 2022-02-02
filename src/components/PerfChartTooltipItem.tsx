@@ -63,7 +63,7 @@ const PerfChartTooltipItem = ({
                     </>
                 )}
             </HStack>
-            <Text fontSize="xs">{point.y.toFixed(2)}</Text>
+            <Text fontSize="xs">{point.y.toFixed(3)}</Text>
         </ListItem>
     );
 };

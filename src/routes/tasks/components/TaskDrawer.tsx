@@ -269,7 +269,7 @@ const TaskDrawer = ({
                                             <Box flexGrow="1" textAlign="right">
                                                 {perf === null
                                                     ? 'N/A'
-                                                    : perf.toFixed(2)}
+                                                    : perf.toFixed(3)}
                                             </Box>
                                         </DrawerSectionEntryWrapper>
                                     );
