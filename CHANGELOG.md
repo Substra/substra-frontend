@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Use 3 decimals instead of 2 for performance value (#366)
+-   Chart: hovering a legend item should highlight the related line and values (#369)
 
 ## [0.10.0] - 2022-01-27
 

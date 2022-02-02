@@ -29,16 +29,22 @@ import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 const AverageListItem = ({
     label,
     perf,
+    onMouseEnter,
+    onMouseLeave,
 }: {
     label: string;
     perf: string;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }): JSX.Element => (
-    <ListItem>
+    <ListItem onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <Flex
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
             paddingX="5"
             height="10"
+            _hover={{ bg: 'gray.100' }}
         >
             <HStack spacing="2.5">
                 <IconTag
@@ -183,6 +189,10 @@ const PerfRankDetails = ({
                             key={`${computePlanKey}-${id}`}
                             label={worker}
                             perf={perf}
+                            onMouseEnter={() =>
+                                setHighlightedSerie({ id, computePlanKey })
+                            }
+                            onMouseLeave={() => setHighlightedSerie(undefined)}
                         />
                     ))}
                 {rankData

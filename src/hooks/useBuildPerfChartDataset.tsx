@@ -6,8 +6,14 @@ import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
 interface ChartStyle {
     color: string;
+    colorLight: string;
     colorScheme: string;
     borderWidth: number;
+}
+
+interface HighlightedSerie {
+    id: number;
+    computePlanKey: string;
 }
 
 export interface DataPoint extends ScatterDataPoint {
@@ -25,12 +31,26 @@ const useBuildPerfChartDataset = (): ((
     serie: SerieT,
     label: string,
     chartStyle?: ChartStyle,
-    highlightedSerie?: {
-        id: number;
-        computePlanKey: string;
-    }
+    highlightedSerie?: HighlightedSerie
 ) => PerfChartDataset) => {
     const { getColor, getColorScheme } = usePerfBrowserColors();
+
+    const getLineColor = (
+        chartStyle: ChartStyle,
+        highlightedSerie: HighlightedSerie | undefined,
+        serie: SerieT
+    ) => {
+        if (highlightedSerie === undefined) {
+            return chartStyle.color;
+        }
+        if (
+            serie.id === highlightedSerie.id &&
+            serie.computePlanKey === highlightedSerie.computePlanKey
+        ) {
+            return chartStyle.color;
+        }
+        return chartStyle.colorLight;
+    };
 
     return (
         serie: SerieT,
@@ -45,6 +65,7 @@ const useBuildPerfChartDataset = (): ((
             chartStyle = {
                 colorScheme: getColorScheme(serie),
                 color: getColor(serie, '500'),
+                colorLight: getColor(serie, '100'),
                 borderWidth: 2,
             };
         }
@@ -64,18 +85,15 @@ const useBuildPerfChartDataset = (): ((
             parsing: false,
             // styles
             backgroundColor: chartStyle.color,
-            borderColor: chartStyle.color,
+            borderColor: getLineColor(chartStyle, highlightedSerie, serie),
             // line styles
-            borderWidth:
-                highlightedSerie !== undefined &&
-                serie.id === highlightedSerie.id &&
-                serie.computePlanKey === highlightedSerie.computePlanKey
-                    ? 3
-                    : chartStyle.borderWidth,
+            borderWidth: chartStyle.borderWidth,
             // point styles
             pointBackgroundColor: 'white',
-            pointBorderColor: chartStyle.color,
+            pointBorderColor: getLineColor(chartStyle, highlightedSerie, serie),
             pointBorderWidth: chartStyle.borderWidth,
+            // draw highlighted serie on top
+            order: serie.id === highlightedSerie?.id ? 0 : 1,
         };
     };
 };

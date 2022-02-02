@@ -68,7 +68,8 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             const averageSerie = buildAverageSerie(series);
             if (averageSerie) {
                 return buildPerfChartDataset(averageSerie, 'Average', {
-                    color: '#000000',
+                    color: 'black',
+                    colorLight: 'black.100',
                     colorScheme: 'black',
                     borderWidth: 3,
                 });
