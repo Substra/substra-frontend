@@ -48,6 +48,7 @@ const PerfBrowser = ({
         (serie) =>
             selectedComputePlanKeys.includes(serie.computePlanKey) &&
             selectedNodeIds.includes(serie.worker) &&
+            !!selectedComputePlanNodes[serie.computePlanKey] &&
             selectedComputePlanNodes[serie.computePlanKey][serie.worker]
     );
     const seriesGroups = buildSeriesGroups(filteredSeries);

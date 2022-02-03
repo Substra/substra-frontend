@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Handle perf rank detail Y overflow (#370)
+-   Race conditions in compare page (#373)
 
 ### Changed
 

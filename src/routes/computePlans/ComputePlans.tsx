@@ -63,7 +63,12 @@ const ComputePlans = (): JSX.Element => {
     const [, setLocation] = useLocation();
 
     useSearchFiltersEffect(() => {
-        dispatch(listComputePlans({ filters: searchFilters, page }));
+        const promise = dispatch(
+            listComputePlans({ filters: searchFilters, page })
+        );
+        return () => {
+            promise.abort();
+        };
     }, [searchFilters, page]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
