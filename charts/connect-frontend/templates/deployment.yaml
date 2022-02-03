@@ -28,7 +28,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default (.Chart.AppVersion | replace "+" "_")}}"
+          image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /bin/bash
@@ -52,8 +52,6 @@ spec:
           env:
             - name: API_URL
               value: {{ .Values.api.url | quote }}
-            - name: APP_VERSION
-              value: {{ .Chart.AppVersion }}
             - name: MICROSOFT_CLARITY_ID
               value: {{ .Values.microsoftClarity.id | quote }}
             - name: MELLODDY
