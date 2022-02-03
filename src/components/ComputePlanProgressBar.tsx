@@ -28,8 +28,8 @@ const Item = ({ status, count, total }: ItemProps): JSX.Element | null => {
 };
 
 export const tupleStatusOrder: TupleStatus[] = [
-    TupleStatus.doing,
     TupleStatus.done,
+    TupleStatus.doing,
     TupleStatus.canceled,
     TupleStatus.failed,
     TupleStatus.todo,
