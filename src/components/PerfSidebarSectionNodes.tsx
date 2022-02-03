@@ -55,6 +55,7 @@ const PerfSidebarSectionNodes = (): JSX.Element => {
                                     worker: node.id,
                                     computePlanKey: '',
                                 })}
+                                alignItems="baseline"
                             >
                                 <Text
                                     as="span"

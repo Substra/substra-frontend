@@ -33,6 +33,7 @@ const ComputePlanCheckbox = ({
             colorScheme={getColorScheme({ computePlanKey, worker: '' })}
             onChange={onComputePlanKeySelectionChange(computePlanKey)}
             isChecked={selectedComputePlanKeys.includes(computePlanKey)}
+            alignItems="baseline"
         >
             <Text as="span" fontSize="xs" fontWeight="semibold">
                 {`#${index + 1}`}
@@ -184,6 +185,7 @@ const PerfSidebarSectionComputePlans = (): JSX.Element => {
                                                         computePlanKey
                                                     )
                                                 }
+                                                alignItems="baseline"
                                             >
                                                 <Text as="span" fontSize="xs">
                                                     {nodeId}
