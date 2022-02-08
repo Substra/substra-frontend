@@ -38,7 +38,6 @@ import {
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -56,17 +55,16 @@ import Timing from '@/components/Timing';
 
 interface TaskDrawerProps {
     category: TaskCategory;
-    compileListPath: (category: TaskCategory) => string;
+    onClose: () => void;
     taskKey: string | undefined;
 }
 
 const TaskDrawer = ({
     category,
-    compileListPath,
+    onClose,
     taskKey,
 }: TaskDrawerProps): JSX.Element => {
-    const { setLocationWithParams } = useLocationWithParams();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -90,8 +88,8 @@ const TaskDrawer = ({
     );
 
     const handleOnClose = () => {
-        setLocationWithParams(compileListPath(category));
         onClose();
+        onDisclosureClose();
     };
 
     return (

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import IconTag from './IconTag';
 import {
@@ -14,7 +14,6 @@ import {
     Tooltip,
 } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
-import { Link } from 'wouter';
 
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
@@ -24,7 +23,7 @@ import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 const AverageListItem = ({
     label,
@@ -81,6 +80,9 @@ const PerfRankDetails = ({
         useContext(PerfBrowserContext);
     const lineId = getLineId(series);
     const { getColorScheme } = usePerfBrowserColors();
+    const [drawerTestTaskKey, setDrawerTestTaskKey] = useState<
+        string | undefined
+    >(undefined);
 
     const getRankData = (
         rank: number
@@ -147,6 +149,10 @@ const PerfRankDetails = ({
         averagePerf = getAveragePerf(maxRank);
     }
 
+    const handleOnclick = (taskKey: string | undefined) => {
+        setDrawerTestTaskKey(taskKey);
+    };
+
     return (
         <Box
             backgroundColor="white"
@@ -156,6 +162,11 @@ const PerfRankDetails = ({
             overflowY="auto"
             position="relative"
         >
+            <TaskDrawer
+                category={TaskCategory.test}
+                taskKey={drawerTestTaskKey}
+                onClose={() => setDrawerTestTaskKey(undefined)}
+            />
             <Heading
                 size="xxs"
                 fontWeight="bold"
@@ -217,88 +228,69 @@ const PerfRankDetails = ({
                                     setHighlightedSerie(undefined)
                                 }
                             >
-                                <Link
-                                    href={
-                                        testTaskKey
-                                            ? compilePath(PATHS.TASK, {
-                                                  key: testTaskKey,
-                                                  category:
-                                                      TASK_CATEGORY_SLUGS[
-                                                          TaskCategory.test
-                                                      ],
-                                              })
-                                            : ''
-                                    }
+                                <Button
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    variant="ghost"
+                                    paddingX="5"
+                                    cursor="pointer"
+                                    width="100%"
+                                    onClick={() => handleOnclick(testTaskKey)}
                                 >
-                                    <Button
-                                        as="a"
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        variant="ghost"
-                                        target="_blank"
-                                        paddingX="5"
-                                    >
-                                        <HStack spacing="2.5">
-                                            <IconTag
-                                                icon={RiGitCommitLine}
-                                                backgroundColor={`${getColorScheme(
-                                                    {
-                                                        worker,
-                                                        computePlanKey,
-                                                    }
-                                                )}.100`}
-                                                fill={`${getColorScheme({
-                                                    worker,
-                                                    computePlanKey,
-                                                })}.500`}
-                                            />
-                                            <Tooltip
-                                                label={
-                                                    sortedComputePlanKeys.length >
+                                    <HStack spacing="2.5">
+                                        <IconTag
+                                            icon={RiGitCommitLine}
+                                            backgroundColor={`${getColorScheme({
+                                                worker,
+                                                computePlanKey,
+                                            })}.100`}
+                                            fill={`${getColorScheme({
+                                                worker,
+                                                computePlanKey,
+                                            })}.500`}
+                                        />
+                                        <Tooltip
+                                            label={
+                                                sortedComputePlanKeys.length > 1
+                                                    ? `${cpId} • ${worker} • ${lineId}`
+                                                    : `${worker} • ${lineId}`
+                                            }
+                                            placement="top"
+                                        >
+                                            <HStack spacing="1">
+                                                <Text
+                                                    fontSize="xs"
+                                                    fontWeight="semibold"
+                                                    maxWidth="150px"
+                                                    isTruncated
+                                                >
+                                                    {sortedComputePlanKeys.length >
                                                     1
-                                                        ? `${cpId} • ${worker} • ${lineId}`
-                                                        : `${worker} • ${lineId}`
-                                                }
-                                                placement="top"
-                                            >
-                                                <HStack spacing="1">
-                                                    <Text
-                                                        fontSize="xs"
-                                                        fontWeight="semibold"
-                                                        maxWidth="150px"
-                                                        isTruncated
-                                                    >
-                                                        {sortedComputePlanKeys.length >
-                                                        1
-                                                            ? `${cpId} • ${worker}`
-                                                            : worker}
-                                                    </Text>
-                                                    <Text
-                                                        as="span"
-                                                        fontSize="xs"
-                                                        fontWeight="normal"
-                                                    >
-                                                        {`• ${lineId}`}
-                                                    </Text>
-                                                </HStack>
-                                            </Tooltip>
-                                        </HStack>
-                                        <HStack spacing="1">
-                                            <Text
-                                                fontSize="xs"
-                                                fontWeight="normal"
-                                            >
-                                                {perf}
-                                            </Text>
-                                            <Icon
-                                                as={RiArrowRightSLine}
-                                                width="14px"
-                                                height="14px"
-                                            />
-                                        </HStack>
-                                    </Button>
-                                </Link>
+                                                        ? `${cpId} • ${worker}`
+                                                        : worker}
+                                                </Text>
+                                                <Text
+                                                    as="span"
+                                                    fontSize="xs"
+                                                    fontWeight="normal"
+                                                >
+                                                    {`• ${lineId}`}
+                                                </Text>
+                                            </HStack>
+                                        </Tooltip>
+                                    </HStack>
+                                    <HStack spacing="1">
+                                        <Text fontSize="xs" fontWeight="normal">
+                                            {perf}
+                                        </Text>
+                                        <Icon
+                                            as={RiArrowRightSLine}
+                                            width="14px"
+                                            height="14px"
+                                        />
+                                    </HStack>
+                                </Button>
                             </ListItem>
                         )
                     )}

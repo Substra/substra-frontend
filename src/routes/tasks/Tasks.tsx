@@ -68,6 +68,7 @@ interface TasksProps {
 const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
         params: { search: searchFilters, page },
+        setLocationWithParams,
     } = useLocationWithParams();
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
@@ -91,7 +92,11 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
             taskDrawer={
                 <TaskDrawer
                     category={TaskCategory.test}
-                    compileListPath={compileListPath}
+                    onClose={() =>
+                        setLocationWithParams(
+                            compileListPath(TaskCategory.test)
+                        )
+                    }
                     taskKey={taskKey}
                 />
             }
@@ -102,6 +107,7 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
 const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
         params: { search: searchFilters, page },
+        setLocationWithParams,
     } = useLocationWithParams();
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
@@ -125,7 +131,11 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
             taskDrawer={
                 <TaskDrawer
                     category={TaskCategory.train}
-                    compileListPath={compileListPath}
+                    onClose={() =>
+                        setLocationWithParams(
+                            compileListPath(TaskCategory.train)
+                        )
+                    }
                     taskKey={taskKey}
                 />
             }
@@ -136,6 +146,7 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
         params: { search: searchFilters, page },
+        setLocationWithParams,
     } = useLocationWithParams();
 
     const loading = useAppSelector(
@@ -161,7 +172,11 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
             taskDrawer={
                 <TaskDrawer
                     category={TaskCategory.composite}
-                    compileListPath={compileListPath}
+                    onClose={() =>
+                        setLocationWithParams(
+                            compileListPath(TaskCategory.composite)
+                        )
+                    }
                     taskKey={taskKey}
                 />
             }
@@ -172,6 +187,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
         params: { search: searchFilters, page },
+        setLocationWithParams,
     } = useLocationWithParams();
 
     const loading = useAppSelector(
@@ -197,7 +213,11 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
             taskDrawer={
                 <TaskDrawer
                     category={TaskCategory.aggregate}
-                    compileListPath={compileListPath}
+                    onClose={() =>
+                        setLocationWithParams(
+                            compileListPath(TaskCategory.aggregate)
+                        )
+                    }
                     taskKey={taskKey}
                 />
             }
