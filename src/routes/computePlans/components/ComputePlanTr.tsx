@@ -19,11 +19,10 @@ import Timing from '@/components/Timing';
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;
     selectedKeys: string[];
-    onSelectionChange: (
-        key: string
-    ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelectionChange: (computePlan: ComputePlanT) => () => void;
     pinnedKeys: string[];
     onPinChange: (computePlan: ComputePlanT) => () => void;
+    highlighted: boolean;
 }
 
 declare const MELLODDY: boolean;
@@ -34,12 +33,14 @@ const ComputePlanTr = ({
     onSelectionChange,
     pinnedKeys,
     onPinChange,
+    highlighted,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
 
     return (
         <ClickableTr
             key={computePlan.key}
+            backgroundColor={highlighted ? 'gray.50' : 'white'}
             onClick={() =>
                 setLocation(
                     compilePath(PATHS.COMPUTE_PLAN_TASKS, {
@@ -51,9 +52,8 @@ const ComputePlanTr = ({
         >
             <CheckboxTd firstCol={true}>
                 <Checkbox
-                    value={computePlan.key}
                     isChecked={selectedKeys.includes(computePlan.key)}
-                    onChange={onSelectionChange(computePlan.key)}
+                    onChange={onSelectionChange(computePlan)}
                     colorScheme="teal"
                 />
             </CheckboxTd>

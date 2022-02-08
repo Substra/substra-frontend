@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Compute plans selected for comparison are now persisted (same as pinned items) (#372)
+
 ### Fixed
 
 -   Alignment issue between checkboxes and their labels (#376)

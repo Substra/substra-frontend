@@ -33,3 +33,7 @@ export interface FileT {
     checksum: string;
     storage_address: string;
 }
+
+export interface HasKey {
+    key: string;
+}

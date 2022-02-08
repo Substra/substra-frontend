@@ -1,6 +1,7 @@
 import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
 import { v4 as uuidv4 } from 'uuid';
 
+import { HasKey } from '@/modules/common/CommonTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
@@ -109,9 +110,6 @@ export function buildSeries(
     return series;
 }
 
-interface HasKey {
-    key: string;
-}
 export function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
     const index: Record<string, Type> = {};
     for (const asset of assets) {

@@ -29,9 +29,8 @@ import {
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-import usePinnedComputePlans from '@/hooks/usePinnedComputePlans';
-import useSelection from '@/hooks/useSelection';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -88,7 +87,21 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
-    const [selectedKeys, onSelectionChange, resetSelection] = useSelection();
+    const {
+        items: selectedComputePlans,
+        addItem: selectComputePlan,
+        removeItem: unselectComputePlan,
+        clearItems: resetSelection,
+    } = useLocalStorageItems<ComputePlanT>('selected_compute_plans');
+    const selectedKeys = selectedComputePlans.map((cp) => cp.key);
+
+    const onSelectionChange = (computePlan: ComputePlanT) => () => {
+        if (selectedKeys.includes(computePlan.key)) {
+            unselectComputePlan(computePlan);
+        } else {
+            selectComputePlan(computePlan);
+        }
+    };
 
     const onClear = () => {
         resetSelection();
@@ -100,7 +113,11 @@ const ComputePlans = (): JSX.Element => {
         );
     };
 
-    const { pinnedItems, pinItem, unpinItem } = usePinnedComputePlans();
+    const {
+        items: pinnedItems,
+        addItem: pinItem,
+        removeItem: unpinItem,
+    } = useLocalStorageItems<ComputePlanT>('pinned_compute_plans');
     const pinnedKeys = pinnedItems.map((cp) => cp.key);
 
     const onPinChange = (computePlan: ComputePlanT) => () => {
@@ -200,7 +217,7 @@ const ComputePlans = (): JSX.Element => {
                             </Tr>
                         </Thead>
                         <ChakraTbody>
-                            {pinnedItems.map((computePlan) => (
+                            {selectedComputePlans.map((computePlan) => (
                                 <ComputePlanTr
                                     key={computePlan.key}
                                     computePlan={computePlan}
@@ -208,8 +225,27 @@ const ComputePlans = (): JSX.Element => {
                                     onSelectionChange={onSelectionChange}
                                     pinnedKeys={pinnedKeys}
                                     onPinChange={onPinChange}
+                                    highlighted={true}
                                 />
                             ))}
+                        </ChakraTbody>
+                        <ChakraTbody>
+                            {pinnedItems
+                                .filter(
+                                    (computePlan) =>
+                                        !selectedKeys.includes(computePlan.key)
+                                )
+                                .map((computePlan) => (
+                                    <ComputePlanTr
+                                        key={computePlan.key}
+                                        computePlan={computePlan}
+                                        selectedKeys={selectedKeys}
+                                        onSelectionChange={onSelectionChange}
+                                        pinnedKeys={pinnedKeys}
+                                        onPinChange={onPinChange}
+                                        highlighted={true}
+                                    />
+                                ))}
                         </ChakraTbody>
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
@@ -294,6 +330,9 @@ const ComputePlans = (): JSX.Element => {
                                         (computePlan) =>
                                             !pinnedKeys.includes(
                                                 computePlan.key
+                                            ) &&
+                                            !selectedKeys.includes(
+                                                computePlan.key
                                             )
                                     )
                                     .map((computePlan) => (
@@ -306,6 +345,7 @@ const ComputePlans = (): JSX.Element => {
                                             }
                                             pinnedKeys={pinnedKeys}
                                             onPinChange={onPinChange}
+                                            highlighted={false}
                                         />
                                     ))
                             )}
