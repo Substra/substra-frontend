@@ -166,6 +166,7 @@ const PerfRankDetails = ({
                 position="sticky"
                 top="0"
                 backgroundColor="white"
+                zIndex="docked"
             >
                 {selectedRank !== null && (
                     <>

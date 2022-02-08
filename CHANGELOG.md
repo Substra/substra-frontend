@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Alignment issue between checkboxes and their labels (#376)
+-   Scroll on performance legend overlaps on header "Rank X" (#381)
 
 ### Changed
 
