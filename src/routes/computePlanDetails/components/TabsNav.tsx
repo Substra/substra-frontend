@@ -71,19 +71,11 @@ const TabsNav = (): JSX.Element | null => {
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
-    let isChartTabDisabled = true;
-
-    if (
+    const isChartTabDisabled =
         computePlan !== null &&
-        [
-            ComputePlanStatus.doing,
-            ComputePlanStatus.done,
-            ComputePlanStatus.failed,
-            ComputePlanStatus.canceled,
-        ].includes(computePlan.status)
-    ) {
-        isChartTabDisabled = false;
-    }
+        [ComputePlanStatus.waiting, ComputePlanStatus.todo].includes(
+            computePlan.status
+        );
 
     return (
         <HStack paddingLeft={8} paddingRight={8} spacing={5}>

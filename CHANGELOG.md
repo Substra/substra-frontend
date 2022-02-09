@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Put status "done" in first position in progress bar (#374)
 -   Compute plan performance opens task drawer in the performance screen (#380)
+-   Perf tab on Compute Plan page is enabled during loading (#385)
 
 ## [0.11.0] - 2022-02-03
 
