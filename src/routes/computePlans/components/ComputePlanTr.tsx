@@ -1,11 +1,15 @@
 import CheckboxTd from './CheckboxTd';
+import { ComputePlanProgressSkeleton } from './ComputePlanTrSkeleton';
 import PinBox from './PinBox';
 import StatusCell from './StatusCell';
 import { Td, Checkbox, Text } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import {
+    ComputePlanStatus,
+    ComputePlanT,
+} from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { shortFormatDate } from '@/libs/utils';
@@ -18,6 +22,8 @@ import Timing from '@/components/Timing';
 
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;
+    computePlanDetails: ComputePlanT | undefined;
+    computePlanDetailsLoading: boolean | undefined;
     selectedKeys: string[];
     onSelectionChange: (computePlan: ComputePlanT) => () => void;
     pinnedKeys: string[];
@@ -29,6 +35,8 @@ declare const MELLODDY: boolean;
 
 const ComputePlanTr = ({
     computePlan,
+    computePlanDetails,
+    computePlanDetailsLoading,
     selectedKeys,
     onSelectionChange,
     pinnedKeys,
@@ -60,7 +68,11 @@ const ComputePlanTr = ({
             <CheckboxTd>
                 <PinBox
                     isChecked={pinnedKeys.includes(computePlan.key)}
-                    onChange={onPinChange(computePlan)}
+                    onChange={onPinChange(
+                        MELLODDY && computePlanDetails
+                            ? computePlanDetails
+                            : computePlan
+                    )}
                 />
             </CheckboxTd>
             <Td minWidth="250px">
@@ -69,7 +81,19 @@ const ComputePlanTr = ({
                 </Text>
             </Td>
             <Td minWidth="255px">
-                <StatusCell computePlan={computePlan} />
+                {MELLODDY &&
+                computePlan.status === ComputePlanStatus.unknown &&
+                (computePlanDetailsLoading || !computePlanDetails) ? (
+                    <ComputePlanProgressSkeleton />
+                ) : (
+                    <StatusCell
+                        computePlan={
+                            MELLODDY && computePlanDetails
+                                ? computePlanDetails
+                                : computePlan
+                        }
+                    />
+                )}
             </Td>
             <Td>
                 <Text fontSize="xs">

@@ -1,27 +1,25 @@
+import { useEffect, useState } from 'react';
+
 import ComputePlanTr from './components/ComputePlanTr';
+import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 import {
     VStack,
     Table,
     Thead,
     Tr,
     Th,
-    Td,
     Tbody as ChakraTbody,
     Box,
     Button,
     HStack,
-    Text,
     Flex,
-    Skeleton,
-    Progress,
 } from '@chakra-ui/react';
+import { RiAddLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import {
-    ComputePlanStatus,
-    ComputePlanT,
-} from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import {
     useAppDispatch,
@@ -40,8 +38,7 @@ import { compilePath, PATHS } from '@/routes';
 
 import { ClickableTh } from '@/components/AssetsTable';
 import SearchBar from '@/components/SearchBar';
-import Status from '@/components/Status';
-import { EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
+import { EmptyTr, Tbody } from '@/components/Table';
 import {
     StatusTableFilterTag,
     TableFilterTags,
@@ -60,6 +57,21 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters },
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
+    /** FIXME:
+     * the computePlanDetails and computePlanDetailsLoading are a temporary change,
+     * they are here to compensate for a perf issue of the backend.
+     *
+     * As a result, /compute_plan doesn't return task counts or statuses anymore,
+     * it's only included in /compute_plan/<key>
+     *
+     * We therefore have to fetch each CP independently once the list is loaded
+     * to have access to all data.
+     */
+    const [computePlansDetails, setComputePlansDetails] = useState<
+        Record<string, ComputePlanT | undefined>
+    >({});
+    const [computePlansDetailsLoading, setComputePlansDetailsLoading] =
+        useState<Record<string, boolean>>({});
 
     useSearchFiltersEffect(() => {
         const promise = dispatch(
@@ -81,6 +93,48 @@ const ComputePlans = (): JSX.Element => {
     const computePlansCount = useAppSelector(
         (state) => state.computePlans.computePlansCount
     );
+
+    const resetComputePlansDetails = () => {
+        const details: Record<string, ComputePlanT | undefined> = {};
+        const detailsLoading: Record<string, boolean> = {};
+        for (const computePlan of computePlans) {
+            details[computePlan.key] = undefined;
+            detailsLoading[computePlan.key] = true;
+        }
+        setComputePlansDetails(details);
+        setComputePlansDetailsLoading(detailsLoading);
+    };
+
+    const retrieveComputePlanDetails = async (computePlanKey: string) => {
+        const response = await retrieveComputePlan(computePlanKey);
+        const computePlan: ComputePlanT = response.data;
+
+        setComputePlansDetails((computePlansDetails) => {
+            if (computePlanKey in computePlansDetails) {
+                return {
+                    ...computePlansDetails,
+                    [computePlanKey]: computePlan,
+                };
+            }
+            return computePlansDetails;
+        });
+        setComputePlansDetailsLoading((computePlansDetailsLoading) => {
+            if (computePlanKey in computePlansDetailsLoading) {
+                return {
+                    ...computePlansDetailsLoading,
+                    [computePlanKey]: false,
+                };
+            }
+            return computePlansDetailsLoading;
+        });
+    };
+
+    useEffect(() => {
+        resetComputePlansDetails();
+        for (const computePlan of computePlans) {
+            retrieveComputePlanDetails(computePlan.key);
+        }
+    }, [computePlans]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
@@ -145,9 +199,25 @@ const ComputePlans = (): JSX.Element => {
             >
                 <Flex justifyContent="space-between" paddingX="6">
                     <HStack spacing="2.5">
-                        <TableFilters>
-                            <ComputePlanStatusTableFilter />
-                        </TableFilters>
+                        {/**
+                         * FIXME:
+                         * Filters are broken in the backend (no status available in localrep for now),
+                         * so we disable the UI components for now.
+                         * */}
+                        {MELLODDY ? (
+                            <Button
+                                size="sm"
+                                backgroundColor="secondary"
+                                leftIcon={<RiAddLine />}
+                                isDisabled={true}
+                            >
+                                Add Filter
+                            </Button>
+                        ) : (
+                            <TableFilters>
+                                <ComputePlanStatusTableFilter />
+                            </TableFilters>
+                        )}
                         <SearchBar asset="compute_plan" />
                     </HStack>
                     <HStack spacing="4">
@@ -190,30 +260,45 @@ const ComputePlans = (): JSX.Element => {
                             <Tr>
                                 <Th padding="0" minWidth="50px"></Th>
                                 <Th padding="0" minWidth="36px"></Th>
-                                <ClickableTh
-                                    minWidth="250px"
-                                    onClick={() => onPopoverOpen(0)}
-                                >
-                                    {MELLODDY ? 'Name' : 'Tag'}
-                                </ClickableTh>
-                                <ClickableTh
-                                    minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
-                                >
-                                    Status / Tasks
-                                </ClickableTh>
-                                <ClickableTh
-                                    minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
-                                >
-                                    Creation
-                                </ClickableTh>
-                                <ClickableTh
-                                    minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
-                                >
-                                    Dates / Duration
-                                </ClickableTh>
+                                {MELLODDY ? (
+                                    <>
+                                        <Th minWidth="250px">
+                                            {MELLODDY ? 'Name' : 'Tag'}
+                                        </Th>
+                                        <Th minWidth="255px">Status / Tasks</Th>
+                                        <Th minWidth="255px">Creation</Th>
+                                        <Th minWidth="255px">
+                                            Dates / Duration
+                                        </Th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ClickableTh
+                                            minWidth="250px"
+                                            onClick={() => onPopoverOpen(0)}
+                                        >
+                                            {MELLODDY ? 'Name' : 'Tag'}
+                                        </ClickableTh>
+                                        <ClickableTh
+                                            minWidth="255px"
+                                            onClick={() => onPopoverOpen(0)}
+                                        >
+                                            Status / Tasks
+                                        </ClickableTh>
+                                        <ClickableTh
+                                            minWidth="255px"
+                                            onClick={() => onPopoverOpen(0)}
+                                        >
+                                            Creation
+                                        </ClickableTh>
+                                        <ClickableTh
+                                            minWidth="255px"
+                                            onClick={() => onPopoverOpen(0)}
+                                        >
+                                            Dates / Duration
+                                        </ClickableTh>
+                                    </>
+                                )}
                             </Tr>
                         </Thead>
                         <ChakraTbody>
@@ -221,6 +306,14 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTr
                                     key={computePlan.key}
                                     computePlan={computePlan}
+                                    computePlanDetails={
+                                        computePlansDetails[computePlan.key]
+                                    }
+                                    computePlanDetailsLoading={
+                                        computePlansDetailsLoading[
+                                            computePlan.key
+                                        ]
+                                    }
                                     selectedKeys={selectedKeys}
                                     onSelectionChange={onSelectionChange}
                                     pinnedKeys={pinnedKeys}
@@ -239,6 +332,14 @@ const ComputePlans = (): JSX.Element => {
                                     <ComputePlanTr
                                         key={computePlan.key}
                                         computePlan={computePlan}
+                                        computePlanDetails={
+                                            computePlansDetails[computePlan.key]
+                                        }
+                                        computePlanDetailsLoading={
+                                            computePlansDetailsLoading[
+                                                computePlan.key
+                                            ]
+                                        }
                                         selectedKeys={selectedKeys}
                                         onSelectionChange={onSelectionChange}
                                         pinnedKeys={pinnedKeys}
@@ -258,72 +359,10 @@ const ComputePlans = (): JSX.Element => {
                                     />
                                 )}
                             {computePlansLoading ? (
-                                <TableSkeleton
-                                    itemCount={computePlansCount}
-                                    currentPage={page}
-                                >
-                                    <Td paddingRight="2.5">
-                                        <Skeleton width="16px" height="16px" />
-                                    </Td>
-                                    <Td paddingX="2.5">
-                                        <Skeleton width="16px" height="16px" />
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <VStack spacing="1">
-                                                <Flex
-                                                    alignItems="center"
-                                                    justifyContent="space-between"
-                                                >
-                                                    <Status
-                                                        status={
-                                                            ComputePlanStatus.done
-                                                        }
-                                                        size="sm"
-                                                    />
-                                                    <Text
-                                                        fontSize="xs"
-                                                        color="gray.600"
-                                                    >
-                                                        {MELLODDY
-                                                            ? 'CP56-SP-CLS-PH1'
-                                                            : 'foo/bar'}
-                                                    </Text>
-                                                </Flex>
-                                                <Progress
-                                                    size="xs"
-                                                    colorScheme="teal"
-                                                    hasStripe={false}
-                                                    value={100}
-                                                />
-                                            </VStack>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <Text
-                                                fontSize="xs"
-                                                whiteSpace="nowrap"
-                                            >
-                                                Lorem ipsum dolor sit amet
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <Text fontSize="xs">
-                                                YYYY-MM-DD HH:MM:SS
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <Text fontSize="xs">
-                                                YYYY-MM-DD HH:MM:SS
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                </TableSkeleton>
+                                <ComputePlanTrSkeleton
+                                    computePlansCount={computePlansCount}
+                                    page={page}
+                                />
                             ) : (
                                 computePlans
                                     .filter(
@@ -339,6 +378,16 @@ const ComputePlans = (): JSX.Element => {
                                         <ComputePlanTr
                                             key={computePlan.key}
                                             computePlan={computePlan}
+                                            computePlanDetails={
+                                                computePlansDetails[
+                                                    computePlan.key
+                                                ]
+                                            }
+                                            computePlanDetailsLoading={
+                                                computePlansDetailsLoading[
+                                                    computePlan.key
+                                                ]
+                                            }
                                             selectedKeys={selectedKeys}
                                             onSelectionChange={
                                                 onSelectionChange
