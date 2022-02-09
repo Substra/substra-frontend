@@ -50,6 +50,7 @@ import {
     DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH,
     DrawerSectionEntryWrapper,
 } from '@/components/DrawerSection';
+import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
@@ -275,6 +276,10 @@ const TaskDrawer = ({
                             </DrawerSection>
                         )
                     )}
+                    <MetadataDrawerSection
+                        metadata={task?.metadata}
+                        loading={taskLoading}
+                    />
                 </DrawerBody>
             </DrawerContent>
         </Drawer>
