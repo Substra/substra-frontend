@@ -9,9 +9,16 @@ import chakraTheme from '@/assets/chakraTheme';
 // https://github.com/chartjs/chartjs-plugin-zoom/blob/4e3a12dab1ea1d62923bb2ebfc6d4aeebd757207/src/state.js#L3
 const chartStates = new WeakMap<Chart, HighlightState>();
 
+const PAN_THRESHOLD = 10;
+
 interface HighlightState {
     hoveredRank: number | null;
     selectedRank: number | null;
+    // the following properties allow to differentiate between normal clicks and clicks at the end of drags
+    isMouseDown: boolean;
+    mouseDownAtX: number;
+    mouseDownAtY: number;
+    isDrag: boolean;
 }
 
 const getState = (chart: Chart): HighlightState => {
@@ -20,6 +27,10 @@ const getState = (chart: Chart): HighlightState => {
         state = {
             hoveredRank: null,
             selectedRank: null,
+            isMouseDown: false,
+            mouseDownAtX: 0,
+            mouseDownAtY: 0,
+            isDrag: false,
         };
         chartStates.set(chart, state);
     }
@@ -98,14 +109,43 @@ export const highlightRankPlugin = ({
 
         if (event.type === 'mouseout') {
             newState.hoveredRank = null;
+            state.isMouseDown = false;
+            state.mouseDownAtX = 0;
+            state.mouseDownAtY = 0;
+            state.isDrag = false;
+        } else if (event.type === 'mousedown') {
+            state.isMouseDown = true;
+            state.mouseDownAtX = event.x === null ? 0 : event.x;
+            state.mouseDownAtY = event.y === null ? 0 : event.y;
         } else if (event.type === 'mousemove') {
-            newState.hoveredRank = getRank(chart, event);
-        } else if (event.type == 'click' && isRankSelectable) {
-            if (state.selectedRank === null) {
-                newState.selectedRank = getRank(chart, event);
+            if (state.isMouseDown) {
+                const x = event.x === null ? 0 : event.x;
+                const y = event.y === null ? 0 : event.y;
+                if (
+                    (x - state.mouseDownAtX) ** 2 +
+                        (y - state.mouseDownAtY) ** 2 >=
+                    PAN_THRESHOLD
+                ) {
+                    // mouse button is down and we've moved more than 3pixels from the original position
+                    state.isDrag = true;
+                }
             } else {
-                newState.selectedRank = null;
+                // mouse button isn't down, this is not part of a drag sequence, we can change the hovered rank
+                newState.hoveredRank = getRank(chart, event);
             }
+        } else if (event.type === 'click') {
+            if (!state.isDrag && isRankSelectable) {
+                if (state.selectedRank === null) {
+                    newState.selectedRank = getRank(chart, event);
+                } else {
+                    newState.selectedRank = null;
+                }
+            }
+            // reset
+            state.isMouseDown = false;
+            state.mouseDownAtX = 0;
+            state.mouseDownAtY = 0;
+            state.isDrag = false;
         }
 
         if (

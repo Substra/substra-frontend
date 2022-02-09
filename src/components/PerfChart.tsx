@@ -103,6 +103,9 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             [maxRank, seriesDatasets, averageDataset, displayAverage]
         );
 
+        // @ts-expect-error ChartOptions['events'] doesn't allow for "mousedown" as of Chart.js 3.6.0
+        // we opened a PR: https://github.com/chartjs/Chart.js/pull/10124
+        // once it is merged and released, we can remove this @ts-expect-error
         const options = useMemo<ChartOptions<'line'>>(() => {
             const zoomPluginOptions: ZoomPluginOptions = {
                 zoom: {
@@ -125,7 +128,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     enabled: true,
                     mode: 'xy',
                     threshold: 0.01,
-                    modifierKey: 'shift',
                 },
             };
             return {
@@ -138,6 +140,15 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                           },
                       }
                     : {}),
+                // default list of events + mousedown
+                events: [
+                    'mousemove',
+                    'mousedown',
+                    'mouseout',
+                    'click',
+                    'touchstart',
+                    'touchmove',
+                ],
                 hover: {
                     mode: 'index',
                     intersect: false,
@@ -294,7 +305,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                             </Text>
                                             <Text fontSize="xs">
                                                 To move into the chart, use{' '}
-                                                <Kbd>shift</Kbd> +{' '}
                                                 <Kbd>Left click</Kbd>
                                             </Text>
                                         </VStack>
