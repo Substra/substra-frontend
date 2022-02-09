@@ -135,6 +135,8 @@ export const datasetsSlice = createSlice({
                 state.datasetsError = '';
             })
             .addCase(listDatasets.rejected, (state, { payload }) => {
+                state.datasets = [];
+                state.datasetsCount = 0;
                 state.datasetsLoading = false;
                 state.datasetsError = payload || 'Unknown error';
             })

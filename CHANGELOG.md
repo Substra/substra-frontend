@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Compute plan performance opens task drawer in the performance screen (#380)
 -   Perf tab on Compute Plan page is enabled during loading (#385)
 -   Load compute plans task counts and status in separate calls (#383)
+-   Handle errors returned by the backend on list calls as if there was no results for the call (#387)
 
 ## [0.11.0] - 2022-02-03
 

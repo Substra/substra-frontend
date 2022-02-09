@@ -257,6 +257,7 @@ export const tasksSlice = createSlice({
             })
             .addCase(listTrainTasks.rejected, (state, { payload }) => {
                 state.trainTasks = [];
+                state.trainTasksCount = 0;
                 state.trainTasksLoading = false;
                 state.trainTasksError = payload || 'Unknown error';
             })
@@ -273,6 +274,7 @@ export const tasksSlice = createSlice({
             })
             .addCase(listTestTasks.rejected, (state, { payload }) => {
                 state.testTasks = [];
+                state.testTasksCount = 0;
                 state.testTasksLoading = false;
                 state.testTasksError = payload || 'Unknown error';
             })
@@ -289,6 +291,7 @@ export const tasksSlice = createSlice({
             })
             .addCase(listCompositeTasks.rejected, (state, { payload }) => {
                 state.compositeTasks = [];
+                state.compositeTasksCount = 0;
                 state.compositeTasksLoading = false;
                 state.compositeTasksError = payload || 'Unknown error';
             })
@@ -305,6 +308,7 @@ export const tasksSlice = createSlice({
             })
             .addCase(listAggregateTasks.rejected, (state, { payload }) => {
                 state.aggregateTasks = [];
+                state.aggregateTasksCount = 0;
                 state.aggregateTasksLoading = false;
                 state.aggregateTasksError = payload || 'Unknown error';
             })

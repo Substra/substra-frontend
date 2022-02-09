@@ -110,6 +110,8 @@ export const metricsSlice = createSlice({
                 state.metricsCount = payload.count;
             })
             .addCase(listMetrics.rejected, (state, { payload }) => {
+                state.metrics = [];
+                state.metricsCount = 0;
                 state.metricsLoading = false;
                 state.metricsError = payload || 'Unknown error';
             })

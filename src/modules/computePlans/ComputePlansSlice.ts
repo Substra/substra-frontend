@@ -258,6 +258,8 @@ export const computePlansSlice = createSlice({
                 state.computePlansError = '';
             })
             .addCase(listComputePlans.rejected, (state, { payload }) => {
+                state.computePlans = [];
+                state.computePlansCount = 0;
                 state.computePlansLoading = false;
                 state.computePlansError = payload || 'Unknown error';
             })
@@ -271,6 +273,7 @@ export const computePlansSlice = createSlice({
                 state.computePlansError = '';
             })
             .addCase(retrieveComputePlans.rejected, (state, { payload }) => {
+                state.computePlans = [];
                 state.computePlansLoading = false;
                 state.computePlansError = payload || 'Unknown error';
             })
@@ -309,6 +312,8 @@ export const computePlansSlice = createSlice({
             .addCase(
                 retrieveComputePlanTrainTasks.rejected,
                 (state, { payload }) => {
+                    state.computePlanTrainTasks = [];
+                    state.computePlanTrainTasksCount = 0;
                     state.computePlanTrainTasksLoading = false;
                     state.computePlanTrainTasksError =
                         payload || 'Unknown error';
@@ -331,6 +336,8 @@ export const computePlansSlice = createSlice({
             .addCase(
                 retrieveComputePlanTestTasks.rejected,
                 (state, { payload }) => {
+                    state.computePlanTestTasks = [];
+                    state.computePlanTestTasksCount = 0;
                     state.computePlanTestTasksLoading = false;
                     state.computePlanTestTasksError =
                         payload || 'Unknown error';
@@ -353,6 +360,8 @@ export const computePlansSlice = createSlice({
             .addCase(
                 retrieveComputePlanAggregateTasks.rejected,
                 (state, { payload }) => {
+                    state.computePlanAggregateTasks = [];
+                    state.computePlanAggregateTasksCount = 0;
                     state.computePlanAggregateTasksLoading = false;
                     state.computePlanAggregateTasksError =
                         payload || 'Unknown error';
@@ -375,6 +384,8 @@ export const computePlansSlice = createSlice({
             .addCase(
                 retrieveComputePlanCompositeTasks.rejected,
                 (state, { payload }) => {
+                    state.computePlanCompositeTasks = [];
+                    state.computePlanCompositeTasksCount = 0;
                     state.computePlanCompositeTasksLoading = false;
                     state.computePlanCompositeTasksError =
                         payload || 'Unknown error';

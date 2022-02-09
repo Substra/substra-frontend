@@ -79,6 +79,7 @@ export const nodesSlice = createSlice({
                 state.nodes = payload;
             })
             .addCase(listNodes.rejected, (state, { payload }) => {
+                state.nodes = [];
                 state.nodesLoading = false;
                 state.nodesError = payload || 'Unknown error';
             })

@@ -114,6 +114,8 @@ export const algosSlice = createSlice({
                 state.algosError = '';
             })
             .addCase(listAlgos.rejected, (state, { payload }) => {
+                state.algos = [];
+                state.algosCount = 0;
                 state.algosLoading = false;
                 state.algosError = payload || 'Unknown error';
             })
