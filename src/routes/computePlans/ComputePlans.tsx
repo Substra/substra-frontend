@@ -94,48 +94,6 @@ const ComputePlans = (): JSX.Element => {
         (state) => state.computePlans.computePlansCount
     );
 
-    const resetComputePlansDetails = () => {
-        const details: Record<string, ComputePlanT | undefined> = {};
-        const detailsLoading: Record<string, boolean> = {};
-        for (const computePlan of computePlans) {
-            details[computePlan.key] = undefined;
-            detailsLoading[computePlan.key] = true;
-        }
-        setComputePlansDetails(details);
-        setComputePlansDetailsLoading(detailsLoading);
-    };
-
-    const retrieveComputePlanDetails = async (computePlanKey: string) => {
-        const response = await retrieveComputePlan(computePlanKey);
-        const computePlan: ComputePlanT = response.data;
-
-        setComputePlansDetails((computePlansDetails) => {
-            if (computePlanKey in computePlansDetails) {
-                return {
-                    ...computePlansDetails,
-                    [computePlanKey]: computePlan,
-                };
-            }
-            return computePlansDetails;
-        });
-        setComputePlansDetailsLoading((computePlansDetailsLoading) => {
-            if (computePlanKey in computePlansDetailsLoading) {
-                return {
-                    ...computePlansDetailsLoading,
-                    [computePlanKey]: false,
-                };
-            }
-            return computePlansDetailsLoading;
-        });
-    };
-
-    useEffect(() => {
-        resetComputePlansDetails();
-        for (const computePlan of computePlans) {
-            retrieveComputePlanDetails(computePlan.key);
-        }
-    }, [computePlans]);
-
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
         []
@@ -181,6 +139,54 @@ const ComputePlans = (): JSX.Element => {
             pinItem(computePlan);
         }
     };
+
+    const initComputePlansDetails = (computePlans: ComputePlanT[]) => {
+        const details: Record<string, undefined> = {};
+        const detailsLoading: Record<string, true> = {};
+        for (const computePlan of computePlans) {
+            if (!computePlansDetails[computePlan.key]) {
+                details[computePlan.key] = undefined;
+                detailsLoading[computePlan.key] = true;
+            }
+        }
+        setComputePlansDetails((computePlanDetails) => ({
+            ...computePlanDetails,
+            ...details,
+        }));
+        setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
+            ...computePlansDetailsLoading,
+            ...detailsLoading,
+        }));
+    };
+
+    const retrieveComputePlansDetails = async (
+        computePlans: ComputePlanT[]
+    ) => {
+        // retrieve details one after the other (not in parallel)
+        for (const computePlan of computePlans) {
+            // do not refetch already available details
+            if (computePlansDetails[computePlan.key]) {
+                continue;
+            }
+            // retrieve
+            const response = await retrieveComputePlan(computePlan.key);
+            const cp: ComputePlanT = response.data;
+            // save details
+            setComputePlansDetails((computePlansDetails) => ({
+                ...computePlansDetails,
+                [computePlan.key]: cp,
+            }));
+            setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
+                ...computePlansDetailsLoading,
+                [computePlan.key]: false,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        initComputePlansDetails(computePlans);
+        retrieveComputePlansDetails(computePlans);
+    }, [computePlans]);
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
