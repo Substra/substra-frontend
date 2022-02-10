@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ComputePlanTr from './components/ComputePlanTr';
 import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
@@ -94,48 +94,6 @@ const ComputePlans = (): JSX.Element => {
         (state) => state.computePlans.computePlansCount
     );
 
-    const resetComputePlansDetails = () => {
-        const details: Record<string, ComputePlanT | undefined> = {};
-        const detailsLoading: Record<string, boolean> = {};
-        for (const computePlan of computePlans) {
-            details[computePlan.key] = undefined;
-            detailsLoading[computePlan.key] = true;
-        }
-        setComputePlansDetails(details);
-        setComputePlansDetailsLoading(detailsLoading);
-    };
-
-    const retrieveComputePlanDetails = async (computePlanKey: string) => {
-        const response = await retrieveComputePlan(computePlanKey);
-        const computePlan: ComputePlanT = response.data;
-
-        setComputePlansDetails((computePlansDetails) => {
-            if (computePlanKey in computePlansDetails) {
-                return {
-                    ...computePlansDetails,
-                    [computePlanKey]: computePlan,
-                };
-            }
-            return computePlansDetails;
-        });
-        setComputePlansDetailsLoading((computePlansDetailsLoading) => {
-            if (computePlanKey in computePlansDetailsLoading) {
-                return {
-                    ...computePlansDetailsLoading,
-                    [computePlanKey]: false,
-                };
-            }
-            return computePlansDetailsLoading;
-        });
-    };
-
-    useEffect(() => {
-        resetComputePlansDetails();
-        for (const computePlan of computePlans) {
-            retrieveComputePlanDetails(computePlan.key);
-        }
-    }, [computePlans]);
-
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
         []
@@ -181,6 +139,78 @@ const ComputePlans = (): JSX.Element => {
             pinItem(computePlan);
         }
     };
+
+    const initComputePlansDetails = (computePlanKeys: string[]) => {
+        const details: Record<string, undefined> = {};
+        const detailsLoading: Record<string, true> = {};
+        for (const computePlanKey of computePlanKeys) {
+            if (!computePlansDetails[computePlanKey]) {
+                details[computePlanKey] = undefined;
+                detailsLoading[computePlanKey] = true;
+            }
+        }
+        setComputePlansDetails((computePlanDetails) => ({
+            ...computePlanDetails,
+            ...details,
+        }));
+        setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
+            ...computePlansDetailsLoading,
+            ...detailsLoading,
+        }));
+    };
+
+    const retrieveComputePlansDetails = async (
+        computePlanKeys: string[],
+        abortController: AbortController
+    ) => {
+        // retrieve details one after the other (not in parallel)
+        for (const computePlanKey of computePlanKeys) {
+            // do not refetch already available details
+            if (computePlansDetails[computePlanKey]) {
+                continue;
+            }
+            // retrieve
+            const response = await retrieveComputePlan(computePlanKey, {
+                signal: abortController.signal,
+            });
+            const computePlan: ComputePlanT = response.data;
+            // save details
+            setComputePlansDetails((computePlansDetails) => ({
+                ...computePlansDetails,
+                [computePlanKey]: computePlan,
+            }));
+            setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
+                ...computePlansDetailsLoading,
+                [computePlanKey]: false,
+            }));
+        }
+    };
+
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    useEffect(() => {
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+        abortControllerRef.current = new AbortController();
+
+        const computePlanKeys = [
+            ...selectedKeys,
+            ...pinnedKeys.filter((key) => !selectedKeys.includes(key)),
+            ...computePlans
+                .map((cp) => cp.key)
+                .filter(
+                    (key) =>
+                        !selectedKeys.includes(key) && !pinnedKeys.includes(key)
+                ),
+        ];
+
+        initComputePlansDetails(computePlanKeys);
+        retrieveComputePlansDetails(
+            computePlanKeys,
+            abortControllerRef.current
+        );
+    }, [computePlans]);
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;

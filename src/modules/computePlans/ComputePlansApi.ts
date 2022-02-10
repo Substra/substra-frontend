@@ -1,5 +1,5 @@
 import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
@@ -27,8 +27,11 @@ export const listComputePlans = (
 ): AxiosPromise<PaginatedApiResponse<ComputePlanStub>> =>
     API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
 
-export const retrieveComputePlan = (key: string): AxiosPromise<ComputePlanT> =>
-    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
+export const retrieveComputePlan = (
+    key: string,
+    config?: AxiosRequestConfig
+): AxiosPromise<ComputePlanT> =>
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
 export const listComputePlanTesttuples = (
     key: string,
