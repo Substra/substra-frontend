@@ -40,15 +40,15 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
     } else if (task.error_type === ErrorType.internal) {
         return (
             <ErrorAlertBase
-                title="An internal error occurred"
-                description="Unable to fetch a model from another organization or no GPU available. Please contact an administrator to check errors or give you logs access."
+                title="Internal error"
+                description="An internal error occurred. Please contact support@owkin.com to get access to logs. "
             />
         );
     } else if (task.error_type === ErrorType.build) {
         return (
             <ErrorAlertBase
-                title="Build failed"
-                description="An error occurred on algorithm and metric call. Please check your algorithm and metric archives. Please contact an administrator to check errors or give you logs access."
+                title="Build error"
+                description="An error occurred when building the container for the task execution. Please check your algorithm archive or metric archive, or contact support@owkin.com to get access to logs."
             />
         );
     } else {
@@ -56,21 +56,19 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
         if (!task.logs_permission || !hasPermission(task.logs_permission)) {
             return (
                 <ErrorAlertBase
-                    title="Execution failed"
-                    description="An error occurred during your algorithm and metric execution. Please check your running code. Please contact an administrator to check errors or give you logs access."
+                    title="Execution error"
+                    description="An error occurred during the task execution. Please check your code, or contact support@owkin.com to get access to logs."
                 />
             );
         } else {
             return (
                 <>
                     <ErrorAlertBase
-                        title="Execution failed"
+                        title="Execution error"
                         description={
                             <>
                                 <Text>
-                                    An error occurred during your algorithm and
-                                    metric execution. Please check your running
-                                    code.{' '}
+                                    An error occurred during the task execution.{' '}
                                     <Button
                                         variant="link"
                                         size="xs"

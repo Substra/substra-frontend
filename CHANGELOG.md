@@ -117,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Lazy load code highlighter and markdown formatter components (#328)
 -   Sort nodes alphabetically on perf browser (#333)
 -   Change request timeout from 10s to 2min (#341)
+-   Change wording for ErrorAlert messages (#388)
 
 ## [0.8.0] - 2022-01-07
 
