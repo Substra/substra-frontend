@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Changed
+
+## [0.12.0] - 2022-02-10
+
+### Added
+
 -   Compute plans selected for comparison are now persisted (same as pinned items) (#372)
 
 ### Fixed
