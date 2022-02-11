@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Align duration display in cp details with the one in cp list (#393)
+-   Increase toast font size (#395)
 
 ## [0.12.0] - 2022-02-10
 

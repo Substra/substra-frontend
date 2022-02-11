@@ -43,9 +43,9 @@ export const useToast = () => {
                         <AlertIcon as={RiInformationLine} />
                     )}
                     <Box flex="1">
-                        <AlertTitle>{options.title}</AlertTitle>
+                        <AlertTitle fontSize="sm">{options.title}</AlertTitle>
                         {options.description && (
-                            <AlertDescription display="block">
+                            <AlertDescription display="block" fontSize="sm">
                                 {options.description}
                             </AlertDescription>
                         )}
