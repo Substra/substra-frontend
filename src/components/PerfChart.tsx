@@ -103,9 +103,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             [maxRank, seriesDatasets, averageDataset, displayAverage]
         );
 
-        // @ts-expect-error ChartOptions['events'] doesn't allow for "mousedown" as of Chart.js 3.6.0
-        // we opened a PR: https://github.com/chartjs/Chart.js/pull/10124
-        // once it is merged and released, we can remove this @ts-expect-error
         const options = useMemo<ChartOptions<'line'>>(() => {
             const zoomPluginOptions: ZoomPluginOptions = {
                 zoom: {
