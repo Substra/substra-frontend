@@ -2,7 +2,7 @@ import CheckboxTd from './CheckboxTd';
 import { ComputePlanProgressSkeleton } from './ComputePlanTrSkeleton';
 import PinBox from './PinBox';
 import StatusCell from './StatusCell';
-import { Td, Checkbox, Text } from '@chakra-ui/react';
+import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
@@ -47,7 +47,6 @@ const ComputePlanTr = ({
 
     return (
         <ClickableTr
-            key={computePlan.key}
             backgroundColor={highlighted ? 'gray.50' : 'white'}
             onClick={() =>
                 setLocation(
@@ -66,14 +65,24 @@ const ComputePlanTr = ({
                 />
             </CheckboxTd>
             <CheckboxTd>
-                <PinBox
-                    isChecked={pinnedKeys.includes(computePlan.key)}
-                    onChange={onPinChange(
-                        MELLODDY && computePlanDetails
-                            ? computePlanDetails
-                            : computePlan
-                    )}
-                />
+                <Tooltip
+                    label={
+                        pinnedKeys.includes(computePlan.key)
+                            ? 'Unpin compute plan'
+                            : 'Pin compute plan'
+                    }
+                    fontSize="xs"
+                    hasArrow={true}
+                    placement="top"
+                    closeOnClick={false}
+                >
+                    <Box as="span">
+                        <PinBox
+                            isChecked={pinnedKeys.includes(computePlan.key)}
+                            onChange={onPinChange(computePlan)}
+                        />
+                    </Box>
+                </Tooltip>
             </CheckboxTd>
             <Td minWidth="250px">
                 <Text fontSize="xs">
