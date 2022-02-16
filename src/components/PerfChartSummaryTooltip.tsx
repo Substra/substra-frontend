@@ -1,10 +1,15 @@
+import { useContext } from 'react';
+
 import PerfChartTooltipItem from './PerfChartTooltipItem';
 import { List, ListItem } from '@chakra-ui/react';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { getLineId } from '@/modules/series/SeriesUtils';
 
+import { capitalize } from '@/libs/utils';
+
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 interface PerfChartTooltipProps {
     series: SerieT[];
@@ -22,6 +27,7 @@ const PerfChartSummaryTooltip = ({
     points,
 }: PerfChartTooltipProps): JSX.Element => {
     const lineId = getLineId(series);
+    const { xAxisMode } = useContext(PerfBrowserContext);
 
     const firstFivePoints = points.slice(0, 5);
     const remainingCount = Math.max(points.length - 5, 0);
@@ -62,7 +68,7 @@ const PerfChartSummaryTooltip = ({
                 color="gray.700"
                 fontWeight="semibold"
                 marginBottom="3"
-            >{`Rank ${points[0].x}`}</ListItem>
+            >{`${capitalize(xAxisMode)} ${points[0].x}`}</ListItem>
             {firstFivePoints.map((point) => (
                 <PerfChartTooltipItem
                     point={point}

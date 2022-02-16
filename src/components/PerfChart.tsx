@@ -1,4 +1,11 @@
-import { useMemo, useRef, forwardRef, useContext, useState } from 'react';
+import {
+    useMemo,
+    useRef,
+    forwardRef,
+    useContext,
+    useState,
+    useEffect,
+} from 'react';
 
 import {
     Box,
@@ -22,7 +29,11 @@ import { Line } from 'react-chartjs-2';
 import { RiQuestionMark } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { buildAverageSerie, getMaxRank } from '@/modules/series/SeriesUtils';
+import {
+    buildAverageSerie,
+    getMaxEpoch,
+    getMaxRank,
+} from '@/modules/series/SeriesUtils';
 
 import useBuildPerfChartDataset, {
     DataPoint,
@@ -53,7 +64,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         }: PerfChartProps,
         ref
     ): JSX.Element => {
-        const { displayAverage } = useContext(PerfBrowserContext);
+        const { displayAverage, xAxisMode } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
@@ -63,6 +74,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
         const maxRank = getMaxRank(series);
+        const maxEpoch = getMaxEpoch(series);
 
         const averageDataset = useMemo(() => {
             const averageSerie = buildAverageSerie(series);
@@ -92,7 +104,11 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
 
         const data = useMemo<ChartData<'line', DataPoint[]>>(
             () => ({
-                labels: [...Array(maxRank + 1).keys()],
+                labels: [
+                    ...Array(
+                        (xAxisMode === 'rank' ? maxRank : maxEpoch) + 1
+                    ).keys(),
+                ],
                 datasets: [
                     ...seriesDatasets,
                     ...(averageDataset && displayAverage
@@ -100,7 +116,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         : []),
                 ],
             }),
-            [maxRank, seriesDatasets, averageDataset, displayAverage]
+            [maxRank, maxEpoch, seriesDatasets, averageDataset, displayAverage]
         );
 
         const options = useMemo<ChartOptions<'line'>>(() => {
@@ -163,7 +179,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         type: 'category',
                         title: {
                             display: true,
-                            text: 'Rank',
+                            text: xAxisMode === 'rank' ? 'Rank' : 'Epoch',
                             align: 'end',
                             color: '#718096',
                             font: {
@@ -218,6 +234,13 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 setIsZoomed(false);
             }
         };
+
+        useEffect(() => {
+            const chart = chartRef.current;
+            if (chart && chart.resetHighlightedRank) {
+                chart.resetHighlightedRank();
+            }
+        }, [xAxisMode]);
 
         const plugins: Plugin<'line'>[] = [
             highlightRankPlugin({

@@ -17,8 +17,15 @@ import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
 
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { average, getLineId, getMaxRank } from '@/modules/series/SeriesUtils';
+import {
+    average,
+    getLineId,
+    getMaxEpoch,
+    getMaxRank,
+} from '@/modules/series/SeriesUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
+
+import { capitalize } from '@/libs/utils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
@@ -76,7 +83,7 @@ const PerfRankDetails = ({
     selectedRank,
     setHighlightedSerie,
 }: PerfRankDetailsProps): JSX.Element => {
-    const { sortedComputePlanKeys, displayAverage } =
+    const { sortedComputePlanKeys, displayAverage, xAxisMode } =
         useContext(PerfBrowserContext);
     const lineId = getLineId(series);
     const { getColorScheme } = usePerfBrowserColors();
@@ -96,7 +103,8 @@ const PerfRankDetails = ({
         perf: string;
     }[] => {
         return series.map((serie) => {
-            const point = serie.points.find((p) => p.rank === rank);
+            // Look for rank or epoch based on X axis mode
+            const point = serie.points.find((p) => p[xAxisMode] === rank);
 
             let perf = 'N/A';
             if (point?.perf) {
@@ -144,9 +152,10 @@ const PerfRankDetails = ({
         rankData = getRankData(hoveredRank);
         averagePerf = getAveragePerf(hoveredRank);
     } else {
-        const maxRank = getMaxRank(series);
-        rankData = getRankData(maxRank);
-        averagePerf = getAveragePerf(maxRank);
+        const max =
+            xAxisMode === 'rank' ? getMaxRank(series) : getMaxEpoch(series);
+        rankData = getRankData(max);
+        averagePerf = getAveragePerf(max);
     }
 
     const handleOnclick = (taskKey: string | undefined) => {
@@ -181,14 +190,16 @@ const PerfRankDetails = ({
             >
                 {selectedRank !== null && (
                     <>
-                        {`Rank ${selectedRank}`}
+                        {`${capitalize(xAxisMode)} ${selectedRank}`}
                         <Icon as={RiLockLine} marginLeft="1" />
                     </>
                 )}
                 {selectedRank === null &&
                     hoveredRank !== null &&
-                    `Rank ${hoveredRank}`}
-                {selectedRank === null && hoveredRank === null && 'Last rank'}
+                    `${capitalize(xAxisMode)} ${hoveredRank}`}
+                {selectedRank === null &&
+                    hoveredRank === null &&
+                    `Last ${xAxisMode}`}
             </Heading>
             <List>
                 {displayAverage && (

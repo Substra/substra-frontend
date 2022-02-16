@@ -7,7 +7,10 @@ import { getSeriesNodes } from '@/modules/series/SeriesUtils';
 
 import { OnOptionChange } from '@/hooks/useSelection';
 
+declare const MELLODDY: boolean;
+
 type ComputePlanNodes = Record<string, Record<string, boolean>>;
+type XAxisMode = 'epoch' | 'rank';
 
 interface PerfBrowserContext {
     loading: boolean;
@@ -21,6 +24,9 @@ interface PerfBrowserContext {
     nodes: NodeType[];
     // How colors should be determined
     colorMode: 'computePlan' | 'node';
+    // What unit to use for the x axis
+    xAxisMode: XAxisMode;
+    setXAxisMode: (xAxisMode: XAxisMode) => void;
     // Whether to display an average serie on charts with more than one line
     displayAverage: boolean;
     setDisplayAverage: (displayAverage: boolean) => void;
@@ -52,6 +58,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     series: [],
     nodes: [],
     colorMode: 'node',
+    xAxisMode: MELLODDY ? 'epoch' : 'rank',
+    setXAxisMode: (xAxisMode) => {},
     displayAverage: false,
     setDisplayAverage: (displayAverage) => {},
     selectedNodeIds: [],
@@ -220,6 +228,10 @@ const usePerfBrowser = (
     );
     sortedComputePlanKeys.sort();
 
+    const [xAxisMode, setXAxisMode] = useState<XAxisMode>(
+        MELLODDY ? 'epoch' : 'rank'
+    );
+
     return {
         context: {
             loading,
@@ -228,6 +240,9 @@ const usePerfBrowser = (
             sortedComputePlanKeys,
             nodes,
             colorMode,
+            // xAxisMode
+            xAxisMode,
+            setXAxisMode,
             // average
             displayAverage,
             setDisplayAverage,

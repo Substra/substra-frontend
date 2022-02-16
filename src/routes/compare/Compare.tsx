@@ -15,6 +15,7 @@ import { PATHS } from '@/routes';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionComputePlans from '@/components/PerfSidebarSectionComputePlans';
 import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
+import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
 
 declare const MELLODDY: boolean;
 
@@ -47,7 +48,9 @@ const Compare = (): JSX.Element => {
             computePlans={computePlans}
             settingsComponents={[
                 PerfSidebarSettingsNodes,
-                ...(MELLODDY ? [] : [PerfSidebarSettingsAverage]),
+                ...(MELLODDY
+                    ? [PerfSidebarSettingsUnits]
+                    : [PerfSidebarSettingsAverage]),
             ]}
             sectionComponents={[PerfSidebarSectionComputePlans]}
             colorMode="computePlan"

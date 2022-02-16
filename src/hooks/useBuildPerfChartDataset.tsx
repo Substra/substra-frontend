@@ -1,7 +1,10 @@
+import { useContext } from 'react';
+
 import { ChartDataset, ScatterDataPoint } from 'chart.js';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
 interface ChartStyle {
@@ -33,6 +36,7 @@ const useBuildPerfChartDataset = (): ((
     chartStyle?: ChartStyle,
     highlightedSerie?: HighlightedSerie
 ) => PerfChartDataset) => {
+    const { xAxisMode } = useContext(PerfBrowserContext);
     const { getColor, getColorScheme } = usePerfBrowserColors();
 
     const getLineColor = (
@@ -74,7 +78,7 @@ const useBuildPerfChartDataset = (): ((
             label,
             data: serie.points.map(
                 (point): DataPoint => ({
-                    x: point.rank,
+                    x: xAxisMode === 'rank' ? point.rank : point.epoch,
                     y: point.perf as number,
                     testTaskKey: point.testTaskKey,
                     worker: serie.worker,

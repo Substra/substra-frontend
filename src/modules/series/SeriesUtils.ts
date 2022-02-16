@@ -62,6 +62,63 @@ function findSerie(
     return null;
 }
 
+function getEpoch(testtuple: TesttupleStub): number {
+    /**
+     * This extracts epochs from a testtuple metadata, taking into account that:
+     *  * epoch is stored in metadata and may not be present
+     *  * epoch is stored as string
+     */
+    const epochStr = testtuple.metadata.epoch;
+    try {
+        return parseInt(epochStr);
+    } catch {
+        return -1;
+    }
+}
+
+function fixEpoch(serie: SerieT) {
+    /**
+     * MDY testtuples have been registered with faulty epochs numbers.
+     * This is because the first and second testtuples are about the same epoch:
+     *  - rank 0 is about the beginning of epoch 0
+     *  - next rank is about the end of epoch 0
+     *
+     * Testtuple registration code has been changed but is faulty even after the change.
+     * Here are the situations for the first 3 testtuples:
+     *  - before 2022-01-26
+     *    Rank | Epoch | Correct Epoch
+     *    ---- | ----- | -------------
+     *       0 |     0 |             0
+     *      98 |     0 |             1
+     *     198 |     1 |             2
+     *
+     *  - after 2022-01-26:
+     *    Rank | Epoch | Correct Epoch
+     *    ---- | ----- | -------------
+     *       0 |     1 |             0
+     *      98 |     1 |             1
+     *     198 |     2 |             2
+     *
+     * NB: 98/198 are ranks for multi partner CP, other types of CP have different ranks.
+     * We cannot use the rank value to infer epoch, only the order.
+     */
+
+    const firstPoint = serie.points[0];
+    if (firstPoint.rank === 0 && firstPoint.epoch === 0) {
+        // before 2022-01-26 situation:
+        // the rank 0 epoch is the only correct one, all other ones must be incremented by 1
+        for (const point of serie.points) {
+            if (point.rank !== 0) {
+                point.epoch += 1;
+            }
+        }
+    } else if (firstPoint.rank === 0 && firstPoint.epoch === 1) {
+        // after 2022-01-26 situation:
+        // the rank 0 epoch is the only wrong one and must be set to 0
+        firstPoint.epoch = 0;
+    }
+}
+
 export function buildSeries(
     testtuples: TesttupleStub[],
     datasets: DatasetStubType[],
@@ -80,6 +137,7 @@ export function buildSeries(
                 rank: testtuple.rank,
                 perf: getPerf(testtuple, metricKey),
                 testTaskKey: testtuple.key,
+                epoch: getEpoch(testtuple),
             };
 
             const serieFeatures = buildSerieFeatures(
@@ -107,6 +165,12 @@ export function buildSeries(
     for (const serie of series) {
         serie.points.sort((p1, p2) => p1.rank - p2.rank);
     }
+
+    // In MDY, testtuple registration didn't use the correct epochs
+    for (const serie of series) {
+        fixEpoch(serie);
+    }
+
     return series;
 }
 
@@ -149,14 +213,22 @@ export function buildAverageSerie(
         return null;
     }
 
-    const ranksPerfs: Record<number, number[]> = {};
+    const ranksPerfs: Record<number, { epoch: number; perfs: number[] }> = {};
 
     for (const serie of series) {
         for (const point of serie.points) {
             if (point.perf !== null) {
-                ranksPerfs[point.rank] = ranksPerfs[point.rank]
-                    ? [...ranksPerfs[point.rank], point.perf]
-                    : [point.perf];
+                if (ranksPerfs[point.rank]) {
+                    ranksPerfs[point.rank] = {
+                        epoch: point.epoch,
+                        perfs: [...ranksPerfs[point.rank].perfs, point.perf],
+                    };
+                } else {
+                    ranksPerfs[point.rank] = {
+                        epoch: point.epoch,
+                        perfs: [point.perf],
+                    };
+                }
             }
         }
     }
@@ -165,12 +237,13 @@ export function buildAverageSerie(
     // with enablePartialAverage option, include points where we have at least 1 value
     const points: PointT[] = Object.entries(ranksPerfs)
         .filter(
-            ([, perfs]) =>
+            ([, { perfs }]) =>
                 perfs.length > 0 &&
                 (enablePartialAverage || perfs.length === series.length)
         )
-        .map(([rank, perfs]) => ({
+        .map(([rank, { epoch, perfs }]) => ({
             rank: parseInt(rank),
+            epoch,
             perf: average(perfs),
             testTaskKey: uuidv4(),
         }));
@@ -200,14 +273,25 @@ export const getSeriesNodes = (series: SerieT[]): NodeType[] => {
     return nodes.map((node) => ({ id: node, is_current: false }));
 };
 
-export const getMaxRank = (series: SerieT[]): number => {
+const getMax = (
+    series: SerieT[],
+    getter: (point: PointT) => number
+): number => {
     return series.reduce((max, serie) => {
         const serieMax = serie.points.reduce(
-            (max, point) => Math.max(max, point.rank),
+            (max, point) => Math.max(max, getter(point)),
             0
         );
         return Math.max(max, serieMax);
     }, 0);
+};
+
+export const getMaxRank = (series: SerieT[]): number => {
+    return getMax(series, (p: PointT) => p.rank);
+};
+
+export const getMaxEpoch = (series: SerieT[]): number => {
+    return getMax(series, (p: PointT) => p.epoch);
 };
 
 export const getLineId = (series: SerieT[]): ((serieId: number) => number) => {

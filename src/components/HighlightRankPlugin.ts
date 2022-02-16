@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Chart, Plugin, ChartEvent } from 'chart.js';
+import { DistributiveArray } from 'chart.js/types/utils';
 
 import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 
@@ -179,7 +180,31 @@ export const highlightRankPlugin = ({
             setSelectedRank(newState.selectedRank);
         }
     },
+    start: (chart: Chart): void => {
+        chart.resetHighlightedRank = () => {
+            const state = getState(chart);
+            state.selectedRank = null;
+            state.hoveredRank = null;
+            setHoveredRank(null);
+            setSelectedRank(null);
+            chart.update();
+        };
+    },
     stop: (chart: Chart): void => {
         removeState(chart);
     },
 });
+
+// extend chart type so that resetHighlightedRank is recognized
+// adapted from https://github.com/chartjs/chartjs-plugin-zoom/blob/master/types/index.d.ts
+declare module 'chart.js' {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    interface Chart<
+        TType extends keyof ChartTypeRegistry = keyof ChartTypeRegistry,
+        TData = DistributiveArray<ChartTypeRegistry[TType]['defaultDataPoint']>,
+        TLabel = unknown
+    > {
+        resetHighlightedRank(): void;
+    }
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+}

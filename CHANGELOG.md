@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Tooltip hover compute plan pin icon (#368)
+-   Support for epochs as X Axis values (#394)
 
 ### Fixed
 
