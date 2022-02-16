@@ -210,6 +210,12 @@ const ComputePlans = (): JSX.Element => {
             computePlanKeys,
             abortControllerRef.current
         );
+
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
     }, [computePlans]);
 
     const context = useTableFiltersContext('compute_plan');

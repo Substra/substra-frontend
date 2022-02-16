@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Logout loop because of planned calls (#397)
+
 ### Changed
 
 -   Align duration display in cp details with the one in cp list (#393)

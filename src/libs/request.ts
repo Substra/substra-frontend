@@ -41,10 +41,12 @@ const withRetry =
                 return instance.post('/user/refresh/').then(
                     () => instanceMethod(url, config),
                     () => {
-                        const url = encodeURI(
-                            `/login?logout=true&next=${window.location.pathname}${window.location.search}`
-                        );
-                        history.pushState({}, '', url);
+                        if (!window.location.pathname.startsWith('/login')) {
+                            const url = encodeURI(
+                                `/login?logout=true&next=${window.location.pathname}${window.location.search}`
+                            );
+                            history.pushState({}, '', url);
+                        }
                         throw error;
                     }
                 );
