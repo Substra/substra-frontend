@@ -22,14 +22,17 @@ const PerfSidebarSection = ({
 
     return (
         <Box borderBottom="1px solid var(--chakra-colors-gray-100)" padding="6">
-            <Heading size="xxs" textTransform="uppercase">
-                <Flex justifyContent="space-between" alignItems="center">
+            <Heading size="xxs" textTransform="uppercase" cursor="pointer">
+                <Flex
+                    justifyContent="space-between"
+                    alignItems="center"
+                    onClick={onToggle}
+                >
                     {title}
                     <Icon
                         as={RiArrowDropDownLine}
                         width="6"
                         height="6"
-                        onClick={onToggle}
                         transform={isOpen ? '' : 'rotate(-90deg)'}
                     />
                 </Flex>
