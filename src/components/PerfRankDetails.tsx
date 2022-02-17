@@ -17,7 +17,6 @@ import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
 import {
-    average,
     getLineId,
     getMaxEpoch,
     getMaxRank,
@@ -83,8 +82,7 @@ const PerfRankDetails = ({
     selectedRank,
     setHighlightedSerie,
 }: PerfRankDetailsProps): JSX.Element => {
-    const { sortedComputePlanKeys, displayAverage, xAxisMode } =
-        useContext(PerfBrowserContext);
+    const { sortedComputePlanKeys, xAxisMode } = useContext(PerfBrowserContext);
     const lineId = getLineId(series);
     const [drawerTestTaskKey, setDrawerTestTaskKey] = useState<
         string | undefined
@@ -124,37 +122,15 @@ const PerfRankDetails = ({
         });
     };
 
-    const getAveragePerf = (rank: number): string => {
-        if (displayAverage) {
-            const rankPerformances = series
-                .map((serie) => serie.points.find((p) => p.rank === rank))
-                .map((point) => point?.perf)
-                .filter(
-                    (perf): perf is number =>
-                        perf !== undefined && perf !== null
-                );
-
-            if (rankPerformances.length === series.length) {
-                return average(rankPerformances).toFixed(3);
-            }
-        }
-
-        return 'N/A';
-    };
-
     let rankData = [];
-    let averagePerf = 'N/A';
     if (selectedRank !== null) {
         rankData = getRankData(selectedRank);
-        averagePerf = getAveragePerf(selectedRank);
     } else if (hoveredRank !== null) {
         rankData = getRankData(hoveredRank);
-        averagePerf = getAveragePerf(hoveredRank);
     } else {
         const max =
             xAxisMode === 'rank' ? getMaxRank(series) : getMaxEpoch(series);
         rankData = getRankData(max);
-        averagePerf = getAveragePerf(max);
     }
 
     const handleOnclick = (taskKey: string | undefined) => {
@@ -202,15 +178,6 @@ const PerfRankDetails = ({
                     `Last ${xAxisMode}`}
             </Heading>
             <List>
-                {/* FIXME: This cannot be tested at the moment and may be broken */}
-                {displayAverage && (
-                    <AverageListItem
-                        label="Average"
-                        perf={averagePerf}
-                        worker="average"
-                        computePlanKey=""
-                    />
-                )}
                 {rankData
                     .filter(({ worker }) => isAverageNode(worker))
                     .map(({ worker, perf, id, computePlanKey }) => (

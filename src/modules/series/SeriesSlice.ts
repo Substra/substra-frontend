@@ -125,7 +125,6 @@ const getComputePlanSeries = async (
                 sameMetricSeries.filter((serie) =>
                     MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
                 ),
-                true,
                 'small5_average'
             );
             if (small5AverageSerie) {
@@ -142,7 +141,6 @@ const getComputePlanSeries = async (
                 sameMetricSeries.filter((serie) =>
                     MELLODDY_LARGE5_NODE_IDS.includes(serie.worker)
                 ),
-                true,
                 'large5_average'
             );
             if (large5AverageSerie) {
@@ -161,7 +159,6 @@ const getComputePlanSeries = async (
                         MELLODDY_LARGE5_NODE_IDS.includes(serie.worker) ||
                         MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
                 ),
-                true,
                 'pharma_average'
             );
             if (pharmaAverageSerie) {
@@ -174,11 +171,7 @@ const getComputePlanSeries = async (
             }
 
             // average
-            const averageSerie = buildAverageSerie(
-                sameMetricSeries,
-                true,
-                'average'
-            );
+            const averageSerie = buildAverageSerie(sameMetricSeries, 'average');
             if (averageSerie) {
                 melloddySeries.push({
                     ...averageSerie,

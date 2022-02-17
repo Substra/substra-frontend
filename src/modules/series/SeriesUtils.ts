@@ -198,17 +198,14 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     return groups;
 }
 
-export const average = (values: number[]): number => {
+const average = (values: number[]): number => {
     return values.reduce((sum, value) => sum + value, 0) / values.length;
 };
 
 export function buildAverageSerie(
     series: SerieT[],
-    enablePartialAverage?: boolean,
-    name?: string
+    name: string
 ): SerieT | null {
-    // if enablePartialAverage is true, then the average serie will have points even if not all series have points for a given rank.
-
     if (series.length < 2) {
         return null;
     }
@@ -233,14 +230,9 @@ export function buildAverageSerie(
         }
     }
 
-    // only includes points where we have values for all series
-    // with enablePartialAverage option, include points where we have at least 1 value
+    // only includes points where we have at least 1 value
     const points: PointT[] = Object.entries(ranksPerfs)
-        .filter(
-            ([, { perfs }]) =>
-                perfs.length > 0 &&
-                (enablePartialAverage || perfs.length === series.length)
-        )
+        .filter(([, { perfs }]) => perfs.length > 0)
         .map(([rank, { epoch, perfs }]) => ({
             rank: parseInt(rank),
             epoch,
@@ -252,13 +244,13 @@ export function buildAverageSerie(
         id: 0,
         points: points,
         algoKey: uuidv4(),
-        algoName: name || 'average',
+        algoName: name,
         datasetKey: uuidv4(),
-        datasetName: name || 'average',
+        datasetName: name,
         dataSampleKeys: [],
-        worker: name || 'average',
+        worker: name,
         metricKey: uuidv4(),
-        metricName: name || 'average',
+        metricName: name,
         computePlanKey: uuidv4(),
     };
 }

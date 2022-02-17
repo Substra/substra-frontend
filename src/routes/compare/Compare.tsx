@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import PerfSidebarSettingsAverage from './components/PerfSidebarSettingsAverage';
 import { useRoute } from 'wouter';
 
 import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
@@ -48,9 +47,7 @@ const Compare = (): JSX.Element => {
             computePlans={computePlans}
             settingsComponents={[
                 PerfSidebarSettingsNodes,
-                ...(MELLODDY
-                    ? [PerfSidebarSettingsUnits]
-                    : [PerfSidebarSettingsAverage]),
+                ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
             ]}
             sectionComponents={[PerfSidebarSectionComputePlans]}
             colorMode="computePlan"

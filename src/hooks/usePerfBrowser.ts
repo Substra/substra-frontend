@@ -27,9 +27,6 @@ interface PerfBrowserContext {
     // What unit to use for the x axis
     xAxisMode: XAxisMode;
     setXAxisMode: (xAxisMode: XAxisMode) => void;
-    // Whether to display an average serie on charts with more than one line
-    displayAverage: boolean;
-    setDisplayAverage: (displayAverage: boolean) => void;
     // List of nodes for which display series (displayed if serie.worker is in selectedNodeIds)
     selectedNodeIds: string[];
     setSelectedNodeIds: (selectedNodeIds: string[]) => void;
@@ -60,8 +57,6 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     colorMode: 'node',
     xAxisMode: MELLODDY ? 'epoch' : 'rank',
     setXAxisMode: (xAxisMode) => {},
-    displayAverage: false,
-    setDisplayAverage: (displayAverage) => {},
     selectedNodeIds: [],
     setSelectedNodeIds: (selectedNodeIds) => {},
     onNodeIdSelectionChange:
@@ -85,7 +80,6 @@ const usePerfBrowser = (
 ): {
     context: PerfBrowserContext;
 } => {
-    const [displayAverage, setDisplayAverage] = useState(false);
     const [selectedNodeIds, baseSetSelectedNodeIds] = useState<string[]>([]);
     const [selectedComputePlanKeys, setSelectedComputePlanKeys] = useState<
         string[]
@@ -243,9 +237,6 @@ const usePerfBrowser = (
             // xAxisMode
             xAxisMode,
             setXAxisMode,
-            // average
-            displayAverage,
-            setDisplayAverage,
             // node IDs
             selectedNodeIds,
             onNodeIdSelectionChange,

@@ -29,11 +29,7 @@ import { Line } from 'react-chartjs-2';
 import { RiQuestionMark } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
-import {
-    buildAverageSerie,
-    getMaxEpoch,
-    getMaxRank,
-} from '@/modules/series/SeriesUtils';
+import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
 
 import useBuildPerfChartDataset, {
     DataPoint,
@@ -64,7 +60,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         }: PerfChartProps,
         ref
     ): JSX.Element => {
-        const { displayAverage, xAxisMode } = useContext(PerfBrowserContext);
+        const { xAxisMode } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
@@ -75,18 +71,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
 
         const maxRank = getMaxRank(series);
         const maxEpoch = getMaxEpoch(series);
-
-        const averageDataset = useMemo(() => {
-            const averageSerie = buildAverageSerie(series);
-            if (averageSerie) {
-                return buildPerfChartDataset(
-                    averageSerie,
-                    'Average',
-                    highlightedSerie
-                );
-            }
-            return null;
-        }, [series]);
 
         const seriesDatasets = useMemo(
             () =>
@@ -107,14 +91,9 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         (xAxisMode === 'rank' ? maxRank : maxEpoch) + 1
                     ).keys(),
                 ],
-                datasets: [
-                    ...seriesDatasets,
-                    ...(averageDataset && displayAverage
-                        ? [averageDataset]
-                        : []),
-                ],
+                datasets: seriesDatasets,
             }),
-            [maxRank, maxEpoch, seriesDatasets, averageDataset, displayAverage]
+            [maxRank, maxEpoch, seriesDatasets]
         );
 
         const options = useMemo<ChartOptions<'line'>>(() => {
