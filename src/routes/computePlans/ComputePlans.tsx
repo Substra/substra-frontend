@@ -27,6 +27,7 @@ import {
     useSearchFiltersEffect,
 } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
@@ -125,20 +126,8 @@ const ComputePlans = (): JSX.Element => {
         );
     };
 
-    const {
-        items: pinnedItems,
-        addItem: pinItem,
-        removeItem: unpinItem,
-    } = useLocalStorageItems<ComputePlanT>('pinned_compute_plans');
-    const pinnedKeys = pinnedItems.map((cp) => cp.key);
-
-    const onPinChange = (computePlan: ComputePlanT) => () => {
-        if (pinnedKeys.includes(computePlan.key)) {
-            unpinItem(computePlan);
-        } else {
-            pinItem(computePlan);
-        }
-    };
+    const { favorites, isFavorite, onFavoriteChange } =
+        useFavoriteComputePlans();
 
     const initComputePlansDetails = (computePlanKeys: string[]) => {
         const details: Record<string, undefined> = {};
@@ -196,13 +185,14 @@ const ComputePlans = (): JSX.Element => {
 
         const computePlanKeys = [
             ...selectedKeys,
-            ...pinnedKeys.filter((key) => !selectedKeys.includes(key)),
+            ...favorites
+                .filter((cp) => !selectedKeys.includes(cp.key))
+                .map((cp) => cp.key),
             ...computePlans
-                .map((cp) => cp.key)
                 .filter(
-                    (key) =>
-                        !selectedKeys.includes(key) && !pinnedKeys.includes(key)
-                ),
+                    (cp) => !selectedKeys.includes(cp.key) && !isFavorite(cp)
+                )
+                .map((cp) => cp.key),
         ];
 
         initComputePlansDetails(computePlanKeys);
@@ -352,14 +342,14 @@ const ComputePlans = (): JSX.Element => {
                                     }
                                     selectedKeys={selectedKeys}
                                     onSelectionChange={onSelectionChange}
-                                    pinnedKeys={pinnedKeys}
-                                    onPinChange={onPinChange}
+                                    isFavorite={isFavorite}
+                                    onFavoriteChange={onFavoriteChange}
                                     highlighted={true}
                                 />
                             ))}
                         </ChakraTbody>
                         <ChakraTbody>
-                            {pinnedItems
+                            {favorites
                                 .filter(
                                     (computePlan) =>
                                         !selectedKeys.includes(computePlan.key)
@@ -378,8 +368,8 @@ const ComputePlans = (): JSX.Element => {
                                         }
                                         selectedKeys={selectedKeys}
                                         onSelectionChange={onSelectionChange}
-                                        pinnedKeys={pinnedKeys}
-                                        onPinChange={onPinChange}
+                                        isFavorite={isFavorite}
+                                        onFavoriteChange={onFavoriteChange}
                                         highlighted={true}
                                     />
                                 ))}
@@ -403,9 +393,7 @@ const ComputePlans = (): JSX.Element => {
                                 computePlans
                                     .filter(
                                         (computePlan) =>
-                                            !pinnedKeys.includes(
-                                                computePlan.key
-                                            ) &&
+                                            !isFavorite(computePlan) &&
                                             !selectedKeys.includes(
                                                 computePlan.key
                                             )
@@ -428,8 +416,8 @@ const ComputePlans = (): JSX.Element => {
                                             onSelectionChange={
                                                 onSelectionChange
                                             }
-                                            pinnedKeys={pinnedKeys}
-                                            onPinChange={onPinChange}
+                                            isFavorite={isFavorite}
+                                            onFavoriteChange={onFavoriteChange}
                                             highlighted={false}
                                         />
                                     ))

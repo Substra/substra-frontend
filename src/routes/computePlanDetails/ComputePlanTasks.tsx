@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import Actions from './components/Actions';
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
 import TabsNav from './components/TabsNav';
@@ -44,6 +45,9 @@ const GenericTasks = ({
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanLoading
+    );
 
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -61,7 +65,10 @@ const GenericTasks = ({
                 borderBottomStyle="solid"
                 borderBottomWidth="1px"
             >
-                <Breadcrumbs />
+                <HStack justifyContent="space-between">
+                    <Breadcrumbs />
+                    <Actions computePlan={computePlan} loading={loading} />
+                </HStack>
                 <TabsNav />
             </Box>
             <HStack

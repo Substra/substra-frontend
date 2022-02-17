@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { RiPushpinFill, RiPushpinLine } from 'react-icons/ri';
+import { RiStarFill, RiStarLine } from 'react-icons/ri';
 
 const StyledInput = styled('input')`
     border: 0px;
@@ -16,11 +16,14 @@ const StyledInput = styled('input')`
     position: absolute;
 `;
 
-interface PinBoxProps {
+interface FavoriteBoxProps {
     isChecked: boolean;
     onChange: () => void;
 }
-const PinBox = ({ isChecked, onChange }: PinBoxProps): JSX.Element => {
+const FavoriteBox = ({
+    isChecked,
+    onChange,
+}: FavoriteBoxProps): JSX.Element => {
     const [focus, setFocus] = useState(false);
     return (
         <Box
@@ -29,12 +32,8 @@ const PinBox = ({ isChecked, onChange }: PinBoxProps): JSX.Element => {
             transitionProperty="box-shadow"
             transitionDuration="normal"
         >
-            {!isChecked && (
-                <RiPushpinLine fill="var(--chakra-colors-gray-300)" />
-            )}
-            {isChecked && (
-                <RiPushpinFill fill="var(--chakra-colors-teal-500)" />
-            )}
+            {!isChecked && <RiStarLine fill="var(--chakra-colors-gray-300)" />}
+            {isChecked && <RiStarFill fill="var(--chakra-colors-teal-500)" />}
             <StyledInput
                 type="checkbox"
                 onChange={onChange}
@@ -45,4 +44,4 @@ const PinBox = ({ isChecked, onChange }: PinBoxProps): JSX.Element => {
     );
 };
 
-export default PinBox;
+export default FavoriteBox;

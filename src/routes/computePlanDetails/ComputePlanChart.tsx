@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
+import Actions from './components/Actions';
 import Breadcrumbs from './components/BreadCrumbs';
 import TabsNav from './components/TabsNav';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
@@ -73,7 +74,10 @@ const ComputePlanChart = (): JSX.Element => {
                 background="white"
                 borderBottom="1px solid var(--chakra-colors-gray-100)"
             >
-                <Breadcrumbs />
+                <HStack justifyContent="space-between">
+                    <Breadcrumbs />
+                    <Actions computePlan={computePlan} loading={loading} />
+                </HStack>
                 <TabsNav />
             </Box>
             <PerfBrowser

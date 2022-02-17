@@ -1,6 +1,6 @@
 import CheckboxTd from './CheckboxTd';
 import { ComputePlanProgressSkeleton } from './ComputePlanTrSkeleton';
-import PinBox from './PinBox';
+import PinBox from './FavoriteBox';
 import StatusCell from './StatusCell';
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
@@ -26,8 +26,8 @@ interface ComputePlanTrProps {
     computePlanDetailsLoading: boolean | undefined;
     selectedKeys: string[];
     onSelectionChange: (computePlan: ComputePlanT) => () => void;
-    pinnedKeys: string[];
-    onPinChange: (computePlan: ComputePlanT) => () => void;
+    isFavorite: (computePlan: ComputePlanT) => boolean;
+    onFavoriteChange: (computePlan: ComputePlanT) => () => void;
     highlighted: boolean;
 }
 
@@ -39,8 +39,8 @@ const ComputePlanTr = ({
     computePlanDetailsLoading,
     selectedKeys,
     onSelectionChange,
-    pinnedKeys,
-    onPinChange,
+    isFavorite,
+    onFavoriteChange,
     highlighted,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
@@ -67,9 +67,9 @@ const ComputePlanTr = ({
             <CheckboxTd>
                 <Tooltip
                     label={
-                        pinnedKeys.includes(computePlan.key)
-                            ? 'Unpin compute plan'
-                            : 'Pin compute plan'
+                        isFavorite(computePlan)
+                            ? 'Remove from favorites'
+                            : 'Add to favorites'
                     }
                     fontSize="xs"
                     hasArrow={true}
@@ -78,8 +78,8 @@ const ComputePlanTr = ({
                 >
                     <Box as="span">
                         <PinBox
-                            isChecked={pinnedKeys.includes(computePlan.key)}
-                            onChange={onPinChange(computePlan)}
+                            isChecked={isFavorite(computePlan)}
+                            onChange={onFavoriteChange(computePlan)}
                         />
                     </Box>
                 </Tooltip>
