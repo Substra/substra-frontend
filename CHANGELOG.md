@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Improved the PerfSidebarSettingsNodes component (#402)
+
 ## [0.13.0] - 2022-02-17
 
 ### Added

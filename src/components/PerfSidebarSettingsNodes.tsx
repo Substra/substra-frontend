@@ -7,6 +7,7 @@ import {
     IconButton,
     Menu,
     MenuButton,
+    MenuDivider,
     MenuGroup,
     MenuItem,
     MenuList,
@@ -17,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
-import { compareNodes } from '@/modules/nodes/NodesUtils';
+import { compareNodes, isAverageNode } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
@@ -45,6 +46,14 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
         setSelectedNodeIds(nodes.map((node) => node.id));
     };
 
+    const notSelectedAverageNodes = nodes
+        .filter((node) => isAverageNode(node.id))
+        .filter((node) => !selectedNodeIds.includes(node.id));
+
+    const notSelectedNodes = nodes
+        .filter((node) => !isAverageNode(node.id))
+        .filter((node) => !selectedNodeIds.includes(node.id));
+
     return (
         <Box>
             <Heading size="xs" marginBottom={4}>
@@ -66,7 +75,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         onClick={clear}
                     />
                     <Box color="gray.200">|</Box>
-                    <Menu>
+                    <Menu placement="bottom-end">
                         <MenuButton
                             as={IconButton}
                             aria-label="Select organizations"
@@ -76,23 +85,63 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         />
                         <MenuList>
                             <MenuGroup>
-                                <MenuItem onClick={addAll}>All</MenuItem>
+                                <MenuItem
+                                    onClick={addAll}
+                                    fontSize="xs"
+                                    paddingX="4"
+                                    paddingY="1.5"
+                                >
+                                    Select all
+                                </MenuItem>
                             </MenuGroup>
-                            <MenuGroup>
-                                {nodes
-                                    .filter(
-                                        (node) =>
-                                            !selectedNodeIds.includes(node.id)
-                                    )
-                                    .map((node) => (
-                                        <MenuItem
-                                            onClick={add(node.id)}
-                                            key={node.id}
-                                        >
-                                            {node.id}
-                                        </MenuItem>
-                                    ))}
-                            </MenuGroup>
+                            {notSelectedAverageNodes.length > 0 && (
+                                <>
+                                    <MenuDivider />
+                                    <MenuGroup
+                                        title="Aggregations"
+                                        fontSize="xs"
+                                        textTransform="uppercase"
+                                        fontWeight="bold"
+                                        color="gray.500"
+                                    >
+                                        {notSelectedAverageNodes.map((node) => (
+                                            <MenuItem
+                                                onClick={add(node.id)}
+                                                key={node.id}
+                                                fontSize="xs"
+                                                paddingX="4"
+                                                paddingY="1.5"
+                                            >
+                                                {node.id}
+                                            </MenuItem>
+                                        ))}
+                                    </MenuGroup>
+                                </>
+                            )}
+                            {notSelectedNodes.length > 0 && (
+                                <>
+                                    <MenuDivider />
+                                    <MenuGroup
+                                        title="Organizations"
+                                        fontSize="xs"
+                                        textTransform="uppercase"
+                                        fontWeight="bold"
+                                        color="gray.500"
+                                    >
+                                        {notSelectedNodes.map((node) => (
+                                            <MenuItem
+                                                onClick={add(node.id)}
+                                                key={node.id}
+                                                fontSize="xs"
+                                                paddingX="4"
+                                                paddingY="1.5"
+                                            >
+                                                {node.id}
+                                            </MenuItem>
+                                        ))}
+                                    </MenuGroup>
+                                </>
+                            )}
                         </MenuList>
                     </Menu>
                 </Flex>
