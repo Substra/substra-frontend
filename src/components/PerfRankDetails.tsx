@@ -174,6 +174,7 @@ const PerfRankDetails = ({
                 category={TaskCategory.test}
                 taskKey={drawerTestTaskKey}
                 onClose={() => setDrawerTestTaskKey(undefined)}
+                setPageTitle={false}
             />
             <Heading
                 size="xxs"

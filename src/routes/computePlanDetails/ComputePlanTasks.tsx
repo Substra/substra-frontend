@@ -143,6 +143,7 @@ const TestTasks = ({
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -202,6 +203,7 @@ const TrainTasks = ({
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -260,6 +262,7 @@ const CompositeTasks = ({
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -318,6 +321,7 @@ const AggregateTasks = ({
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />

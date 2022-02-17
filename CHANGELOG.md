@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Increase toast font size (#395)
 -   Upgrade chartjs to 3.7.1 (#399)
 -   Make full PerfBrowser sidebar section clickable (#401)
+-   Page title issue on perf chart with task drawer open (#403)
 
 ## [0.12.0] - 2022-02-10
 

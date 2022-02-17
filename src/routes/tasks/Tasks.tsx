@@ -98,6 +98,7 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -137,6 +138,7 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -178,6 +180,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />
@@ -219,6 +222,7 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
                         )
                     }
                     taskKey={taskKey}
+                    setPageTitle={true}
                 />
             }
         />

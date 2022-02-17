@@ -58,12 +58,14 @@ interface TaskDrawerProps {
     category: TaskCategory;
     onClose: () => void;
     taskKey: string | undefined;
+    setPageTitle: boolean;
 }
 
 const TaskDrawer = ({
     category,
     onClose,
     taskKey,
+    setPageTitle,
 }: TaskDrawerProps): JSX.Element => {
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
@@ -83,7 +85,9 @@ const TaskDrawer = ({
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
-            setDocumentTitle(`${CATEGORY_LABEL[category]} task ${taskKey}`);
+            if (setPageTitle && taskKey) {
+                setDocumentTitle(`${CATEGORY_LABEL[category]} task ${taskKey}`);
+            }
         },
         [taskKey, category]
     );
