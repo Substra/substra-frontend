@@ -4,7 +4,7 @@ import PerfRankDetails from './PerfRankDetails';
 import { Box, Button, Flex, HStack, VStack } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
 
 import PerfChart from '@/components/PerfChart';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
@@ -22,7 +22,7 @@ const PerfDetails = ({
 }: PerfDetailsProps): JSX.Element => {
     const perfChartRef = useRef<HTMLDivElement>(null);
     const [highlightedSerie, setHighlightedSerie] =
-        useState<{ id: number; computePlanKey: string }>();
+        useState<HighlightedSerie>();
     const [hoveredRank, setHoveredRank] = useState<number | null>(null);
     const [selectedRank, setSelectedRank] = useState<number | null>(null);
 

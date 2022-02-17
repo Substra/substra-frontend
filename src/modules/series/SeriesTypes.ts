@@ -23,3 +23,8 @@ export interface SerieT extends SerieFeaturesT {
 }
 
 export type Index<Type> = Record<string, Type>;
+
+export interface HighlightedSerie {
+    id: number;
+    computePlanKey: string;
+}

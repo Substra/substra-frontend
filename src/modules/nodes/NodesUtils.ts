@@ -17,6 +17,13 @@ export const MELLODDY_SMALL5_NODE_IDS: string[] = [
     'pharma9',
 ];
 
+export const STATIC_AVERAGE_NODE_IDS: string[] = [
+    'average',
+    'small5_average',
+    'large5_average',
+    'pharma_average',
+];
+
 const compareString = (a: string, b: string): 1 | 0 | -1 => {
     if (a < b) {
         return -1;
@@ -45,10 +52,5 @@ export const isAverageNode = (nodeId: string): boolean => {
     if (!MELLODDY) {
         return false;
     }
-    return [
-        'average',
-        'small5_average',
-        'large5_average',
-        'pharma_average',
-    ].includes(nodeId);
+    return STATIC_AVERAGE_NODE_IDS.includes(nodeId);
 };

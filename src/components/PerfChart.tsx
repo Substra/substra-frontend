@@ -47,7 +47,7 @@ interface PerfChartProps {
     series: SerieT[];
     size: 'full' | 'thumbnail';
     zoomEnabled: boolean;
-    highlightedSerie?: { id: number; computePlanKey: string } | undefined;
+    highlightedSerie?: { id: number; computePlanKey: string };
     setHoveredRank: (rank: number | null) => void;
     setSelectedRank: (rank: number | null) => void;
 }
@@ -79,12 +79,11 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const averageDataset = useMemo(() => {
             const averageSerie = buildAverageSerie(series);
             if (averageSerie) {
-                return buildPerfChartDataset(averageSerie, 'Average', {
-                    color: 'black',
-                    colorLight: 'black.100',
-                    colorScheme: 'black',
-                    borderWidth: 3,
-                });
+                return buildPerfChartDataset(
+                    averageSerie,
+                    'Average',
+                    highlightedSerie
+                );
             }
             return null;
         }, [series]);
@@ -95,7 +94,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     buildPerfChartDataset(
                         serie,
                         `${serie.computePlanKey}-${serie.id}`,
-                        undefined,
                         highlightedSerie
                     )
                 ),

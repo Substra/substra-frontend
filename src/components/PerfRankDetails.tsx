@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 
-import IconTag from './IconTag';
 import {
     Box,
     Button,
@@ -13,10 +12,10 @@ import {
     Text,
     Tooltip,
 } from '@chakra-ui/react';
-import { RiArrowRightSLine, RiGitCommitLine, RiLockLine } from 'react-icons/ri';
+import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
 import {
     average,
     getLineId,
@@ -28,16 +27,21 @@ import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { capitalize } from '@/libs/utils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
+import PerfIconTag from '@/components/PerfIconTag';
+
 const AverageListItem = ({
+    worker,
+    computePlanKey,
     label,
     perf,
     onMouseEnter,
     onMouseLeave,
 }: {
+    worker: string;
+    computePlanKey: string;
     label: string;
     perf: string;
     onMouseEnter?: () => void;
@@ -53,11 +57,7 @@ const AverageListItem = ({
             _hover={{ bg: 'gray.100' }}
         >
             <HStack spacing="2.5">
-                <IconTag
-                    icon={RiGitCommitLine}
-                    backgroundColor="black.100"
-                    fill="black.500"
-                />
+                <PerfIconTag worker={worker} computePlanKey={computePlanKey} />
                 <Text fontSize="xs" fontWeight="semibold">
                     {label}
                 </Text>
@@ -74,7 +74,7 @@ interface PerfRankDetailsProps {
     hoveredRank: number | null;
     selectedRank: number | null;
     setHighlightedSerie: (
-        highlightedSerie: { id: number; computePlanKey: string } | undefined
+        highlightedSerie: HighlightedSerie | undefined
     ) => void;
 }
 const PerfRankDetails = ({
@@ -86,7 +86,6 @@ const PerfRankDetails = ({
     const { sortedComputePlanKeys, displayAverage, xAxisMode } =
         useContext(PerfBrowserContext);
     const lineId = getLineId(series);
-    const { getColorScheme } = usePerfBrowserColors();
     const [drawerTestTaskKey, setDrawerTestTaskKey] = useState<
         string | undefined
     >(undefined);
@@ -202,14 +201,22 @@ const PerfRankDetails = ({
                     `Last ${xAxisMode}`}
             </Heading>
             <List>
+                {/* FIXME: This cannot be tested at the moment and may be broken */}
                 {displayAverage && (
-                    <AverageListItem label="Average" perf={averagePerf} />
+                    <AverageListItem
+                        label="Average"
+                        perf={averagePerf}
+                        worker="average"
+                        computePlanKey=""
+                    />
                 )}
                 {rankData
                     .filter(({ worker }) => isAverageNode(worker))
                     .map(({ worker, perf, id, computePlanKey }) => (
                         <AverageListItem
                             key={`${computePlanKey}-${id}`}
+                            worker={worker}
+                            computePlanKey={computePlanKey}
                             label={worker}
                             perf={perf}
                             onMouseEnter={() =>
@@ -250,16 +257,9 @@ const PerfRankDetails = ({
                                     onClick={() => handleOnclick(testTaskKey)}
                                 >
                                     <HStack spacing="2.5">
-                                        <IconTag
-                                            icon={RiGitCommitLine}
-                                            backgroundColor={`${getColorScheme({
-                                                worker,
-                                                computePlanKey,
-                                            })}.100`}
-                                            fill={`${getColorScheme({
-                                                worker,
-                                                computePlanKey,
-                                            })}.500`}
+                                        <PerfIconTag
+                                            worker={worker}
+                                            computePlanKey={computePlanKey}
                                         />
                                         <Tooltip
                                             label={

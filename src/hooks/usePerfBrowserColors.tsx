@@ -11,7 +11,7 @@ interface ColorDiscriminant {
     worker: string;
 }
 
-const PERF_BROWSER_COLORSCHEMES = HAS_LIGHT_COLORSCHEME;
+export const PERF_BROWSER_COLORSCHEMES = HAS_LIGHT_COLORSCHEME;
 
 const usePerfBrowserColors = () => {
     const { colorMode, sortedComputePlanKeys, nodes } =
@@ -26,7 +26,7 @@ const usePerfBrowserColors = () => {
             index = sortedComputePlanKeys.indexOf(computePlanKey);
         } else {
             if (isAverageNode(worker)) {
-                return 'blackAlpha';
+                return 'gray';
             }
             index = nodes.map((n) => n.id).indexOf(worker);
         }
