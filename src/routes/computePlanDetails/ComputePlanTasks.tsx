@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 import Actions from './components/Actions';
-import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
 import TabsNav from './components/TabsNav';
+import TasksBreadcrumbs from './components/TasksBreadCrumbs';
 import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
@@ -66,7 +66,7 @@ const GenericTasks = ({
                 borderBottomWidth="1px"
             >
                 <HStack justifyContent="space-between">
-                    <Breadcrumbs />
+                    <TasksBreadcrumbs />
                     <Actions computePlan={computePlan} loading={loading} />
                 </HStack>
                 <TabsNav />

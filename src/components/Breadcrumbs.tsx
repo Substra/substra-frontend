@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -54,7 +56,7 @@ const Breadcrumbs = ({
                 </BreadcrumbLink>
             </Link>
         </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>{children}</BreadcrumbItem>
+        {children}
     </StyledBreadcrumb>
 );
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import Actions from './components/Actions';
-import Breadcrumbs from './components/BreadCrumbs';
+import ChartBreadcrumbs from './components/ChartBreadCrumbs';
 import TabsNav from './components/TabsNav';
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
@@ -14,6 +14,7 @@ import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
@@ -61,33 +62,36 @@ const ComputePlanChart = (): JSX.Element => {
         []
     );
 
+    const computePlans = computePlan ? [computePlan] : [];
+    const { context } = usePerfBrowser(series, computePlans, 'node', loading);
+
     return (
-        <Flex
-            direction="column"
-            alignItems="stretch"
-            flexGrow={1}
-            overflow="hidden"
-            alignSelf="stretch"
-        >
-            <Box
-                background="white"
-                borderBottom="1px solid var(--chakra-colors-gray-100)"
+        <PerfBrowserContext.Provider value={context}>
+            <Flex
+                direction="column"
+                alignItems="stretch"
+                flexGrow={1}
+                overflow="hidden"
+                alignSelf="stretch"
             >
-                <HStack justifyContent="space-between">
-                    <Breadcrumbs />
-                    <Actions computePlan={computePlan} loading={loading} />
-                </HStack>
-                <TabsNav />
-            </Box>
-            <PerfBrowser
-                series={series}
-                loading={loading}
-                computePlans={computePlan ? [computePlan] : []}
-                settingsComponents={MELLODDY ? [PerfSidebarSettingsUnits] : []}
-                sectionComponents={[PerfSidebarSectionNodes]}
-                colorMode="node"
-            />
-        </Flex>
+                <Box
+                    background="white"
+                    borderBottom="1px solid var(--chakra-colors-gray-100)"
+                >
+                    <HStack justifyContent="space-between">
+                        <ChartBreadcrumbs />
+                        <Actions computePlan={computePlan} loading={loading} />
+                    </HStack>
+                    <TabsNav />
+                </Box>
+                <PerfBrowser
+                    settingsComponents={
+                        MELLODDY ? [PerfSidebarSettingsUnits] : []
+                    }
+                    sectionComponents={[PerfSidebarSectionNodes]}
+                />
+            </Flex>
+        </PerfBrowserContext.Provider>
     );
 };
 

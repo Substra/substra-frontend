@@ -1,12 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { SerieT } from '@/modules/series/SeriesTypes';
 import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 
-import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import PerfDetails from '@/components/PerfDetails';
 import PerfList from '@/components/PerfList';
@@ -14,35 +12,23 @@ import PerfLoadingState from '@/components/PerfLoadingState';
 import PerfSidebarSection from '@/components/PerfSidebarSection';
 
 interface PerfBrowserProps {
-    series: SerieT[];
-    loading: boolean;
-    computePlans: ComputePlanT[];
     settingsComponents: React.FunctionComponent[];
     sectionComponents: React.FunctionComponent[];
-    colorMode: 'computePlan' | 'node';
 }
 
 const PerfBrowser = ({
-    loading,
-    series,
-    computePlans,
     settingsComponents,
     sectionComponents,
-    colorMode,
 }: PerfBrowserProps) => {
-    const [selectedMetricName, setSelectedMetricName] = useState('');
-
-    const { context } = usePerfBrowser(
-        series,
-        computePlans,
-        colorMode,
-        loading
-    );
     const {
+        series,
+        loading,
         selectedNodeIds,
         selectedComputePlanKeys,
         selectedComputePlanNodes,
-    } = context;
+        selectedMetricName,
+        setSelectedMetricName,
+    } = useContext(PerfBrowserContext);
 
     const filteredSeries = series.filter(
         (serie) =>
@@ -72,70 +58,68 @@ const PerfBrowser = ({
     }, [seriesGroups, selectedMetricName]);
 
     return (
-        <PerfBrowserContext.Provider value={context}>
-            <HStack
-                flexGrow={1}
-                spacing="0"
-                alignItems="stretch"
-                overflow="hidden"
-                alignSelf="stretch"
+        <HStack
+            flexGrow={1}
+            spacing="0"
+            alignItems="stretch"
+            overflow="hidden"
+            alignSelf="stretch"
+        >
+            <Flex
+                flexGrow={0}
+                flexShrink={0}
+                flexDirection="column"
+                width="300px"
+                backgroundColor="white"
+                overflowX="hidden"
+                overflowY="auto"
             >
-                <Flex
-                    flexGrow={0}
-                    flexShrink={0}
-                    flexDirection="column"
-                    width="300px"
-                    backgroundColor="white"
-                    overflowX="hidden"
-                    overflowY="auto"
-                >
-                    {settingsComponents.length > 0 && (
-                        <PerfSidebarSection title="Settings">
-                            <VStack spacing="5" alignItems="stretch">
-                                {settingsComponents.map((SettingsComponent) => (
-                                    <SettingsComponent
-                                        key={SettingsComponent.name}
-                                    />
-                                ))}
-                            </VStack>
-                        </PerfSidebarSection>
-                    )}
-                    {sectionComponents.map((SectionComponent) => (
-                        <SectionComponent key={SectionComponent.name} />
-                    ))}
-                </Flex>
-                <Flex
-                    flexGrow={1}
-                    flexWrap="wrap"
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    overflowX="hidden"
-                    overflowY="auto"
-                >
-                    {loading && <PerfLoadingState />}
-                    {!loading && (
-                        <>
-                            {selectedMetricName && (
-                                <PerfDetails
-                                    metricName={selectedMetricName}
-                                    onBack={() => setSelectedMetricName('')}
-                                    series={selectedSeriesGroup}
+                {settingsComponents.length > 0 && (
+                    <PerfSidebarSection title="Settings">
+                        <VStack spacing="5" alignItems="stretch">
+                            {settingsComponents.map((SettingsComponent) => (
+                                <SettingsComponent
+                                    key={SettingsComponent.name}
                                 />
-                            )}
-                            {!selectedMetricName && (
-                                <PerfList
-                                    seriesGroups={seriesGroups}
-                                    onCardClick={(metricName) =>
-                                        setSelectedMetricName(metricName)
-                                    }
-                                />
-                            )}
-                        </>
-                    )}
-                </Flex>
-            </HStack>
-        </PerfBrowserContext.Provider>
+                            ))}
+                        </VStack>
+                    </PerfSidebarSection>
+                )}
+                {sectionComponents.map((SectionComponent) => (
+                    <SectionComponent key={SectionComponent.name} />
+                ))}
+            </Flex>
+            <Flex
+                flexGrow={1}
+                flexWrap="wrap"
+                flexDirection="row"
+                justifyContent="center"
+                alignItems="center"
+                overflowX="hidden"
+                overflowY="auto"
+            >
+                {loading && <PerfLoadingState />}
+                {!loading && (
+                    <>
+                        {selectedMetricName && (
+                            <PerfDetails
+                                metricName={selectedMetricName}
+                                onBack={() => setSelectedMetricName('')}
+                                series={selectedSeriesGroup}
+                            />
+                        )}
+                        {!selectedMetricName && (
+                            <PerfList
+                                seriesGroups={seriesGroups}
+                                onCardClick={(metricName) =>
+                                    setSelectedMetricName(metricName)
+                                }
+                            />
+                        )}
+                    </>
+                )}
+            </Flex>
+        </HStack>
     );
 };
 

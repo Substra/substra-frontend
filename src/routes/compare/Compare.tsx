@@ -8,6 +8,7 @@ import { loadSeries } from '@/modules/series/SeriesSlice';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import { PATHS } from '@/routes';
 
@@ -40,18 +41,23 @@ const Compare = (): JSX.Element => {
         (state) => state.computePlans.computePlans
     );
 
+    const { context } = usePerfBrowser(
+        series,
+        computePlans,
+        'computePlan',
+        loading
+    );
+
     return (
-        <PerfBrowser
-            loading={loading}
-            series={series}
-            computePlans={computePlans}
-            settingsComponents={[
-                PerfSidebarSettingsNodes,
-                ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
-            ]}
-            sectionComponents={[PerfSidebarSectionComputePlans]}
-            colorMode="computePlan"
-        />
+        <PerfBrowserContext.Provider value={context}>
+            <PerfBrowser
+                settingsComponents={[
+                    PerfSidebarSettingsNodes,
+                    ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
+                ]}
+                sectionComponents={[PerfSidebarSectionComputePlans]}
+            />
+        </PerfBrowserContext.Provider>
     );
 };
 export default Compare;

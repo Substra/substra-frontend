@@ -41,6 +41,8 @@ interface PerfBrowserContext {
     setSelectedComputePlanNodes: (
         computePlanPlanNodes: ComputePlanNodes
     ) => void;
+    selectedMetricName: string;
+    setSelectedMetricName: (name: string) => void;
     onComputePlanNodeSelectionChange: (
         computePlanKey: string,
         nodeId: string
@@ -68,6 +70,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
         (event: React.ChangeEvent<HTMLInputElement>) => {},
     selectedComputePlanNodes: {},
     setSelectedComputePlanNodes: (computePlanNodes) => {},
+    selectedMetricName: '',
+    setSelectedMetricName: (name: string) => {},
     onComputePlanNodeSelectionChange: (computePlanNodes) => (event) => {},
 });
 /* eslint-enable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
@@ -86,6 +90,7 @@ const usePerfBrowser = (
     >([]);
     const [selectedComputePlanNodes, setSelectedComputePlanNodes] =
         useState<ComputePlanNodes>({});
+    const [selectedMetricName, setSelectedMetricName] = useState<string>('');
 
     const setSelectedNodeIds = (newSelectedNodeIds: string[]): void => {
         // update selectedNodeIds
@@ -248,6 +253,8 @@ const usePerfBrowser = (
             // compute plan nodes
             selectedComputePlanNodes,
             setSelectedComputePlanNodes,
+            selectedMetricName,
+            setSelectedMetricName,
             onComputePlanNodeSelectionChange,
         },
     };
