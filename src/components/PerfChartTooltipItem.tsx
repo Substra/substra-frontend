@@ -16,7 +16,7 @@ const PerfChartTooltipItem = ({
     point: DataPoint;
     lineId: (serieId: number) => number;
 }): JSX.Element => {
-    const { sortedComputePlanKeys } = useContext(PerfBrowserContext);
+    const { sortedComputePlanKeys, xAxisMode } = useContext(PerfBrowserContext);
 
     return (
         <ListItem
@@ -31,7 +31,7 @@ const PerfChartTooltipItem = ({
                 />
                 {isAverageNode(point.worker) ? (
                     <Text fontSize="xs" fontWeight="semibold">
-                        {`${point.worker} for rank ${point.x}`}
+                        {`${point.worker} for ${xAxisMode} ${point.x}`}
                     </Text>
                 ) : (
                     <HStack spacing="1">

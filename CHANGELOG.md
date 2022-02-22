@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Rank/epoch typo in perf chart tooltip (#408)
+
 ### Changed
 
 -   Improved the PerfSidebarSettingsNodes component (#402)
