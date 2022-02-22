@@ -21,12 +21,13 @@ import {
     PopoverBody,
     VStack,
     Button,
+    ButtonGroup,
 } from '@chakra-ui/react';
 import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
 import { Line } from 'react-chartjs-2';
-import { RiQuestionMark } from 'react-icons/ri';
+import { RiAddLine, RiQuestionMark, RiSubtractLine } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
@@ -212,6 +213,20 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             }
         };
 
+        const onZoomInClick = () => {
+            const chart = chartRef.current;
+            if (chart) {
+                chart.zoom(1.1);
+            }
+        };
+
+        const onZoomOutClick = () => {
+            const chart = chartRef.current;
+            if (chart) {
+                chart.zoom(0.9);
+            }
+        };
+
         useEffect(() => {
             const chart = chartRef.current;
             if (chart && chart.resetHighlightedRank) {
@@ -260,6 +275,24 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                 Reset zoom
                             </Button>
                         )}
+                        <ButtonGroup isAttached>
+                            <IconButton
+                                aria-label="Zoom out"
+                                onClick={onZoomOutClick}
+                                variant="outline"
+                                size="sm"
+                                background="white"
+                                icon={<RiSubtractLine />}
+                            />
+                            <IconButton
+                                aria-label="Zoom in"
+                                onClick={onZoomInClick}
+                                variant="outline"
+                                size="sm"
+                                background="white"
+                                icon={<RiAddLine />}
+                            />
+                        </ButtonGroup>
                         <Box>
                             <Popover placement="top-end">
                                 <PopoverTrigger>

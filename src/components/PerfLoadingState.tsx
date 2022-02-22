@@ -46,7 +46,7 @@ const PerfLoadingState = (): JSX.Element => {
                     size="md"
                     fontWeight="medium"
                 >
-                    Metrics
+                    Go back
                 </Button>
                 <Skeleton>
                     <Button

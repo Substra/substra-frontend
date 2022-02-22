@@ -50,7 +50,7 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                     size="md"
                     fontWeight="medium"
                 >
-                    Metrics
+                    Go back
                 </Button>
                 <Button
                     leftIcon={<Icon as={RiDownloadLine} />}
