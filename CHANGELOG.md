@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Improved the PerfSidebarSettingsNodes component (#402)
 -   Removed dynamic average (#407)
+-   Changed wording and controls in perf chart settings (#XXX)
 
 ## [0.13.0] - 2022-02-17
 

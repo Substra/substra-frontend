@@ -202,7 +202,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     },
                 },
             };
-        }, [zoomEnabled, size]);
+        }, [zoomEnabled, size, xAxisMode]);
 
         const onResetZoomClick = () => {
             const chart = chartRef.current;

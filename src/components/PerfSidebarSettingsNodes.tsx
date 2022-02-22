@@ -57,7 +57,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
     return (
         <Box>
             <Heading size="xs" marginBottom={4}>
-                Organizations
+                Filters
             </Heading>
             <Box
                 borderStyle="solid"

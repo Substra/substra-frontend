@@ -10,7 +10,7 @@ import { OnOptionChange } from '@/hooks/useSelection';
 declare const MELLODDY: boolean;
 
 type ComputePlanNodes = Record<string, Record<string, boolean>>;
-type XAxisMode = 'epoch' | 'rank';
+export type XAxisMode = 'epoch' | 'rank';
 
 interface PerfBrowserContext {
     loading: boolean;

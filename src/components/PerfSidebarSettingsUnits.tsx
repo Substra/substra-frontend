@@ -1,15 +1,8 @@
 import { useContext } from 'react';
 
-import {
-    Box,
-    ButtonGroup,
-    Flex,
-    Heading,
-    Text,
-    Button,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Select } from '@chakra-ui/react';
 
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext, XAxisMode } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsUnits = (): JSX.Element => {
     const { xAxisMode, setXAxisMode } = useContext(PerfBrowserContext);
@@ -17,24 +10,21 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
     return (
         <Box>
             <Heading size="xs" marginBottom={4}>
-                Others
+                Parameters
             </Heading>
             <Flex justifyContent="space-between" alignItems="center">
-                <Text fontSize="xs">Units</Text>
-                <ButtonGroup size="xs" isAttached>
-                    <Button
-                        colorScheme={xAxisMode === 'rank' ? 'teal' : undefined}
-                        onClick={() => setXAxisMode('rank')}
-                    >
-                        Ranks
-                    </Button>
-                    <Button
-                        colorScheme={xAxisMode === 'epoch' ? 'teal' : undefined}
-                        onClick={() => setXAxisMode('epoch')}
-                    >
-                        Epochs
-                    </Button>
-                </ButtonGroup>
+                <Text fontSize="xs">X axis</Text>
+                <Select
+                    variant="filled"
+                    width="90px"
+                    size="xs"
+                    fontWeight="semibold"
+                    value={xAxisMode}
+                    onChange={(e) => setXAxisMode(e.target.value as XAxisMode)}
+                >
+                    <option value="rank">Ranks</option>
+                    <option value="epoch">Epochs</option>
+                </Select>
             </Flex>
         </Box>
     );
