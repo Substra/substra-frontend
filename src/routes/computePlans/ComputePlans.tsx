@@ -14,6 +14,7 @@ import {
     HStack,
     Flex,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import { RiAddLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
@@ -159,19 +160,25 @@ const ComputePlans = (): JSX.Element => {
                 continue;
             }
             // retrieve
-            const response = await retrieveComputePlan(computePlanKey, {
-                signal: abortController.signal,
-            });
-            const computePlan: ComputePlanT = response.data;
-            // save details
-            setComputePlansDetails((computePlansDetails) => ({
-                ...computePlansDetails,
-                [computePlanKey]: computePlan,
-            }));
-            setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
-                ...computePlansDetailsLoading,
-                [computePlanKey]: false,
-            }));
+            try {
+                const response = await retrieveComputePlan(computePlanKey, {
+                    signal: abortController.signal,
+                });
+                const computePlan: ComputePlanT = response.data;
+                // save details
+                setComputePlansDetails((computePlansDetails) => ({
+                    ...computePlansDetails,
+                    [computePlanKey]: computePlan,
+                }));
+                setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
+                    ...computePlansDetailsLoading,
+                    [computePlanKey]: false,
+                }));
+            } catch (error) {
+                if (!axios.isCancel(error)) {
+                    throw error;
+                }
+            }
         }
     };
 
