@@ -20,6 +20,7 @@ import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarSectionNodes from '@/components/PerfSidebarSectionNodes';
+import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
 import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
 
 declare const MELLODDY: boolean;
@@ -85,9 +86,10 @@ const ComputePlanChart = (): JSX.Element => {
                     <TabsNav />
                 </Box>
                 <PerfBrowser
-                    settingsComponents={
-                        MELLODDY ? [PerfSidebarSettingsUnits] : []
-                    }
+                    settingsComponents={[
+                        PerfSidebarSettingsNodes,
+                        ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
+                    ]}
                     sectionComponents={[PerfSidebarSectionNodes]}
                 />
             </Flex>
