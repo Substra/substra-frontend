@@ -1,12 +1,15 @@
 import { useState } from 'react';
 
+import useAppSelector from './useAppSelector';
 import { useCustomCompareEffect } from 'use-custom-compare';
 
 import { HasKey } from '@/modules/common/CommonTypes';
 
 function useLoadSave<T>(localStorageKey: string) {
+    const channel = useAppSelector((state) => state.nodes.info.channel);
+    const channelLocalStorageKey = `${channel}-${localStorageKey}`;
     const load = (): T[] => {
-        const jsonItems = localStorage.getItem(localStorageKey) || '[]';
+        const jsonItems = localStorage.getItem(channelLocalStorageKey) || '[]';
         try {
             return JSON.parse(jsonItems);
         } catch {
@@ -16,7 +19,7 @@ function useLoadSave<T>(localStorageKey: string) {
     };
 
     const save = (items: T[]): void => {
-        localStorage.setItem(localStorageKey, JSON.stringify(items));
+        localStorage.setItem(channelLocalStorageKey, JSON.stringify(items));
     };
 
     return { load, save };

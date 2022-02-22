@@ -31,8 +31,10 @@ const App = (): JSX.Element => {
             .then(unwrapResult)
             .then(
                 () => {
-                    dispatch(listNodes());
-                    dispatch(retrieveInfo(true));
+                    return Promise.all([
+                        dispatch(listNodes()),
+                        dispatch(retrieveInfo(true)),
+                    ]);
                 },
                 () => {
                     if (!onLoginPage) {
