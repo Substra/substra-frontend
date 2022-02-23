@@ -75,10 +75,6 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                                 series={series}
                                 size="thumbnail"
                                 zoomEnabled={false}
-                                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                setHoveredRank={() => {}}
-                                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                setSelectedRank={() => {}}
                             />
                         </PerfCard>
                     </WrapItem>

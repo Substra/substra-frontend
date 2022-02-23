@@ -44,24 +44,12 @@ interface PerfChartProps {
     series: SerieT[];
     size: 'full' | 'thumbnail';
     zoomEnabled: boolean;
-    highlightedSerie?: { id: number; computePlanKey: string };
-    setHoveredRank: (rank: number | null) => void;
-    setSelectedRank: (rank: number | null) => void;
 }
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
-    (
-        {
-            series,
-            size,
-            zoomEnabled,
-            highlightedSerie,
-            setHoveredRank,
-            setSelectedRank,
-        }: PerfChartProps,
-        ref
-    ): JSX.Element => {
-        const { xAxisMode } = useContext(PerfBrowserContext);
+    ({ series, size, zoomEnabled }: PerfChartProps, ref): JSX.Element => {
+        const { xAxisMode, highlightedSerie, setHoveredRank, setSelectedRank } =
+            useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(

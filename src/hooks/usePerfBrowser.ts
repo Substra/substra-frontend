@@ -1,9 +1,12 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
-import { SerieT } from '@/modules/series/SeriesTypes';
-import { getSeriesNodes } from '@/modules/series/SeriesUtils';
+import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
+import {
+    buildSeriesGroups,
+    getSeriesNodes,
+} from '@/modules/series/SeriesUtils';
 
 import { OnOptionChange } from '@/hooks/useSelection';
 
@@ -20,6 +23,8 @@ interface PerfBrowserContext {
     sortedComputePlanKeys: string[];
     // List of all the series that can be extracted from the computePlans
     series: SerieT[];
+    // List of groups of series sharing the same metric name once all filters have been applied
+    seriesGroups: SerieT[][];
     // List of the nodes references by all the series
     nodes: NodeType[];
     // How colors should be determined
@@ -41,12 +46,24 @@ interface PerfBrowserContext {
     setSelectedComputePlanNodes: (
         computePlanPlanNodes: ComputePlanNodes
     ) => void;
-    selectedMetricName: string;
-    setSelectedMetricName: (name: string) => void;
     onComputePlanNodeSelectionChange: (
         computePlanKey: string,
         nodeId: string
     ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+    // Currently selected metric with its series
+    selectedMetricName: string;
+    setSelectedMetricName: (name: string) => void;
+    selectedSeriesGroup: SerieT[];
+    // Serie to highlight on charts
+    highlightedSerie: HighlightedSerie | undefined;
+    setHighlightedSerie: (
+        highlightedSerie: HighlightedSerie | undefined
+    ) => void;
+    // Hovered / selected rank on chart
+    hoveredRank: number | null;
+    setHoveredRank: (hoveredRank: number | null) => void;
+    selectedRank: number | null;
+    setSelectedRank: (selectedRank: number | null) => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
@@ -55,6 +72,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     computePlans: [],
     sortedComputePlanKeys: [],
     series: [],
+    seriesGroups: [],
     nodes: [],
     colorMode: 'node',
     xAxisMode: MELLODDY ? 'epoch' : 'rank',
@@ -70,9 +88,16 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
         (event: React.ChangeEvent<HTMLInputElement>) => {},
     selectedComputePlanNodes: {},
     setSelectedComputePlanNodes: (computePlanNodes) => {},
+    onComputePlanNodeSelectionChange: (computePlanNodes) => (event) => {},
     selectedMetricName: '',
     setSelectedMetricName: (name: string) => {},
-    onComputePlanNodeSelectionChange: (computePlanNodes) => (event) => {},
+    selectedSeriesGroup: [],
+    highlightedSerie: undefined,
+    setHighlightedSerie: (highlightedSerie) => {},
+    hoveredRank: null,
+    setHoveredRank: (hoveredRank) => {},
+    selectedRank: null,
+    setSelectedRank: (selectedRank) => {},
 });
 /* eslint-enable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 
@@ -90,7 +115,11 @@ const usePerfBrowser = (
     >([]);
     const [selectedComputePlanNodes, setSelectedComputePlanNodes] =
         useState<ComputePlanNodes>({});
+    const [hoveredRank, setHoveredRank] = useState<number | null>(null);
+    const [selectedRank, setSelectedRank] = useState<number | null>(null);
     const [selectedMetricName, setSelectedMetricName] = useState<string>('');
+    const [highlightedSerie, setHighlightedSerie] =
+        useState<HighlightedSerie>();
 
     const setSelectedNodeIds = (newSelectedNodeIds: string[]): void => {
         // update selectedNodeIds
@@ -193,6 +222,34 @@ const usePerfBrowser = (
 
     const nodes = getSeriesNodes(series);
 
+    // Define seriesGroups and selectedSeriesGroup
+    const filteredSeries = series.filter(
+        (serie) =>
+            selectedComputePlanKeys.includes(serie.computePlanKey) &&
+            selectedNodeIds.includes(serie.worker) &&
+            !!selectedComputePlanNodes[serie.computePlanKey] &&
+            selectedComputePlanNodes[serie.computePlanKey][serie.worker]
+    );
+    const seriesGroups = buildSeriesGroups(filteredSeries);
+
+    const selectedSeriesGroup = useMemo(() => {
+        if (!selectedMetricName) {
+            return [];
+        }
+
+        const groupsMatchingMetric = seriesGroups.filter(
+            (series) =>
+                series[0].metricName.toLowerCase() ===
+                selectedMetricName.toLowerCase()
+        );
+
+        if (groupsMatchingMetric.length > 0) {
+            return groupsMatchingMetric[0];
+        } else {
+            return [];
+        }
+    }, [seriesGroups, selectedMetricName]);
+
     useEffect(() => {
         if (nodes.length) {
             baseSetSelectedNodeIds(nodes.map((node) => node.id));
@@ -234,7 +291,9 @@ const usePerfBrowser = (
     return {
         context: {
             loading,
+            // series
             series,
+            seriesGroups,
             computePlans,
             sortedComputePlanKeys,
             nodes,
@@ -253,9 +312,19 @@ const usePerfBrowser = (
             // compute plan nodes
             selectedComputePlanNodes,
             setSelectedComputePlanNodes,
+            onComputePlanNodeSelectionChange,
+            // selected metric
             selectedMetricName,
             setSelectedMetricName,
-            onComputePlanNodeSelectionChange,
+            selectedSeriesGroup,
+            // event: highlighted serie
+            highlightedSerie,
+            setHighlightedSerie,
+            // event: hovered/selected rank
+            hoveredRank,
+            setHoveredRank,
+            selectedRank,
+            setSelectedRank,
         },
     };
 };

@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import PerfRankDetails from './PerfRankDetails';
 import { Box, Button, Flex, HStack, VStack } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
-import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
+import { SerieT } from '@/modules/series/SeriesTypes';
 
 import PerfChart from '@/components/PerfChart';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
@@ -21,10 +21,6 @@ const PerfDetails = ({
     series,
 }: PerfDetailsProps): JSX.Element => {
     const perfChartRef = useRef<HTMLDivElement>(null);
-    const [highlightedSerie, setHighlightedSerie] =
-        useState<HighlightedSerie>();
-    const [hoveredRank, setHoveredRank] = useState<number | null>(null);
-    const [selectedRank, setSelectedRank] = useState<number | null>(null);
 
     return (
         <VStack
@@ -67,17 +63,9 @@ const PerfDetails = ({
                             series={series}
                             size="full"
                             zoomEnabled={true}
-                            highlightedSerie={highlightedSerie}
-                            setHoveredRank={setHoveredRank}
-                            setSelectedRank={setSelectedRank}
                         />
                     </Box>
-                    <PerfRankDetails
-                        series={series}
-                        hoveredRank={hoveredRank}
-                        selectedRank={selectedRank}
-                        setHighlightedSerie={setHighlightedSerie}
-                    />
+                    <PerfRankDetails series={series} />
                 </HStack>
             )}
         </VStack>

@@ -1,8 +1,6 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 
 import { Flex, HStack, VStack } from '@chakra-ui/react';
-
-import { buildSeriesGroups } from '@/modules/series/SeriesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
@@ -21,41 +19,12 @@ const PerfBrowser = ({
     sectionComponents,
 }: PerfBrowserProps) => {
     const {
-        series,
         loading,
-        selectedNodeIds,
-        selectedComputePlanKeys,
-        selectedComputePlanNodes,
         selectedMetricName,
         setSelectedMetricName,
+        seriesGroups,
+        selectedSeriesGroup,
     } = useContext(PerfBrowserContext);
-
-    const filteredSeries = series.filter(
-        (serie) =>
-            selectedComputePlanKeys.includes(serie.computePlanKey) &&
-            selectedNodeIds.includes(serie.worker) &&
-            !!selectedComputePlanNodes[serie.computePlanKey] &&
-            selectedComputePlanNodes[serie.computePlanKey][serie.worker]
-    );
-    const seriesGroups = buildSeriesGroups(filteredSeries);
-
-    const selectedSeriesGroup = useMemo(() => {
-        if (!selectedMetricName) {
-            return [];
-        }
-
-        const groupsMatchingMetric = seriesGroups.filter(
-            (series) =>
-                series[0].metricName.toLowerCase() ===
-                selectedMetricName.toLowerCase()
-        );
-
-        if (groupsMatchingMetric.length > 0) {
-            return groupsMatchingMetric[0];
-        } else {
-            return [];
-        }
-    }, [seriesGroups, selectedMetricName]);
 
     return (
         <HStack

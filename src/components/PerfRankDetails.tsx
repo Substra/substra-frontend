@@ -15,7 +15,7 @@ import {
 import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
-import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
+import { SerieT } from '@/modules/series/SeriesTypes';
 import {
     getLineId,
     getMaxEpoch,
@@ -70,19 +70,15 @@ const AverageListItem = ({
 
 interface PerfRankDetailsProps {
     series: SerieT[];
-    hoveredRank: number | null;
-    selectedRank: number | null;
-    setHighlightedSerie: (
-        highlightedSerie: HighlightedSerie | undefined
-    ) => void;
 }
-const PerfRankDetails = ({
-    series,
-    hoveredRank,
-    selectedRank,
-    setHighlightedSerie,
-}: PerfRankDetailsProps): JSX.Element => {
-    const { sortedComputePlanKeys, xAxisMode } = useContext(PerfBrowserContext);
+const PerfRankDetails = ({ series }: PerfRankDetailsProps): JSX.Element => {
+    const {
+        sortedComputePlanKeys,
+        xAxisMode,
+        hoveredRank,
+        selectedRank,
+        setHighlightedSerie,
+    } = useContext(PerfBrowserContext);
     const lineId = getLineId(series);
     const [drawerTestTaskKey, setDrawerTestTaskKey] = useState<
         string | undefined

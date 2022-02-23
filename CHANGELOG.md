@@ -24,8 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Improved the PerfSidebarSettingsNodes component (#402)
 -   Removed dynamic average (#407)
--   Changed wording and controls in perf chart settings (#XXX)
 -   Auto cancel pending HTTP calls when changing route or url params (#409)
+-   Changed wording and controls in perf chart settings (#416)
+-   Move all PerfBrowser inner state to PerfBrowserContext (#417)
 
 ## [0.13.0] - 2022-02-17
 
