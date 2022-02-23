@@ -1,5 +1,5 @@
 import { PaginatedApiResponse } from '../common/CommonTypes';
-import TasksApi from './TasksApi';
+import * as TasksApi from './TasksApi';
 import {
     Aggregatetuple,
     AggregatetupleStub,
@@ -12,7 +12,7 @@ import {
     TraintupleStub,
 } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosPromise } from 'axios';
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -93,8 +93,8 @@ export const listTrainTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listTraintuples(
-                nonTypeFilters,
-                page
+                { searchFilters: nonTypeFilters, page },
+                { signal: thunkAPI.signal }
             );
             return response.data;
         } catch (error) {
@@ -117,7 +117,10 @@ export const listTestTasks = createAsyncThunk<
     const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
 
     try {
-        const response = await TasksApi.listTesttuples(nonTypeFilters, page);
+        const response = await TasksApi.listTesttuples(
+            { searchFilters: nonTypeFilters, page },
+            { signal: thunkAPI.signal }
+        );
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -145,8 +148,8 @@ export const listCompositeTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listCompositeTraintuples(
-                nonTypeFilters,
-                page
+                { searchFilters: nonTypeFilters, page },
+                { signal: thunkAPI.signal }
             );
             return response.data;
         } catch (error) {
@@ -176,8 +179,8 @@ export const listAggregateTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listAggregatetuples(
-                nonTypeFilters,
-                page
+                { searchFilters: nonTypeFilters, page },
+                { signal: thunkAPI.signal }
             );
             return response.data;
         } catch (error) {
@@ -193,7 +196,8 @@ export const listAggregateTasks = createAsyncThunk<
 const retrieveMethods: Record<
     TaskCategory,
     (
-        key: string
+        key: string,
+        config: AxiosRequestConfig
     ) => AxiosPromise<
         Testtuple | Traintuple | CompositeTraintuple | Aggregatetuple
     >
@@ -210,7 +214,7 @@ export const retrieveTask = createAsyncThunk<
 >('tasks/get', async ({ category, key }, thunkAPI) => {
     const method = retrieveMethods[category];
     try {
-        const response = await method(key);
+        const response = await method(key, { signal: thunkAPI.signal });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -227,7 +231,9 @@ export const retrieveLogs = createAsyncThunk<
     { rejectValue: string }
 >('tasks/logs', async (key: string, thunkAPI) => {
     try {
-        const response = await TasksApi.retrieveLogs(key);
+        const response = await TasksApi.retrieveLogs(key, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -255,11 +261,13 @@ export const tasksSlice = createSlice({
                 state.trainTasksLoading = false;
                 state.trainTasksError = '';
             })
-            .addCase(listTrainTasks.rejected, (state, { payload }) => {
-                state.trainTasks = [];
-                state.trainTasksCount = 0;
-                state.trainTasksLoading = false;
-                state.trainTasksError = payload || 'Unknown error';
+            .addCase(listTrainTasks.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.trainTasks = [];
+                    state.trainTasksCount = 0;
+                    state.trainTasksLoading = false;
+                    state.trainTasksError = payload || 'Unknown error';
+                }
             })
             .addCase(listTestTasks.pending, (state) => {
                 state.testTasks = [];
@@ -272,11 +280,13 @@ export const tasksSlice = createSlice({
                 state.testTasksLoading = false;
                 state.testTasksError = '';
             })
-            .addCase(listTestTasks.rejected, (state, { payload }) => {
-                state.testTasks = [];
-                state.testTasksCount = 0;
-                state.testTasksLoading = false;
-                state.testTasksError = payload || 'Unknown error';
+            .addCase(listTestTasks.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.testTasks = [];
+                    state.testTasksCount = 0;
+                    state.testTasksLoading = false;
+                    state.testTasksError = payload || 'Unknown error';
+                }
             })
             .addCase(listCompositeTasks.pending, (state) => {
                 state.compositeTasks = [];
@@ -289,12 +299,17 @@ export const tasksSlice = createSlice({
                 state.compositeTasksLoading = false;
                 state.compositeTasksError = '';
             })
-            .addCase(listCompositeTasks.rejected, (state, { payload }) => {
-                state.compositeTasks = [];
-                state.compositeTasksCount = 0;
-                state.compositeTasksLoading = false;
-                state.compositeTasksError = payload || 'Unknown error';
-            })
+            .addCase(
+                listCompositeTasks.rejected,
+                (state, { payload, error }) => {
+                    if (error.name !== 'AbortError') {
+                        state.compositeTasks = [];
+                        state.compositeTasksCount = 0;
+                        state.compositeTasksLoading = false;
+                        state.compositeTasksError = payload || 'Unknown error';
+                    }
+                }
+            )
             .addCase(listAggregateTasks.pending, (state) => {
                 state.aggregateTasks = [];
                 state.aggregateTasksLoading = true;
@@ -306,12 +321,17 @@ export const tasksSlice = createSlice({
                 state.aggregateTasksLoading = false;
                 state.aggregateTasksError = '';
             })
-            .addCase(listAggregateTasks.rejected, (state, { payload }) => {
-                state.aggregateTasks = [];
-                state.aggregateTasksCount = 0;
-                state.aggregateTasksLoading = false;
-                state.aggregateTasksError = payload || 'Unknown error';
-            })
+            .addCase(
+                listAggregateTasks.rejected,
+                (state, { payload, error }) => {
+                    if (error.name !== 'AbortError') {
+                        state.aggregateTasks = [];
+                        state.aggregateTasksCount = 0;
+                        state.aggregateTasksLoading = false;
+                        state.aggregateTasksError = payload || 'Unknown error';
+                    }
+                }
+            )
             .addCase(retrieveTask.pending, (state) => {
                 state.taskLoading = true;
                 state.taskError = '';

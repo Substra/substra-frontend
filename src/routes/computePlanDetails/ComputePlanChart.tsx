@@ -11,7 +11,8 @@ import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppSelector } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -48,14 +49,24 @@ const ComputePlanChart = (): JSX.Element => {
         }
     }, [computePlan?.status]);
 
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbortSeries = useDispatchWithAutoAbort();
+    const dispatchWithAutoAbortComputePlan = useDispatchWithAutoAbort();
+
     useEffect(() => {
+        const destructors: (() => void)[] = [];
         if (key) {
-            dispatch(loadSeries(key));
+            destructors.push(dispatchWithAutoAbortSeries(loadSeries(key)));
         }
         if (key && key !== computePlan?.key) {
-            dispatch(retrieveComputePlan(key));
+            destructors.push(
+                dispatchWithAutoAbortComputePlan(retrieveComputePlan(key))
+            );
         }
+        return () => {
+            for (const destructor of destructors) {
+                destructor();
+            }
+        };
     }, [key]);
 
     useDocumentTitleEffect(

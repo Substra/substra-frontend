@@ -29,7 +29,8 @@ import {
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
 
-import { useAppDispatch, useSearchFiltersEffect } from '@/hooks';
+import { useSearchFiltersEffect } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
     TableFiltersContext,
@@ -91,11 +92,11 @@ const TasksTable = ({
         setLocationWithParams,
     } = useLocationWithParams();
 
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useSearchFiltersEffect(() => {
         const action = list();
         if (action) {
-            dispatch(action);
+            return dispatchWithAutoAbort(action);
         }
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [searchFilters, category, page, computePlan]);

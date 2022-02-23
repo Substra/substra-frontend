@@ -15,11 +15,8 @@ import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 
 import { formatDate } from '@/libs/utils';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersEffect,
-} from '@/hooks';
+import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -53,7 +50,7 @@ import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
 const Algos = (): JSX.Element => {
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
         params: { search: searchFilters, page },
         setLocationWithParams,
@@ -64,7 +61,9 @@ const Algos = (): JSX.Element => {
     const algosCount = useAppSelector((state) => state.algos.algosCount);
 
     useSearchFiltersEffect(() => {
-        dispatch(listAlgos({ filters: searchFilters, page }));
+        return dispatchWithAutoAbort(
+            listAlgos({ filters: searchFilters, page })
+        );
     }, [searchFilters, page]);
 
     const key = useKeyFromPath(PATHS.ALGO);

@@ -1,9 +1,8 @@
-import { PaginatedApiResponse } from '../common/CommonTypes';
+import { APIListArgs, PaginatedApiResponse } from '../common/CommonTypes';
 import { MetricType } from './MetricsTypes';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/metric/',
@@ -11,16 +10,17 @@ const URLS = {
 };
 
 export const listMetrics = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<MetricType>> => {
-    return API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
+    return API.authenticatedGet(URLS.LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
-export const retrieveMetric = (key: string): AxiosPromise<MetricType> =>
-    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
-
-export default {
-    listMetrics,
-    retrieveMetric,
-};
+export const retrieveMetric = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<MetricType> =>
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);

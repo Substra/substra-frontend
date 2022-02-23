@@ -1,4 +1,4 @@
-import NodesAPI from './NodesApi';
+import * as NodesAPI from './NodesApi';
 import { NodeInfoType, NodeType } from './NodesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';

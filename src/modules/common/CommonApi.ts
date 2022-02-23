@@ -1,10 +1,8 @@
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API from '@/libs/request';
 
-export const retrieveDescription = (url: string): AxiosPromise<string> =>
-    API.authenticatedGet(url);
-
-export default {
-    retrieveDescription,
-};
+export const retrieveDescription = (
+    url: string,
+    config: AxiosRequestConfig
+): AxiosPromise<string> => API.authenticatedGet(url, config);

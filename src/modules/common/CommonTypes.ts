@@ -1,3 +1,5 @@
+import { SearchFilterType } from '@/libs/searchFilter';
+
 export interface PermissionType {
     public: boolean;
     authorized_ids: string[];
@@ -37,3 +39,5 @@ export interface FileT {
 export interface HasKey {
     key: string;
 }
+
+export type APIListArgs = { searchFilters: SearchFilterType[]; page?: number };

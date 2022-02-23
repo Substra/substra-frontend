@@ -20,8 +20,3 @@ export const retrieveInfo = (
 
     return API.anonymousGet(URLS.INFO);
 };
-
-export default {
-    listNodes,
-    retrieveInfo,
-};

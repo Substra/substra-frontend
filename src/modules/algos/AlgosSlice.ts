@@ -1,10 +1,10 @@
 import { PaginatedApiResponse } from '../common/CommonTypes';
-import AlgosApi from './AlgosApi';
+import * as AlgosApi from './AlgosApi';
 import { AlgoT } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import CommonApi from '@/modules/common/CommonApi';
+import * as CommonApi from '@/modules/common/CommonApi';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
@@ -51,7 +51,10 @@ export const listAlgos = createAsyncThunk<
     try {
         const standardFilters = filters.filter((sf) => sf.asset === 'algo');
 
-        const response = await AlgosApi.listAlgos(standardFilters, page);
+        const response = await AlgosApi.listAlgos(
+            { searchFilters: standardFilters, page },
+            { signal: thunkAPI.signal }
+        );
 
         return response.data;
     } catch (error) {
@@ -69,7 +72,9 @@ export const retrieveAlgo = createAsyncThunk<
     { rejectValue: string }
 >('algos/get', async (key: string, thunkAPI) => {
     try {
-        const response = await AlgosApi.retrieveAlgo(key);
+        const response = await AlgosApi.retrieveAlgo(key, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -86,7 +91,9 @@ export const retrieveDescription = createAsyncThunk<
     { rejectValue: string }
 >('algos/description', async (descriptionURL: string, thunkAPI) => {
     try {
-        const response = await CommonApi.retrieveDescription(descriptionURL);
+        const response = await CommonApi.retrieveDescription(descriptionURL, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -113,11 +120,13 @@ export const algosSlice = createSlice({
                 state.algosLoading = false;
                 state.algosError = '';
             })
-            .addCase(listAlgos.rejected, (state, { payload }) => {
-                state.algos = [];
-                state.algosCount = 0;
-                state.algosLoading = false;
-                state.algosError = payload || 'Unknown error';
+            .addCase(listAlgos.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.algos = [];
+                    state.algosCount = 0;
+                    state.algosLoading = false;
+                    state.algosError = payload || 'Unknown error';
+                }
             })
             .addCase(retrieveAlgo.pending, (state) => {
                 state.algoLoading = true;

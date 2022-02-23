@@ -17,11 +17,8 @@ import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 import { formatDate } from '@/libs/utils';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersEffect,
-} from '@/hooks';
+import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -49,14 +46,16 @@ import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
 const Metrics = (): JSX.Element => {
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
         params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
 
     useSearchFiltersEffect(() => {
-        dispatch(listMetrics({ filters: searchFilters, page }));
+        return dispatchWithAutoAbort(
+            listMetrics({ filters: searchFilters, page })
+        );
     }, [searchFilters, page]);
 
     const metrics: MetricType[] = useAppSelector(

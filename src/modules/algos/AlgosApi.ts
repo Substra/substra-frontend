@@ -1,10 +1,12 @@
 import { AlgoT } from './AlgosTypes';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import {
+    APIListArgs,
+    PaginatedApiResponse,
+} from '@/modules/common/CommonTypes';
 
 import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/algo/',
@@ -12,15 +14,16 @@ const URLS = {
 };
 
 export const listAlgos = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<AlgoT>> =>
-    API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
+    API.authenticatedGet(URLS.LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 
-export const retrieveAlgo = (key: string): AxiosPromise<AlgoT> =>
-    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
-
-export default {
-    listAlgos,
-    retrieveAlgo,
-};
+export const retrieveAlgo = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<AlgoT> =>
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);

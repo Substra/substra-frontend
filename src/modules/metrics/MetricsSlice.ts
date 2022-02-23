@@ -1,9 +1,9 @@
-import MetricsAPI from './MetricsApi';
+import * as MetricsAPI from './MetricsApi';
 import { MetricType } from './MetricsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import CommonApi from '@/modules/common/CommonApi';
+import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
@@ -48,7 +48,10 @@ export const listMetrics = createAsyncThunk<
     { rejectValue: string }
 >('metrics/list', async ({ filters, page }: listMetricsArgs, thunkAPI) => {
     try {
-        const response = await MetricsAPI.listMetrics(filters, page);
+        const response = await MetricsAPI.listMetrics(
+            { searchFilters: filters, page },
+            { signal: thunkAPI.signal }
+        );
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -65,7 +68,9 @@ export const retrieveMetric = createAsyncThunk<
     { rejectValue: string }
 >('metrics/get', async (key: string, thunkAPI) => {
     try {
-        const response = await MetricsAPI.retrieveMetric(key);
+        const response = await MetricsAPI.retrieveMetric(key, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -82,7 +87,9 @@ export const retrieveDescription = createAsyncThunk<
     { rejectValue: string }
 >('metrics/description', async (descriptionURL: string, thunkAPI) => {
     try {
-        const response = await CommonApi.retrieveDescription(descriptionURL);
+        const response = await CommonApi.retrieveDescription(descriptionURL, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -109,11 +116,13 @@ export const metricsSlice = createSlice({
                 state.metricsError = '';
                 state.metricsCount = payload.count;
             })
-            .addCase(listMetrics.rejected, (state, { payload }) => {
-                state.metrics = [];
-                state.metricsCount = 0;
-                state.metricsLoading = false;
-                state.metricsError = payload || 'Unknown error';
+            .addCase(listMetrics.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.metrics = [];
+                    state.metricsCount = 0;
+                    state.metricsLoading = false;
+                    state.metricsError = payload || 'Unknown error';
+                }
             })
             .addCase(retrieveMetric.pending, (state) => {
                 state.metricLoading = true;

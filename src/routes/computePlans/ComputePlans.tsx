@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import ComputePlanTr from './components/ComputePlanTr';
 import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
@@ -22,12 +22,10 @@ import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersEffect,
-} from '@/hooks';
+import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useEffectWithAbortController from '@/hooks/useEffectWithAbortController';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -54,7 +52,7 @@ import TablePagination from '@/components/TablePagination';
 declare const MELLODDY: boolean;
 
 const ComputePlans = (): JSX.Element => {
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
         params: { page, search: searchFilters },
     } = useLocationWithParams();
@@ -76,12 +74,9 @@ const ComputePlans = (): JSX.Element => {
         useState<Record<string, boolean>>({});
 
     useSearchFiltersEffect(() => {
-        const promise = dispatch(
+        return dispatchWithAutoAbort(
             listComputePlans({ filters: searchFilters, page })
         );
-        return () => {
-            promise.abort();
-        };
     }, [searchFilters, page]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
@@ -182,38 +177,26 @@ const ComputePlans = (): JSX.Element => {
         }
     };
 
-    const abortControllerRef = useRef<AbortController | null>(null);
+    useEffectWithAbortController(
+        (abortController) => {
+            const computePlanKeys = [
+                ...selectedKeys,
+                ...favorites
+                    .filter((cp) => !selectedKeys.includes(cp.key))
+                    .map((cp) => cp.key),
+                ...computePlans
+                    .filter(
+                        (cp) =>
+                            !selectedKeys.includes(cp.key) && !isFavorite(cp)
+                    )
+                    .map((cp) => cp.key),
+            ];
 
-    useEffect(() => {
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
-        abortControllerRef.current = new AbortController();
-
-        const computePlanKeys = [
-            ...selectedKeys,
-            ...favorites
-                .filter((cp) => !selectedKeys.includes(cp.key))
-                .map((cp) => cp.key),
-            ...computePlans
-                .filter(
-                    (cp) => !selectedKeys.includes(cp.key) && !isFavorite(cp)
-                )
-                .map((cp) => cp.key),
-        ];
-
-        initComputePlansDetails(computePlanKeys);
-        retrieveComputePlansDetails(
-            computePlanKeys,
-            abortControllerRef.current
-        );
-
-        return () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
-        };
-    }, [computePlans]);
+            initComputePlansDetails(computePlanKeys);
+            retrieveComputePlansDetails(computePlanKeys, abortController);
+        },
+        [computePlans]
+    );
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;

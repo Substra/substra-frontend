@@ -1,4 +1,4 @@
-import { PaginatedApiResponse } from '../common/CommonTypes';
+import { APIListArgs, PaginatedApiResponse } from '../common/CommonTypes';
 import {
     TraintupleStub,
     CompositeTraintupleStub,
@@ -9,10 +9,9 @@ import {
     Traintuple,
     AggregatetupleStub,
 } from './TuplesTypes';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
 
 export const URLS = {
     AGGREGATE_LIST: '/aggregatetuple/',
@@ -29,74 +28,77 @@ export const URLS = {
 };
 
 export const listAggregatetuples = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<AggregatetupleStub>> => {
-    return API.authenticatedGet(
-        URLS.AGGREGATE_LIST,
-        getApiOptions(searchFilters, page)
-    );
+    return API.authenticatedGet(URLS.AGGREGATE_LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
 export const listCompositeTraintuples = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>> => {
-    return API.authenticatedGet(
-        URLS.COMPOSITE_LIST,
-        getApiOptions(searchFilters, page)
-    );
+    return API.authenticatedGet(URLS.COMPOSITE_LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
 export const listTesttuples = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TesttupleStub>> => {
-    return API.authenticatedGet(
-        URLS.TEST_LIST,
-        getApiOptions(searchFilters, page)
-    );
+    return API.authenticatedGet(URLS.TEST_LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
 export const listTraintuples = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TraintupleStub>> => {
-    return API.authenticatedGet(
-        URLS.TRAIN_LIST,
-        getApiOptions(searchFilters, page)
-    );
+    return API.authenticatedGet(URLS.TRAIN_LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
 export const retrieveAggregateTuple = (
-    key: string
+    key: string,
+    config: AxiosRequestConfig
 ): AxiosPromise<Aggregatetuple> =>
-    API.authenticatedGet(URLS.AGGREGATE_RETRIEVE.replace('__KEY__', key));
+    API.authenticatedGet(
+        URLS.AGGREGATE_RETRIEVE.replace('__KEY__', key),
+        config
+    );
 
 export const retrieveCompositeTraintuple = (
-    key: string
+    key: string,
+    config: AxiosRequestConfig
 ): AxiosPromise<CompositeTraintuple> =>
-    API.authenticatedGet(URLS.COMPOSITE_RETRIEVE.replace('__KEY__', key));
+    API.authenticatedGet(
+        URLS.COMPOSITE_RETRIEVE.replace('__KEY__', key),
+        config
+    );
 
-export const retrieveTesttuple = (key: string): AxiosPromise<Testtuple> =>
-    API.authenticatedGet(URLS.TEST_RETRIEVE.replace('__KEY__', key));
+export const retrieveTesttuple = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<Testtuple> =>
+    API.authenticatedGet(URLS.TEST_RETRIEVE.replace('__KEY__', key), config);
 
-export const retrieveTraintuple = (key: string): AxiosPromise<Traintuple> =>
-    API.authenticatedGet(URLS.TRAIN_RETRIEVE.replace('__KEY__', key));
+export const retrieveTraintuple = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<Traintuple> =>
+    API.authenticatedGet(URLS.TRAIN_RETRIEVE.replace('__KEY__', key), config);
 
-export const retrieveLogs = (key: string): AxiosPromise<string> =>
-    API.authenticatedGet(URLS.LOGS_RETRIEVE.replace('__KEY__', key));
-
-export default {
-    listAggregatetuples,
-    listCompositeTraintuples,
-    listTesttuples,
-    listTraintuples,
-
-    retrieveAggregateTuple,
-    retrieveCompositeTraintuple,
-    retrieveTesttuple,
-    retrieveTraintuple,
-
-    retrieveLogs,
-};
+export const retrieveLogs = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<string> =>
+    API.authenticatedGet(URLS.LOGS_RETRIEVE.replace('__KEY__', key), config);

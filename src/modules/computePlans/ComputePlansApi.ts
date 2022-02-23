@@ -1,7 +1,10 @@
 import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import {
+    APIListArgs,
+    PaginatedApiResponse,
+} from '@/modules/common/CommonTypes';
 import {
     Aggregatetuple,
     CompositeTraintupleStub,
@@ -10,7 +13,6 @@ import {
 } from '@/modules/tasks/TuplesTypes';
 
 import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/compute_plan/',
@@ -22,67 +24,64 @@ const URLS = {
 };
 
 export const listComputePlans = (
-    searchFilters: SearchFilterType[],
-    page: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<ComputePlanStub>> =>
-    API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
+    API.authenticatedGet(URLS.LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 
 export const retrieveComputePlan = (
     key: string,
-    config?: AxiosRequestConfig
+    config: AxiosRequestConfig
 ): AxiosPromise<ComputePlanT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
+export type APIListCPTuplesArgs = APIListArgs & {
+    key: string;
+    pageSize?: number;
+};
+
 export const listComputePlanTesttuples = (
-    key: string,
-    searchFilters: SearchFilterType[],
-    page: number,
-    pageSize?: number
+    { key, searchFilters, page, pageSize }: APIListCPTuplesArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TesttupleStub>> => {
-    return API.authenticatedGet(
-        URLS.LIST_TESTTUPLES.replace('__KEY__', key),
-        getApiOptions(searchFilters, page, pageSize)
-    );
+    return API.authenticatedGet(URLS.LIST_TESTTUPLES.replace('__KEY__', key), {
+        ...getApiOptions(searchFilters, page, pageSize),
+        ...config,
+    });
 };
 export const listComputePlanTraintuples = (
-    key: string,
-    searchFilters: SearchFilterType[],
-    page: number,
-    pageSize?: number
+    { key, searchFilters, page, pageSize }: APIListCPTuplesArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TraintupleStub>> => {
-    return API.authenticatedGet(
-        URLS.LIST_TRAINTUPLES.replace('__KEY__', key),
-        getApiOptions(searchFilters, page, pageSize)
-    );
+    return API.authenticatedGet(URLS.LIST_TRAINTUPLES.replace('__KEY__', key), {
+        ...getApiOptions(searchFilters, page, pageSize),
+        ...config,
+    });
 };
 export const listComputePlanCompositeTraintuples = (
-    key: string,
-    searchFilters: SearchFilterType[],
-    page: number,
-    pageSize?: number
+    { key, searchFilters, page, pageSize }: APIListCPTuplesArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>> => {
     return API.authenticatedGet(
         URLS.LIST_COMPOSITE_TRAINTUPLES.replace('__KEY__', key),
-        getApiOptions(searchFilters, page, pageSize)
+        {
+            ...getApiOptions(searchFilters, page, pageSize),
+            ...config,
+        }
     );
 };
 export const listComputePlanAggregatetuples = (
-    key: string,
-    searchFilters: SearchFilterType[],
-    page: number,
-    pageSize?: number
+    { key, searchFilters, page, pageSize }: APIListCPTuplesArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<Aggregatetuple>> => {
     return API.authenticatedGet(
         URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
-        getApiOptions(searchFilters, page, pageSize)
+        {
+            ...getApiOptions(searchFilters, page, pageSize),
+            ...config,
+        }
     );
-};
-
-export default {
-    listComputePlans,
-    retrieveComputePlan,
-    listComputePlanTesttuples,
-    listComputePlanTraintuples,
-    listComputePlanAggregatetuples,
-    listComputePlanCompositeTraintuples,
 };

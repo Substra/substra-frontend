@@ -5,8 +5,8 @@ import { useRoute } from 'wouter';
 import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { loadSeries } from '@/modules/series/SeriesSlice';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
@@ -20,8 +20,6 @@ import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
 declare const MELLODDY: boolean;
 
 const Compare = (): JSX.Element => {
-    const dispatch = useAppDispatch();
-
     const [, params] = useRoute(PATHS.COMPARE);
     const keys = decodeURIComponent(params?.keys || '').split(',');
     useDocumentTitleEffect(
@@ -30,9 +28,22 @@ const Compare = (): JSX.Element => {
         []
     );
 
+    const dispatchWithAutoAbortSeries = useDispatchWithAutoAbort();
+    const dispatchWithAutoAbortComputePlans = useDispatchWithAutoAbort();
+
     useEffect(() => {
-        dispatch(retrieveComputePlans({ computePlanKeys: keys }));
-        dispatch(loadSeries(keys));
+        const destructors: (() => void)[] = [];
+        destructors.push(
+            dispatchWithAutoAbortComputePlans(
+                retrieveComputePlans({ computePlanKeys: keys })
+            )
+        );
+        destructors.push(dispatchWithAutoAbortSeries(loadSeries(keys)));
+        return () => {
+            for (const destructor of destructors) {
+                destructor();
+            }
+        };
     }, []);
 
     const loading = useAppSelector((state) => state.series.loading);

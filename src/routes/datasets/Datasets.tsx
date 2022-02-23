@@ -14,11 +14,8 @@ import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 
 import { formatDate } from '@/libs/utils';
 
-import {
-    useAppDispatch,
-    useAppSelector,
-    useSearchFiltersEffect,
-} from '@/hooks';
+import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
@@ -45,14 +42,16 @@ import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
 const Datasets = (): JSX.Element => {
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
         params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
 
     useSearchFiltersEffect(() => {
-        dispatch(listDatasets({ filters: searchFilters, page }));
+        return dispatchWithAutoAbort(
+            listDatasets({ filters: searchFilters, page })
+        );
     }, [searchFilters, page]);
 
     const datasets: DatasetStubType[] = useAppSelector(

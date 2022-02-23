@@ -16,7 +16,8 @@ import {
 } from '@/modules/computePlans/ComputePlansSlice';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppSelector } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 
@@ -49,10 +50,10 @@ const GenericTasks = ({
         (state) => state.computePlans.computePlanLoading
     );
 
-    const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useEffect(() => {
         if (key && key !== computePlan?.key) {
-            dispatch(retrieveComputePlan(key));
+            return dispatchWithAutoAbort(retrieveComputePlan(key));
         }
     }, [key, computePlan?.key]);
 

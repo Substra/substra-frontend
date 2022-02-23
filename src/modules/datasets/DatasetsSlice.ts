@@ -1,9 +1,9 @@
-import DatasetAPI from './DatasetsApi';
+import * as DatasetAPI from './DatasetsApi';
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import CommonApi from '@/modules/common/CommonApi';
+import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
@@ -56,7 +56,10 @@ export const listDatasets = createAsyncThunk<
     { rejectValue: string }
 >('datasets/list', async ({ filters, page }: listDatasetsArgs, thunkAPI) => {
     try {
-        const response = await DatasetAPI.listDatasets(filters, page);
+        const response = await DatasetAPI.listDatasets(
+            { searchFilters: filters, page },
+            { signal: thunkAPI.signal }
+        );
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -73,7 +76,9 @@ export const retrieveDataset = createAsyncThunk<
     { rejectValue: string }
 >('datasets/get', async (key: string, thunkAPI) => {
     try {
-        const response = await DatasetAPI.retrieveDataset(key);
+        const response = await DatasetAPI.retrieveDataset(key, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -90,7 +95,9 @@ export const retrieveDescription = createAsyncThunk<
     { rejectValue: string }
 >('datasets/description', async (descriptionURL: string, thunkAPI) => {
     try {
-        const response = await CommonApi.retrieveDescription(descriptionURL);
+        const response = await CommonApi.retrieveDescription(descriptionURL, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -107,7 +114,9 @@ export const retrieveOpener = createAsyncThunk<
     { rejectValue: string }
 >('datasets/opener', async (openerURL: string, thunkAPI) => {
     try {
-        const response = await DatasetAPI.retrieveOpener(openerURL);
+        const response = await DatasetAPI.retrieveOpener(openerURL, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -134,11 +143,13 @@ export const datasetsSlice = createSlice({
                 state.datasetsLoading = false;
                 state.datasetsError = '';
             })
-            .addCase(listDatasets.rejected, (state, { payload }) => {
-                state.datasets = [];
-                state.datasetsCount = 0;
-                state.datasetsLoading = false;
-                state.datasetsError = payload || 'Unknown error';
+            .addCase(listDatasets.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.datasets = [];
+                    state.datasetsCount = 0;
+                    state.datasetsLoading = false;
+                    state.datasetsError = payload || 'Unknown error';
+                }
             })
             .addCase(retrieveDataset.pending, (state) => {
                 state.datasetLoading = true;

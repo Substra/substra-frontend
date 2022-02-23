@@ -1,13 +1,13 @@
-import { PaginatedApiResponse } from '../common/CommonTypes';
-import ComputePlansApi from '../computePlans/ComputePlansApi';
-import { DatasetStubType } from '../datasets/DatasetsTypes';
 import { SerieT } from './SeriesTypes';
 import { buildAverageSerie, buildSeries } from './SeriesUtils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise } from 'axios';
 
-import MetricsApi from '@/modules//metrics/MetricsApi';
-import DatasetsApi from '@/modules/datasets/DatasetsApi';
+import * as MetricsApi from '@/modules//metrics/MetricsApi';
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
+import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
+import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import {
     MELLODDY_LARGE5_NODE_IDS,
@@ -15,7 +15,6 @@ import {
 } from '@/modules/nodes/NodesUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
-import { getAllPagesResults } from '@/libs/request';
 import { SearchFilterType } from '@/libs/searchFilter';
 
 declare const MELLODDY: boolean;
@@ -35,15 +34,29 @@ const initialState: SeriesState = {
 const getComputePlanSeries = async (
     computePlanKey: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rejectWithValue: (value: string) => any
+    rejectWithValue: (value: string) => any,
+    signal: AbortSignal
 ): Promise<SerieT[]> => {
     let testtuples: TesttupleStub[];
 
     try {
-        testtuples = await getAllPagesResults<
-            TesttupleStub,
-            [string, SearchFilterType[]]
-        >(ComputePlansApi.listComputePlanTesttuples, [computePlanKey, []], 100);
+        const pageSize = 100;
+        const firstPageResponse =
+            await ComputePlansApi.listComputePlanTesttuples(
+                { key: computePlanKey, searchFilters: [], pageSize, page: 1 },
+                { signal }
+            );
+        const lastPage = Math.ceil(firstPageResponse.data.count / pageSize);
+        testtuples = firstPageResponse.data.results;
+
+        for (let page = 2; page <= lastPage; page++) {
+            const pageResponse =
+                await ComputePlansApi.listComputePlanTesttuples(
+                    { key: computePlanKey, searchFilters: [], pageSize, page },
+                    { signal }
+                );
+            testtuples = [...testtuples, ...pageResponse.data.results];
+        }
     } catch (error) {
         if (axios.isAxiosError(error)) {
             return rejectWithValue(error.response?.data);
@@ -87,8 +100,14 @@ const getComputePlanSeries = async (
             AxiosPromise<PaginatedApiResponse<MetricType>>,
             AxiosPromise<PaginatedApiResponse<DatasetStubType>>
         ] = [
-            MetricsApi.listMetrics(metricSearchFilters),
-            DatasetsApi.listDatasets(datasetSearchFilters),
+            MetricsApi.listMetrics(
+                { searchFilters: metricSearchFilters },
+                { signal }
+            ),
+            DatasetsApi.listDatasets(
+                { searchFilters: datasetSearchFilters },
+                { signal }
+            ),
         ];
         let responses;
         try {
@@ -203,7 +222,8 @@ export const loadSeries = createAsyncThunk<
     for (const computePlanKey of computePlanKeys) {
         const computePlanSeries = await getComputePlanSeries(
             computePlanKey,
-            thunkAPI.rejectWithValue
+            thunkAPI.rejectWithValue,
+            thunkAPI.signal
         );
 
         series = [...series, ...computePlanSeries];

@@ -1,10 +1,12 @@
 import { DatasetType, DatasetStubType } from './DatasetsTypes';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
-import { PaginatedApiResponse } from '@/modules//common/CommonTypes';
+import {
+    APIListArgs,
+    PaginatedApiResponse,
+} from '@/modules//common/CommonTypes';
 
 import API, { getApiOptions } from '@/libs/request';
-import { SearchFilterType } from '@/libs/searchFilter';
 
 const URLS = {
     LIST: '/data_manager/',
@@ -12,20 +14,22 @@ const URLS = {
 };
 
 export const listDatasets = (
-    searchFilters: SearchFilterType[],
-    page?: number
+    { searchFilters, page }: APIListArgs,
+    config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<DatasetStubType>> => {
-    return API.authenticatedGet(URLS.LIST, getApiOptions(searchFilters, page));
+    return API.authenticatedGet(URLS.LIST, {
+        ...getApiOptions(searchFilters, page),
+        ...config,
+    });
 };
 
-export const retrieveDataset = (key: string): AxiosPromise<DatasetType> =>
-    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key));
+export const retrieveDataset = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<DatasetType> =>
+    API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
-export const retrieveOpener = (url: string): AxiosPromise<string> =>
-    API.authenticatedGet(url);
-
-export default {
-    listDatasets,
-    retrieveDataset,
-    retrieveOpener,
-};
+export const retrieveOpener = (
+    url: string,
+    config: AxiosRequestConfig
+): AxiosPromise<string> => API.authenticatedGet(url, config);
