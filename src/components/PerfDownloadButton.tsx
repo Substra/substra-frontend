@@ -1,4 +1,4 @@
-import { RefObject, useContext } from 'react';
+import { useContext } from 'react';
 
 import {
     Button,
@@ -11,26 +11,25 @@ import {
 import { toJpeg } from 'html-to-image';
 import { RiDownloadLine } from 'react-icons/ri';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
-
 import useDownloadPerfCsv from '@/hooks/useDownloadPerfCsv';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-interface PerfDownloadButtonProps {
-    series: SerieT[];
-    downloadRef: RefObject<HTMLDivElement>;
-}
-
-const PerfDownloadButton = ({
-    series,
-    downloadRef,
-}: PerfDownloadButtonProps): JSX.Element => {
-    const { computePlans } = useContext(PerfBrowserContext);
-    const downloadPerfCsv = useDownloadPerfCsv([series]);
+const PerfDownloadButton = (): JSX.Element => {
+    const {
+        computePlans,
+        loading,
+        selectedMetricName,
+        selectedSeriesGroup,
+        seriesGroups,
+        perfChartRef,
+    } = useContext(PerfBrowserContext);
+    const downloadPerfCsv = useDownloadPerfCsv(
+        selectedMetricName ? [selectedSeriesGroup] : seriesGroups
+    );
 
     const onDownloadImage = () => {
-        if (downloadRef.current) {
-            toJpeg(downloadRef.current, { backgroundColor: '#fff' }).then(
+        if (perfChartRef?.current) {
+            toJpeg(perfChartRef?.current, { backgroundColor: '#fff' }).then(
                 (dataUrl) => {
                     const link = document.createElement('a');
                     link.download =
@@ -52,14 +51,22 @@ const PerfDownloadButton = ({
                 leftIcon={<Icon as={RiDownloadLine} />}
                 variant="solid"
                 colorScheme="teal"
-                size="sm"
-                isDisabled={series.length === 0}
+                size="xs"
+                isDisabled={loading}
             >
                 Download...
             </MenuButton>
             <MenuList zIndex="popover">
-                <MenuItem onClick={onDownloadImage}>Download as JPEG</MenuItem>
-                <MenuItem onClick={downloadPerfCsv}>Download as CSV</MenuItem>
+                <MenuItem
+                    onClick={onDownloadImage}
+                    isDisabled={!selectedMetricName}
+                    fontSize="xs"
+                >
+                    Download as JPEG
+                </MenuItem>
+                <MenuItem onClick={downloadPerfCsv} fontSize="xs">
+                    Download as CSV
+                </MenuItem>
             </MenuList>
         </Menu>
     );

@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, {
+    createContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
@@ -64,6 +70,8 @@ interface PerfBrowserContext {
     setHoveredRank: (hoveredRank: number | null) => void;
     selectedRank: number | null;
     setSelectedRank: (selectedRank: number | null) => void;
+    // chart reference for JPEG export
+    perfChartRef: React.RefObject<HTMLDivElement>;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
@@ -98,6 +106,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     setHoveredRank: (hoveredRank) => {},
     selectedRank: null,
     setSelectedRank: (selectedRank) => {},
+    perfChartRef: { current: null },
 });
 /* eslint-enable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 
@@ -288,6 +297,8 @@ const usePerfBrowser = (
         MELLODDY ? 'epoch' : 'rank'
     );
 
+    const perfChartRef = useRef<HTMLDivElement>(null);
+
     return {
         context: {
             loading,
@@ -325,6 +336,8 @@ const usePerfBrowser = (
             setHoveredRank,
             selectedRank,
             setSelectedRank,
+            // for JPEG export
+            perfChartRef,
         },
     };
 };

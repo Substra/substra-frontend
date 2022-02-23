@@ -71,11 +71,7 @@ const PerfBrowser = ({
                 {!loading && (
                     <>
                         {selectedMetricName && (
-                            <PerfDetails
-                                metricName={selectedMetricName}
-                                onBack={() => setSelectedMetricName('')}
-                                series={selectedSeriesGroup}
-                            />
+                            <PerfDetails series={selectedSeriesGroup} />
                         )}
                         {!selectedMetricName && (
                             <PerfList

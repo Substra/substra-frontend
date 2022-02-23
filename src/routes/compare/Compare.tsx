@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import CompareBreadcrumbs from './components/CompareBreadcrumbs';
+import { HStack, Flex, Box } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
 import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
@@ -13,6 +15,7 @@ import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { PATHS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
+import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarSectionComputePlans from '@/components/PerfSidebarSectionComputePlans';
 import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
 import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
@@ -61,13 +64,33 @@ const Compare = (): JSX.Element => {
 
     return (
         <PerfBrowserContext.Provider value={context}>
-            <PerfBrowser
-                settingsComponents={[
-                    PerfSidebarSettingsNodes,
-                    ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
-                ]}
-                sectionComponents={[PerfSidebarSectionComputePlans]}
-            />
+            <Flex
+                direction="column"
+                alignItems="stretch"
+                flexGrow={1}
+                overflow="hidden"
+                alignSelf="stretch"
+            >
+                <HStack
+                    justifyContent="space-between"
+                    background="white"
+                    borderBottom="1px solid var(--chakra-colors-gray-100)"
+                >
+                    <CompareBreadcrumbs />
+                    <HStack paddingX="8">
+                        <Box>
+                            <PerfDownloadButton />
+                        </Box>
+                    </HStack>
+                </HStack>
+                <PerfBrowser
+                    settingsComponents={[
+                        PerfSidebarSettingsNodes,
+                        ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
+                    ]}
+                    sectionComponents={[PerfSidebarSectionComputePlans]}
+                />
+            </Flex>
         </PerfBrowserContext.Provider>
     );
 };

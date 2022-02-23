@@ -1,26 +1,20 @@
-import { useRef } from 'react';
+import { useContext } from 'react';
 
 import PerfRankDetails from './PerfRankDetails';
-import { Box, Button, Flex, HStack, VStack } from '@chakra-ui/react';
-import { RiArrowLeftLine } from 'react-icons/ri';
+import { Box, HStack, VStack } from '@chakra-ui/react';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+
 import PerfChart from '@/components/PerfChart';
-import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfEmptyState from '@/components/PerfEmptyState';
 
 interface PerfDetailsProps {
-    metricName: string;
-    onBack: () => void;
     series: SerieT[];
 }
-const PerfDetails = ({
-    metricName,
-    onBack,
-    series,
-}: PerfDetailsProps): JSX.Element => {
-    const perfChartRef = useRef<HTMLDivElement>(null);
+const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
+    const { perfChartRef } = useContext(PerfBrowserContext);
 
     return (
         <VStack
@@ -29,26 +23,10 @@ const PerfDetails = ({
             justifyContent="flex-start"
             alignItems="stretch"
             spacing="4"
-            paddingX="8"
-            paddingY="4"
+            padding="8"
             overflow="hidden"
             height="100%"
         >
-            <Flex justifyContent="space-between" alignItems="center">
-                <Button
-                    leftIcon={<RiArrowLeftLine />}
-                    onClick={onBack}
-                    variant="ghost"
-                    size="md"
-                    fontWeight="medium"
-                >
-                    {metricName}
-                </Button>
-                <PerfDownloadButton
-                    series={series}
-                    downloadRef={perfChartRef}
-                />
-            </Flex>
             <PerfEmptyState seriesGroups={series.length > 0 ? [series] : []} />
             {series.length > 0 && (
                 <HStack

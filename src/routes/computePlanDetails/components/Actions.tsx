@@ -1,9 +1,11 @@
-import { HStack, IconButton, Tooltip } from '@chakra-ui/react';
+import { Box, HStack, IconButton, Tooltip } from '@chakra-ui/react';
 import { RiStarLine, RiStarFill } from 'react-icons/ri';
 
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
+
+import PerfDownloadButton from '@/components/PerfDownloadButton';
 
 interface ActionsProps {
     computePlan: ComputePlanT | null;
@@ -34,6 +36,9 @@ const Actions = ({ computePlan, loading }: ActionsProps): JSX.Element => {
                     }
                 />
             </Tooltip>
+            <Box>
+                <PerfDownloadButton />
+            </Box>
         </HStack>
     );
 };

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add metrics to breadcrumb in CP chart page (#410)
 -   Nodes settings in Compute Plan Chart page (#413)
 -   Add zoom buttons on charts (#415)
+-   Breadcrumb and actions for Compare page (#418)
 
 ### Fixed
 
