@@ -12,7 +12,6 @@ import {
     HStack,
     Flex,
 } from '@chakra-ui/react';
-import { RiAddLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
@@ -122,25 +121,9 @@ const ComputePlans = (): JSX.Element => {
             >
                 <Flex justifyContent="space-between" paddingX="6">
                     <HStack spacing="2.5">
-                        {/**
-                         * FIXME:
-                         * Filters are broken in the backend (no status available in localrep for now),
-                         * so we disable the UI components for now.
-                         * */}
-                        {MELLODDY ? (
-                            <Button
-                                size="sm"
-                                backgroundColor="secondary"
-                                leftIcon={<RiAddLine />}
-                                isDisabled={true}
-                            >
-                                Add Filter
-                            </Button>
-                        ) : (
-                            <TableFilters>
-                                <ComputePlanStatusTableFilter />
-                            </TableFilters>
-                        )}
+                        <TableFilters>
+                            <ComputePlanStatusTableFilter />
+                        </TableFilters>
                         <SearchBar asset="compute_plan" />
                     </HStack>
                     <HStack spacing="4">

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Auto cancel pending HTTP calls when changing route or url params (#409)
 -   Changed wording and controls in perf chart settings (#416)
 -   Move all PerfBrowser inner state to PerfBrowserContext (#417)
+-   Enabled filters on compute plans page (#421)
 
 ## [0.13.0] - 2022-02-17
 
