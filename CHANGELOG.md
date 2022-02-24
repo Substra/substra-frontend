@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Rank/epoch typo in perf chart tooltip (#408)
 -   Add channel namespace to values stored in localStorage (#412)
 -   Catch cancel error when voluntarily aborting CP details calls (#414)
+-   Improve responsiveness of charts (#423)
 
 ### Changed
 

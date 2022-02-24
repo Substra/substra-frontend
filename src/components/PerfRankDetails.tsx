@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 
 import {
     Box,
@@ -84,50 +84,53 @@ const PerfRankDetails = ({ series }: PerfRankDetailsProps): JSX.Element => {
         string | undefined
     >(undefined);
 
-    const getRankData = (
-        rank: number
-    ): {
-        id: number;
-        computePlanKey: string;
-        testTaskKey?: string;
-        cpId: string;
-        lineId: string;
-        worker: string;
-        perf: string;
-    }[] => {
-        return series.map((serie) => {
-            // Look for rank or epoch based on X axis mode
-            const point = serie.points.find((p) => p[xAxisMode] === rank);
+    const rankData = useMemo(() => {
+        const getRankData = (
+            rank: number
+        ): {
+            id: number;
+            computePlanKey: string;
+            testTaskKey?: string;
+            cpId: string;
+            lineId: string;
+            worker: string;
+            perf: string;
+        }[] => {
+            return series.map((serie) => {
+                // Look for rank or epoch based on X axis mode
+                const point = serie.points.find((p) => p[xAxisMode] === rank);
 
-            let perf = 'N/A';
-            if (point?.perf) {
-                perf = point.perf.toFixed(3);
-            }
+                let perf = 'N/A';
+                if (point?.perf) {
+                    perf = point.perf.toFixed(3);
+                }
 
-            return {
-                id: serie.id,
-                computePlanKey: serie.computePlanKey,
-                testTaskKey: point?.testTaskKey,
-                cpId: `#${
-                    sortedComputePlanKeys.indexOf(serie.computePlanKey) + 1
-                }`,
-                lineId: `L${lineId(serie.id)}`,
-                worker: serie.worker,
-                perf,
-            };
-        });
-    };
+                return {
+                    id: serie.id,
+                    computePlanKey: serie.computePlanKey,
+                    testTaskKey: point?.testTaskKey,
+                    cpId: `#${
+                        sortedComputePlanKeys.indexOf(serie.computePlanKey) + 1
+                    }`,
+                    lineId: `L${lineId(serie.id)}`,
+                    worker: serie.worker,
+                    perf,
+                };
+            });
+        };
 
-    let rankData = [];
-    if (selectedRank !== null) {
-        rankData = getRankData(selectedRank);
-    } else if (hoveredRank !== null) {
-        rankData = getRankData(hoveredRank);
-    } else {
-        const max =
-            xAxisMode === 'rank' ? getMaxRank(series) : getMaxEpoch(series);
-        rankData = getRankData(max);
-    }
+        let rankData = [];
+        if (selectedRank !== null) {
+            rankData = getRankData(selectedRank);
+        } else if (hoveredRank !== null) {
+            rankData = getRankData(hoveredRank);
+        } else {
+            const max =
+                xAxisMode === 'rank' ? getMaxRank(series) : getMaxEpoch(series);
+            rankData = getRankData(max);
+        }
+        return rankData;
+    }, [selectedRank, hoveredRank, xAxisMode, series, sortedComputePlanKeys]);
 
     const handleOnclick = (taskKey: string | undefined) => {
         setDrawerTestTaskKey(taskKey);

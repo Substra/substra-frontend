@@ -229,17 +229,24 @@ const usePerfBrowser = (
             });
         };
 
-    const nodes = getSeriesNodes(series);
+    const nodes = useMemo(() => getSeriesNodes(series), [series]);
 
     // Define seriesGroups and selectedSeriesGroup
-    const filteredSeries = series.filter(
-        (serie) =>
-            selectedComputePlanKeys.includes(serie.computePlanKey) &&
-            selectedNodeIds.includes(serie.worker) &&
-            !!selectedComputePlanNodes[serie.computePlanKey] &&
-            selectedComputePlanNodes[serie.computePlanKey][serie.worker]
-    );
-    const seriesGroups = buildSeriesGroups(filteredSeries);
+    const seriesGroups = useMemo(() => {
+        const filteredSeries = series.filter(
+            (serie) =>
+                selectedComputePlanKeys.includes(serie.computePlanKey) &&
+                selectedNodeIds.includes(serie.worker) &&
+                !!selectedComputePlanNodes[serie.computePlanKey] &&
+                selectedComputePlanNodes[serie.computePlanKey][serie.worker]
+        );
+        return buildSeriesGroups(filteredSeries);
+    }, [
+        series,
+        selectedComputePlanKeys,
+        selectedNodeIds,
+        selectedComputePlanNodes,
+    ]);
 
     const selectedSeriesGroup = useMemo(() => {
         if (!selectedMetricName) {
@@ -288,10 +295,11 @@ const usePerfBrowser = (
         }
     }, [series.length, computePlans.length]);
 
-    const sortedComputePlanKeys = computePlans.map(
-        (computePlan) => computePlan.key
-    );
-    sortedComputePlanKeys.sort();
+    const sortedComputePlanKeys = useMemo(() => {
+        const keys = computePlans.map((computePlan) => computePlan.key);
+        keys.sort();
+        return keys;
+    }, [computePlans]);
 
     const [xAxisMode, setXAxisMode] = useState<XAxisMode>(
         MELLODDY ? 'epoch' : 'rank'

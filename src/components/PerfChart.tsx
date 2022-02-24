@@ -58,8 +58,9 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         );
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
-        const maxRank = getMaxRank(series);
-        const maxEpoch = getMaxEpoch(series);
+        const [maxRank, maxEpoch] = useMemo(() => {
+            return [getMaxRank(series), getMaxEpoch(series)];
+        }, [series]);
 
         const seriesDatasets = useMemo(
             () =>
@@ -82,7 +83,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 ],
                 datasets: seriesDatasets,
             }),
-            [maxRank, maxEpoch, seriesDatasets]
+            [maxRank, maxEpoch, seriesDatasets, xAxisMode]
         );
 
         const options = useMemo<ChartOptions<'line'>>(() => {
