@@ -1,15 +1,11 @@
 import CheckboxTd from './CheckboxTd';
-import { ComputePlanProgressSkeleton } from './ComputePlanTrSkeleton';
 import PinBox from './FavoriteBox';
 import StatusCell from './StatusCell';
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
-import {
-    ComputePlanStatus,
-    ComputePlanT,
-} from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { shortFormatDate } from '@/libs/utils';
@@ -22,8 +18,6 @@ import Timing from '@/components/Timing';
 
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;
-    computePlanDetails: ComputePlanT | undefined;
-    computePlanDetailsLoading: boolean | undefined;
     selectedKeys: string[];
     onSelectionChange: (computePlan: ComputePlanT) => () => void;
     isFavorite: (computePlan: ComputePlanT) => boolean;
@@ -35,8 +29,6 @@ declare const MELLODDY: boolean;
 
 const ComputePlanTr = ({
     computePlan,
-    computePlanDetails,
-    computePlanDetailsLoading,
     selectedKeys,
     onSelectionChange,
     isFavorite,
@@ -90,19 +82,7 @@ const ComputePlanTr = ({
                 </Text>
             </Td>
             <Td minWidth="255px">
-                {MELLODDY &&
-                computePlan.status === ComputePlanStatus.unknown &&
-                (computePlanDetailsLoading || !computePlanDetails) ? (
-                    <ComputePlanProgressSkeleton />
-                ) : (
-                    <StatusCell
-                        computePlan={
-                            MELLODDY && computePlanDetails
-                                ? computePlanDetails
-                                : computePlan
-                        }
-                    />
-                )}
+                <StatusCell computePlan={computePlan} />
             </Td>
             <Td>
                 <Text fontSize="xs">

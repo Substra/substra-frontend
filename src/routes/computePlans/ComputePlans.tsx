@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import ComputePlanTr from './components/ComputePlanTr';
 import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 import {
@@ -14,18 +12,15 @@ import {
     HStack,
     Flex,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { RiAddLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
-import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useEffectWithAbortController from '@/hooks/useEffectWithAbortController';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
@@ -57,21 +52,6 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters },
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
-    /** FIXME:
-     * the computePlanDetails and computePlanDetailsLoading are a temporary change,
-     * they are here to compensate for a perf issue of the backend.
-     *
-     * As a result, /compute_plan doesn't return task counts or statuses anymore,
-     * it's only included in /compute_plan/<key>
-     *
-     * We therefore have to fetch each CP independently once the list is loaded
-     * to have access to all data.
-     */
-    const [computePlansDetails, setComputePlansDetails] = useState<
-        Record<string, ComputePlanT | undefined>
-    >({});
-    const [computePlansDetailsLoading, setComputePlansDetailsLoading] =
-        useState<Record<string, boolean>>({});
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
@@ -124,79 +104,6 @@ const ComputePlans = (): JSX.Element => {
 
     const { favorites, isFavorite, onFavoriteChange } =
         useFavoriteComputePlans();
-
-    const initComputePlansDetails = (computePlanKeys: string[]) => {
-        const details: Record<string, undefined> = {};
-        const detailsLoading: Record<string, true> = {};
-        for (const computePlanKey of computePlanKeys) {
-            if (!computePlansDetails[computePlanKey]) {
-                details[computePlanKey] = undefined;
-                detailsLoading[computePlanKey] = true;
-            }
-        }
-        setComputePlansDetails((computePlanDetails) => ({
-            ...computePlanDetails,
-            ...details,
-        }));
-        setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
-            ...computePlansDetailsLoading,
-            ...detailsLoading,
-        }));
-    };
-
-    const retrieveComputePlansDetails = async (
-        computePlanKeys: string[],
-        abortController: AbortController
-    ) => {
-        // retrieve details one after the other (not in parallel)
-        for (const computePlanKey of computePlanKeys) {
-            // do not refetch already available details
-            if (computePlansDetails[computePlanKey]) {
-                continue;
-            }
-            // retrieve
-            try {
-                const response = await retrieveComputePlan(computePlanKey, {
-                    signal: abortController.signal,
-                });
-                const computePlan: ComputePlanT = response.data;
-                // save details
-                setComputePlansDetails((computePlansDetails) => ({
-                    ...computePlansDetails,
-                    [computePlanKey]: computePlan,
-                }));
-                setComputePlansDetailsLoading((computePlansDetailsLoading) => ({
-                    ...computePlansDetailsLoading,
-                    [computePlanKey]: false,
-                }));
-            } catch (error) {
-                if (!axios.isCancel(error)) {
-                    throw error;
-                }
-            }
-        }
-    };
-
-    useEffectWithAbortController(
-        (abortController) => {
-            const computePlanKeys = [
-                ...selectedKeys,
-                ...favorites
-                    .filter((cp) => !selectedKeys.includes(cp.key))
-                    .map((cp) => cp.key),
-                ...computePlans
-                    .filter(
-                        (cp) =>
-                            !selectedKeys.includes(cp.key) && !isFavorite(cp)
-                    )
-                    .map((cp) => cp.key),
-            ];
-
-            initComputePlansDetails(computePlanKeys);
-            retrieveComputePlansDetails(computePlanKeys, abortController);
-        },
-        [computePlans]
-    );
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
@@ -322,14 +229,6 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTr
                                     key={computePlan.key}
                                     computePlan={computePlan}
-                                    computePlanDetails={
-                                        computePlansDetails[computePlan.key]
-                                    }
-                                    computePlanDetailsLoading={
-                                        computePlansDetailsLoading[
-                                            computePlan.key
-                                        ]
-                                    }
                                     selectedKeys={selectedKeys}
                                     onSelectionChange={onSelectionChange}
                                     isFavorite={isFavorite}
@@ -348,14 +247,6 @@ const ComputePlans = (): JSX.Element => {
                                     <ComputePlanTr
                                         key={computePlan.key}
                                         computePlan={computePlan}
-                                        computePlanDetails={
-                                            computePlansDetails[computePlan.key]
-                                        }
-                                        computePlanDetailsLoading={
-                                            computePlansDetailsLoading[
-                                                computePlan.key
-                                            ]
-                                        }
                                         selectedKeys={selectedKeys}
                                         onSelectionChange={onSelectionChange}
                                         isFavorite={isFavorite}
@@ -392,16 +283,6 @@ const ComputePlans = (): JSX.Element => {
                                         <ComputePlanTr
                                             key={computePlan.key}
                                             computePlan={computePlan}
-                                            computePlanDetails={
-                                                computePlansDetails[
-                                                    computePlan.key
-                                                ]
-                                            }
-                                            computePlanDetailsLoading={
-                                                computePlansDetailsLoading[
-                                                    computePlan.key
-                                                ]
-                                            }
                                             selectedKeys={selectedKeys}
                                             onSelectionChange={
                                                 onSelectionChange

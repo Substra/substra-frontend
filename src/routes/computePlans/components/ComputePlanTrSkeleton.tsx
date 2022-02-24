@@ -7,7 +7,7 @@ import { TableSkeleton } from '@/components/Table';
 
 declare const MELLODDY: boolean;
 
-export const ComputePlanProgressSkeleton = (): JSX.Element => (
+const ComputePlanProgressSkeleton = (): JSX.Element => (
     <Skeleton>
         <VStack spacing="1">
             <Flex alignItems="center" justifyContent="space-between">

@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Removed loading of compute plan counts and statuses in separate calls (reverts #383 and #390) (#400)
 -   Improved the PerfSidebarSettingsNodes component (#402)
 -   Removed dynamic average (#407)
 -   Auto cancel pending HTTP calls when changing route or url params (#409)
