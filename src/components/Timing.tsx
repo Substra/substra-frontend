@@ -30,7 +30,7 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
 
     return (
         <Text>
-            <Text as="span">{`${shortFormatDate(asset.start_date)} ->`}</Text>
+            <Text as="span">{`${shortFormatDate(asset.start_date)} -> `}</Text>
             {asset.end_date && (
                 <Text as="span">{shortFormatDate(asset.end_date)}</Text>
             )}

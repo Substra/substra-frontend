@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Add missing space in Timing component (#424)
+
 ### Changed
 
 ## [0.14.0] - 2022-02-24
