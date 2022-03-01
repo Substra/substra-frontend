@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Do not display copy/download buttons for empty data sample lists (#427)
+
 ## [0.14.0] - 2022-02-24
 
 ### Added

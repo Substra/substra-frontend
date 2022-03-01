@@ -25,20 +25,22 @@ const DataSamplesListItem = ({
                 />
                 <Text fontSize="xs">{`${keys.length} ${type} data samples`}</Text>
             </HStack>
-            <HStack spacing="0.5">
-                <CopyIconButton
-                    aria-label={`Copy ${type} data samples keys as JSON`}
-                    variant="ghost"
-                    value={keysAsJson}
-                    size="sm"
-                />
-                <DownloadIconButton
-                    aria-label={`Download ${type} data samples keys as JSON`}
-                    variant="ghost"
-                    blob={keysAsBlob}
-                    filename={`${type}_data_sample_keys.json`}
-                />
-            </HStack>
+            {keys.length > 0 && (
+                <HStack spacing="0.5">
+                    <CopyIconButton
+                        aria-label={`Copy ${type} data samples keys as JSON`}
+                        variant="ghost"
+                        value={keysAsJson}
+                        size="sm"
+                    />
+                    <DownloadIconButton
+                        aria-label={`Download ${type} data samples keys as JSON`}
+                        variant="ghost"
+                        blob={keysAsBlob}
+                        filename={`${type}_data_sample_keys.json`}
+                    />
+                </HStack>
+            )}
         </ListItem>
     );
 };
