@@ -71,7 +71,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         highlightedSerie
                     )
                 ),
-            [series, highlightedSerie]
+            [series, highlightedSerie, xAxisMode]
         );
 
         const data = useMemo<ChartData<'line', DataPoint[]>>(
