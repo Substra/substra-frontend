@@ -166,45 +166,30 @@ const ComputePlans = (): JSX.Element => {
                             <Tr>
                                 <Th padding="0" minWidth="50px"></Th>
                                 <Th padding="0" minWidth="36px"></Th>
-                                {MELLODDY ? (
-                                    <>
-                                        <Th minWidth="250px">
-                                            {MELLODDY ? 'Name' : 'Tag'}
-                                        </Th>
-                                        <Th minWidth="255px">Status / Tasks</Th>
-                                        <Th minWidth="255px">Creation</Th>
-                                        <Th minWidth="255px">
-                                            Dates / Duration
-                                        </Th>
-                                    </>
-                                ) : (
-                                    <>
-                                        <ClickableTh
-                                            minWidth="250px"
-                                            onClick={() => onPopoverOpen(0)}
-                                        >
-                                            {MELLODDY ? 'Name' : 'Tag'}
-                                        </ClickableTh>
-                                        <ClickableTh
-                                            minWidth="255px"
-                                            onClick={() => onPopoverOpen(0)}
-                                        >
-                                            Status / Tasks
-                                        </ClickableTh>
-                                        <ClickableTh
-                                            minWidth="255px"
-                                            onClick={() => onPopoverOpen(0)}
-                                        >
-                                            Creation
-                                        </ClickableTh>
-                                        <ClickableTh
-                                            minWidth="255px"
-                                            onClick={() => onPopoverOpen(0)}
-                                        >
-                                            Dates / Duration
-                                        </ClickableTh>
-                                    </>
-                                )}
+                                <ClickableTh
+                                    minWidth="250px"
+                                    onClick={() => onPopoverOpen(0)}
+                                >
+                                    {MELLODDY ? 'Name' : 'Tag'}
+                                </ClickableTh>
+                                <ClickableTh
+                                    minWidth="255px"
+                                    onClick={() => onPopoverOpen(0)}
+                                >
+                                    Status / Tasks
+                                </ClickableTh>
+                                <ClickableTh
+                                    minWidth="255px"
+                                    onClick={() => onPopoverOpen(0)}
+                                >
+                                    Creation
+                                </ClickableTh>
+                                <ClickableTh
+                                    minWidth="255px"
+                                    onClick={() => onPopoverOpen(0)}
+                                >
+                                    Dates / Duration
+                                </ClickableTh>
                             </Tr>
                         </Thead>
                         <ChakraTbody>
