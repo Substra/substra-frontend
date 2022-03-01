@@ -13,14 +13,13 @@ export interface DataPoint extends ScatterDataPoint {
     testTaskKey: string;
     worker: string;
     computePlanKey: string;
-    serieId: number;
+    serieId: string;
 }
 
 export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 
 const useBuildPerfChartDataset = (): ((
     serie: SerieT,
-    label: string,
     highlightedSerie: HighlightedSerie | undefined
 ) => PerfChartDataset) => {
     const { xAxisMode } = useContext(PerfBrowserContext);
@@ -28,14 +27,10 @@ const useBuildPerfChartDataset = (): ((
 
     return (
         serie: SerieT,
-        label: string,
-        highlightedSerie?: {
-            id: number;
-            computePlanKey: string;
-        }
+        highlightedSerie?: HighlightedSerie
     ): PerfChartDataset => {
         return {
-            label,
+            label: serie.id,
             data: serie.points.map(
                 (point): DataPoint => ({
                     x: xAxisMode === 'rank' ? point.rank : point.epoch,

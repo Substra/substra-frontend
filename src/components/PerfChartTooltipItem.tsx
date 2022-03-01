@@ -14,7 +14,7 @@ const PerfChartTooltipItem = ({
     lineId,
 }: {
     point: DataPoint;
-    lineId: (serieId: number) => number;
+    lineId: (serieId: string) => number;
 }): JSX.Element => {
     const { sortedComputePlanKeys, xAxisMode } = useContext(PerfBrowserContext);
 

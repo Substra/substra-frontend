@@ -88,7 +88,7 @@ const PerfRankDetails = ({ series }: PerfRankDetailsProps): JSX.Element => {
         const getRankData = (
             rank: number
         ): {
-            id: number;
+            id: string;
             computePlanKey: string;
             testTaskKey?: string;
             cpId: string;

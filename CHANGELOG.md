@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add missing space in Timing component (#424)
 -   Restore clickable table headers on Compute Plans page (#425)
 -   Fix rank/epoch switch (#426)
+-   Uniqueness issue of average series IDs (#XXX)
 
 ### Changed
 

@@ -151,7 +151,6 @@ const getComputePlanSeries = async (
                     ...small5AverageSerie,
                     computePlanKey,
                     metricName,
-                    id: series.length + 1,
                 });
             }
 
@@ -167,7 +166,6 @@ const getComputePlanSeries = async (
                     ...large5AverageSerie,
                     computePlanKey,
                     metricName,
-                    id: series.length + 2,
                 });
             }
 
@@ -185,7 +183,6 @@ const getComputePlanSeries = async (
                     ...pharmaAverageSerie,
                     computePlanKey,
                     metricName,
-                    id: series.length + 3,
                 });
             }
 
@@ -196,7 +193,6 @@ const getComputePlanSeries = async (
                     ...averageSerie,
                     computePlanKey,
                     metricName,
-                    id: series.length + 4,
                 });
             }
         }

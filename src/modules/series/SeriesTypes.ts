@@ -18,13 +18,13 @@ export interface PointT {
 }
 
 export interface SerieT extends SerieFeaturesT {
-    id: number;
+    id: string;
     points: PointT[];
 }
 
 export type Index<Type> = Record<string, Type>;
 
 export interface HighlightedSerie {
-    id: number;
+    id: string;
     computePlanKey: string;
 }

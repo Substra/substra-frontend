@@ -153,7 +153,7 @@ export function buildSeries(
                 series.push({
                     // The couple (computePlanKey, id) should be unique
                     // id is an incremented number
-                    id: series.length,
+                    id: uuidv4(),
                     points: [point],
                     ...serieFeatures,
                 });
@@ -241,7 +241,7 @@ export function buildAverageSerie(
         }));
 
     return {
-        id: 0,
+        id: uuidv4(),
         points: points,
         algoKey: uuidv4(),
         algoName: name,
@@ -286,8 +286,8 @@ export const getMaxEpoch = (series: SerieT[]): number => {
     return getMax(series, (p: PointT) => p.epoch);
 };
 
-export const getLineId = (series: SerieT[]): ((serieId: number) => number) => {
+export const getLineId = (series: SerieT[]): ((serieId: string) => number) => {
     const sortedSerieIds = series.map((s) => s.id);
     sortedSerieIds.sort();
-    return (serieId: number): number => sortedSerieIds.indexOf(serieId) + 1;
+    return (serieId: string): number => sortedSerieIds.indexOf(serieId) + 1;
 };

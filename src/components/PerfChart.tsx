@@ -65,11 +65,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const seriesDatasets = useMemo(
             () =>
                 series.map((serie) =>
-                    buildPerfChartDataset(
-                        serie,
-                        `${serie.computePlanKey}-${serie.id}`,
-                        highlightedSerie
-                    )
+                    buildPerfChartDataset(serie, highlightedSerie)
                 ),
             [series, highlightedSerie, xAxisMode]
         );
