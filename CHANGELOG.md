@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix rank/epoch switch (#426)
 -   Uniqueness issue of average series IDs (#437)
 -   Sort point by score in tooltip summary (#441)
+-   Set a max height for filter menu (#442)
 
 ### Changed
 

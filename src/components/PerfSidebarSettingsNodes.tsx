@@ -81,7 +81,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             size="xs"
                             icon={<RiArrowDownSLine />}
                         />
-                        <MenuList>
+                        <MenuList maxHeight="350px" overflowY="auto">
                             <MenuGroup>
                                 <MenuItem
                                     onClick={addAll}
