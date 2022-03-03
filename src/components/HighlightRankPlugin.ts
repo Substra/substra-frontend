@@ -2,7 +2,7 @@
 import { Chart, Plugin, ChartEvent } from 'chart.js';
 import { DistributiveArray } from 'chart.js/types/utils';
 
-import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
+import { DataPoint } from '@/modules/series/SeriesTypes';
 
 import chakraTheme from '@/assets/chakraTheme';
 

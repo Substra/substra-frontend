@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
-
-import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
+import { SerieT, DataPoint } from '@/modules/series/SeriesTypes';
 
 import PerfChartSummaryTooltip from '@/components/PerfChartSummaryTooltip';
 import PerfChartTooltip from '@/components/PerfChartTooltip';

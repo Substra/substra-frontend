@@ -1,3 +1,5 @@
+import { ScatterDataPoint } from 'chart.js';
+
 export interface SerieFeaturesT {
     algoKey: string;
     algoName: string;
@@ -15,6 +17,15 @@ export interface PointT {
     epoch: number;
     perf: number | null;
     testTaskKey: string | null;
+}
+
+export interface DataPoint extends ScatterDataPoint {
+    x: number;
+    y: number;
+    testTaskKey: string | null;
+    worker: string;
+    computePlanKey: string;
+    serieId: string;
 }
 
 export interface SerieT extends SerieFeaturesT {

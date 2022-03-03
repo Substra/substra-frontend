@@ -3,9 +3,11 @@ import { useContext } from 'react';
 import PerfChartTooltipItem from './PerfChartTooltipItem';
 import { List, ListItem } from '@chakra-ui/react';
 
+import { DataPoint } from '@/modules/series/SeriesTypes';
+import { compareDataPoint } from '@/modules/series/SeriesUtils';
+
 import { capitalize } from '@/libs/utils';
 
-import { DataPoint } from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 interface PerfChartTooltipProps {
@@ -23,7 +25,11 @@ const PerfChartSummaryTooltip = ({
 }: PerfChartTooltipProps): JSX.Element => {
     const { xAxisMode } = useContext(PerfBrowserContext);
 
-    const firstFivePoints = points.slice(0, 5);
+    const higherFivePoints = [...points]
+        .sort(compareDataPoint)
+        .slice(-5)
+        .reverse();
+
     const remainingCount = Math.max(points.length - 5, 0);
 
     // Position
@@ -35,7 +41,7 @@ const PerfChartSummaryTooltip = ({
     if (canvasBoundingRect) {
         const tooltipHeight =
             18 + // header
-            firstFivePoints.length * 36 + // items
+            higherFivePoints.length * 36 + // items
             (remainingCount > 0 ? 30 : 0) + // footer
             24; // padding
         if (tooltipHeight + canvasBoundingRect.bottom > window.innerHeight) {
@@ -63,7 +69,7 @@ const PerfChartSummaryTooltip = ({
                 fontWeight="semibold"
                 marginBottom="3"
             >{`${capitalize(xAxisMode)} ${points[0].x}`}</ListItem>
-            {firstFivePoints.map((point) => (
+            {higherFivePoints.map((point) => (
                 <PerfChartTooltipItem point={point} key={point.serieId} />
             ))}
             {remainingCount && (

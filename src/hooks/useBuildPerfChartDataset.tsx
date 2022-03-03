@@ -1,18 +1,13 @@
-import { ChartDataset, ScatterDataPoint } from 'chart.js';
+import { ChartDataset } from 'chart.js';
 
-import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
+import {
+    DataPoint,
+    HighlightedParams,
+    SerieT,
+} from '@/modules/series/SeriesTypes';
 
 import { XAxisMode } from '@/hooks/usePerfBrowser';
 import usePerfChartDatasetStyle from '@/hooks/usePerfChartDatasetStyle';
-
-export interface DataPoint extends ScatterDataPoint {
-    x: number;
-    y: number;
-    testTaskKey: string | null;
-    worker: string;
-    computePlanKey: string;
-    serieId: string;
-}
 
 export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 

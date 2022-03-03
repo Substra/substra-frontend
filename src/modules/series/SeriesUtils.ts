@@ -1,4 +1,5 @@
 import {
+    DataPoint,
     Index,
     PointT,
     SerieFeaturesT,
@@ -326,4 +327,14 @@ export const compareSerieRankData = (
         return nodesRes;
     }
     return compareSeries(a, b);
+};
+
+export const compareDataPoint = (a: DataPoint, b: DataPoint) => {
+    if (a.y < b.y) {
+        return -1;
+    }
+    if (a.y > b.y) {
+        return 1;
+    }
+    return 0;
 };

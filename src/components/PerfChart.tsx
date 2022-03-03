@@ -29,12 +29,10 @@ import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
 import { Line } from 'react-chartjs-2';
 import { RiAddLine, RiQuestionMark, RiSubtractLine } from 'react-icons/ri';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
 import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
 
-import useBuildPerfChartDataset, {
-    DataPoint,
-} from '@/hooks/useBuildPerfChartDataset';
+import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 
