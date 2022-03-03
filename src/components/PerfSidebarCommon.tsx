@@ -69,15 +69,21 @@ export const NodeListItem = ({
     nodeId: string;
     computePlanKey: string;
 }) => {
-    const { getNodeIndex, setHighlightedNodeId } =
+    const { getNodeIndex, setHighlightedNodeId, setHighlightedComputePlanKey } =
         useContext(PerfBrowserContext);
     return (
         <ListItem
             display="flex"
             alignItems="center"
             height="10"
-            onMouseEnter={() => setHighlightedNodeId(nodeId)}
-            onMouseLeave={() => setHighlightedNodeId(undefined)}
+            onMouseEnter={() => {
+                setHighlightedNodeId(nodeId);
+                setHighlightedComputePlanKey(computePlanKey);
+            }}
+            onMouseLeave={() => {
+                setHighlightedNodeId(undefined);
+                setHighlightedComputePlanKey(undefined);
+            }}
         >
             <HStack spacing="2.5" alignItems="center">
                 <PerfIconTag worker={nodeId} computePlanKey={computePlanKey} />

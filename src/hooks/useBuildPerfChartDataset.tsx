@@ -23,11 +23,6 @@ const useBuildPerfChartDataset = (): ((
         xAxisMode: XAxisMode,
         highlightedParams: HighlightedParams
     ): PerfChartDataset => {
-        const {
-            highlightedSerie,
-            highlightedComputePlanKey,
-            highlightedNodeId,
-        } = highlightedParams;
         return {
             label: serie.id,
             data: serie.points.map(
@@ -41,13 +36,6 @@ const useBuildPerfChartDataset = (): ((
                 })
             ),
             parsing: false,
-            // draw highlighted serie on top
-            order:
-                serie.id === highlightedSerie?.id ||
-                serie.computePlanKey === highlightedComputePlanKey ||
-                serie.worker === highlightedNodeId
-                    ? 0
-                    : 1,
             ...datasetStyle(serie, highlightedParams),
         };
     };

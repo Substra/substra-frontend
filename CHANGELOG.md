@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Uniqueness issue of average series IDs (#437)
 -   Sort point by score in tooltip summary (#441)
 -   Set a max height for filter menu (#442)
+-   Highlight only related node on hover in comparison mode (#444)
 
 ### Changed
 

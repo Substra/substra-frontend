@@ -7,7 +7,8 @@ import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
 const usePerfChartDatasetStyle = () => {
     const { getColor } = usePerfBrowserColors();
     const { getPointStyle } = usePerfBrowserPointStyles();
-    const getLineColor = (
+
+    const datasetStyle = (
         serie: SerieT,
         {
             highlightedSerie,
@@ -15,7 +16,7 @@ const usePerfChartDatasetStyle = () => {
             highlightedNodeId,
         }: HighlightedParams
     ) => {
-        if (
+        const isHighlighted =
             // no highlight on chart
             (highlightedSerie === undefined &&
                 highlightedComputePlanKey === undefined &&
@@ -23,27 +24,23 @@ const usePerfChartDatasetStyle = () => {
             // current serie matches highlightedSerie
             (serie.id === highlightedSerie?.id &&
                 serie.computePlanKey === highlightedSerie?.computePlanKey) ||
-            // current serie matches highlightedComputePlanKey
-            serie.computePlanKey === highlightedComputePlanKey ||
+            // current serie matches highlighted compute plan
+            (serie.computePlanKey === highlightedComputePlanKey &&
+                highlightedNodeId === undefined) ||
             // current serie matches highlightedNodeId
-            serie.worker === highlightedNodeId
-        ) {
-            return getColor(serie, '500');
-        }
+            (serie.worker === highlightedNodeId &&
+                serie.computePlanKey === highlightedComputePlanKey);
 
-        return getColor(serie, '100');
-    };
-
-    const datasetStyle = (
-        serie: SerieT,
-        highlightedParams: HighlightedParams
-    ) => {
-        const lineColor = getLineColor(serie, highlightedParams);
+        const lineColor = isHighlighted
+            ? getColor(serie, '500')
+            : getColor(serie, '100');
         const lightColor = getColor(serie, '100');
 
         const dashed = isAverageNode(serie.worker);
 
         return {
+            // draw highlighted serie on top
+            order: isHighlighted ? 0 : 1,
             // line styles
             borderColor: lineColor,
             borderWidth: 1.5,
