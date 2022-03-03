@@ -1,5 +1,5 @@
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
-import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
+import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
 
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
@@ -9,23 +9,36 @@ const usePerfChartDatasetStyle = () => {
     const { getPointStyle } = usePerfBrowserPointStyles();
     const getLineColor = (
         serie: SerieT,
-        highlightedSerie: HighlightedSerie | undefined
+        {
+            highlightedSerie,
+            highlightedComputePlanKey,
+            highlightedNodeId,
+        }: HighlightedParams
     ) => {
         if (
-            highlightedSerie === undefined ||
-            (serie.id === highlightedSerie.id &&
-                serie.computePlanKey === highlightedSerie.computePlanKey)
+            // no highlight on chart
+            (highlightedSerie === undefined &&
+                highlightedComputePlanKey === undefined &&
+                highlightedNodeId === undefined) ||
+            // current serie matches highlightedSerie
+            (serie.id === highlightedSerie?.id &&
+                serie.computePlanKey === highlightedSerie?.computePlanKey) ||
+            // current serie matches highlightedComputePlanKey
+            serie.computePlanKey === highlightedComputePlanKey ||
+            // current serie matches highlightedNodeId
+            serie.worker === highlightedNodeId
         ) {
             return getColor(serie, '500');
         }
+
         return getColor(serie, '100');
     };
 
     const datasetStyle = (
         serie: SerieT,
-        highlightedSerie: HighlightedSerie | undefined
+        highlightedParams: HighlightedParams
     ) => {
-        const lineColor = getLineColor(serie, highlightedSerie);
+        const lineColor = getLineColor(serie, highlightedParams);
         const lightColor = getColor(serie, '100');
 
         const dashed = isAverageNode(serie.worker);

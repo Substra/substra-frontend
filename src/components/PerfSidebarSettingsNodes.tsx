@@ -18,15 +18,13 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
-import { compareNodes, isAverageNode } from '@/modules/nodes/NodesUtils';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsNodes = (): JSX.Element => {
     const { nodes, selectedNodeIds, setSelectedNodeIds, loading } =
         useContext(PerfBrowserContext);
-
-    nodes.sort(compareNodes);
 
     const remove = (nodeId: string) => () => {
         setSelectedNodeIds(selectedNodeIds.filter((id) => id !== nodeId));

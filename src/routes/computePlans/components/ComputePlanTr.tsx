@@ -1,5 +1,5 @@
 import CheckboxTd from './CheckboxTd';
-import PinBox from './FavoriteBox';
+import FavoriteBox from './FavoriteBox';
 import StatusCell from './StatusCell';
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
@@ -69,7 +69,7 @@ const ComputePlanTr = ({
                     closeOnClick={false}
                 >
                     <Box as="span">
-                        <PinBox
+                        <FavoriteBox
                             isChecked={isFavorite(computePlan)}
                             onChange={onFavoriteChange(computePlan)}
                         />

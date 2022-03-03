@@ -73,7 +73,7 @@ const Settings = (): JSX.Element => {
     }
 
     return (
-        <Box background="white" flexGrow="1">
+        <Box background="white" flexGrow="1" minHeight="100%">
             <VStack
                 width="600px"
                 marginX="auto"

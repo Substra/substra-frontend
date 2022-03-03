@@ -5,17 +5,16 @@ import {
     Heading,
     Icon,
     useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
-interface PerfSidebarSectionProps {
-    title: string;
-    children: React.ReactNode | React.ReactNode[];
-}
-const PerfSidebarSection = ({
-    title,
-    children,
-}: PerfSidebarSectionProps): JSX.Element => {
+import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
+import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
+
+declare const MELLODDY: boolean;
+
+const PerfSidebarSettings = (): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: true,
     });
@@ -28,7 +27,7 @@ const PerfSidebarSection = ({
                     alignItems="center"
                     onClick={onToggle}
                 >
-                    {title}
+                    Settings
                     <Icon
                         as={RiArrowDropDownLine}
                         width="6"
@@ -38,10 +37,13 @@ const PerfSidebarSection = ({
                 </Flex>
             </Heading>
             <Collapse in={isOpen} animateOpacity>
-                <Box marginTop={4}>{children}</Box>
+                <VStack marginTop={4} spacing={4} alignItems="stretch">
+                    <PerfSidebarSettingsNodes />
+                    {MELLODDY ? <PerfSidebarSettingsUnits /> : null}
+                </VStack>
             </Collapse>
         </Box>
     );
 };
 
-export default PerfSidebarSection;
+export default PerfSidebarSettings;

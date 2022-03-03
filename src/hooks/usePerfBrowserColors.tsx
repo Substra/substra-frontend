@@ -4,18 +4,27 @@ import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-import chakraTheme, { HAS_LIGHT_COLORSCHEME } from '@/assets/chakraTheme';
+import chakraTheme from '@/assets/chakraTheme';
 
 interface ColorDiscriminant {
     computePlanKey: string;
     worker: string;
 }
 
-export const PERF_BROWSER_COLORSCHEMES = HAS_LIGHT_COLORSCHEME;
+export const PERF_BROWSER_COLORSCHEMES = [
+    'teal',
+    'orange',
+    'blue',
+    'pink',
+    'green',
+    'yellow',
+    'cyan',
+    'red',
+    'purple',
+];
 
 const usePerfBrowserColors = () => {
-    const { colorMode, sortedComputePlanKeys, nodes } =
-        useContext(PerfBrowserContext);
+    const { colorMode, computePlans, nodes } = useContext(PerfBrowserContext);
 
     const getColorScheme = ({
         computePlanKey,
@@ -23,7 +32,9 @@ const usePerfBrowserColors = () => {
     }: ColorDiscriminant): string => {
         let index = 0;
         if (colorMode === 'computePlan') {
-            index = sortedComputePlanKeys.indexOf(computePlanKey);
+            index = computePlans.findIndex(
+                (computePlan) => computePlan.key === computePlanKey
+            );
         } else {
             if (isAverageNode(worker)) {
                 return 'gray';

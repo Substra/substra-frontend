@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import PerfRankDetails from './PerfRankDetails';
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
+import { RiArrowLeftLine } from 'react-icons/ri';
 
 import { SerieT } from '@/modules/series/SeriesTypes';
 
@@ -14,39 +14,43 @@ interface PerfDetailsProps {
     series: SerieT[];
 }
 const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
-    const { perfChartRef } = useContext(PerfBrowserContext);
+    const { perfChartRef, setSelectedMetricName } =
+        useContext(PerfBrowserContext);
 
     return (
-        <VStack
+        <Flex
             flexGrow={1}
             alignSelf="stretch"
             justifyContent="flex-start"
             alignItems="stretch"
-            spacing="4"
-            padding="8"
             overflow="hidden"
             height="100%"
+            position="relative"
         >
             <PerfEmptyState seriesGroups={series.length > 0 ? [series] : []} />
             {series.length > 0 && (
-                <HStack
-                    spacing={8}
-                    flexGrow={1}
-                    alignItems="stretch"
-                    overflow="hidden"
-                >
-                    <Box backgroundColor="white" width="calc(100% - 300px)">
-                        <PerfChart
-                            ref={perfChartRef}
-                            series={series}
-                            size="full"
-                            zoomEnabled={true}
-                        />
-                    </Box>
-                    <PerfRankDetails series={series} />
-                </HStack>
+                <>
+                    <PerfChart
+                        ref={perfChartRef}
+                        series={series}
+                        size="full"
+                        zoomEnabled={true}
+                    />
+                    <Button
+                        position="absolute"
+                        top="5"
+                        left="20"
+                        size="sm"
+                        variant="outline"
+                        backgroundColor="white"
+                        leftIcon={<RiArrowLeftLine />}
+                        onClick={() => setSelectedMetricName('')}
+                    >
+                        Go back
+                    </Button>
+                </>
             )}
-        </VStack>
+        </Flex>
     );
 };
 

@@ -14,7 +14,7 @@ export interface PointT {
     rank: number;
     epoch: number;
     perf: number | null;
-    testTaskKey: string;
+    testTaskKey: string | null;
 }
 
 export interface SerieT extends SerieFeaturesT {
@@ -28,3 +28,17 @@ export interface HighlightedSerie {
     id: string;
     computePlanKey: string;
 }
+
+export interface HighlightedParams {
+    highlightedSerie?: HighlightedSerie;
+    highlightedComputePlanKey?: string;
+    highlightedNodeId?: string;
+}
+
+export type SerieRankData = {
+    id: string;
+    computePlanKey: string;
+    testTaskKey: string | null;
+    worker: string;
+    perf: string;
+};

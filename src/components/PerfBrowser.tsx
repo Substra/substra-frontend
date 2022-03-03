@@ -1,90 +1,88 @@
 import { useContext } from 'react';
 
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
+
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+
+import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import PerfDetails from '@/components/PerfDetails';
 import PerfList from '@/components/PerfList';
 import PerfLoadingState from '@/components/PerfLoadingState';
-import PerfSidebarSection from '@/components/PerfSidebarSection';
+import PerfSidebarSettings from '@/components/PerfSidebarSettings';
 
 interface PerfBrowserProps {
-    settingsComponents: React.FunctionComponent[];
-    sectionComponents: React.FunctionComponent[];
+    SidebarComponent: React.FunctionComponent;
 }
 
-const PerfBrowser = ({
-    settingsComponents,
-    sectionComponents,
-}: PerfBrowserProps) => {
+const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
     const {
         loading,
         selectedMetricName,
         setSelectedMetricName,
         seriesGroups,
         selectedSeriesGroup,
+        drawerTestTaskKey,
+        setDrawerTestTaskKey,
     } = useContext(PerfBrowserContext);
 
     return (
-        <HStack
-            flexGrow={1}
-            spacing="0"
-            alignItems="stretch"
-            overflow="hidden"
-            alignSelf="stretch"
-        >
-            <Flex
-                flexGrow={0}
-                flexShrink={0}
-                flexDirection="column"
-                width="300px"
-                backgroundColor="white"
-                overflowX="hidden"
-                overflowY="auto"
-            >
-                {settingsComponents.length > 0 && (
-                    <PerfSidebarSection title="Settings">
-                        <VStack spacing="5" alignItems="stretch">
-                            {settingsComponents.map((SettingsComponent) => (
-                                <SettingsComponent
-                                    key={SettingsComponent.name}
-                                />
-                            ))}
-                        </VStack>
-                    </PerfSidebarSection>
-                )}
-                {sectionComponents.map((SectionComponent) => (
-                    <SectionComponent key={SectionComponent.name} />
-                ))}
-            </Flex>
-            <Flex
+        <>
+            <TaskDrawer
+                category={TaskCategory.test}
+                taskKey={drawerTestTaskKey}
+                onClose={() => setDrawerTestTaskKey(null)}
+                setPageTitle={false}
+            />
+            <HStack
                 flexGrow={1}
-                flexWrap="wrap"
-                flexDirection="row"
-                justifyContent="center"
-                alignItems="center"
-                overflowX="hidden"
-                overflowY="auto"
+                spacing="0"
+                alignItems="stretch"
+                overflow="hidden"
+                alignSelf="stretch"
             >
-                {loading && <PerfLoadingState />}
-                {!loading && (
-                    <>
-                        {selectedMetricName && (
-                            <PerfDetails series={selectedSeriesGroup} />
-                        )}
-                        {!selectedMetricName && (
-                            <PerfList
-                                seriesGroups={seriesGroups}
-                                onCardClick={(metricName) =>
-                                    setSelectedMetricName(metricName)
-                                }
-                            />
-                        )}
-                    </>
-                )}
-            </Flex>
-        </HStack>
+                <Flex
+                    flexGrow={0}
+                    flexShrink={0}
+                    flexDirection="column"
+                    width="350px"
+                    backgroundColor="white"
+                    overflowX="hidden"
+                    overflowY="auto"
+                >
+                    <PerfSidebarSettings />
+                    <SidebarComponent />
+                </Flex>
+                <Flex
+                    flexGrow={1}
+                    flexWrap="wrap"
+                    flexDirection="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    overflowX="hidden"
+                    overflowY="auto"
+                >
+                    {loading && <PerfLoadingState />}
+                    {!loading && (
+                        <>
+                            {selectedMetricName && (
+                                <PerfDetails series={selectedSeriesGroup} />
+                            )}
+                            {!selectedMetricName && (
+                                <PerfList
+                                    seriesGroups={seriesGroups}
+                                    onCardClick={(metricName) =>
+                                        setSelectedMetricName(metricName)
+                                    }
+                                />
+                            )}
+                        </>
+                    )}
+                </Flex>
+            </HStack>
+        </>
     );
 };
 

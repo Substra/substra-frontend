@@ -20,11 +20,7 @@ import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
-import PerfSidebarSectionNodes from '@/components/PerfSidebarSectionNodes';
-import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
-import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
-
-declare const MELLODDY: boolean;
+import PerfSidebarLines from '@/components/PerfSidebarLines';
 
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
@@ -96,13 +92,7 @@ const ComputePlanChart = (): JSX.Element => {
                     </HStack>
                     <TabsNav />
                 </Box>
-                <PerfBrowser
-                    settingsComponents={[
-                        PerfSidebarSettingsNodes,
-                        ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
-                    ]}
-                    sectionComponents={[PerfSidebarSectionNodes]}
-                />
+                <PerfBrowser SidebarComponent={PerfSidebarLines} />
             </Flex>
         </PerfBrowserContext.Provider>
     );

@@ -9,14 +9,8 @@ import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import PerfIconTag from '@/components/PerfIconTag';
 
-const PerfChartTooltipItem = ({
-    point,
-    lineId,
-}: {
-    point: DataPoint;
-    lineId: (serieId: string) => number;
-}): JSX.Element => {
-    const { sortedComputePlanKeys, xAxisMode } = useContext(PerfBrowserContext);
+const PerfChartTooltipItem = ({ point }: { point: DataPoint }): JSX.Element => {
+    const { xAxisMode, getSerieIndex } = useContext(PerfBrowserContext);
 
     return (
         <ListItem
@@ -31,23 +25,18 @@ const PerfChartTooltipItem = ({
                 />
                 {isAverageNode(point.worker) ? (
                     <Text fontSize="xs" fontWeight="semibold">
-                        {`${point.worker} for ${xAxisMode} ${point.x}`}
+                        {`#${getSerieIndex(
+                            point.computePlanKey,
+                            point.serieId
+                        )} • ${point.worker} for ${xAxisMode} ${point.x}`}
                     </Text>
                 ) : (
-                    <HStack spacing="1">
-                        <Text fontSize="xs" fontWeight="semibold">
-                            {sortedComputePlanKeys.length > 1
-                                ? `#${
-                                      sortedComputePlanKeys.indexOf(
-                                          point.computePlanKey
-                                      ) + 1
-                                  } • ${point.worker}`
-                                : point.worker}
-                        </Text>
-                        <Text as="span" fontSize="xs">
-                            {`• L${lineId(point.serieId)}`}
-                        </Text>
-                    </HStack>
+                    <Text fontSize="xs" fontWeight="semibold">
+                        {`#${getSerieIndex(
+                            point.computePlanKey,
+                            point.serieId
+                        )} • ${point.worker}`}
+                    </Text>
                 )}
             </HStack>
             <Text fontSize="xs">{point.y.toFixed(3)}</Text>

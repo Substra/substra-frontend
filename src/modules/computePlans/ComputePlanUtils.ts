@@ -35,3 +35,16 @@ export const getMelloddyName = (
 
     throw 'Cannot get MELLODDY name if MELLODDY flag is not set';
 };
+
+export const compareComputePlans = (
+    a: ComputePlanT,
+    b: ComputePlanT
+): -1 | 0 | 1 => {
+    if (a.key < b.key) {
+        return -1;
+    } else if (a.key === b.key) {
+        return 0;
+    } else {
+        return 1;
+    }
+};

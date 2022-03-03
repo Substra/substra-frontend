@@ -11,7 +11,7 @@ const PerfLoadingState = (): JSX.Element => {
             padding="8"
             overflow="hidden"
         >
-            <Wrap spacing="3">
+            <Wrap spacing="3" justify="center">
                 {[...Array(4)].map((_, index) => (
                     <WrapItem key={index}>
                         <Skeleton

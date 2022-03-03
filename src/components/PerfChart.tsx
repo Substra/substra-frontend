@@ -48,8 +48,14 @@ interface PerfChartProps {
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
     ({ series, size, zoomEnabled }: PerfChartProps, ref): JSX.Element => {
-        const { xAxisMode, highlightedSerie, setHoveredRank, setSelectedRank } =
-            useContext(PerfBrowserContext);
+        const {
+            xAxisMode,
+            highlightedSerie,
+            highlightedComputePlanKey,
+            highlightedNodeId,
+            setHoveredRank,
+            setSelectedRank,
+        } = useContext(PerfBrowserContext);
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
@@ -65,9 +71,19 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const seriesDatasets = useMemo(
             () =>
                 series.map((serie) =>
-                    buildPerfChartDataset(serie, highlightedSerie)
+                    buildPerfChartDataset(serie, xAxisMode, {
+                        highlightedSerie,
+                        highlightedComputePlanKey,
+                        highlightedNodeId,
+                    })
                 ),
-            [series, highlightedSerie, xAxisMode]
+            [
+                series,
+                xAxisMode,
+                highlightedSerie,
+                highlightedComputePlanKey,
+                highlightedNodeId,
+            ]
         );
 
         const data = useMemo<ChartData<'line', DataPoint[]>>(

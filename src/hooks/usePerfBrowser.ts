@@ -6,11 +6,21 @@ import React, {
     useState,
 } from 'react';
 
+import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
-import { HighlightedSerie, SerieT } from '@/modules/series/SeriesTypes';
+import { compareNodes } from '@/modules/nodes/NodesUtils';
+import {
+    HighlightedSerie,
+    SerieRankData,
+    SerieT,
+} from '@/modules/series/SeriesTypes';
 import {
     buildSeriesGroups,
+    compareSerieRankData,
+    compareSeries,
+    getMaxEpochWithPerf,
+    getMaxRankWithPerf,
     getSeriesNodes,
 } from '@/modules/series/SeriesUtils';
 
@@ -18,15 +28,12 @@ import { OnOptionChange } from '@/hooks/useSelection';
 
 declare const MELLODDY: boolean;
 
-type ComputePlanNodes = Record<string, Record<string, boolean>>;
 export type XAxisMode = 'epoch' | 'rank';
 
 interface PerfBrowserContext {
     loading: boolean;
     // List of all compute plans we're browsing series for
     computePlans: ComputePlanT[];
-    // List of all compute plan keys sorted alphabetically
-    sortedComputePlanKeys: string[];
     // List of all the series that can be extracted from the computePlans
     series: SerieT[];
     // List of groups of series sharing the same metric name once all filters have been applied
@@ -46,39 +53,40 @@ interface PerfBrowserContext {
     selectedComputePlanKeys: string[];
     setSelectedComputePlanKeys: (selectedComputePlanKeys: string[]) => void;
     onComputePlanKeySelectionChange: OnOptionChange;
-    // Dict of all node IDs per compute plan key of all series, with a selected status for each node.
-    // ex: selectedComputePlanNodes[computePlanKey][nodeId] = true;
-    selectedComputePlanNodes: ComputePlanNodes;
-    setSelectedComputePlanNodes: (
-        computePlanPlanNodes: ComputePlanNodes
-    ) => void;
-    onComputePlanNodeSelectionChange: (
-        computePlanKey: string,
-        nodeId: string
-    ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
     // Currently selected metric with its series
     selectedMetricName: string;
     setSelectedMetricName: (name: string) => void;
     selectedSeriesGroup: SerieT[];
-    // Serie to highlight on charts
+    // Serie, compute plan and node to highlight on charts
     highlightedSerie: HighlightedSerie | undefined;
     setHighlightedSerie: (
         highlightedSerie: HighlightedSerie | undefined
     ) => void;
+    highlightedComputePlanKey: string | undefined;
+    setHighlightedComputePlanKey: (key: string | undefined) => void;
+    highlightedNodeId: string | undefined;
+    setHighlightedNodeId: (nodeId: string | undefined) => void;
     // Hovered / selected rank on chart
     hoveredRank: number | null;
     setHoveredRank: (hoveredRank: number | null) => void;
     selectedRank: number | null;
     setSelectedRank: (selectedRank: number | null) => void;
+    rankData: SerieRankData[];
     // chart reference for JPEG export
     perfChartRef: React.RefObject<HTMLDivElement>;
+    // test task drawer
+    drawerTestTaskKey: string | null;
+    setDrawerTestTaskKey: (key: string | null) => void;
+    // indexes
+    getComputePlanIndex: (computePlanKey: string) => string;
+    getNodeIndex: (computePlanKey: string, nodeId: string) => string;
+    getSerieIndex: (computePlanKey: string, serieId: string) => string;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 export const PerfBrowserContext = createContext<PerfBrowserContext>({
     loading: true,
     computePlans: [],
-    sortedComputePlanKeys: [],
     series: [],
     seriesGroups: [],
     nodes: [],
@@ -94,73 +102,55 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     onComputePlanKeySelectionChange:
         (computePlanKey: string) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {},
-    selectedComputePlanNodes: {},
-    setSelectedComputePlanNodes: (computePlanNodes) => {},
-    onComputePlanNodeSelectionChange: (computePlanNodes) => (event) => {},
     selectedMetricName: '',
     setSelectedMetricName: (name: string) => {},
     selectedSeriesGroup: [],
     highlightedSerie: undefined,
     setHighlightedSerie: (highlightedSerie) => {},
+    highlightedComputePlanKey: undefined,
+    setHighlightedComputePlanKey: (computePlanKey) => {},
+    highlightedNodeId: undefined,
+    setHighlightedNodeId: (nodeId) => {},
     hoveredRank: null,
     setHoveredRank: (hoveredRank) => {},
     selectedRank: null,
     setSelectedRank: (selectedRank) => {},
+    rankData: [],
     perfChartRef: { current: null },
+    drawerTestTaskKey: null,
+    setDrawerTestTaskKey: (key) => {},
+    getComputePlanIndex: (computePlanKey: string) => '',
+    getNodeIndex: (computePlanKey: string, nodeId: string) => '',
+    getSerieIndex: (computePlanKey: string, serieId: string) => '',
 });
 /* eslint-enable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 
 const usePerfBrowser = (
     series: SerieT[],
-    computePlans: ComputePlanT[],
+    unsortedComputePlans: ComputePlanT[],
     colorMode: 'computePlan' | 'node',
     loading: boolean
 ): {
     context: PerfBrowserContext;
 } => {
-    const [selectedNodeIds, baseSetSelectedNodeIds] = useState<string[]>([]);
+    const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
     const [selectedComputePlanKeys, setSelectedComputePlanKeys] = useState<
         string[]
     >([]);
-    const [selectedComputePlanNodes, setSelectedComputePlanNodes] =
-        useState<ComputePlanNodes>({});
     const [hoveredRank, setHoveredRank] = useState<number | null>(null);
     const [selectedRank, setSelectedRank] = useState<number | null>(null);
     const [selectedMetricName, setSelectedMetricName] = useState<string>('');
     const [highlightedSerie, setHighlightedSerie] =
         useState<HighlightedSerie>();
+    const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
+        useState<string>();
+    const [highlightedNodeId, setHighlightedNodeId] = useState<string>();
 
-    const setSelectedNodeIds = (newSelectedNodeIds: string[]): void => {
-        // update selectedNodeIds
-        baseSetSelectedNodeIds(newSelectedNodeIds);
-
-        // update selectedComputePlanNodes
-        const computePlanNodesSelection: ComputePlanNodes = {};
-        const added = newSelectedNodeIds.filter(
-            (nodeId) => !selectedNodeIds.includes(nodeId)
-        );
-        const removed = selectedNodeIds.filter(
-            (nodeId) => !newSelectedNodeIds.includes(nodeId)
-        );
-        for (const computePlanKey of Object.keys(selectedComputePlanNodes)) {
-            computePlanNodesSelection[computePlanKey] = {};
-            for (const nodeId of Object.keys(
-                selectedComputePlanNodes[computePlanKey]
-            )) {
-                let selected = selectedComputePlanNodes[computePlanKey][nodeId];
-                if (selected === undefined) {
-                    continue;
-                }
-                if (added.includes(nodeId)) {
-                    selected = true;
-                } else if (removed.includes(nodeId)) {
-                    selected = false;
-                }
-                computePlanNodesSelection[computePlanKey][nodeId] = selected;
-            }
-        }
-        setSelectedComputePlanNodes(computePlanNodesSelection);
-    };
+    const computePlans = useMemo(() => {
+        const computePlans = [...unsortedComputePlans];
+        computePlans.sort(compareComputePlans);
+        return computePlans;
+    }, [unsortedComputePlans]);
 
     const onNodeIdSelectionChange =
         (nodeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,25 +174,11 @@ const usePerfBrowser = (
             const checked = event.target.checked;
             const selected = selectedComputePlanKeys.includes(computePlanKey);
 
-            const setAllComputePlanNodesSelection = () => {
-                const nodesSelection: Record<string, boolean> = {};
-                for (const nodeId of Object.keys(
-                    selectedComputePlanNodes[computePlanKey]
-                )) {
-                    nodesSelection[nodeId] = checked;
-                }
-                setSelectedComputePlanNodes({
-                    ...selectedComputePlanNodes,
-                    [computePlanKey]: nodesSelection,
-                });
-            };
-
             if (checked && !selected) {
                 setSelectedComputePlanKeys([
                     ...selectedComputePlanKeys,
                     computePlanKey,
                 ]);
-                setAllComputePlanNodesSelection();
             }
 
             if (!checked && selected) {
@@ -211,42 +187,24 @@ const usePerfBrowser = (
                         (key) => key !== computePlanKey
                     )
                 );
-                setAllComputePlanNodesSelection();
             }
         };
 
-    const onComputePlanNodeSelectionChange =
-        (computePlanKey: string, nodeId: string) =>
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            const checked = event.target.checked;
-
-            setSelectedComputePlanNodes({
-                ...selectedComputePlanNodes,
-                [computePlanKey]: {
-                    ...selectedComputePlanNodes[computePlanKey],
-                    [nodeId]: checked,
-                },
-            });
-        };
-
-    const nodes = useMemo(() => getSeriesNodes(series), [series]);
+    const nodes = useMemo(() => {
+        const nodes = getSeriesNodes(series);
+        nodes.sort(compareNodes);
+        return nodes;
+    }, [series]);
 
     // Define seriesGroups and selectedSeriesGroup
     const seriesGroups = useMemo(() => {
         const filteredSeries = series.filter(
             (serie) =>
                 selectedComputePlanKeys.includes(serie.computePlanKey) &&
-                selectedNodeIds.includes(serie.worker) &&
-                !!selectedComputePlanNodes[serie.computePlanKey] &&
-                selectedComputePlanNodes[serie.computePlanKey][serie.worker]
+                selectedNodeIds.includes(serie.worker)
         );
         return buildSeriesGroups(filteredSeries);
-    }, [
-        series,
-        selectedComputePlanKeys,
-        selectedNodeIds,
-        selectedComputePlanNodes,
-    ]);
+    }, [series, selectedComputePlanKeys, selectedNodeIds]);
 
     const selectedSeriesGroup = useMemo(() => {
         if (!selectedMetricName) {
@@ -268,7 +226,7 @@ const usePerfBrowser = (
 
     useEffect(() => {
         if (nodes.length) {
-            baseSetSelectedNodeIds(nodes.map((node) => node.id));
+            setSelectedNodeIds(nodes.map((node) => node.id));
         }
     }, [nodes.length]);
 
@@ -280,32 +238,115 @@ const usePerfBrowser = (
         }
     }, [computePlans.length]);
 
-    useEffect(() => {
-        if (computePlans.length > 0 && series.length > 0) {
-            const computePlanNodes: ComputePlanNodes = {};
-            for (const computePlan of computePlans) {
-                computePlanNodes[computePlan.key] = {};
-                for (const serie of series.filter(
-                    (serie) => serie.computePlanKey === computePlan.key
-                )) {
-                    computePlanNodes[computePlan.key][serie.worker] = true;
-                }
-            }
-            setSelectedComputePlanNodes(computePlanNodes);
-        }
-    }, [series.length, computePlans.length]);
-
-    const sortedComputePlanKeys = useMemo(() => {
-        const keys = computePlans.map((computePlan) => computePlan.key);
-        keys.sort();
-        return keys;
-    }, [computePlans]);
-
     const [xAxisMode, setXAxisMode] = useState<XAxisMode>(
         MELLODDY ? 'epoch' : 'rank'
     );
 
     const perfChartRef = useRef<HTMLDivElement>(null);
+
+    const rankData = useMemo(() => {
+        if (selectedSeriesGroup.length === 0) {
+            return [];
+        }
+        const getRankData = (rank: number): SerieRankData[] => {
+            return selectedSeriesGroup.map((serie) => {
+                // Look for rank or epoch based on X axis mode
+                const point = serie.points.find((p) => p[xAxisMode] === rank);
+
+                let perf = '-';
+                if (point?.perf) {
+                    perf = point.perf.toFixed(3);
+                }
+
+                return {
+                    id: serie.id,
+                    computePlanKey: serie.computePlanKey,
+                    testTaskKey: point ? point.testTaskKey : null,
+                    worker: serie.worker,
+                    perf,
+                };
+            });
+        };
+
+        let rankData: SerieRankData[] = [];
+        if (selectedRank !== null) {
+            rankData = getRankData(selectedRank);
+        } else if (hoveredRank !== null) {
+            rankData = getRankData(hoveredRank);
+        } else {
+            const max =
+                xAxisMode === 'rank'
+                    ? getMaxRankWithPerf(selectedSeriesGroup)
+                    : getMaxEpochWithPerf(selectedSeriesGroup);
+            rankData = getRankData(max);
+        }
+        rankData.sort(compareSerieRankData);
+        return rankData;
+    }, [selectedSeriesGroup, hoveredRank, selectedRank, xAxisMode]);
+
+    const [drawerTestTaskKey, setDrawerTestTaskKey] = useState<string | null>(
+        null
+    );
+
+    const { getComputePlanIndex, getNodeIndex, getSerieIndex } = useMemo(() => {
+        // object where keys are compute plan keys, values are the index to display
+        const computePlanIndexes: Record<string, string> = {};
+        // object of objects where keys are compute plan keys, values are themselves
+        // objects where keys are node ids and values are the index to display
+        const nodeIndexes: Record<string, Record<string, string>> = {};
+        // object of objects where keys are compute plan keys, values are themselves
+        // objects where keys are serie ids and values are the index to display
+        const serieIndexes: Record<string, Record<string, string>> = {};
+
+        for (const [i, computePlan] of computePlans.entries()) {
+            const cpIndex = `${i + 1}`;
+            computePlanIndexes[computePlan.key] = cpIndex;
+            nodeIndexes[computePlan.key] = {};
+            serieIndexes[computePlan.key] = {};
+
+            const cpSeries = series.filter(
+                (serie) => serie.computePlanKey === computePlan.key
+            );
+            const cpNodes = nodes.filter(
+                (node) => !!cpSeries.find((serie) => serie.worker === node.id)
+            );
+            for (const [j, node] of cpNodes.entries()) {
+                const nodeIndex =
+                    computePlans.length === 1
+                        ? `${j + 1}`
+                        : `${cpIndex}.${j + 1}`;
+                nodeIndexes[computePlan.key][node.id] = nodeIndex;
+
+                const cpNodeSeries = cpSeries.filter(
+                    (serie) => serie.worker === node.id
+                );
+
+                const seriesGroups = buildSeriesGroups(cpNodeSeries);
+                for (const serieGroup of seriesGroups) {
+                    if (serieGroup.length === 1) {
+                        serieIndexes[computePlan.key][serieGroup[0].id] =
+                            nodeIndex;
+                    } else if (serieGroup.length > 1) {
+                        serieGroup.sort(compareSeries);
+                        for (const [k, serie] of serieGroup.entries()) {
+                            const serieIndex = `${nodeIndex}.${k + 1}`;
+                            serieIndexes[computePlan.key][serie.id] =
+                                serieIndex;
+                        }
+                    }
+                }
+            }
+        }
+
+        return {
+            getComputePlanIndex: (computePlanKey: string): string =>
+                computePlanIndexes[computePlanKey],
+            getNodeIndex: (computePlanKey: string, nodeId: string): string =>
+                nodeIndexes[computePlanKey][nodeId],
+            getSerieIndex: (computePlanKey: string, serieId: string): string =>
+                serieIndexes[computePlanKey][serieId],
+        };
+    }, [computePlans, nodes, series]);
 
     return {
         context: {
@@ -314,7 +355,6 @@ const usePerfBrowser = (
             series,
             seriesGroups,
             computePlans,
-            sortedComputePlanKeys,
             nodes,
             colorMode,
             // xAxisMode
@@ -328,24 +368,32 @@ const usePerfBrowser = (
             selectedComputePlanKeys,
             onComputePlanKeySelectionChange,
             setSelectedComputePlanKeys,
-            // compute plan nodes
-            selectedComputePlanNodes,
-            setSelectedComputePlanNodes,
-            onComputePlanNodeSelectionChange,
             // selected metric
             selectedMetricName,
             setSelectedMetricName,
             selectedSeriesGroup,
-            // event: highlighted serie
+            // event: highlighted serie, compute plan or node
             highlightedSerie,
             setHighlightedSerie,
+            highlightedComputePlanKey,
+            setHighlightedComputePlanKey,
+            highlightedNodeId,
+            setHighlightedNodeId,
             // event: hovered/selected rank
             hoveredRank,
             setHoveredRank,
             selectedRank,
             setSelectedRank,
+            rankData,
             // for JPEG export
             perfChartRef,
+            // test task drawer
+            drawerTestTaskKey,
+            setDrawerTestTaskKey,
+            // indexes
+            getComputePlanIndex,
+            getNodeIndex,
+            getSerieIndex,
         },
     };
 };

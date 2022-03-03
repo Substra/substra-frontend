@@ -22,7 +22,7 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
             overflow="hidden"
         >
             <PerfEmptyState seriesGroups={seriesGroups} />
-            <Wrap spacing="3">
+            <Wrap spacing="3" justify="center">
                 {seriesGroups.map((series) => (
                     <WrapItem key={`${series[0].metricKey}-${series[0].id}`}>
                         <PerfCard

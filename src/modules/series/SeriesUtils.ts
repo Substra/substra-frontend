@@ -1,10 +1,17 @@
-import { Index, PointT, SerieFeaturesT, SerieT } from './SeriesTypes';
+import {
+    Index,
+    PointT,
+    SerieFeaturesT,
+    SerieRankData,
+    SerieT,
+} from './SeriesTypes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { HasKey } from '@/modules/common/CommonTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
+import { compareNodes } from '@/modules/nodes/NodesUtils';
 import { getPerf } from '@/modules/tasks/TasksUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
@@ -230,14 +237,14 @@ export function buildAverageSerie(
         }
     }
 
-    // only includes points where we have at least 1 value
+    // only includes points where we have values for all series
     const points: PointT[] = Object.entries(ranksPerfs)
-        .filter(([, { perfs }]) => perfs.length > 0)
+        .filter(([, { perfs }]) => perfs.length === series.length)
         .map(([rank, { epoch, perfs }]) => ({
             rank: parseInt(rank),
             epoch,
             perf: average(perfs),
-            testTaskKey: uuidv4(),
+            testTaskKey: null,
         }));
 
     return {
@@ -265,29 +272,58 @@ export const getSeriesNodes = (series: SerieT[]): NodeType[] => {
     return nodes.map((node) => ({ id: node, is_current: false }));
 };
 
-const getMax = (
-    series: SerieT[],
-    getter: (point: PointT) => number
-): number => {
-    return series.reduce((max, serie) => {
-        const serieMax = serie.points.reduce(
-            (max, point) => Math.max(max, getter(point)),
-            0
-        );
-        return Math.max(max, serieMax);
-    }, 0);
+const getAllPoints = (series: SerieT[]): PointT[] => {
+    let res: PointT[] = [];
+    for (const serie of series) {
+        res = [...res, ...serie.points];
+    }
+    return res;
 };
 
 export const getMaxRank = (series: SerieT[]): number => {
-    return getMax(series, (p: PointT) => p.rank);
+    const points = getAllPoints(series);
+    const ranks = points.map((p) => p.rank);
+    return Math.max(0, ...ranks);
+};
+
+export const getMaxRankWithPerf = (series: SerieT[]): number => {
+    const points = getAllPoints(series);
+    const ranks = points.filter((p) => p.perf !== null).map((p) => p.rank);
+    return Math.max(0, ...ranks);
 };
 
 export const getMaxEpoch = (series: SerieT[]): number => {
-    return getMax(series, (p: PointT) => p.epoch);
+    const points = getAllPoints(series);
+    const epochs = points.map((p) => p.epoch);
+    return Math.max(0, ...epochs);
 };
 
-export const getLineId = (series: SerieT[]): ((serieId: string) => number) => {
-    const sortedSerieIds = series.map((s) => s.id);
-    sortedSerieIds.sort();
-    return (serieId: string): number => sortedSerieIds.indexOf(serieId) + 1;
+export const getMaxEpochWithPerf = (series: SerieT[]): number => {
+    const points = getAllPoints(series);
+    const epochs = points.filter((p) => p.perf !== null).map((p) => p.epoch);
+    return Math.max(0, ...epochs);
+};
+
+export const compareSeries = <T extends { id: string }>(
+    a: T,
+    b: T
+): -1 | 0 | 1 => {
+    if (a.id === b.id) {
+        return 0;
+    } else if (a.id < b.id) {
+        return -1;
+    } else {
+        return 1;
+    }
+};
+
+export const compareSerieRankData = (
+    a: SerieRankData,
+    b: SerieRankData
+): -1 | 0 | 1 => {
+    const nodesRes = compareNodes(a.worker, b.worker);
+    if (nodesRes !== 0) {
+        return nodesRes;
+    }
+    return compareSeries(a, b);
 };

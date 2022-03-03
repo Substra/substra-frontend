@@ -144,61 +144,6 @@ const colors: Record<string, ColorScheme> = {
     },
 };
 
-/** Generate light color schemes
- *
- * A light color scheme is a colorscheme where all values were shifted by one level.
- * For example the 400 becomes 500, therefore the 500 is visually lighter.
- *
- * This is needed for checkboxes in the PerfSidebarSectionComputePlans components,
- * where we have a hiearchy of checkboxes and want lighter colors for lower levels
- * of the hiearchy.
- *
- * The only way I found for styling the control was through the theme, but if
- * you find how to make it work through __css props and StylesProvider / useMultiStyleConfig
- * feel free to delete all of this
- */
-
-export const HAS_LIGHT_COLORSCHEME = [
-    'teal',
-    'orange',
-    'blue',
-    'pink',
-    'green',
-    'yellow',
-    'cyan',
-    'red',
-    'purple',
-];
-
-export const lightenColorName = (colorName: string): string =>
-    `light${colorName[0].toUpperCase()}${colorName.slice(1)}`;
-
-for (const colorName of HAS_LIGHT_COLORSCHEME) {
-    const lightColorName = lightenColorName(colorName);
-    const colorScheme = colors[colorName];
-    const lightColorScheme = { ...colorScheme };
-    const indexes = [
-        '50',
-        '100',
-        '200',
-        '300',
-        '400',
-        '500',
-        '600',
-        '700',
-        '800',
-        '900',
-    ];
-    for (let i = indexes.length - 1; i > 0; i--) {
-        const intensity = indexes[i];
-        const lowerIntensity = indexes[i - 1];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore: I couldn't figure how to explain to TS that this was legit
-        lightColorScheme[intensity] = colorScheme[lowerIntensity];
-    }
-    colors[lightColorName] = lightColorScheme;
-}
-
 export default extendTheme({
     colors,
     components: {

@@ -34,9 +34,18 @@ const compareString = (a: string, b: string): 1 | 0 | -1 => {
     }
 };
 
-export const compareNodes = (nodeA: NodeType, nodeB: NodeType): 1 | 0 | -1 => {
-    const nodeALabel = nodeA.id;
-    const nodeBLabel = nodeB.id;
+export const compareNodes = (
+    nodeA: NodeType | string,
+    nodeB: NodeType | string
+): 1 | 0 | -1 => {
+    const nodeALabel = typeof nodeA === 'string' ? nodeA : nodeA.id;
+    const nodeBLabel = typeof nodeB === 'string' ? nodeB : nodeB.id;
+
+    if (isAverageNode(nodeALabel) && !isAverageNode(nodeBLabel)) {
+        return -1;
+    } else if (!isAverageNode(nodeALabel) && isAverageNode(nodeBLabel)) {
+        return 1;
+    }
 
     const res = compareString(
         nodeALabel.toLowerCase(),

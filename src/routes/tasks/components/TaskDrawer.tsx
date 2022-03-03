@@ -57,7 +57,7 @@ import Timing from '@/components/Timing';
 interface TaskDrawerProps {
     category: TaskCategory;
     onClose: () => void;
-    taskKey: string | undefined;
+    taskKey: string | undefined | null;
     setPageTitle: boolean;
 }
 

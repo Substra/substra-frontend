@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   New PerfBrowser layout and behavior (#411)
+
 ### Fixed
 
 -   Add missing space in Timing component (#424)

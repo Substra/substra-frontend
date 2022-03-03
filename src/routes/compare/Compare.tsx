@@ -16,11 +16,7 @@ import { PATHS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
-import PerfSidebarSectionComputePlans from '@/components/PerfSidebarSectionComputePlans';
-import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
-import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
-
-declare const MELLODDY: boolean;
+import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
 
 const Compare = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPARE);
@@ -83,13 +79,7 @@ const Compare = (): JSX.Element => {
                         </Box>
                     </HStack>
                 </HStack>
-                <PerfBrowser
-                    settingsComponents={[
-                        PerfSidebarSettingsNodes,
-                        ...(MELLODDY ? [PerfSidebarSettingsUnits] : []),
-                    ]}
-                    sectionComponents={[PerfSidebarSectionComputePlans]}
-                />
+                <PerfBrowser SidebarComponent={PerfSidebarComputePlans} />
             </Flex>
         </PerfBrowserContext.Provider>
     );

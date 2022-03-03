@@ -39,7 +39,6 @@ const usePerfChartTooltip = (
         displayed &&
         (summary ? (
             <PerfChartSummaryTooltip
-                series={series}
                 hideTooltip={hideTooltip}
                 showTooltip={showTooltip}
                 canvasBoundingRect={canvasBoundingRect}
@@ -47,7 +46,6 @@ const usePerfChartTooltip = (
             />
         ) : (
             <PerfChartTooltip
-                series={series}
                 hideTooltip={hideTooltip}
                 showTooltip={showTooltip}
                 x={position.x}

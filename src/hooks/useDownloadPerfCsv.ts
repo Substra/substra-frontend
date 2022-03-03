@@ -5,7 +5,6 @@ import { toCsv } from 'react-csv-downloader';
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
-import { getLineId } from '@/modules/series/SeriesUtils';
 
 import { downloadBlob } from '@/libs/request';
 
@@ -65,8 +64,11 @@ const CSV_COLUMNS = [
 
 const escape = (s: string): string => s.replace(/"/g, '""');
 
-const getDatas = (series: SerieT[], computePlans: ComputePlanT[]): Datas => {
-    const lineId = getLineId(series);
+const getDatas = (
+    series: SerieT[],
+    computePlans: ComputePlanT[],
+    getSerieIndex: (computePlanKey: string, serieId: string) => string
+): Datas => {
     const datas: Datas = [];
     for (const serie of series) {
         for (const point of serie.points) {
@@ -90,9 +92,11 @@ const getDatas = (series: SerieT[], computePlans: ComputePlanT[]): Datas => {
                     JSON.stringify(computePlan?.metadata || {})
                 ),
                 worker: escape(serie.worker),
-                testtupleKey: escape(point.testTaskKey),
+                testtupleKey: escape(point.testTaskKey || 'NA'),
                 metricName: escape(serie.metricName),
-                lineId: escape(lineId(serie.id).toString()),
+                lineId: escape(
+                    `#${getSerieIndex(serie.computePlanKey, serie.id)}`
+                ),
                 testtupleRank: escape(point.rank.toString()),
                 perf: escape(
                     point.perf === null ? 'NA' : point.perf.toString()
@@ -139,7 +143,7 @@ const compareDatas = (a: Data, b: Data) => {
 };
 
 const useDownloadPerfCsv = (seriesGroups: SerieT[][]) => {
-    const { computePlans } = useContext(PerfBrowserContext);
+    const { computePlans, getSerieIndex } = useContext(PerfBrowserContext);
 
     const downloadPerfCsv = async () => {
         // This code is adapted from the handleClick function of CsvDownloader
@@ -149,7 +153,7 @@ const useDownloadPerfCsv = (seriesGroups: SerieT[][]) => {
         const datas: Datas = seriesGroups.reduce(
             (allDatas: Datas, series: SerieT[]) => [
                 ...allDatas,
-                ...getDatas(series, computePlans),
+                ...getDatas(series, computePlans, getSerieIndex),
             ],
             []
         );
