@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import HyperparametersModal from '../computePlanDetails/components/HyperparametersModal';
 import CompareBreadcrumbs from './components/CompareBreadcrumbs';
 import { HStack, Flex, Box } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
@@ -17,6 +18,8 @@ import { PATHS } from '@/routes';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
+
+declare const HYPERPARAMETERS: string[];
 
 const Compare = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPARE);
@@ -74,6 +77,9 @@ const Compare = (): JSX.Element => {
                 >
                     <CompareBreadcrumbs />
                     <HStack paddingX="8">
+                        {HYPERPARAMETERS.length && (
+                            <HyperparametersModal computePlans={computePlans} />
+                        )}
                         <Box>
                             <PerfDownloadButton />
                         </Box>
