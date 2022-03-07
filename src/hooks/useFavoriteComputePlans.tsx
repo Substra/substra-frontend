@@ -4,6 +4,7 @@ import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 
 const useFavoriteComputePlans = (): {
     favorites: ComputePlanT[];
+    updateFavorite: (computePlan: ComputePlanT) => void;
     addToFavorites: (computePlan: ComputePlanT) => void;
     removeFromFavorites: (computePlan: ComputePlanT) => void;
     isFavorite: (computePlan: ComputePlanT) => boolean;
@@ -11,6 +12,7 @@ const useFavoriteComputePlans = (): {
 } => {
     const {
         items: favorites,
+        updateItem: updateFavorite,
         addItem: addToFavorites,
         removeItem: removeFromFavorites,
     } = useLocalStorageItems<ComputePlanT>('pinned_compute_plans');
@@ -29,6 +31,7 @@ const useFavoriteComputePlans = (): {
 
     return {
         favorites,
+        updateFavorite,
         addToFavorites,
         removeFromFavorites,
         isFavorite,

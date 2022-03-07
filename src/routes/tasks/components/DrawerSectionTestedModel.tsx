@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 import { Skeleton } from '@chakra-ui/react';
@@ -16,7 +16,7 @@ import {
     Traintuple,
 } from '@/modules/tasks/TuplesTypes';
 
-import useEffectWithAbortController from '@/hooks/useEffectWithAbortController';
+import useWithAbortController from '@/hooks/useWithAbortController';
 
 import { DrawerSectionEntry } from '@/components/DrawerSection';
 
@@ -29,39 +29,36 @@ const DrawerSectionTestedModel = ({
     const [parentTask, setParentTask] = useState<
         Traintuple | CompositeTraintuple | Aggregatetuple
     >();
+    const withAbortController = useWithAbortController();
 
     const parentTaskStub = task.parent_tasks[0];
+    useEffect(() => {
+        const retrieveParentTask = async (abortController: AbortController) => {
+            setLoading(true);
 
-    useEffectWithAbortController(
-        (abortController) => {
-            const retrieveParentTask = async () => {
-                setLoading(true);
+            let method;
+            if (parentTaskStub.category === TaskCategory.train) {
+                method = retrieveTraintuple;
+            } else if (parentTaskStub.category === TaskCategory.composite) {
+                method = retrieveCompositeTraintuple;
+            } else {
+                method = retrieveAggregateTuple;
+            }
 
-                let method;
-                if (parentTaskStub.category === TaskCategory.train) {
-                    method = retrieveTraintuple;
-                } else if (parentTaskStub.category === TaskCategory.composite) {
-                    method = retrieveCompositeTraintuple;
-                } else {
-                    method = retrieveAggregateTuple;
-                }
+            try {
+                const response = await method(parentTaskStub.key, {
+                    signal: abortController.signal,
+                });
+                setParentTask(response.data);
+            } catch (error) {
+                console.error(error);
+            }
 
-                try {
-                    const response = await method(parentTaskStub.key, {
-                        signal: abortController.signal,
-                    });
-                    setParentTask(response.data);
-                } catch (error) {
-                    console.error(error);
-                }
+            setLoading(false);
+        };
 
-                setLoading(false);
-            };
-
-            retrieveParentTask();
-        },
-        [parentTaskStub.key]
-    );
+        return withAbortController(retrieveParentTask);
+    }, [parentTaskStub.key]);
 
     return (
         <DrawerSectionEntry

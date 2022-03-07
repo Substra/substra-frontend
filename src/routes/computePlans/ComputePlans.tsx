@@ -12,8 +12,10 @@ import {
     HStack,
     Flex,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import { useLocation } from 'wouter';
 
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
@@ -27,6 +29,7 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
+import useWithAbortController from '@/hooks/useWithAbortController';
 
 import { compilePath, PATHS } from '@/routes';
 
@@ -51,11 +54,77 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters },
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
+    const {
+        items: selectedComputePlans,
+        updateItem: updateSelectedComputePlan,
+        addItem: selectComputePlan,
+        removeItem: unselectComputePlan,
+        clearItems: resetSelection,
+    } = useLocalStorageItems<ComputePlanT>('selected_compute_plans');
+    const {
+        favorites,
+        isFavorite,
+        onFavoriteChange,
+        updateFavorite,
+        removeFromFavorites,
+    } = useFavoriteComputePlans();
+    const withAbortController = useWithAbortController();
+
+    const selectedKeys = selectedComputePlans.map((cp) => cp.key);
 
     useSearchFiltersEffect(() => {
-        return dispatchWithAutoAbort(
+        const refreshSelectedAndFavorites = async (
+            abortController: AbortController
+        ) => {
+            const selectedAndFavorites = [
+                ...favorites,
+                ...selectedComputePlans.filter(
+                    (selectedCp) =>
+                        !favorites.find(
+                            (favoriteCp) => favoriteCp.key === selectedCp.key
+                        )
+                ),
+            ];
+            for (const computePlan of selectedAndFavorites) {
+                retrieveComputePlan(computePlan.key, {
+                    signal: abortController.signal,
+                }).then(
+                    (response) => {
+                        const refreshedComputePlan = response.data;
+                        if (isFavorite(computePlan)) {
+                            updateFavorite(refreshedComputePlan);
+                        }
+                        if (selectedKeys.includes(computePlan.key)) {
+                            updateSelectedComputePlan(refreshedComputePlan);
+                        }
+                    },
+                    (error) => {
+                        // do nothing if the call has been voluntarily canceled
+                        if (axios.isCancel(error)) {
+                            return;
+                        }
+                        // remove from favorite/selected if there was an error
+                        if (isFavorite(computePlan)) {
+                            removeFromFavorites(computePlan);
+                        }
+                        if (selectedKeys.includes(computePlan.key)) {
+                            unselectComputePlan(computePlan);
+                        }
+                    }
+                );
+            }
+        };
+
+        const abortRefreshFavorites = withAbortController(
+            refreshSelectedAndFavorites
+        );
+        const abortListComputePlans = dispatchWithAutoAbort(
             listComputePlans({ filters: searchFilters, page })
         );
+        return () => {
+            abortRefreshFavorites();
+            abortListComputePlans();
+        };
     }, [searchFilters, page]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
@@ -75,14 +144,6 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
-    const {
-        items: selectedComputePlans,
-        addItem: selectComputePlan,
-        removeItem: unselectComputePlan,
-        clearItems: resetSelection,
-    } = useLocalStorageItems<ComputePlanT>('selected_compute_plans');
-    const selectedKeys = selectedComputePlans.map((cp) => cp.key);
-
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
             unselectComputePlan(computePlan);
@@ -100,9 +161,6 @@ const ComputePlans = (): JSX.Element => {
             compilePath(PATHS.COMPARE, { keys: selectedKeys.join(',') })
         );
     };
-
-    const { favorites, isFavorite, onFavoriteChange } =
-        useFavoriteComputePlans();
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
