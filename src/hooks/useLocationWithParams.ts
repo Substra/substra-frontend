@@ -11,11 +11,13 @@ const RADIX = 10;
 interface LocationParams {
     search: SearchFilterType[];
     page: number;
+    match: string;
 }
 
 interface NewLocationParams {
     search?: SearchFilterType[];
     page?: number;
+    match?: string;
 }
 
 const useLocationWithParams = (): {
@@ -36,6 +38,7 @@ const useLocationWithParams = (): {
     const params: LocationParams = {
         search: parseSearchFiltersString(urlSearchParams.get('search') || ''),
         page: parseInt(urlSearchParams.get('page') || '', RADIX) || 1,
+        match: urlSearchParams.get('match') || '',
     };
 
     // This function is meant to be called 3 ways:
@@ -66,6 +69,10 @@ const useLocationWithParams = (): {
         }
         if (newParams.page) {
             urlSearchParams.set('page', newParams.page.toString(RADIX));
+        }
+
+        if (newParams.match !== undefined) {
+            urlSearchParams.set('match', newParams.match);
         }
 
         return `${newLocation}?${urlSearchParams.toString()}`;

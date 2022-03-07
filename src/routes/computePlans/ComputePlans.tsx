@@ -32,6 +32,7 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import { ClickableTh } from '@/components/AssetsTable';
+import FullTextSearchBar from '@/components/FullTextSearchBar';
 import SearchBar from '@/components/SearchBar';
 import { EmptyTr, Tbody } from '@/components/Table';
 import {
@@ -50,7 +51,7 @@ import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 const ComputePlans = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
-        params: { page, search: searchFilters },
+        params: { page, search: searchFilters, match },
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
     const {
@@ -118,13 +119,13 @@ const ComputePlans = (): JSX.Element => {
             refreshSelectedAndFavorites
         );
         const abortListComputePlans = dispatchWithAutoAbort(
-            listComputePlans({ filters: searchFilters, page })
+            listComputePlans({ filters: searchFilters, page, match })
         );
         return () => {
             abortRefreshFavorites();
             abortListComputePlans();
         };
-    }, [searchFilters, page]);
+    }, [searchFilters, page, match]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
         (state) => state.computePlans.computePlans
@@ -184,6 +185,7 @@ const ComputePlans = (): JSX.Element => {
                             <ComputePlanStatusTableFilter />
                         </TableFilters>
                         <SearchBar asset="compute_plan" />
+                        {MELLODDY && <FullTextSearchBar />}
                     </HStack>
                     <HStack spacing="4">
                         {selectedKeys.length > 0 && (

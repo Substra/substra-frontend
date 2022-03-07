@@ -68,6 +68,7 @@ const initialState: ComputePlansState = {
 interface listComputePlansArgs {
     filters: SearchFilterType[];
     page: number;
+    match: string;
 }
 export const listComputePlans = createAsyncThunk<
     PaginatedApiResponse<ComputePlanStub>,
@@ -75,10 +76,10 @@ export const listComputePlans = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/list',
-    async ({ filters, page }: listComputePlansArgs, thunkAPI) => {
+    async ({ filters, page, match }: listComputePlansArgs, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlans(
-                { searchFilters: filters, page },
+                { searchFilters: filters, page, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;

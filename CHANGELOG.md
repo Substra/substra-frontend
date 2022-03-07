@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Show hyperparameters on the compare page (#434)
 -   Favorite and selected compute plans are updated when new data is available (#428)
 -   Hyperparameters columns in cp list table (#450)
+-   Full text search on CP list (#452)
 -   Drag to zoom on charts (#455)
 
 ### Fixed
