@@ -1,7 +1,8 @@
-import PerfChartTooltipItem from './PerfChartTooltipItem';
 import { List } from '@chakra-ui/react';
 
 import { DataPoint } from '@/modules/series/SeriesTypes';
+
+import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 
 const TOOLTIP_WIDTH = 340;
 

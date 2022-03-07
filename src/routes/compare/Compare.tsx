@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import HyperparametersModal from '../computePlanDetails/components/HyperparametersModal';
 import CompareBreadcrumbs from './components/CompareBreadcrumbs';
 import { HStack, Flex, Box } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
@@ -15,6 +14,7 @@ import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import { PATHS } from '@/routes';
 
+import HyperparametersModal from '@/components/HyperparametersModal';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';

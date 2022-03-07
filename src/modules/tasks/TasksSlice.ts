@@ -1,4 +1,3 @@
-import { PaginatedApiResponse } from '../common/CommonTypes';
 import * as TasksApi from './TasksApi';
 import {
     Aggregatetuple,
@@ -13,6 +12,8 @@ import {
 } from './TuplesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 

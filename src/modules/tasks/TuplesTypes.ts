@@ -1,5 +1,3 @@
-import { DatasetStubType } from '../datasets/DatasetsTypes';
-import { MetricType } from '../metrics/MetricsTypes';
 import { Model } from './ModelsTypes';
 
 import { AlgoT } from '@/modules/algos/AlgosTypes';
@@ -9,6 +7,8 @@ import {
     PermissionsType,
     PermissionType,
 } from '@/modules/common/CommonTypes';
+import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 export enum TupleStatus {
     waiting = 'STATUS_WAITING',

@@ -1,6 +1,10 @@
-import { APIListArgs, PaginatedApiResponse } from '../common/CommonTypes';
 import { MetricType } from './MetricsTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
+
+import {
+    APIListArgs,
+    PaginatedApiResponse,
+} from '@/modules/common/CommonTypes';
 
 import API, { getApiOptions } from '@/libs/request';
 

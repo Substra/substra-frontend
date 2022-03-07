@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 
-import PerfChartTooltipItem from './PerfChartTooltipItem';
 import { List, ListItem } from '@chakra-ui/react';
 
 import { DataPoint } from '@/modules/series/SeriesTypes';
@@ -9,6 +8,8 @@ import { compareDataPoint } from '@/modules/series/SeriesUtils';
 import { capitalize } from '@/libs/utils';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+
+import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 
 interface PerfChartTooltipProps {
     showTooltip: () => void;

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import HyperparametersTr from './HyperparametersTr';
 import {
     Button,
     Modal,
@@ -30,6 +29,8 @@ import { RiSearchLine } from 'react-icons/ri';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { capitalize } from '@/libs/utils';
+
+import HyperparametersTr from '@/components/HyperparametersTr';
 
 interface HyperparametersModalProps {
     computePlans: ComputePlanT[];

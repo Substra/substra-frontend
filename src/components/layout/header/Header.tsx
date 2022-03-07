@@ -1,6 +1,3 @@
-import About from './About';
-import HeaderNavigation from './HeaderNavigation';
-import Help from './Help';
 import {
     Flex,
     Text,
@@ -24,6 +21,10 @@ import { logOut } from '@/modules/user/UserSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
 import { PATHS } from '@/routes';
+
+import About from '@/components/layout/header/About';
+import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
+import Help from '@/components/layout/header/Help';
 
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
 

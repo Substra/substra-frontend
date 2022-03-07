@@ -1,4 +1,3 @@
-import HyperparametersModal from './HyperparametersModal';
 import { Box, HStack, IconButton, Tooltip } from '@chakra-ui/react';
 import { RiStarLine, RiStarFill } from 'react-icons/ri';
 
@@ -6,6 +5,7 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 
+import HyperparametersModal from '@/components/HyperparametersModal';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 
 interface ActionsProps {

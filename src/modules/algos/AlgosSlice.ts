@@ -1,10 +1,10 @@
-import { PaginatedApiResponse } from '../common/CommonTypes';
 import * as AlgosApi from './AlgosApi';
 import { AlgoT } from './AlgosTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import * as CommonApi from '@/modules/common/CommonApi';
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
