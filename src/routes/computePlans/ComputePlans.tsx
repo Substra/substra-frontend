@@ -23,6 +23,7 @@ import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
+import useHyperparameters from '@/hooks/useHyperparameters';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
@@ -142,6 +143,8 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
+    const hyperparametersList = useHyperparameters();
+
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
             unselectComputePlan(computePlan);
@@ -246,6 +249,15 @@ const ComputePlans = (): JSX.Element => {
                                 >
                                     Dates / Duration
                                 </ClickableTh>
+                                {hyperparametersList.map((hp) => (
+                                    <ClickableTh
+                                        key={hp}
+                                        minWidth="125px"
+                                        onClick={() => onPopoverOpen(0)}
+                                    >
+                                        {hp}
+                                    </ClickableTh>
+                                ))}
                             </Tr>
                         </Thead>
                         <ChakraTbody>
@@ -258,6 +270,7 @@ const ComputePlans = (): JSX.Element => {
                                     isFavorite={isFavorite}
                                     onFavoriteChange={onFavoriteChange}
                                     highlighted={true}
+                                    hyperparametersList={hyperparametersList}
                                 />
                             ))}
                         </ChakraTbody>
@@ -276,6 +289,9 @@ const ComputePlans = (): JSX.Element => {
                                         isFavorite={isFavorite}
                                         onFavoriteChange={onFavoriteChange}
                                         highlighted={true}
+                                        hyperparametersList={
+                                            hyperparametersList
+                                        }
                                     />
                                 ))}
                         </ChakraTbody>
@@ -314,6 +330,9 @@ const ComputePlans = (): JSX.Element => {
                                             isFavorite={isFavorite}
                                             onFavoriteChange={onFavoriteChange}
                                             highlighted={false}
+                                            hyperparametersList={
+                                                hyperparametersList
+                                            }
                                         />
                                     ))
                             )}

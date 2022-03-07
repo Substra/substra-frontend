@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     Button,
@@ -30,6 +30,8 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { capitalize } from '@/libs/utils';
 
+import useHyperparameters from '@/hooks/useHyperparameters';
+
 import HyperparametersTr from '@/components/HyperparametersTr';
 
 interface HyperparametersModalProps {
@@ -53,25 +55,7 @@ const HyperparametersModal = ({
         setInputValue('');
     }, [isOpen]);
 
-    const hyperparametersList = useMemo<string[]>(() => {
-        const hyperparamsList: string[] = [];
-
-        for (const computePlan of computePlans) {
-            for (const data in computePlan.metadata) {
-                /**
-                 * Fill an array containing every hyperparameter for all the compute plans
-                 * To be used to define Thead columns in the hyperparameter table
-                 */
-                if (
-                    HYPERPARAMETERS.includes(data) &&
-                    !hyperparamsList.includes(data)
-                ) {
-                    hyperparamsList.push(data);
-                }
-            }
-        }
-        return hyperparamsList;
-    }, [computePlans]);
+    const hyperparametersList = useHyperparameters();
 
     const addFilter = (filter: string) => {
         setFilters([...filters, filter]);
