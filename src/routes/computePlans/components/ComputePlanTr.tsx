@@ -25,8 +25,6 @@ interface ComputePlanTrProps {
     highlighted: boolean;
 }
 
-declare const MELLODDY: boolean;
-
 const ComputePlanTr = ({
     computePlan,
     selectedKeys,

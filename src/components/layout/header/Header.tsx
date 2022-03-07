@@ -27,8 +27,6 @@ import { PATHS } from '@/routes';
 
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
 
-declare const MICROSOFT_CLARITY_ID: string;
-
 const IconLink = styled(Link)`
     cursor: pointer;
 `;

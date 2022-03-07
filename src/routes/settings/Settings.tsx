@@ -20,8 +20,6 @@ import { useToast } from '@/hooks/useToast';
 
 import NotFound from '@/routes/notfound/NotFound';
 
-declare const MICROSOFT_CLARITY_ID: string;
-
 const Settings = (): JSX.Element => {
     const toast = useToast();
     const [displayNotification, setDisplayNotification] = useCookie(

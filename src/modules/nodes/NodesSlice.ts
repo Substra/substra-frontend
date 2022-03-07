@@ -3,8 +3,6 @@ import { NodeInfoType, NodeType } from './NodesTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-declare const API_URL: string;
-
 interface NodesState {
     nodes: NodeType[];
     nodesLoading: boolean;

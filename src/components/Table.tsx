@@ -67,8 +67,6 @@ export const ClickableTr = styled(Tr)`
     }
 `;
 
-declare const DEFAULT_PAGE_SIZE: number;
-
 interface TableSkeletonProps {
     children: React.ReactNode;
     currentPage: number;

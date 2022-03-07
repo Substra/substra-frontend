@@ -10,8 +10,6 @@ import { PATHS } from '@/routes';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Status from '@/components/Status';
 
-declare const MELLODDY: boolean;
-
 const ComputePlanTasksBreadcrumbs = (): JSX.Element => {
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan

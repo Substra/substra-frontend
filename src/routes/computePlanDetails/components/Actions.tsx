@@ -8,7 +8,6 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 
-declare const HYPERPARAMETERS: string[];
 interface ActionsProps {
     computePlan: ComputePlanT | null;
     loading: boolean;

@@ -31,8 +31,6 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { capitalize } from '@/libs/utils';
 
-declare const HYPERPARAMETERS: string[];
-
 interface HyperparametersModalProps {
     computePlans: ComputePlanT[];
 }

@@ -21,8 +21,6 @@ import { RiExternalLinkLine } from 'react-icons/ri';
 
 import useCookieSettings from '@/hooks/useCookieSettings';
 
-declare const MICROSOFT_CLARITY_ID: string;
-
 const installClarity = () => {
     if (MICROSOFT_CLARITY_ID) {
         // install clarity

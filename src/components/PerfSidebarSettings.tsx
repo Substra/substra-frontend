@@ -12,8 +12,6 @@ import { RiArrowDropDownLine } from 'react-icons/ri';
 import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
 import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
 
-declare const MELLODDY: boolean;
-
 const PerfSidebarSettings = (): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: true,

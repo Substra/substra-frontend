@@ -18,8 +18,6 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
-declare const MELLODDY: boolean;
-
 const DetailsSidebar = (): JSX.Element => {
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan

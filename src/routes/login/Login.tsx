@@ -22,8 +22,6 @@ import { PATHS } from '@/routes';
 
 import OwkinLogoBlack from '@/assets/svg/owkin-logo-black';
 
-declare const __APP_VERSION__: string;
-
 const Login = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();

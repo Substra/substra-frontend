@@ -1,7 +1,5 @@
 import { NodeType } from './NodesTypes';
 
-declare const MELLODDY: boolean;
-
 export const MELLODDY_LARGE5_NODE_IDS: string[] = [
     'pharma10',
     'pharma8',

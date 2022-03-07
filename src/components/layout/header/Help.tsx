@@ -28,8 +28,6 @@ import { useAppSelector } from '@/hooks';
 
 import CopyButton from '@/components/CopyButton';
 
-declare const __APP_VERSION__: string;
-
 const Help = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -10,8 +10,6 @@ import { downloadBlob } from '@/libs/request';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-declare const MELLODDY: boolean;
-
 enum CSV_COLUMN_ID {
     computePlanKey = 'computePlanKey',
     computePlanTag = 'computePlanTag',

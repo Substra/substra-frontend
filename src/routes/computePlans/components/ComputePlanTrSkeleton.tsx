@@ -5,8 +5,6 @@ import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import Status from '@/components/Status';
 import { TableSkeleton } from '@/components/Table';
 
-declare const MELLODDY: boolean;
-
 const ComputePlanProgressSkeleton = (): JSX.Element => (
     <Skeleton>
         <VStack spacing="1">

@@ -26,8 +26,6 @@ import {
 
 import { OnOptionChange } from '@/hooks/useSelection';
 
-declare const MELLODDY: boolean;
-
 export type XAxisMode = 'epoch' | 'rank';
 
 interface PerfBrowserContext {

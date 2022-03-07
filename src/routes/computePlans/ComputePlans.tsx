@@ -46,8 +46,6 @@ import {
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
-declare const MELLODDY: boolean;
-
 const ComputePlans = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {

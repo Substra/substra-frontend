@@ -18,9 +18,6 @@ import { useAppSelector } from '@/hooks';
 import CopyButton from '@/components/CopyButton';
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
-declare const __APP_VERSION__: string;
-declare const API_URL: string;
-
 const About = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 

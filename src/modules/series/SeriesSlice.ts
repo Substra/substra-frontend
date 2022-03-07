@@ -17,8 +17,6 @@ import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
 import { SearchFilterType } from '@/libs/searchFilter';
 
-declare const MELLODDY: boolean;
-
 interface SeriesState {
     series: SerieT[];
     loading: boolean;

@@ -6,8 +6,6 @@ import {
     SearchFilterType,
 } from '@/libs/searchFilter';
 
-declare const API_URL: string;
-
 const CONFIG = {
     baseURL: API_URL,
     timeout: 2 * 60 * 1000, // 2 mins
@@ -61,8 +59,6 @@ const API = {
     post: instance.post,
     anonymousGet: anonymousInstance.get,
 };
-
-declare const DEFAULT_PAGE_SIZE: number;
 
 export const getApiOptions = (
     searchFilters: SearchFilterType[],

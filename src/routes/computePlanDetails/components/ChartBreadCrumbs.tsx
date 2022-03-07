@@ -13,8 +13,6 @@ import { PATHS } from '@/routes';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Status from '@/components/Status';
 
-declare const MELLODDY: boolean;
-
 const ComputePlanChartBreadcrumbs = (): JSX.Element => {
     const { selectedMetricName, setSelectedMetricName } =
         useContext(PerfBrowserContext);

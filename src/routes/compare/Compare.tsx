@@ -19,8 +19,6 @@ import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
 
-declare const HYPERPARAMETERS: string[];
-
 const Compare = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPARE);
     const keys = decodeURIComponent(params?.keys || '').split(',');

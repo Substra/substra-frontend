@@ -23,8 +23,6 @@ export const getStatusCount = (
     throw `Invalid status ${status}`;
 };
 
-declare const MELLODDY: boolean;
-
 export const getMelloddyName = (
     computePlan: ComputePlanT | ComputePlanStub
 ): string => {

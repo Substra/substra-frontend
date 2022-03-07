@@ -2,8 +2,6 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import Pagination from '@/components/Pagination';
 
-declare const DEFAULT_PAGE_SIZE: number;
-
 interface TablePaginationProps {
     currentPage: number;
     itemCount: number;

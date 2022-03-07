@@ -37,8 +37,6 @@ import {
     SerieListItem,
 } from '@/components/PerfSidebarCommon';
 
-declare const MELLODDY: boolean;
-
 const LoadingState = (): JSX.Element => {
     return (
         <List spacing="2.5">
