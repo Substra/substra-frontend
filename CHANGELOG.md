@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Add a news feed for compute plan task events (#336)
 -   Show hyperparameters on the compare page (#434)
 -   Favorite and selected compute plans are updated when new data is available (#428)
 -   Hyperparameters columns in cp list table (#450)

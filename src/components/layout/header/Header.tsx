@@ -1,3 +1,4 @@
+import NewsFeed from './NewsFeed';
 import {
     Flex,
     Text,
@@ -163,6 +164,7 @@ const Header = (): JSX.Element => {
                         </MenuList>
                     </Menu>
                 </Box>
+                <NewsFeed />
             </HStack>
         </Flex>
     );
