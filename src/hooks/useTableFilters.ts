@@ -8,15 +8,13 @@ import React, {
 
 import { useDisclosure } from '@chakra-ui/react';
 
-import { AssetType } from '@/modules/common/CommonTypes';
-
+import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSelection, { OnOptionChange } from '@/hooks/useSelection';
 import {
     areSearchFiltersListsEqual,
     SearchFilterType,
 } from '@/libs/searchFilter';
-
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSelection, { OnOptionChange } from '@/hooks/useSelection';
+import { AssetType } from '@/modules/common/CommonTypes';
 
 type ClearCallback = (searchFilters: SearchFilterType[]) => SearchFilterType[];
 type ApplyCallback = (searchFilters: SearchFilterType[]) => SearchFilterType[];

@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import CookieBanner from './components/CookieBanner';
-import { Flex, Spinner } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
-import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
-import { refreshToken } from '@/modules/user/UserSlice';
+import { Flex, Spinner } from '@chakra-ui/react';
 
 import { useAppDispatch } from '@/hooks';
-
+import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
+import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
 import AppLayout from '@/components/layout/applayout/AppLayout';
+
+import CookieBanner from './components/CookieBanner';
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();

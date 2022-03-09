@@ -1,4 +1,7 @@
-import NewsFeed from './NewsFeed';
+import styled from '@emotion/styled';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { Link, useLocation, useRoute } from 'wouter';
+
 import {
     Flex,
     Text,
@@ -12,22 +15,18 @@ import {
     IconButton,
     Icon,
 } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { RiUser3Fill } from 'react-icons/ri';
-import { Link, useLocation, useRoute } from 'wouter';
 
-import { logOut } from '@/modules/user/UserSlice';
-
+import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-
+import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
 
 import About from '@/components/layout/header/About';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
 
-import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
+import NewsFeed from './NewsFeed';
 
 const IconLink = styled(Link)`
     cursor: pointer;

@@ -1,6 +1,5 @@
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 const useFavoriteComputePlans = (): {
     favorites: ComputePlanT[];

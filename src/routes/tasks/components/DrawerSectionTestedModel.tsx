@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 import { Skeleton } from '@chakra-ui/react';
 
+import useWithAbortController from '@/hooks/useWithAbortController';
 import {
     retrieveAggregateTuple,
     retrieveCompositeTraintuple,
@@ -16,9 +16,9 @@ import {
     Traintuple,
 } from '@/modules/tasks/TuplesTypes';
 
-import useWithAbortController from '@/hooks/useWithAbortController';
-
 import { DrawerSectionEntry } from '@/components/DrawerSection';
+
+import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
 const DrawerSectionTestedModel = ({
     task,

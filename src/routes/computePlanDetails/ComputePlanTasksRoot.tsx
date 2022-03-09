@@ -1,9 +1,7 @@
 import { Redirect } from 'wouter';
 
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 

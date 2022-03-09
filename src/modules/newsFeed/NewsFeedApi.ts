@@ -1,9 +1,9 @@
-import { NewsItemType } from './NewsFeedTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+import API from '@/libs/request';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
-import API from '@/libs/request';
+import { NewsItemType } from './NewsFeedTypes';
 
 const URLS = {
     LIST: '/news_feed/',

@@ -7,6 +7,11 @@ import {
     useEffect,
 } from 'react';
 
+import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
+import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
+import { Line } from 'react-chartjs-2';
+
 import {
     Box,
     HStack,
@@ -23,18 +28,13 @@ import {
     Button,
     ButtonGroup,
 } from '@chakra-ui/react';
-import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
-import zoomPlugin from 'chartjs-plugin-zoom';
-import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
-import { Line } from 'react-chartjs-2';
 import { RiAddLine, RiQuestionMark, RiSubtractLine } from 'react-icons/ri';
-
-import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
-import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
 
 import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
+import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
+import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 

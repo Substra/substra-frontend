@@ -2,12 +2,10 @@ import { useContext } from 'react';
 
 import { List, ListItem } from '@chakra-ui/react';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { capitalize } from '@/libs/utils';
 import { DataPoint } from '@/modules/series/SeriesTypes';
 import { compareDataPoint } from '@/modules/series/SeriesUtils';
-
-import { capitalize } from '@/libs/utils';
-
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 

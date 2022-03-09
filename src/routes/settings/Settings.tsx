@@ -17,7 +17,6 @@ import { RiExternalLinkLine } from 'react-icons/ri';
 import useCookie, { toBool } from '@/hooks/useCookie';
 import useCookieSettings from '@/hooks/useCookieSettings';
 import { useToast } from '@/hooks/useToast';
-
 import NotFound from '@/routes/notfound/NotFound';
 
 const Settings = (): JSX.Element => {

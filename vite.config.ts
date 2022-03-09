@@ -1,9 +1,10 @@
-import { version } from './package.json';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import path from 'path';
 import { defineConfig } from 'vite';
 import reactSvgPlugin from 'vite-plugin-react-svg';
 import reactJsx from 'vite-react-jsx';
+
+import { version } from './package.json';
 
 const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
 const MICROSOFT_CLARITY_ID = process.env['MICROSOFT_CLARITY_ID'] || '';

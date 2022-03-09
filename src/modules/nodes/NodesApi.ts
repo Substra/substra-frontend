@@ -1,7 +1,8 @@
-import { NodeInfoType, NodeType } from './NodesTypes';
 import { AxiosPromise } from 'axios';
 
 import API from '@/libs/request';
+
+import { NodeInfoType, NodeType } from './NodesTypes';
 
 const URLS = {
     LIST: '/node/',

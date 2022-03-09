@@ -1,11 +1,3 @@
-import {
-    DataPoint,
-    Index,
-    PointT,
-    SerieFeaturesT,
-    SerieRankData,
-    SerieT,
-} from './SeriesTypes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { HasKey } from '@/modules/common/CommonTypes';
@@ -15,6 +7,15 @@ import { NodeType } from '@/modules/nodes/NodesTypes';
 import { compareNodes } from '@/modules/nodes/NodesUtils';
 import { getPerf } from '@/modules/tasks/TasksUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
+
+import {
+    DataPoint,
+    Index,
+    PointT,
+    SerieFeaturesT,
+    SerieRankData,
+    SerieT,
+} from './SeriesTypes';
 
 function buildSerieFeatures(
     testtuple: TesttupleStub,

@@ -1,6 +1,6 @@
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
-
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 
 export const getStatusCount = (
     computePlan: ComputePlanT,

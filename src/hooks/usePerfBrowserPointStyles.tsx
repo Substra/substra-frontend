@@ -16,16 +16,14 @@ import {
     RiVipDiamondLine,
 } from 'react-icons/ri';
 
+import chakraTheme from '@/assets/chakraTheme';
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PERF_BROWSER_COLORSCHEMES } from '@/hooks/usePerfBrowserColors';
 import {
     isAverageNode,
     STATIC_AVERAGE_NODE_IDS,
 } from '@/modules/nodes/NodesUtils';
 import { SerieT } from '@/modules/series/SeriesTypes';
-
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { PERF_BROWSER_COLORSCHEMES } from '@/hooks/usePerfBrowserColors';
-
-import chakraTheme from '@/assets/chakraTheme';
 
 const POINT_STYLE_ICONS = [
     'play',

@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
 
-import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
-import DrawerSectionMetricsEntry from './DrawerSectionMetricsEntry';
-import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
-import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
-import DrawerSectionTestedModel from './DrawerSectionTestedModel';
-import ErrorAlert from './ErrorAlert';
 import {
     Drawer,
     DrawerContent,
@@ -19,6 +13,14 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import {
+    isAggregatetuple,
+    isCompositeTraintuple,
+    isTesttuple,
+    isTraintuple,
+} from '@/libs/tuples';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
@@ -28,17 +30,6 @@ import {
     getTaskDataset,
 } from '@/modules/tasks/TasksUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
-import {
-    isAggregatetuple,
-    isCompositeTraintuple,
-    isTesttuple,
-    isTraintuple,
-} from '@/libs/tuples';
-
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-
 import { compilePath, PATHS } from '@/routes';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -53,6 +44,13 @@ import {
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
+
+import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
+import DrawerSectionMetricsEntry from './DrawerSectionMetricsEntry';
+import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
+import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
+import DrawerSectionTestedModel from './DrawerSectionTestedModel';
+import ErrorAlert from './ErrorAlert';
 
 interface TaskDrawerProps {
     category: TaskCategory;

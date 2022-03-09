@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 
-import Actions from './components/Actions';
-import DetailsSidebar from './components/DetailsSidebar';
-import TabsNav from './components/TabsNav';
-import TasksBreadcrumbs from './components/TasksBreadCrumbs';
-import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
+import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
+
+import { useAppSelector } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
     retrieveComputePlan,
     retrieveComputePlanAggregateTasks,
@@ -15,17 +16,16 @@ import {
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
-import { useAppSelector } from '@/hooks';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-
 import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import TasksTable from '@/components/TasksTable';
+
+import Actions from './components/Actions';
+import DetailsSidebar from './components/DetailsSidebar';
+import TabsNav from './components/TabsNav';
+import TasksBreadcrumbs from './components/TasksBreadCrumbs';
 
 interface GenericTasksProps {
     tasksTable: React.ReactNode;

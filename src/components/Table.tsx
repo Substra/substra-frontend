@@ -1,13 +1,13 @@
 import { Fragment } from 'react';
 
-import { Tr, Td, Tbody as ChakraTbody } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
+import { Tr, Td, Tbody as ChakraTbody } from '@chakra-ui/react';
 import { RiListCheck2 } from 'react-icons/ri';
 
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 import { AssetType } from '@/modules/common/CommonTypes';
 import { getAssetLabel } from '@/modules/common/CommonUtils';
-
-import useLocationWithParams from '@/hooks/useLocationWithParams';
 
 import EmptyState from '@/components/EmptyState';
 

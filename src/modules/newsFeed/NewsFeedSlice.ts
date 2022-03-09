@@ -1,9 +1,10 @@
-import * as NewsFeedApi from './NewsFeedApi';
-import { NewsItemType } from './NewsFeedTypes';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+
+import * as NewsFeedApi from './NewsFeedApi';
+import { NewsItemType } from './NewsFeedTypes';
 
 interface NewsFeedState {
     newsFeed: NewsItemType[];

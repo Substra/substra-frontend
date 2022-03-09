@@ -1,9 +1,9 @@
-import { Flex } from '@chakra-ui/react';
-import { RiFileWarningLine } from 'react-icons/ri';
 import { useLocation } from 'wouter';
 
-import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import { Flex } from '@chakra-ui/react';
+import { RiFileWarningLine } from 'react-icons/ri';
 
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { PATHS } from '@/routes';
 
 import EmptyState from '@/components/EmptyState';

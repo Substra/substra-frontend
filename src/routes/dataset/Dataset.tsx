@@ -1,25 +1,25 @@
 import React, { Suspense, useEffect } from 'react';
 
-import Breadcrumbs from './components/BreadCrumbs';
-import DetailsSidebar from './components/DetailsSidebar';
-import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useRoute } from 'wouter';
 
+import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import {
     retrieveDataset,
     retrieveDescription,
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 import { DatasetType } from '@/modules/datasets/DatasetsTypes';
-
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-
 import { PATHS } from '@/routes';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
+
+import Breadcrumbs from './components/BreadCrumbs';
+import DetailsSidebar from './components/DetailsSidebar';
 
 const CodeHighlighter = React.lazy(
     () => import('@/components/CodeHighlighter')

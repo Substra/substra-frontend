@@ -1,5 +1,6 @@
-import ComputePlanTr from './components/ComputePlanTr';
-import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
+import axios from 'axios';
+import { useLocation } from 'wouter';
+
 import {
     VStack,
     Table,
@@ -12,12 +13,6 @@ import {
     HStack,
     Flex,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useLocation } from 'wouter';
-
-import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
-import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
@@ -31,7 +26,9 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import useWithAbortController from '@/hooks/useWithAbortController';
-
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
+import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import { ClickableTh } from '@/components/AssetsTable';
@@ -46,6 +43,9 @@ import {
     ComputePlanStatusTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
+
+import ComputePlanTr from './components/ComputePlanTr';
+import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 
 const ComputePlans = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();

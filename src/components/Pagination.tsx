@@ -1,6 +1,7 @@
+import { Link } from 'wouter';
+
 import { Button, IconButton, Stack } from '@chakra-ui/react';
 import { RiArrowLeftLine, RiArrowRightLine } from 'react-icons/ri';
-import { Link } from 'wouter';
 
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 

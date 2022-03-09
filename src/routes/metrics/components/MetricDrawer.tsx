@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import {
     Drawer,
     DrawerContent,
@@ -9,19 +11,16 @@ import {
     VStack,
     Skeleton,
 } from '@chakra-ui/react';
-import { unwrapResult } from '@reduxjs/toolkit';
-
-import {
-    retrieveMetric,
-    retrieveDescription,
-} from '@/modules/metrics/MetricsSlice';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-
+import {
+    retrieveMetric,
+    retrieveDescription,
+} from '@/modules/metrics/MetricsSlice';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { PATHS } from '@/routes';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';

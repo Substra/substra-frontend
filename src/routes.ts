@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 import Algos from '@/routes/algos/Algos';
 import Compare from '@/routes/compare/Compare';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';

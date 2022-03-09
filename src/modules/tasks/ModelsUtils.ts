@@ -1,15 +1,15 @@
+import {
+    isAggregatetuple,
+    isCompositeTraintupleStub,
+    isTraintupleStub,
+} from '@/libs/tuples';
+
 import { Model, ModelCategory } from './ModelsTypes';
 import {
     Aggregatetuple,
     CompositeTraintupleStub,
     TraintupleStub,
 } from './TuplesTypes';
-
-import {
-    isAggregatetuple,
-    isCompositeTraintupleStub,
-    isTraintupleStub,
-} from '@/libs/tuples';
 
 type TupleWithModels =
     | TraintupleStub

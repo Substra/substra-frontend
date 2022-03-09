@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react';
 
+import { OnOptionChange } from '@/hooks/useSelection';
 import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
@@ -23,8 +24,6 @@ import {
     getMaxRankWithPerf,
     getSeriesNodes,
 } from '@/modules/series/SeriesUtils';
-
-import { OnOptionChange } from '@/hooks/useSelection';
 
 export type XAxisMode = 'epoch' | 'rank';
 

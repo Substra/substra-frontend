@@ -1,4 +1,3 @@
-import AlgoDrawer from './components/AlgoDrawer';
 import {
     VStack,
     Thead,
@@ -10,11 +9,6 @@ import {
     HStack,
 } from '@chakra-ui/react';
 
-import { listAlgos } from '@/modules/algos/AlgosSlice';
-import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
-
-import { formatDate } from '@/libs/utils';
-
 import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -24,7 +18,9 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-
+import { formatDate } from '@/libs/utils';
+import { listAlgos } from '@/modules/algos/AlgosSlice';
+import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 import { compilePath, PATHS } from '@/routes';
 
 import {
@@ -48,6 +44,8 @@ import {
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
+
+import AlgoDrawer from './components/AlgoDrawer';
 
 const Algos = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();

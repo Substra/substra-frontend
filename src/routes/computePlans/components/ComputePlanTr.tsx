@@ -1,20 +1,20 @@
-import CheckboxTd from './CheckboxTd';
-import FavoriteBox from './FavoriteBox';
-import StatusCell from './StatusCell';
-import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
+import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
+
+import { shortFormatDate } from '@/libs/utils';
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
-import { shortFormatDate } from '@/libs/utils';
-
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import Duration from '@/components/Duration';
 import { ClickableTr } from '@/components/Table';
 import Timing from '@/components/Timing';
+
+import CheckboxTd from './CheckboxTd';
+import FavoriteBox from './FavoriteBox';
+import StatusCell from './StatusCell';
 
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;

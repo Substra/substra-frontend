@@ -1,12 +1,11 @@
 import { Text } from '@chakra-ui/react';
 
+import { shortFormatDate } from '@/libs/utils';
 import {
     ComputePlanStatus,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
 import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
-
-import { shortFormatDate } from '@/libs/utils';
 
 interface TimingProps {
     asset: ComputePlanT | AnyTupleT;

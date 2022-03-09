@@ -1,10 +1,8 @@
 import { VStack, Flex, Text } from '@chakra-ui/react';
 
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-
-import { getDiffDates } from '@/libs/utils';
-
 import { useAppSelector } from '@/hooks';
+import { getDiffDates } from '@/libs/utils';
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 
 import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
 import {

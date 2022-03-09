@@ -1,6 +1,6 @@
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+import API, { getApiOptions } from '@/libs/request';
 import {
     APIListArgs,
     PaginatedApiResponse,
@@ -12,7 +12,7 @@ import {
     TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
-import API, { getApiOptions } from '@/libs/request';
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 
 const URLS = {
     LIST: '/compute_plan/',

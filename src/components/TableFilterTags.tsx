@@ -2,17 +2,15 @@ import { useContext, useCallback } from 'react';
 
 import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 
-import { AlgoCategory } from '@/modules/algos/AlgosTypes';
-import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
-
+import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { TableFiltersContext } from '@/hooks/useTableFilters';
 import {
     areSearchFiltersListsEqual,
     SearchFilterType,
 } from '@/libs/searchFilter';
 import { getStatusLabel } from '@/libs/status';
-
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import { TableFiltersContext } from '@/hooks/useTableFilters';
+import { AlgoCategory } from '@/modules/algos/AlgosTypes';
+import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 
 interface TableFilterTagsProps {
     children: React.ReactNode | React.ReactNode[];

@@ -1,12 +1,12 @@
-import { MetricType } from './MetricsTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+import API, { getApiOptions } from '@/libs/request';
 import {
     APIListArgs,
     PaginatedApiResponse,
 } from '@/modules/common/CommonTypes';
 
-import API, { getApiOptions } from '@/libs/request';
+import { MetricType } from './MetricsTypes';
 
 const URLS = {
     LIST: '/metric/',

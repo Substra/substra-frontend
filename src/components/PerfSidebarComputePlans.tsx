@@ -21,14 +21,12 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDropDownLine, RiMore2Fill } from 'react-icons/ri';
 
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import { useToast } from '@/hooks/useToast';
-
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import {

@@ -1,6 +1,3 @@
-import { RootState } from '@/store';
-
-import MetricDrawer from './components/MetricDrawer';
 import {
     VStack,
     HStack,
@@ -12,11 +9,6 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import { listMetrics } from '@/modules/metrics/MetricsSlice';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
-
-import { formatDate } from '@/libs/utils';
-
 import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -26,8 +18,11 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-
+import { formatDate } from '@/libs/utils';
+import { listMetrics } from '@/modules/metrics/MetricsSlice';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { compilePath, PATHS } from '@/routes';
+import { RootState } from '@/store';
 
 import {
     AssetsTable,
@@ -44,6 +39,8 @@ import {
 import { OwnerTableFilter, TableFilters } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
+
+import MetricDrawer from './components/MetricDrawer';
 
 const Metrics = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();

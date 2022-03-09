@@ -1,12 +1,12 @@
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+import API, { getApiOptions } from '@/libs/request';
 import {
     APIListArgs,
     PaginatedApiResponse,
 } from '@/modules//common/CommonTypes';
 
-import API, { getApiOptions } from '@/libs/request';
+import { DatasetType, DatasetStubType } from './DatasetsTypes';
 
 const URLS = {
     LIST: '/data_manager/',

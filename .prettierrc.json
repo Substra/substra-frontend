@@ -5,13 +5,10 @@
     "singleQuote": true,
     "importOrder": [
         "^react$",
-        "^((?![@][/]).)*$",
-        "^@/modules(/)?(.*)$",
-        "^@/libs(/)?(.*)$",
-        "^@/hooks(/)?(.*)$",
-        "^@/routes(/)?(.*)$",
+        "<THIRD_PARTY_MODULES>",
+        "^((?=@chakra-ui)|(?=react-icons))(.*)",
+        "^@/(?!component)(.*)$",
         "^@/components(/)?(.*)$",
-        "^@/assets(/)?(.*)$",
         "^[./]"
     ],
     "importOrderSeparation": true

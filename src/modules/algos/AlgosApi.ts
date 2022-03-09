@@ -1,12 +1,12 @@
-import { AlgoT } from './AlgosTypes';
 import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+import API, { getApiOptions } from '@/libs/request';
 import {
     APIListArgs,
     PaginatedApiResponse,
 } from '@/modules/common/CommonTypes';
 
-import API, { getApiOptions } from '@/libs/request';
+import { AlgoT } from './AlgosTypes';
 
 const URLS = {
     LIST: '/algo/',

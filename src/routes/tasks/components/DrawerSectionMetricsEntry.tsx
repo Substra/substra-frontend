@@ -1,7 +1,6 @@
 import { Link, List, ListItem, Text } from '@chakra-ui/react';
 
 import { Testtuple } from '@/modules/tasks/TuplesTypes';
-
 import { compilePath, PATHS } from '@/routes';
 
 import {

@@ -1,21 +1,20 @@
-import { List, ListItem, Link, HStack, Text } from '@chakra-ui/react';
-import { RiGitCommitLine } from 'react-icons/ri';
 import { useRoute } from 'wouter';
 
+import { List, ListItem, Link, HStack, Text } from '@chakra-ui/react';
+import { RiGitCommitLine } from 'react-icons/ri';
+
+import AngleIcon from '@/assets/svg/angle-icon.svg';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
     CompositeTraintupleStub,
     TraintupleStub,
     AggregatetupleStub,
 } from '@/modules/tasks/TuplesTypes';
-
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
 import Status from '@/components/Status';
-
-import AngleIcon from '@/assets/svg/angle-icon.svg';
 
 const DrawerSectionParentTasksEntry = ({
     parentTasks,

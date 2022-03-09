@@ -1,8 +1,7 @@
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
-import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
-
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
+import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
 
 const usePerfChartDatasetStyle = () => {
     const { getColor } = usePerfBrowserColors();

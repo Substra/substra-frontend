@@ -1,3 +1,9 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+
+import { SearchFilterType } from '@/libs/searchFilter';
+import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+
 import * as TasksApi from './TasksApi';
 import {
     Aggregatetuple,
@@ -10,12 +16,6 @@ import {
     Traintuple,
     TraintupleStub,
 } from './TuplesTypes';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
-
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
-
-import { SearchFilterType } from '@/libs/searchFilter';
 
 interface TasksState {
     trainTasks: TraintupleStub[];

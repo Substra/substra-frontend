@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useLocation } from 'wouter';
+
 import {
     Button,
     Box,
@@ -14,16 +17,12 @@ import {
     AlertTitle,
     AlertDescription,
 } from '@chakra-ui/react';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
-import { useLocation } from 'wouter';
 
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
-
-import { useAppDispatch, useAppSelector } from '@/hooks';
-
 import { PATHS } from '@/routes';
 
 const LoginForm = (): JSX.Element => {

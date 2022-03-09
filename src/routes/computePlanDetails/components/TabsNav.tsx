@@ -1,11 +1,10 @@
-import { HStack, Text, Tooltip } from '@chakra-ui/react';
 import { Link, useRoute } from 'wouter';
 
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
+import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
-
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
 
 interface TabsNavItemProps {

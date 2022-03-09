@@ -3,11 +3,9 @@ import { useContext } from 'react';
 import { BreadcrumbItem, HStack, Text, Link } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
-
 import { useAppSelector } from '@/hooks';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { PATHS } from '@/routes';
 
 import Breadcrumbs from '@/components/Breadcrumbs';

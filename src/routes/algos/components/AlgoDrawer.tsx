@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import {
     Drawer,
     DrawerContent,
@@ -9,17 +11,14 @@ import {
     VStack,
     Skeleton,
 } from '@chakra-ui/react';
-import { unwrapResult } from '@reduxjs/toolkit';
-
-import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-
+import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
+import { AlgoT } from '@/modules/algos/AlgosTypes';
+import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 import { PATHS } from '@/routes';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';

@@ -1,7 +1,6 @@
-import { PermissionsType } from '@/modules/common/CommonTypes';
-
 import { useAppSelector } from '@/hooks';
 import useHasPermission from '@/hooks/useHasPermission';
+import { PermissionsType } from '@/modules/common/CommonTypes';
 
 const useCanDownloadModel = (): ((permissions: PermissionsType) => boolean) => {
     const modelExportEnabled = useAppSelector(

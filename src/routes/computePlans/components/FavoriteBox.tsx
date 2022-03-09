@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
+import { Box } from '@chakra-ui/react';
 import { RiStarFill, RiStarLine } from 'react-icons/ri';
 
 const StyledInput = styled('input')`

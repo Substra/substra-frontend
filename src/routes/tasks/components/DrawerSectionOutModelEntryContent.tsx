@@ -1,5 +1,11 @@
 import { Text, HStack } from '@chakra-ui/react';
 
+import useCanDownloadModel from '@/hooks/useCanDownloadModel';
+import {
+    isAggregatetuple,
+    isCompositeTraintuple,
+    isTraintuple,
+} from '@/libs/tuples';
 import { getHeadModel, getSimpleModel } from '@/modules/tasks/ModelsUtils';
 import {
     Aggregatetuple,
@@ -7,14 +13,6 @@ import {
     Traintuple,
     TupleStatus,
 } from '@/modules/tasks/TuplesTypes';
-
-import {
-    isAggregatetuple,
-    isCompositeTraintuple,
-    isTraintuple,
-} from '@/libs/tuples';
-
-import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 

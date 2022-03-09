@@ -1,8 +1,7 @@
-import * as ComputePlansApi from './ComputePlansApi';
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { SearchFilterType } from '@/libs/searchFilter';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
     Aggregatetuple,
@@ -11,7 +10,8 @@ import {
     TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
+import * as ComputePlansApi from './ComputePlansApi';
+import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 
 interface ComputePlansState {
     computePlans: ComputePlanStub[];

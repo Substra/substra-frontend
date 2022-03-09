@@ -1,14 +1,13 @@
-import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
-
+import { isCompositeTraintuple } from '@/libs/tuples';
 import {
     Aggregatetuple,
     CompositeTraintuple,
     Traintuple,
 } from '@/modules/tasks/TuplesTypes';
 
-import { isCompositeTraintuple } from '@/libs/tuples';
-
 import { DrawerSectionEntry } from '@/components/DrawerSection';
+
+import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
 const DrawerSectionOutModelEntry = ({
     task,

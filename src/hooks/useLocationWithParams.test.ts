@@ -1,5 +1,6 @@
-import useLocationWithParams from './useLocationWithParams';
 import { renderHook, act } from '@testing-library/react-hooks';
+
+import useLocationWithParams from './useLocationWithParams';
 
 test('can update only location', () => {
     const { result } = renderHook(() => useLocationWithParams());

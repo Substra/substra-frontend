@@ -1,6 +1,5 @@
-import { PermissionType } from '@/modules/common/CommonTypes';
-
 import useAppSelector from '@/hooks/useAppSelector';
+import { PermissionType } from '@/modules/common/CommonTypes';
 
 const useHasPermission = (): ((permission: PermissionType) => boolean) => {
     const currentNodeID = useAppSelector((state) => state.nodes.info.node_id);

@@ -1,7 +1,6 @@
 import { Redirect } from 'wouter';
 
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 export default () => (

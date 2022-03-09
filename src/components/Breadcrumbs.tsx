@@ -1,13 +1,14 @@
 import React from 'react';
 
+import styled from '@emotion/styled';
+import { Link } from 'wouter';
+
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     HStack,
 } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { Link } from 'wouter';
 
 import IconTag, { IconTagProps } from '@/components/IconTag';
 

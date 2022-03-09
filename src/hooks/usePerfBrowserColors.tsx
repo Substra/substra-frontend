@@ -1,10 +1,8 @@
 import { useContext } from 'react';
 
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
-
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
 import chakraTheme from '@/assets/chakraTheme';
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 interface ColorDiscriminant {
     computePlanKey: string;

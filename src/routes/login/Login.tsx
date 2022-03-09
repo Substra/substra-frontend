@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import LoginForm from './components/LoginForm';
+import ReactPlayer from 'react-player';
+import { useLocation } from 'wouter';
+
 import {
     AspectRatio,
     Box,
@@ -10,17 +12,14 @@ import {
     Link,
     Button,
 } from '@chakra-ui/react';
-import ReactPlayer from 'react-player';
-import { useLocation } from 'wouter';
-
-import { logOut } from '@/modules/user/UserSlice';
-
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-
-import { PATHS } from '@/routes';
 
 import OwkinLogoBlack from '@/assets/svg/owkin-logo-black';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import { logOut } from '@/modules/user/UserSlice';
+import { PATHS } from '@/routes';
+
+import LoginForm from './components/LoginForm';
 
 const Login = (): JSX.Element => {
     const dispatch = useAppDispatch();

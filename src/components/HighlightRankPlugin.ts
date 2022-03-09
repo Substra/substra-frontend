@@ -2,9 +2,8 @@
 import { Chart, Plugin, ChartEvent } from 'chart.js';
 import { DistributiveArray } from 'chart.js/types/utils';
 
-import { DataPoint } from '@/modules/series/SeriesTypes';
-
 import chakraTheme from '@/assets/chakraTheme';
+import { DataPoint } from '@/modules/series/SeriesTypes';
 
 // this state management is taken from the ChartJS Zoom Plugin
 // https://github.com/chartjs/chartjs-plugin-zoom/blob/4e3a12dab1ea1d62923bb2ebfc6d4aeebd757207/src/state.js#L3

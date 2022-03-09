@@ -26,11 +26,9 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-
-import { capitalize } from '@/libs/utils';
-
 import useHyperparameters from '@/hooks/useHyperparameters';
+import { capitalize } from '@/libs/utils';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import HyperparametersTr from '@/components/HyperparametersTr';
 

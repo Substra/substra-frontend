@@ -3,9 +3,8 @@ import { useContext } from 'react';
 import { Flex } from '@chakra-ui/react';
 import { RiFunctionLine } from 'react-icons/ri';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
-
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { SerieT } from '@/modules/series/SeriesTypes';
 
 import EmptyState from '@/components/EmptyState';
 

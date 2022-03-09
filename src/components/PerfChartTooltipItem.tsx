@@ -2,10 +2,9 @@ import { useContext } from 'react';
 
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { DataPoint } from '@/modules/series/SeriesTypes';
-
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import PerfIconTag from '@/components/PerfIconTag';
 

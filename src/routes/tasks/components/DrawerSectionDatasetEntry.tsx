@@ -1,8 +1,8 @@
 import { List, ListItem, Text, Link, HStack } from '@chakra-ui/react';
 import { RiDatabase2Line } from 'react-icons/ri';
 
+import AngleIcon from '@/assets/svg/angle-icon.svg';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-
 import { compilePath, PATHS } from '@/routes';
 
 import {
@@ -10,8 +10,6 @@ import {
     DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH,
 } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
-
-import AngleIcon from '@/assets/svg/angle-icon.svg';
 
 interface DrawerSectionDatasetEntry {
     dataset: DatasetStubType;

@@ -1,6 +1,6 @@
-import { AssetType } from './CommonTypes';
-
 import { capitalize as capitalizeString } from '@/libs/utils';
+
+import { AssetType } from './CommonTypes';
 
 const ASSET_LABEL: Record<AssetType, string> = {
     algo: 'algorithm',

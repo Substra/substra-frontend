@@ -19,15 +19,13 @@ import {
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
+import { useAppSelector } from '@/hooks';
+import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
+import { getStatusDescription, getStatusLabel } from '@/libs/status';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
-
-import { getStatusDescription, getStatusLabel } from '@/libs/status';
-
-import { useAppSelector } from '@/hooks';
-import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
 
 import TableFilterCheckboxes from '@/components/TableFilterCheckboxes';
 

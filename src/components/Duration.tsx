@@ -1,14 +1,13 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import { RiTimeLine } from 'react-icons/ri';
 
+import { getDiffDates } from '@/libs/utils';
 import {
     ComputePlanStatus,
     ComputePlanT,
     isComputePlan,
 } from '@/modules/computePlans/ComputePlansTypes';
 import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
-
-import { getDiffDates } from '@/libs/utils';
 
 interface DurationProps {
     asset: ComputePlanT | AnyTupleT;

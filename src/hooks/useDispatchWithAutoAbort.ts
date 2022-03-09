@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 
-import useAppDispatch from './useAppDispatch';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
+
+import useAppDispatch from './useAppDispatch';
 
 type DispatchWithAutoAbort = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,10 +2,8 @@ import { useContext } from 'react';
 
 import { Flex, HStack } from '@chakra-ui/react';
 
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import PerfDetails from '@/components/PerfDetails';

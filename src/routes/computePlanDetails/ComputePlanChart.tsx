@@ -1,26 +1,26 @@
 import { useEffect } from 'react';
 
-import Actions from './components/Actions';
-import ChartBreadcrumbs from './components/ChartBreadCrumbs';
-import TabsNav from './components/TabsNav';
-import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 
-import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { loadSeries } from '@/modules/series/SeriesSlice';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
+import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+import { loadSeries } from '@/modules/series/SeriesSlice';
+import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarLines from '@/components/PerfSidebarLines';
+
+import Actions from './components/Actions';
+import ChartBreadcrumbs from './components/ChartBreadCrumbs';
+import TabsNav from './components/TabsNav';
 
 const ComputePlanChart = (): JSX.Element => {
     const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);

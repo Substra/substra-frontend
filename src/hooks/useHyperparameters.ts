@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-
 import useAppSelector from '@/hooks/useAppSelector';
+import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 declare const HYPERPARAMETERS: string[];
 

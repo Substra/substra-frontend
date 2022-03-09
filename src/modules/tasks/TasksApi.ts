@@ -1,3 +1,11 @@
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
+
+import API, { getApiOptions } from '@/libs/request';
+import {
+    APIListArgs,
+    PaginatedApiResponse,
+} from '@/modules/common/CommonTypes';
+
 import {
     TraintupleStub,
     CompositeTraintupleStub,
@@ -8,14 +16,6 @@ import {
     Traintuple,
     AggregatetupleStub,
 } from './TuplesTypes';
-import { AxiosPromise, AxiosRequestConfig } from 'axios';
-
-import {
-    APIListArgs,
-    PaginatedApiResponse,
-} from '@/modules/common/CommonTypes';
-
-import API, { getApiOptions } from '@/libs/request';
 
 export const URLS = {
     AGGREGATE_LIST: '/aggregatetuple/',

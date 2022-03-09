@@ -1,13 +1,12 @@
 import { ChartDataset } from 'chart.js';
 
+import { XAxisMode } from '@/hooks/usePerfBrowser';
+import usePerfChartDatasetStyle from '@/hooks/usePerfChartDatasetStyle';
 import {
     DataPoint,
     HighlightedParams,
     SerieT,
 } from '@/modules/series/SeriesTypes';
-
-import { XAxisMode } from '@/hooks/usePerfBrowser';
-import usePerfChartDatasetStyle from '@/hooks/usePerfChartDatasetStyle';
 
 export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 

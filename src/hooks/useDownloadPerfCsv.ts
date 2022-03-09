@@ -2,13 +2,11 @@ import { useContext } from 'react';
 
 import { toCsv } from 'react-csv-downloader';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { downloadBlob } from '@/libs/request';
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
-
-import { downloadBlob } from '@/libs/request';
-
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 enum CSV_COLUMN_ID {
     computePlanKey = 'computePlanKey',

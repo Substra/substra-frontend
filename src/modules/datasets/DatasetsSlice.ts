@@ -1,12 +1,12 @@
-import * as DatasetAPI from './DatasetsApi';
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { SearchFilterType } from '@/libs/searchFilter';
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
+import * as DatasetAPI from './DatasetsApi';
+import { DatasetType, DatasetStubType } from './DatasetsTypes';
 
 interface DatasetState {
     datasets: DatasetStubType[];

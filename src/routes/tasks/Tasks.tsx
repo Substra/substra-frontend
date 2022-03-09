@@ -1,7 +1,11 @@
-import TaskDrawer from './components/TaskDrawer';
-import { VStack } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
+import { VStack } from '@chakra-ui/react';
+
+import { useAppSelector } from '@/hooks';
+import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
     listAggregateTasks,
     listCompositeTasks,
@@ -9,17 +13,13 @@ import {
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
-import { useAppSelector } from '@/hooks';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-
 import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
 import TableTitle from '@/components/TableTitle';
 import TasksTable from '@/components/TasksTable';
+
+import TaskDrawer from './components/TaskDrawer';
 
 interface GenericTasksProps {
     tasksTable: React.ReactNode;

@@ -1,4 +1,3 @@
-import LogsModal from './LogsModal';
 import {
     Alert,
     AlertIcon,
@@ -11,9 +10,10 @@ import {
 } from '@chakra-ui/react';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
+import useHasPermission from '@/hooks/useHasPermission';
 import { AnyTupleT, ErrorType } from '@/modules/tasks/TuplesTypes';
 
-import useHasPermission from '@/hooks/useHasPermission';
+import LogsModal from './LogsModal';
 
 const ErrorAlertBase = ({
     title,

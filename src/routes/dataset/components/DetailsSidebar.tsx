@@ -1,4 +1,3 @@
-import DataSamplesListItem from './DataSamplesListItem';
 import { VStack, Badge, List } from '@chakra-ui/react';
 
 import { useAppSelector } from '@/hooks';
@@ -12,6 +11,8 @@ import {
 import { DrawerSectionHeading } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import PermissionTag from '@/components/PermissionTag';
+
+import DataSamplesListItem from './DataSamplesListItem';
 
 const DetailsSidebar = (): JSX.Element => {
     const dataset = useAppSelector((state) => state.datasets.dataset);

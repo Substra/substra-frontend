@@ -1,7 +1,8 @@
-import { Box, Heading } from '@chakra-ui/react';
 import 'github-markdown-css/github-markdown-light.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+
+import { Box, Heading } from '@chakra-ui/react';
 
 interface MarkdownSectionProps {
     source: string;

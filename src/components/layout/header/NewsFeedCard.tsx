@@ -18,14 +18,12 @@ import {
     RiStackshareLine,
 } from 'react-icons/ri';
 
+import { shortFormatDate } from '@/libs/utils';
 import {
     NewsItemStatus,
     NewsItemType,
     taskCategoryByCategoryNumber,
 } from '@/modules/newsFeed/NewsFeedTypes';
-
-import { shortFormatDate } from '@/libs/utils';
-
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 interface NewsFeedCardProps {

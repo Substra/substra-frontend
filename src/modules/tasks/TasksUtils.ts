@@ -1,4 +1,14 @@
 import {
+    isCompositeTraintuple,
+    isCompositeTraintupleStub,
+    isTesttuple,
+    isTesttupleStub,
+    isTraintuple,
+    isTraintupleStub,
+} from '@/libs/tuples';
+import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+
+import {
     AnyTupleT,
     TaskCategory,
     CompositeTraintupleStub,
@@ -8,17 +18,6 @@ import {
     Traintuple,
     CompositeTraintuple,
 } from './TuplesTypes';
-
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-
-import {
-    isCompositeTraintuple,
-    isCompositeTraintupleStub,
-    isTesttuple,
-    isTesttupleStub,
-    isTraintuple,
-    isTraintupleStub,
-} from '@/libs/tuples';
 
 export const CATEGORY_LABEL: Record<TaskCategory, string> = {
     TASK_TEST: 'Test',

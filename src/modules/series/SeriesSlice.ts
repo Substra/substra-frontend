@@ -1,8 +1,7 @@
-import { SerieT } from './SeriesTypes';
-import { buildAverageSerie, buildSeries } from './SeriesUtils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise } from 'axios';
 
+import { SearchFilterType } from '@/libs/searchFilter';
 import * as MetricsApi from '@/modules//metrics/MetricsApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
@@ -15,7 +14,8 @@ import {
 } from '@/modules/nodes/NodesUtils';
 import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
 
-import { SearchFilterType } from '@/libs/searchFilter';
+import { SerieT } from './SeriesTypes';
+import { buildAverageSerie, buildSeries } from './SeriesUtils';
 
 interface SeriesState {
     series: SerieT[];

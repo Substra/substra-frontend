@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { NewsFeedCard, NewsFeedCardSkeleton } from './NewsFeedCard';
 import {
     Box,
     Button,
@@ -17,13 +16,14 @@ import {
 } from '@chakra-ui/react';
 import { RiListCheck2, RiNotification3Fill } from 'react-icons/ri';
 
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { listNewsFeed } from '@/modules/newsFeed/NewsFeedSlice';
 import { NewsItemType } from '@/modules/newsFeed/NewsFeedTypes';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-
 import EmptyState from '@/components/EmptyState';
+
+import { NewsFeedCard, NewsFeedCardSkeleton } from './NewsFeedCard';
 
 const NewsFeed = (): JSX.Element => {
     const dispatch = useAppDispatch();

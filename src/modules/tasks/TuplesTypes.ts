@@ -1,5 +1,3 @@
-import { Model } from './ModelsTypes';
-
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import {
     AssetType,
@@ -9,6 +7,8 @@ import {
 } from '@/modules/common/CommonTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
+
+import { Model } from './ModelsTypes';
 
 export enum TupleStatus {
     waiting = 'STATUS_WAITING',

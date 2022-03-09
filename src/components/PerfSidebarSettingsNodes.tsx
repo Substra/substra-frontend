@@ -18,9 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
-
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 const PerfSidebarSettingsNodes = (): JSX.Element => {
     const { nodes, selectedNodeIds, setSelectedNodeIds, loading } =

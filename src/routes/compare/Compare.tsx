@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
 
-import CompareBreadcrumbs from './components/CompareBreadcrumbs';
-import { HStack, Flex, Box } from '@chakra-ui/react';
 import { useRoute } from 'wouter';
 
-import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { loadSeries } from '@/modules/series/SeriesSlice';
+import { HStack, Flex, Box } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
+import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
+import { loadSeries } from '@/modules/series/SeriesSlice';
 import { PATHS } from '@/routes';
 
 import HyperparametersModal from '@/components/HyperparametersModal';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
+
+import CompareBreadcrumbs from './components/CompareBreadcrumbs';
 
 const Compare = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPARE);

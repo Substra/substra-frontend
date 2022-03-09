@@ -3,9 +3,8 @@ import { useContext } from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
-
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { SerieT } from '@/modules/series/SeriesTypes';
 
 import PerfChart from '@/components/PerfChart';
 import PerfEmptyState from '@/components/PerfEmptyState';

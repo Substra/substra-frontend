@@ -13,11 +13,9 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 
-import { SerieRankData } from '@/modules/series/SeriesTypes';
-
-import { capitalize } from '@/libs/utils';
-
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { capitalize } from '@/libs/utils';
+import { SerieRankData } from '@/modules/series/SeriesTypes';
 
 import PerfIconTag from '@/components/PerfIconTag';
 

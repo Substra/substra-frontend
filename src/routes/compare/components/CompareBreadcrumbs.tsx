@@ -4,7 +4,6 @@ import { BreadcrumbItem, HStack, Text, Link } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-
 import { PATHS } from '@/routes';
 
 import Breadcrumbs from '@/components/Breadcrumbs';

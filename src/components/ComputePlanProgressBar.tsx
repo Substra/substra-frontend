@@ -1,10 +1,9 @@
 import { Box, HStack } from '@chakra-ui/react';
 
+import { getStatusStyle } from '@/libs/status';
 import { getStatusCount } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
-
-import { getStatusStyle } from '@/libs/status';
 
 interface ItemProps {
     status: TupleStatus;
