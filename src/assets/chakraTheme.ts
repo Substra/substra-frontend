@@ -186,6 +186,7 @@ export default extendTheme({
                 },
             },
         },
+        Kbd: noDefaultBorderRadius,
         Menu: {
             baseStyle: {
                 list: {

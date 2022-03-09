@@ -100,7 +100,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             const zoomPluginOptions: ZoomPluginOptions = {
                 zoom: {
                     drag: {
-                        enabled: false,
+                        enabled: true,
                     },
                     wheel: {
                         enabled: true,
@@ -118,6 +118,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     enabled: true,
                     mode: 'xy',
                     threshold: 0.01,
+                    modifierKey: 'shift',
                 },
             };
             return {
@@ -330,10 +331,12 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                             </Text>
                                             <Text fontSize="xs">
                                                 To zoom into the chart, use your
-                                                mousewheel.
+                                                mousewheel or click and drag to
+                                                select the zoom area.
                                             </Text>
                                             <Text fontSize="xs">
                                                 To move into the chart, use{' '}
+                                                <Kbd>shift</Kbd> +{' '}
                                                 <Kbd>Left click</Kbd>
                                             </Text>
                                         </VStack>
