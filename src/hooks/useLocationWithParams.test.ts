@@ -9,11 +9,19 @@ test('can update only location', () => {
         result.current.setLocationWithParams('/foo', { search: [], page: 1 })
     );
     expect(result.current.location).toBe('/foo');
-    expect(result.current.params).toStrictEqual({ search: [], page: 1 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 1,
+        match: '',
+    });
 
     act(() => result.current.setLocationWithParams('/bar'));
     expect(result.current.location).toBe('/bar');
-    expect(result.current.params).toStrictEqual({ search: [], page: 1 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 1,
+        match: '',
+    });
 });
 
 test('can update only searchFilters', () => {
@@ -23,7 +31,11 @@ test('can update only searchFilters', () => {
         result.current.setLocationWithParams('/foo', { search: [], page: 1 })
     );
     expect(result.current.location).toBe('/foo');
-    expect(result.current.params).toStrictEqual({ search: [], page: 1 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 1,
+        match: '',
+    });
 
     act(() =>
         result.current.setLocationWithParams({
@@ -46,6 +58,7 @@ test('can update only searchFilters', () => {
             },
         ],
         page: 1,
+        match: '',
     });
 });
 
@@ -56,7 +69,11 @@ test('can update only page', () => {
         result.current.setLocationWithParams('/foo', { search: [], page: 1 })
     );
     expect(result.current.location).toBe('/foo');
-    expect(result.current.params).toStrictEqual({ search: [], page: 1 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 1,
+        match: '',
+    });
 
     act(() =>
         result.current.setLocationWithParams({
@@ -64,7 +81,11 @@ test('can update only page', () => {
         })
     );
     expect(result.current.location).toBe('/foo');
-    expect(result.current.params).toStrictEqual({ search: [], page: 2 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 2,
+        match: '',
+    });
 });
 
 test('can update both location and params', () => {
@@ -74,7 +95,11 @@ test('can update both location and params', () => {
         result.current.setLocationWithParams('/foo', { search: [], page: 1 })
     );
     expect(result.current.location).toBe('/foo');
-    expect(result.current.params).toStrictEqual({ search: [], page: 1 });
+    expect(result.current.params).toStrictEqual({
+        search: [],
+        page: 1,
+        match: '',
+    });
 
     act(() =>
         result.current.setLocationWithParams('/bar', {
@@ -98,5 +123,6 @@ test('can update both location and params', () => {
             },
         ],
         page: 2,
+        match: '',
     });
 });
