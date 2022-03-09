@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Favorite and selected compute plans are updated when new data is available (#428)
 -   Hyperparameters columns in cp list table (#450)
 
+### Fixed
+
+-   Inject hyperparameters at deploy time (#445)
+
 ## [0.15.0] - 2022-03-03
 
 ### Added
@@ -29,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Sort point by score in tooltip summary (#441)
 -   Set a max height for filter menu (#442)
 -   Highlight only related node on hover in comparison mode (#444)
--   Inject hyperparameters at deploy time (#445)
 
 ### Changed
 
