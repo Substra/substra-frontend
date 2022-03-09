@@ -56,6 +56,8 @@ spec:
               value: {{ .Values.microsoftClarity.id | quote }}
             - name: MELLODDY
               value: {{ .Values.melloddy | quote}}
+            - name: HYPERPARAMETERS
+              value: {{ .Values.hyperparameters | quote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,3 +1,4 @@
+hyperparameters: '["Foo","Bar"]'
 api:
     url: http://substra-backend.node-1.com
 ingress:
