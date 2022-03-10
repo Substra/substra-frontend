@@ -63,7 +63,8 @@ const API = {
 export const getApiOptions = (
     searchFilters: SearchFilterType[],
     page?: number,
-    pageSize?: number
+    pageSize?: number,
+    match?: string
 ): AxiosRequestConfig => {
     let params = {};
 
@@ -80,6 +81,14 @@ export const getApiOptions = (
             ...params,
             page_size: pageSize || DEFAULT_PAGE_SIZE,
             page,
+        };
+    }
+
+    // full text search
+    if (match) {
+        params = {
+            ...params,
+            match,
         };
     }
 

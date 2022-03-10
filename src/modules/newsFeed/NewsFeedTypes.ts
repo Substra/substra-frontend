@@ -6,6 +6,7 @@ export enum NewsItemStatus {
     doing = 'STATUS_DOING',
     done = 'STATUS_DONE',
     failed = 'STATUS_FAILED',
+    canceled = 'STATUS_CANCELED',
 }
 
 // This order is the one defined in the backend

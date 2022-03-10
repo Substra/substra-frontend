@@ -23,12 +23,15 @@ const URLS = {
     LIST_AGGREGATETUPLES: '/compute_plan/__KEY__/aggregatetuple/',
 };
 
+interface ListComputePlansArgs extends APIListArgs {
+    match?: string;
+}
 export const listComputePlans = (
-    { searchFilters, page }: APIListArgs,
+    { searchFilters, page, match }: ListComputePlansArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<ComputePlanStub>> =>
     API.authenticatedGet(URLS.LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(searchFilters, page, undefined, match),
         ...config,
     });
 

@@ -18,7 +18,6 @@ import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import useHyperparameters from '@/hooks/useHyperparameters';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
@@ -32,6 +31,7 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import { ClickableTh } from '@/components/AssetsTable';
+import FullTextSearchBar from '@/components/FullTextSearchBar';
 import SearchBar from '@/components/SearchBar';
 import { EmptyTr, Tbody } from '@/components/Table';
 import {
@@ -50,7 +50,7 @@ import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 const ComputePlans = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
-        params: { page, search: searchFilters },
+        params: { page, search: searchFilters, match },
     } = useLocationWithParams();
     const [, setLocation] = useLocation();
     const {
@@ -118,13 +118,13 @@ const ComputePlans = (): JSX.Element => {
             refreshSelectedAndFavorites
         );
         const abortListComputePlans = dispatchWithAutoAbort(
-            listComputePlans({ filters: searchFilters, page })
+            listComputePlans({ filters: searchFilters, page, match })
         );
         return () => {
             abortRefreshFavorites();
             abortListComputePlans();
         };
-    }, [searchFilters, page]);
+    }, [searchFilters, page, match]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
         (state) => state.computePlans.computePlans
@@ -142,8 +142,6 @@ const ComputePlans = (): JSX.Element => {
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
         []
     );
-
-    const hyperparametersList = useHyperparameters();
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
@@ -184,6 +182,7 @@ const ComputePlans = (): JSX.Element => {
                             <ComputePlanStatusTableFilter />
                         </TableFilters>
                         <SearchBar asset="compute_plan" />
+                        {MELLODDY && <FullTextSearchBar />}
                     </HStack>
                     <HStack spacing="4">
                         {selectedKeys.length > 0 && (
@@ -249,7 +248,7 @@ const ComputePlans = (): JSX.Element => {
                                 >
                                     Dates / Duration
                                 </ClickableTh>
-                                {hyperparametersList.map((hp) => (
+                                {HYPERPARAMETERS.map((hp) => (
                                     <ClickableTh
                                         key={hp}
                                         minWidth="125px"
@@ -270,7 +269,6 @@ const ComputePlans = (): JSX.Element => {
                                     isFavorite={isFavorite}
                                     onFavoriteChange={onFavoriteChange}
                                     highlighted={true}
-                                    hyperparametersList={hyperparametersList}
                                 />
                             ))}
                         </ChakraTbody>
@@ -289,9 +287,6 @@ const ComputePlans = (): JSX.Element => {
                                         isFavorite={isFavorite}
                                         onFavoriteChange={onFavoriteChange}
                                         highlighted={true}
-                                        hyperparametersList={
-                                            hyperparametersList
-                                        }
                                     />
                                 ))}
                         </ChakraTbody>
@@ -330,9 +325,6 @@ const ComputePlans = (): JSX.Element => {
                                             isFavorite={isFavorite}
                                             onFavoriteChange={onFavoriteChange}
                                             highlighted={false}
-                                            hyperparametersList={
-                                                hyperparametersList
-                                            }
                                         />
                                     ))
                             )}

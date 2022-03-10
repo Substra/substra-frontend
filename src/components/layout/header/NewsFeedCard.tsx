@@ -64,6 +64,12 @@ const taskMetadata: TaskMetadataT = {
         icon: RiCheckFill,
         path: PATHS.COMPUTE_PLAN_CHART,
     },
+    STATUS_CANCELED: {
+        text: 'has been canceled',
+        color: 'red',
+        icon: RiCloseFill,
+        path: PATHS.COMPUTE_PLAN_TASKS,
+    },
 };
 
 export const NewsFeedCardSkeleton = (): JSX.Element => {
