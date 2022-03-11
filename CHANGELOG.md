@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Remove warning related to breadcrumb component on dataset page (#458)
+-   Fix large border into chart zoom button group (#459)
 
 ## [0.16.0] - 2022-03-10
 

@@ -282,6 +282,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                 variant="outline"
                                 size="sm"
                                 background="white"
+                                borderRight="none"
                                 icon={<RiSubtractLine />}
                             />
                             <IconButton
