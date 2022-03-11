@@ -31,6 +31,7 @@ function useLocalStorageItems<Type extends HasKey>(
     addItem: (item: Type) => void;
     updateItem: (item: Type) => void;
     removeItem: (item: Type) => void;
+    replaceItems: (item: Type[]) => void;
     clearItems: () => void;
 } {
     const { load, save } = useLoadSave<Type>(localStorageKey);
@@ -56,6 +57,11 @@ function useLocalStorageItems<Type extends HasKey>(
         setItems(newItems);
     };
 
+    const replaceItems = (items: Type[]) => {
+        save(items);
+        setItems(items);
+    };
+
     const clearItems = () => {
         save([]);
         setItems([]);
@@ -66,6 +72,7 @@ function useLocalStorageItems<Type extends HasKey>(
         addItem,
         updateItem,
         removeItem,
+        replaceItems,
         clearItems,
     };
 }

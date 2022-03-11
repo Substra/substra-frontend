@@ -18,6 +18,7 @@ import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
+import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import {
@@ -31,6 +32,7 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import { ClickableTh } from '@/components/AssetsTable';
+import CustomColumnsModal from '@/components/CustomColumnsModal';
 import FullTextSearchBar from '@/components/FullTextSearchBar';
 import SearchBar from '@/components/SearchBar';
 import { EmptyTr, Tbody } from '@/components/Table';
@@ -143,6 +145,14 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
+    const {
+        customHyperparameters,
+        replaceCustomHyperparameters,
+        clearCustomHyperparameters,
+    } = useCustomHyperparameters();
+    const activeHyperparameters =
+        customHyperparameters.map((hp) => hp.key) || HYPERPARAMETERS;
+
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
             unselectComputePlan(computePlan);
@@ -194,6 +204,18 @@ const ComputePlans = (): JSX.Element => {
                             >
                                 Clear
                             </Button>
+                        )}
+                        {HYPERPARAMETERS && (
+                            <CustomColumnsModal
+                                computePlans={computePlans}
+                                customHyperparameters={customHyperparameters}
+                                replaceCustomHyperparameters={
+                                    replaceCustomHyperparameters
+                                }
+                                clearCustomHyperparameters={
+                                    clearCustomHyperparameters
+                                }
+                            />
                         )}
                         <Button
                             marginLeft={16}
@@ -248,7 +270,7 @@ const ComputePlans = (): JSX.Element => {
                                 >
                                     Dates / Duration
                                 </ClickableTh>
-                                {HYPERPARAMETERS.map((hp) => (
+                                {activeHyperparameters.map((hp) => (
                                     <ClickableTh
                                         key={hp}
                                         minWidth="125px"
@@ -269,6 +291,7 @@ const ComputePlans = (): JSX.Element => {
                                     isFavorite={isFavorite}
                                     onFavoriteChange={onFavoriteChange}
                                     highlighted={true}
+                                    hyperparametersList={activeHyperparameters}
                                 />
                             ))}
                         </ChakraTbody>
@@ -287,6 +310,9 @@ const ComputePlans = (): JSX.Element => {
                                         isFavorite={isFavorite}
                                         onFavoriteChange={onFavoriteChange}
                                         highlighted={true}
+                                        hyperparametersList={
+                                            activeHyperparameters
+                                        }
                                     />
                                 ))}
                         </ChakraTbody>
@@ -325,6 +351,9 @@ const ComputePlans = (): JSX.Element => {
                                             isFavorite={isFavorite}
                                             onFavoriteChange={onFavoriteChange}
                                             highlighted={false}
+                                            hyperparametersList={
+                                                activeHyperparameters
+                                            }
                                         />
                                     ))
                             )}

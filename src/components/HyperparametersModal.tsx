@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 
 import {
     Button,
@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
+import useHyperparameters from '@/hooks/useHyperparameters';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
@@ -61,17 +62,7 @@ const HyperparametersModal = ({
         setInputValue('');
     }, [isOpen]);
 
-    const hyperparametersList = useMemo<string[]>(() => {
-        const hyperparamsList: string[] = [];
-        for (const hp of HYPERPARAMETERS) {
-            for (const computePlan of computePlans) {
-                if (computePlan.metadata[hp] && !hyperparamsList.includes(hp)) {
-                    hyperparamsList.push(hp);
-                }
-            }
-        }
-        return hyperparamsList;
-    }, [computePlans]);
+    const hyperparametersList = useHyperparameters(computePlans);
 
     const addFilter = (filter: string) => {
         setFilters([...filters, filter]);

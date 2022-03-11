@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Hyperparameters columns in cp list are customizable (#453)
+
 ### Fixed
 
 -   Get compute plan index from PerfBrowserContext in HP modal (#448)

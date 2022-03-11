@@ -23,6 +23,7 @@ interface ComputePlanTrProps {
     isFavorite: (computePlan: ComputePlanT) => boolean;
     onFavoriteChange: (computePlan: ComputePlanT) => () => void;
     highlighted: boolean;
+    hyperparametersList: string[];
 }
 
 const ComputePlanTr = ({
@@ -32,6 +33,7 @@ const ComputePlanTr = ({
     isFavorite,
     onFavoriteChange,
     highlighted,
+    hyperparametersList,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
 
@@ -91,7 +93,7 @@ const ComputePlanTr = ({
                 <Timing asset={computePlan} />
                 <Duration asset={computePlan} />
             </Td>
-            {HYPERPARAMETERS.map((hp) => (
+            {hyperparametersList.map((hp) => (
                 <Td
                     key={`${computePlan.tag}-${hp}`}
                     fontSize="xs"
