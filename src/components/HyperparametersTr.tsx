@@ -1,18 +1,21 @@
+import { useContext } from 'react';
+
 import { HStack, Td, Text, Th, Tr } from '@chakra-ui/react';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 interface HyperparametersProps {
     computePlan: ComputePlanT;
     hyperparametersList: string[];
-    position: number;
 }
 
 const HyperparametersTr = ({
     computePlan,
     hyperparametersList,
-    position,
 }: HyperparametersProps): JSX.Element => {
+    const { getComputePlanIndex, computePlans } =
+        useContext(PerfBrowserContext);
     return (
         <Tr color="gray.800">
             <Th
@@ -24,9 +27,11 @@ const HyperparametersTr = ({
                 backgroundColor="white"
             >
                 <HStack>
-                    <Text color="black" fontWeight="semibold">
-                        #{position}
-                    </Text>
+                    {computePlans.length > 1 && (
+                        <Text color="black" fontWeight="semibold">
+                            #{getComputePlanIndex(computePlan.key)}
+                        </Text>
+                    )}
                     <Text>{computePlan.metadata.name}</Text>
                 </HStack>
             </Th>

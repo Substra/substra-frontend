@@ -28,6 +28,7 @@ import {
 export type XAxisMode = 'epoch' | 'rank';
 
 interface PerfBrowserContext {
+    // Whether the compute plan and series are being loaded
     loading: boolean;
     // List of all compute plans we're browsing series for
     computePlans: ComputePlanT[];

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useContext } from 'react';
 
 import {
     Button,
@@ -26,13 +26,15 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
+import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import HyperparametersTr from '@/components/HyperparametersTr';
 
 interface HyperparametersModalProps {
-    computePlans: ComputePlanT[];
+    // the computePlans props is to be used only when there's no PerfBrowserContext available
+    computePlans?: ComputePlanT[];
 }
 
 export interface HyperparamsT {
@@ -40,8 +42,15 @@ export interface HyperparamsT {
 }
 
 const HyperparametersModal = ({
-    computePlans,
+    computePlans: propsComputePlans,
 }: HyperparametersModalProps): JSX.Element => {
+    const { computePlans: perfBrowserComputePlans } =
+        useContext(PerfBrowserContext);
+
+    const computePlans = propsComputePlans
+        ? propsComputePlans
+        : perfBrowserComputePlans;
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [inputValue, setInputValue] = useState<string>('');
     const [inputIsFocused, setInputIsFocused] = useState<boolean>(false);
@@ -237,14 +246,13 @@ const HyperparametersModal = ({
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {computePlans.map((computePlan, index) => (
+                                {computePlans.map((computePlan) => (
                                     <HyperparametersTr
-                                        key={`${computePlan.tag}`}
+                                        key={computePlan.key}
                                         computePlan={computePlan}
                                         hyperparametersList={
                                             activeHyperparameters
                                         }
-                                        position={index + 1}
                                     />
                                 ))}
                             </Tbody>

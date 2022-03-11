@@ -75,9 +75,7 @@ const Compare = (): JSX.Element => {
                 >
                     <CompareBreadcrumbs />
                     <HStack paddingX="8">
-                        {HYPERPARAMETERS.length && (
-                            <HyperparametersModal computePlans={computePlans} />
-                        )}
+                        {HYPERPARAMETERS.length && <HyperparametersModal />}
                         <Box>
                             <PerfDownloadButton />
                         </Box>
