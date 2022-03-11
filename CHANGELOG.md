@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Get compute plan index from PerfBrowserContext in HP modal (#448)
 -   Remove warning related to breadcrumb component on dataset page (#458)
 -   Fix large border into chart zoom button group (#459)
 
@@ -42,7 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Sort point by score in tooltip summary (#441)
 -   Set a max height for filter menu (#442)
 -   Highlight only related node on hover in comparison mode (#444)
--   Get compute plan index from PerfBrowserContext in HP modal (#448)
 
 ### Changed
 
