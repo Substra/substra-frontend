@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { BreadcrumbItem, Text } from '@chakra-ui/react';
 import { RiDatabase2Line } from 'react-icons/ri';
 
 import { useAppSelector } from '@/hooks';
@@ -17,15 +17,17 @@ const DatasetBreadcrumbs = (): JSX.Element => {
             rootLabel="Datasets"
             rootIcon={RiDatabase2Line}
         >
-            <Text
-                color="black"
-                fontSize="sm"
-                fontWeight="medium"
-                lineHeight="5"
-            >
-                {datasetLoading && 'Loading'}
-                {!datasetLoading && dataset && <>{dataset.name}</>}
-            </Text>
+            <BreadcrumbItem isCurrentPage={true}>
+                <Text
+                    color="black"
+                    fontSize="sm"
+                    fontWeight="medium"
+                    lineHeight="5"
+                >
+                    {datasetLoading && 'Loading'}
+                    {!datasetLoading && dataset && <>{dataset.name}</>}
+                </Text>
+            </BreadcrumbItem>
         </Breadcrumbs>
     );
 };
