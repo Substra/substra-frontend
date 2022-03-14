@@ -9,7 +9,8 @@ import { version } from './package.json';
 const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
 const MICROSOFT_CLARITY_ID = process.env['MICROSOFT_CLARITY_ID'] || '';
 const MELLODDY = process.env['MELLODDY'] || '';
-const API_URL = process.env['API_URL'] || 'http://substra-backend.node-1.com';
+const API_URL =
+    process.env['API_URL'] || 'http://substra-backend.node-1.com:8000';
 const HYPERPARAMETERS = process.env['HYPERPARAMETERS'] || [
     'epochs',
     'hidden_sizes',
