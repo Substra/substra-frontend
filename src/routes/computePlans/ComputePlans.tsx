@@ -150,8 +150,9 @@ const ComputePlans = (): JSX.Element => {
         replaceCustomHyperparameters,
         clearCustomHyperparameters,
     } = useCustomHyperparameters();
-    const activeHyperparameters =
-        customHyperparameters.map((hp) => hp.key) || HYPERPARAMETERS;
+    const activeHyperparameters = customHyperparameters.length
+        ? customHyperparameters.map((hp) => hp.key)
+        : HYPERPARAMETERS;
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
