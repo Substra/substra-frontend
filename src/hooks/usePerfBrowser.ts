@@ -7,6 +7,11 @@ import React, {
 } from 'react';
 
 import { OnOptionChange } from '@/hooks/useSelection';
+import {
+    useSyncedState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
@@ -131,13 +136,18 @@ const usePerfBrowser = (
 ): {
     context: PerfBrowserContext;
 } => {
-    const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
-    const [selectedComputePlanKeys, setSelectedComputePlanKeys] = useState<
-        string[]
-    >([]);
+    const [selectedNodeIds, setSelectedNodeIds] = useSyncedStringArrayState(
+        'selectedNodeIds',
+        []
+    );
+    const [selectedComputePlanKeys, setSelectedComputePlanKeys] =
+        useSyncedStringArrayState('selectedComputePlanKeys', []);
     const [hoveredRank, setHoveredRank] = useState<number | null>(null);
     const [selectedRank, setSelectedRank] = useState<number | null>(null);
-    const [selectedMetricName, setSelectedMetricName] = useState<string>('');
+    const [selectedMetricName, setSelectedMetricName] = useSyncedStringState(
+        'selectedMetricName',
+        ''
+    );
     const [highlightedSerie, setHighlightedSerie] =
         useState<HighlightedSerie>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
@@ -223,21 +233,24 @@ const usePerfBrowser = (
     }, [seriesGroups, selectedMetricName]);
 
     useEffect(() => {
-        if (nodes.length) {
+        if (nodes.length && !selectedNodeIds.length) {
             setSelectedNodeIds(nodes.map((node) => node.id));
         }
     }, [nodes.length]);
 
     useEffect(() => {
-        if (computePlans.length) {
+        if (computePlans.length && !selectedComputePlanKeys.length) {
             setSelectedComputePlanKeys(
                 computePlans.map((computePlan) => computePlan.key)
             );
         }
     }, [computePlans.length]);
 
-    const [xAxisMode, setXAxisMode] = useState<XAxisMode>(
-        MELLODDY ? 'epoch' : 'rank'
+    const [xAxisMode, setXAxisMode] = useSyncedState<XAxisMode>(
+        'xAxisMode',
+        MELLODDY ? 'epoch' : 'rank',
+        (v) => (v === 'epoch' ? 'epoch' : 'rank'),
+        (v) => v
     );
 
     const perfChartRef = useRef<HTMLDivElement>(null);
