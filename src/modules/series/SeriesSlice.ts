@@ -4,6 +4,7 @@ import axios, { AxiosPromise } from 'axios';
 import { SearchFilterType } from '@/libs/searchFilter';
 import * as MetricsApi from '@/modules//metrics/MetricsApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
@@ -39,22 +40,14 @@ const getComputePlanSeries = async (
 
     try {
         const pageSize = 100;
-        const firstPageResponse =
-            await ComputePlansApi.listComputePlanTesttuples(
-                { key: computePlanKey, searchFilters: [], pageSize, page: 1 },
-                { signal }
-            );
-        const lastPage = Math.ceil(firstPageResponse.data.count / pageSize);
-        testtuples = firstPageResponse.data.results;
-
-        for (let page = 2; page <= lastPage; page++) {
-            const pageResponse =
-                await ComputePlansApi.listComputePlanTesttuples(
+        testtuples = await getAllPages(
+            (page) =>
+                ComputePlansApi.listComputePlanTesttuples(
                     { key: computePlanKey, searchFilters: [], pageSize, page },
                     { signal }
-                );
-            testtuples = [...testtuples, ...pageResponse.data.results];
-        }
+                ),
+            pageSize
+        );
     } catch (error) {
         if (axios.isAxiosError(error)) {
             return rejectWithValue(error.response?.data);
