@@ -9,7 +9,7 @@ import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import Duration from '@/components/Duration';
-import { ClickableTr } from '@/components/Table';
+import { ClickableTr, rightBorderProps } from '@/components/Table';
 import Timing from '@/components/Timing';
 
 import CheckboxTd from './CheckboxTd';
@@ -18,17 +18,17 @@ import StatusCell from './StatusCell';
 
 interface ComputePlanTrProps {
     computePlan: ComputePlanT;
-    selectedKeys: string[];
-    onSelectionChange: (computePlan: ComputePlanT) => () => void;
-    isFavorite: (computePlan: ComputePlanT) => boolean;
-    onFavoriteChange: (computePlan: ComputePlanT) => () => void;
+    isSelected: boolean;
+    onSelectionChange: () => void;
+    isFavorite: boolean;
+    onFavoriteChange: () => void;
     highlighted: boolean;
     hyperparametersList: string[];
 }
 
 const ComputePlanTr = ({
     computePlan,
-    selectedKeys,
+    isSelected,
     onSelectionChange,
     isFavorite,
     onFavoriteChange,
@@ -49,17 +49,28 @@ const ComputePlanTr = ({
                 )
             }
         >
-            <CheckboxTd firstCol={true}>
+            <CheckboxTd
+                firstCol={true}
+                position="sticky"
+                left="0"
+                zIndex="1"
+                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+            >
                 <Checkbox
-                    isChecked={selectedKeys.includes(computePlan.key)}
-                    onChange={onSelectionChange(computePlan)}
+                    isChecked={isSelected}
+                    onChange={onSelectionChange}
                     colorScheme="teal"
                 />
             </CheckboxTd>
-            <CheckboxTd>
+            <CheckboxTd
+                position="sticky"
+                left="50px"
+                zIndex="1"
+                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+            >
                 <Tooltip
                     label={
-                        isFavorite(computePlan)
+                        isFavorite
                             ? 'Remove from favorites'
                             : 'Add to favorites'
                     }
@@ -70,13 +81,20 @@ const ComputePlanTr = ({
                 >
                     <Box as="span">
                         <FavoriteBox
-                            isChecked={isFavorite(computePlan)}
-                            onChange={onFavoriteChange(computePlan)}
+                            isChecked={isFavorite}
+                            onChange={onFavoriteChange}
                         />
                     </Box>
                 </Tooltip>
             </CheckboxTd>
-            <Td minWidth="250px">
+            <Td
+                minWidth="250px"
+                position="sticky"
+                left="86px"
+                zIndex="1"
+                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+                {...rightBorderProps}
+            >
                 <Text fontSize="xs">
                     {MELLODDY ? getMelloddyName(computePlan) : computePlan.tag}
                 </Text>
@@ -98,7 +116,6 @@ const ComputePlanTr = ({
                     key={`${computePlan.tag}-${hp}`}
                     fontSize="xs"
                     whiteSpace="nowrap"
-                    border="none"
                 >
                     <Text>{computePlan.metadata[hp] || '-'}</Text>
                 </Td>

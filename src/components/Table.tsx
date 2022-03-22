@@ -97,3 +97,31 @@ export const TableSkeleton = ({
         </Fragment>
     );
 };
+
+export const rightBorderProps = {
+    borderRight: 'none',
+    backgroundImage:
+        'linear-gradient(var(--chakra-colors-gray-100), var(--chakra-colors-gray-100))',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '1px 100%',
+    backgroundPosition: 'right',
+};
+
+export const bottomBorderProps = {
+    borderBottom: 'none',
+    backgroundImage:
+        'linear-gradient(var(--chakra-colors-gray-100), var(--chakra-colors-gray-100))',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 1px',
+    backgroundPosition: 'bottom',
+};
+
+export const bottomRightBorderProps = {
+    borderBottom: 'none',
+    borderRight: 'none',
+    backgroundImage:
+        'linear-gradient(var(--chakra-colors-gray-100), var(--chakra-colors-gray-100)), linear-gradient(var(--chakra-colors-gray-100), var(--chakra-colors-gray-100))',
+    backgroundRepeat: 'no-repeat, no-repeat',
+    backgroundSize: '100% 1px, 1px 100%',
+    backgroundPosition: 'bottom, right',
+};

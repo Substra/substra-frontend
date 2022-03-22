@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Hyperparameters columns in cp list are customizable (#453)
 -   Hyperparameters modal now draggable (#467)
+-   Sticky columns on compute plans page (#468)
 
 ### Fixed
 

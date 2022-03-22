@@ -35,7 +35,12 @@ import { ClickableTh } from '@/components/AssetsTable';
 import CustomColumnsModal from '@/components/CustomColumnsModal';
 import FullTextSearchBar from '@/components/FullTextSearchBar';
 import SearchBar from '@/components/SearchBar';
-import { EmptyTr, Tbody } from '@/components/Table';
+import {
+    bottomBorderProps,
+    bottomRightBorderProps,
+    EmptyTr,
+    Tbody,
+} from '@/components/Table';
 import {
     StatusTableFilterTag,
     TableFilterTags,
@@ -242,32 +247,56 @@ const ComputePlans = (): JSX.Element => {
                             position="sticky"
                             top={0}
                             backgroundColor="white"
-                            zIndex={1}
+                            zIndex="2"
                         >
                             <Tr>
-                                <Th padding="0" minWidth="50px"></Th>
-                                <Th padding="0" minWidth="36px"></Th>
+                                <Th
+                                    padding="0"
+                                    minWidth="50px"
+                                    position="sticky"
+                                    left="0"
+                                    zIndex="1"
+                                    backgroundColor="white"
+                                    {...bottomBorderProps}
+                                ></Th>
+                                <Th
+                                    padding="0"
+                                    minWidth="36px"
+                                    position="sticky"
+                                    left="50px"
+                                    zIndex="1"
+                                    backgroundColor="white"
+                                    {...bottomBorderProps}
+                                ></Th>
                                 <ClickableTh
                                     minWidth="250px"
                                     onClick={() => onPopoverOpen(0)}
+                                    position="sticky"
+                                    left="86px"
+                                    zIndex="1"
+                                    backgroundColor="white"
+                                    {...bottomRightBorderProps}
                                 >
                                     {MELLODDY ? 'Name' : 'Tag'}
                                 </ClickableTh>
                                 <ClickableTh
                                     minWidth="255px"
                                     onClick={() => onPopoverOpen(0)}
+                                    {...bottomBorderProps}
                                 >
                                     Status / Tasks
                                 </ClickableTh>
                                 <ClickableTh
                                     minWidth="255px"
                                     onClick={() => onPopoverOpen(0)}
+                                    {...bottomBorderProps}
                                 >
                                     Creation
                                 </ClickableTh>
                                 <ClickableTh
                                     minWidth="255px"
                                     onClick={() => onPopoverOpen(0)}
+                                    {...bottomBorderProps}
                                 >
                                     Dates / Duration
                                 </ClickableTh>
@@ -276,6 +305,7 @@ const ComputePlans = (): JSX.Element => {
                                         key={hp}
                                         minWidth="125px"
                                         onClick={() => onPopoverOpen(0)}
+                                        {...bottomBorderProps}
                                     >
                                         {hp}
                                     </ClickableTh>
@@ -287,10 +317,16 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTr
                                     key={computePlan.key}
                                     computePlan={computePlan}
-                                    selectedKeys={selectedKeys}
-                                    onSelectionChange={onSelectionChange}
-                                    isFavorite={isFavorite}
-                                    onFavoriteChange={onFavoriteChange}
+                                    isSelected={selectedKeys.includes(
+                                        computePlan.key
+                                    )}
+                                    onSelectionChange={onSelectionChange(
+                                        computePlan
+                                    )}
+                                    isFavorite={isFavorite(computePlan)}
+                                    onFavoriteChange={onFavoriteChange(
+                                        computePlan
+                                    )}
                                     highlighted={true}
                                     hyperparametersList={activeHyperparameters}
                                 />
@@ -306,10 +342,16 @@ const ComputePlans = (): JSX.Element => {
                                     <ComputePlanTr
                                         key={computePlan.key}
                                         computePlan={computePlan}
-                                        selectedKeys={selectedKeys}
-                                        onSelectionChange={onSelectionChange}
-                                        isFavorite={isFavorite}
-                                        onFavoriteChange={onFavoriteChange}
+                                        isSelected={selectedKeys.includes(
+                                            computePlan.key
+                                        )}
+                                        onSelectionChange={onSelectionChange(
+                                            computePlan
+                                        )}
+                                        isFavorite={isFavorite(computePlan)}
+                                        onFavoriteChange={onFavoriteChange(
+                                            computePlan
+                                        )}
                                         highlighted={true}
                                         hyperparametersList={
                                             activeHyperparameters
@@ -345,12 +387,16 @@ const ComputePlans = (): JSX.Element => {
                                         <ComputePlanTr
                                             key={computePlan.key}
                                             computePlan={computePlan}
-                                            selectedKeys={selectedKeys}
-                                            onSelectionChange={
-                                                onSelectionChange
-                                            }
-                                            isFavorite={isFavorite}
-                                            onFavoriteChange={onFavoriteChange}
+                                            isSelected={selectedKeys.includes(
+                                                computePlan.key
+                                            )}
+                                            onSelectionChange={onSelectionChange(
+                                                computePlan
+                                            )}
+                                            isFavorite={isFavorite(computePlan)}
+                                            onFavoriteChange={onFavoriteChange(
+                                                computePlan
+                                            )}
                                             highlighted={false}
                                             hyperparametersList={
                                                 activeHyperparameters

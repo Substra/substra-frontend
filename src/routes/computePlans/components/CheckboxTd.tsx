@@ -1,18 +1,20 @@
-import { Box, Td } from '@chakra-ui/react';
+import { Box, TableCellProps, Td } from '@chakra-ui/react';
 
+interface CheckboxTdProps extends TableCellProps {
+    firstCol?: boolean;
+}
 const CheckboxTd = ({
     firstCol,
     children,
-}: {
-    firstCol?: boolean;
-    children: React.ReactNode;
-}): JSX.Element => (
+    ...props
+}: CheckboxTdProps): JSX.Element => (
     <Td
         position="relative"
         // width and padding are here to compensate for the label being positioned with absolute
         minWidth={firstCol ? '50px' : '36px'}
         paddingLeft={firstCol ? '6' : '2.5'}
         paddingRight="2.5"
+        {...props}
     >
         <Box
             as="label"
