@@ -115,6 +115,15 @@ const HyperparametersModal = ({
                     style={{ x, y }}
                     pointerEvents="auto"
                     containerProps={{ pointerEvents: 'none' }}
+                    overflow="hidden"
+                    resize="both"
+                    width="var(--chakra-sizes-4xl)"
+                    minHeight="156px"
+                    minWidth="560px"
+                    maxWidth="none"
+                    _focus={{
+                        boxShadow: 'var(--chakra-shadows-lg) !important',
+                    }}
                 >
                     <ModalCloseButton />
                     <MotionModalHeader
