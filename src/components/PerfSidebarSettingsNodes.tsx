@@ -11,7 +11,6 @@ import {
     MenuGroup,
     MenuItem,
     MenuList,
-    Skeleton,
     Tag,
     TagCloseButton,
     TagLabel,
@@ -40,7 +39,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
     };
 
     const addAll = () => {
-        setSelectedNodeIds(nodes.map((node) => node.id));
+        setSelectedNodeIds([]);
     };
 
     const notSelectedAverageNodes = nodes
@@ -70,6 +69,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         size="xs"
                         icon={<RiCloseLine />}
                         onClick={clear}
+                        isDisabled={loading}
                     />
                     <Box color="gray.200">|</Box>
                     <Menu placement="bottom-end">
@@ -79,6 +79,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             variant="ghost"
                             size="xs"
                             icon={<RiArrowDownSLine />}
+                            isDisabled={loading}
                         />
                         <MenuList maxHeight="350px" overflowY="auto">
                             <MenuGroup>
@@ -142,36 +143,20 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         </MenuList>
                     </Menu>
                 </Flex>
-                {loading && (
-                    <>
-                        <Skeleton
-                            height="20px"
-                            width="160px"
-                            marginBottom="1"
-                        />
-                        <Skeleton
-                            height="20px"
-                            width="160px"
-                            marginBottom="1"
-                        />
-                        <Skeleton height="20px" width="130px" />
-                    </>
-                )}
-                {!loading &&
-                    selectedNodeIds.map((nodeId) => {
-                        return (
-                            <Tag
-                                size="sm"
-                                colorScheme="teal"
-                                variant="solid"
-                                key={nodeId}
-                                marginRight="1"
-                            >
-                                <TagLabel>{nodeId}</TagLabel>
-                                <TagCloseButton onClick={remove(nodeId)} />
-                            </Tag>
-                        );
-                    })}
+                {selectedNodeIds.map((nodeId) => {
+                    return (
+                        <Tag
+                            size="sm"
+                            colorScheme="teal"
+                            variant="solid"
+                            key={nodeId}
+                            marginRight="1"
+                        >
+                            <TagLabel>{nodeId}</TagLabel>
+                            <TagCloseButton onClick={remove(nodeId)} />
+                        </Tag>
+                    );
+                })}
                 <Box style={{ clear: 'both' }} />
             </Box>
         </Box>

@@ -11,10 +11,11 @@ import {
 } from '@/components/PerfSidebarCommon';
 
 const NodeList = ({ computePlanKey }: { computePlanKey: string }) => {
-    const { nodes: allNodes, selectedNodeIds } = useContext(PerfBrowserContext);
+    const { nodes: allNodes, isNodeIdSelected } =
+        useContext(PerfBrowserContext);
     const nodes = useMemo(
-        () => allNodes.filter((node) => selectedNodeIds.includes(node.id)),
-        [allNodes, selectedNodeIds]
+        () => allNodes.filter((node) => isNodeIdSelected(node.id)),
+        [allNodes, isNodeIdSelected]
     );
     return (
         <PerfSidebarContainer title="Lines">
@@ -32,14 +33,14 @@ const NodeList = ({ computePlanKey }: { computePlanKey: string }) => {
 };
 
 const SerieList = () => {
-    const { rankData: allRankData, selectedNodeIds } =
+    const { rankData: allRankData, isNodeIdSelected } =
         useContext(PerfBrowserContext);
     const rankData = useMemo(
         () =>
             allRankData.filter((serieRankData) =>
-                selectedNodeIds.includes(serieRankData.worker)
+                isNodeIdSelected(serieRankData.worker)
             ),
-        [allRankData, selectedNodeIds]
+        [allRankData, isNodeIdSelected]
     );
     return (
         <PerfSidebarContainer title="Lines">

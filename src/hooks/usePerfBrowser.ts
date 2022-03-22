@@ -1,5 +1,6 @@
 import React, {
     createContext,
+    useCallback,
     useEffect,
     useMemo,
     useRef,
@@ -51,7 +52,7 @@ interface PerfBrowserContext {
     // List of nodes for which display series (displayed if serie.worker is in selectedNodeIds)
     selectedNodeIds: string[];
     setSelectedNodeIds: (selectedNodeIds: string[]) => void;
-    onNodeIdSelectionChange: OnOptionChange;
+    isNodeIdSelected: (nodeId: string) => boolean;
     // List of compute plans for which to display series (display if serie.computePlanKey is in selectedComputePlanKeys)
     selectedComputePlanKeys: string[];
     setSelectedComputePlanKeys: (selectedComputePlanKeys: string[]) => void;
@@ -98,8 +99,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     setXAxisMode: (xAxisMode) => {},
     selectedNodeIds: [],
     setSelectedNodeIds: (selectedNodeIds) => {},
-    onNodeIdSelectionChange:
-        (nodeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {},
+    isNodeIdSelected: (nodeId) => false,
     selectedComputePlanKeys: [],
     setSelectedComputePlanKeys: (selectedComputePlanKeys) => {},
     onComputePlanKeySelectionChange:
@@ -160,21 +160,11 @@ const usePerfBrowser = (
         return computePlans;
     }, [unsortedComputePlans]);
 
-    const onNodeIdSelectionChange =
-        (nodeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            const checked = event.target.checked;
-            const selected = selectedNodeIds.includes(nodeId);
-
-            if (checked && !selected) {
-                setSelectedNodeIds([...selectedNodeIds, nodeId]);
-            }
-
-            if (!checked && selected) {
-                setSelectedNodeIds(
-                    selectedNodeIds.filter((id) => id !== nodeId)
-                );
-            }
-        };
+    const isNodeIdSelected = useCallback(
+        (nodeId: string): boolean =>
+            selectedNodeIds.length === 0 || selectedNodeIds.includes(nodeId),
+        [selectedNodeIds]
+    );
 
     const onComputePlanKeySelectionChange =
         (computePlanKey: string) =>
@@ -209,10 +199,10 @@ const usePerfBrowser = (
         const filteredSeries = series.filter(
             (serie) =>
                 selectedComputePlanKeys.includes(serie.computePlanKey) &&
-                selectedNodeIds.includes(serie.worker)
+                isNodeIdSelected(serie.worker)
         );
         return buildSeriesGroups(filteredSeries);
-    }, [series, selectedComputePlanKeys, selectedNodeIds]);
+    }, [series, selectedComputePlanKeys, isNodeIdSelected]);
 
     const selectedSeriesGroup = useMemo(() => {
         if (!selectedMetricName) {
@@ -231,12 +221,6 @@ const usePerfBrowser = (
             return [];
         }
     }, [seriesGroups, selectedMetricName]);
-
-    useEffect(() => {
-        if (nodes.length && !selectedNodeIds.length) {
-            setSelectedNodeIds(nodes.map((node) => node.id));
-        }
-    }, [nodes.length]);
 
     useEffect(() => {
         if (computePlans.length && !selectedComputePlanKeys.length) {
@@ -373,8 +357,8 @@ const usePerfBrowser = (
             setXAxisMode,
             // node IDs
             selectedNodeIds,
-            onNodeIdSelectionChange,
             setSelectedNodeIds,
+            isNodeIdSelected,
             // compute plan keys
             selectedComputePlanKeys,
             onComputePlanKeySelectionChange,

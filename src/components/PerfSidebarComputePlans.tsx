@@ -249,7 +249,7 @@ const SerieList = ({
 }: {
     computePlanKey: string;
 }): JSX.Element => {
-    const { rankData: allRankData, selectedNodeIds } =
+    const { rankData: allRankData, isNodeIdSelected } =
         useContext(PerfBrowserContext);
 
     const rankData = useMemo(
@@ -257,9 +257,9 @@ const SerieList = ({
             allRankData.filter(
                 (serieRankData) =>
                     serieRankData.computePlanKey == computePlanKey &&
-                    selectedNodeIds.includes(serieRankData.worker)
+                    isNodeIdSelected(serieRankData.worker)
             ),
-        [allRankData, selectedNodeIds, computePlanKey]
+        [allRankData, isNodeIdSelected, computePlanKey]
     );
 
     return (
@@ -289,7 +289,7 @@ const NodeList = ({
 }): JSX.Element => {
     const {
         nodes: allNodes,
-        selectedNodeIds,
+        isNodeIdSelected,
         series,
     } = useContext(PerfBrowserContext);
 
@@ -297,14 +297,14 @@ const NodeList = ({
         () =>
             allNodes.filter(
                 (node) =>
-                    selectedNodeIds.includes(node.id) &&
+                    isNodeIdSelected(node.id) &&
                     !!series.find(
                         (serie) =>
                             serie.worker === node.id &&
                             serie.computePlanKey === computePlanKey
                     )
             ),
-        [allNodes, computePlanKey, selectedNodeIds]
+        [allNodes, computePlanKey, isNodeIdSelected]
     );
 
     return (
