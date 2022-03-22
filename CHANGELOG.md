@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Users management v1
 -   Added license file
 -   Removed references to close-source items
+-   Component with ellipsis in the middle
 
 ### Changed
 

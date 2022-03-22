@@ -14,6 +14,7 @@ import { compilePath, PATHS } from '@/paths';
 
 import Duration from '@/components/Duration';
 import { ClickableTr, rightBorderProps } from '@/components/Table';
+import TextWithMiddleEllipsis from '@/components/TextWithMiddleEllipsis';
 import Timing from '@/components/Timing';
 
 import CheckboxTd from './CheckboxTd';
@@ -148,7 +149,12 @@ const ComputePlanTr = ({
                 backgroundColor="white"
                 {...rightBorderProps}
             >
-                <Text fontSize="xs">{computePlan.name}</Text>
+                <TextWithMiddleEllipsis
+                    text={computePlan.name}
+                    charsAfterEllipsis={5}
+                    width="236px"
+                    fontSize="xs"
+                />
             </Td>
             {columns.map((column) => (
                 <ColumnTd
