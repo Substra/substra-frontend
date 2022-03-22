@@ -14,7 +14,11 @@ import {
     Button,
     HStack,
     Flex,
+    Td,
+    Icon,
+    useDisclosure,
 } from '@chakra-ui/react';
+import { RiArrowDownSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
@@ -101,30 +105,39 @@ const ComputePlans = (): JSX.Element => {
             /**
              * Refresh the list of filtered pinned items matching the current filters
              */
-            const pinnedSearchFilters = [
-                ...searchFilters,
-                ...pinnedKeys.map(
-                    (key): SearchFilterType => ({
-                        asset: 'compute_plan',
-                        key: 'key',
-                        value: key,
-                    })
-                ),
-            ];
-            setRefreshFilteredPinnedLoading(true);
-            try {
-                const filteredPinned = await getAllPages(
-                    (page) =>
-                        API.listComputePlans(
-                            { searchFilters: pinnedSearchFilters, page, match },
-                            { signal: abortController.signal }
-                        ),
-                    DEFAULT_PAGE_SIZE
-                );
-                // do not display pinned items not matching these searchFilters
-                setFilteredPinnedKeys(filteredPinned.map((cp) => cp.key));
-            } catch (error) {
-                // do nothing
+
+            if (pinnedKeys.length === 0) {
+                setFilteredPinnedKeys([]);
+            } else {
+                const pinnedSearchFilters = [
+                    ...searchFilters,
+                    ...pinnedKeys.map(
+                        (key): SearchFilterType => ({
+                            asset: 'compute_plan',
+                            key: 'key',
+                            value: key,
+                        })
+                    ),
+                ];
+                setRefreshFilteredPinnedLoading(true);
+                try {
+                    const filteredPinned = await getAllPages(
+                        (page) =>
+                            API.listComputePlans(
+                                {
+                                    searchFilters: pinnedSearchFilters,
+                                    page,
+                                    match,
+                                },
+                                { signal: abortController.signal }
+                            ),
+                        DEFAULT_PAGE_SIZE
+                    );
+                    // do not display pinned items not matching these searchFilters
+                    setFilteredPinnedKeys(filteredPinned.map((cp) => cp.key));
+                } catch (error) {
+                    // do nothing
+                }
             }
             setRefreshFilteredPinnedLoading(false);
         };
@@ -254,6 +267,10 @@ const ComputePlans = (): JSX.Element => {
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
+
+    const { isOpen: isPinnedOpen, onToggle: onPinnedToggle } = useDisclosure();
+
+    const numColumns = 7 + activeHyperparameters.length;
 
     return (
         <TableFiltersContext.Provider value={context}>
@@ -388,67 +405,98 @@ const ComputePlans = (): JSX.Element => {
                             </Tr>
                         </Thead>
                         <ChakraTbody>
-                            {!refreshFilteredPinnedLoading &&
-                                selectedComputePlans
-                                    .filter((computePlan) =>
-                                        filteredPinnedKeys.includes(
-                                            computePlan.key
-                                        )
-                                    )
-                                    .map((computePlan) => (
-                                        <ComputePlanTr
-                                            key={computePlan.key}
-                                            computePlan={computePlan}
-                                            isSelected={selectedKeys.includes(
-                                                computePlan.key
-                                            )}
-                                            onSelectionChange={onSelectionChange(
-                                                computePlan
-                                            )}
-                                            isFavorite={isFavorite(computePlan)}
-                                            onFavoriteChange={onFavoriteChange(
-                                                computePlan
-                                            )}
-                                            highlighted={true}
-                                            hyperparametersList={
-                                                activeHyperparameters
-                                            }
-                                        />
-                                    ))}
+                            <Tr>
+                                <Td colSpan={numColumns}>
+                                    <Button
+                                        variant="link"
+                                        colorScheme="teal"
+                                        size="xs"
+                                        leftIcon={
+                                            <Icon
+                                                as={
+                                                    isPinnedOpen
+                                                        ? RiArrowDownSLine
+                                                        : RiArrowRightSLine
+                                                }
+                                            />
+                                        }
+                                        onClick={onPinnedToggle}
+                                        marginLeft="2"
+                                        position="sticky"
+                                        left="8"
+                                        zIndex="1"
+                                    >
+                                        {`Favorites (${filteredPinnedKeys.length})`}
+                                    </Button>
+                                </Td>
+                            </Tr>
                         </ChakraTbody>
-                        <ChakraTbody>
-                            {!refreshFilteredPinnedLoading &&
-                                favorites
-                                    .filter(
-                                        (computePlan) =>
-                                            !selectedKeys.includes(
-                                                computePlan.key
-                                            ) &&
+                        {isPinnedOpen && (
+                            <ChakraTbody>
+                                {!refreshFilteredPinnedLoading &&
+                                    selectedComputePlans
+                                        .filter((computePlan) =>
                                             filteredPinnedKeys.includes(
                                                 computePlan.key
                                             )
-                                    )
-                                    .map((computePlan) => (
-                                        <ComputePlanTr
-                                            key={computePlan.key}
-                                            computePlan={computePlan}
-                                            isSelected={selectedKeys.includes(
-                                                computePlan.key
-                                            )}
-                                            onSelectionChange={onSelectionChange(
-                                                computePlan
-                                            )}
-                                            isFavorite={isFavorite(computePlan)}
-                                            onFavoriteChange={onFavoriteChange(
-                                                computePlan
-                                            )}
-                                            highlighted={true}
-                                            hyperparametersList={
-                                                activeHyperparameters
-                                            }
-                                        />
-                                    ))}
-                        </ChakraTbody>
+                                        )
+                                        .map((computePlan) => (
+                                            <ComputePlanTr
+                                                key={computePlan.key}
+                                                computePlan={computePlan}
+                                                isSelected={selectedKeys.includes(
+                                                    computePlan.key
+                                                )}
+                                                onSelectionChange={onSelectionChange(
+                                                    computePlan
+                                                )}
+                                                isFavorite={isFavorite(
+                                                    computePlan
+                                                )}
+                                                onFavoriteChange={onFavoriteChange(
+                                                    computePlan
+                                                )}
+                                                highlighted={true}
+                                                hyperparametersList={
+                                                    activeHyperparameters
+                                                }
+                                            />
+                                        ))}
+                                {!refreshFilteredPinnedLoading &&
+                                    favorites
+                                        .filter(
+                                            (computePlan) =>
+                                                !selectedKeys.includes(
+                                                    computePlan.key
+                                                ) &&
+                                                filteredPinnedKeys.includes(
+                                                    computePlan.key
+                                                )
+                                        )
+                                        .map((computePlan) => (
+                                            <ComputePlanTr
+                                                key={computePlan.key}
+                                                computePlan={computePlan}
+                                                isSelected={selectedKeys.includes(
+                                                    computePlan.key
+                                                )}
+                                                onSelectionChange={onSelectionChange(
+                                                    computePlan
+                                                )}
+                                                isFavorite={isFavorite(
+                                                    computePlan
+                                                )}
+                                                onFavoriteChange={onFavoriteChange(
+                                                    computePlan
+                                                )}
+                                                highlighted={true}
+                                                hyperparametersList={
+                                                    activeHyperparameters
+                                                }
+                                            />
+                                        ))}
+                            </ChakraTbody>
+                        )}
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
                         >

@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Filters also apply to favorites (#469)
+-   Favorites / selected compute plan rows are collapsible (#470)
 
 ## [0.16.0] - 2022-03-10
 
