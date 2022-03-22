@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 
+import { motion, useMotionValue } from 'framer-motion';
+
 import {
     Button,
     Modal,
@@ -7,7 +9,6 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalHeader,
-    ModalOverlay,
     Table,
     Thead,
     Tbody,
@@ -23,6 +24,8 @@ import {
     Tag,
     TagCloseButton,
     TagLabel,
+    ModalContentProps,
+    ModalHeaderProps,
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
@@ -42,6 +45,9 @@ export interface HyperparamsT {
     [computePlanName: string]: Record<string, string>;
 }
 
+export const MotionModalContent = motion<ModalContentProps>(ModalContent);
+export const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);
+
 const HyperparametersModal = ({
     computePlans: propsComputePlans,
 }: HyperparametersModalProps): JSX.Element => {
@@ -56,6 +62,14 @@ const HyperparametersModal = ({
     const [inputValue, setInputValue] = useState<string>('');
     const [inputIsFocused, setInputIsFocused] = useState<boolean>(false);
     const [filters, setFilters] = useState<string[]>([]);
+
+    const toggle = () => {
+        if (isOpen) {
+            onClose();
+        } else {
+            onOpen();
+        }
+    };
 
     useEffect(() => {
         setFilters([]);
@@ -77,10 +91,14 @@ const HyperparametersModal = ({
         ? filters
         : hyperparametersList;
 
+    const [grabbing, setGrabbing] = useState(false);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
     return (
         <>
-            <Button onClick={onOpen} size="xs">
-                Show hyperparameters
+            <Button onClick={toggle} size="xs">
+                {!isOpen ? 'Show hyperparameters' : 'Hide hyperparameters'}
             </Button>
             <Modal
                 isOpen={isOpen}
@@ -88,11 +106,26 @@ const HyperparametersModal = ({
                 size="4xl"
                 scrollBehavior="inside"
                 isCentered
+                closeOnOverlayClick={false}
+                blockScrollOnMount={false}
+                trapFocus={false}
+                motionPreset={'none'}
             >
-                <ModalOverlay />
-                <ModalContent>
+                <MotionModalContent
+                    style={{ x, y }}
+                    pointerEvents="auto"
+                    containerProps={{ pointerEvents: 'none' }}
+                >
                     <ModalCloseButton />
-                    <ModalHeader>
+                    <MotionModalHeader
+                        onPan={(e, info) => {
+                            x.set(x.get() + info.delta.x);
+                            y.set(y.get() + info.delta.y);
+                        }}
+                        onMouseDown={() => setGrabbing(true)}
+                        onMouseUp={() => setGrabbing(false)}
+                        cursor={grabbing ? 'grabbing' : 'grab'}
+                    >
                         <HStack spacing="4">
                             <Text
                                 color="black"
@@ -205,7 +238,7 @@ const HyperparametersModal = ({
                                 ))}
                             </HStack>
                         )}
-                    </ModalHeader>
+                    </MotionModalHeader>
                     <ModalBody padding="0">
                         <Table whiteSpace="nowrap" width="auto" maxWidth="100%">
                             <Thead>
@@ -249,7 +282,7 @@ const HyperparametersModal = ({
                             </Tbody>
                         </Table>
                     </ModalBody>
-                </ModalContent>
+                </MotionModalContent>
             </Modal>
         </>
     );

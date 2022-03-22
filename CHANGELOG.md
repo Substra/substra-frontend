@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Hyperparameters columns in cp list are customizable (#453)
+-   Hyperparameters modal now draggable (#467)
 
 ### Fixed
 
