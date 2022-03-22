@@ -167,7 +167,12 @@ const useDownloadPerfCsv = (seriesGroups: SerieT[][]) => {
         const blob = new Blob([`${bomCode}${csv}`], {
             type: 'text/csv;charset=utf-8',
         });
-        downloadBlob(blob, `cp_${computePlans[0].key}.csv`);
+        downloadBlob(
+            blob,
+            computePlans.length === 1
+                ? `cp_${computePlans[0].key}.csv`
+                : 'cp_comparison.csv'
+        );
     };
 
     return downloadPerfCsv;
