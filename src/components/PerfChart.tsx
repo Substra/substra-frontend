@@ -101,6 +101,9 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 zoom: {
                     drag: {
                         enabled: true,
+                        backgroundColor: 'rgba(173, 245, 244, 0.5)',
+                        borderColor: '#3bcccc',
+                        borderWidth: 1,
                     },
                     wheel: {
                         enabled: true,
