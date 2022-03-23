@@ -110,6 +110,7 @@ const HyperparametersModal = ({
                 blockScrollOnMount={false}
                 trapFocus={false}
                 motionPreset={'none'}
+                onEsc={() => setInputIsFocused(false)}
             >
                 <MotionModalContent
                     style={{ x, y }}

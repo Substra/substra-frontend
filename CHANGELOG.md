@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove warning related to breadcrumb component on dataset page (#458)
 -   Fix large border into chart zoom button group (#459)
 -   Rename csv files downloaded from the comparison interface (#476)
+-   Close hyperparameters list on modal escape (#477)
 
 ### Changed
 
