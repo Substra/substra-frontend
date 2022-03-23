@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Sticky columns on compute plans page (#468)
 -   Hyperparameters modal now resizable (#475)
 -   Change drag zoom background color (#478)
+-   Add buttons to show diffs only & clear filters in hp modal (#481)
 
 ### Fixed
 

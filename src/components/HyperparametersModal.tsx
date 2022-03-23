@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useMemo } from 'react';
 
 import { motion, useMotionValue } from 'framer-motion';
 
@@ -26,6 +26,8 @@ import {
     TagLabel,
     ModalContentProps,
     ModalHeaderProps,
+    Wrap,
+    WrapItem,
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
@@ -58,7 +60,10 @@ const HyperparametersModal = ({
         ? propsComputePlans
         : perfBrowserComputePlans;
 
+    const hyperparametersList = useHyperparameters(computePlans);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isShowingDiffs, setIsShowingDiffs] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>('');
     const [inputIsFocused, setInputIsFocused] = useState<boolean>(false);
     const [filters, setFilters] = useState<string[]>([]);
@@ -74,22 +79,59 @@ const HyperparametersModal = ({
     useEffect(() => {
         setFilters([]);
         setInputValue('');
+        setIsShowingDiffs(false);
     }, [isOpen]);
-
-    const hyperparametersList = useHyperparameters(computePlans);
 
     const addFilter = (filter: string) => {
         setFilters([...filters, filter]);
         setInputValue('');
+
+        if (isShowingDiffs && !hpDiffList.includes(filter)) {
+            setIsShowingDiffs(false);
+        }
     };
 
     const removeFilter = (filter: string) => {
         setFilters(filters.filter((f) => filter !== f));
+
+        if (isShowingDiffs && !filters.length) {
+            setIsShowingDiffs(false);
+        }
+    };
+
+    const clearFilters = () => {
+        setFilters([]);
+        setIsShowingDiffs(false);
     };
 
     const activeHyperparameters = filters.length
         ? filters
         : hyperparametersList;
+
+    const hpDiffList: string[] = useMemo(() => {
+        const hpDiffList: string[] = [];
+        if (computePlans.length > 1) {
+            for (const hp of hyperparametersList) {
+                const reference = computePlans[0].metadata[hp];
+                let hpHasDiff = false;
+                let index = 1;
+
+                while (!hpHasDiff && index < computePlans.length) {
+                    if (computePlans[index].metadata[hp] !== reference) {
+                        hpHasDiff = true;
+                        hpDiffList.push(hp);
+                    }
+                    index++;
+                }
+            }
+        }
+        return hpDiffList;
+    }, [computePlans]);
+
+    const toggleDifferencesDisplay = () => {
+        setIsShowingDiffs(true);
+        setFilters(hpDiffList);
+    };
 
     const [grabbing, setGrabbing] = useState(false);
     const x = useMotionValue(0);
@@ -135,6 +177,7 @@ const HyperparametersModal = ({
                         onMouseDown={() => setGrabbing(true)}
                         onMouseUp={() => setGrabbing(false)}
                         cursor={grabbing ? 'grabbing' : 'grab'}
+                        paddingBottom={filters.length ? '0' : '4'}
                     >
                         <HStack spacing="4">
                             <Text
@@ -223,30 +266,55 @@ const HyperparametersModal = ({
                                 )}
                             </VStack>
                         </HStack>
+                        <HStack marginTop="3">
+                            <Button
+                                onClick={toggleDifferencesDisplay}
+                                size="xs"
+                                variant="outline"
+                                disabled={
+                                    hpDiffList.length > 0 && !isShowingDiffs
+                                        ? false
+                                        : true
+                                }
+                            >
+                                Show only differences
+                            </Button>
+                            <Button
+                                onClick={clearFilters}
+                                size="xs"
+                                variant="outline"
+                                disabled={filters.length ? false : true}
+                            >
+                                Clear filters
+                            </Button>
+                        </HStack>
                         {filters.length > 0 && (
-                            <HStack marginTop="3">
+                            <Wrap marginTop="3" paddingBottom="4">
                                 {filters.map((filter) => (
-                                    <Tag
-                                        key={filter}
-                                        size="sm"
-                                        variant="outline"
-                                        color="gray.800"
-                                        borderRadius="4px"
-                                        boxShadow="inset 0 0 1px var(--chakra-colors-gray-500)"
-                                    >
-                                        <TagLabel
-                                            fontWeight="medium"
-                                            lineHeight="4"
+                                    <WrapItem key={filter}>
+                                        <Tag
+                                            size="sm"
+                                            variant="outline"
+                                            color="gray.800"
+                                            borderRadius="4px"
+                                            boxShadow="inset 0 0 1px var(--chakra-colors-gray-500)"
                                         >
-                                            {capitalize(filter)}
-                                        </TagLabel>
-                                        <TagCloseButton
-                                            opacity="1"
-                                            onClick={() => removeFilter(filter)}
-                                        />
-                                    </Tag>
+                                            <TagLabel
+                                                fontWeight="medium"
+                                                lineHeight="4"
+                                            >
+                                                {capitalize(filter)}
+                                            </TagLabel>
+                                            <TagCloseButton
+                                                opacity="1"
+                                                onClick={() =>
+                                                    removeFilter(filter)
+                                                }
+                                            />
+                                        </Tag>
+                                    </WrapItem>
                                 ))}
-                            </HStack>
+                            </Wrap>
                         )}
                     </MotionModalHeader>
                     <ModalBody padding="0">
