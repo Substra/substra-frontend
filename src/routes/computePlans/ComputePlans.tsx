@@ -78,8 +78,8 @@ const ComputePlans = (): JSX.Element => {
     const {
         favorites,
         isFavorite,
-        onFavoriteChange: baseOnFavoriteChange,
         updateFavorite,
+        addToFavorites,
         removeFromFavorites,
     } = useFavoriteComputePlans();
 
@@ -227,31 +227,41 @@ const ComputePlans = (): JSX.Element => {
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
+            // remove CP from selection
             unselectComputePlan(computePlan);
-            setFilteredPinnedKeys(
-                filteredPinnedKeys.filter(
-                    (key) =>
-                        key !== computePlan.key || favoriteKeys.includes(key)
-                )
-            );
+            // remove CP from displayed pinned rows if it isn't also a favorite
+            if (!favoriteKeys.includes(computePlan.key)) {
+                setFilteredPinnedKeys(
+                    filteredPinnedKeys.filter((key) => key !== computePlan.key)
+                );
+            }
         } else {
+            // add CP to selection
             selectComputePlan(computePlan);
-            setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
+            // add CP to displayed pinned rows if it isn't already there (happens if it is also a favorite)
+            if (!filteredPinnedKeys.includes(computePlan.key)) {
+                setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
+            }
         }
     };
 
     const onFavoriteChange = (computePlan: ComputePlanT) => () => {
-        setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
-        baseOnFavoriteChange(computePlan)();
-        if (filteredPinnedKeys.includes(computePlan.key)) {
-            setFilteredPinnedKeys(
-                filteredPinnedKeys.filter(
-                    (key) =>
-                        key !== computePlan.key || selectedKeys.includes(key)
-                )
-            );
+        if (favoriteKeys.includes(computePlan.key)) {
+            // remove CP from favorites
+            removeFromFavorites(computePlan);
+            // remove CP from displayed pinned rows if it isn't also selected
+            if (!selectedKeys.includes(computePlan.key)) {
+                setFilteredPinnedKeys(
+                    filteredPinnedKeys.filter((key) => key !== computePlan.key)
+                );
+            }
         } else {
-            setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
+            // add CP to favorites
+            addToFavorites(computePlan);
+            // add CP to displayed pinned rows if it isn't already there (happens if it is also selected)
+            if (!filteredPinnedKeys.includes(computePlan.key)) {
+                setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
+            }
         }
     };
 

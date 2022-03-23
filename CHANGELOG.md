@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix large border into chart zoom button group (#459)
 -   Rename csv files downloaded from the comparison interface (#476)
 -   Close hyperparameters list on modal escape (#477)
+-   Faulty favorites count when filter are applied (#480)
 
 ### Changed
 
