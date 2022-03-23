@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Hyperparameters modal now draggable (#467)
 -   Sticky columns on compute plans page (#468)
 -   Hyperparameters modal now resizable (#475)
+-   Change drag zoom background color (#478)
 
 ### Fixed
 
