@@ -31,6 +31,7 @@ import {
 import { RiAddLine, RiQuestionMark, RiSubtractLine } from 'react-icons/ri';
 
 import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
+import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
@@ -230,6 +231,11 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             }
         };
 
+        // Keyboard interaction
+        useKeyPress('r', onResetZoomClick);
+        useKeyPress('+', onZoomInClick);
+        useKeyPress('-', onZoomOutClick);
+
         useEffect(() => {
             const chart = chartRef.current;
             if (chart && chart.resetHighlightedRank) {
@@ -336,7 +342,14 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                             <Text fontSize="xs">
                                                 To zoom into the chart, use your
                                                 mousewheel or click and drag to
-                                                select the zoom area.
+                                                select the zoom area. You can
+                                                also use <Kbd>+</Kbd> and{' '}
+                                                <Kbd>-</Kbd>. Use <Kbd>r</Kbd>{' '}
+                                                to reset zoom.
+                                            </Text>
+                                            <Text fontSize="xs">
+                                                To go back you can use{' '}
+                                                <Kbd>Escape</Kbd>
                                             </Text>
                                             <Text fontSize="xs">
                                                 To move into the chart, use{' '}

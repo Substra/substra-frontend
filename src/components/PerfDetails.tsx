@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
+import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { SerieT } from '@/modules/series/SeriesTypes';
 
@@ -12,9 +13,12 @@ import PerfEmptyState from '@/components/PerfEmptyState';
 interface PerfDetailsProps {
     series: SerieT[];
 }
+
 const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
     const { perfChartRef, setSelectedMetricName } =
         useContext(PerfBrowserContext);
+
+    useKeyPress('Escape', () => setSelectedMetricName(''));
 
     return (
         <Flex

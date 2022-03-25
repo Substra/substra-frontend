@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Hyperparameters modal now resizable (#475)
 -   Change drag zoom background color (#478)
 -   Add buttons to show diffs only & clear filters in hp modal (#481)
+-   Allow keyboard interaction with the chart (#482)
 
 ### Fixed
 
