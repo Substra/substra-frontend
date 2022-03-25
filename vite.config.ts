@@ -1,7 +1,7 @@
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import path from 'path';
 import { defineConfig } from 'vite';
-import reactSvgPlugin from 'vite-plugin-react-svg';
+import { svgrComponent } from 'vite-plugin-svgr-component';
 import reactJsx from 'vite-react-jsx';
 
 import { version } from './package.json';
@@ -66,9 +66,7 @@ export default defineConfig({
         reactJsx(),
         // Do not include reactRefresh in test mode
         ...(process.env.NODE_ENV === 'test' ? [] : [reactRefresh()]),
-        reactSvgPlugin({
-            defaultExport: 'component',
-        }),
+        svgrComponent(),
     ],
     resolve: {
         alias: {

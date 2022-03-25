@@ -13,7 +13,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 
-import OwkinLogoBlack from '@/assets/svg/owkin-logo-black';
+import OwkinLogoBlack from '@/assets/svg/owkin-logo-black.svg';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { logOut } from '@/modules/user/UserSlice';
