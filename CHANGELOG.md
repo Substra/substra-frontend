@@ -30,9 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   In PerfBrowser, an empty node filters list means all node are displayed (#460)
-
-### Changed
-
 -   Filters also apply to favorites (#469)
 -   Favorites / selected compute plan rows are collapsible (#470)
 
