@@ -1,6 +1,6 @@
 import { VStack, Badge, List } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 
 import {
     DrawerSection,

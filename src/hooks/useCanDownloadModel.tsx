@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import useHasPermission from '@/hooks/useHasPermission';
 import { PermissionsType } from '@/modules/common/CommonTypes';
 

@@ -1,7 +1,7 @@
 import { BreadcrumbItem, HStack, Text } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { PATHS } from '@/routes';
 

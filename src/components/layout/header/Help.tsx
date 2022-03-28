@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { shortDateFormatter } from '@/libs/utils';
 
 import CopyButton from '@/components/CopyButton';

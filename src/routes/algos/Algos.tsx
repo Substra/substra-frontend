@@ -9,11 +9,12 @@ import {
     HStack,
 } from '@chakra-ui/react';
 
-import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
     TableFiltersContext,
     useTableFiltersContext,

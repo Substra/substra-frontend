@@ -2,7 +2,7 @@ import { useRoute } from 'wouter';
 
 import { VStack } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';

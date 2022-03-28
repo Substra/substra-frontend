@@ -2,7 +2,7 @@ import { Link, useRoute } from 'wouter';
 
 import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';

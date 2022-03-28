@@ -13,7 +13,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 
 import CopyButton from '@/components/CopyButton';
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';

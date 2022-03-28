@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Fix version of vite-plugin-svgr-component dependency (#489)
 
+### Changed
+
+-   Hooks cleanup (removed dead code) (#499)
+
 ## [0.17.0] - 2022-03-24
 
 ### Added

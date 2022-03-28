@@ -19,7 +19,8 @@ import {
 } from '@chakra-ui/react';
 import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';

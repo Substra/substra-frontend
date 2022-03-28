@@ -12,7 +12,8 @@ import {
     Box,
 } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { URLS } from '@/modules/tasks/TasksApi';
 import { retrieveLogs } from '@/modules/tasks/TasksSlice';
 import { AnyTupleT } from '@/modules/tasks/TuplesTypes';

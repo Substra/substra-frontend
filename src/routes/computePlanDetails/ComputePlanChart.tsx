@@ -4,7 +4,7 @@ import { useLocation } from 'wouter';
 
 import { Box, Flex, HStack } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';

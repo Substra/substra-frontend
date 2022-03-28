@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react';
 import { RiAlertLine } from 'react-icons/ri';
 
-import { useSearchFiltersEffect } from '@/hooks';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
     TableFiltersContext,
     useTableFiltersContext,

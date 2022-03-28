@@ -9,8 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import { useSearchFiltersEffect } from '@/hooks';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import { SearchFilterType } from '@/libs/searchFilter';
 import { AssetType } from '@/modules/common/CommonTypes';
 

@@ -5,7 +5,8 @@ import { useRoute } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import {
     retrieveDataset,

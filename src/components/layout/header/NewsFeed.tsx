@@ -16,7 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { RiListCheck2, RiNotification3Fill } from 'react-icons/ri';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { listNewsFeed } from '@/modules/newsFeed/NewsFeedSlice';
 import { NewsItemType } from '@/modules/newsFeed/NewsFeedTypes';

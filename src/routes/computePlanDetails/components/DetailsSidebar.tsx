@@ -1,6 +1,6 @@
 import { VStack, Flex, Text } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { getDiffDates } from '@/libs/utils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 

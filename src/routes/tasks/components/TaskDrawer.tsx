@@ -13,7 +13,8 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import {
     isAggregatetuple,

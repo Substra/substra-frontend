@@ -18,7 +18,8 @@ import {
 import { RiUser3Fill } from 'react-icons/ri';
 
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
 

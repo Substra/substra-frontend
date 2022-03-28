@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 
 import Header from '@/components/layout/header/Header';
 

@@ -5,7 +5,7 @@ import { Route, Switch, useLocation, useRoute } from 'wouter';
 
 import { Flex, Spinner } from '@chakra-ui/react';
 
-import { useAppDispatch } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
 import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';

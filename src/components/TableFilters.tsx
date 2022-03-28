@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';

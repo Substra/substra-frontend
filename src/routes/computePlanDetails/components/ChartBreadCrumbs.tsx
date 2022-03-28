@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { BreadcrumbItem, HStack, Text, Link } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
-import { useAppSelector } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { PATHS } from '@/routes';

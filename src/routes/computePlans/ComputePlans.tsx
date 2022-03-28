@@ -20,13 +20,14 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiArrowRightSLine } from 'react-icons/ri';
 
-import { useAppSelector, useSearchFiltersEffect } from '@/hooks';
+import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
     TableFiltersContext,
     useTableFiltersContext,

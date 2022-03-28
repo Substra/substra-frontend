@@ -14,7 +14,8 @@ import {
 } from '@chakra-ui/react';
 
 import OwkinLogoBlack from '@/assets/svg/owkin-logo-black.svg';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import useAppDispatch from '@/hooks/useAppDispatch';
+import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
