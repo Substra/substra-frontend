@@ -267,18 +267,16 @@ const HyperparametersModal = ({
                             </VStack>
                         </HStack>
                         <HStack marginTop="3">
-                            <Button
-                                onClick={toggleDifferencesDisplay}
-                                size="xs"
-                                variant="outline"
-                                disabled={
-                                    hpDiffList.length > 0 && !isShowingDiffs
-                                        ? false
-                                        : true
-                                }
-                            >
-                                Show only differences
-                            </Button>
+                            {hpDiffList.length > 0 && (
+                                <Button
+                                    onClick={toggleDifferencesDisplay}
+                                    size="xs"
+                                    variant="outline"
+                                    disabled={!isShowingDiffs ? false : true}
+                                >
+                                    Show only differences
+                                </Button>
+                            )}
                             <Button
                                 onClick={clearFilters}
                                 size="xs"

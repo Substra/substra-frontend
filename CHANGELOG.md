@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Hide show diff button in single cp page (#492)
+
 ## [0.17.0] - 2022-03-24
 
 ### Added
