@@ -85,7 +85,7 @@ const computePlanStatusByStatusLabel: Record<
 
 export const getStatusLabel = (
     status: TupleStatus | ComputePlanStatus
-): TupleStatusLabel | ComputePlanStatusLabel => {
+): TupleStatusLabel | ComputePlanStatusLabel | string => {
     if (Object.values(TupleStatus).includes(status as TupleStatus)) {
         return statusLabelByTupleStatus[status as TupleStatus];
     }
@@ -95,7 +95,7 @@ export const getStatusLabel = (
         return statusLabelByComputePlanStatus[status as ComputePlanStatus];
     }
 
-    throw `Unknown status: '${status}'`;
+    return status as string;
 };
 
 const getComputePlanStatusFromLabel = (
