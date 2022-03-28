@@ -14,13 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Glitchy selected compute plans on compare page (#491)
 -   Handle invalid statuses (#490)
 -   Open node settings on click in box (#496)
+-   Hide clear button when no filters are applied in hp modal (#498)
 
 ### Changed
 
 -   Fix version of vite-plugin-svgr-component dependency (#489)
-
-### Changed
-
 -   Hooks cleanup (removed dead code) (#499)
 
 ## [0.17.0] - 2022-03-24

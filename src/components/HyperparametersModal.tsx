@@ -266,26 +266,31 @@ const HyperparametersModal = ({
                                 )}
                             </VStack>
                         </HStack>
-                        <HStack marginTop="3">
-                            {hpDiffList.length > 0 && (
-                                <Button
-                                    onClick={toggleDifferencesDisplay}
-                                    size="xs"
-                                    variant="outline"
-                                    disabled={!isShowingDiffs ? false : true}
-                                >
-                                    Show only differences
-                                </Button>
-                            )}
-                            <Button
-                                onClick={clearFilters}
-                                size="xs"
-                                variant="outline"
-                                disabled={filters.length ? false : true}
-                            >
-                                Clear filters
-                            </Button>
-                        </HStack>
+                        {(hpDiffList.length > 0 || filters.length > 0) && (
+                            <HStack marginTop="3">
+                                {hpDiffList.length > 0 && (
+                                    <Button
+                                        onClick={toggleDifferencesDisplay}
+                                        size="xs"
+                                        variant="outline"
+                                        disabled={
+                                            !isShowingDiffs ? false : true
+                                        }
+                                    >
+                                        Show only differences
+                                    </Button>
+                                )}
+                                {filters.length > 0 && (
+                                    <Button
+                                        onClick={clearFilters}
+                                        size="xs"
+                                        variant="outline"
+                                    >
+                                        Clear filters
+                                    </Button>
+                                )}
+                            </HStack>
+                        )}
                         {filters.length > 0 && (
                             <Wrap marginTop="3" paddingBottom="4">
                                 {filters.map((filter) => (
