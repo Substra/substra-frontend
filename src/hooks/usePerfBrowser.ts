@@ -223,12 +223,10 @@ const usePerfBrowser = (
     }, [seriesGroups, selectedMetricName]);
 
     useEffect(() => {
-        if (computePlans.length && !selectedComputePlanKeys.length) {
-            setSelectedComputePlanKeys(
-                computePlans.map((computePlan) => computePlan.key)
-            );
-        }
-    }, [computePlans.length]);
+        setSelectedComputePlanKeys(
+            computePlans.map((computePlan) => computePlan.key)
+        );
+    }, [computePlans]);
 
     const [xAxisMode, setXAxisMode] = useSyncedState<XAxisMode>(
         'xAxisMode',
