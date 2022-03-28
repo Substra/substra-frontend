@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix owkin-logo-black svg by putting back proper width & height (#493)
 -   Glitchy selected compute plans on compare page (#491)
 -   Handle invalid statuses (#490)
+-   Open node settings on click in box (#496)
 
 ## [0.17.0] - 2022-03-24
 

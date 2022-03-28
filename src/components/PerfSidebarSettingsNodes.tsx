@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 import {
     Box,
@@ -14,6 +14,8 @@ import {
     Tag,
     TagCloseButton,
     TagLabel,
+    useDisclosure,
+    useOutsideClick,
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
@@ -50,6 +52,18 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
         .filter((node) => !isAverageNode(node.id))
         .filter((node) => !selectedNodeIds.includes(node.id));
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    useOutsideClick({
+        enabled: isOpen,
+        ref: containerRef,
+        handler: (event) => {
+            if (!containerRef.current?.contains(event.target as HTMLElement)) {
+                onClose();
+            }
+        },
+    });
+
     return (
         <Box>
             <Heading size="xs" marginBottom={4}>
@@ -61,6 +75,17 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                 borderColor="gray.200"
                 paddingX="3.5"
                 paddingY="2"
+                ref={containerRef}
+                onClick={() => {
+                    if (loading) {
+                        return;
+                    }
+                    if (isOpen) {
+                        onClose();
+                    } else {
+                        onOpen();
+                    }
+                }}
             >
                 <Flex float="right" marginRight="-7px" marginTop="-4px">
                     <IconButton
@@ -68,11 +93,20 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                         variant="ghost"
                         size="xs"
                         icon={<RiCloseLine />}
-                        onClick={clear}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            clear();
+                        }}
                         isDisabled={loading}
                     />
                     <Box color="gray.200">|</Box>
-                    <Menu placement="bottom-end">
+                    <Menu
+                        placement="bottom-end"
+                        closeOnBlur={false}
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                    >
                         <MenuButton
                             as={IconButton}
                             aria-label="Select organizations"
@@ -151,6 +185,10 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             variant="solid"
                             key={nodeId}
                             marginRight="1"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onClose();
+                            }}
                         >
                             <TagLabel>{nodeId}</TagLabel>
                             <TagCloseButton onClick={remove(nodeId)} />
