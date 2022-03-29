@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Allow keyboard interaction with the chart (#482)
+
 ### Fixed
 
 -   Hide show diff button in single cp page (#492)
@@ -23,6 +27,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.17.0] - 2022-03-24
 
+### Fixed
+
+-   Faulty favorites count when filter are applied (#480)
+-   Fixed security issues in axios & nth-check dependencies (#487)
+
+### Changed
+
+-   Filters also apply to favorites (#469)
+-   Favorites / selected compute plan rows are collapsible (#470)
+-   Replace compute plan key by its name in news feed (#495)
+
+## [0.16.1] - 2022-03-24
+
 ### Added
 
 -   Hyperparameters columns in cp list are customizable (#453)
@@ -31,7 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Hyperparameters modal now resizable (#475)
 -   Change drag zoom background color (#478)
 -   Add buttons to show diffs only & clear filters in hp modal (#481)
--   Allow keyboard interaction with the chart (#482)
 
 ### Fixed
 
@@ -40,15 +56,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix large border into chart zoom button group (#459)
 -   Rename csv files downloaded from the comparison interface (#476)
 -   Close hyperparameters list on modal escape (#477)
--   Faulty favorites count when filter are applied (#480)
--   Fixed security issues in axios & nth-check dependencies (#487)
 
 ### Changed
 
 -   In PerfBrowser, an empty node filters list means all node are displayed (#460)
--   Filters also apply to favorites (#469)
--   Favorites / selected compute plan rows are collapsible (#470)
--   Replace compute plan key by its name in news feed (#495)
 
 ## [0.16.0] - 2022-03-10
 
