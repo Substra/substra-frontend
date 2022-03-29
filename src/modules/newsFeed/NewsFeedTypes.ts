@@ -30,6 +30,7 @@ export const taskCategoryByCategoryNumber: Record<
 export interface NewsItemType {
     asset_kind: AssetType;
     asset_key: string;
+    name: string;
     status: NewsItemStatus;
     timestamp: string;
     detail: {

@@ -163,7 +163,7 @@ export const NewsFeedCard = ({ newsItem }: NewsFeedCardProps): JSX.Element => {
                         </Text>
                     </HStack>
                     <Box fontSize="xs">
-                        <Text as="span">{newsItem.asset_key}</Text>
+                        <Text as="span">{newsItem.name}</Text>
                         <Text as="span" color="gray.500">
                             {' '}
                             {taskMetadata[taskStatus]['text']}
