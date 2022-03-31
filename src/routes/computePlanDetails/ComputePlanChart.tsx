@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useLocation } from 'wouter';
 
@@ -70,7 +70,10 @@ const ComputePlanChart = (): JSX.Element => {
         []
     );
 
-    const computePlans = computePlan ? [computePlan] : [];
+    const computePlans = useMemo(
+        () => (computePlan ? [computePlan] : []),
+        [computePlan]
+    );
     const { context } = usePerfBrowser(series, computePlans, 'node', loading);
 
     return (

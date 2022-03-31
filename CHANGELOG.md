@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Handle invalid statuses (#490)
 -   Open node settings on click in box (#496)
 -   Hide clear button when no filters are applied in hp modal (#498)
--   Revert the filtering (#469) and collapsing (#470) of favorites (#497)
+-   Max updated depth issue on ComputePlanChart (#502)
 
 ### Changed
 
