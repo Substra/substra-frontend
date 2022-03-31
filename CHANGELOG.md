@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix version of vite-plugin-svgr-component dependency (#489)
 -   Hooks cleanup (removed dead code) (#499)
 -   Change favicon svg (#503)
+-   Remove "Select all" option from filters in performance page and hide clear icon when no filters are applied (#505)
 
 ## [0.17.0] - 2022-03-24
 

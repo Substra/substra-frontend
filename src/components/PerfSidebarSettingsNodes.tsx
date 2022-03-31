@@ -40,10 +40,6 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
         }
     };
 
-    const addAll = () => {
-        setSelectedNodeIds([]);
-    };
-
     const notSelectedAverageNodes = nodes
         .filter((node) => isAverageNode(node.id))
         .filter((node) => !selectedNodeIds.includes(node.id));
@@ -88,18 +84,22 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                 }}
             >
                 <Flex float="right" marginRight="-7px" marginTop="-4px">
-                    <IconButton
-                        aria-label="Clear organizations"
-                        variant="ghost"
-                        size="xs"
-                        icon={<RiCloseLine />}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            clear();
-                        }}
-                        isDisabled={loading}
-                    />
-                    <Box color="gray.200">|</Box>
+                    {!!selectedNodeIds.length && (
+                        <>
+                            <IconButton
+                                aria-label="Clear organizations"
+                                variant="ghost"
+                                size="xs"
+                                icon={<RiCloseLine />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    clear();
+                                }}
+                                isDisabled={loading}
+                            />
+                            <Box color="gray.200">|</Box>
+                        </>
+                    )}
                     <Menu
                         placement="bottom-end"
                         closeOnBlur={false}
@@ -116,39 +116,26 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             isDisabled={loading}
                         />
                         <MenuList maxHeight="350px" overflowY="auto">
-                            <MenuGroup>
-                                <MenuItem
-                                    onClick={addAll}
-                                    fontSize="xs"
-                                    paddingX="4"
-                                    paddingY="1.5"
-                                >
-                                    Select all
-                                </MenuItem>
-                            </MenuGroup>
                             {notSelectedAverageNodes.length > 0 && (
-                                <>
-                                    <MenuDivider />
-                                    <MenuGroup
-                                        title="Aggregations"
-                                        fontSize="xs"
-                                        textTransform="uppercase"
-                                        fontWeight="bold"
-                                        color="gray.500"
-                                    >
-                                        {notSelectedAverageNodes.map((node) => (
-                                            <MenuItem
-                                                onClick={add(node.id)}
-                                                key={node.id}
-                                                fontSize="xs"
-                                                paddingX="4"
-                                                paddingY="1.5"
-                                            >
-                                                {node.id}
-                                            </MenuItem>
-                                        ))}
-                                    </MenuGroup>
-                                </>
+                                <MenuGroup
+                                    title="Aggregations"
+                                    fontSize="xs"
+                                    textTransform="uppercase"
+                                    fontWeight="bold"
+                                    color="gray.500"
+                                >
+                                    {notSelectedAverageNodes.map((node) => (
+                                        <MenuItem
+                                            onClick={add(node.id)}
+                                            key={node.id}
+                                            fontSize="xs"
+                                            paddingX="4"
+                                            paddingY="1.5"
+                                        >
+                                            {node.id}
+                                        </MenuItem>
+                                    ))}
+                                </MenuGroup>
                             )}
                             {notSelectedNodes.length > 0 && (
                                 <>
