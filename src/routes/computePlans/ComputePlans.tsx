@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import axios from 'axios';
 import { useLocation } from 'wouter';
 
@@ -14,11 +12,7 @@ import {
     Button,
     HStack,
     Flex,
-    Td,
-    Icon,
-    useDisclosure,
 } from '@chakra-ui/react';
-import { RiArrowDownSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
@@ -33,9 +27,7 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import useWithAbortController from '@/hooks/useWithAbortController';
-import { SearchFilterType } from '@/libs/searchFilter';
-import { getAllPages } from '@/modules/common/CommonUtils';
-import * as API from '@/modules/computePlans/ComputePlansApi';
+import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
@@ -79,71 +71,13 @@ const ComputePlans = (): JSX.Element => {
     const {
         favorites,
         isFavorite,
+        onFavoriteChange,
         updateFavorite,
-        addToFavorites,
         removeFromFavorites,
     } = useFavoriteComputePlans();
+    const withAbortController = useWithAbortController();
 
     const selectedKeys = selectedComputePlans.map((cp) => cp.key);
-    const favoriteKeys = favorites.map((cp) => cp.key);
-    const pinnedKeys = [
-        ...favoriteKeys,
-        ...selectedKeys.filter((key) => !favoriteKeys.includes(key)),
-    ];
-
-    const withAbortControllerFilterPinned = useWithAbortController();
-    const withAbortControllerRefreshPinned = useWithAbortController();
-
-    const [filteredPinnedKeys, setFilteredPinnedKeys] =
-        useState<string[]>(pinnedKeys);
-    const [refreshFilteredPinnedLoading, setRefreshFilteredPinnedLoading] =
-        useState(true);
-
-    useSearchFiltersEffect(() => {
-        const refreshFilteredPinned = async (
-            abortController: AbortController
-        ) => {
-            /**
-             * Refresh the list of filtered pinned items matching the current filters
-             */
-
-            if (pinnedKeys.length === 0) {
-                setFilteredPinnedKeys([]);
-            } else {
-                const pinnedSearchFilters = [
-                    ...searchFilters,
-                    ...pinnedKeys.map(
-                        (key): SearchFilterType => ({
-                            asset: 'compute_plan',
-                            key: 'key',
-                            value: key,
-                        })
-                    ),
-                ];
-                setRefreshFilteredPinnedLoading(true);
-                try {
-                    const filteredPinned = await getAllPages(
-                        (page) =>
-                            API.listComputePlans(
-                                {
-                                    searchFilters: pinnedSearchFilters,
-                                    page,
-                                    match,
-                                },
-                                { signal: abortController.signal }
-                            ),
-                        DEFAULT_PAGE_SIZE
-                    );
-                    // do not display pinned items not matching these searchFilters
-                    setFilteredPinnedKeys(filteredPinned.map((cp) => cp.key));
-                } catch (error) {
-                    // do nothing
-                }
-            }
-            setRefreshFilteredPinnedLoading(false);
-        };
-        return withAbortControllerFilterPinned(refreshFilteredPinned);
-    }, [searchFilters, match]);
 
     useSearchFiltersEffect(() => {
         const refreshSelectedAndFavorites = async (
@@ -159,7 +93,7 @@ const ComputePlans = (): JSX.Element => {
                 ),
             ];
             for (const computePlan of selectedAndFavorites) {
-                API.retrieveComputePlan(computePlan.key, {
+                retrieveComputePlan(computePlan.key, {
                     signal: abortController.signal,
                 }).then(
                     (response) => {
@@ -188,7 +122,7 @@ const ComputePlans = (): JSX.Element => {
             }
         };
 
-        const abortRefreshFavorites = withAbortControllerRefreshPinned(
+        const abortRefreshFavorites = withAbortController(
             refreshSelectedAndFavorites
         );
         const abortListComputePlans = dispatchWithAutoAbort(
@@ -230,39 +164,9 @@ const ComputePlans = (): JSX.Element => {
         if (selectedKeys.includes(computePlan.key)) {
             // remove CP from selection
             unselectComputePlan(computePlan);
-            // remove CP from displayed pinned rows if it isn't also a favorite
-            if (!favoriteKeys.includes(computePlan.key)) {
-                setFilteredPinnedKeys(
-                    filteredPinnedKeys.filter((key) => key !== computePlan.key)
-                );
-            }
         } else {
             // add CP to selection
             selectComputePlan(computePlan);
-            // add CP to displayed pinned rows if it isn't already there (happens if it is also a favorite)
-            if (!filteredPinnedKeys.includes(computePlan.key)) {
-                setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
-            }
-        }
-    };
-
-    const onFavoriteChange = (computePlan: ComputePlanT) => () => {
-        if (favoriteKeys.includes(computePlan.key)) {
-            // remove CP from favorites
-            removeFromFavorites(computePlan);
-            // remove CP from displayed pinned rows if it isn't also selected
-            if (!selectedKeys.includes(computePlan.key)) {
-                setFilteredPinnedKeys(
-                    filteredPinnedKeys.filter((key) => key !== computePlan.key)
-                );
-            }
-        } else {
-            // add CP to favorites
-            addToFavorites(computePlan);
-            // add CP to displayed pinned rows if it isn't already there (happens if it is also selected)
-            if (!filteredPinnedKeys.includes(computePlan.key)) {
-                setFilteredPinnedKeys([...filteredPinnedKeys, computePlan.key]);
-            }
         }
     };
 
@@ -278,10 +182,6 @@ const ComputePlans = (): JSX.Element => {
 
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
-
-    const { isOpen: isPinnedOpen, onToggle: onPinnedToggle } = useDisclosure();
-
-    const numColumns = 7 + activeHyperparameters.length;
 
     return (
         <TableFiltersContext.Provider value={context}>
@@ -416,98 +316,52 @@ const ComputePlans = (): JSX.Element => {
                             </Tr>
                         </Thead>
                         <ChakraTbody>
-                            <Tr>
-                                <Td colSpan={numColumns}>
-                                    <Button
-                                        variant="link"
-                                        colorScheme="teal"
-                                        size="xs"
-                                        leftIcon={
-                                            <Icon
-                                                as={
-                                                    isPinnedOpen
-                                                        ? RiArrowDownSLine
-                                                        : RiArrowRightSLine
-                                                }
-                                            />
-                                        }
-                                        onClick={onPinnedToggle}
-                                        marginLeft="2"
-                                        position="sticky"
-                                        left="8"
-                                        zIndex="1"
-                                    >
-                                        {`Favorites (${filteredPinnedKeys.length})`}
-                                    </Button>
-                                </Td>
-                            </Tr>
+                            {selectedComputePlans.map((computePlan) => (
+                                <ComputePlanTr
+                                    key={computePlan.key}
+                                    computePlan={computePlan}
+                                    isSelected={selectedKeys.includes(
+                                        computePlan.key
+                                    )}
+                                    onSelectionChange={onSelectionChange(
+                                        computePlan
+                                    )}
+                                    isFavorite={isFavorite(computePlan)}
+                                    onFavoriteChange={onFavoriteChange(
+                                        computePlan
+                                    )}
+                                    highlighted={true}
+                                    hyperparametersList={activeHyperparameters}
+                                />
+                            ))}
                         </ChakraTbody>
-                        {isPinnedOpen && (
-                            <ChakraTbody>
-                                {!refreshFilteredPinnedLoading &&
-                                    selectedComputePlans
-                                        .filter((computePlan) =>
-                                            filteredPinnedKeys.includes(
-                                                computePlan.key
-                                            )
-                                        )
-                                        .map((computePlan) => (
-                                            <ComputePlanTr
-                                                key={computePlan.key}
-                                                computePlan={computePlan}
-                                                isSelected={selectedKeys.includes(
-                                                    computePlan.key
-                                                )}
-                                                onSelectionChange={onSelectionChange(
-                                                    computePlan
-                                                )}
-                                                isFavorite={isFavorite(
-                                                    computePlan
-                                                )}
-                                                onFavoriteChange={onFavoriteChange(
-                                                    computePlan
-                                                )}
-                                                highlighted={true}
-                                                hyperparametersList={
-                                                    activeHyperparameters
-                                                }
-                                            />
-                                        ))}
-                                {!refreshFilteredPinnedLoading &&
-                                    favorites
-                                        .filter(
-                                            (computePlan) =>
-                                                !selectedKeys.includes(
-                                                    computePlan.key
-                                                ) &&
-                                                filteredPinnedKeys.includes(
-                                                    computePlan.key
-                                                )
-                                        )
-                                        .map((computePlan) => (
-                                            <ComputePlanTr
-                                                key={computePlan.key}
-                                                computePlan={computePlan}
-                                                isSelected={selectedKeys.includes(
-                                                    computePlan.key
-                                                )}
-                                                onSelectionChange={onSelectionChange(
-                                                    computePlan
-                                                )}
-                                                isFavorite={isFavorite(
-                                                    computePlan
-                                                )}
-                                                onFavoriteChange={onFavoriteChange(
-                                                    computePlan
-                                                )}
-                                                highlighted={true}
-                                                hyperparametersList={
-                                                    activeHyperparameters
-                                                }
-                                            />
-                                        ))}
-                            </ChakraTbody>
-                        )}
+                        <ChakraTbody>
+                            {favorites
+                                .filter(
+                                    (computePlan) =>
+                                        !selectedKeys.includes(computePlan.key)
+                                )
+                                .map((computePlan) => (
+                                    <ComputePlanTr
+                                        key={computePlan.key}
+                                        computePlan={computePlan}
+                                        isSelected={selectedKeys.includes(
+                                            computePlan.key
+                                        )}
+                                        onSelectionChange={onSelectionChange(
+                                            computePlan
+                                        )}
+                                        isFavorite={isFavorite(computePlan)}
+                                        onFavoriteChange={onFavoriteChange(
+                                            computePlan
+                                        )}
+                                        highlighted={true}
+                                        hyperparametersList={
+                                            activeHyperparameters
+                                        }
+                                    />
+                                ))}
+                        </ChakraTbody>
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
                         >
