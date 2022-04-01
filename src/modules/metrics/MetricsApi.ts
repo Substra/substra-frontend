@@ -14,11 +14,11 @@ const URLS = {
 };
 
 export const listMetrics = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<MetricType>> => {
     return API.authenticatedGet(URLS.LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };

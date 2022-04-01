@@ -49,26 +49,30 @@ const initialState: DatasetState = {
 interface listDatasetsArgs {
     filters: SearchFilterType[];
     page: number;
+    ordering: string;
 }
 export const listDatasets = createAsyncThunk<
     PaginatedApiResponse<DatasetStubType>,
     listDatasetsArgs,
     { rejectValue: string }
->('datasets/list', async ({ filters, page }: listDatasetsArgs, thunkAPI) => {
-    try {
-        const response = await DatasetAPI.listDatasets(
-            { searchFilters: filters, page },
-            { signal: thunkAPI.signal }
-        );
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return thunkAPI.rejectWithValue(error.response?.data);
-        } else {
-            throw error;
+>(
+    'datasets/list',
+    async ({ filters, page, ordering }: listDatasetsArgs, thunkAPI) => {
+        try {
+            const response = await DatasetAPI.listDatasets(
+                { searchFilters: filters, page, ordering },
+                { signal: thunkAPI.signal }
+            );
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
-});
+);
 
 export const retrieveDataset = createAsyncThunk<
     DatasetType,

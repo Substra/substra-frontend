@@ -14,11 +14,11 @@ const URLS = {
 };
 
 export const listDatasets = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<DatasetStubType>> => {
     return API.authenticatedGet(URLS.LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };

@@ -41,30 +41,34 @@ const initialState: AlgoState = {
 export interface listAlgosArgs {
     filters: SearchFilterType[];
     page: number;
+    ordering: string;
 }
 
 export const listAlgos = createAsyncThunk<
     PaginatedApiResponse<AlgoT>,
     listAlgosArgs,
     { rejectValue: string }
->('algos/listAlgos', async ({ filters, page }: listAlgosArgs, thunkAPI) => {
-    try {
-        const standardFilters = filters.filter((sf) => sf.asset === 'algo');
+>(
+    'algos/listAlgos',
+    async ({ filters, page, ordering }: listAlgosArgs, thunkAPI) => {
+        try {
+            const standardFilters = filters.filter((sf) => sf.asset === 'algo');
 
-        const response = await AlgosApi.listAlgos(
-            { searchFilters: standardFilters, page },
-            { signal: thunkAPI.signal }
-        );
+            const response = await AlgosApi.listAlgos(
+                { searchFilters: standardFilters, page, ordering },
+                { signal: thunkAPI.signal }
+            );
 
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return thunkAPI.rejectWithValue(error.response?.data);
-        } else {
-            throw error;
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
-});
+);
 
 export const retrieveAlgo = createAsyncThunk<
     AlgoT,

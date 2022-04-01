@@ -60,12 +60,19 @@ const API = {
     anonymousGet: anonymousInstance.get,
 };
 
-export const getApiOptions = (
-    searchFilters: SearchFilterType[],
-    page?: number,
-    pageSize?: number,
-    match?: string
-): AxiosRequestConfig => {
+export const getApiOptions = ({
+    searchFilters,
+    page,
+    pageSize,
+    match,
+    ordering,
+}: {
+    searchFilters: SearchFilterType[];
+    page?: number;
+    pageSize?: number;
+    match?: string;
+    ordering?: string;
+}): AxiosRequestConfig => {
     let params = {};
 
     // searchFilters
@@ -89,6 +96,14 @@ export const getApiOptions = (
         params = {
             ...params,
             match,
+        };
+    }
+
+    // ordering
+    if (ordering) {
+        params = {
+            ...params,
+            ordering,
         };
     }
 

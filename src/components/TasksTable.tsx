@@ -21,6 +21,7 @@ import { RiAlertLine } from 'react-icons/ri';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -38,13 +39,9 @@ import {
 } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    AssetsTable,
-    AssetsTableRankDurationTh,
-    AssetsTableStatusTh,
-    ClickableTh,
-} from '@/components/AssetsTable';
+import { AssetsTable } from '@/components/AssetsTable';
 import Duration from '@/components/Duration';
+import OrderingTh from '@/components/OrderingTh';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -90,6 +87,7 @@ const TasksTable = ({
         params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useSearchFiltersEffect(() => {
@@ -98,7 +96,7 @@ const TasksTable = ({
             return dispatchWithAutoAbort(action);
         }
         // The computePlan is needed to trigger a list call once it has been fetched
-    }, [searchFilters, category, page, computePlan]);
+    }, [searchFilters, category, page, computePlan, ordering]);
 
     const tabs: [TaskCategory, string][] = [
         [TaskCategory.test, 'Test'],
@@ -195,25 +193,109 @@ const TasksTable = ({
                         <AssetsTable>
                             <Thead>
                                 <Tr>
-                                    <AssetsTableStatusTh
-                                        onClick={() => onPopoverOpen(0)}
+                                    <OrderingTh
+                                        width="140px"
+                                        openFilters={() => onPopoverOpen(0)}
+                                        options={[
+                                            {
+                                                label: 'Status',
+                                                asc: {
+                                                    label: 'Sort status WAITING -> DONE',
+                                                    value: 'status',
+                                                },
+                                                desc: {
+                                                    label: 'Sort status DONE -> WAITING',
+                                                    value: '-status',
+                                                },
+                                            },
+                                        ]}
                                     />
-                                    <ClickableTh
-                                        onClick={() => onPopoverOpen(1)}
-                                    >
-                                        Category / Worker / Rank
-                                    </ClickableTh>
-                                    <AssetsTableRankDurationTh
-                                        onClick={() => onPopoverOpen(0)}
+                                    <OrderingTh
+                                        openFilters={() => onPopoverOpen(1)}
+                                        options={[
+                                            {
+                                                label: 'Category',
+                                                asc: {
+                                                    label: 'Sort category A -> Z',
+                                                    value: 'category',
+                                                },
+                                                desc: {
+                                                    label: 'Sort category Z -> A',
+                                                    value: '-category',
+                                                },
+                                            },
+                                            {
+                                                label: 'Worker',
+                                                asc: {
+                                                    label: 'Sort worker A -> Z',
+                                                    value: 'worker',
+                                                },
+                                                desc: {
+                                                    label: 'Sort worker Z -> A',
+                                                    value: '-worker',
+                                                },
+                                            },
+                                            {
+                                                label: 'Rank',
+                                                asc: {
+                                                    label: 'Sort rank smallest first',
+                                                    value: 'rank',
+                                                },
+                                                desc: {
+                                                    label: 'Sort rank biggest first',
+                                                    value: '-rank',
+                                                },
+                                            },
+                                        ]}
+                                    />
+                                    <OrderingTh
+                                        openFilters={() => onPopoverOpen(0)}
+                                        width="240px"
+                                        whiteSpace="nowrap"
+                                        options={[
+                                            {
+                                                label: 'Start date',
+                                                asc: {
+                                                    label: 'Sort start date newest first',
+                                                    value: 'start_date',
+                                                },
+                                                desc: {
+                                                    label: 'Sort start date oldest first',
+                                                    value: '-start_date',
+                                                },
+                                            },
+                                            {
+                                                label: 'End date',
+                                                asc: {
+                                                    label: 'Sort end date newest first',
+                                                    value: 'end_date',
+                                                },
+                                                desc: {
+                                                    label: 'Sort end date oldest first',
+                                                    value: '-end_date',
+                                                },
+                                            },
+                                        ]}
                                     />
                                     {!computePlan && (
-                                        <ClickableTh
-                                            onClick={() => onPopoverOpen(0)}
-                                            width="295px"
+                                        <OrderingTh
+                                            openFilters={() => onPopoverOpen(1)}
+                                            width="200px"
                                             textAlign="right"
-                                        >
-                                            Compute plan
-                                        </ClickableTh>
+                                            options={[
+                                                {
+                                                    label: 'Compute plan',
+                                                    asc: {
+                                                        label: 'Sort compute plan A -> Z',
+                                                        value: 'compute_plan_key',
+                                                    },
+                                                    desc: {
+                                                        label: 'Sort compute plan Z -> A',
+                                                        value: '-compute_plan_key',
+                                                    },
+                                                },
+                                            ]}
+                                        />
                                     )}
                                 </Tr>
                             </Thead>

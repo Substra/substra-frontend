@@ -14,11 +14,11 @@ const URLS = {
 };
 
 export const listAlgos = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<AlgoT>> =>
     API.authenticatedGet(URLS.LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 

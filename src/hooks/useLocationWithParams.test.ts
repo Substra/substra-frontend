@@ -13,6 +13,7 @@ test('can update only location', () => {
         search: [],
         page: 1,
         match: '',
+        ordering: '',
     });
 
     act(() => result.current.setLocationWithParams('/bar'));
@@ -21,6 +22,7 @@ test('can update only location', () => {
         search: [],
         page: 1,
         match: '',
+        ordering: '',
     });
 });
 
@@ -28,13 +30,18 @@ test('can update only searchFilters', () => {
     const { result } = renderHook(() => useLocationWithParams());
 
     act(() =>
-        result.current.setLocationWithParams('/foo', { search: [], page: 1 })
+        result.current.setLocationWithParams('/foo', {
+            search: [],
+            page: 1,
+            ordering: '',
+        })
     );
     expect(result.current.location).toBe('/foo');
     expect(result.current.params).toStrictEqual({
         search: [],
         page: 1,
         match: '',
+        ordering: '',
     });
 
     act(() =>
@@ -59,6 +66,7 @@ test('can update only searchFilters', () => {
         ],
         page: 1,
         match: '',
+        ordering: '',
     });
 });
 
@@ -73,6 +81,7 @@ test('can update only page', () => {
         search: [],
         page: 1,
         match: '',
+        ordering: '',
     });
 
     act(() =>
@@ -85,6 +94,7 @@ test('can update only page', () => {
         search: [],
         page: 2,
         match: '',
+        ordering: '',
     });
 });
 
@@ -92,13 +102,18 @@ test('can update both location and params', () => {
     const { result } = renderHook(() => useLocationWithParams());
 
     act(() =>
-        result.current.setLocationWithParams('/foo', { search: [], page: 1 })
+        result.current.setLocationWithParams('/foo', {
+            search: [],
+            page: 1,
+            ordering: '',
+        })
     );
     expect(result.current.location).toBe('/foo');
     expect(result.current.params).toStrictEqual({
         search: [],
         page: 1,
         match: '',
+        ordering: '',
     });
 
     act(() =>
@@ -124,5 +139,6 @@ test('can update both location and params', () => {
         ],
         page: 2,
         match: '',
+        ordering: '',
     });
 });

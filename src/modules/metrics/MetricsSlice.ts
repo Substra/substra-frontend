@@ -41,26 +41,30 @@ const initialState: MetricState = {
 interface listMetricsArgs {
     filters: SearchFilterType[];
     page: number;
+    ordering: string;
 }
 export const listMetrics = createAsyncThunk<
     PaginatedApiResponse<MetricType>,
     listMetricsArgs,
     { rejectValue: string }
->('metrics/list', async ({ filters, page }: listMetricsArgs, thunkAPI) => {
-    try {
-        const response = await MetricsAPI.listMetrics(
-            { searchFilters: filters, page },
-            { signal: thunkAPI.signal }
-        );
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return thunkAPI.rejectWithValue(error.response?.data);
-        } else {
-            throw error;
+>(
+    'metrics/list',
+    async ({ filters, page, ordering }: listMetricsArgs, thunkAPI) => {
+        try {
+            const response = await MetricsAPI.listMetrics(
+                { searchFilters: filters, page, ordering },
+                { signal: thunkAPI.signal }
+            );
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
-});
+);
 
 export const retrieveMetric = createAsyncThunk<
     MetricType,

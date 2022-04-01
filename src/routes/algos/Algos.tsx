@@ -15,6 +15,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -26,10 +27,9 @@ import { compilePath, PATHS } from '@/routes';
 
 import {
     AssetsTable,
-    AssetsTableCategoryTh,
     AssetsTablePermissionsTh,
-    ClickableTh,
 } from '@/components/AssetsTable';
+import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -54,6 +54,7 @@ const Algos = (): JSX.Element => {
         params: { search: searchFilters, page },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-creation_date');
 
     const algos = useAppSelector((state) => state.algos.algos);
     const algosLoading = useAppSelector((state) => state.algos.algosLoading);
@@ -61,9 +62,9 @@ const Algos = (): JSX.Element => {
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listAlgos({ filters: searchFilters, page })
+            listAlgos({ filters: searchFilters, page, ordering })
         );
-    }, [searchFilters, page]);
+    }, [searchFilters, page, ordering]);
 
     const key = useKeyFromPath(PATHS.ALGO);
 
@@ -103,15 +104,62 @@ const Algos = (): JSX.Element => {
                     <AssetsTable>
                         <Thead>
                             <Tr>
-                                <ClickableTh onClick={() => onPopoverOpen(0)}>
-                                    Name / Creation / Owner
-                                </ClickableTh>
-                                <AssetsTableCategoryTh
-                                    onClick={() => onPopoverOpen(1)}
+                                <OrderingTh
+                                    openFilters={() => onPopoverOpen(0)}
+                                    options={[
+                                        {
+                                            label: 'Name',
+                                            asc: {
+                                                label: 'Sort name A -> Z',
+                                                value: 'name',
+                                            },
+                                            desc: {
+                                                label: 'Sort name Z -> A',
+                                                value: '-name',
+                                            },
+                                        },
+                                        {
+                                            label: 'Creation',
+                                            asc: {
+                                                label: 'Sort creation newest first',
+                                                value: 'creation_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort creation oldest first',
+                                                value: '-creation_date',
+                                            },
+                                        },
+                                        {
+                                            label: 'Owner',
+                                            asc: {
+                                                label: 'Sort owner A -> Z',
+                                                value: 'owner',
+                                            },
+                                            desc: {
+                                                label: 'Sort owner Z -> A',
+                                                value: '-owner',
+                                            },
+                                        },
+                                    ]}
                                 />
-                                <AssetsTablePermissionsTh
-                                    onClick={() => onPopoverOpen(0)}
+                                <OrderingTh
+                                    openFilters={() => onPopoverOpen(1)}
+                                    options={[
+                                        {
+                                            label: 'Category',
+                                            asc: {
+                                                label: 'Sort category A -> Z',
+                                                value: 'category',
+                                            },
+                                            desc: {
+                                                label: 'Sort category Z -> A',
+                                                value: '-category',
+                                            },
+                                        },
+                                    ]}
+                                    width="140px"
                                 />
+                                <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
                         <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>

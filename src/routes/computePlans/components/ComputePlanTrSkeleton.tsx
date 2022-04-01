@@ -27,10 +27,12 @@ const ComputePlanProgressSkeleton = (): JSX.Element => (
 interface ComputePlanTrSkeletonProps {
     computePlansCount: number;
     page: number;
+    hyperparametersList: string[];
 }
 const ComputePlanTrSkeleton = ({
     computePlansCount,
     page,
+    hyperparametersList,
 }: ComputePlanTrSkeletonProps): JSX.Element => (
     <TableSkeleton itemCount={computePlansCount} currentPage={page}>
         <Td paddingRight="2.5">
@@ -59,6 +61,14 @@ const ComputePlanTrSkeleton = ({
                 <Text fontSize="xs">YYYY-MM-DD HH:MM:SS</Text>
             </Skeleton>
         </Td>
+
+        {hyperparametersList.map((hp) => (
+            <Td key={hp}>
+                <Skeleton>
+                    <Text fontSize="xs">Foo</Text>
+                </Skeleton>
+            </Td>
+        ))}
     </TableSkeleton>
 );
 export default ComputePlanTrSkeleton;

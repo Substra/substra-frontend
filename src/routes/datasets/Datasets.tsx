@@ -14,6 +14,7 @@ import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -26,8 +27,8 @@ import { compilePath, PATHS } from '@/routes';
 import {
     AssetsTable,
     AssetsTablePermissionsTh,
-    ClickableTh,
 } from '@/components/AssetsTable';
+import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -45,12 +46,13 @@ const Datasets = (): JSX.Element => {
         params: { page, search: searchFilters },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-creation_date');
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listDatasets({ filters: searchFilters, page })
+            listDatasets({ filters: searchFilters, page, ordering })
         );
-    }, [searchFilters, page]);
+    }, [searchFilters, page, ordering]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
@@ -98,12 +100,45 @@ const Datasets = (): JSX.Element => {
                     <AssetsTable>
                         <Thead>
                             <Tr>
-                                <ClickableTh onClick={() => onPopoverOpen(0)}>
-                                    Name / Creation / Owner
-                                </ClickableTh>
-                                <AssetsTablePermissionsTh
-                                    onClick={() => onPopoverOpen(0)}
+                                <OrderingTh
+                                    openFilters={() => onPopoverOpen(0)}
+                                    options={[
+                                        {
+                                            label: 'Name',
+                                            asc: {
+                                                label: 'Sort name A -> Z',
+                                                value: 'name',
+                                            },
+                                            desc: {
+                                                label: 'Sort name Z -> A',
+                                                value: '-name',
+                                            },
+                                        },
+                                        {
+                                            label: 'Creation',
+                                            asc: {
+                                                label: 'Sort creation newest first',
+                                                value: 'creation_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort creation oldest first',
+                                                value: '-creation_date',
+                                            },
+                                        },
+                                        {
+                                            label: 'Owner',
+                                            asc: {
+                                                label: 'Sort owner A -> Z',
+                                                value: 'owner',
+                                            },
+                                            desc: {
+                                                label: 'Sort owner Z -> A',
+                                                value: '-owner',
+                                            },
+                                        },
+                                    ]}
                                 />
+                                <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
                         <Tbody data-cy={datasetsLoading ? 'loading' : 'loaded'}>

@@ -8,6 +8,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import {
     retrieveComputePlan,
     retrieveComputePlanAggregateTasks,
@@ -108,6 +109,7 @@ const TestTasks = ({
         params: { search: searchFilters, page },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTestTasksLoading
@@ -117,6 +119,7 @@ const TestTasks = ({
             computePlanKey,
             page,
             filters: searchFilters,
+            ordering,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTestTasks
@@ -168,6 +171,7 @@ const TrainTasks = ({
         params: { search: searchFilters, page },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasksLoading
@@ -177,6 +181,7 @@ const TrainTasks = ({
             computePlanKey,
             page,
             filters: searchFilters,
+            ordering,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasks
@@ -227,6 +232,7 @@ const CompositeTasks = ({
         params: { search: searchFilters, page },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasksLoading
@@ -236,6 +242,7 @@ const CompositeTasks = ({
             computePlanKey,
             page,
             filters: searchFilters,
+            ordering,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasks
@@ -286,6 +293,7 @@ const AggregateTasks = ({
         params: { search: searchFilters, page },
         setLocationWithParams,
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksLoading
@@ -295,6 +303,7 @@ const AggregateTasks = ({
             computePlanKey,
             page,
             filters: searchFilters,
+            ordering,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasks

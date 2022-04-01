@@ -32,41 +32,41 @@ export const URLS = {
 };
 
 export const listAggregatetuples = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<AggregatetupleStub>> => {
     return API.authenticatedGet(URLS.AGGREGATE_LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };
 
 export const listCompositeTraintuples = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>> => {
     return API.authenticatedGet(URLS.COMPOSITE_LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };
 
 export const listTesttuples = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TesttupleStub>> => {
     return API.authenticatedGet(URLS.TEST_LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };
 
 export const listTraintuples = (
-    { searchFilters, page }: APIListArgs,
+    apiListArgs: APIListArgs,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponse<TraintupleStub>> => {
     return API.authenticatedGet(URLS.TRAIN_LIST, {
-        ...getApiOptions(searchFilters, page),
+        ...getApiOptions(apiListArgs),
         ...config,
     });
 };

@@ -79,7 +79,8 @@ const initialState: TasksState = {
 
 export interface listTasksArgs {
     filters: SearchFilterType[];
-    page?: number;
+    page: number;
+    ordering: string;
 }
 export const listTrainTasks = createAsyncThunk<
     PaginatedApiResponse<TraintupleStub>,
@@ -87,14 +88,14 @@ export const listTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listTrainTasks',
-    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
         const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
 
         const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
 
         try {
             const response = await TasksApi.listTraintuples(
-                { searchFilters: nonTypeFilters, page },
+                { searchFilters: nonTypeFilters, page, ordering },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -112,25 +113,28 @@ export const listTestTasks = createAsyncThunk<
     PaginatedApiResponse<TesttupleStub>,
     listTasksArgs,
     { rejectValue: string }
->('tasks/listTestTasks', async ({ filters, page }: listTasksArgs, thunkAPI) => {
-    const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
+>(
+    'tasks/listTestTasks',
+    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
+        const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
 
-    const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
+        const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
 
-    try {
-        const response = await TasksApi.listTesttuples(
-            { searchFilters: nonTypeFilters, page },
-            { signal: thunkAPI.signal }
-        );
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return thunkAPI.rejectWithValue(error.response?.data);
-        } else {
-            throw error;
+        try {
+            const response = await TasksApi.listTesttuples(
+                { searchFilters: nonTypeFilters, page, ordering },
+                { signal: thunkAPI.signal }
+            );
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(error.response?.data);
+            } else {
+                throw error;
+            }
         }
     }
-});
+);
 
 export const listCompositeTasks = createAsyncThunk<
     PaginatedApiResponse<CompositeTraintupleStub>,
@@ -138,7 +142,7 @@ export const listCompositeTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listCompositeTasks',
-    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
         const compositeFilters = filters.filter(
             (sf) => (sf.asset = 'composite_traintuple')
         );
@@ -149,7 +153,7 @@ export const listCompositeTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listCompositeTraintuples(
-                { searchFilters: nonTypeFilters, page },
+                { searchFilters: nonTypeFilters, page, ordering },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -168,8 +172,8 @@ export const listAggregateTasks = createAsyncThunk<
     listTasksArgs,
     { rejectValue: string }
 >(
-    'tasks/listAgreggateTasks',
-    async ({ filters, page }: listTasksArgs, thunkAPI) => {
+    'tasks/listAggregateTasks',
+    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
         const aggregateFilters = filters.filter(
             (sf) => sf.asset === 'aggregatetuple'
         );
@@ -180,7 +184,7 @@ export const listAggregateTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listAggregatetuples(
-                { searchFilters: nonTypeFilters, page },
+                { searchFilters: nonTypeFilters, page, ordering },
                 { signal: thunkAPI.signal }
             );
             return response.data;

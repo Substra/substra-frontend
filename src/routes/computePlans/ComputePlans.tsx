@@ -22,6 +22,7 @@ import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -32,9 +33,9 @@ import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
-import { ClickableTh } from '@/components/AssetsTable';
 import CustomColumnsModal from '@/components/CustomColumnsModal';
 import FullTextSearchBar from '@/components/FullTextSearchBar';
+import OrderingTh from '@/components/OrderingTh';
 import SearchBar from '@/components/SearchBar';
 import {
     bottomBorderProps,
@@ -60,6 +61,7 @@ const ComputePlans = (): JSX.Element => {
     const {
         params: { page, search: searchFilters, match },
     } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '-creation_date');
     const [, setLocation] = useLocation();
     const {
         items: selectedComputePlans,
@@ -126,13 +128,19 @@ const ComputePlans = (): JSX.Element => {
             refreshSelectedAndFavorites
         );
         const abortListComputePlans = dispatchWithAutoAbort(
-            listComputePlans({ filters: searchFilters, page, match })
+            listComputePlans({
+                filters: searchFilters,
+                page,
+                match,
+                ordering,
+            })
         );
+
         return () => {
             abortRefreshFavorites();
             abortListComputePlans();
         };
-    }, [searchFilters, page, match]);
+    }, [searchFilters, page, match, ordering]);
 
     const computePlans: ComputePlanT[] = useAppSelector(
         (state) => state.computePlans.computePlans
@@ -271,47 +279,132 @@ const ComputePlans = (): JSX.Element => {
                                     backgroundColor="white"
                                     {...bottomBorderProps}
                                 ></Th>
-                                <ClickableTh
+                                <OrderingTh
                                     minWidth="250px"
-                                    onClick={() => onPopoverOpen(0)}
+                                    openFilters={() => onPopoverOpen(0)}
+                                    options={
+                                        MELLODDY
+                                            ? [
+                                                  {
+                                                      label: 'Name',
+                                                      asc: {
+                                                          label: 'Sort name A -> Z',
+                                                          value: 'metadata__name',
+                                                      },
+                                                      desc: {
+                                                          label: 'Sort name Z -> A',
+                                                          value: '-metadata__name',
+                                                      },
+                                                  },
+                                              ]
+                                            : [
+                                                  {
+                                                      label: 'Tag',
+                                                      asc: {
+                                                          label: 'Sort tag A -> Z',
+                                                          value: 'tag',
+                                                      },
+                                                      desc: {
+                                                          label: 'Sort tag Z -> A',
+                                                          value: '-tag',
+                                                      },
+                                                  },
+                                              ]
+                                    }
                                     position="sticky"
                                     left="86px"
                                     zIndex="1"
                                     backgroundColor="white"
                                     {...bottomRightBorderProps}
-                                >
-                                    {MELLODDY ? 'Name' : 'Tag'}
-                                </ClickableTh>
-                                <ClickableTh
+                                />
+                                <OrderingTh
                                     minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
+                                    openFilters={() => onPopoverOpen(0)}
+                                    options={[
+                                        {
+                                            label: 'Status',
+                                            asc: {
+                                                label: 'Sort status WAITING -> DONE',
+                                                value: 'status',
+                                            },
+                                            desc: {
+                                                label: 'Sort status DONE -> WAITING',
+                                                value: '-status',
+                                            },
+                                        },
+                                        {
+                                            label: 'Tasks',
+                                        },
+                                    ]}
                                     {...bottomBorderProps}
-                                >
-                                    Status / Tasks
-                                </ClickableTh>
-                                <ClickableTh
+                                />
+                                <OrderingTh
                                     minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
+                                    openFilters={() => onPopoverOpen(0)}
+                                    options={[
+                                        {
+                                            label: 'Creation',
+                                            desc: {
+                                                label: 'Sort creation newest first',
+                                                value: '-creation_date',
+                                            },
+                                            asc: {
+                                                label: 'Sort creation oldest first',
+                                                value: 'creation_date',
+                                            },
+                                        },
+                                    ]}
                                     {...bottomBorderProps}
-                                >
-                                    Creation
-                                </ClickableTh>
-                                <ClickableTh
-                                    minWidth="255px"
-                                    onClick={() => onPopoverOpen(0)}
-                                    {...bottomBorderProps}
-                                >
-                                    Dates / Duration
-                                </ClickableTh>
+                                />
+                                <OrderingTh
+                                    openFilters={() => onPopoverOpen(0)}
+                                    minWidth="300px"
+                                    whiteSpace="nowrap"
+                                    options={[
+                                        {
+                                            label: 'Start date',
+                                            asc: {
+                                                label: 'Sort start date newest first',
+                                                value: 'start_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort start date oldest first',
+                                                value: '-start_date',
+                                            },
+                                        },
+                                        {
+                                            label: 'End date',
+                                            asc: {
+                                                label: 'Sort end date newest first',
+                                                value: 'end_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort end date oldest first',
+                                                value: '-end_date',
+                                            },
+                                        },
+                                    ]}
+                                />
                                 {activeHyperparameters.map((hp) => (
-                                    <ClickableTh
+                                    <OrderingTh
                                         key={hp}
                                         minWidth="125px"
-                                        onClick={() => onPopoverOpen(0)}
+                                        openFilters={() => onPopoverOpen(0)}
+                                        options={[
+                                            {
+                                                label: hp,
+                                                asc: {
+                                                    label: `Sort ${hp} A -> Z`,
+                                                    value: `metadata__${hp}`,
+                                                },
+                                                desc: {
+                                                    label: `Sort ${hp} Z -> A`,
+                                                    value: `-metadata__${hp}`,
+                                                },
+                                            },
+                                        ]}
                                         {...bottomBorderProps}
-                                    >
-                                        {hp}
-                                    </ClickableTh>
+                                    />
                                 ))}
                             </Tr>
                         </Thead>
@@ -376,6 +469,7 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTrSkeleton
                                     computePlansCount={computePlansCount}
                                     page={page}
+                                    hyperparametersList={activeHyperparameters}
                                 />
                             ) : (
                                 computePlans

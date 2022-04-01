@@ -40,4 +40,9 @@ export interface HasKey {
     key: string;
 }
 
-export type APIListArgs = { searchFilters: SearchFilterType[]; page?: number };
+export type APIListArgs = {
+    searchFilters: SearchFilterType[];
+    page?: number;
+    ordering?: string;
+    pageSize?: number;
+};

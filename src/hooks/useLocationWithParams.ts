@@ -12,12 +12,14 @@ interface LocationParams {
     search: SearchFilterType[];
     page: number;
     match: string;
+    ordering: string;
 }
 
 interface NewLocationParams {
     search?: SearchFilterType[];
     page?: number;
     match?: string;
+    ordering?: string;
 }
 
 const useLocationWithParams = (): {
@@ -39,6 +41,7 @@ const useLocationWithParams = (): {
         search: parseSearchFiltersString(urlSearchParams.get('search') || ''),
         page: parseInt(urlSearchParams.get('page') || '', RADIX) || 1,
         match: urlSearchParams.get('match') || '',
+        ordering: urlSearchParams.get('ordering') || '',
     };
 
     // This function is meant to be called 3 ways:
@@ -69,6 +72,9 @@ const useLocationWithParams = (): {
         }
         if (newParams.page) {
             urlSearchParams.set('page', newParams.page.toString(RADIX));
+        }
+        if (newParams.ordering) {
+            urlSearchParams.set('ordering', newParams.ordering);
         }
 
         if (newParams.match !== undefined) {
