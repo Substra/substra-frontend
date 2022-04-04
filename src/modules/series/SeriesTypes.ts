@@ -2,9 +2,7 @@ import { ScatterDataPoint } from 'chart.js';
 
 export interface SerieFeaturesT {
     algoKey: string;
-    algoName: string;
     datasetKey: string;
-    datasetName: string;
     dataSampleKeys: string[];
     worker: string;
     metricKey: string;

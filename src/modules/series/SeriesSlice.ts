@@ -1,19 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosPromise } from 'axios';
+import axios from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
-import * as MetricsApi from '@/modules//metrics/MetricsApi';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 import {
     MELLODDY_LARGE5_NODE_IDS,
     MELLODDY_SMALL5_NODE_IDS,
 } from '@/modules/nodes/NodesUtils';
-import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
+import { PerformanceType } from '@/modules/perf/PerformancesTypes';
 
 import { SerieT } from './SeriesTypes';
 import { buildAverageSerie, buildSeries } from './SeriesUtils';
@@ -36,13 +30,13 @@ const getComputePlanSeries = async (
     rejectWithValue: (value: string) => any,
     signal: AbortSignal
 ): Promise<SerieT[]> => {
-    let testtuples: TesttupleStub[];
+    let cpPerformances: PerformanceType[];
 
     try {
         const pageSize = 100;
-        testtuples = await getAllPages(
+        cpPerformances = await getAllPages(
             (page) =>
-                ComputePlansApi.listComputePlanTesttuples(
+                ComputePlansApi.listComputePlanPerformances(
                     { key: computePlanKey, searchFilters: [], pageSize, page },
                     { signal }
                 ),
@@ -56,68 +50,8 @@ const getComputePlanSeries = async (
         }
     }
 
-    // load datasets and metrics
-
-    let metrics: MetricType[] = [];
-    let datasets: DatasetStubType[] = [];
-    if (testtuples.length) {
-        const metricKeys: string[] = [];
-        const datasetKeys: string[] = [];
-        for (const testtuple of testtuples) {
-            for (const metricKey of testtuple.test.metric_keys) {
-                if (!metricKeys.includes(metricKey)) {
-                    metricKeys.push(metricKey);
-                }
-            }
-            if (!datasetKeys.includes(testtuple.test.data_manager_key)) {
-                datasetKeys.push(testtuple.test.data_manager_key);
-            }
-        }
-        const metricSearchFilters = metricKeys.map(
-            (key: string): SearchFilterType => ({
-                asset: 'metric',
-                key: 'key',
-                value: key,
-            })
-        );
-        const datasetSearchFilters = datasetKeys.map(
-            (key: string): SearchFilterType => ({
-                asset: 'dataset',
-                key: 'key',
-                value: key,
-            })
-        );
-        const promises: [
-            AxiosPromise<PaginatedApiResponse<MetricType>>,
-            AxiosPromise<PaginatedApiResponse<DatasetStubType>>
-        ] = [
-            MetricsApi.listMetrics(
-                { searchFilters: metricSearchFilters },
-                { signal }
-            ),
-            DatasetsApi.listDatasets(
-                { searchFilters: datasetSearchFilters },
-                { signal }
-            ),
-        ];
-        let responses;
-        try {
-            responses = await Promise.all(promises);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
-        }
-
-        metrics = responses[0].data.results;
-        datasets = responses[1].data.results;
-    }
-
     // build series
-
-    const series = buildSeries(testtuples, datasets, metrics);
+    const series = buildSeries(cpPerformances, computePlanKey);
 
     if (MELLODDY) {
         const melloddySeries: SerieT[] = [];

@@ -5,6 +5,7 @@ import {
     APIListArgs,
     PaginatedApiResponse,
 } from '@/modules/common/CommonTypes';
+import { PerformanceType } from '@/modules/perf/PerformancesTypes';
 import {
     Aggregatetuple,
     CompositeTraintupleStub,
@@ -21,6 +22,7 @@ const URLS = {
     LIST_TRAINTUPLES: '/compute_plan/__KEY__/traintuple/',
     LIST_COMPOSITE_TRAINTUPLES: '/compute_plan/__KEY__/composite_traintuple/',
     LIST_AGGREGATETUPLES: '/compute_plan/__KEY__/aggregatetuple/',
+    LIST_PERFORMANCES: '/compute_plan/__KEY__/perf/',
 };
 
 interface ListComputePlansArgs extends APIListArgs {
@@ -81,6 +83,19 @@ export const listComputePlanAggregatetuples = (
 ): AxiosPromise<PaginatedApiResponse<Aggregatetuple>> => {
     return API.authenticatedGet(
         URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
+        {
+            ...getApiOptions(apiListArgs),
+            ...config,
+        }
+    );
+};
+
+export const listComputePlanPerformances = (
+    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    config: AxiosRequestConfig
+): AxiosPromise<PaginatedApiResponse<PerformanceType>> => {
+    return API.authenticatedGet(
+        URLS.LIST_PERFORMANCES.replace('__KEY__', key),
         {
             ...getApiOptions(apiListArgs),
             ...config,

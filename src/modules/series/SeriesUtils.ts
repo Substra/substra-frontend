@@ -1,16 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { HasKey } from '@/modules/common/CommonTypes';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { NodeType } from '@/modules/nodes/NodesTypes';
 import { compareNodes } from '@/modules/nodes/NodesUtils';
-import { getPerf } from '@/modules/tasks/TasksUtils';
-import { TesttupleStub } from '@/modules/tasks/TuplesTypes';
+import { PerformanceType } from '@/modules/perf/PerformancesTypes';
 
 import {
     DataPoint,
-    Index,
     PointT,
     SerieFeaturesT,
     SerieRankData,
@@ -18,20 +13,17 @@ import {
 } from './SeriesTypes';
 
 function buildSerieFeatures(
-    testtuple: TesttupleStub,
-    dataset: DatasetStubType,
-    metric: MetricType
+    performance: PerformanceType,
+    computePlanKey: string
 ): SerieFeaturesT {
     return {
-        algoKey: testtuple.algo.key,
-        algoName: testtuple.algo.name,
-        datasetKey: dataset.key,
-        datasetName: dataset.name,
-        dataSampleKeys: testtuple.test.data_sample_keys,
-        worker: testtuple.worker,
-        metricKey: metric.key,
-        metricName: metric.name,
-        computePlanKey: testtuple.compute_plan_key,
+        algoKey: performance.compute_task.algo_key,
+        datasetKey: performance.compute_task.data_manager_key,
+        dataSampleKeys: performance.compute_task.data_samples,
+        worker: performance.compute_task.worker,
+        metricKey: performance.metric.key,
+        metricName: performance.metric.name,
+        computePlanKey,
     };
 }
 
@@ -71,13 +63,11 @@ function findSerie(
     return null;
 }
 
-function getEpoch(testtuple: TesttupleStub): number {
+function getEpochAsNumber(epochStr: string): number {
     /**
-     * This extracts epochs from a testtuple metadata, taking into account that:
-     *  * epoch is stored in metadata and may not be present
-     *  * epoch is stored as string
+     * epoch may not be present
+     * epoch is stored as string in the db
      */
-    const epochStr = testtuple.metadata.epoch;
     try {
         return parseInt(epochStr);
     } catch {
@@ -129,50 +119,34 @@ function fixEpoch(serie: SerieT) {
 }
 
 export function buildSeries(
-    testtuples: TesttupleStub[],
-    datasets: DatasetStubType[],
-    metrics: MetricType[]
+    cpPerformances: PerformanceType[],
+    computePlanKey: string
 ): SerieT[] {
-    // create indexes
-    const datasetIndex = buildIndex<DatasetStubType>(datasets);
-    const metricIndex = buildIndex(metrics);
-
     // create series from test tasks
     const series: SerieT[] = [];
 
-    for (const testtuple of testtuples) {
-        for (const metricKey of testtuple.test.metric_keys) {
-            const point: PointT = {
-                rank: testtuple.rank,
-                perf: getPerf(testtuple, metricKey),
-                testTaskKey: testtuple.key,
-                epoch: getEpoch(testtuple),
-            };
+    for (const performance of cpPerformances) {
+        const point: PointT = {
+            rank: performance.compute_task.rank,
+            perf: performance.perf,
+            testTaskKey: performance.compute_task.key,
+            epoch: getEpochAsNumber(performance.compute_task.epoch),
+        };
 
-            const serieFeatures = buildSerieFeatures(
-                testtuple,
-                datasetIndex[testtuple.test.data_manager_key],
-                metricIndex[metricKey]
-            );
+        const serieFeatures = buildSerieFeatures(performance, computePlanKey);
 
-            const serie = findSerie(series, serieFeatures);
-            if (serie) {
-                serie.points.push(point);
-            } else {
-                series.push({
-                    // The couple (computePlanKey, id) should be unique
-                    // id is an incremented number
-                    id: uuidv4(),
-                    points: [point],
-                    ...serieFeatures,
-                });
-            }
+        const serie = findSerie(series, serieFeatures);
+        if (serie) {
+            serie.points.push(point);
+        } else {
+            series.push({
+                // The couple (computePlanKey, id) should be unique
+                // id is an incremented number
+                id: uuidv4(),
+                points: [point],
+                ...serieFeatures,
+            });
         }
-    }
-
-    // sort points by rank
-    for (const serie of series) {
-        serie.points.sort((p1, p2) => p1.rank - p2.rank);
     }
 
     // In MDY, testtuple registration didn't use the correct epochs
@@ -181,14 +155,6 @@ export function buildSeries(
     }
 
     return series;
-}
-
-export function buildIndex<Type extends HasKey>(assets: Type[]): Index<Type> {
-    const index: Record<string, Type> = {};
-    for (const asset of assets) {
-        index[asset.key] = asset;
-    }
-    return index;
 }
 
 export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
@@ -253,9 +219,7 @@ export function buildAverageSerie(
         id: uuidv4(),
         points: points,
         algoKey: uuidv4(),
-        algoName: name,
         datasetKey: uuidv4(),
-        datasetName: name,
         dataSampleKeys: [],
         worker: name,
         metricKey: uuidv4(),
