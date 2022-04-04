@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Open node settings on click in box (#496)
 -   Hide clear button when no filters are applied in hp modal (#498)
 -   Max updated depth issue on ComputePlanChart (#502)
+-   Favorites management in compare page (#507)
 
 ### Changed
 

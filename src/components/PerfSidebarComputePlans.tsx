@@ -91,10 +91,16 @@ const ComputePlanCheckbox = ({
     computePlanKey,
     isOpen,
     onToggle,
+    isFavorite,
+    addToFavorites,
+    removeFromFavorites,
 }: {
     computePlanKey: string;
     isOpen: boolean;
     onToggle: () => void;
+    isFavorite: (cpkey: string) => boolean;
+    addToFavorites: (favorite: string) => void;
+    removeFromFavorites: (favorite: string) => void;
 }): JSX.Element => {
     const {
         computePlans,
@@ -109,9 +115,6 @@ const ComputePlanCheckbox = ({
 
     const { onCopy } = useClipboard(computePlanKey);
     const toast = useToast();
-
-    const { isFavorite, addToFavorites, removeFromFavorites } =
-        useFavoriteComputePlans();
 
     const onClickCopy = () => {
         onCopy();
@@ -330,9 +333,15 @@ const NodeList = ({
 
 interface ComputePlanSectionProps {
     computePlanKey: string;
+    isFavorite: (cpkey: string) => boolean;
+    addToFavorites: (favorite: string) => void;
+    removeFromFavorites: (favorite: string) => void;
 }
 const ComputePlanSection = ({
     computePlanKey,
+    isFavorite,
+    addToFavorites,
+    removeFromFavorites,
 }: ComputePlanSectionProps): JSX.Element => {
     const { selectedMetricName } = useContext(PerfBrowserContext);
     const { isOpen, onToggle } = useDisclosure({
@@ -345,6 +354,9 @@ const ComputePlanSection = ({
                 computePlanKey={computePlanKey}
                 isOpen={isOpen}
                 onToggle={onToggle}
+                isFavorite={isFavorite}
+                addToFavorites={addToFavorites}
+                removeFromFavorites={removeFromFavorites}
             />
             <Collapse in={isOpen} animateOpacity>
                 {selectedMetricName ? (
@@ -359,6 +371,9 @@ const ComputePlanSection = ({
 
 const PerfSidebarComputePlans = (): JSX.Element => {
     const { loading, computePlans } = useContext(PerfBrowserContext);
+
+    const { isFavorite, addToFavorites, removeFromFavorites } =
+        useFavoriteComputePlans();
 
     if (loading) {
         return (
@@ -375,6 +390,9 @@ const PerfSidebarComputePlans = (): JSX.Element => {
                     <ComputePlanSection
                         computePlanKey={computePlan.key}
                         key={computePlan.key}
+                        isFavorite={isFavorite}
+                        addToFavorites={addToFavorites}
+                        removeFromFavorites={removeFromFavorites}
                     />
                 ))}
             </List>
