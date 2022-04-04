@@ -127,15 +127,15 @@ const ComputePlanCheckbox = ({
             return;
         }
 
-        if (isFavorite(computePlan)) {
-            removeFromFavorites(computePlan);
+        if (isFavorite(computePlan.key)) {
+            removeFromFavorites(computePlan.key);
             toast({
                 title: 'Removed from favorites',
                 status: 'success',
                 isClosable: true,
             });
         } else {
-            addToFavorites(computePlan);
+            addToFavorites(computePlan.key);
             toast({
                 title: 'Added to favorites',
                 status: 'success',
@@ -216,7 +216,7 @@ const ComputePlanCheckbox = ({
                                 </MenuItem>
                             </Link>
                             <MenuItem onClick={toggleFavorite}>
-                                {isFavorite(computePlan)
+                                {isFavorite(computePlan.key)
                                     ? 'Remove from favorites'
                                     : 'Add to favorites'}
                             </MenuItem>

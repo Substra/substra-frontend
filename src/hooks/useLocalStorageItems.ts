@@ -24,10 +24,12 @@ function useLoadSave<T>(localStorageKey: string) {
     return { load, save };
 }
 
-function useLocalStorageItems<Type extends HasKey>(
-    localStorageKey: string
+function useLocalStorageItems<Type>(
+    localStorageKey: string,
+    areEqual: (a: Type, b: Type) => boolean
 ): {
     items: Type[];
+    includesItem: (item: Type) => boolean;
     addItem: (item: Type) => void;
     updateItem: (item: Type) => void;
     removeItem: (item: Type) => void;
@@ -37,6 +39,15 @@ function useLocalStorageItems<Type extends HasKey>(
     const { load, save } = useLoadSave<Type>(localStorageKey);
     const [items, setItems] = useState(load);
 
+    const includesItem = (item: Type) => {
+        for (const i of items) {
+            if (areEqual(i, item)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const addItem = (item: Type) => {
         const newItems = [...items, item];
         save(newItems);
@@ -44,14 +55,14 @@ function useLocalStorageItems<Type extends HasKey>(
     };
 
     const removeItem = (item: Type) => {
-        const newItems = items.filter((i) => i.key !== item.key);
+        const newItems = items.filter((i) => !areEqual(i, item));
         save(newItems);
         setItems(newItems);
     };
 
     const updateItem = (item: Type) => {
         const newItems = items.map((currentItem) =>
-            currentItem.key === item.key ? item : currentItem
+            areEqual(currentItem, item) ? item : currentItem
         );
         save(newItems);
         setItems(newItems);
@@ -69,6 +80,7 @@ function useLocalStorageItems<Type extends HasKey>(
 
     return {
         items,
+        includesItem,
         addItem,
         updateItem,
         removeItem,
@@ -76,4 +88,21 @@ function useLocalStorageItems<Type extends HasKey>(
         clearItems,
     };
 }
-export default useLocalStorageItems;
+
+export function useLocalStorageKeyItems<Type extends HasKey>(
+    localStorageKey: string
+) {
+    return useLocalStorageItems<Type>(
+        localStorageKey,
+        (a: Type, b: Type) => a.key === b.key
+    );
+}
+
+export function useLocalStorageStringItems(localStorageKey: string) {
+    return useLocalStorageItems<string>(
+        localStorageKey,
+        (a: string, b: string) => a === b
+    );
+}
+
+export default useLocalStorageKeyItems;

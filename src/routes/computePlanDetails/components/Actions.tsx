@@ -14,7 +14,7 @@ interface ActionsProps {
 const Actions = ({ computePlan, loading }: ActionsProps): JSX.Element => {
     const { isFavorite, onFavoriteChange } = useFavoriteComputePlans();
 
-    const favorite = !loading && computePlan && isFavorite(computePlan);
+    const favorite = !loading && computePlan && isFavorite(computePlan.key);
     const ariaLabel = favorite ? 'Remove from favorites' : 'Add to favorites';
     return (
         <HStack paddingX="8">
@@ -37,7 +37,9 @@ const Actions = ({ computePlan, loading }: ActionsProps): JSX.Element => {
                     color={favorite ? 'teal' : 'gray'}
                     isDisabled={loading || !computePlan}
                     onClick={
-                        computePlan ? onFavoriteChange(computePlan) : undefined
+                        computePlan
+                            ? onFavoriteChange(computePlan.key)
+                            : undefined
                     }
                 />
             </Tooltip>

@@ -19,7 +19,7 @@ import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
-import useLocalStorageItems from '@/hooks/useLocalStorageItems';
+import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import { useSyncedStringState } from '@/hooks/useSyncedState';
@@ -69,53 +69,28 @@ const ComputePlans = (): JSX.Element => {
         addItem: selectComputePlan,
         removeItem: unselectComputePlan,
         clearItems: resetSelection,
-    } = useLocalStorageItems<ComputePlanT>('selected_compute_plans');
-    const {
-        favorites,
-        isFavorite,
-        onFavoriteChange,
-        updateFavorite,
-        removeFromFavorites,
-    } = useFavoriteComputePlans();
+    } = useLocalStorageKeyItems<ComputePlanT>('selected_compute_plans');
+    const { isFavorite, onFavoriteChange } = useFavoriteComputePlans();
     const withAbortController = useWithAbortController();
 
     const selectedKeys = selectedComputePlans.map((cp) => cp.key);
 
     useSearchFiltersEffect(() => {
-        const refreshSelectedAndFavorites = async (
-            abortController: AbortController
-        ) => {
-            const selectedAndFavorites = [
-                ...favorites,
-                ...selectedComputePlans.filter(
-                    (selectedCp) =>
-                        !favorites.find(
-                            (favoriteCp) => favoriteCp.key === selectedCp.key
-                        )
-                ),
-            ];
-            for (const computePlan of selectedAndFavorites) {
+        const refreshSelected = async (abortController: AbortController) => {
+            for (const computePlan of selectedComputePlans) {
                 retrieveComputePlan(computePlan.key, {
                     signal: abortController.signal,
                 }).then(
                     (response) => {
                         const refreshedComputePlan = response.data;
-                        if (isFavorite(computePlan)) {
-                            updateFavorite(refreshedComputePlan);
-                        }
-                        if (selectedKeys.includes(computePlan.key)) {
-                            updateSelectedComputePlan(refreshedComputePlan);
-                        }
+                        updateSelectedComputePlan(refreshedComputePlan);
                     },
                     (error) => {
                         // do nothing if the call has been voluntarily canceled
                         if (axios.isCancel(error)) {
                             return;
                         }
-                        // remove from favorite/selected if there was an error
-                        if (isFavorite(computePlan)) {
-                            removeFromFavorites(computePlan);
-                        }
+                        // remove from selected if there was an error
                         if (selectedKeys.includes(computePlan.key)) {
                             unselectComputePlan(computePlan);
                         }
@@ -124,9 +99,7 @@ const ComputePlans = (): JSX.Element => {
             }
         };
 
-        const abortRefreshFavorites = withAbortController(
-            refreshSelectedAndFavorites
-        );
+        const abortRefreshSelected = withAbortController(refreshSelected);
         const abortListComputePlans = dispatchWithAutoAbort(
             listComputePlans({
                 filters: searchFilters,
@@ -137,7 +110,7 @@ const ComputePlans = (): JSX.Element => {
         );
 
         return () => {
-            abortRefreshFavorites();
+            abortRefreshSelected();
             abortListComputePlans();
         };
     }, [searchFilters, page, match, ordering]);
@@ -165,7 +138,7 @@ const ComputePlans = (): JSX.Element => {
         clearCustomHyperparameters,
     } = useCustomHyperparameters();
     const activeHyperparameters = customHyperparameters.length
-        ? customHyperparameters.map((hp) => hp.key)
+        ? customHyperparameters
         : HYPERPARAMETERS;
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
@@ -419,41 +392,14 @@ const ComputePlans = (): JSX.Element => {
                                     onSelectionChange={onSelectionChange(
                                         computePlan
                                     )}
-                                    isFavorite={isFavorite(computePlan)}
+                                    isFavorite={isFavorite(computePlan.key)}
                                     onFavoriteChange={onFavoriteChange(
-                                        computePlan
+                                        computePlan.key
                                     )}
                                     highlighted={true}
                                     hyperparametersList={activeHyperparameters}
                                 />
                             ))}
-                        </ChakraTbody>
-                        <ChakraTbody>
-                            {favorites
-                                .filter(
-                                    (computePlan) =>
-                                        !selectedKeys.includes(computePlan.key)
-                                )
-                                .map((computePlan) => (
-                                    <ComputePlanTr
-                                        key={computePlan.key}
-                                        computePlan={computePlan}
-                                        isSelected={selectedKeys.includes(
-                                            computePlan.key
-                                        )}
-                                        onSelectionChange={onSelectionChange(
-                                            computePlan
-                                        )}
-                                        isFavorite={isFavorite(computePlan)}
-                                        onFavoriteChange={onFavoriteChange(
-                                            computePlan
-                                        )}
-                                        highlighted={true}
-                                        hyperparametersList={
-                                            activeHyperparameters
-                                        }
-                                    />
-                                ))}
                         </ChakraTbody>
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
@@ -475,7 +421,6 @@ const ComputePlans = (): JSX.Element => {
                                 computePlans
                                     .filter(
                                         (computePlan) =>
-                                            !isFavorite(computePlan) &&
                                             !selectedKeys.includes(
                                                 computePlan.key
                                             )
@@ -490,9 +435,11 @@ const ComputePlans = (): JSX.Element => {
                                             onSelectionChange={onSelectionChange(
                                                 computePlan
                                             )}
-                                            isFavorite={isFavorite(computePlan)}
+                                            isFavorite={isFavorite(
+                                                computePlan.key
+                                            )}
                                             onFavoriteChange={onFavoriteChange(
-                                                computePlan
+                                                computePlan.key
                                             )}
                                             highlighted={false}
                                             hyperparametersList={

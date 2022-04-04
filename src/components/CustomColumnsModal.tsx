@@ -20,19 +20,15 @@ import {
 } from '@chakra-ui/react';
 import { RiInformationLine } from 'react-icons/ri';
 
-import useHyperparameters, {
-    customHyperparametersT,
-} from '@/hooks/useHyperparameters';
+import useHyperparameters from '@/hooks/useHyperparameters';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import CopyButton from '@/components/CopyButton';
 
 interface CustomColumnsModalProps {
     computePlans: ComputePlanT[];
-    customHyperparameters: customHyperparametersT[];
-    replaceCustomHyperparameters: (
-        hyperparameters: customHyperparametersT[]
-    ) => void;
+    customHyperparameters: string[];
+    replaceCustomHyperparameters: (hyperparameters: string[]) => void;
     clearCustomHyperparameters: () => void;
 }
 
@@ -46,7 +42,7 @@ const CustomColumnsModal = ({
 
     const hyperparametersList = useHyperparameters(computePlans);
 
-    const initialValue = customHyperparameters.map((hp) => hp.key).join(', ');
+    const initialValue = customHyperparameters.join(', ');
     const [value, setValue] = useState<string>(initialValue);
 
     // returns first half of the hyperpameters list
@@ -84,11 +80,7 @@ const CustomColumnsModal = ({
                 .replace(/\s+/g, '')
                 .split(',');
 
-            replaceCustomHyperparameters(
-                newCustomHyperparameters.map((hp) => {
-                    return { key: hp };
-                })
-            );
+            replaceCustomHyperparameters(newCustomHyperparameters);
         }
 
         onClose();

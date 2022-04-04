@@ -1,36 +1,29 @@
-import useLocalStorageItems from '@/hooks/useLocalStorageItems';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { useLocalStorageStringItems } from '@/hooks/useLocalStorageItems';
 
 const useFavoriteComputePlans = (): {
-    favorites: ComputePlanT[];
-    updateFavorite: (computePlan: ComputePlanT) => void;
-    addToFavorites: (computePlan: ComputePlanT) => void;
-    removeFromFavorites: (computePlan: ComputePlanT) => void;
-    isFavorite: (computePlan: ComputePlanT) => boolean;
-    onFavoriteChange: (computePlan: ComputePlanT) => () => void;
+    favorites: string[];
+    addToFavorites: (favorite: string) => void;
+    removeFromFavorites: (favorite: string) => void;
+    isFavorite: (cpKey: string) => boolean;
+    onFavoriteChange: (cpKey: string) => () => void;
 } => {
     const {
         items: favorites,
-        updateItem: updateFavorite,
+        includesItem: isFavorite,
         addItem: addToFavorites,
         removeItem: removeFromFavorites,
-    } = useLocalStorageItems<ComputePlanT>('pinned_compute_plans');
+    } = useLocalStorageStringItems('favorite_compute_plans');
 
-    const isFavorite = (computePlan: ComputePlanT): boolean => {
-        return !!favorites.find((cp) => cp.key === computePlan.key);
-    };
-
-    const onFavoriteChange = (computePlan: ComputePlanT) => () => {
-        if (isFavorite(computePlan)) {
-            removeFromFavorites(computePlan);
+    const onFavoriteChange = (cpKey: string) => () => {
+        if (isFavorite(cpKey)) {
+            removeFromFavorites(cpKey);
         } else {
-            addToFavorites(computePlan);
+            addToFavorites(cpKey);
         }
     };
 
     return {
         favorites,
-        updateFavorite,
         addToFavorites,
         removeFromFavorites,
         isFavorite,

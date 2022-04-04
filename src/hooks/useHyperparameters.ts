@@ -1,25 +1,18 @@
 import { useMemo } from 'react';
 
-import useLocalStorageItems from '@/hooks/useLocalStorageItems';
+import { useLocalStorageStringItems } from '@/hooks/useLocalStorageItems';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-export interface customHyperparametersT {
-    key: string;
-}
 export const useCustomHyperparameters = (): {
-    customHyperparameters: customHyperparametersT[];
-    replaceCustomHyperparameters: (
-        hyperparameters: customHyperparametersT[]
-    ) => void;
+    customHyperparameters: string[];
+    replaceCustomHyperparameters: (hyperparameters: string[]) => void;
     clearCustomHyperparameters: () => void;
 } => {
     const {
         items: customHyperparameters,
         replaceItems: replaceCustomHyperparameters,
         clearItems: clearCustomHyperparameters,
-    } = useLocalStorageItems<customHyperparametersT>(
-        'custom_hyperparameters_columns'
-    );
+    } = useLocalStorageStringItems('custom_hyperparameters_columns');
 
     return {
         customHyperparameters,

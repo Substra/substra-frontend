@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Change favicon svg (#503)
 -   Use performance endpoint (#504)
 -   Remove "Select all" option from filters in performance page and hide clear icon when no filters are applied (#505)
+-   Favorite stays at their place in the cp list (#506)
 
 ## [0.17.0] - 2022-03-24
 

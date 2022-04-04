@@ -54,7 +54,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="0"
                 zIndex="1"
-                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+                backgroundColor={isSelected ? 'gray.50' : 'white'}
             >
                 <Checkbox
                     isChecked={isSelected}
@@ -66,7 +66,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="50px"
                 zIndex="1"
-                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+                backgroundColor={isSelected ? 'gray.50' : 'white'}
             >
                 <Tooltip
                     label={
@@ -92,7 +92,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="86px"
                 zIndex="1"
-                backgroundColor={isSelected || isFavorite ? 'gray.50' : 'white'}
+                backgroundColor={isSelected ? 'gray.50' : 'white'}
                 {...rightBorderProps}
             >
                 <Text fontSize="xs">
