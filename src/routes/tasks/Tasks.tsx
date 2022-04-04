@@ -68,14 +68,14 @@ interface TasksProps {
 
 const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
-        params: { search: searchFilters, page },
+        params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
     const list = () =>
-        listTestTasks({ filters: searchFilters, page, ordering });
+        listTestTasks({ filters: searchFilters, page, ordering, match });
     const tasks = useAppSelector((state) => state.tasks.testTasks);
     const count = useAppSelector((state) => state.tasks.testTasksCount);
 
@@ -110,14 +110,14 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
 
 const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
-        params: { search: searchFilters, page },
+        params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
     const list = () =>
-        listTrainTasks({ filters: searchFilters, page, ordering });
+        listTrainTasks({ filters: searchFilters, page, ordering, match });
     const tasks = useAppSelector((state) => state.tasks.trainTasks);
     const count = useAppSelector((state) => state.tasks.trainTasksCount);
 
@@ -152,7 +152,7 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 
 const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
-        params: { search: searchFilters, page },
+        params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
@@ -161,7 +161,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
         (state) => state.tasks.compositeTasksLoading
     );
     const list = () =>
-        listCompositeTasks({ filters: searchFilters, page, ordering });
+        listCompositeTasks({ filters: searchFilters, page, ordering, match });
     const tasks = useAppSelector((state) => state.tasks.compositeTasks);
     const count = useAppSelector((state) => state.tasks.compositeTasksCount);
 
@@ -196,7 +196,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 
 const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const {
-        params: { search: searchFilters, page },
+        params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
@@ -205,7 +205,7 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
         (state) => state.tasks.aggregateTasksLoading
     );
     const list = () =>
-        listAggregateTasks({ filters: searchFilters, page, ordering });
+        listAggregateTasks({ filters: searchFilters, page, ordering, match });
     const tasks = useAppSelector((state) => state.tasks.aggregateTasks);
     const count = useAppSelector((state) => state.tasks.aggregateTasksCount);
 

@@ -34,7 +34,6 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import CustomColumnsModal from '@/components/CustomColumnsModal';
-import FullTextSearchBar from '@/components/FullTextSearchBar';
 import OrderingTh from '@/components/OrderingTh';
 import SearchBar from '@/components/SearchBar';
 import {
@@ -181,8 +180,7 @@ const ComputePlans = (): JSX.Element => {
                         <TableFilters>
                             <ComputePlanStatusTableFilter />
                         </TableFilters>
-                        <SearchBar asset="compute_plan" />
-                        {MELLODDY && <FullTextSearchBar />}
+                        <SearchBar />
                     </HStack>
                     <HStack spacing="4">
                         {selectedKeys.length > 0 && (

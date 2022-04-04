@@ -42,6 +42,7 @@ export interface listAlgosArgs {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
+    match: string;
 }
 
 export const listAlgos = createAsyncThunk<
@@ -50,12 +51,12 @@ export const listAlgos = createAsyncThunk<
     { rejectValue: string }
 >(
     'algos/listAlgos',
-    async ({ filters, page, ordering }: listAlgosArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listAlgosArgs, thunkAPI) => {
         try {
             const standardFilters = filters.filter((sf) => sf.asset === 'algo');
 
             const response = await AlgosApi.listAlgos(
-                { searchFilters: standardFilters, page, ordering },
+                { searchFilters: standardFilters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
 

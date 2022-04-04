@@ -84,7 +84,7 @@ const TasksTable = ({
     compileDetailsPath,
 }: TasksTableProps): JSX.Element => {
     const {
-        params: { page, search: searchFilters },
+        params: { page, search: searchFilters, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
@@ -96,7 +96,7 @@ const TasksTable = ({
             return dispatchWithAutoAbort(action);
         }
         // The computePlan is needed to trigger a list call once it has been fetched
-    }, [searchFilters, category, page, computePlan, ordering]);
+    }, [searchFilters, category, page, computePlan, ordering, match]);
 
     const tabs: [TaskCategory, string][] = [
         [TaskCategory.test, 'Test'],
@@ -119,6 +119,8 @@ const TasksTable = ({
                 }
                 return searchFilter;
             }),
+            ordering,
+            match,
         });
     };
 
@@ -132,7 +134,7 @@ const TasksTable = ({
                     <TaskStatusTableFilter />
                     <WorkerTableFilter />
                 </TableFilters>
-                <SearchBar asset={assetTypeByTaskCategory[category]} />
+                <SearchBar placeholder="Search key..." />
             </HStack>
             <TableFilterTags>
                 <StatusTableFilterTag />

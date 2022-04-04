@@ -9,61 +9,34 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { SearchFilterType } from '@/libs/searchFilter';
-import { AssetType } from '@/modules/common/CommonTypes';
+import {
+    useSyncedNumberState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 
 interface SearchBarProps {
-    asset: AssetType;
+    placeholder?: string;
 }
-const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
-    const [value, setValue] = useState('');
-
-    const { params, setLocationWithParams } = useLocationWithParams();
-    const searchFilters = params.search;
-
-    useSearchFiltersEffect(() => {
-        // filters that can be created with this search bar:
-        // - only on key
-        // - only for assets that can be selected
-        const keySearchFilters = searchFilters.filter(
-            (sf) => sf.key === 'key' && asset === sf.asset
-        );
-        if (keySearchFilters.length) {
-            const keySearchFilter = keySearchFilters[0];
-            setValue(keySearchFilter.value);
-        } else {
-            setValue('');
-        }
-    }, [searchFilters]);
-
-    const applySearchFilters = (value: string) => {
-        // preserve all filters that are not on asset key
-        const newSearchFilters: SearchFilterType[] = searchFilters.filter(
-            (sf) => sf.key !== 'key'
-        );
-        if (value) {
-            newSearchFilters.push({
-                asset,
-                key: 'key',
-                value,
-            });
-        }
-        setLocationWithParams({ search: newSearchFilters, page: 1 });
-    };
+const SearchBar = ({ placeholder }: SearchBarProps): JSX.Element => {
+    const [match, setMatch] = useSyncedStringState('match', '');
+    const [, setPage] = useSyncedNumberState('page', 1);
+    const [value, setValue] = useState(match);
 
     const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        applySearchFilters(value);
+        setMatch(value);
+        setPage(1);
     };
 
     const onClear = () => {
-        applySearchFilters('');
+        setValue('');
+        setMatch('');
+        setPage(1);
     };
 
     const onBlur = () => {
-        applySearchFilters(value);
+        setMatch(value);
+        setPage(1);
     };
 
     return (
@@ -76,7 +49,7 @@ const SearchBar = ({ asset }: SearchBarProps): JSX.Element => {
                     }
                 />
                 <Input
-                    placeholder="Search key..."
+                    placeholder={placeholder || 'Search name or key...'}
                     variant="outline"
                     colorScheme="gray"
                     width="360px"

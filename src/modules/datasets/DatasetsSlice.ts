@@ -50,6 +50,7 @@ interface listDatasetsArgs {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
+    match: string;
 }
 export const listDatasets = createAsyncThunk<
     PaginatedApiResponse<DatasetStubType>,

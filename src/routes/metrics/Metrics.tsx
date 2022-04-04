@@ -47,16 +47,16 @@ import MetricDrawer from './components/MetricDrawer';
 const Metrics = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
-        params: { page, search: searchFilters },
+        params: { page, search: searchFilters, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listMetrics({ filters: searchFilters, page, ordering })
+            listMetrics({ filters: searchFilters, page, ordering, match })
         );
-    }, [searchFilters, page, ordering]);
+    }, [searchFilters, page, ordering, match]);
 
     const metrics: MetricType[] = useAppSelector(
         (state: RootState) => state.metrics.metrics
@@ -89,7 +89,7 @@ const Metrics = (): JSX.Element => {
                     <TableFilters>
                         <OwnerTableFilter />
                     </TableFilters>
-                    <SearchBar asset="metric" />
+                    <SearchBar />
                 </HStack>
                 <TableFilterTags>
                     <OwnerTableFilterTag />

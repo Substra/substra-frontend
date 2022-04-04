@@ -78,12 +78,12 @@ export const listComputePlans = createAsyncThunk<
 >(
     'computePlans/list',
     async (
-        { filters, page, match, ordering }: listComputePlansArgs,
+        { filters, page, ordering, match }: listComputePlansArgs,
         thunkAPI
     ) => {
         try {
             const response = await ComputePlansApi.listComputePlans(
-                { searchFilters: filters, page, match, ordering },
+                { searchFilters: filters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -150,6 +150,7 @@ export interface retrieveComputePlanTasksArgs {
     page: number;
     filters: SearchFilterType[];
     ordering: string;
+    match: string;
 }
 
 export const retrieveComputePlanTrainTasks = createAsyncThunk<
@@ -158,7 +159,7 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getTrainTasks',
-    async ({ computePlanKey, page, filters, ordering }, thunkAPI) => {
+    async ({ computePlanKey, page, filters, ordering, match }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanTraintuples(
                 {
@@ -168,6 +169,7 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
                     ),
                     page,
                     ordering,
+                    match,
                 },
                 { signal: thunkAPI.signal }
             );
@@ -188,7 +190,7 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getTestTasks',
-    async ({ computePlanKey, page, filters, ordering }, thunkAPI) => {
+    async ({ computePlanKey, page, filters, ordering, match }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanTesttuples(
                 {
@@ -198,6 +200,7 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
                     ),
                     page,
                     ordering,
+                    match,
                 },
                 { signal: thunkAPI.signal }
             );
@@ -218,7 +221,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getAggregateTasks',
-    async ({ computePlanKey, page, filters, ordering }, thunkAPI) => {
+    async ({ computePlanKey, page, filters, ordering, match }, thunkAPI) => {
         try {
             const response =
                 await ComputePlansApi.listComputePlanAggregatetuples(
@@ -229,6 +232,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
                         ),
                         page,
                         ordering,
+                        match,
                     },
                     { signal: thunkAPI.signal }
                 );
@@ -249,7 +253,7 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getCompositeTasks',
-    async ({ computePlanKey, page, filters, ordering }, thunkAPI) => {
+    async ({ computePlanKey, page, filters, ordering, match }, thunkAPI) => {
         try {
             const response =
                 await ComputePlansApi.listComputePlanCompositeTraintuples(
@@ -260,6 +264,7 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
                         ),
                         page,
                         ordering,
+                        match,
                     },
                     { signal: thunkAPI.signal }
                 );

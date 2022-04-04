@@ -42,6 +42,7 @@ interface listMetricsArgs {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
+    match: string;
 }
 export const listMetrics = createAsyncThunk<
     PaginatedApiResponse<MetricType>,
@@ -49,10 +50,10 @@ export const listMetrics = createAsyncThunk<
     { rejectValue: string }
 >(
     'metrics/list',
-    async ({ filters, page, ordering }: listMetricsArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listMetricsArgs, thunkAPI) => {
         try {
             const response = await MetricsAPI.listMetrics(
-                { searchFilters: filters, page, ordering },
+                { searchFilters: filters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;

@@ -81,6 +81,7 @@ export interface listTasksArgs {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
+    match: string;
 }
 export const listTrainTasks = createAsyncThunk<
     PaginatedApiResponse<TraintupleStub>,
@@ -88,14 +89,14 @@ export const listTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listTrainTasks',
-    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listTasksArgs, thunkAPI) => {
         const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
 
         const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
 
         try {
             const response = await TasksApi.listTraintuples(
-                { searchFilters: nonTypeFilters, page, ordering },
+                { searchFilters: nonTypeFilters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -115,14 +116,14 @@ export const listTestTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listTestTasks',
-    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listTasksArgs, thunkAPI) => {
         const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
 
         const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
 
         try {
             const response = await TasksApi.listTesttuples(
-                { searchFilters: nonTypeFilters, page, ordering },
+                { searchFilters: nonTypeFilters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -142,7 +143,7 @@ export const listCompositeTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listCompositeTasks',
-    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listTasksArgs, thunkAPI) => {
         const compositeFilters = filters.filter(
             (sf) => (sf.asset = 'composite_traintuple')
         );
@@ -153,7 +154,7 @@ export const listCompositeTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listCompositeTraintuples(
-                { searchFilters: nonTypeFilters, page, ordering },
+                { searchFilters: nonTypeFilters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;
@@ -173,7 +174,7 @@ export const listAggregateTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'tasks/listAggregateTasks',
-    async ({ filters, page, ordering }: listTasksArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listTasksArgs, thunkAPI) => {
         const aggregateFilters = filters.filter(
             (sf) => sf.asset === 'aggregatetuple'
         );
@@ -184,7 +185,7 @@ export const listAggregateTasks = createAsyncThunk<
 
         try {
             const response = await TasksApi.listAggregatetuples(
-                { searchFilters: nonTypeFilters, page, ordering },
+                { searchFilters: nonTypeFilters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;

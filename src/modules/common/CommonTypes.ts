@@ -45,4 +45,5 @@ export type APIListArgs = {
     page?: number;
     ordering?: string;
     pageSize?: number;
+    match?: string;
 };

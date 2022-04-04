@@ -43,16 +43,16 @@ import TableTitle from '@/components/TableTitle';
 const Datasets = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
-        params: { page, search: searchFilters },
+        params: { page, search: searchFilters, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listDatasets({ filters: searchFilters, page, ordering })
+            listDatasets({ filters: searchFilters, page, ordering, match })
         );
-    }, [searchFilters, page, ordering]);
+    }, [searchFilters, page, ordering, match]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
@@ -86,7 +86,7 @@ const Datasets = (): JSX.Element => {
                     <TableFilters>
                         <OwnerTableFilter />
                     </TableFilters>
-                    <SearchBar asset="dataset" />
+                    <SearchBar />
                 </HStack>
                 <TableFilterTags>
                     <OwnerTableFilterTag />

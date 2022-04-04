@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Use performance endpoint (#504)
 -   Remove "Select all" option from filters in performance page and hide clear icon when no filters are applied (#505)
 -   Favorite stays at their place in the cp list (#506)
+-   Search filter now searches in both name and key (#508)
 
 ## [0.17.0] - 2022-03-24
 

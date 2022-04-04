@@ -13,7 +13,6 @@ export const useSyncedState = <T>(
     parse: (value: string) => T,
     toString: (value: T) => string
 ): [T, (value: T) => void] => {
-    const [state, setState] = useState<T>(originalValue);
     const [, setLocation] = useLocation();
 
     const setLocationParams = (urlSearchParams: URLSearchParams) => {
@@ -40,6 +39,11 @@ export const useSyncedState = <T>(
         setLocationParams(urlSearchParams);
     };
 
+    const [state, setState] = useState<T>(() => {
+        const value = getParam();
+        return value === null ? originalValue : parse(value);
+    });
+
     useEffect(() => {
         const updateState = () => {
             const value = getParam();
@@ -51,8 +55,6 @@ export const useSyncedState = <T>(
         };
 
         events.forEach((e) => addEventListener(e, updateState));
-
-        updateState();
 
         return () => {
             // unregister events
@@ -82,4 +84,12 @@ export const useSyncedStringArrayState = (
         originalValue,
         (valueAsString) => valueAsString.split(',').filter((v) => !!v),
         (v) => v.join(',')
+    );
+
+export const useSyncedNumberState = (param: string, originalValue: number) =>
+    useSyncedState<number>(
+        param,
+        originalValue,
+        (v) => parseInt(v),
+        (v) => v.toFixed(0)
     );

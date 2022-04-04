@@ -77,7 +77,7 @@ const useLocationWithParams = (): {
             urlSearchParams.set('ordering', newParams.ordering);
         }
 
-        if (newParams.match !== undefined) {
+        if (newParams.match) {
             urlSearchParams.set('match', newParams.match);
         }
 

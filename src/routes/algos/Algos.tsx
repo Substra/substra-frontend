@@ -51,7 +51,7 @@ import AlgoDrawer from './components/AlgoDrawer';
 const Algos = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const {
-        params: { search: searchFilters, page },
+        params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
@@ -62,9 +62,9 @@ const Algos = (): JSX.Element => {
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listAlgos({ filters: searchFilters, page, ordering })
+            listAlgos({ filters: searchFilters, page, ordering, match })
         );
-    }, [searchFilters, page, ordering]);
+    }, [searchFilters, page, ordering, match]);
 
     const key = useKeyFromPath(PATHS.ALGO);
 
@@ -89,7 +89,7 @@ const Algos = (): JSX.Element => {
                         <OwnerTableFilter />
                         <AlgoCategoryTableFilter />
                     </TableFilters>
-                    <SearchBar asset="algo" />
+                    <SearchBar />
                 </HStack>
                 <TableFilterTags>
                     <AlgoCategoryTableFilterTag />
