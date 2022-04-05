@@ -259,11 +259,11 @@ const ComputePlans = (): JSX.Element => {
                                                   {
                                                       label: 'Name',
                                                       asc: {
-                                                          label: 'Sort name A -> Z',
+                                                          label: 'Sort name 0A → 9Z',
                                                           value: 'metadata__name',
                                                       },
                                                       desc: {
-                                                          label: 'Sort name Z -> A',
+                                                          label: 'Sort name 9Z → 0A',
                                                           value: '-metadata__name',
                                                       },
                                                   },
@@ -272,11 +272,11 @@ const ComputePlans = (): JSX.Element => {
                                                   {
                                                       label: 'Tag',
                                                       asc: {
-                                                          label: 'Sort tag A -> Z',
+                                                          label: 'Sort tag 0A → 9Z',
                                                           value: 'tag',
                                                       },
                                                       desc: {
-                                                          label: 'Sort tag Z -> A',
+                                                          label: 'Sort tag 9Z → 0A',
                                                           value: '-tag',
                                                       },
                                                   },
@@ -365,11 +365,11 @@ const ComputePlans = (): JSX.Element => {
                                             {
                                                 label: hp,
                                                 asc: {
-                                                    label: `Sort ${hp} A -> Z`,
+                                                    label: `Sort ${hp} 0A → 9Z`,
                                                     value: `metadata__${hp}`,
                                                 },
                                                 desc: {
-                                                    label: `Sort ${hp} Z -> A`,
+                                                    label: `Sort ${hp} 9Z → 0A`,
                                                     value: `-metadata__${hp}`,
                                                 },
                                             },

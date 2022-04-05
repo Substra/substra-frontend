@@ -106,11 +106,11 @@ const Datasets = (): JSX.Element => {
                                         {
                                             label: 'Name',
                                             asc: {
-                                                label: 'Sort name A -> Z',
+                                                label: 'Sort name 0A → 9Z',
                                                 value: 'name',
                                             },
                                             desc: {
-                                                label: 'Sort name Z -> A',
+                                                label: 'Sort name 9Z → 0A',
                                                 value: '-name',
                                             },
                                         },
@@ -128,11 +128,11 @@ const Datasets = (): JSX.Element => {
                                         {
                                             label: 'Owner',
                                             asc: {
-                                                label: 'Sort owner A -> Z',
+                                                label: 'Sort owner 0A → 9Z',
                                                 value: 'owner',
                                             },
                                             desc: {
-                                                label: 'Sort owner Z -> A',
+                                                label: 'Sort owner 9Z → 0A',
                                                 value: '-owner',
                                             },
                                         },
