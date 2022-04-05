@@ -33,12 +33,6 @@ export const useSyncedState = <T>(
         return urlSearchParams.get(param);
     };
 
-    const deleteParam = () => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        urlSearchParams.delete(param);
-        setLocationParams(urlSearchParams);
-    };
-
     const [state, setState] = useState<T>(() => {
         const value = getParam();
         return value === null ? originalValue : parse(value);
@@ -59,8 +53,6 @@ export const useSyncedState = <T>(
         return () => {
             // unregister events
             events.forEach((e) => removeEventListener(e, updateState));
-            // reset param in URL
-            deleteParam();
         };
     }, []);
 
