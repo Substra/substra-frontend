@@ -110,11 +110,11 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Name',
                                             asc: {
-                                                label: 'Sort name 0A → 9Z',
+                                                label: 'Sort name A -> Z',
                                                 value: 'name',
                                             },
                                             desc: {
-                                                label: 'Sort name 9Z → 0A',
+                                                label: 'Sort name Z -> A',
                                                 value: '-name',
                                             },
                                         },
@@ -132,11 +132,11 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Owner',
                                             asc: {
-                                                label: 'Sort owner 0A → 9Z',
+                                                label: 'Sort owner A -> Z',
                                                 value: 'owner',
                                             },
                                             desc: {
-                                                label: 'Sort owner 9Z → 0A',
+                                                label: 'Sort owner Z -> A',
                                                 value: '-owner',
                                             },
                                         },
@@ -148,11 +148,11 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Category',
                                             asc: {
-                                                label: 'Sort category 0A → 9Z',
+                                                label: 'Sort category A -> Z',
                                                 value: 'category',
                                             },
                                             desc: {
-                                                label: 'Sort category 9Z → 0A',
+                                                label: 'Sort category Z -> A',
                                                 value: '-category',
                                             },
                                         },

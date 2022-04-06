@@ -218,22 +218,22 @@ const TasksTable = ({
                                             {
                                                 label: 'Category',
                                                 asc: {
-                                                    label: 'Sort category 0A → 9Z',
+                                                    label: 'Sort category A -> Z',
                                                     value: 'category',
                                                 },
                                                 desc: {
-                                                    label: 'Sort category 9Z → 0A',
+                                                    label: 'Sort category Z -> A',
                                                     value: '-category',
                                                 },
                                             },
                                             {
                                                 label: 'Worker',
                                                 asc: {
-                                                    label: 'Sort worker 0A → 9Z',
+                                                    label: 'Sort worker A -> Z',
                                                     value: 'worker',
                                                 },
                                                 desc: {
-                                                    label: 'Sort worker 9Z → 0A',
+                                                    label: 'Sort worker Z -> A',
                                                     value: '-worker',
                                                 },
                                             },
@@ -288,11 +288,11 @@ const TasksTable = ({
                                                 {
                                                     label: 'Compute plan',
                                                     asc: {
-                                                        label: 'Sort compute plan 0A → 9Z',
+                                                        label: 'Sort compute plan A -> Z',
                                                         value: 'compute_plan_key',
                                                     },
                                                     desc: {
-                                                        label: 'Sort compute plan 9Z → 0A',
+                                                        label: 'Sort compute plan Z -> A',
                                                         value: '-compute_plan_key',
                                                     },
                                                 },
