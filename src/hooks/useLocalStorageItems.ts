@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { HasKey } from '@/modules/common/CommonTypes';
 
 import useAppSelector from './useAppSelector';
 
-function useLoadSave<T>(localStorageKey: string) {
-    const channel = useAppSelector((state) => state.nodes.info.channel);
+function useLoadSave<T>(localStorageKey: string, channel?: string) {
+    if (!channel) {
+        return {
+            load: () => [],
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            save: () => {},
+        };
+    }
     const channelLocalStorageKey = `${channel}-${localStorageKey}`;
     const load = (): T[] => {
         const jsonItems = localStorage.getItem(channelLocalStorageKey) || '[]';
@@ -36,8 +42,15 @@ function useLocalStorageItems<Type>(
     replaceItems: (item: Type[]) => void;
     clearItems: () => void;
 } {
-    const { load, save } = useLoadSave<Type>(localStorageKey);
+    const channel = useAppSelector((state) => state.nodes.info.channel);
+    const { load, save } = useLoadSave<Type>(localStorageKey, channel);
     const [items, setItems] = useState(load);
+
+    useEffect(() => {
+        if (channel) {
+            setItems(load());
+        }
+    }, [channel]);
 
     const includesItem = (item: Type) => {
         for (const i of items) {

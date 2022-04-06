@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Max updated depth issue on ComputePlanChart (#502)
 -   Favorites management in compare page (#507)
 -   useSyncedState hook doesn't remove param from url on unmount (#509)
+-   localStorage values not loaded after login (#515)
 
 ### Changed
 
