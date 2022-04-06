@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Allow keyboard interaction with the chart (#482)
 -   Ordering (#446)
+-   Favorites filter (#510)
 
 ### Fixed
 

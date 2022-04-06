@@ -145,7 +145,16 @@ export const useTableFiltersContext = (
 
 export const useTableFilter = (
     filterKey: string
-): { checkboxesValue: string[]; onOptionChange: OnOptionChange } => {
+): {
+    checkboxesValue: string[];
+    onOptionChange: OnOptionChange;
+    resetCheckboxesValue: () => void;
+    setCheckboxesValue: (values: string[]) => void;
+    setValue: (
+        searchFilters: SearchFilterType[],
+        newValue: string[]
+    ) => SearchFilterType[];
+} => {
     const clearRef = useRef<ClearCallback | null>(null);
     const applyRef = useRef<ApplyCallback | null>(null);
     const resetRef = useRef<ResetCallback | null>(null);
@@ -199,5 +208,8 @@ export const useTableFilter = (
     return {
         checkboxesValue,
         onOptionChange,
+        resetCheckboxesValue,
+        setCheckboxesValue,
+        setValue,
     };
 };

@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useMemo } from 'react';
 
 import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 
@@ -9,6 +9,7 @@ import {
     SearchFilterType,
 } from '@/libs/searchFilter';
 import { getStatusLabel } from '@/libs/status';
+import { areSetEqual } from '@/libs/utils';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 
@@ -148,6 +149,36 @@ export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
                 ))}
             </>
         );
+    }
+
+    return null;
+};
+
+export const FavoritesTableFilterTag = ({
+    favorites,
+}: {
+    favorites: string[];
+}): JSX.Element | null => {
+    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
+        useTagFilter('key');
+
+    const isFavoriteOnly = useMemo(() => {
+        return (
+            favorites.length > 0 &&
+            areSetEqual(
+                new Set(tagFilters.map((tf) => tf.value)),
+                new Set(favorites)
+            )
+        );
+    }, [favorites, tagFilters]);
+
+    const clear = () => {
+        const newFilters = searchFilters.filter((sf) => !isTagFilter(sf));
+        applySearchFilters(newFilters);
+    };
+
+    if (isFavoriteOnly) {
+        return <FilterTag label="Favorites Only" clear={clear} />;
     }
 
     return null;

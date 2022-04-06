@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { areSetEqual } from '@/libs/utils';
 import { NodeType } from '@/modules/nodes/NodesTypes';
 import { compareNodes } from '@/modules/nodes/NodesUtils';
 import { PerformanceType } from '@/modules/perf/PerformancesTypes';
@@ -25,20 +26,6 @@ function buildSerieFeatures(
         metricName: performance.metric.name,
         computePlanKey,
     };
-}
-
-function areSetEqual(s1: Set<string>, s2: Set<string>): boolean {
-    if (s1.size !== s2.size) {
-        return false;
-    }
-
-    for (const v of s1) {
-        if (!s2.has(v)) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 function areSeriesEqual(sf1: SerieFeaturesT, sf2: SerieFeaturesT): boolean {

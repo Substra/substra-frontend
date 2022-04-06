@@ -43,12 +43,14 @@ import {
     Tbody,
 } from '@/components/Table';
 import {
+    FavoritesTableFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
 import {
     TableFilters,
     ComputePlanStatusTableFilter,
+    ComputePlanFavoritesTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
@@ -69,7 +71,8 @@ const ComputePlans = (): JSX.Element => {
         removeItem: unselectComputePlan,
         clearItems: resetSelection,
     } = useLocalStorageKeyItems<ComputePlanT>('selected_compute_plans');
-    const { isFavorite, onFavoriteChange } = useFavoriteComputePlans();
+    const { favorites, isFavorite, onFavoriteChange } =
+        useFavoriteComputePlans();
     const withAbortController = useWithAbortController();
 
     const selectedKeys = selectedComputePlans.map((cp) => cp.key);
@@ -179,6 +182,9 @@ const ComputePlans = (): JSX.Element => {
                     <HStack spacing="2.5">
                         <TableFilters>
                             <ComputePlanStatusTableFilter />
+                            <ComputePlanFavoritesTableFilter
+                                favorites={favorites}
+                            />
                         </TableFilters>
                         <SearchBar />
                     </HStack>
@@ -221,6 +227,7 @@ const ComputePlans = (): JSX.Element => {
                 <Box paddingX="6">
                     <TableFilterTags>
                         <StatusTableFilterTag />
+                        <FavoritesTableFilterTag favorites={favorites} />
                     </TableFilterTags>
                 </Box>
                 <Box flexGrow={1} overflow="auto">

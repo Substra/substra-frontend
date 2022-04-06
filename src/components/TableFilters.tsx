@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
     Button,
@@ -15,13 +15,19 @@ import {
     TabPanel,
     TabPanels,
     Tabs,
+    Text,
     Box,
+    Checkbox,
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
+import useLocationWithParams from '@/hooks/useLocationWithParams';
+import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
+import { areSearchFiltersListsEqual } from '@/libs/searchFilter';
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
+import { areSetEqual } from '@/libs/utils';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
@@ -237,6 +243,89 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
 };
 
 ComputePlanStatusTableFilter.filterTitle = 'Status';
+
+export const ComputePlanFavoritesTableFilter = ({
+    favorites,
+}: {
+    favorites: string[];
+}): JSX.Element => {
+    const {
+        checkboxesValue,
+        resetCheckboxesValue,
+        setCheckboxesValue,
+        setValue,
+    } = useTableFilter('key');
+
+    const {
+        params: { search: searchFilters },
+        setLocationWithParams,
+    } = useLocationWithParams();
+
+    const isFavoritesOnly = () =>
+        favorites.length > 0 &&
+        areSetEqual(new Set(checkboxesValue), new Set(favorites));
+
+    const [favoritesOnly, setFavoritesOnly] = useState(isFavoritesOnly);
+
+    useEffect(() => {
+        setFavoritesOnly(isFavoritesOnly());
+    }, [checkboxesValue]);
+
+    useEffect(() => {
+        if (favoritesOnly) {
+            const newSearchFilters = setValue(searchFilters, favorites);
+            if (!areSearchFiltersListsEqual(searchFilters, newSearchFilters)) {
+                setCheckboxesValue(favorites);
+                setLocationWithParams({ search: newSearchFilters, page: 1 });
+            }
+        }
+    }, [favorites]);
+
+    useSearchFiltersEffect(() => {
+        const cpKeyFilters = searchFilters
+            .filter((sf) => sf.asset === 'compute_plan' && sf.key === 'key')
+            .map((sf) => sf.value);
+
+        if (cpKeyFilters.length === 0 && checkboxesValue.length > 0) {
+            resetCheckboxesValue();
+        }
+    }, [searchFilters]);
+
+    const onChange = () => {
+        if (favoritesOnly) {
+            resetCheckboxesValue();
+        } else {
+            setCheckboxesValue(favorites);
+        }
+        setFavoritesOnly(!favoritesOnly);
+    };
+
+    return (
+        <Box w="100%" paddingY="5" paddingX="30px">
+            <Text color="gray.500" fontSize="xs" mb="2.5">
+                Filter by
+            </Text>
+            <Checkbox
+                isChecked={favoritesOnly}
+                isDisabled={!favorites.length}
+                onChange={onChange}
+                colorScheme="teal"
+                alignItems="start"
+            >
+                <Text fontSize="sm" lineHeight="1.2">
+                    Favorites Only
+                </Text>
+            </Checkbox>
+            {!favorites.length && (
+                <Text color="gray.500" fontSize="xs">
+                    You currently have no favorite compute plan
+                </Text>
+            )}
+        </Box>
+    );
+};
+
+ComputePlanFavoritesTableFilter.filterTitle = 'Favorites';
 
 export const AlgoCategoryTableFilter = (): JSX.Element => {
     const { checkboxesValue, onOptionChange } = useTableFilter('category');
