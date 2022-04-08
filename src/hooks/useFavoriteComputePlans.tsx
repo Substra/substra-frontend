@@ -2,6 +2,7 @@ import { useLocalStorageStringItems } from '@/hooks/useLocalStorageItems';
 
 const useFavoriteComputePlans = (): {
     favorites: string[];
+    setFavorites: (favorites: string[]) => void;
     addToFavorites: (favorite: string) => void;
     removeFromFavorites: (favorite: string) => void;
     isFavorite: (cpKey: string) => boolean;
@@ -9,6 +10,7 @@ const useFavoriteComputePlans = (): {
 } => {
     const {
         items: favorites,
+        setItems: setFavorites,
         includesItem: isFavorite,
         addItem: addToFavorites,
         removeItem: removeFromFavorites,
@@ -24,6 +26,7 @@ const useFavoriteComputePlans = (): {
 
     return {
         favorites,
+        setFavorites,
         addToFavorites,
         removeFromFavorites,
         isFavorite,

@@ -28,14 +28,14 @@ import CopyButton from '@/components/CopyButton';
 interface CustomColumnsModalProps {
     computePlans: ComputePlanT[];
     customHyperparameters: string[];
-    replaceCustomHyperparameters: (hyperparameters: string[]) => void;
+    storeCustomHyperparameters: (hyperparameters: string[]) => void;
     clearCustomHyperparameters: () => void;
 }
 
 const CustomColumnsModal = ({
     computePlans,
     customHyperparameters,
-    replaceCustomHyperparameters,
+    storeCustomHyperparameters,
     clearCustomHyperparameters,
 }: CustomColumnsModalProps): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -80,7 +80,7 @@ const CustomColumnsModal = ({
                 .replace(/\s+/g, '')
                 .split(',');
 
-            replaceCustomHyperparameters(newCustomHyperparameters);
+            storeCustomHyperparameters(newCustomHyperparameters);
         }
 
         onClose();

@@ -1,15 +1,10 @@
-import axios from 'axios';
-import { useLocation } from 'wouter';
-
 import {
     VStack,
     Table,
     Thead,
     Tr,
     Th,
-    Tbody as ChakraTbody,
     Box,
-    Button,
     HStack,
     Flex,
 } from '@chakra-ui/react';
@@ -27,12 +22,11 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import useWithAbortController from '@/hooks/useWithAbortController';
-import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansApi';
+import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { compilePath, PATHS } from '@/routes';
 
+import BulkSelection from '@/components/BulkSelection';
 import CustomColumnsModal from '@/components/CustomColumnsModal';
 import OrderingTh from '@/components/OrderingTh';
 import SearchBar from '@/components/SearchBar';
@@ -63,59 +57,35 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters, match },
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
-    const [, setLocation] = useLocation();
     const {
         items: selectedComputePlans,
-        updateItem: updateSelectedComputePlan,
         addItem: selectComputePlan,
         removeItem: unselectComputePlan,
         clearItems: resetSelection,
-    } = useLocalStorageKeyItems<ComputePlanT>('selected_compute_plans');
-    const { favorites, isFavorite, onFavoriteChange } =
-        useFavoriteComputePlans();
-    const withAbortController = useWithAbortController();
+    } = useLocalStorageKeyItems<{ key: string; name: string }>(
+        'selected_compute_plans_'
+    );
+    // Adding an underscore at the end to create a new variable for selected compute plans.
+    // This is needed because selected_compute_plans used to store full cp objects in local storage.
+    // So it would cause a crash if users haven't deleted the old variable (which they probably won't bother doing).
 
     const selectedKeys = selectedComputePlans.map((cp) => cp.key);
 
-    useSearchFiltersEffect(() => {
-        const refreshSelected = async (abortController: AbortController) => {
-            for (const computePlan of selectedComputePlans) {
-                retrieveComputePlan(computePlan.key, {
-                    signal: abortController.signal,
-                }).then(
-                    (response) => {
-                        const refreshedComputePlan = response.data;
-                        updateSelectedComputePlan(refreshedComputePlan);
-                    },
-                    (error) => {
-                        // do nothing if the call has been voluntarily canceled
-                        if (axios.isCancel(error)) {
-                            return;
-                        }
-                        // remove from selected if there was an error
-                        if (selectedKeys.includes(computePlan.key)) {
-                            unselectComputePlan(computePlan);
-                        }
-                    }
-                );
-            }
-        };
+    const { favorites, setFavorites, isFavorite, onFavoriteChange } =
+        useFavoriteComputePlans();
 
-        const abortRefreshSelected = withAbortController(refreshSelected);
-        const abortListComputePlans = dispatchWithAutoAbort(
-            listComputePlans({
-                filters: searchFilters,
-                page,
-                match,
-                ordering,
-            })
-        );
-
-        return () => {
-            abortRefreshSelected();
-            abortListComputePlans();
-        };
-    }, [searchFilters, page, match, ordering]);
+    useSearchFiltersEffect(
+        () =>
+            dispatchWithAutoAbort(
+                listComputePlans({
+                    filters: searchFilters,
+                    page,
+                    match,
+                    ordering,
+                })
+            ),
+        [searchFilters, page, match, ordering]
+    );
 
     const computePlans: ComputePlanT[] = useAppSelector(
         (state) => state.computePlans.computePlans
@@ -136,7 +106,7 @@ const ComputePlans = (): JSX.Element => {
 
     const {
         customHyperparameters,
-        replaceCustomHyperparameters,
+        storeCustomHyperparameters,
         clearCustomHyperparameters,
     } = useCustomHyperparameters();
     const activeHyperparameters = customHyperparameters.length
@@ -146,21 +116,17 @@ const ComputePlans = (): JSX.Element => {
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
             // remove CP from selection
-            unselectComputePlan(computePlan);
+            unselectComputePlan({
+                key: computePlan.key,
+                name: MELLODDY ? getMelloddyName(computePlan) : computePlan.tag,
+            });
         } else {
             // add CP to selection
-            selectComputePlan(computePlan);
+            selectComputePlan({
+                key: computePlan.key,
+                name: MELLODDY ? getMelloddyName(computePlan) : computePlan.tag,
+            });
         }
-    };
-
-    const onClear = () => {
-        resetSelection();
-    };
-
-    const onCompare = () => {
-        setLocation(
-            compilePath(PATHS.COMPARE, { keys: selectedKeys.join(',') })
-        );
     };
 
     const context = useTableFiltersContext('compute_plan');
@@ -169,7 +135,8 @@ const ComputePlans = (): JSX.Element => {
     return (
         <TableFiltersContext.Provider value={context}>
             <VStack
-                paddingY="5"
+                paddingTop="5"
+                paddingBottom={selectedComputePlans.length ? '0' : '5'}
                 spacing="2.5"
                 alignItems="stretch"
                 width="100%"
@@ -188,41 +155,18 @@ const ComputePlans = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    <HStack spacing="4">
-                        {selectedKeys.length > 0 && (
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={onClear}
-                                disabled={selectedKeys.length === 0}
-                            >
-                                Clear
-                            </Button>
-                        )}
-                        {HYPERPARAMETERS && (
-                            <CustomColumnsModal
-                                computePlans={computePlans}
-                                customHyperparameters={customHyperparameters}
-                                replaceCustomHyperparameters={
-                                    replaceCustomHyperparameters
-                                }
-                                clearCustomHyperparameters={
-                                    clearCustomHyperparameters
-                                }
-                            />
-                        )}
-                        <Button
-                            marginLeft={16}
-                            size="sm"
-                            colorScheme="teal"
-                            onClick={onCompare}
-                            disabled={selectedKeys.length < 2}
-                        >
-                            {selectedKeys.length < 2
-                                ? 'Select compute plans to compare'
-                                : `Compare ${selectedKeys.length} compute plans`}
-                        </Button>
-                    </HStack>
+                    {HYPERPARAMETERS && (
+                        <CustomColumnsModal
+                            computePlans={computePlans}
+                            customHyperparameters={customHyperparameters}
+                            storeCustomHyperparameters={
+                                storeCustomHyperparameters
+                            }
+                            clearCustomHyperparameters={
+                                clearCustomHyperparameters
+                            }
+                        />
+                    )}
                 </Flex>
                 <Box paddingX="6">
                     <TableFilterTags>
@@ -386,26 +330,6 @@ const ComputePlans = (): JSX.Element => {
                                 ))}
                             </Tr>
                         </Thead>
-                        <ChakraTbody>
-                            {selectedComputePlans.map((computePlan) => (
-                                <ComputePlanTr
-                                    key={computePlan.key}
-                                    computePlan={computePlan}
-                                    isSelected={selectedKeys.includes(
-                                        computePlan.key
-                                    )}
-                                    onSelectionChange={onSelectionChange(
-                                        computePlan
-                                    )}
-                                    isFavorite={isFavorite(computePlan.key)}
-                                    onFavoriteChange={onFavoriteChange(
-                                        computePlan.key
-                                    )}
-                                    highlighted={true}
-                                    hyperparametersList={activeHyperparameters}
-                                />
-                            ))}
-                        </ChakraTbody>
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
                         >
@@ -423,35 +347,25 @@ const ComputePlans = (): JSX.Element => {
                                     hyperparametersList={activeHyperparameters}
                                 />
                             ) : (
-                                computePlans
-                                    .filter(
-                                        (computePlan) =>
-                                            !selectedKeys.includes(
-                                                computePlan.key
-                                            )
-                                    )
-                                    .map((computePlan) => (
-                                        <ComputePlanTr
-                                            key={computePlan.key}
-                                            computePlan={computePlan}
-                                            isSelected={selectedKeys.includes(
-                                                computePlan.key
-                                            )}
-                                            onSelectionChange={onSelectionChange(
-                                                computePlan
-                                            )}
-                                            isFavorite={isFavorite(
-                                                computePlan.key
-                                            )}
-                                            onFavoriteChange={onFavoriteChange(
-                                                computePlan.key
-                                            )}
-                                            highlighted={false}
-                                            hyperparametersList={
-                                                activeHyperparameters
-                                            }
-                                        />
-                                    ))
+                                computePlans.map((computePlan) => (
+                                    <ComputePlanTr
+                                        key={computePlan.key}
+                                        computePlan={computePlan}
+                                        isSelected={selectedKeys.includes(
+                                            computePlan.key
+                                        )}
+                                        onSelectionChange={onSelectionChange(
+                                            computePlan
+                                        )}
+                                        isFavorite={isFavorite(computePlan.key)}
+                                        onFavoriteChange={onFavoriteChange(
+                                            computePlan.key
+                                        )}
+                                        hyperparametersList={
+                                            activeHyperparameters
+                                        }
+                                    />
+                                ))
                             )}
                         </Tbody>
                     </Table>
@@ -462,6 +376,18 @@ const ComputePlans = (): JSX.Element => {
                         itemCount={computePlansCount}
                     />
                 </Box>
+                {selectedComputePlans.length > 0 && (
+                    <Box paddingX="4" paddingY="3" backgroundColor="teal.500">
+                        <BulkSelection
+                            selectedComputePlans={selectedComputePlans}
+                            unselectComputePlan={unselectComputePlan}
+                            resetSelection={resetSelection}
+                            favorites={favorites}
+                            setFavorites={setFavorites}
+                            isFavorite={isFavorite}
+                        />
+                    </Box>
+                )}
             </VStack>
         </TableFiltersContext.Provider>
     );

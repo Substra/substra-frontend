@@ -35,20 +35,20 @@ function useLocalStorageItems<Type>(
     areEqual: (a: Type, b: Type) => boolean
 ): {
     items: Type[];
+    setItems: (items: Type[]) => void;
     includesItem: (item: Type) => boolean;
     addItem: (item: Type) => void;
     updateItem: (item: Type) => void;
     removeItem: (item: Type) => void;
-    replaceItems: (item: Type[]) => void;
     clearItems: () => void;
 } {
     const channel = useAppSelector((state) => state.nodes.info.channel);
     const { load, save } = useLoadSave<Type>(localStorageKey, channel);
-    const [items, setItems] = useState(load);
+    const [items, setStateItems] = useState(load);
 
     useEffect(() => {
         if (channel) {
-            setItems(load());
+            setStateItems(load());
         }
     }, [channel]);
 
@@ -61,15 +61,18 @@ function useLocalStorageItems<Type>(
         return false;
     };
 
+    const setItems = (items: Type[]) => {
+        save(items);
+        setStateItems(items);
+    };
+
     const addItem = (item: Type) => {
         const newItems = [...items, item];
-        save(newItems);
         setItems(newItems);
     };
 
     const removeItem = (item: Type) => {
         const newItems = items.filter((i) => !areEqual(i, item));
-        save(newItems);
         setItems(newItems);
     };
 
@@ -77,27 +80,20 @@ function useLocalStorageItems<Type>(
         const newItems = items.map((currentItem) =>
             areEqual(currentItem, item) ? item : currentItem
         );
-        save(newItems);
         setItems(newItems);
     };
 
-    const replaceItems = (items: Type[]) => {
-        save(items);
-        setItems(items);
-    };
-
     const clearItems = () => {
-        save([]);
         setItems([]);
     };
 
     return {
         items,
+        setItems,
         includesItem,
         addItem,
         updateItem,
         removeItem,
-        replaceItems,
         clearItems,
     };
 }

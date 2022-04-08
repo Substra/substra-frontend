@@ -22,7 +22,6 @@ interface ComputePlanTrProps {
     onSelectionChange: () => void;
     isFavorite: boolean;
     onFavoriteChange: () => void;
-    highlighted: boolean;
     hyperparametersList: string[];
 }
 
@@ -32,14 +31,13 @@ const ComputePlanTr = ({
     onSelectionChange,
     isFavorite,
     onFavoriteChange,
-    highlighted,
     hyperparametersList,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
 
     return (
         <ClickableTr
-            backgroundColor={highlighted ? 'gray.50' : 'white'}
+            backgroundColor="white"
             onClick={() =>
                 setLocation(
                     compilePath(PATHS.COMPUTE_PLAN_TASKS, {
@@ -54,7 +52,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="0"
                 zIndex="1"
-                backgroundColor={isSelected ? 'gray.50' : 'white'}
+                backgroundColor="white"
             >
                 <Checkbox
                     isChecked={isSelected}
@@ -66,7 +64,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="50px"
                 zIndex="1"
-                backgroundColor={isSelected ? 'gray.50' : 'white'}
+                backgroundColor="white"
             >
                 <Tooltip
                     label={
@@ -92,7 +90,7 @@ const ComputePlanTr = ({
                 position="sticky"
                 left="86px"
                 zIndex="1"
-                backgroundColor={isSelected ? 'gray.50' : 'white'}
+                backgroundColor="white"
                 {...rightBorderProps}
             >
                 <Text fontSize="xs">

@@ -5,18 +5,18 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 export const useCustomHyperparameters = (): {
     customHyperparameters: string[];
-    replaceCustomHyperparameters: (hyperparameters: string[]) => void;
+    storeCustomHyperparameters: (hyperparameters: string[]) => void;
     clearCustomHyperparameters: () => void;
 } => {
     const {
         items: customHyperparameters,
-        replaceItems: replaceCustomHyperparameters,
+        setItems: storeCustomHyperparameters,
         clearItems: clearCustomHyperparameters,
     } = useLocalStorageStringItems('custom_hyperparameters_columns');
 
     return {
         customHyperparameters,
-        replaceCustomHyperparameters,
+        storeCustomHyperparameters,
         clearCustomHyperparameters,
     };
 };
