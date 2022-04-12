@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+-   Use a separate store for computePlans compare (#513)
+
 ## [0.18.0] - 2022-04-11
 
 ### Added

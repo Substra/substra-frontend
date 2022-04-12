@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
 import algosSlice from '@/modules/algos/AlgosSlice';
+import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
@@ -17,6 +18,7 @@ const store = configureStore({
         user: userSlice,
         datasets: datasetsSlice,
         computePlans: computePlansSlice,
+        compare: compareSlice,
         nodes: nodesSlice,
         newsFeed: newsFeedSlice,
         algos: algosSlice,

@@ -8,7 +8,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { retrieveComputePlans } from '@/modules/computePlans/ComputePlansSlice';
+import { retrieveComputePlans } from '@/modules/computePlans/CompareSlice';
 import { loadSeries } from '@/modules/series/SeriesSlice';
 import { PATHS } from '@/routes';
 
@@ -48,9 +48,7 @@ const Compare = (): JSX.Element => {
 
     const loading = useAppSelector((state) => state.series.loading);
     const series = useAppSelector((state) => state.series.series);
-    const computePlans = useAppSelector(
-        (state) => state.computePlans.computePlans
-    );
+    const computePlans = useAppSelector((state) => state.compare.computePlans);
 
     const { context } = usePerfBrowser(
         series,
