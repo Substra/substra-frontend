@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Fixed
 
 -   Fix search by name and key on datasets page (#520)
+-   Fix localStorage migration issue for hyperparameters (#521)
 
 ## Changed
 
