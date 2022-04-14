@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.1] - 2022-04-14
+
 ## Fixed
 
 -   Fix search by name and key on datasets page (#520)
