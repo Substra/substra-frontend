@@ -58,10 +58,10 @@ export const listDatasets = createAsyncThunk<
     { rejectValue: string }
 >(
     'datasets/list',
-    async ({ filters, page, ordering }: listDatasetsArgs, thunkAPI) => {
+    async ({ filters, page, ordering, match }: listDatasetsArgs, thunkAPI) => {
         try {
             const response = await DatasetAPI.listDatasets(
-                { searchFilters: filters, page, ordering },
+                { searchFilters: filters, page, ordering, match },
                 { signal: thunkAPI.signal }
             );
             return response.data;

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Fixed
+
+-   Fix search by name and key on datasets page (#520)
+
 ## Changed
 
 -   Use a separate store for computePlans compare (#513)
