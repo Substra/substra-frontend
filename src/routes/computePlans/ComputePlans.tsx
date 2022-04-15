@@ -203,7 +203,6 @@ const ComputePlans = (): JSX.Element => {
                                 ></Th>
                                 <OrderingTh
                                     minWidth="250px"
-                                    openFilters={() => onPopoverOpen(0)}
                                     options={
                                         MELLODDY
                                             ? [
@@ -262,7 +261,6 @@ const ComputePlans = (): JSX.Element => {
                                 />
                                 <OrderingTh
                                     minWidth="255px"
-                                    openFilters={() => onPopoverOpen(0)}
                                     options={[
                                         {
                                             label: 'Creation',
@@ -279,7 +277,6 @@ const ComputePlans = (): JSX.Element => {
                                     {...bottomBorderProps}
                                 />
                                 <OrderingTh
-                                    openFilters={() => onPopoverOpen(0)}
                                     minWidth="300px"
                                     whiteSpace="nowrap"
                                     options={[
@@ -311,7 +308,6 @@ const ComputePlans = (): JSX.Element => {
                                     <OrderingTh
                                         key={hp}
                                         minWidth="125px"
-                                        openFilters={() => onPopoverOpen(0)}
                                         options={[
                                             {
                                                 label: hp,

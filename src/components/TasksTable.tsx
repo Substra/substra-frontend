@@ -213,7 +213,6 @@ const TasksTable = ({
                                         ]}
                                     />
                                     <OrderingTh
-                                        openFilters={() => onPopoverOpen(1)}
                                         options={[
                                             {
                                                 label: 'Category',
@@ -251,7 +250,6 @@ const TasksTable = ({
                                         ]}
                                     />
                                     <OrderingTh
-                                        openFilters={() => onPopoverOpen(0)}
                                         width="240px"
                                         whiteSpace="nowrap"
                                         options={[
@@ -281,7 +279,6 @@ const TasksTable = ({
                                     />
                                     {!computePlan && (
                                         <OrderingTh
-                                            openFilters={() => onPopoverOpen(1)}
                                             width="200px"
                                             textAlign="right"
                                             options={[

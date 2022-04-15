@@ -119,7 +119,7 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
 
 interface OrderingThProps extends TableColumnHeaderProps {
     options: OrderingOption[];
-    openFilters: () => void;
+    openFilters?: () => void;
 }
 const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
     return (
@@ -148,15 +148,19 @@ const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
                         size="xs"
                     />
                     <MenuList zIndex="popover">
-                        <MenuItem
-                            onClick={() => {
-                                setTimeout(openFilters, 50);
-                            }}
-                            icon={<RiFilter3Fill />}
-                        >
-                            Filter
-                        </MenuItem>
-                        <MenuDivider />
+                        {openFilters && (
+                            <>
+                                <MenuItem
+                                    onClick={() => {
+                                        setTimeout(openFilters, 50);
+                                    }}
+                                    icon={<RiFilter3Fill />}
+                                >
+                                    Filter
+                                </MenuItem>
+                                <MenuDivider />
+                            </>
+                        )}
                         {options.map(({ label, asc, desc }) => (
                             <Fragment key={label}>
                                 {asc && (
