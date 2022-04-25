@@ -5,7 +5,7 @@ WORKDIR /workspace
 COPY package.json .
 RUN npm install --unsafe-perm
 
-COPY src ./
+COPY . .
 
 ENV API_URL=backend:8000
 
