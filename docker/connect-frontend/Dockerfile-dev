@@ -1,0 +1,10 @@
+FROM node:16.13.0-alpine
+
+WORKDIR /workspace
+
+COPY package.json .
+RUN npm install --unsafe-perm
+
+COPY src ./
+
+CMD [ "npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "8080" ]
