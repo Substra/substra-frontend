@@ -1,4 +1,3 @@
-import { AssetType } from '@/modules/common/CommonTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 export enum NewsItemStatus {
@@ -27,8 +26,14 @@ export const taskCategoryByCategoryNumber: Record<
     [TaskCategoryNumber.aggregate]: TaskCategory.aggregate,
 };
 
+export type NewsItemAssetKind =
+    | 'ASSET_COMPUTE_PLAN'
+    | 'ASSET_ALGO'
+    | 'ASSET_METRIC'
+    | 'ASSET_DATA_MANAGER';
+
 export interface NewsItemType {
-    asset_kind: AssetType;
+    asset_kind: NewsItemAssetKind;
     asset_key: string;
     name: string;
     status: NewsItemStatus;

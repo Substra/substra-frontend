@@ -7,26 +7,39 @@ import * as NewsFeedApi from './NewsFeedApi';
 import { NewsItemType } from './NewsFeedTypes';
 
 interface NewsFeedState {
-    newsFeed: NewsItemType[];
-    newsFeedLoading: boolean;
-    newsFeedError: string;
+    items: NewsItemType[];
+    count: number;
+    currentPage: number;
+    isLastPage: boolean;
+    loading: boolean;
+    error: string;
 }
 
 const initialState: NewsFeedState = {
-    newsFeed: [],
-    newsFeedLoading: true,
-    newsFeedError: '',
+    items: [],
+    count: 0,
+    loading: true,
+    currentPage: 1,
+    isLastPage: false,
+    error: '',
 };
+
+export const NEWS_FEED_PAGE_SIZE = 10;
 
 export const listNewsFeed = createAsyncThunk<
     PaginatedApiResponse<NewsItemType>,
-    void,
+    { firstPage: boolean },
     { rejectValue: string }
->('newsFeed/list', async (_, thunkAPI) => {
+>('newsFeed/list', async ({ firstPage }, thunkAPI) => {
+    const state = thunkAPI.getState() as { newsFeed: NewsFeedState };
+    const page = firstPage ? 1 : state.newsFeed.currentPage;
     try {
-        const response = await NewsFeedApi.listNewsFeed({
-            signal: thunkAPI.signal,
-        });
+        const response = await NewsFeedApi.listNewsFeed(
+            { page: page, pageSize: NEWS_FEED_PAGE_SIZE },
+            {
+                signal: thunkAPI.signal,
+            }
+        );
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -43,19 +56,31 @@ export const newsFeedSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(listNewsFeed.pending, (state) => {
-                state.newsFeedLoading = true;
-                state.newsFeedError = '';
+            .addCase(listNewsFeed.pending, (state, { meta }) => {
+                state.currentPage = meta.arg.firstPage
+                    ? 1
+                    : state.currentPage + 1;
+                state.items = meta.arg.firstPage ? [] : state.items;
+                state.loading = true;
+                state.error = '';
             })
             .addCase(listNewsFeed.fulfilled, (state, { payload }) => {
-                state.newsFeed = payload.results;
-                state.newsFeedLoading = false;
-                state.newsFeedError = '';
+                if (!payload.previous) {
+                    // fetched the first page
+                    state.items = payload.results;
+                } else {
+                    // fetched a subsequent page
+                    state.items = [...state.items, ...payload.results];
+                }
+                state.count = payload.count;
+                state.isLastPage = !payload.next;
+                state.loading = false;
+                state.error = '';
             })
             .addCase(listNewsFeed.rejected, (state, { payload, error }) => {
                 if (error.name !== 'AbortError') {
-                    state.newsFeedLoading = false;
-                    state.newsFeedError = payload || 'Unknown error';
+                    state.loading = false;
+                    state.error = payload || 'Unknown error';
                 }
             });
     },

@@ -24,6 +24,7 @@ import {
     NewsItemType,
     taskCategoryByCategoryNumber,
 } from '@/modules/newsFeed/NewsFeedTypes';
+import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 interface NewsFeedCardProps {
@@ -127,26 +128,28 @@ export const NewsFeedCard = ({ newsItem }: NewsFeedCardProps): JSX.Element => {
                             left="2.5"
                         />
                     </Box>
-                    <Box
-                        height="4"
-                        width="4"
-                        backgroundColor="purple.700"
-                        border="1px solid white"
-                        borderRadius="3"
-                        position="absolute"
-                        top="7"
-                        right="-1"
-                    >
-                        <Icon
-                            as={RiStackshareLine}
-                            color="white"
-                            height="3"
-                            width="3"
+                    {newsItem.asset_kind === 'ASSET_COMPUTE_PLAN' && (
+                        <Box
+                            height="4"
+                            width="4"
+                            backgroundColor="purple.700"
+                            border="1px solid white"
+                            borderRadius="3"
                             position="absolute"
-                            top="1px"
-                            left="1px"
-                        />
-                    </Box>
+                            top="7"
+                            right="-1"
+                        >
+                            <Icon
+                                as={RiStackshareLine}
+                                color="white"
+                                height="3"
+                                width="3"
+                                position="absolute"
+                                top="1px"
+                                left="1px"
+                            />
+                        </Box>
+                    )}
                 </Box>
                 {/* Content */}
                 <Flex flexDirection="column" marginLeft="4">
@@ -156,14 +159,16 @@ export const NewsFeedCard = ({ newsItem }: NewsFeedCardProps): JSX.Element => {
                             color={`${taskMetadata[taskStatus]['color']}.500`}
                             fontWeight="500"
                         >
-                            Compute plan
+                            {getAssetKindLabel(newsItem.asset_kind)}
                         </Text>
                         <Text fontSize="xs" color="gray.500" fontWeight="500">
                             • {shortFormatDate(newsItem.timestamp)}
                         </Text>
                     </HStack>
                     <Box fontSize="xs">
-                        <Text as="span">{newsItem.name}</Text>
+                        <Text as="span" wordBreak="break-all">
+                            {newsItem.name}
+                        </Text>
                         <Text as="span" color="gray.500">
                             {' '}
                             {taskMetadata[taskStatus]['text']}

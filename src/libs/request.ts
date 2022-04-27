@@ -67,7 +67,7 @@ export const getApiOptions = ({
     match,
     ordering,
 }: {
-    searchFilters: SearchFilterType[];
+    searchFilters?: SearchFilterType[];
     page?: number;
     pageSize?: number;
     match?: string;
@@ -76,10 +76,12 @@ export const getApiOptions = ({
     let params = {};
 
     // searchFilters
-    const search = buildSearchFiltersString(searchFilters);
+    if (searchFilters) {
+        const search = buildSearchFiltersString(searchFilters);
 
-    if (search) {
-        params = { ...params, search };
+        if (search) {
+            params = { ...params, search };
+        }
     }
 
     // pagination
