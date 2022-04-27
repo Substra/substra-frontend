@@ -16,6 +16,7 @@ import {
     RiInformationLine,
     RiPlayMiniLine,
     RiStackshareLine,
+    RiIndeterminateCircleLine,
 } from 'react-icons/ri';
 
 import { shortFormatDate } from '@/libs/utils';
@@ -67,8 +68,8 @@ const taskMetadata: TaskMetadataT = {
     },
     STATUS_CANCELED: {
         text: 'has been canceled',
-        color: 'red',
-        icon: RiCloseFill,
+        color: 'gray',
+        icon: RiIndeterminateCircleLine,
         path: PATHS.COMPUTE_PLAN_TASKS,
     },
 };
