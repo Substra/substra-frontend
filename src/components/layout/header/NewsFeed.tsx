@@ -1,21 +1,34 @@
+import { useRef } from 'react';
+
 import {
     Box,
+    CloseButton,
     Icon,
     IconButton,
     Popover,
-    PopoverCloseButton,
     PopoverContent,
     PopoverHeader,
     PopoverTrigger,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { RiNotification3Fill } from 'react-icons/ri';
 
 import NewsFeedList from '@/components/layout/header/NewsFeedList';
 
 const NewsFeed = (): JSX.Element => {
+    const { onOpen, onClose, isOpen } = useDisclosure();
+    const initialFocusRef = useRef(null);
+
     return (
         <Box>
-            <Popover placement="bottom-end" autoFocus={false} isLazy>
+            <Popover
+                placement="bottom-end"
+                isOpen={isOpen}
+                onOpen={onOpen}
+                onClose={onClose}
+                isLazy
+                initialFocusRef={initialFocusRef}
+            >
                 <PopoverTrigger>
                     <IconButton
                         aria-label="News feed"
@@ -43,7 +56,14 @@ const NewsFeed = (): JSX.Element => {
                     >
                         notifications
                     </PopoverHeader>
-                    <PopoverCloseButton marginTop="3" marginRight="3" />
+                    <CloseButton
+                        onClick={onClose}
+                        position="absolute"
+                        top="4"
+                        right="5"
+                        size="sm"
+                        ref={initialFocusRef}
+                    />
                     <NewsFeedList />
                 </PopoverContent>
             </Popover>
