@@ -37,7 +37,7 @@ const CustomColumnsModal = ({
     customHyperparameters,
     storeCustomHyperparameters,
     clearCustomHyperparameters,
-}: CustomColumnsModalProps): JSX.Element => {
+}: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const hyperparametersList = useHyperparameters(computePlans);
@@ -85,6 +85,10 @@ const CustomColumnsModal = ({
 
         onClose();
     };
+
+    if (hyperparametersList.length === 0) {
+        return null;
+    }
 
     return (
         <>

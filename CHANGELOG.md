@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Make "Permissions" row top aligned in drawers and sidebars (#540)
 -   Add empty state message in performance chart filter (#541)
 -   Close news feed on blur (#546)
+-   Hide "Customize columns" button if no hyperparameters are defined (#550)
 
 ### Changed
 
