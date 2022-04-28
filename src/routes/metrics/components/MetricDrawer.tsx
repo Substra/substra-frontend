@@ -31,9 +31,9 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
-import PermissionTag from '@/components/PermissionTag';
 
 const MetricDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
@@ -123,16 +123,10 @@ const MetricDrawer = (): JSX.Element => {
                                 metric.owner
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Permissions">
-                            {metricLoading || !metric ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                <PermissionTag
-                                    permission={metric.permissions.process}
-                                    listNodes={true}
-                                />
-                            )}
-                        </DrawerSectionEntry>
+                        <PermissionsDrawerSectionEntry
+                            loading={metricLoading}
+                            asset={metric}
+                        />
                     </DrawerSection>
                     <MetadataDrawerSection
                         metadata={metric?.metadata}

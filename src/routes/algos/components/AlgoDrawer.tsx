@@ -29,9 +29,9 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
-import PermissionTag from '@/components/PermissionTag';
 
 const AlgoDrawer = (): JSX.Element => {
     const { setLocationWithParams } = useLocationWithParams();
@@ -126,16 +126,10 @@ const AlgoDrawer = (): JSX.Element => {
                                 algo.owner
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Permissions">
-                            {algoLoading || !algo ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                <PermissionTag
-                                    permission={algo.permissions.process}
-                                    listNodes={true}
-                                />
-                            )}
-                        </DrawerSectionEntry>
+                        <PermissionsDrawerSectionEntry
+                            loading={algoLoading}
+                            asset={algo}
+                        />
                     </DrawerSection>
                     <MetadataDrawerSection
                         metadata={algo?.metadata}

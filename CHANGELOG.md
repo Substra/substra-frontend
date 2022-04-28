@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Make "Permissions" row top aligned in drawers and sidebars (#540)
+
 ### Changed
 
 -   Use paginated results for the newsfeed (#524)
@@ -25,12 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.18.1] - 2022-04-14
 
-## Fixed
+### Fixed
 
 -   Fix search by name and key on datasets page (#520)
 -   Fix localStorage migration issue for hyperparameters (#521)
 
-## Changed
+### Changed
 
 -   Use a separate store for computePlans compare (#513)
 

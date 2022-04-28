@@ -15,8 +15,13 @@ import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';
+import { AlgoT } from '@/modules/algos/AlgosTypes';
+import { DatasetType } from '@/modules/datasets/DatasetsTypes';
+import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 import CopyIconButton from '@/components/CopyIconButton';
+
+import PermissionTag from './PermissionTag';
 
 export const DrawerSectionHeading = ({
     title,
@@ -174,3 +179,37 @@ export const DrawerSectionDateEntry = ({
 
 export const DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH = '325px';
 export const DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH = '300px';
+
+export const PermissionsDrawerSectionEntry = ({
+    loading,
+    asset,
+}: {
+    loading?: boolean;
+    asset: AlgoT | DatasetType | MetricType | null;
+}) => {
+    if (loading || !asset) {
+        return (
+            <DrawerSectionEntry title="Permissions">
+                <Skeleton height="4" width="250px" />
+            </DrawerSectionEntry>
+        );
+    }
+    return (
+        <DrawerSectionEntryWrapper alignItems="flex-start">
+            <Text
+                whiteSpace="nowrap"
+                width="120px"
+                flexShrink="0"
+                paddingTop="2px" // compensates for the extra height of tag components
+            >
+                Permissions
+            </Text>
+            <Box flexGrow="1">
+                <PermissionTag
+                    permission={asset.permissions.process}
+                    listNodes={true}
+                />
+            </Box>
+        </DrawerSectionEntryWrapper>
+    );
+};

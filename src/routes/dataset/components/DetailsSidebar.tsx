@@ -7,10 +7,10 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import { DrawerSectionHeading } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
-import PermissionTag from '@/components/PermissionTag';
 
 import DataSamplesListItem from './DataSamplesListItem';
 
@@ -29,12 +29,7 @@ const DetailsSidebar = (): JSX.Element => {
                         <DrawerSectionEntry title="Owner">
                             {dataset.owner}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Permissions">
-                            <PermissionTag
-                                permission={dataset.permissions.process}
-                                listNodes={true}
-                            />
-                        </DrawerSectionEntry>
+                        <PermissionsDrawerSectionEntry asset={dataset} />
                     </>
                 )}
             </DrawerSection>
