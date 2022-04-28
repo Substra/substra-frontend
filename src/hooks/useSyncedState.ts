@@ -39,19 +39,22 @@ export const useSyncedState = <T>(
     });
 
     useEffect(() => {
+        // set originalValue in URL if not defined at first
+        if (getParam() === null) {
+            setParam(originalValue);
+        }
+
+        // handler reacting to changes in URL
         const updateState = () => {
             const value = getParam();
-            if (value === null) {
-                setParam(originalValue);
-            } else {
-                setState(parse(value));
-            }
+            setState(value === null ? originalValue : parse(value));
         };
 
+        // register handler
         events.forEach((e) => addEventListener(e, updateState));
 
         return () => {
-            // unregister events
+            // unregister handler
             events.forEach((e) => removeEventListener(e, updateState));
         };
     }, []);
