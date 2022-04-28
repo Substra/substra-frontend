@@ -10,7 +10,7 @@ import {
     MenuItem,
     MenuList,
 } from '@chakra-ui/react';
-import { RiDownloadLine } from 'react-icons/ri';
+import { RiArrowDownSLine, RiDownloadLine } from 'react-icons/ri';
 
 import useDownloadPerfCsv from '@/hooks/useDownloadPerfCsv';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
@@ -44,25 +44,38 @@ const PerfDownloadButton = (): JSX.Element => {
         }
     };
 
-    return (
-        <Menu>
-            <MenuButton
-                as={Button}
+    if (!selectedMetricName) {
+        return (
+            <Button
                 aria-label="Download chart"
                 leftIcon={<Icon as={RiDownloadLine} />}
                 variant="solid"
                 colorScheme="teal"
                 size="xs"
                 isDisabled={loading}
+                onClick={downloadPerfCsv}
             >
-                Download...
+                Download as CSV
+            </Button>
+        );
+    }
+
+    return (
+        <Menu>
+            <MenuButton
+                as={Button}
+                aria-label="Download chart"
+                leftIcon={<Icon as={RiDownloadLine} />}
+                rightIcon={<Icon as={RiArrowDownSLine} />}
+                variant="solid"
+                colorScheme="teal"
+                size="xs"
+                isDisabled={loading}
+            >
+                Download
             </MenuButton>
             <MenuList zIndex="popover">
-                <MenuItem
-                    onClick={onDownloadImage}
-                    isDisabled={!selectedMetricName}
-                    fontSize="xs"
-                >
+                <MenuItem onClick={onDownloadImage} fontSize="xs">
                     Download as JPEG
                 </MenuItem>
                 <MenuItem onClick={downloadPerfCsv} fontSize="xs">
