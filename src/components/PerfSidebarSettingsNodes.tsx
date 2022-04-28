@@ -14,6 +14,7 @@ import {
     Tag,
     TagCloseButton,
     TagLabel,
+    Text,
     useDisclosure,
     useOutsideClick,
 } from '@chakra-ui/react';
@@ -116,6 +117,17 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             isDisabled={loading}
                         />
                         <MenuList maxHeight="350px" overflowY="auto">
+                            {notSelectedNodes.length === 0 &&
+                                notSelectedAverageNodes.length === 0 && (
+                                    <Text
+                                        fontSize="sm"
+                                        fontWeight="semibold"
+                                        color="gray.500"
+                                        textAlign="center"
+                                    >
+                                        No more options
+                                    </Text>
+                                )}
                             {notSelectedAverageNodes.length > 0 && (
                                 <MenuGroup
                                     title="Aggregations"
@@ -139,7 +151,10 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             )}
                             {notSelectedNodes.length > 0 && (
                                 <>
-                                    <MenuDivider />
+                                    {notSelectedAverageNodes.length > 0 && (
+                                        <MenuDivider />
+                                    )}
+
                                     <MenuGroup
                                         title="Organizations"
                                         fontSize="xs"
