@@ -138,7 +138,10 @@ const Datasets = (): JSX.Element => {
                                         },
                                     ]}
                                 />
-                                <AssetsTablePermissionsTh />
+                                <AssetsTablePermissionsTh textAlign="left" />
+                                <AssetsTablePermissionsTh>
+                                    Logs access
+                                </AssetsTablePermissionsTh>
                             </Tr>
                         </Thead>
                         <Tbody data-cy={datasetsLoading ? 'loading' : 'loaded'}>
@@ -161,6 +164,9 @@ const Datasets = (): JSX.Element => {
                                                 by Foo
                                             </Text>
                                         </Skeleton>
+                                    </Td>
+                                    <Td>
+                                        <Skeleton width="100px" height="20px" />
                                     </Td>
                                     <Td textAlign="right">
                                         <Skeleton width="100px" height="20px" />
@@ -186,10 +192,17 @@ const Datasets = (): JSX.Element => {
                                                 dataset.creation_date
                                             )} by ${dataset.owner}`}</Text>
                                         </Td>
-                                        <Td textAlign="right">
+                                        <Td>
                                             <PermissionTag
                                                 permission={
                                                     dataset.permissions.process
+                                                }
+                                            />
+                                        </Td>
+                                        <Td textAlign="right">
+                                            <PermissionTag
+                                                permission={
+                                                    dataset.logs_permission
                                                 }
                                             />
                                         </Td>

@@ -14,14 +14,16 @@ export const AssetsTable = (props: TableProps): JSX.Element => (
     />
 );
 
-export const AssetsTablePermissionsTh = (props: TableColumnHeaderProps) => (
+export const AssetsTablePermissionsTh = ({
+    children,
+    ...props
+}: TableColumnHeaderProps) => (
     <Th
-        {...props}
         textAlign="right"
         width="140px"
         whiteSpace="nowrap"
         title="Permissions"
-    >
-        Permissions
-    </Th>
+        children={children || 'Permissions'}
+        {...props}
+    />
 );

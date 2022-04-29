@@ -7,10 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Display logs permissions on datasets table and details page (#551)
+
 ### Fixed
 
 -   Make "Permissions" row top aligned in drawers and sidebars (#540)
 -   Add empty state message in performance chart filter (#541)
+-   Synced state init issue (#543)
+-   Switch icons & wordings for ordering (#545)
 -   Close news feed on blur (#546)
 -   Hide "Customize columns" button if no hyperparameters are defined (#550)
 
@@ -19,11 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Use paginated results for the newsfeed (#524)
 -   Newsfeed card icon for canceled compute plans (#525)
 -   More explicit download button in perf browser (#547)
-
-### Fixed
-
--   synced state init issue (#543)
--   Switch icons & wordings for ordering (#545)
 
 ## [0.19.0] - 2022-04-19
 

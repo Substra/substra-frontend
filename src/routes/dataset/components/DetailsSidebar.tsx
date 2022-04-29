@@ -29,7 +29,13 @@ const DetailsSidebar = (): JSX.Element => {
                         <DrawerSectionEntry title="Owner">
                             {dataset.owner}
                         </DrawerSectionEntry>
-                        <PermissionsDrawerSectionEntry asset={dataset} />
+                        <PermissionsDrawerSectionEntry
+                            permission={dataset.permissions.process}
+                        />
+                        <PermissionsDrawerSectionEntry
+                            title="Logs permissions"
+                            permission={dataset.logs_permission}
+                        />
                     </>
                 )}
             </DrawerSection>

@@ -128,7 +128,7 @@ const AlgoDrawer = (): JSX.Element => {
                         </DrawerSectionEntry>
                         <PermissionsDrawerSectionEntry
                             loading={algoLoading}
-                            asset={algo}
+                            permission={algo?.permissions.process}
                         />
                     </DrawerSection>
                     <MetadataDrawerSection

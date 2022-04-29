@@ -125,7 +125,7 @@ const MetricDrawer = (): JSX.Element => {
                         </DrawerSectionEntry>
                         <PermissionsDrawerSectionEntry
                             loading={metricLoading}
-                            asset={metric}
+                            permission={metric?.permissions.process}
                         />
                     </DrawerSection>
                     <MetadataDrawerSection

@@ -15,13 +15,10 @@ import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { DatasetType } from '@/modules/datasets/DatasetsTypes';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
+import { PermissionType } from '@/modules/common/CommonTypes';
 
 import CopyIconButton from '@/components/CopyIconButton';
-
-import PermissionTag from './PermissionTag';
+import PermissionTag from '@/components/PermissionTag';
 
 export const DrawerSectionHeading = ({
     title,
@@ -181,15 +178,17 @@ export const DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH = '325px';
 export const DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH = '300px';
 
 export const PermissionsDrawerSectionEntry = ({
+    title,
     loading,
-    asset,
+    permission,
 }: {
+    title?: string;
     loading?: boolean;
-    asset: AlgoT | DatasetType | MetricType | null;
+    permission?: PermissionType;
 }) => {
-    if (loading || !asset) {
+    if (loading || !permission) {
         return (
-            <DrawerSectionEntry title="Permissions">
+            <DrawerSectionEntry title={title || 'Permissions'}>
                 <Skeleton height="4" width="250px" />
             </DrawerSectionEntry>
         );
@@ -202,13 +201,10 @@ export const PermissionsDrawerSectionEntry = ({
                 flexShrink="0"
                 paddingTop="2px" // compensates for the extra height of tag components
             >
-                Permissions
+                {title || 'Permissions'}
             </Text>
             <Box flexGrow="1">
-                <PermissionTag
-                    permission={asset.permissions.process}
-                    listNodes={true}
-                />
+                <PermissionTag permission={permission} listNodes={true} />
             </Box>
         </DrawerSectionEntryWrapper>
     );
