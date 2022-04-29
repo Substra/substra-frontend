@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Switch icons & wordings for ordering (#545)
 -   Close news feed on blur (#546)
 -   Hide "Customize columns" button if no hyperparameters are defined (#550)
+-   Bad redirects breaking browsers back buttons (#552)
 
 ### Changed
 
