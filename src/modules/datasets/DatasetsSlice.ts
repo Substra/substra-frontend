@@ -46,22 +46,25 @@ const initialState: DatasetState = {
     openerError: '',
 };
 
-interface listDatasetsArgs {
+type listDatasetsArgs = {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
     match: string;
-}
+} & {
+    [param: string]: unknown;
+};
+
 export const listDatasets = createAsyncThunk<
     PaginatedApiResponse<DatasetStubType>,
     listDatasetsArgs,
     { rejectValue: string }
 >(
     'datasets/list',
-    async ({ filters, page, ordering, match }: listDatasetsArgs, thunkAPI) => {
+    async ({ filters, ...params }: listDatasetsArgs, thunkAPI) => {
         try {
             const response = await DatasetAPI.listDatasets(
-                { searchFilters: filters, page, ordering, match },
+                { searchFilters: filters, ...params },
                 { signal: thunkAPI.signal }
             );
             return response.data;

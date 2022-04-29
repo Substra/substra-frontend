@@ -38,12 +38,14 @@ const initialState: AlgoState = {
     descriptionError: '',
 };
 
-export interface listAlgosArgs {
+type listAlgosArgs = {
     filters: SearchFilterType[];
-    page: number;
-    ordering: string;
-    match: string;
-}
+    page?: number;
+    ordering?: string;
+    match?: string;
+} & {
+    [param: string]: unknown;
+};
 
 export const listAlgos = createAsyncThunk<
     PaginatedApiResponse<AlgoT>,
@@ -51,12 +53,15 @@ export const listAlgos = createAsyncThunk<
     { rejectValue: string }
 >(
     'algos/listAlgos',
-    async ({ filters, page, ordering, match }: listAlgosArgs, thunkAPI) => {
+    async ({ filters, ...params }: listAlgosArgs, thunkAPI) => {
         try {
             const standardFilters = filters.filter((sf) => sf.asset === 'algo');
 
             const response = await AlgosApi.listAlgos(
-                { searchFilters: standardFilters, page, ordering, match },
+                {
+                    searchFilters: standardFilters,
+                    ...params,
+                },
                 { signal: thunkAPI.signal }
             );
 

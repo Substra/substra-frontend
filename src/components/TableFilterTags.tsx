@@ -1,15 +1,10 @@
-import { useContext, useCallback, useMemo } from 'react';
-
 import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import { TableFiltersContext } from '@/hooks/useTableFilters';
 import {
-    areSearchFiltersListsEqual,
-    SearchFilterType,
-} from '@/libs/searchFilter';
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+} from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
-import { areSetEqual } from '@/libs/utils';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 
@@ -20,35 +15,6 @@ interface TableFilterTagsProps {
 export const TableFilterTags = ({
     children,
 }: TableFilterTagsProps): JSX.Element => <HStack>{children}</HStack>;
-
-const useTagFilter = (assetKey: string) => {
-    const { asset } = useContext(TableFiltersContext);
-    const {
-        params: { search: searchFilters },
-        setLocationWithParams,
-    } = useLocationWithParams();
-
-    const isTagFilter = useCallback(
-        (sf: SearchFilterType): boolean =>
-            sf.asset === asset && sf.key === assetKey,
-        [asset]
-    );
-
-    const tagFilters = searchFilters.filter(isTagFilter);
-
-    const applySearchFilters = (newFilters: SearchFilterType[]) => {
-        if (!areSearchFiltersListsEqual(searchFilters, newFilters)) {
-            setLocationWithParams({ search: newFilters, page: 1 });
-        }
-    };
-
-    return {
-        searchFilters,
-        isTagFilter,
-        tagFilters,
-        applySearchFilters,
-    };
-};
 
 interface FilterTagProps {
     label: string;
@@ -80,31 +46,25 @@ const CounterFilterTag = ({
     assetKey,
     formatter,
 }: CounterFilterTagProps): JSX.Element | null => {
-    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
-        useTagFilter(assetKey);
+    const [assetKeys, setAssetKeys] = useSyncedStringArrayState(
+        `${assetKey}`,
+        []
+    );
 
     const clear = () => {
-        const newFilters = searchFilters.filter((sf) => !isTagFilter(sf));
-        applySearchFilters(newFilters);
+        setAssetKeys([]);
     };
 
-    if (tagFilters.length === 1) {
+    if (assetKeys.length === 1) {
         return (
             <FilterTag
-                label={
-                    formatter
-                        ? formatter(tagFilters[0].value)
-                        : tagFilters[0].value
-                }
+                label={formatter ? formatter(assetKeys[0]) : assetKeys[0]}
                 clear={clear}
             />
         );
-    } else if (tagFilters.length > 1) {
+    } else if (assetKeys.length > 1) {
         return (
-            <FilterTag
-                label={`${label} (${tagFilters.length})`}
-                clear={clear}
-            />
+            <FilterTag label={`${label} (${assetKeys.length})`} clear={clear} />
         );
     }
 
@@ -128,23 +88,23 @@ export const StatusTableFilterTag = (): JSX.Element | null => (
 );
 
 export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
-    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
-        useTagFilter('category');
+    const [categories, setCategories] = useSyncedStringArrayState(
+        'category',
+        []
+    );
 
-    const clear = (value: string) => () => {
-        const newFilters = searchFilters.filter(
-            (sf) => !(isTagFilter(sf) && sf.value === value)
-        );
-        applySearchFilters(newFilters);
+    const clear = (category: string) => () => {
+        setCategories(categories.filter((c) => c !== category));
     };
 
-    if (tagFilters.length) {
+    if (categories.length) {
         return (
             <>
-                {tagFilters.map((sf) => (
+                {categories.map((category) => (
                     <FilterTag
-                        label={CATEGORY_LABEL[sf.value as AlgoCategory]}
-                        clear={clear(sf.value)}
+                        key={category}
+                        label={CATEGORY_LABEL[category as AlgoCategory]}
+                        clear={clear(category)}
                     />
                 ))}
             </>
@@ -154,32 +114,33 @@ export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
     return null;
 };
 
-export const FavoritesTableFilterTag = ({
-    favorites,
-}: {
-    favorites: string[];
-}): JSX.Element | null => {
-    const { searchFilters, tagFilters, isTagFilter, applySearchFilters } =
-        useTagFilter('key');
-
-    const isFavoriteOnly = useMemo(() => {
-        return (
-            favorites.length > 0 &&
-            areSetEqual(
-                new Set(tagFilters.map((tf) => tf.value)),
-                new Set(favorites)
-            )
-        );
-    }, [favorites, tagFilters]);
+export const FavoritesTableFilterTag = (): JSX.Element | null => {
+    const [keys, setKeys] = useSyncedStringArrayState('key', []);
 
     const clear = () => {
-        const newFilters = searchFilters.filter((sf) => !isTagFilter(sf));
-        applySearchFilters(newFilters);
+        setKeys([]);
     };
 
-    if (isFavoriteOnly) {
+    if (keys.length) {
         return <FilterTag label="Favorites Only" clear={clear} />;
     }
 
+    return null;
+};
+
+export const DateFilterTag = ({
+    urlParam,
+    label,
+}: {
+    urlParam: string;
+    label: string;
+}) => {
+    const [date, setDate] = useSyncedDateStringState(urlParam, '');
+    const clear = () => {
+        setDate('');
+    };
+    if (date) {
+        return <FilterTag label={label} clear={clear} />;
+    }
     return null;
 };

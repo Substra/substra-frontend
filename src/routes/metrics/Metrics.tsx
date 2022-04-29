@@ -15,7 +15,11 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -35,10 +39,15 @@ import PermissionTag from '@/components/PermissionTag';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
+    DateFilterTag,
     OwnerTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
-import { OwnerTableFilter, TableFilters } from '@/components/TableFilters';
+import {
+    CreationDateTableFilter,
+    OwnerTableFilter,
+    TableFilters,
+} from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
@@ -51,12 +60,37 @@ const Metrics = (): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
+    const [owner] = useSyncedStringArrayState('owner', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listMetrics({ filters: searchFilters, page, ordering, match })
+            listMetrics({
+                filters: searchFilters,
+                page,
+                ordering,
+                match,
+                owner__in: owner,
+                creation_date_after,
+                creation_date_before,
+            })
         );
-    }, [searchFilters, page, ordering, match]);
+    }, [
+        searchFilters,
+        page,
+        ordering,
+        match,
+        owner,
+        creation_date_after,
+        creation_date_before,
+    ]);
 
     const metrics: MetricType[] = useAppSelector(
         (state: RootState) => state.metrics.metrics
@@ -88,11 +122,20 @@ const Metrics = (): JSX.Element => {
                 <HStack spacing="2.5">
                     <TableFilters>
                         <OwnerTableFilter />
+                        <CreationDateTableFilter />
                     </TableFilters>
                     <SearchBar />
                 </HStack>
                 <TableFilterTags>
                     <OwnerTableFilterTag />
+                    <DateFilterTag
+                        urlParam="creation_date_before"
+                        label="Max creation date"
+                    />
+                    <DateFilterTag
+                        urlParam="creation_date_after"
+                        label="Min creation date"
+                    />
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"

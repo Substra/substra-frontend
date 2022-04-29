@@ -6,7 +6,11 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     listAggregateTasks,
     listCompositeTasks,
@@ -72,10 +76,40 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
     const list = () =>
-        listTestTasks({ filters: searchFilters, page, ordering, match });
+        listTestTasks({
+            filters: searchFilters,
+            page,
+            ordering,
+            match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
+        });
     const tasks = useAppSelector((state) => state.tasks.testTasks);
     const count = useAppSelector((state) => state.tasks.testTasksCount);
 
@@ -114,10 +148,40 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
     const list = () =>
-        listTrainTasks({ filters: searchFilters, page, ordering, match });
+        listTrainTasks({
+            filters: searchFilters,
+            page,
+            ordering,
+            match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
+        });
     const tasks = useAppSelector((state) => state.tasks.trainTasks);
     const count = useAppSelector((state) => state.tasks.trainTasksCount);
 
@@ -156,12 +220,42 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.tasks.compositeTasksLoading
     );
     const list = () =>
-        listCompositeTasks({ filters: searchFilters, page, ordering, match });
+        listCompositeTasks({
+            filters: searchFilters,
+            page,
+            ordering,
+            match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
+        });
     const tasks = useAppSelector((state) => state.tasks.compositeTasks);
     const count = useAppSelector((state) => state.tasks.compositeTasksCount);
 
@@ -200,12 +294,42 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.tasks.aggregateTasksLoading
     );
     const list = () =>
-        listAggregateTasks({ filters: searchFilters, page, ordering, match });
+        listAggregateTasks({
+            filters: searchFilters,
+            page,
+            ordering,
+            match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
+        });
     const tasks = useAppSelector((state) => state.tasks.aggregateTasks);
     const count = useAppSelector((state) => state.tasks.aggregateTasksCount);
 

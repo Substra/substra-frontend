@@ -15,7 +15,11 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -35,6 +39,7 @@ import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     AlgoCategoryTableFilterTag,
+    DateFilterTag,
     OwnerTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
@@ -42,6 +47,7 @@ import {
     TableFilters,
     OwnerTableFilter,
     AlgoCategoryTableFilter,
+    CreationDateTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
@@ -55,6 +61,16 @@ const Algos = (): JSX.Element => {
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
+    const [owner] = useSyncedStringArrayState('owner', []);
+    const [category] = useSyncedStringArrayState('category', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
 
     const algos = useAppSelector((state) => state.algos.algos);
     const algosLoading = useAppSelector((state) => state.algos.algosLoading);
@@ -62,9 +78,27 @@ const Algos = (): JSX.Element => {
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
-            listAlgos({ filters: searchFilters, page, ordering, match })
+            listAlgos({
+                filters: searchFilters,
+                page,
+                ordering,
+                match,
+                owner__in: owner,
+                category,
+                creation_date_after,
+                creation_date_before,
+            })
         );
-    }, [searchFilters, page, ordering, match]);
+    }, [
+        searchFilters,
+        page,
+        ordering,
+        match,
+        owner,
+        category,
+        creation_date_after,
+        creation_date_before,
+    ]);
 
     const key = useKeyFromPath(PATHS.ALGO);
 
@@ -88,12 +122,21 @@ const Algos = (): JSX.Element => {
                     <TableFilters>
                         <OwnerTableFilter />
                         <AlgoCategoryTableFilter />
+                        <CreationDateTableFilter />
                     </TableFilters>
                     <SearchBar />
                 </HStack>
                 <TableFilterTags>
                     <AlgoCategoryTableFilterTag />
                     <OwnerTableFilterTag />
+                    <DateFilterTag
+                        urlParam="creation_date_before"
+                        label="Max creation date"
+                    />
+                    <DateFilterTag
+                        urlParam="creation_date_after"
+                        label="Min creation date"
+                    />
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"

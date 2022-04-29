@@ -8,7 +8,11 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     retrieveComputePlan,
     retrieveComputePlanAggregateTasks,
@@ -110,6 +114,23 @@ const TestTasks = ({
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTestTasksLoading
@@ -121,6 +142,14 @@ const TestTasks = ({
             filters: searchFilters,
             ordering,
             match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTestTasks
@@ -174,6 +203,23 @@ const TrainTasks = ({
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasksLoading
@@ -185,6 +231,14 @@ const TrainTasks = ({
             filters: searchFilters,
             ordering,
             match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasks
@@ -237,6 +291,23 @@ const CompositeTasks = ({
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasksLoading
@@ -248,6 +319,14 @@ const CompositeTasks = ({
             filters: searchFilters,
             ordering,
             match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasks
@@ -300,6 +379,23 @@ const AggregateTasks = ({
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksLoading
@@ -311,6 +407,14 @@ const AggregateTasks = ({
             filters: searchFilters,
             ordering,
             match,
+            status,
+            worker__in: worker,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
         });
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasks

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { useLocation } from 'wouter';
+import {
+    getUrlSearchParams,
+    useSetLocationParams,
+} from '@/hooks/useSetLocationParams';
 
 const eventPopstate = 'popstate';
 const eventPushState = 'pushState';
@@ -13,23 +16,16 @@ export const useSyncedState = <T>(
     parse: (value: string) => T,
     toString: (value: T) => string
 ): [T, (value: T) => void] => {
-    const [, setLocation] = useLocation();
-
-    const setLocationParams = (urlSearchParams: URLSearchParams) => {
-        setLocation(
-            `${window.location.pathname}?${urlSearchParams.toString()}`,
-            { replace: true }
-        );
-    };
+    const setLocationParams = useSetLocationParams();
 
     const setParam = (value: T) => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
+        const urlSearchParams = getUrlSearchParams();
         urlSearchParams.set(param, toString(value));
         setLocationParams(urlSearchParams);
     };
 
     const getParam = () => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
+        const urlSearchParams = getUrlSearchParams();
         return urlSearchParams.get(param);
     };
 
@@ -79,6 +75,28 @@ export const useSyncedStringArrayState = (
         originalValue,
         (valueAsString) => valueAsString.split(',').filter((v) => !!v),
         (v) => v.join(',')
+    );
+
+export const useSyncedDateStringState = (
+    param: string,
+    originalValue: string
+) =>
+    useSyncedState<string>(
+        param,
+        originalValue,
+        (v) => {
+            const timestamp = Date.parse(v);
+            if (isNaN(timestamp)) {
+                return '';
+            } else {
+                const d = new Date(timestamp);
+                const month = `${d.getMonth() + 1}`.padStart(2, '0');
+                const day = `${d.getDate()}`.padStart(2, '0');
+                const res = `${d.getFullYear()}-${month}-${day}`;
+                return res;
+            }
+        },
+        (v) => v
     );
 
 export const useSyncedNumberState = (param: string, originalValue: number) =>

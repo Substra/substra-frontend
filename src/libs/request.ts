@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import qs from 'qs';
 import Cookies from 'universal-cookie';
 
 import {
@@ -14,6 +15,8 @@ const CONFIG = {
         'Content-Type': 'application/json;',
     },
 };
+
+const NONENUMFILTERS = ['owner__in', 'worker__in', 'key__in'];
 
 const instance = axios.create({ ...CONFIG });
 
@@ -64,21 +67,18 @@ export const getApiOptions = ({
     searchFilters,
     page,
     pageSize,
-    match,
-    ordering,
+    ...otherParams
 }: {
     searchFilters?: SearchFilterType[];
     page?: number;
     pageSize?: number;
-    match?: string;
-    ordering?: string;
+    [param: string]: unknown;
 }): AxiosRequestConfig => {
     let params = {};
 
     // searchFilters
     if (searchFilters) {
         const search = buildSearchFiltersString(searchFilters);
-
         if (search) {
             params = { ...params, search };
         }
@@ -93,24 +93,32 @@ export const getApiOptions = ({
         };
     }
 
-    // full text search
-    if (match) {
-        params = {
-            ...params,
-            match,
-        };
-    }
+    /** Non-enum filters
+    /* Needs a special handling as the backend is waiting for a format of type: "filter=filter1, filter2" 
+    /* Contrary to enum filters which have format: "filter=filter1&filter=filter2"
+    **/
+    for (const param in otherParams) {
+        if (!Array.isArray(otherParams[param])) {
+            continue;
+        }
 
-    // ordering
-    if (ordering) {
-        params = {
-            ...params,
-            ordering,
-        };
+        const paramArray = otherParams[param] as Array<unknown>;
+        if (NONENUMFILTERS.includes(param) && paramArray.length > 1) {
+            otherParams[param] = paramArray.join(',');
+        }
     }
 
     const options = {
-        params,
+        params: {
+            ...params,
+            ...otherParams,
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        paramsSerializer: (params: any): string => {
+            return qs.stringify(params, {
+                arrayFormat: 'repeat',
+            });
+        },
     };
     return options;
 };

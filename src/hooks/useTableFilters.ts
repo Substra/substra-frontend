@@ -8,16 +8,14 @@ import React, {
 
 import { useDisclosure } from '@chakra-ui/react';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSelection, { OnOptionChange } from '@/hooks/useSelection';
 import {
-    areSearchFiltersListsEqual,
-    SearchFilterType,
-} from '@/libs/searchFilter';
+    getUrlSearchParams,
+    useSetLocationParams,
+} from '@/hooks/useSetLocationParams';
 import { AssetType } from '@/modules/common/CommonTypes';
 
-type ClearCallback = (searchFilters: SearchFilterType[]) => SearchFilterType[];
-type ApplyCallback = (searchFilters: SearchFilterType[]) => SearchFilterType[];
+type ClearCallback = (urlSearchParams: URLSearchParams) => void;
+type ApplyCallback = (urlSearchParams: URLSearchParams) => void;
 type ResetCallback = () => void;
 
 type Register = (
@@ -68,10 +66,8 @@ export const useTableFiltersContext = (
             }
         >
     >({});
-    const {
-        params: { search: searchFilters },
-        setLocationWithParams,
-    } = useLocationWithParams();
+
+    const setLocationParams = useSetLocationParams();
 
     const register: Register = (name, clear, apply, reset) => {
         tableFilters.current[name] = {
@@ -81,29 +77,25 @@ export const useTableFiltersContext = (
         };
     };
 
-    const setSearchFilters = (newFilters: SearchFilterType[]) => {
-        if (!areSearchFiltersListsEqual(searchFilters, newFilters)) {
-            setLocationWithParams({ search: newFilters, page: 1 });
-        }
-    };
     const clearAll = () => {
-        let newSearchFilters = [...searchFilters];
+        const urlSearchParams = getUrlSearchParams();
         for (const tableFilter of Object.values(tableFilters.current)) {
             if (tableFilter.clear.current) {
-                newSearchFilters = tableFilter.clear.current(newSearchFilters);
+                tableFilter.clear.current(urlSearchParams);
             }
         }
-        setSearchFilters(newSearchFilters);
+        setLocationParams(urlSearchParams);
     };
 
     const applyAll = () => {
-        let newSearchFilters = [...searchFilters];
+        const urlSearchParams = getUrlSearchParams();
         for (const tableFilter of Object.values(tableFilters.current)) {
             if (tableFilter.apply.current) {
-                newSearchFilters = tableFilter.apply.current(newSearchFilters);
+                tableFilter.apply.current(urlSearchParams);
             }
         }
-        setSearchFilters(newSearchFilters);
+        urlSearchParams.set('page', '1');
+        setLocationParams(urlSearchParams);
     };
 
     const resetAll = () => {
@@ -143,73 +135,20 @@ export const useTableFiltersContext = (
     };
 };
 
-export const useTableFilter = (
-    filterKey: string
-): {
-    checkboxesValue: string[];
-    onOptionChange: OnOptionChange;
-    resetCheckboxesValue: () => void;
-    setCheckboxesValue: (values: string[]) => void;
-    setValue: (
-        searchFilters: SearchFilterType[],
-        newValue: string[]
-    ) => SearchFilterType[];
-} => {
+export const useTableFilterCallbackRefs = (filterKey: string) => {
     const clearRef = useRef<ClearCallback | null>(null);
     const applyRef = useRef<ApplyCallback | null>(null);
     const resetRef = useRef<ResetCallback | null>(null);
 
-    const { asset, register } = useContext(TableFiltersContext);
+    const { register } = useContext(TableFiltersContext);
 
     useEffect(() => {
         register(filterKey, clearRef, applyRef, resetRef);
     }, []);
 
-    const {
-        params: { search: searchFilters },
-    } = useLocationWithParams();
-
-    const value = searchFilters
-        .filter((filter) => filter.asset === asset && filter.key === filterKey)
-        .map((filter) => filter.value);
-
-    const [
-        checkboxesValue,
-        onOptionChange,
-        resetCheckboxesValue,
-        setCheckboxesValue,
-    ] = useSelection(value);
-
-    const setValue = (
-        searchFilters: SearchFilterType[],
-        newValue: string[]
-    ): SearchFilterType[] => {
-        const assetKeyFilters = newValue.map((v) => ({
-            asset,
-            key: filterKey,
-            value: v,
-        }));
-        const otherFilters = searchFilters.filter(
-            (sf) => filterKey !== sf.key || asset !== sf.asset
-        );
-        return [...assetKeyFilters, ...otherFilters];
-    };
-    clearRef.current = (searchFilters) => {
-        resetCheckboxesValue();
-        return setValue(searchFilters, []);
-    };
-    applyRef.current = (searchFilters) => {
-        return setValue(searchFilters, checkboxesValue);
-    };
-    resetRef.current = () => {
-        setCheckboxesValue(value);
-    };
-
     return {
-        checkboxesValue,
-        onOptionChange,
-        resetCheckboxesValue,
-        setCheckboxesValue,
-        setValue,
+        clearRef,
+        applyRef,
+        resetRef,
     };
 };

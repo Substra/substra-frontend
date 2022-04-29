@@ -22,7 +22,11 @@ import { RiAlertLine } from 'react-icons/ri';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -47,11 +51,15 @@ import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
+    DateFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
     WorkerTableFilterTag,
 } from '@/components/TableFilterTags';
 import {
+    CreationDateTableFilter,
+    EndDateTableFilter,
+    StartDateTableFilter,
     TableFilters,
     TaskStatusTableFilter,
     WorkerTableFilter,
@@ -91,6 +99,23 @@ const TasksTable = ({
         setLocationWithParams,
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-rank');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [worker] = useSyncedStringArrayState('worker', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
 
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useSearchFiltersEffect(() => {
@@ -99,7 +124,22 @@ const TasksTable = ({
             return dispatchWithAutoAbort(action);
         }
         // The computePlan is needed to trigger a list call once it has been fetched
-    }, [searchFilters, category, page, computePlan, ordering, match]);
+    }, [
+        searchFilters,
+        category,
+        page,
+        computePlan,
+        ordering,
+        match,
+        status,
+        worker,
+        creation_date_after,
+        creation_date_before,
+        start_date_after,
+        start_date_before,
+        end_date_after,
+        end_date_before,
+    ]);
 
     const tabs: [TaskCategory, string][] = [
         [TaskCategory.test, 'Test'],
@@ -136,12 +176,36 @@ const TasksTable = ({
                 <TableFilters>
                     <TaskStatusTableFilter />
                     <WorkerTableFilter />
+                    <CreationDateTableFilter />
+                    <StartDateTableFilter />
+                    <EndDateTableFilter />
                 </TableFilters>
                 <SearchBar placeholder="Search key..." />
             </HStack>
             <TableFilterTags>
                 <StatusTableFilterTag />
                 <WorkerTableFilterTag />
+                <DateFilterTag
+                    urlParam="creation_date_before"
+                    label="Max creation date"
+                />
+                <DateFilterTag
+                    urlParam="creation_date_after"
+                    label="Min creation date"
+                />
+                <DateFilterTag
+                    urlParam="start_date_before"
+                    label="Max start date"
+                />
+                <DateFilterTag
+                    urlParam="start_date_after"
+                    label="Min start date"
+                />
+                <DateFilterTag
+                    urlParam="end_date_before"
+                    label="Max end date"
+                />
+                <DateFilterTag urlParam="end_date_after" label="Min end date" />
             </TableFilterTags>
             <Box>
                 <Tabs

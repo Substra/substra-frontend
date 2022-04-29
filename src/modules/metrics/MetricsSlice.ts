@@ -38,34 +38,32 @@ const initialState: MetricState = {
     descriptionError: '',
 };
 
-interface listMetricsArgs {
+type listMetricsArgs = {
     filters: SearchFilterType[];
     page: number;
     ordering: string;
     match: string;
-}
+} & { [param: string]: unknown };
+
 export const listMetrics = createAsyncThunk<
     PaginatedApiResponse<MetricType>,
     listMetricsArgs,
     { rejectValue: string }
->(
-    'metrics/list',
-    async ({ filters, page, ordering, match }: listMetricsArgs, thunkAPI) => {
-        try {
-            const response = await MetricsAPI.listMetrics(
-                { searchFilters: filters, page, ordering, match },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('metrics/list', async ({ filters, ...params }: listMetricsArgs, thunkAPI) => {
+    try {
+        const response = await MetricsAPI.listMetrics(
+            { searchFilters: filters, ...params },
+            { signal: thunkAPI.signal }
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const retrieveMetric = createAsyncThunk<
     MetricType,

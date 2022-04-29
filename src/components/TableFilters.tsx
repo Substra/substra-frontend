@@ -22,10 +22,19 @@ import {
 import { RiAddLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { TableFiltersContext, useTableFilter } from '@/hooks/useTableFilters';
-import { areSearchFiltersListsEqual } from '@/libs/searchFilter';
+import useSelection from '@/hooks/useSelection';
+import {
+    getUrlSearchParams,
+    useSetLocationParams,
+} from '@/hooks/useSetLocationParams';
+import {
+    useSyncedStringArrayState,
+    useSyncedDateStringState,
+} from '@/hooks/useSyncedState';
+import {
+    TableFiltersContext,
+    useTableFilterCallbackRefs,
+} from '@/hooks/useTableFilters';
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
 import { areSetEqual } from '@/libs/utils';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
@@ -34,6 +43,7 @@ import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import TableFilterCheckboxes from '@/components/TableFilterCheckboxes';
+import TableFilterDate from '@/components/TableFilterDate';
 
 interface TableFiltersProps {
     children: React.ReactNode | React.ReactNode[];
@@ -173,15 +183,32 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
 };
 
 export const OwnerTableFilter = (): JSX.Element => {
-    const { checkboxesValue, onOptionChange } = useTableFilter('owner');
+    const [tmpOwners, onTmpOwnerChange, resetTmpOwners, setTmpOwners] =
+        useSelection();
+    const [activeOwners] = useSyncedStringArrayState('owner', []);
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('owner');
+
+    clearRef.current = (urlSearchParams) => {
+        resetTmpOwners();
+        urlSearchParams.delete('owner');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('owner', tmpOwners.join(','));
+    };
+
+    resetRef.current = () => {
+        setTmpOwners(activeOwners);
+    };
 
     const nodes = useAppSelector((state) => state.nodes.nodes);
 
     return (
         <TableFilterCheckboxes
             options={nodes.map((node) => node.id)}
-            value={checkboxesValue}
-            onChange={onOptionChange}
+            value={tmpOwners}
+            onChange={onTmpOwnerChange}
         />
     );
 };
@@ -189,15 +216,33 @@ export const OwnerTableFilter = (): JSX.Element => {
 OwnerTableFilter.filterTitle = 'Owner';
 
 export const WorkerTableFilter = (): JSX.Element => {
-    const { checkboxesValue, onOptionChange } = useTableFilter('worker');
+    const [tmpWorkers, onTmpWorkerChange, resetTmpWorkers, setTmpWorkers] =
+        useSelection();
+
+    const [activeWorkers] = useSyncedStringArrayState('worker', []);
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('worker');
+
+    clearRef.current = (urlSearchParams) => {
+        resetTmpWorkers();
+        urlSearchParams.delete('worker');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('worker', tmpWorkers.join(','));
+    };
+
+    resetRef.current = () => {
+        setTmpWorkers(activeWorkers);
+    };
 
     const nodes = useAppSelector((state) => state.nodes.nodes);
 
     return (
         <TableFilterCheckboxes
             options={nodes.map((node) => node.id)}
-            value={checkboxesValue}
-            onChange={onOptionChange}
+            value={tmpWorkers}
+            onChange={onTmpWorkerChange}
         />
     );
 };
@@ -205,7 +250,25 @@ export const WorkerTableFilter = (): JSX.Element => {
 WorkerTableFilter.filterTitle = 'Worker';
 
 export const TaskStatusTableFilter = (): JSX.Element => {
-    const { checkboxesValue, onOptionChange } = useTableFilter('status');
+    const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =
+        useSelection();
+
+    const [activeStatus] = useSyncedStringArrayState('status', []);
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('status');
+
+    clearRef.current = (urlSearchParams) => {
+        resetTmpStatus();
+        urlSearchParams.delete('status');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('status', tmpStatus.join(','));
+    };
+
+    resetRef.current = () => {
+        setTmpStatus(activeStatus);
+    };
 
     const options = Object.values(TupleStatus).map((status) => ({
         value: status,
@@ -216,8 +279,8 @@ export const TaskStatusTableFilter = (): JSX.Element => {
     return (
         <TableFilterCheckboxes
             options={options}
-            value={checkboxesValue}
-            onChange={onOptionChange}
+            value={tmpStatus}
+            onChange={onTmpStatusChange}
         />
     );
 };
@@ -225,7 +288,25 @@ export const TaskStatusTableFilter = (): JSX.Element => {
 TaskStatusTableFilter.filterTitle = 'Status';
 
 export const ComputePlanStatusTableFilter = (): JSX.Element => {
-    const { checkboxesValue, onOptionChange } = useTableFilter('status');
+    const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =
+        useSelection();
+
+    const [activeStatus] = useSyncedStringArrayState('status', []);
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('status');
+
+    clearRef.current = (urlSearchParams) => {
+        resetTmpStatus();
+        urlSearchParams.delete('status');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('status', tmpStatus.join(','));
+    };
+
+    resetRef.current = () => {
+        setTmpStatus(activeStatus);
+    };
 
     const options = Object.values(ComputePlanStatus).map((status) => ({
         value: status,
@@ -236,8 +317,8 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
     return (
         <TableFilterCheckboxes
             options={options}
-            value={checkboxesValue}
-            onChange={onOptionChange}
+            value={tmpStatus}
+            onChange={onTmpStatusChange}
         />
     );
 };
@@ -249,53 +330,44 @@ export const ComputePlanFavoritesTableFilter = ({
 }: {
     favorites: string[];
 }): JSX.Element => {
-    const {
-        checkboxesValue,
-        resetCheckboxesValue,
-        setCheckboxesValue,
-        setValue,
-    } = useTableFilter('key');
+    const [tmpFavorites, setTmpFavorites] = useState<string[]>([]);
+    const [activeFavorites] = useSyncedStringArrayState('key', []);
+    const { clearRef, applyRef } = useTableFilterCallbackRefs('favorites');
 
-    const {
-        params: { search: searchFilters },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const setLocationParams = useSetLocationParams();
+    const urlSearchParams = getUrlSearchParams();
 
-    const isFavoritesOnly = () =>
+    const isFavoritesOnly =
         favorites.length > 0 &&
-        areSetEqual(new Set(checkboxesValue), new Set(favorites));
+        areSetEqual(new Set(activeFavorites), new Set(favorites));
 
     const [favoritesOnly, setFavoritesOnly] = useState(isFavoritesOnly);
 
+    clearRef.current = (urlSearchParams) => {
+        urlSearchParams.delete('key');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('key', tmpFavorites.join(','));
+    };
+
     useEffect(() => {
-        setFavoritesOnly(isFavoritesOnly());
-    }, [checkboxesValue]);
+        setFavoritesOnly(isFavoritesOnly);
+    }, [activeFavorites]);
 
     useEffect(() => {
         if (favoritesOnly) {
-            const newSearchFilters = setValue(searchFilters, favorites);
-            if (!areSearchFiltersListsEqual(searchFilters, newSearchFilters)) {
-                setCheckboxesValue(favorites);
-                setLocationWithParams({ search: newSearchFilters, page: 1 });
-            }
+            urlSearchParams.set('key', favorites.join(','));
+            urlSearchParams.set('page', '1');
+            setLocationParams(urlSearchParams);
         }
     }, [favorites]);
 
-    useSearchFiltersEffect(() => {
-        const cpKeyFilters = searchFilters
-            .filter((sf) => sf.asset === 'compute_plan' && sf.key === 'key')
-            .map((sf) => sf.value);
-
-        if (cpKeyFilters.length === 0 && checkboxesValue.length > 0) {
-            resetCheckboxesValue();
-        }
-    }, [searchFilters]);
-
     const onChange = () => {
         if (favoritesOnly) {
-            resetCheckboxesValue();
+            setTmpFavorites([]);
         } else {
-            setCheckboxesValue(favorites);
+            setTmpFavorites(favorites);
         }
         setFavoritesOnly(!favoritesOnly);
     };
@@ -328,7 +400,28 @@ export const ComputePlanFavoritesTableFilter = ({
 ComputePlanFavoritesTableFilter.filterTitle = 'Favorites';
 
 export const AlgoCategoryTableFilter = (): JSX.Element => {
-    const { checkboxesValue, onOptionChange } = useTableFilter('category');
+    const [
+        tmpCategories,
+        onTmpCategoryChange,
+        resetTmpCategories,
+        setTmpCategories,
+    ] = useSelection();
+    const [activeCategories] = useSyncedStringArrayState('category', []);
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('category');
+
+    clearRef.current = (urlSearchParams) => {
+        resetTmpCategories();
+        urlSearchParams.delete('category');
+    };
+
+    applyRef.current = (urlSearchParams) => {
+        urlSearchParams.set('category', tmpCategories.join(','));
+    };
+
+    resetRef.current = () => {
+        setTmpCategories(activeCategories);
+    };
 
     const options = Object.values(AlgoCategory).map((category) => ({
         value: category,
@@ -338,10 +431,63 @@ export const AlgoCategoryTableFilter = (): JSX.Element => {
     return (
         <TableFilterCheckboxes
             options={options}
-            value={checkboxesValue}
-            onChange={onOptionChange}
+            value={tmpCategories}
+            onChange={onTmpCategoryChange}
         />
     );
 };
 
 AlgoCategoryTableFilter.filterTitle = 'Category';
+
+const buildDateTableFilter = (field: string, title: string) => {
+    const DateTableFilter = (): JSX.Element => {
+        const [tmpMinDate, setTmpMinDate] = useState<string>('');
+        const [tmpMaxDate, setTmpMaxDate] = useState<string>('');
+
+        const [activeMinDate] = useSyncedDateStringState(`${field}_after`, '');
+        const [activeMaxDate] = useSyncedDateStringState(`${field}_before`, '');
+
+        const { clearRef, applyRef, resetRef } =
+            useTableFilterCallbackRefs(field);
+
+        clearRef.current = (urlSearchParams) => {
+            setTmpMinDate('');
+            setTmpMaxDate('');
+            urlSearchParams.delete(`${field}_after`);
+            urlSearchParams.delete(`${field}_before`);
+        };
+
+        applyRef.current = (urlSearchParams) => {
+            urlSearchParams.set(`${field}_after`, tmpMinDate);
+            urlSearchParams.set(`${field}_before`, tmpMaxDate);
+        };
+
+        resetRef.current = () => {
+            setTmpMinDate(activeMinDate);
+            setTmpMaxDate(activeMaxDate);
+        };
+
+        return (
+            <TableFilterDate
+                minDate={tmpMinDate}
+                setMinDate={setTmpMinDate}
+                maxDate={tmpMaxDate}
+                setMaxDate={setTmpMaxDate}
+            />
+        );
+    };
+    DateTableFilter.filterTitle = title;
+    return DateTableFilter;
+};
+
+export const CreationDateTableFilter = buildDateTableFilter(
+    'creation_date',
+    'Creation date'
+);
+
+export const StartDateTableFilter = buildDateTableFilter(
+    'start_date',
+    'Start date'
+);
+
+export const EndDateTableFilter = buildDateTableFilter('end_date', 'End date');

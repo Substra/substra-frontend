@@ -17,7 +17,11 @@ import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
+import {
+    useSyncedDateStringState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -37,6 +41,7 @@ import {
     Tbody,
 } from '@/components/Table';
 import {
+    DateFilterTag,
     FavoritesTableFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
@@ -45,6 +50,9 @@ import {
     TableFilters,
     ComputePlanStatusTableFilter,
     ComputePlanFavoritesTableFilter,
+    CreationDateTableFilter,
+    StartDateTableFilter,
+    EndDateTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
@@ -57,6 +65,23 @@ const ComputePlans = (): JSX.Element => {
         params: { page, search: searchFilters, match },
     } = useLocationWithParams();
     const [ordering] = useSyncedStringState('ordering', '-creation_date');
+    const [status] = useSyncedStringArrayState('status', []);
+    const [key] = useSyncedStringArrayState('key', []);
+    const [creation_date_after] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creation_date_before] = useSyncedDateStringState(
+        'creation_date_before',
+        ''
+    );
+    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
+    const [start_date_before] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
+    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
     const {
         items: selectedComputePlans,
         addItem: selectComputePlan,
@@ -82,9 +107,30 @@ const ComputePlans = (): JSX.Element => {
                     page,
                     match,
                     ordering,
+                    status,
+                    key__in: key,
+                    creation_date_after,
+                    creation_date_before,
+                    start_date_after,
+                    start_date_before,
+                    end_date_after,
+                    end_date_before,
                 })
             ),
-        [searchFilters, page, match, ordering]
+        [
+            searchFilters,
+            page,
+            match,
+            ordering,
+            status,
+            key,
+            creation_date_after,
+            creation_date_before,
+            start_date_after,
+            start_date_before,
+            end_date_after,
+            end_date_before,
+        ]
     );
 
     const computePlans: ComputePlanT[] = useAppSelector(
@@ -152,6 +198,9 @@ const ComputePlans = (): JSX.Element => {
                             <ComputePlanFavoritesTableFilter
                                 favorites={favorites}
                             />
+                            <CreationDateTableFilter />
+                            <StartDateTableFilter />
+                            <EndDateTableFilter />
                         </TableFilters>
                         <SearchBar />
                     </HStack>
@@ -171,7 +220,31 @@ const ComputePlans = (): JSX.Element => {
                 <Box paddingX="6">
                     <TableFilterTags>
                         <StatusTableFilterTag />
-                        <FavoritesTableFilterTag favorites={favorites} />
+                        <FavoritesTableFilterTag />
+                        <DateFilterTag
+                            urlParam="creation_date_before"
+                            label="Max creation date"
+                        />
+                        <DateFilterTag
+                            urlParam="creation_date_after"
+                            label="Min creation date"
+                        />
+                        <DateFilterTag
+                            urlParam="start_date_before"
+                            label="Max start date"
+                        />
+                        <DateFilterTag
+                            urlParam="start_date_after"
+                            label="Min start date"
+                        />
+                        <DateFilterTag
+                            urlParam="end_date_before"
+                            label="Max end date"
+                        />
+                        <DateFilterTag
+                            urlParam="end_date_after"
+                            label="Min end date"
+                        />
                     </TableFilterTags>
                 </Box>
                 <Box flexGrow={1} overflow="auto">
