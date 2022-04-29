@@ -5,7 +5,8 @@ import { Box, Flex, Heading, Text, Select } from '@chakra-ui/react';
 import { PerfBrowserContext, XAxisMode } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsUnits = (): JSX.Element => {
-    const { xAxisMode, setXAxisMode } = useContext(PerfBrowserContext);
+    const { xAxisMode, setXAxisMode, seriesGroupsWithRounds } =
+        useContext(PerfBrowserContext);
 
     return (
         <Box>
@@ -23,7 +24,13 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
                     onChange={(e) => setXAxisMode(e.target.value as XAxisMode)}
                 >
                     <option value="rank">Ranks</option>
-                    <option value="epoch">Epochs</option>
+                    {MELLODDY ? <option value="epoch">Epochs</option> : null}
+                    <option
+                        value="round"
+                        disabled={seriesGroupsWithRounds.length === 0}
+                    >
+                        Rounds
+                    </option>
                 </Select>
             </Flex>
         </Box>

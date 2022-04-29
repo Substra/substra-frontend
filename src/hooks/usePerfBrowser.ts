@@ -28,10 +28,11 @@ import {
     compareSeries,
     getMaxEpochWithPerf,
     getMaxRankWithPerf,
+    getMaxRoundWithPerf,
     getSeriesNodes,
 } from '@/modules/series/SeriesUtils';
 
-export type XAxisMode = 'epoch' | 'rank';
+export type XAxisMode = 'epoch' | 'round' | 'rank';
 
 interface PerfBrowserContext {
     // Whether the compute plan and series are being loaded
@@ -42,6 +43,8 @@ interface PerfBrowserContext {
     series: SerieT[];
     // List of groups of series sharing the same metric name once all filters have been applied
     seriesGroups: SerieT[][];
+    // List of groups of series sharing the same metric name where all points of the series contain the round metadata
+    seriesGroupsWithRounds: SerieT[][];
     // List of the nodes references by all the series
     nodes: NodeType[];
     // How colors should be determined
@@ -93,6 +96,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     computePlans: [],
     series: [],
     seriesGroups: [],
+    seriesGroupsWithRounds: [],
     nodes: [],
     colorMode: 'node',
     xAxisMode: MELLODDY ? 'epoch' : 'rank',
@@ -228,10 +232,26 @@ const usePerfBrowser = (
         );
     }, [computePlans]);
 
+    const seriesGroupsWithRounds = useMemo(() => {
+        const groupsWithRounds = seriesGroups
+            .map((series) => {
+                return series.filter((serie) => {
+                    for (const point of serie.points) {
+                        if (point.round < 0 || isNaN(point.round)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            })
+            .filter((series) => series.length);
+        return groupsWithRounds;
+    }, [seriesGroups]);
+
     const [xAxisMode, setXAxisMode] = useSyncedState<XAxisMode>(
         'xAxisMode',
         MELLODDY ? 'epoch' : 'rank',
-        (v) => (v === 'epoch' ? 'epoch' : 'rank'),
+        (v) => v as XAxisMode,
         (v) => v
     );
 
@@ -243,7 +263,7 @@ const usePerfBrowser = (
         }
         const getRankData = (rank: number): SerieRankData[] => {
             return selectedSeriesGroup.map((serie) => {
-                // Look for rank or epoch based on X axis mode
+                // Look for rank, round or epoch based on X axis mode
                 const point = serie.points.find((p) => p[xAxisMode] === rank);
 
                 let perf = '-';
@@ -267,10 +287,18 @@ const usePerfBrowser = (
         } else if (hoveredRank !== null) {
             rankData = getRankData(hoveredRank);
         } else {
-            const max =
-                xAxisMode === 'rank'
-                    ? getMaxRankWithPerf(selectedSeriesGroup)
-                    : getMaxEpochWithPerf(selectedSeriesGroup);
+            let max: number;
+            switch (xAxisMode) {
+                case 'epoch':
+                    max = getMaxEpochWithPerf(selectedSeriesGroup);
+                    break;
+                case 'round':
+                    max = getMaxRoundWithPerf(selectedSeriesGroup);
+                    break;
+                case 'rank':
+                default:
+                    max = getMaxRankWithPerf(selectedSeriesGroup);
+            }
             rankData = getRankData(max);
         }
         rankData.sort(compareSerieRankData);
@@ -347,6 +375,7 @@ const usePerfBrowser = (
             // series
             series,
             seriesGroups,
+            seriesGroupsWithRounds,
             computePlans,
             nodes,
             colorMode,

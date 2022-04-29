@@ -20,7 +20,9 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
         loading,
         selectedMetricName,
         setSelectedMetricName,
+        xAxisMode,
         seriesGroups,
+        seriesGroupsWithRounds,
         selectedSeriesGroup,
         drawerTestTaskKey,
         setDrawerTestTaskKey,
@@ -70,7 +72,11 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
                             )}
                             {!selectedMetricName && (
                                 <PerfList
-                                    seriesGroups={seriesGroups}
+                                    seriesGroups={
+                                        xAxisMode === 'round'
+                                            ? seriesGroupsWithRounds
+                                            : seriesGroups
+                                    }
                                     onCardClick={(metricName) =>
                                         setSelectedMetricName(metricName)
                                     }

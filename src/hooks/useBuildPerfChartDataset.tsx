@@ -26,7 +26,7 @@ const useBuildPerfChartDataset = (): ((
             label: serie.id,
             data: serie.points.map(
                 (point): DataPoint => ({
-                    x: xAxisMode === 'rank' ? point.rank : point.epoch,
+                    x: point[xAxisMode],
                     y: point.perf as number,
                     testTaskKey: point.testTaskKey,
                     worker: serie.worker,

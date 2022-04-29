@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Add rounds as x axis on perf charts (#549)
 -   Display logs permissions on datasets table and details page (#551)
 
 ### Fixed

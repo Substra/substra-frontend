@@ -34,8 +34,13 @@ import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
+import { capitalize } from '@/libs/utils';
 import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
-import { getMaxEpoch, getMaxRank } from '@/modules/series/SeriesUtils';
+import {
+    getMaxEpoch,
+    getMaxRank,
+    getMaxRound,
+} from '@/modules/series/SeriesUtils';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 
@@ -63,9 +68,33 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         );
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
-        const [maxRank, maxEpoch] = useMemo(() => {
-            return [getMaxRank(series), getMaxEpoch(series)];
+        const [maxRank, maxEpoch, maxRound] = useMemo(() => {
+            return [
+                getMaxRank(series),
+                getMaxEpoch(series),
+                getMaxRound(series),
+            ];
         }, [series]);
+
+        const getMaxXAxisMode = () => {
+            let max: number;
+
+            switch (xAxisMode) {
+                case 'rank':
+                    max = maxRank;
+                    break;
+                case 'epoch':
+                    max = maxEpoch;
+                    break;
+                case 'round':
+                    max = maxRound;
+                    break;
+                default:
+                    max = 0;
+            }
+
+            return max;
+        };
 
         const seriesDatasets = useMemo(
             () =>
@@ -87,14 +116,10 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
 
         const data = useMemo<ChartData<'line', DataPoint[]>>(
             () => ({
-                labels: [
-                    ...Array(
-                        (xAxisMode === 'rank' ? maxRank : maxEpoch) + 1
-                    ).keys(),
-                ],
+                labels: [...Array(getMaxXAxisMode() + 1).keys()],
                 datasets: seriesDatasets,
             }),
-            [maxRank, maxEpoch, seriesDatasets, xAxisMode]
+            [maxRank, maxEpoch, maxRound, seriesDatasets, xAxisMode]
         );
 
         const options = useMemo<ChartOptions<'line'>>(() => {
@@ -161,7 +186,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         type: 'category',
                         title: {
                             display: true,
-                            text: xAxisMode === 'rank' ? 'Rank' : 'Epoch',
+                            text: capitalize(xAxisMode),
                             align: 'end',
                             color: '#718096',
                             font: {

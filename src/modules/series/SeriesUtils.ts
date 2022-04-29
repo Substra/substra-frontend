@@ -50,13 +50,15 @@ function findSerie(
     return null;
 }
 
-function getEpochAsNumber(epochStr: string): number {
+function getEpochOrRoundAsNumber(str: string | null): number {
     /**
-     * epoch may not be present
-     * epoch is stored as string in the db
+     * epoch & round may not be present
+     * epoch & round are stored as string in the db
      */
     try {
-        return parseInt(epochStr);
+        if (typeof str === 'string') {
+            return parseInt(str);
+        } else return -1;
     } catch {
         return -1;
     }
@@ -117,7 +119,8 @@ export function buildSeries(
             rank: performance.compute_task.rank,
             perf: performance.perf,
             testTaskKey: performance.compute_task.key,
-            epoch: getEpochAsNumber(performance.compute_task.epoch),
+            epoch: getEpochOrRoundAsNumber(performance.compute_task.epoch),
+            round: getEpochOrRoundAsNumber(performance.compute_task.round_idx),
         };
 
         const serieFeatures = buildSerieFeatures(performance, computePlanKey);
@@ -172,7 +175,10 @@ export function buildAverageSerie(
         return null;
     }
 
-    const ranksPerfs: Record<number, { epoch: number; perfs: number[] }> = {};
+    const ranksPerfs: Record<
+        number,
+        { epoch: number; round: number; perfs: number[] }
+    > = {};
 
     for (const serie of series) {
         for (const point of serie.points) {
@@ -180,11 +186,13 @@ export function buildAverageSerie(
                 if (ranksPerfs[point.rank]) {
                     ranksPerfs[point.rank] = {
                         epoch: point.epoch,
+                        round: point.round,
                         perfs: [...ranksPerfs[point.rank].perfs, point.perf],
                     };
                 } else {
                     ranksPerfs[point.rank] = {
                         epoch: point.epoch,
+                        round: point.round,
                         perfs: [point.perf],
                     };
                 }
@@ -195,9 +203,10 @@ export function buildAverageSerie(
     // only includes points where we have values for all series
     const points: PointT[] = Object.entries(ranksPerfs)
         .filter(([, { perfs }]) => perfs.length === series.length)
-        .map(([rank, { epoch, perfs }]) => ({
+        .map(([rank, { epoch, round, perfs }]) => ({
             rank: parseInt(rank),
             epoch,
+            round,
             perf: average(perfs),
             testTaskKey: null,
         }));
@@ -255,6 +264,20 @@ export const getMaxEpochWithPerf = (series: SerieT[]): number => {
     const points = getAllPoints(series);
     const epochs = points.filter((p) => p.perf !== null).map((p) => p.epoch);
     return Math.max(0, ...epochs);
+};
+
+export const getMaxRound = (series: SerieT[]): number => {
+    const points = getAllPoints(series);
+    const rounds = points.filter((p) => !isNaN(p.round)).map((p) => p.round);
+    return Math.max(0, ...rounds);
+};
+
+export const getMaxRoundWithPerf = (series: SerieT[]): number => {
+    const points = getAllPoints(series);
+    const rounds = points
+        .filter((p) => p.perf !== null && !isNaN(p.round))
+        .map((p) => p.round);
+    return Math.max(0, ...rounds);
 };
 
 export const compareSeries = <T extends { id: string }>(

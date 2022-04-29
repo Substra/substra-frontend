@@ -13,6 +13,7 @@ export interface SerieFeaturesT {
 export interface PointT {
     rank: number;
     epoch: number;
+    round: number;
     perf: number | null;
     testTaskKey: string | null;
 }

@@ -37,7 +37,7 @@ const PerfSidebarSettings = (): JSX.Element => {
             <Collapse in={isOpen} animateOpacity>
                 <VStack marginTop={4} spacing={4} alignItems="stretch">
                     <PerfSidebarSettingsNodes />
-                    {MELLODDY ? <PerfSidebarSettingsUnits /> : null}
+                    <PerfSidebarSettingsUnits />
                 </VStack>
             </Collapse>
         </Box>

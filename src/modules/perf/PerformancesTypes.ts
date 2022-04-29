@@ -5,7 +5,7 @@ export interface PerformanceType {
         algo_key: string;
         rank: number;
         epoch: string;
-        round_idx: number;
+        round_idx: string | null;
         data_samples: string[];
         worker: string;
     };
