@@ -110,34 +110,34 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Name',
                                             asc: {
-                                                label: 'Sort name A -> Z',
-                                                value: 'name',
-                                            },
-                                            desc: {
                                                 label: 'Sort name Z -> A',
                                                 value: '-name',
+                                            },
+                                            desc: {
+                                                label: 'Sort name A -> Z',
+                                                value: 'name',
                                             },
                                         },
                                         {
                                             label: 'Creation',
                                             asc: {
-                                                label: 'Sort creation newest first',
+                                                label: 'Sort creation oldest first',
                                                 value: 'creation_date',
                                             },
                                             desc: {
-                                                label: 'Sort creation oldest first',
+                                                label: 'Sort creation newest first',
                                                 value: '-creation_date',
                                             },
                                         },
                                         {
                                             label: 'Owner',
                                             asc: {
-                                                label: 'Sort owner A -> Z',
-                                                value: 'owner',
-                                            },
-                                            desc: {
                                                 label: 'Sort owner Z -> A',
                                                 value: '-owner',
+                                            },
+                                            desc: {
+                                                label: 'Sort owner A -> Z',
+                                                value: 'owner',
                                             },
                                         },
                                     ]}
@@ -148,12 +148,12 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Category',
                                             asc: {
-                                                label: 'Sort category A -> Z',
-                                                value: 'category',
+                                                label: 'Sort category Composite -> Aggregate -> Simple',
+                                                value: '-category',
                                             },
                                             desc: {
-                                                label: 'Sort category Z -> A',
-                                                value: '-category',
+                                                label: 'Sort category Simple -> Aggregate -> Composite',
+                                                value: 'category',
                                             },
                                         },
                                     ]}

@@ -215,35 +215,24 @@ const TasksTable = ({
                                     <OrderingTh
                                         options={[
                                             {
-                                                label: 'Category',
-                                                asc: {
-                                                    label: 'Sort category A -> Z',
-                                                    value: 'category',
-                                                },
-                                                desc: {
-                                                    label: 'Sort category Z -> A',
-                                                    value: '-category',
-                                                },
-                                            },
-                                            {
                                                 label: 'Worker',
                                                 asc: {
-                                                    label: 'Sort worker A -> Z',
-                                                    value: 'worker',
-                                                },
-                                                desc: {
                                                     label: 'Sort worker Z -> A',
                                                     value: '-worker',
+                                                },
+                                                desc: {
+                                                    label: 'Sort worker A -> Z',
+                                                    value: 'worker',
                                                 },
                                             },
                                             {
                                                 label: 'Rank',
                                                 asc: {
-                                                    label: 'Sort rank smallest first',
+                                                    label: 'Sort rank lowest first',
                                                     value: 'rank',
                                                 },
                                                 desc: {
-                                                    label: 'Sort rank biggest first',
+                                                    label: 'Sort rank highest first',
                                                     value: '-rank',
                                                 },
                                             },
@@ -256,23 +245,23 @@ const TasksTable = ({
                                             {
                                                 label: 'Start date',
                                                 asc: {
-                                                    label: 'Sort start date newest first',
-                                                    value: 'start_date',
-                                                },
-                                                desc: {
                                                     label: 'Sort start date oldest first',
                                                     value: '-start_date',
+                                                },
+                                                desc: {
+                                                    label: 'Sort start date newest first',
+                                                    value: 'start_date',
                                                 },
                                             },
                                             {
                                                 label: 'End date',
                                                 asc: {
-                                                    label: 'Sort end date newest first',
-                                                    value: 'end_date',
-                                                },
-                                                desc: {
                                                     label: 'Sort end date oldest first',
                                                     value: '-end_date',
+                                                },
+                                                desc: {
+                                                    label: 'Sort end date newest first',
+                                                    value: 'end_date',
                                                 },
                                             },
                                         ]}
@@ -285,12 +274,12 @@ const TasksTable = ({
                                                 {
                                                     label: 'Compute plan',
                                                     asc: {
-                                                        label: 'Sort compute plan A -> Z',
-                                                        value: 'compute_plan_key',
-                                                    },
-                                                    desc: {
                                                         label: 'Sort compute plan Z -> A',
                                                         value: '-compute_plan_key',
+                                                    },
+                                                    desc: {
+                                                        label: 'Sort compute plan A -> Z',
+                                                        value: 'compute_plan_key',
                                                     },
                                                 },
                                             ]}

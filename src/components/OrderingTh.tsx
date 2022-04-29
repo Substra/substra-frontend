@@ -163,16 +163,16 @@ const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
                         )}
                         {options.map(({ label, asc, desc }) => (
                             <Fragment key={label}>
-                                {asc && (
-                                    <OrderingMenuItem
-                                        {...asc}
-                                        direction="asc"
-                                    />
-                                )}
                                 {desc && (
                                     <OrderingMenuItem
                                         {...desc}
                                         direction="desc"
+                                    />
+                                )}
+                                {asc && (
+                                    <OrderingMenuItem
+                                        {...asc}
+                                        direction="asc"
                                     />
                                 )}
                             </Fragment>

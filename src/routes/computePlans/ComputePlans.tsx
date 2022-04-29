@@ -209,12 +209,12 @@ const ComputePlans = (): JSX.Element => {
                                                   {
                                                       label: 'Name',
                                                       asc: {
-                                                          label: 'Sort name A -> Z',
-                                                          value: 'metadata__name',
-                                                      },
-                                                      desc: {
                                                           label: 'Sort name Z -> A',
                                                           value: '-metadata__name',
+                                                      },
+                                                      desc: {
+                                                          label: 'Sort name A -> Z',
+                                                          value: 'metadata__name',
                                                       },
                                                   },
                                               ]
@@ -222,12 +222,12 @@ const ComputePlans = (): JSX.Element => {
                                                   {
                                                       label: 'Tag',
                                                       asc: {
-                                                          label: 'Sort tag A -> Z',
-                                                          value: 'tag',
-                                                      },
-                                                      desc: {
                                                           label: 'Sort tag Z -> A',
                                                           value: '-tag',
+                                                      },
+                                                      desc: {
+                                                          label: 'Sort tag A -> Z',
+                                                          value: 'tag',
                                                       },
                                                   },
                                               ]
@@ -264,13 +264,13 @@ const ComputePlans = (): JSX.Element => {
                                     options={[
                                         {
                                             label: 'Creation',
-                                            desc: {
-                                                label: 'Sort creation newest first',
-                                                value: '-creation_date',
-                                            },
                                             asc: {
                                                 label: 'Sort creation oldest first',
                                                 value: 'creation_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort creation newest first',
+                                                value: '-creation_date',
                                             },
                                         },
                                     ]}
@@ -283,23 +283,23 @@ const ComputePlans = (): JSX.Element => {
                                         {
                                             label: 'Start date',
                                             asc: {
-                                                label: 'Sort start date newest first',
-                                                value: 'start_date',
-                                            },
-                                            desc: {
                                                 label: 'Sort start date oldest first',
                                                 value: '-start_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort start date newest first',
+                                                value: 'start_date',
                                             },
                                         },
                                         {
                                             label: 'End date',
                                             asc: {
-                                                label: 'Sort end date newest first',
-                                                value: 'end_date',
-                                            },
-                                            desc: {
                                                 label: 'Sort end date oldest first',
                                                 value: '-end_date',
+                                            },
+                                            desc: {
+                                                label: 'Sort end date newest first',
+                                                value: 'end_date',
                                             },
                                         },
                                     ]}
@@ -312,12 +312,12 @@ const ComputePlans = (): JSX.Element => {
                                             {
                                                 label: hp,
                                                 asc: {
-                                                    label: `Sort ${hp} A -> Z`,
-                                                    value: `metadata__${hp}`,
-                                                },
-                                                desc: {
                                                     label: `Sort ${hp} Z -> A`,
                                                     value: `-metadata__${hp}`,
+                                                },
+                                                desc: {
+                                                    label: `Sort ${hp} A -> Z`,
+                                                    value: `metadata__${hp}`,
                                                 },
                                             },
                                         ]}
