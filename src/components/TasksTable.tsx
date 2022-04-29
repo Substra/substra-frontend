@@ -15,6 +15,7 @@ import {
     HStack,
     Icon,
     Link as ChakraLink,
+    TableProps,
 } from '@chakra-ui/react';
 import { RiAlertLine } from 'react-icons/ri';
 
@@ -71,6 +72,7 @@ interface TasksTableProps {
     computePlan?: ComputePlanT | null;
     compileListPath: (category: TaskCategory) => string;
     compileDetailsPath: (category: TaskCategory, key: string) => string;
+    tableProps?: TableProps;
 }
 
 const TasksTable = ({
@@ -82,6 +84,7 @@ const TasksTable = ({
     computePlan,
     compileListPath,
     compileDetailsPath,
+    tableProps,
 }: TasksTableProps): JSX.Element => {
     const {
         params: { page, search: searchFilters, match },
@@ -192,7 +195,7 @@ const TasksTable = ({
                         borderStyle="solid"
                         borderColor="gray.100"
                     >
-                        <AssetsTable>
+                        <AssetsTable {...tableProps}>
                             <Thead>
                                 <Tr>
                                     <OrderingTh

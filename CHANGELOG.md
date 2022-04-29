@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Use paginated results for the newsfeed (#524)
 -   Newsfeed card icon for canceled compute plans (#525)
 -   More explicit download button in perf browser (#547)
+-   Updated layout with 1200px min width (#554)
 
 ## [0.19.0] - 2022-04-19
 

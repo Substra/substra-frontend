@@ -80,7 +80,7 @@ const GenericTasks = ({
                 alignItems="flex-start"
                 overflow="auto"
             >
-                <VStack display="inline-block" spacing="2.5">
+                <VStack display="inline-block" spacing="2.5" flexGrow="1">
                     <Heading size="xxs" textTransform="uppercase">
                         Tasks
                     </Heading>
@@ -144,6 +144,7 @@ const TestTasks = ({
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
                     computePlan={computePlan}
+                    tableProps={{ width: '100%' }}
                 />
             }
             taskDrawer={
@@ -207,6 +208,7 @@ const TrainTasks = ({
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
                     computePlan={computePlan}
+                    tableProps={{ width: '100%' }}
                 />
             }
             taskDrawer={
@@ -269,6 +271,7 @@ const CompositeTasks = ({
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
                     computePlan={computePlan}
+                    tableProps={{ width: '100%' }}
                 />
             }
             taskDrawer={
@@ -331,6 +334,7 @@ const AggregateTasks = ({
                     compileListPath={compileListPath}
                     compileDetailsPath={compileDetailsPath}
                     computePlan={computePlan}
+                    tableProps={{ width: '100%' }}
                 />
             }
             taskDrawer={
