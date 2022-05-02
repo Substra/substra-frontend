@@ -1,6 +1,6 @@
 name: Publish Helm
-# This workflow builds the 'master' helm
-# That is, any helm chart change that gets to master is immediately uploaded to the
+# This workflow builds the 'main' helm
+# That is, any helm chart change that gets to main is immediately uploaded to the
 # chart repo (that is to say it is released without further ado)
 env: {}
 # secrets:
@@ -11,7 +11,7 @@ env: {}
 #   GH_PAT
 on:
     push:
-        branches: [master]
+        branches: [main]
         paths: ['charts/connect-frontend/**']
     workflow_dispatch: {} # For running by hand from the web UI
 jobs:

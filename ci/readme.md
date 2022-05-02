@@ -20,7 +20,7 @@ Docker images (containing the app) are built by `ci/publish-docker`, and Helm ch
 
 On the CI, they are built continuously by GitHub Actions workflow called [build.yaml](/.github/workflows/build.yaml), which gives them "dev" versions based on commit info. This workflow can be triggered by:
 
--   pushing a commit on the `master` branch
+-   pushing a commit on the `main` branch
 -   pushing a tag
 -   [running it manually](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) via the github interface or a HTTP API call
 
@@ -36,7 +36,7 @@ When a tag is pushed, it triggers the [release.yaml](/.github/workflows/release.
 
 ### Helm
 
-Helm charts do not follow the regular release process. Any change to the `charts/` directory to the master branch will trigger a build and upload.
+Helm charts do not follow the regular release process. Any change to the `charts/` directory to the main branch will trigger a build and upload.
 
 ## PR validation (linting)
 

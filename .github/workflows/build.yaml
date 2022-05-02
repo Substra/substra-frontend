@@ -15,7 +15,7 @@ env:
 #   GH_PAT
 on:
     push:
-        branches: [master]
+        branches: [main]
     workflow_dispatch: {} # For running by hand from the web UI
 jobs:
     build-image:

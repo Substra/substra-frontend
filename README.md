@@ -21,7 +21,7 @@ ex: `API_URL=http://127.0.0.1:8000 npm run dev`
 
 ## Using a specific branch / commit of the backend and/or orchestrator
 
-Many developments done in the frontend go hand in hand with API changes coming from either the backend or the orchestrator. These changes aren't always available in the last release and sometimes aren't even merged in the `master` branches. In order to use them, you'll need to:
+Many developments done in the frontend go hand in hand with API changes coming from either the backend or the orchestrator. These changes aren't always available in the last release and sometimes aren't even merged in the `main` branches. In order to use them, you'll need to:
 
 1. Check out the branches / commits in your local clones of the repos
 2. In each repo, run `skaffold run` (with your usual options, for example `-p single-org` for `connect-backend`)
@@ -61,7 +61,7 @@ MELLODDY dumps are orchestrator dumps. In order to use them, you need to follow 
     cat orchestrator/server/standalone/migration/000008_add_compute_task_id_column_to_models.up.sql | kubectl exec -n org-1 -i owkin-orchestrator-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/orchestrator
     ```
 
-5. In parallel, launch the backend from the master branch:
+5. In parallel, launch the backend from the main branch:
    `skaffold run --profile isolated --profile single-org --status-check=false`
 
 6. Once up, clone in your connect folder the `melloddy`(https://github.com/owkin/melloddy) repo.
