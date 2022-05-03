@@ -25,7 +25,6 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import { useToast } from '@/hooks/useToast';
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
@@ -163,17 +162,7 @@ const ComputePlanCheckbox = ({
                 <Text as="span" fontSize="xs" fontWeight="semibold">
                     {`#${getComputePlanIndex(computePlanKey)}`}
                 </Text>
-                {MELLODDY && computePlan && (
-                    <>
-                        <Text as="span" fontSize="xs" marginX="1">
-                            •
-                        </Text>
-                        <Text as="span" fontSize="xs">
-                            {getMelloddyName(computePlan)}
-                        </Text>
-                    </>
-                )}
-                {!MELLODDY && computePlan?.tag && (
+                {computePlan?.tag && (
                     <>
                         <Text as="span" fontSize="xs" marginX="1">
                             •

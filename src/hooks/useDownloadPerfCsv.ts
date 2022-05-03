@@ -4,7 +4,6 @@ import { toCsv } from 'react-csv-downloader';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { downloadBlob } from '@/libs/request';
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { SerieT } from '@/modules/series/SeriesTypes';
 
@@ -28,14 +27,6 @@ type Datas = Data[];
 
 const CSV_COLUMNS = [
     { displayName: 'Compute plan key', id: CSV_COLUMN_ID.computePlanKey },
-    ...(MELLODDY
-        ? [
-              {
-                  displayName: 'Compute plan name',
-                  id: 'computePlanName',
-              },
-          ]
-        : []),
     { displayName: 'Compute plan tag', id: CSV_COLUMN_ID.computePlanTag },
     { displayName: 'Compute plan status', id: CSV_COLUMN_ID.computePlanStatus },
     {
@@ -73,13 +64,6 @@ const getDatas = (
             );
             datas.push({
                 computePlanKey: escape(computePlan?.key || 'NA'),
-                ...(MELLODDY
-                    ? {
-                          computePlanName: computePlan
-                              ? getMelloddyName(computePlan)
-                              : 'NA',
-                      }
-                    : {}),
                 computePlanTag: escape(computePlan?.tag || 'NA'),
                 computePlanStatus: escape(computePlan?.status || 'NA'),
                 computePlanStartDate: escape(computePlan?.start_date || 'NA'),

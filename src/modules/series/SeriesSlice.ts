@@ -3,14 +3,10 @@ import axios from 'axios';
 
 import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import {
-    MELLODDY_LARGE5_NODE_IDS,
-    MELLODDY_SMALL5_NODE_IDS,
-} from '@/modules/nodes/NodesUtils';
 import { PerformanceType } from '@/modules/perf/PerformancesTypes';
 
 import { SerieT } from './SeriesTypes';
-import { buildAverageSerie, buildSeries } from './SeriesUtils';
+import { buildSeries } from './SeriesUtils';
 
 interface SeriesState {
     series: SerieT[];
@@ -53,77 +49,6 @@ const getComputePlanSeries = async (
     // build series
     const series = buildSeries(cpPerformances, computePlanKey);
 
-    if (MELLODDY) {
-        const melloddySeries: SerieT[] = [];
-
-        const metricNames = new Set(
-            series.map((serie) => serie.metricName.toLowerCase())
-        );
-        for (const metricName of metricNames) {
-            const sameMetricSeries = series.filter(
-                (serie) => serie.metricName.toLowerCase() === metricName
-            );
-
-            // small5_average
-            const small5AverageSerie = buildAverageSerie(
-                sameMetricSeries.filter((serie) =>
-                    MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
-                ),
-                'small5_average'
-            );
-            if (small5AverageSerie) {
-                melloddySeries.push({
-                    ...small5AverageSerie,
-                    computePlanKey,
-                    metricName,
-                });
-            }
-
-            // large5_average
-            const large5AverageSerie = buildAverageSerie(
-                sameMetricSeries.filter((serie) =>
-                    MELLODDY_LARGE5_NODE_IDS.includes(serie.worker)
-                ),
-                'large5_average'
-            );
-            if (large5AverageSerie) {
-                melloddySeries.push({
-                    ...large5AverageSerie,
-                    computePlanKey,
-                    metricName,
-                });
-            }
-
-            // pharma_average
-            const pharmaAverageSerie = buildAverageSerie(
-                sameMetricSeries.filter(
-                    (serie) =>
-                        MELLODDY_LARGE5_NODE_IDS.includes(serie.worker) ||
-                        MELLODDY_SMALL5_NODE_IDS.includes(serie.worker)
-                ),
-                'pharma_average'
-            );
-            if (pharmaAverageSerie) {
-                melloddySeries.push({
-                    ...pharmaAverageSerie,
-                    computePlanKey,
-                    metricName,
-                });
-            }
-
-            // average
-            const averageSerie = buildAverageSerie(sameMetricSeries, 'average');
-            if (averageSerie) {
-                melloddySeries.push({
-                    ...averageSerie,
-                    computePlanKey,
-                    metricName,
-                });
-            }
-        }
-
-        return [...series, ...melloddySeries];
-    }
     return series;
 };
 

@@ -26,7 +26,6 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
@@ -164,13 +163,13 @@ const ComputePlans = (): JSX.Element => {
             // remove CP from selection
             unselectComputePlan({
                 key: computePlan.key,
-                name: MELLODDY ? getMelloddyName(computePlan) : computePlan.tag,
+                name: computePlan.tag,
             });
         } else {
             // add CP to selection
             selectComputePlan({
                 key: computePlan.key,
-                name: MELLODDY ? getMelloddyName(computePlan) : computePlan.tag,
+                name: computePlan.tag,
             });
         }
     };
@@ -202,7 +201,7 @@ const ComputePlans = (): JSX.Element => {
                             <StartDateTableFilter />
                             <EndDateTableFilter />
                         </TableFilters>
-                        <SearchBar />
+                        <SearchBar placeholder="Search tag or key..." />
                     </HStack>
                     {HYPERPARAMETERS && (
                         <CustomColumnsModal
@@ -276,35 +275,19 @@ const ComputePlans = (): JSX.Element => {
                                 ></Th>
                                 <OrderingTh
                                     minWidth="250px"
-                                    options={
-                                        MELLODDY
-                                            ? [
-                                                  {
-                                                      label: 'Name',
-                                                      asc: {
-                                                          label: 'Sort name Z -> A',
-                                                          value: '-metadata__name',
-                                                      },
-                                                      desc: {
-                                                          label: 'Sort name A -> Z',
-                                                          value: 'metadata__name',
-                                                      },
-                                                  },
-                                              ]
-                                            : [
-                                                  {
-                                                      label: 'Tag',
-                                                      asc: {
-                                                          label: 'Sort tag Z -> A',
-                                                          value: '-tag',
-                                                      },
-                                                      desc: {
-                                                          label: 'Sort tag A -> Z',
-                                                          value: 'tag',
-                                                      },
-                                                  },
-                                              ]
-                                    }
+                                    options={[
+                                        {
+                                            label: 'Tag',
+                                            asc: {
+                                                label: 'Sort tag Z -> A',
+                                                value: '-tag',
+                                            },
+                                            desc: {
+                                                label: 'Sort tag A -> Z',
+                                                value: 'tag',
+                                            },
+                                        },
+                                    ]}
                                     position="sticky"
                                     left="86px"
                                     zIndex="1"

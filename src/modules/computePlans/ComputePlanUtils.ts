@@ -1,6 +1,6 @@
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
+import { ComputePlanT } from './ComputePlansTypes';
 
 export const getStatusCount = (
     computePlan: ComputePlanT,
@@ -21,17 +21,6 @@ export const getStatusCount = (
     }
 
     throw `Invalid status ${status}`;
-};
-
-export const getMelloddyName = (
-    computePlan: ComputePlanT | ComputePlanStub
-): string => {
-    if (MELLODDY) {
-        const name = computePlan.metadata['name'] || 'Unnamed compute plan';
-        return name;
-    }
-
-    throw 'Cannot get MELLODDY name if MELLODDY flag is not set';
 };
 
 export const compareComputePlans = (

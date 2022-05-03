@@ -2,7 +2,6 @@ import { useContext } from 'react';
 
 import chakraTheme from '@/assets/chakraTheme';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 interface ColorDiscriminant {
     computePlanKey: string;
@@ -34,10 +33,7 @@ const usePerfBrowserColors = () => {
                 (computePlan) => computePlan.key === computePlanKey
             );
         } else {
-            if (isAverageNode(worker)) {
-                return 'gray';
-            }
-            index = nodes.map((n) => n.id).indexOf(worker);
+            index = nodes.findIndex((node) => node.id === worker);
         }
 
         if (index === -1) {

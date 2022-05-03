@@ -120,11 +120,9 @@ const DetailsSidebar = (): JSX.Element => {
                             />
                         </DrawerSectionEntry>
                         <DrawerSectionKeyEntry value={computePlan.key} />
-                        {MELLODDY && (
-                            <DrawerSectionEntry title="Tag">
-                                {computePlan.tag}
-                            </DrawerSectionEntry>
-                        )}
+                        <DrawerSectionEntry title="Tag">
+                            {computePlan.tag}
+                        </DrawerSectionEntry>
                         <DrawerSectionDateEntry
                             title="Created"
                             date={computePlan.creation_date}

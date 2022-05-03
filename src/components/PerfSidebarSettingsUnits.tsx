@@ -24,7 +24,6 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
                     onChange={(e) => setXAxisMode(e.target.value as XAxisMode)}
                 >
                     <option value="rank">Ranks</option>
-                    {MELLODDY ? <option value="epoch">Epochs</option> : null}
                     <option
                         value="round"
                         disabled={seriesGroupsWithRounds.length === 0}

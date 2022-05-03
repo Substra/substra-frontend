@@ -1,6 +1,5 @@
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
 import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
 
 const usePerfChartDatasetStyle = () => {
@@ -35,19 +34,12 @@ const usePerfChartDatasetStyle = () => {
             : getColor(serie, '100');
         const lightColor = getColor(serie, '100');
 
-        const dashed = isAverageNode(serie.worker);
-
         return {
             // draw highlighted serie on top
             order: isHighlighted ? 0 : 1,
             // line styles
             borderColor: lineColor,
             borderWidth: 1.5,
-            ...(dashed
-                ? {
-                      borderDash: [4, 2],
-                  }
-                : {}),
             // point styles
             pointBackgroundColor: lightColor,
             pointBorderColor: lineColor,

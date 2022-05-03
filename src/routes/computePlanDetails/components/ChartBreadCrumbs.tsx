@@ -5,7 +5,6 @@ import { RiStackshareLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { PATHS } from '@/routes';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -43,10 +42,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                             {computePlanLoading && 'Loading'}
                             {!computePlanLoading &&
                                 computePlan &&
-                                (MELLODDY
-                                    ? getMelloddyName(computePlan)
-                                    : computePlan.tag ||
-                                      'Untagged compute plan')}
+                                (computePlan.tag || 'Untagged compute plan')}
                         </Link>
                     ) : (
                         <Text
@@ -58,10 +54,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                             {computePlanLoading && 'Loading'}
                             {!computePlanLoading &&
                                 computePlan &&
-                                (MELLODDY
-                                    ? getMelloddyName(computePlan)
-                                    : computePlan.tag ||
-                                      'Untagged compute plan')}
+                                (computePlan.tag || 'Untagged compute plan')}
                         </Text>
                     )}
                     {!computePlanLoading && computePlan && (

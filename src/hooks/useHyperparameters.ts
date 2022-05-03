@@ -9,7 +9,7 @@ export const useCustomHyperparameters = (): {
     clearCustomHyperparameters: () => void;
 } => {
     // The type of the value stored for hyperparameters changed between releases 0.17.0 and 0.18.0.
-    // We used to store a list of objects such as `{key: "epoch"}` when we now store a list of strings
+    // We used to store a list of objects such as `{key: "round_idx"}` when we now store a list of strings
     // In order to not have to do data migration, we opted to store the hyperparameters in a new localStorage variable.
     // - previously: in custom_hyperparameters_columns
     // - now: in custom_hyperparameters_columns_

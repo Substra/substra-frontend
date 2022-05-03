@@ -3,7 +3,6 @@ import { useLocation } from 'wouter';
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 
 import { shortFormatDate } from '@/libs/utils';
-import { getMelloddyName } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
@@ -93,9 +92,7 @@ const ComputePlanTr = ({
                 backgroundColor="white"
                 {...rightBorderProps}
             >
-                <Text fontSize="xs">
-                    {MELLODDY ? getMelloddyName(computePlan) : computePlan.tag}
-                </Text>
+                <Text fontSize="xs">{computePlan.tag}</Text>
             </Td>
             <Td minWidth="255px">
                 <StatusCell computePlan={computePlan} />

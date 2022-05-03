@@ -13,27 +13,10 @@ const PerfIconTag = ({
     computePlanKey,
 }: PerfIconTagProps): JSX.Element => {
     const { getColorScheme } = usePerfBrowserColors();
-    const { getPointStyleComponent, getPointStyleVariant } =
-        usePerfBrowserPointStyles();
+    const { getPointStyleComponent } = usePerfBrowserPointStyles();
 
     const IconComponent = getPointStyleComponent(worker);
-    const variant = getPointStyleVariant(worker);
     const colorScheme = getColorScheme({ worker, computePlanKey });
-
-    const backgroundProperties =
-        variant === 'fill'
-            ? {
-                  backgroundImage: `linear-gradient(90deg, var(--chakra-colors-${colorScheme}-500) 0%, var(--chakra-colors-${colorScheme}-500) 100%)`,
-                  backgroundPosition: 'center',
-                  backgroundSize: '12px 1px',
-                  backgroundRepeat: 'no-repeat',
-              }
-            : {
-                  backgroundImage: `linear-gradient(90deg, var(--chakra-colors-${colorScheme}-500) 0, var(--chakra-colors-${colorScheme}-500) 1px, transparent 1px, transparent 11px, var(--chakra-colors-${colorScheme}-500) 11px, var(--chakra-colors-${colorScheme}-500) 12px)`,
-                  backgroundPosition: 'center',
-                  backgroundSize: '12px 2px',
-                  backgroundRepeat: 'no-repeat',
-              };
 
     return (
         <Tag
@@ -44,7 +27,10 @@ const PerfIconTag = ({
             alignItems="center"
             justifyContent="center"
             padding="0"
-            {...backgroundProperties}
+            backgroundImage={`linear-gradient(90deg, var(--chakra-colors-${colorScheme}-500) 0%, var(--chakra-colors-${colorScheme}-500) 100%)`}
+            backgroundPosition="center"
+            backgroundSize="12px 1px"
+            backgroundRepeat="no-repeat"
         >
             <Icon
                 as={IconComponent ? IconComponent : RiGitCommitLine}

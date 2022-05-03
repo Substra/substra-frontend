@@ -4,7 +4,6 @@ export interface PerformanceType {
         data_manager_key: string;
         algo_key: string;
         rank: number;
-        epoch: string;
         round_idx: string | null;
         data_samples: string[];
         worker: string;

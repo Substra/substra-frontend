@@ -36,11 +36,7 @@ import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 import { capitalize } from '@/libs/utils';
 import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
-import {
-    getMaxEpoch,
-    getMaxRank,
-    getMaxRound,
-} from '@/modules/series/SeriesUtils';
+import { getMaxRank, getMaxRound } from '@/modules/series/SeriesUtils';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 
@@ -68,12 +64,8 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         );
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
-        const [maxRank, maxEpoch, maxRound] = useMemo(() => {
-            return [
-                getMaxRank(series),
-                getMaxEpoch(series),
-                getMaxRound(series),
-            ];
+        const [maxRank, maxRound] = useMemo(() => {
+            return [getMaxRank(series), getMaxRound(series)];
         }, [series]);
 
         const getMaxXAxisMode = () => {
@@ -82,9 +74,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             switch (xAxisMode) {
                 case 'rank':
                     max = maxRank;
-                    break;
-                case 'epoch':
-                    max = maxEpoch;
                     break;
                 case 'round':
                     max = maxRound;
@@ -119,7 +108,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 labels: [...Array(getMaxXAxisMode() + 1).keys()],
                 datasets: seriesDatasets,
             }),
-            [maxRank, maxEpoch, maxRound, seriesDatasets, xAxisMode]
+            [maxRank, maxRound, seriesDatasets, xAxisMode]
         );
 
         const options = useMemo<ChartOptions<'line'>>(() => {

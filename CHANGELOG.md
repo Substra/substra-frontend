@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   More explicit download button in perf browser (#547)
 -   Updated layout with 1200px min width (#554)
 -   Rename master branch into main (#541)
+-   Removed all MELLODDY specific code and features (#555)
 
 ## [0.19.0] - 2022-04-19
 

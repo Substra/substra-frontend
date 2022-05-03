@@ -11,7 +11,7 @@ const ComputePlanProgressSkeleton = (): JSX.Element => (
             <Flex alignItems="center" justifyContent="space-between">
                 <Status status={ComputePlanStatus.done} size="sm" />
                 <Text fontSize="xs" color="gray.600">
-                    {MELLODDY ? 'CP56-SP-CLS-PH1' : 'foo/bar'}
+                    foo/bar
                 </Text>
             </Flex>
             <Progress

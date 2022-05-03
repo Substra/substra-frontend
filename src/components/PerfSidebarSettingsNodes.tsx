@@ -7,7 +7,6 @@ import {
     IconButton,
     Menu,
     MenuButton,
-    MenuDivider,
     MenuGroup,
     MenuItem,
     MenuList,
@@ -21,7 +20,6 @@ import {
 import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { isAverageNode } from '@/modules/nodes/NodesUtils';
 
 const PerfSidebarSettingsNodes = (): JSX.Element => {
     const { nodes, selectedNodeIds, setSelectedNodeIds, loading } =
@@ -41,13 +39,9 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
         }
     };
 
-    const notSelectedAverageNodes = nodes
-        .filter((node) => isAverageNode(node.id))
-        .filter((node) => !selectedNodeIds.includes(node.id));
-
-    const notSelectedNodes = nodes
-        .filter((node) => !isAverageNode(node.id))
-        .filter((node) => !selectedNodeIds.includes(node.id));
+    const notSelectedNodes = nodes.filter(
+        (node) => !selectedNodeIds.includes(node.id)
+    );
 
     const containerRef = useRef<HTMLDivElement>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -117,26 +111,25 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             isDisabled={loading}
                         />
                         <MenuList maxHeight="350px" overflowY="auto">
-                            {notSelectedNodes.length === 0 &&
-                                notSelectedAverageNodes.length === 0 && (
-                                    <Text
-                                        fontSize="sm"
-                                        fontWeight="semibold"
-                                        color="gray.500"
-                                        textAlign="center"
-                                    >
-                                        No more options
-                                    </Text>
-                                )}
-                            {notSelectedAverageNodes.length > 0 && (
+                            {notSelectedNodes.length === 0 && (
+                                <Text
+                                    fontSize="sm"
+                                    fontWeight="semibold"
+                                    color="gray.500"
+                                    textAlign="center"
+                                >
+                                    No more options
+                                </Text>
+                            )}
+                            {notSelectedNodes.length > 0 && (
                                 <MenuGroup
-                                    title="Aggregations"
+                                    title="Organizations"
                                     fontSize="xs"
                                     textTransform="uppercase"
                                     fontWeight="bold"
                                     color="gray.500"
                                 >
-                                    {notSelectedAverageNodes.map((node) => (
+                                    {notSelectedNodes.map((node) => (
                                         <MenuItem
                                             onClick={add(node.id)}
                                             key={node.id}
@@ -148,33 +141,6 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                         </MenuItem>
                                     ))}
                                 </MenuGroup>
-                            )}
-                            {notSelectedNodes.length > 0 && (
-                                <>
-                                    {notSelectedAverageNodes.length > 0 && (
-                                        <MenuDivider />
-                                    )}
-
-                                    <MenuGroup
-                                        title="Organizations"
-                                        fontSize="xs"
-                                        textTransform="uppercase"
-                                        fontWeight="bold"
-                                        color="gray.500"
-                                    >
-                                        {notSelectedNodes.map((node) => (
-                                            <MenuItem
-                                                onClick={add(node.id)}
-                                                key={node.id}
-                                                fontSize="xs"
-                                                paddingX="4"
-                                                paddingY="1.5"
-                                            >
-                                                {node.id}
-                                            </MenuItem>
-                                        ))}
-                                    </MenuGroup>
-                                </>
                             )}
                         </MenuList>
                     </Menu>

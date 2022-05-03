@@ -26,13 +26,12 @@ import {
     buildSeriesGroups,
     compareSerieRankData,
     compareSeries,
-    getMaxEpochWithPerf,
     getMaxRankWithPerf,
     getMaxRoundWithPerf,
     getSeriesNodes,
 } from '@/modules/series/SeriesUtils';
 
-export type XAxisMode = 'epoch' | 'round' | 'rank';
+export type XAxisMode = 'round' | 'rank';
 
 interface PerfBrowserContext {
     // Whether the compute plan and series are being loaded
@@ -99,7 +98,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     seriesGroupsWithRounds: [],
     nodes: [],
     colorMode: 'node',
-    xAxisMode: MELLODDY ? 'epoch' : 'rank',
+    xAxisMode: 'rank',
     setXAxisMode: (xAxisMode) => {},
     selectedNodeIds: [],
     setSelectedNodeIds: (selectedNodeIds) => {},
@@ -250,7 +249,7 @@ const usePerfBrowser = (
 
     const [xAxisMode, setXAxisMode] = useSyncedState<XAxisMode>(
         'xAxisMode',
-        MELLODDY ? 'epoch' : 'rank',
+        'rank',
         (v) => v as XAxisMode,
         (v) => v
     );
@@ -263,7 +262,7 @@ const usePerfBrowser = (
         }
         const getRankData = (rank: number): SerieRankData[] => {
             return selectedSeriesGroup.map((serie) => {
-                // Look for rank, round or epoch based on X axis mode
+                // Look for rank or round based on X axis mode
                 const point = serie.points.find((p) => p[xAxisMode] === rank);
 
                 let perf = '-';
@@ -289,9 +288,6 @@ const usePerfBrowser = (
         } else {
             let max: number;
             switch (xAxisMode) {
-                case 'epoch':
-                    max = getMaxEpochWithPerf(selectedSeriesGroup);
-                    break;
                 case 'round':
                     max = getMaxRoundWithPerf(selectedSeriesGroup);
                     break;
