@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta17
 kind: Config
 build:
     artifacts:
-        - image: &imageref eu.gcr.io/connect-314908/connect-frontend-tests
+        - image: &imageref gcr.io/connect-314908/connect-frontend-tests
           context: ..
           docker:
               dockerfile: 'docker/connect-frontend-tests/Dockerfile'
