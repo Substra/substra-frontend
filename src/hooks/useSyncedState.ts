@@ -8,7 +8,7 @@ import {
 const eventPopstate = 'popstate';
 const eventPushState = 'pushState';
 const eventReplaceState = 'replaceState';
-export const events = [eventPopstate, eventPushState, eventReplaceState];
+const events = [eventPopstate, eventPushState, eventReplaceState];
 
 export const useSyncedState = <T>(
     param: string,

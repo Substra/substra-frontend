@@ -87,7 +87,7 @@ interface BaseTuple extends BaseTupleStub {
     )[];
 }
 
-export interface CompositeDetailsStub {
+interface CompositeDetailsStub {
     data_manager_key: string;
     data_sample_keys: string[];
     head_permissions: PermissionsType;
@@ -95,7 +95,7 @@ export interface CompositeDetailsStub {
     models?: Model[];
 }
 
-export interface CompositeDetails extends CompositeDetailsStub {
+interface CompositeDetails extends CompositeDetailsStub {
     data_manager: DatasetStubType;
 }
 
@@ -107,7 +107,7 @@ export interface CompositeTraintuple extends BaseTuple {
     composite: CompositeDetails;
 }
 
-export interface AggregateDetails {
+interface AggregateDetails {
     model_permissions: PermissionsType;
     models?: Model[];
 }
@@ -120,14 +120,14 @@ export interface Aggregatetuple extends BaseTuple {
     aggregate: AggregateDetails;
 }
 
-export interface TestDetailsStub {
+interface TestDetailsStub {
     data_manager_key: string;
     data_sample_keys: string[];
     metric_keys: string[];
     perfs?: Record<string, number>;
 }
 
-export interface TestDetails extends TestDetailsStub {
+interface TestDetails extends TestDetailsStub {
     data_manager: DatasetStubType;
     metrics: MetricType[];
 }
@@ -140,14 +140,14 @@ export interface Testtuple extends BaseTuple {
     test: TestDetails;
 }
 
-export interface TrainDetailsStub {
+interface TrainDetailsStub {
     data_manager_key: string;
     data_sample_keys: string[];
     model_permissions: PermissionsType;
     models?: Model[];
 }
 
-export interface TrainDetails extends TrainDetailsStub {
+interface TrainDetails extends TrainDetailsStub {
     data_manager: DatasetStubType;
 }
 

@@ -31,8 +31,6 @@ export interface SerieT extends SerieFeaturesT {
     points: PointT[];
 }
 
-export type Index<Type> = Record<string, Type>;
-
 export interface HighlightedSerie {
     id: string;
     computePlanKey: string;

@@ -20,6 +20,8 @@ jobs:
               if: always()
             - name: Typescript
               run: npx tsc
+            - name: Deadcode
+              run: npm run find-deadcode
             - name: Unit tests
               run: npm run test:unit
             - name: Helm

@@ -85,9 +85,7 @@ export const isCompositeTraintuple = (
     return (task as CompositeTraintuple).composite.data_manager !== undefined;
 };
 
-export const isAggregatetupleStub = (
-    task: unknown
-): task is AggregatetupleStub => {
+const isAggregatetupleStub = (task: unknown): task is AggregatetupleStub => {
     if (!isTuple(task)) {
         return false;
     }

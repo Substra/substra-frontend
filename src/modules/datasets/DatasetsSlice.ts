@@ -135,7 +135,7 @@ export const retrieveOpener = createAsyncThunk<
     }
 });
 
-export const datasetsSlice = createSlice({
+const datasetsSlice = createSlice({
     name: 'dataset',
     initialState,
     reducers: {},

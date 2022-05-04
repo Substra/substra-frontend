@@ -77,10 +77,7 @@ const getAllImgs = (icon: PointStyleIcon): Record<string, HTMLImageElement> => {
     return res;
 };
 
-export const POINT_STYLES: Record<
-    PointStyleIcon,
-    Record<string, HTMLImageElement>
-> = {
+const POINT_STYLES: Record<PointStyleIcon, Record<string, HTMLImageElement>> = {
     play: getAllImgs('play'),
     'checkbox-blank': getAllImgs('checkbox-blank'),
     heart: getAllImgs('heart'),

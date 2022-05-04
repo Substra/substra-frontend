@@ -244,7 +244,7 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     }
 );
 
-export const computePlansSlice = createSlice({
+const computePlansSlice = createSlice({
     name: 'computePlan',
     initialState,
     reducers: {},

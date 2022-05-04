@@ -43,12 +43,8 @@ interface HyperparametersModalProps {
     computePlans?: ComputePlanT[];
 }
 
-export interface HyperparamsT {
-    [computePlanName: string]: Record<string, string>;
-}
-
-export const MotionModalContent = motion<ModalContentProps>(ModalContent);
-export const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);
+const MotionModalContent = motion<ModalContentProps>(ModalContent);
+const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);
 
 const HyperparametersModal = ({
     computePlans: propsComputePlans,

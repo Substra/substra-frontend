@@ -8,7 +8,7 @@ import {
     SerieT,
 } from '@/modules/series/SeriesTypes';
 
-export type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
+type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
 
 const useBuildPerfChartDataset = (): ((
     serie: SerieT,

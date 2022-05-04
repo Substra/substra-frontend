@@ -253,7 +253,7 @@ export const retrieveLogs = createAsyncThunk<
     }
 });
 
-export const tasksSlice = createSlice({
+const tasksSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {},

@@ -98,9 +98,7 @@ function useLocalStorageItems<Type>(
     };
 }
 
-export function useLocalStorageKeyItems<Type extends HasKey>(
-    localStorageKey: string
-) {
+function useLocalStorageKeyItems<Type extends HasKey>(localStorageKey: string) {
     return useLocalStorageItems<Type>(
         localStorageKey,
         (a: Type, b: Type) => a.key === b.key

@@ -48,7 +48,7 @@ export const retrieveComputePlans = createAsyncThunk<
     }
 );
 
-export const compareSlice = createSlice({
+const compareSlice = createSlice({
     name: 'compare',
     initialState,
     reducers: {},

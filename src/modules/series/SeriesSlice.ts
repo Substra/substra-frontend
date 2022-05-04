@@ -78,7 +78,7 @@ export const loadSeries = createAsyncThunk<
     return series;
 });
 
-export const seriesSlice = createSlice({
+const seriesSlice = createSlice({
     name: 'series',
     initialState,
     reducers: {},

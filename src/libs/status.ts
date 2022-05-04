@@ -8,7 +8,6 @@ import {
     RiTimeLine,
 } from 'react-icons/ri';
 
-import { AssetType } from '@/modules/common/CommonTypes';
 import {
     ComputePlanStatus,
     ComputePlanStatusDescription,
@@ -61,28 +60,6 @@ const statusLabelByComputePlanStatus: Record<
     [ComputePlanStatus.unknown]: ComputePlanStatusLabel.unknown,
 };
 
-const tupleStatusByStatusLabel: Record<TupleStatusLabel, TupleStatus> = {
-    [TupleStatusLabel.canceled]: TupleStatus.canceled,
-    [TupleStatusLabel.doing]: TupleStatus.doing,
-    [TupleStatusLabel.done]: TupleStatus.done,
-    [TupleStatusLabel.failed]: TupleStatus.failed,
-    [TupleStatusLabel.todo]: TupleStatus.todo,
-    [TupleStatusLabel.waiting]: TupleStatus.waiting,
-};
-
-const computePlanStatusByStatusLabel: Record<
-    ComputePlanStatusLabel,
-    ComputePlanStatus
-> = {
-    [ComputePlanStatusLabel.canceled]: ComputePlanStatus.canceled,
-    [ComputePlanStatusLabel.doing]: ComputePlanStatus.doing,
-    [ComputePlanStatusLabel.done]: ComputePlanStatus.done,
-    [ComputePlanStatusLabel.failed]: ComputePlanStatus.failed,
-    [ComputePlanStatusLabel.todo]: ComputePlanStatus.todo,
-    [ComputePlanStatusLabel.waiting]: ComputePlanStatus.waiting,
-    [ComputePlanStatusLabel.unknown]: ComputePlanStatus.unknown,
-};
-
 export const getStatusLabel = (
     status: TupleStatus | ComputePlanStatus
 ): TupleStatusLabel | ComputePlanStatusLabel | string => {
@@ -96,16 +73,6 @@ export const getStatusLabel = (
     }
 
     return status as string;
-};
-
-const getComputePlanStatusFromLabel = (
-    label: ComputePlanStatusLabel
-): ComputePlanStatus => {
-    return computePlanStatusByStatusLabel[label];
-};
-
-const getTupleStatusFromLabel = (label: TupleStatusLabel): TupleStatus => {
-    return tupleStatusByStatusLabel[label];
 };
 
 export const getStatusDescription = (
@@ -124,26 +91,6 @@ export const getStatusDescription = (
     }
 
     throw `Unknown status: '${status}'`;
-};
-
-export const getStatusFromLabel = (
-    asset: AssetType,
-    label: ComputePlanStatusLabel | TupleStatusLabel
-): ComputePlanStatus | TupleStatus => {
-    if (asset === 'compute_plan') {
-        return getComputePlanStatusFromLabel(label as ComputePlanStatusLabel);
-    }
-    if (
-        [
-            'traintuple',
-            'composite_traintuple',
-            'testtuple',
-            'aggregatetuple',
-        ].includes(asset)
-    ) {
-        return getTupleStatusFromLabel(label as TupleStatusLabel);
-    }
-    throw `Unknown asset with status: '${asset}'`;
 };
 
 interface StatusStyle {

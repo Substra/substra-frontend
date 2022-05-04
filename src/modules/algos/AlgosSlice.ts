@@ -114,7 +114,7 @@ export const retrieveDescription = createAsyncThunk<
     }
 });
 
-export const algosSlice = createSlice({
+const algosSlice = createSlice({
     name: 'algo',
     initialState,
     reducers: {},

@@ -16,7 +16,7 @@ type TupleWithModels =
     | CompositeTraintupleStub
     | Aggregatetuple;
 
-export function getModels(task: TupleWithModels): Model[] {
+function getModels(task: TupleWithModels): Model[] {
     let models;
     if (isAggregatetuple(task)) {
         models = task.aggregate.models;

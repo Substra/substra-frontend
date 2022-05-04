@@ -101,7 +101,7 @@ export const refreshToken = createAsyncThunk<
     }
 });
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {},

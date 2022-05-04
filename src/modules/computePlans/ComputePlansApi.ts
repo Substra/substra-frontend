@@ -43,7 +43,7 @@ export const retrieveComputePlan = (
 ): AxiosPromise<ComputePlanT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
-export type APIListCPTuplesArgs = APIListArgs & {
+type APIListCPTuplesArgs = APIListArgs & {
     key: string;
 };
 

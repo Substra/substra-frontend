@@ -103,7 +103,7 @@ export const retrieveDescription = createAsyncThunk<
     }
 });
 
-export const metricsSlice = createSlice({
+const metricsSlice = createSlice({
     name: 'metric',
     initialState,
     reducers: {},

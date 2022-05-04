@@ -50,7 +50,7 @@ export const listNewsFeed = createAsyncThunk<
     }
 });
 
-export const newsFeedSlice = createSlice({
+const newsFeedSlice = createSlice({
     name: 'newsFeed',
     initialState,
     reducers: {},

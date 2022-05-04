@@ -2,4 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run eslint
+npm run find-deadcode
 npm run prettier

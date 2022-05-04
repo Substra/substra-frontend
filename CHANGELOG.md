@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Change all references to eu.gcr.io to gcr.io in skaffold configs (#474)
+-   Removed deadcode (#560)
 
 ## [0.20.0] - 2022-05-03
 

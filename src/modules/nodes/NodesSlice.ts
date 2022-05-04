@@ -62,7 +62,7 @@ export const retrieveInfo = createAsyncThunk<
     }
 });
 
-export const nodesSlice = createSlice({
+const nodesSlice = createSlice({
     name: 'nodes',
     initialState,
     reducers: {},

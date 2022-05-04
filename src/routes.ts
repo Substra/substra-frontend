@@ -17,7 +17,7 @@ import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
 import TasksRoot from '@/routes/tasks/TasksRoot';
 
-export interface IRoute {
+interface IRoute {
     path: string;
     component: FC;
 }

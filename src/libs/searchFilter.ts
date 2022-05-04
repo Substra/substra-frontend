@@ -30,7 +30,7 @@ export const buildSearchFiltersString = (
     return sfList.map((sf) => `${sf.asset}:${sf.key}:${sf.value}`).join(AND);
 };
 
-export const areSearchFiltersEqual = (
+const areSearchFiltersEqual = (
     sfA: SearchFilterType,
     sfB: SearchFilterType
 ): boolean => {
@@ -41,7 +41,7 @@ export const areSearchFiltersEqual = (
     );
 };
 
-export const searchFiltersListIncludes = (
+const searchFiltersListIncludes = (
     searchFiltersList: SearchFilterType[],
     searchFilter: SearchFilterType
 ): boolean => {
@@ -63,7 +63,7 @@ export const areSearchFiltersListsEqual = (
     );
 };
 
-export const isSearchFilter = (sf: unknown): sf is SearchFilterType => {
+const isSearchFilter = (sf: unknown): sf is SearchFilterType => {
     if (typeof sf !== 'object') {
         return false;
     }
