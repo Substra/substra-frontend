@@ -18,9 +18,12 @@ import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
-    useSyncedDateStringState,
-    useSyncedStringArrayState,
-    useSyncedStringState,
+    useCreationDate,
+    useEndDate,
+    useKey,
+    useOrdering,
+    useStartDate,
+    useStatus,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -63,24 +66,12 @@ const ComputePlans = (): JSX.Element => {
     const {
         params: { page, search: searchFilters, match },
     } = useLocationWithParams();
-    const [ordering] = useSyncedStringState('ordering', '-creation_date');
-    const [status] = useSyncedStringArrayState('status', []);
-    const [key] = useSyncedStringArrayState('key', []);
-    const [creation_date_after] = useSyncedDateStringState(
-        'creation_date_after',
-        ''
-    );
-    const [creation_date_before] = useSyncedDateStringState(
-        'creation_date_before',
-        ''
-    );
-    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
-    const [start_date_before] = useSyncedDateStringState(
-        'start_date_before',
-        ''
-    );
-    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
-    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
+    const [ordering] = useOrdering('-creation_date');
+    const [status] = useStatus();
+    const [key] = useKey();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const { startDateBefore, startDateAfter } = useStartDate();
+    const { endDateBefore, endDateAfter } = useEndDate();
     const {
         items: selectedComputePlans,
         addItem: selectComputePlan,
@@ -108,12 +99,12 @@ const ComputePlans = (): JSX.Element => {
                     ordering,
                     status,
                     key__in: key,
-                    creation_date_after,
-                    creation_date_before,
-                    start_date_after,
-                    start_date_before,
-                    end_date_after,
-                    end_date_before,
+                    creationDateAfter,
+                    creationDateBefore,
+                    startDateAfter,
+                    startDateBefore,
+                    endDateAfter,
+                    endDateBefore,
                 })
             ),
         [
@@ -123,12 +114,12 @@ const ComputePlans = (): JSX.Element => {
             ordering,
             status,
             key,
-            creation_date_after,
-            creation_date_before,
-            start_date_after,
-            start_date_before,
-            end_date_after,
-            end_date_before,
+            creationDateAfter,
+            creationDateBefore,
+            startDateAfter,
+            startDateBefore,
+            endDateAfter,
+            endDateBefore,
         ]
     );
 

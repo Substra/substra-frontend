@@ -28,8 +28,12 @@ import {
     useSetLocationParams,
 } from '@/hooks/useSetLocationParams';
 import {
-    useSyncedStringArrayState,
     useSyncedDateStringState,
+    useOwner,
+    useWorker,
+    useStatus,
+    useCategory,
+    useKey,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -185,7 +189,7 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
 export const OwnerTableFilter = (): JSX.Element => {
     const [tmpOwners, onTmpOwnerChange, resetTmpOwners, setTmpOwners] =
         useSelection();
-    const [activeOwners] = useSyncedStringArrayState('owner', []);
+    const [activeOwners] = useOwner();
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('owner');
 
@@ -219,7 +223,7 @@ export const WorkerTableFilter = (): JSX.Element => {
     const [tmpWorkers, onTmpWorkerChange, resetTmpWorkers, setTmpWorkers] =
         useSelection();
 
-    const [activeWorkers] = useSyncedStringArrayState('worker', []);
+    const [activeWorkers] = useWorker();
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('worker');
 
@@ -253,7 +257,7 @@ export const TaskStatusTableFilter = (): JSX.Element => {
     const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =
         useSelection();
 
-    const [activeStatus] = useSyncedStringArrayState('status', []);
+    const [activeStatus] = useStatus();
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('status');
 
@@ -291,7 +295,7 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
     const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =
         useSelection();
 
-    const [activeStatus] = useSyncedStringArrayState('status', []);
+    const [activeStatus] = useStatus();
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('status');
 
@@ -331,7 +335,7 @@ export const ComputePlanFavoritesTableFilter = ({
     favorites: string[];
 }): JSX.Element => {
     const [tmpFavorites, setTmpFavorites] = useState<string[]>([]);
-    const [activeFavorites] = useSyncedStringArrayState('key', []);
+    const [activeFavorites] = useKey();
     const { clearRef, applyRef } = useTableFilterCallbackRefs('favorites');
 
     const setLocationParams = useSetLocationParams();
@@ -406,7 +410,7 @@ export const AlgoCategoryTableFilter = (): JSX.Element => {
         resetTmpCategories,
         setTmpCategories,
     ] = useSelection();
-    const [activeCategories] = useSyncedStringArrayState('category', []);
+    const [activeCategories] = useCategory();
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('category');
 

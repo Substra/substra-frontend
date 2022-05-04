@@ -15,11 +15,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import {
-    useSyncedDateStringState,
-    useSyncedStringArrayState,
-    useSyncedStringState,
-} from '@/hooks/useSyncedState';
+import { useCreationDate, useOrdering, useOwner } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -59,16 +55,9 @@ const Metrics = (): JSX.Element => {
         params: { page, search: searchFilters, match },
         setLocationWithParams,
     } = useLocationWithParams();
-    const [ordering] = useSyncedStringState('ordering', '-creation_date');
-    const [owner] = useSyncedStringArrayState('owner', []);
-    const [creation_date_after] = useSyncedDateStringState(
-        'creation_date_after',
-        ''
-    );
-    const [creation_date_before] = useSyncedDateStringState(
-        'creation_date_before',
-        ''
-    );
+    const [ordering] = useOrdering('-creation_date');
+    const [owner] = useOwner();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
 
     useSearchFiltersEffect(() => {
         return dispatchWithAutoAbort(
@@ -78,8 +67,8 @@ const Metrics = (): JSX.Element => {
                 ordering,
                 match,
                 owner__in: owner,
-                creation_date_after,
-                creation_date_before,
+                creationDateAfter,
+                creationDateBefore,
             })
         );
     }, [
@@ -88,8 +77,8 @@ const Metrics = (): JSX.Element => {
         ordering,
         match,
         owner,
-        creation_date_after,
-        creation_date_before,
+        creationDateAfter,
+        creationDateBefore,
     ]);
 
     const metrics: MetricType[] = useAppSelector(

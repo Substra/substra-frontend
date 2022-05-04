@@ -106,3 +106,62 @@ export const useSyncedNumberState = (param: string, originalValue: number) =>
         (v) => parseInt(v),
         (v) => v.toFixed(0)
     );
+
+// Common string states
+export const useOrdering = (defaultValue: string) =>
+    useSyncedStringState('ordering', defaultValue);
+
+// Common string arrays states
+export const useCategory = () => useSyncedStringArrayState('category', []);
+export const useKey = () => useSyncedStringArrayState('key', []);
+export const useOwner = () => useSyncedStringArrayState('owner', []);
+export const useStatus = () => useSyncedStringArrayState('status', []);
+export const useWorker = () => useSyncedStringArrayState('worker', []);
+
+// Common dates states
+export const useCreationDate = () => {
+    const [creationDateAfter, setCreationDateAfter] = useSyncedDateStringState(
+        'creation_date_after',
+        ''
+    );
+    const [creationDateBefore, setCreationDateBefore] =
+        useSyncedDateStringState('creation_date_before', '');
+    return {
+        creationDateAfter,
+        setCreationDateAfter,
+        creationDateBefore,
+        setCreationDateBefore,
+    };
+};
+export const useStartDate = () => {
+    const [startDateAfter, setStartDateAfter] = useSyncedDateStringState(
+        'start_date_after',
+        ''
+    );
+    const [startDateBefore, setStartDateBefore] = useSyncedDateStringState(
+        'start_date_before',
+        ''
+    );
+    return {
+        startDateAfter,
+        setStartDateAfter,
+        startDateBefore,
+        setStartDateBefore,
+    };
+};
+export const useEndDate = () => {
+    const [endDateAfter, setEndDateAfter] = useSyncedDateStringState(
+        'end_date_after',
+        ''
+    );
+    const [endDateBefore, setEndDateBefore] = useSyncedDateStringState(
+        'end_date_before',
+        ''
+    );
+    return {
+        endDateAfter,
+        setEndDateAfter,
+        endDateBefore,
+        setEndDateBefore,
+    };
+};

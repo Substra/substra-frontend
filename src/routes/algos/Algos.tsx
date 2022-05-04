@@ -16,9 +16,10 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
-    useSyncedDateStringState,
-    useSyncedStringArrayState,
-    useSyncedStringState,
+    useCategory,
+    useCreationDate,
+    useOrdering,
+    useOwner,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -60,17 +61,10 @@ const Algos = (): JSX.Element => {
         params: { search: searchFilters, page, match },
         setLocationWithParams,
     } = useLocationWithParams();
-    const [ordering] = useSyncedStringState('ordering', '-creation_date');
-    const [owner] = useSyncedStringArrayState('owner', []);
-    const [category] = useSyncedStringArrayState('category', []);
-    const [creation_date_after] = useSyncedDateStringState(
-        'creation_date_after',
-        ''
-    );
-    const [creation_date_before] = useSyncedDateStringState(
-        'creation_date_before',
-        ''
-    );
+    const [ordering] = useOrdering('-creation_date');
+    const [owner] = useOwner();
+    const [category] = useCategory();
+    const { creationDateAfter, creationDateBefore } = useCreationDate();
 
     const algos = useAppSelector((state) => state.algos.algos);
     const algosLoading = useAppSelector((state) => state.algos.algosLoading);
@@ -85,8 +79,8 @@ const Algos = (): JSX.Element => {
                 match,
                 owner__in: owner,
                 category,
-                creation_date_after,
-                creation_date_before,
+                creationDateAfter,
+                creationDateBefore,
             })
         );
     }, [
@@ -96,8 +90,8 @@ const Algos = (): JSX.Element => {
         match,
         owner,
         category,
-        creation_date_after,
-        creation_date_before,
+        creationDateAfter,
+        creationDateBefore,
     ]);
 
     const key = useKeyFromPath(PATHS.ALGO);

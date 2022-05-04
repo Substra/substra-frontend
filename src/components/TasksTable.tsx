@@ -23,9 +23,12 @@ import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useLocationWithParams from '@/hooks/useLocationWithParams';
 import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
-    useSyncedDateStringState,
-    useSyncedStringArrayState,
-    useSyncedStringState,
+    useCreationDate,
+    useEndDate,
+    useOrdering,
+    useStartDate,
+    useStatus,
+    useWorker,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -98,24 +101,12 @@ const TasksTable = ({
         params: { page, search: searchFilters, match },
         setLocationWithParams,
     } = useLocationWithParams();
-    const [ordering] = useSyncedStringState('ordering', '-rank');
-    const [status] = useSyncedStringArrayState('status', []);
-    const [worker] = useSyncedStringArrayState('worker', []);
-    const [creation_date_after] = useSyncedDateStringState(
-        'creation_date_after',
-        ''
-    );
-    const [creation_date_before] = useSyncedDateStringState(
-        'creation_date_before',
-        ''
-    );
-    const [start_date_after] = useSyncedDateStringState('start_date_after', '');
-    const [start_date_before] = useSyncedDateStringState(
-        'start_date_before',
-        ''
-    );
-    const [end_date_after] = useSyncedDateStringState('end_date_after', '');
-    const [end_date_before] = useSyncedDateStringState('end_date_before', '');
+    const [ordering] = useOrdering('-rank');
+    const [status] = useStatus();
+    const [worker] = useWorker();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const { startDateBefore, startDateAfter } = useStartDate();
+    const { endDateBefore, endDateAfter } = useEndDate();
 
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useSearchFiltersEffect(() => {
@@ -133,12 +124,12 @@ const TasksTable = ({
         match,
         status,
         worker,
-        creation_date_after,
-        creation_date_before,
-        start_date_after,
-        start_date_before,
-        end_date_after,
-        end_date_before,
+        creationDateAfter,
+        creationDateBefore,
+        startDateAfter,
+        startDateBefore,
+        endDateAfter,
+        endDateBefore,
     ]);
 
     const tabs: [TaskCategory, string][] = [

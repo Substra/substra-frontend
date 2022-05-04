@@ -1,6 +1,8 @@
 import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 
 import {
+    useCategory,
+    useKey,
     useSyncedDateStringState,
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
@@ -46,10 +48,7 @@ const CounterFilterTag = ({
     assetKey,
     formatter,
 }: CounterFilterTagProps): JSX.Element | null => {
-    const [assetKeys, setAssetKeys] = useSyncedStringArrayState(
-        `${assetKey}`,
-        []
-    );
+    const [assetKeys, setAssetKeys] = useSyncedStringArrayState(assetKey, []);
 
     const clear = () => {
         setAssetKeys([]);
@@ -88,11 +87,7 @@ export const StatusTableFilterTag = (): JSX.Element | null => (
 );
 
 export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
-    const [categories, setCategories] = useSyncedStringArrayState(
-        'category',
-        []
-    );
-
+    const [categories, setCategories] = useCategory();
     const clear = (category: string) => () => {
         setCategories(categories.filter((c) => c !== category));
     };
@@ -115,7 +110,7 @@ export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
 };
 
 export const FavoritesTableFilterTag = (): JSX.Element | null => {
-    const [keys, setKeys] = useSyncedStringArrayState('key', []);
+    const [keys, setKeys] = useKey();
 
     const clear = () => {
         setKeys([]);
