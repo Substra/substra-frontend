@@ -33,7 +33,7 @@ const getComputePlanSeries = async (
         cpPerformances = await getAllPages(
             (page) =>
                 ComputePlansApi.listComputePlanPerformances(
-                    { key: computePlanKey, searchFilters: [], pageSize, page },
+                    { key: computePlanKey, pageSize, page },
                     { signal }
                 ),
             pageSize

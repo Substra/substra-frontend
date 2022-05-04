@@ -2,11 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import Cookies from 'universal-cookie';
 
-import {
-    buildSearchFiltersString,
-    SearchFilterType,
-} from '@/libs/searchFilter';
-
 const CONFIG = {
     baseURL: API_URL,
     timeout: 2 * 60 * 1000, // 2 mins
@@ -64,25 +59,15 @@ const API = {
 };
 
 export const getApiOptions = ({
-    searchFilters,
     page,
     pageSize,
     ...otherParams
 }: {
-    searchFilters?: SearchFilterType[];
     page?: number;
     pageSize?: number;
     [param: string]: unknown;
 }): AxiosRequestConfig => {
     let params = {};
-
-    // searchFilters
-    if (searchFilters) {
-        const search = buildSearchFiltersString(searchFilters);
-        if (search) {
-            params = { ...params, search };
-        }
-    }
 
     // pagination
     if (page) {

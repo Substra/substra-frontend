@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
@@ -39,7 +38,6 @@ const initialState: AlgoState = {
 };
 
 type listAlgosArgs = {
-    filters: SearchFilterType[];
     page?: number;
     ordering?: string;
     match?: string;
@@ -51,30 +49,21 @@ export const listAlgos = createAsyncThunk<
     PaginatedApiResponse<AlgoT>,
     listAlgosArgs,
     { rejectValue: string }
->(
-    'algos/listAlgos',
-    async ({ filters, ...params }: listAlgosArgs, thunkAPI) => {
-        try {
-            const standardFilters = filters.filter((sf) => sf.asset === 'algo');
+>('algos/listAlgos', async (params: listAlgosArgs, thunkAPI) => {
+    try {
+        const response = await AlgosApi.listAlgos(params, {
+            signal: thunkAPI.signal,
+        });
 
-            const response = await AlgosApi.listAlgos(
-                {
-                    searchFilters: standardFilters,
-                    ...params,
-                },
-                { signal: thunkAPI.signal }
-            );
-
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const retrieveAlgo = createAsyncThunk<
     AlgoT,

@@ -7,11 +7,13 @@ import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
     useEndDate,
+    useMatch,
     useOrdering,
+    usePage,
     useStartDate,
     useStatus,
     useWorker,
@@ -112,16 +114,15 @@ const TestTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTestTasksLoading
@@ -130,7 +131,6 @@ const TestTasks = ({
         retrieveComputePlanTestTasks({
             computePlanKey,
             page,
-            filters: searchFilters,
             ordering,
             match,
             status,
@@ -171,7 +171,7 @@ const TestTasks = ({
                 <TaskDrawer
                     category={TaskCategory.test}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.test)
                         )
                     }
@@ -189,16 +189,15 @@ const TrainTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasksLoading
@@ -207,7 +206,6 @@ const TrainTasks = ({
         retrieveComputePlanTrainTasks({
             computePlanKey,
             page,
-            filters: searchFilters,
             ordering,
             match,
             status,
@@ -248,7 +246,7 @@ const TrainTasks = ({
                 <TaskDrawer
                     category={TaskCategory.train}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.train)
                         )
                     }
@@ -265,16 +263,15 @@ const CompositeTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasksLoading
@@ -283,7 +280,6 @@ const CompositeTasks = ({
         retrieveComputePlanCompositeTasks({
             computePlanKey,
             page,
-            filters: searchFilters,
             ordering,
             match,
             status,
@@ -324,7 +320,7 @@ const CompositeTasks = ({
                 <TaskDrawer
                     category={TaskCategory.composite}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.composite)
                         )
                     }
@@ -341,16 +337,15 @@ const AggregateTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksLoading
@@ -359,7 +354,6 @@ const AggregateTasks = ({
         retrieveComputePlanAggregateTasks({
             computePlanKey,
             page,
-            filters: searchFilters,
             ordering,
             match,
             status,
@@ -400,7 +394,7 @@ const AggregateTasks = ({
                 <TaskDrawer
                     category={TaskCategory.aggregate}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.aggregate)
                         )
                     }

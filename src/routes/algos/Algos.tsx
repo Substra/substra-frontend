@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
     VStack,
     Thead,
@@ -13,13 +15,14 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCategory,
     useCreationDate,
+    useMatch,
     useOrdering,
     useOwner,
+    usePage,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -57,23 +60,21 @@ import AlgoDrawer from './components/AlgoDrawer';
 
 const Algos = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const [category] = useCategory();
     const { creationDateAfter, creationDateBefore } = useCreationDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const algos = useAppSelector((state) => state.algos.algos);
     const algosLoading = useAppSelector((state) => state.algos.algosLoading);
     const algosCount = useAppSelector((state) => state.algos.algosCount);
 
-    useSearchFiltersEffect(() => {
+    useEffect(() => {
         return dispatchWithAutoAbort(
             listAlgos({
-                filters: searchFilters,
                 page,
                 ordering,
                 match,
@@ -84,7 +85,6 @@ const Algos = (): JSX.Element => {
             })
         );
     }, [
-        searchFilters,
         page,
         ordering,
         match,
@@ -236,7 +236,7 @@ const Algos = (): JSX.Element => {
                                     <ClickableTr
                                         key={algo.key}
                                         onClick={() =>
-                                            setLocationWithParams(
+                                            setLocationPreserveParams(
                                                 compilePath(PATHS.ALGO, {
                                                     key: algo.key,
                                                 })

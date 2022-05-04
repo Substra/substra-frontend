@@ -16,7 +16,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
@@ -34,7 +34,7 @@ import {
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
 const AlgoDrawer = (): JSX.Element => {
-    const { setLocationWithParams } = useLocationWithParams();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const key = useKeyFromPath(PATHS.ALGO);
 
@@ -76,7 +76,7 @@ const AlgoDrawer = (): JSX.Element => {
             isOpen={isOpen}
             placement="right"
             onClose={() => {
-                setLocationWithParams(PATHS.ALGOS);
+                setLocationPreserveParams(PATHS.ALGOS);
                 onClose();
             }}
             size="md"
@@ -90,7 +90,7 @@ const AlgoDrawer = (): JSX.Element => {
                     storageAddress={algo?.algorithm.storage_address}
                     filename={`algo-${key}.zip`}
                     onClose={() => {
-                        setLocationWithParams(PATHS.ALGOS);
+                        setLocationPreserveParams(PATHS.ALGOS);
                         onClose();
                     }}
                 />

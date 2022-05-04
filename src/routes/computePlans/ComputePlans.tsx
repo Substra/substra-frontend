@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
     VStack,
     Table,
@@ -15,13 +17,13 @@ import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
 import {
     useCreationDate,
     useEndDate,
     useKey,
+    useMatch,
     useOrdering,
+    usePage,
     useStartDate,
     useStatus,
 } from '@/hooks/useSyncedState';
@@ -63,9 +65,8 @@ import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 
 const ComputePlans = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
-    const {
-        params: { page, search: searchFilters, match },
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
     const [status] = useStatus();
     const [key] = useKey();
@@ -89,11 +90,10 @@ const ComputePlans = (): JSX.Element => {
     const { favorites, setFavorites, isFavorite, onFavoriteChange } =
         useFavoriteComputePlans();
 
-    useSearchFiltersEffect(
+    useEffect(
         () =>
             dispatchWithAutoAbort(
                 listComputePlans({
-                    filters: searchFilters,
                     page,
                     match,
                     ordering,
@@ -108,7 +108,6 @@ const ComputePlans = (): JSX.Element => {
                 })
             ),
         [
-            searchFilters,
             page,
             match,
             ordering,

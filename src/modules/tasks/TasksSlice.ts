@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
 import * as TasksApi from './TasksApi';
@@ -78,7 +77,6 @@ const initialState: TasksState = {
 };
 
 export type listTasksArgs = {
-    filters: SearchFilterType[];
     page?: number;
     ordering?: string;
     match?: string;
@@ -90,117 +88,77 @@ export const listTrainTasks = createAsyncThunk<
     PaginatedApiResponse<TraintupleStub>,
     listTasksArgs,
     { rejectValue: string }
->(
-    'tasks/listTrainTasks',
-    async ({ filters, ...params }: listTasksArgs, thunkAPI) => {
-        const trainFilters = filters.filter((sf) => sf.asset === 'traintuple');
-
-        const nonTypeFilters = trainFilters.filter((sf) => sf.key !== 'type');
-
-        try {
-            const response = await TasksApi.listTraintuples(
-                { searchFilters: nonTypeFilters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('tasks/listTrainTasks', async (params: listTasksArgs, thunkAPI) => {
+    try {
+        const response = await TasksApi.listTraintuples(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const listTestTasks = createAsyncThunk<
     PaginatedApiResponse<TesttupleStub>,
     listTasksArgs,
     { rejectValue: string }
->(
-    'tasks/listTestTasks',
-    async ({ filters, ...params }: listTasksArgs, thunkAPI) => {
-        const testFilters = filters.filter((sf) => sf.asset === 'testtuple');
-
-        const nonTypeFilters = testFilters.filter((sf) => sf.key !== 'type');
-
-        try {
-            const response = await TasksApi.listTesttuples(
-                { searchFilters: nonTypeFilters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('tasks/listTestTasks', async (params: listTasksArgs, thunkAPI) => {
+    try {
+        const response = await TasksApi.listTesttuples(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const listCompositeTasks = createAsyncThunk<
     PaginatedApiResponse<CompositeTraintupleStub>,
     listTasksArgs,
     { rejectValue: string }
->(
-    'tasks/listCompositeTasks',
-    async ({ filters, ...params }: listTasksArgs, thunkAPI) => {
-        const compositeFilters = filters.filter(
-            (sf) => (sf.asset = 'composite_traintuple')
-        );
-
-        const nonTypeFilters = compositeFilters.filter(
-            (sf) => sf.key !== 'type'
-        );
-
-        try {
-            const response = await TasksApi.listCompositeTraintuples(
-                { searchFilters: nonTypeFilters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('tasks/listCompositeTasks', async (params: listTasksArgs, thunkAPI) => {
+    try {
+        const response = await TasksApi.listCompositeTraintuples(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const listAggregateTasks = createAsyncThunk<
     PaginatedApiResponse<AggregatetupleStub>,
     listTasksArgs,
     { rejectValue: string }
->(
-    'tasks/listAggregateTasks',
-    async ({ filters, ...params }: listTasksArgs, thunkAPI) => {
-        const aggregateFilters = filters.filter(
-            (sf) => sf.asset === 'aggregatetuple'
-        );
-
-        const nonTypeFilters = aggregateFilters.filter(
-            (sf) => sf.key !== 'type'
-        );
-
-        try {
-            const response = await TasksApi.listAggregatetuples(
-                { searchFilters: nonTypeFilters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('tasks/listAggregateTasks', async (params: listTasksArgs, thunkAPI) => {
+    try {
+        const response = await TasksApi.listAggregatetuples(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 const retrieveMethods: Record<
     TaskCategory,

@@ -22,11 +22,11 @@ import {
 import { RiAddLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import useSelection from '@/hooks/useSelection';
 import {
     getUrlSearchParams,
     useSetLocationParams,
-} from '@/hooks/useSetLocationParams';
+} from '@/hooks/useLocationWithParams';
+import useSelection from '@/hooks/useSelection';
 import {
     useSyncedDateStringState,
     useOwner,

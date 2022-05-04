@@ -3,13 +3,19 @@ import { Link } from 'wouter';
 import { Button, IconButton, Stack } from '@chakra-ui/react';
 import { RiArrowLeftLine, RiArrowRightLine } from 'react-icons/ri';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 
 const ellipsis = (
     <Button variant="outline" size="sm" disabled={true}>
         ...
     </Button>
 );
+
+const getPageLocation = (page: number) => {
+    const urlSearchParams = getUrlSearchParams();
+    urlSearchParams.set('page', page.toString());
+    return `${window.location.pathname}?${urlSearchParams.toString()}`;
+};
 
 interface PageLinkProps {
     page: number;
@@ -21,9 +27,8 @@ const PageLink = ({
     activePage,
     isDisabled,
 }: PageLinkProps): JSX.Element => {
-    const { buildLocationWithParams } = useLocationWithParams();
     return (
-        <Link href={buildLocationWithParams({ page })}>
+        <Link href={getPageLocation(page)}>
             <Button
                 as="a"
                 backgroundColor={activePage === page ? 'gray.200' : 'white'}
@@ -38,8 +43,6 @@ const PageLink = ({
 };
 
 const PreviousPage = ({ page }: { page: number }): JSX.Element => {
-    const { buildLocationWithParams } = useLocationWithParams();
-
     if (page === 0) {
         return (
             <IconButton
@@ -53,7 +56,7 @@ const PreviousPage = ({ page }: { page: number }): JSX.Element => {
     }
 
     return (
-        <Link href={buildLocationWithParams({ page })}>
+        <Link href={getPageLocation(page)}>
             <IconButton
                 as="a"
                 variant="outline"
@@ -72,7 +75,6 @@ const NextPage = ({
     page: number;
     lastPage: number;
 }): JSX.Element => {
-    const { buildLocationWithParams } = useLocationWithParams();
     if (page > lastPage) {
         return (
             <IconButton
@@ -85,7 +87,7 @@ const NextPage = ({
         );
     }
     return (
-        <Link href={buildLocationWithParams({ page })}>
+        <Link href={getPageLocation(page)}>
             <IconButton
                 as="a"
                 variant="outline"

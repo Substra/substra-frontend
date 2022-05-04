@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { Link } from 'wouter';
 
@@ -20,12 +22,17 @@ import {
 import { RiAlertLine } from 'react-icons/ri';
 
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
+import {
+    useLocationWithParams,
+    useSetLocationPreserveParams,
+    getUrlSearchParams,
+} from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
     useEndDate,
+    useMatch,
     useOrdering,
+    usePage,
     useStartDate,
     useStatus,
     useWorker,
@@ -97,26 +104,25 @@ const TasksTable = ({
     compileDetailsPath,
     tableProps,
 }: TasksTableProps): JSX.Element => {
-    const {
-        params: { page, search: searchFilters, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const [, setLocationWithParams] = useLocationWithParams();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
-    useSearchFiltersEffect(() => {
+    useEffect(() => {
         const action = list();
         if (action) {
             return dispatchWithAutoAbort(action);
         }
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [
-        searchFilters,
         category,
         page,
         computePlan,
@@ -143,19 +149,10 @@ const TasksTable = ({
 
     const onTabsChange = (index: number) => {
         const newCategory = tabs[index][0];
-        const currentType = assetTypeByTaskCategory[category];
-        const newType = assetTypeByTaskCategory[newCategory];
-        setLocationWithParams(compileListPath(newCategory), {
-            page: 1,
-            search: searchFilters.map((searchFilter) => {
-                if (searchFilter.asset === currentType) {
-                    return { ...searchFilter, asset: newType };
-                }
-                return searchFilter;
-            }),
-            ordering,
-            match,
-        });
+
+        const urlSearchParams = getUrlSearchParams();
+        urlSearchParams.set('page', '1');
+        setLocationWithParams(compileListPath(newCategory), urlSearchParams);
     };
 
     const context = useTableFiltersContext(assetTypeByTaskCategory[category]);
@@ -411,7 +408,7 @@ const TasksTable = ({
                                         <ClickableTr
                                             key={task.key}
                                             onClick={() =>
-                                                setLocationWithParams(
+                                                setLocationPreserveParams(
                                                     compileDetailsPath(
                                                         category,
                                                         task.key

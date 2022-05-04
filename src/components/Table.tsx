@@ -5,7 +5,10 @@ import styled from '@emotion/styled';
 import { Tr, Td, Tbody as ChakraTbody } from '@chakra-ui/react';
 import { RiListCheck2 } from 'react-icons/ri';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import {
+    getUrlSearchParams,
+    useSetLocationParams,
+} from '@/hooks/useLocationWithParams';
 import { AssetType } from '@/modules/common/CommonTypes';
 import { getAssetLabel } from '@/modules/common/CommonUtils';
 
@@ -18,25 +21,38 @@ export const Tbody = styled(ChakraTbody)`
     }
 `;
 
+const getHasFilters = () => {
+    const urlSearchParams = getUrlSearchParams();
+    const keys = urlSearchParams.keys();
+    for (const key of keys) {
+        if (key !== 'page' && key !== 'ordering' && urlSearchParams.get(key)) {
+            return true;
+        }
+    }
+    return false;
+};
+
 interface EmptyTrProps {
     nbColumns: number;
     asset: AssetType;
 }
 
 export const EmptyTr = ({ nbColumns, asset }: EmptyTrProps): JSX.Element => {
-    const {
-        params: { search: searchFilters },
-        setLocationWithParams,
-    } = useLocationWithParams();
-
-    const hasFilters = !!searchFilters.find((sf) => sf.asset === asset);
+    const setLocationParams = useSetLocationParams();
 
     const clearAll = () => {
-        const newSearchFilters = searchFilters.filter(
-            (sf) => sf.asset !== asset
-        );
-        setLocationWithParams({ search: newSearchFilters, page: 1 });
+        const urlSearchParams = getUrlSearchParams();
+        const keys = urlSearchParams.keys();
+        for (const key of keys) {
+            if (key !== 'page' && key !== 'ordering') {
+                urlSearchParams.delete(key);
+            }
+        }
+        urlSearchParams.set('page', '1');
+        setLocationParams(urlSearchParams);
     };
+
+    const hasFilters = getHasFilters();
 
     const assetLabel = getAssetLabel(asset, { plural: true });
     return (

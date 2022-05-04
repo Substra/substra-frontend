@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
     getUrlSearchParams,
     useSetLocationParams,
-} from '@/hooks/useSetLocationParams';
+} from '@/hooks/useLocationWithParams';
 
 const eventPopstate = 'popstate';
 const eventPushState = 'pushState';
@@ -107,7 +107,11 @@ export const useSyncedNumberState = (param: string, originalValue: number) =>
         (v) => v.toFixed(0)
     );
 
+// Common number states
+export const usePage = () => useSyncedNumberState('page', 1);
+
 // Common string states
+export const useMatch = () => useSyncedStringState('match', '');
 export const useOrdering = (defaultValue: string) =>
     useSyncedStringState('ordering', defaultValue);
 

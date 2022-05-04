@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import {
     Aggregatetuple,
@@ -66,7 +65,6 @@ const initialState: ComputePlansState = {
 };
 
 type listComputePlansArgs = {
-    filters: SearchFilterType[];
     page?: number;
     match?: string;
     ordering?: string;
@@ -78,24 +76,20 @@ export const listComputePlans = createAsyncThunk<
     PaginatedApiResponse<ComputePlanStub>,
     listComputePlansArgs,
     { rejectValue: string }
->(
-    'computePlans/list',
-    async ({ filters, ...params }: listComputePlansArgs, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.listComputePlans(
-                { searchFilters: filters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('computePlans/list', async (params: listComputePlansArgs, thunkAPI) => {
+    try {
+        const response = await ComputePlansApi.listComputePlans(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const retrieveComputePlan = createAsyncThunk<
     ComputePlanT,
@@ -119,7 +113,6 @@ export const retrieveComputePlan = createAsyncThunk<
 export type retrieveComputePlanTasksArgs = {
     computePlanKey: string;
     page: number;
-    filters: SearchFilterType[];
     ordering: string;
     match: string;
 } & {
@@ -132,14 +125,11 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getTrainTasks',
-    async ({ computePlanKey, filters, ...params }, thunkAPI) => {
+    async ({ computePlanKey, ...params }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanTraintuples(
                 {
                     key: computePlanKey,
-                    searchFilters: filters.filter(
-                        (sf) => sf.asset === 'traintuple'
-                    ),
                     ...params,
                 },
                 { signal: thunkAPI.signal }
@@ -161,14 +151,11 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getTestTasks',
-    async ({ computePlanKey, filters, ...params }, thunkAPI) => {
+    async ({ computePlanKey, ...params }, thunkAPI) => {
         try {
             const response = await ComputePlansApi.listComputePlanTesttuples(
                 {
                     key: computePlanKey,
-                    searchFilters: filters.filter(
-                        (sf) => sf.asset === 'testtuple'
-                    ),
                     ...params,
                 },
                 { signal: thunkAPI.signal }
@@ -190,15 +177,12 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getAggregateTasks',
-    async ({ computePlanKey, filters, ...params }, thunkAPI) => {
+    async ({ computePlanKey, ...params }, thunkAPI) => {
         try {
             const response =
                 await ComputePlansApi.listComputePlanAggregatetuples(
                     {
                         key: computePlanKey,
-                        searchFilters: filters.filter(
-                            (sf) => sf.asset === 'aggregatetuple'
-                        ),
                         ...params,
                     },
                     { signal: thunkAPI.signal }
@@ -220,15 +204,12 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
     { rejectValue: string }
 >(
     'computePlans/getCompositeTasks',
-    async ({ computePlanKey, filters, ...params }, thunkAPI) => {
+    async ({ computePlanKey, ...params }, thunkAPI) => {
         try {
             const response =
                 await ComputePlansApi.listComputePlanCompositeTraintuples(
                     {
                         key: computePlanKey,
-                        searchFilters: filters.filter(
-                            (sf) => sf.asset === 'composite_traintuple'
-                        ),
                         ...params,
                     },
                     { signal: thunkAPI.signal }

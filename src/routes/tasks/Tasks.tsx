@@ -5,11 +5,13 @@ import { VStack } from '@chakra-ui/react';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
     useEndDate,
+    useMatch,
     useOrdering,
+    usePage,
     useStartDate,
     useStatus,
     useWorker,
@@ -74,21 +76,19 @@ interface TasksProps {
 }
 
 const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
     const list = () =>
         listTestTasks({
-            filters: searchFilters,
             page,
             ordering,
             match,
@@ -121,7 +121,7 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 <TaskDrawer
                     category={TaskCategory.test}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.test)
                         )
                     }
@@ -134,21 +134,19 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
 };
 
 const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
     const list = () =>
         listTrainTasks({
-            filters: searchFilters,
             page,
             ordering,
             match,
@@ -181,7 +179,7 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 <TaskDrawer
                     category={TaskCategory.train}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.train)
                         )
                     }
@@ -194,23 +192,21 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 };
 
 const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.tasks.compositeTasksLoading
     );
     const list = () =>
         listCompositeTasks({
-            filters: searchFilters,
             page,
             ordering,
             match,
@@ -243,7 +239,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 <TaskDrawer
                     category={TaskCategory.composite}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.composite)
                         )
                     }
@@ -256,23 +252,21 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
 };
 
 const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
-    const {
-        params: { search: searchFilters, page, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
     const [status] = useStatus();
     const [worker] = useWorker();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
         (state) => state.tasks.aggregateTasksLoading
     );
     const list = () =>
         listAggregateTasks({
-            filters: searchFilters,
             page,
             ordering,
             match,
@@ -305,7 +299,7 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 <TaskDrawer
                     category={TaskCategory.aggregate}
                     onClose={() =>
-                        setLocationWithParams(
+                        setLocationPreserveParams(
                             compileListPath(TaskCategory.aggregate)
                         )
                     }

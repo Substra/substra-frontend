@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
@@ -39,7 +38,6 @@ const initialState: MetricState = {
 };
 
 type listMetricsArgs = {
-    filters: SearchFilterType[];
     page: number;
     ordering: string;
     match: string;
@@ -49,12 +47,11 @@ export const listMetrics = createAsyncThunk<
     PaginatedApiResponse<MetricType>,
     listMetricsArgs,
     { rejectValue: string }
->('metrics/list', async ({ filters, ...params }: listMetricsArgs, thunkAPI) => {
+>('metrics/list', async (params: listMetricsArgs, thunkAPI) => {
     try {
-        const response = await MetricsAPI.listMetrics(
-            { searchFilters: filters, ...params },
-            { signal: thunkAPI.signal }
-        );
+        const response = await MetricsAPI.listMetrics(params, {
+            signal: thunkAPI.signal,
+        });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

@@ -22,7 +22,11 @@ import {
     RiFilter3Fill,
 } from 'react-icons/ri';
 
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import {
+    getUrlSearchParams,
+    useSetLocationParams,
+} from '@/hooks/useLocationWithParams';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 
 interface OrderingOption {
     label: string;
@@ -39,10 +43,8 @@ const OrderingMenuItem = ({
     value: string;
     direction: 'asc' | 'desc';
 }): JSX.Element => {
-    const {
-        params: { ordering },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '');
+    const setLocationParams = useSetLocationParams();
 
     return (
         <MenuItem
@@ -57,12 +59,12 @@ const OrderingMenuItem = ({
                     <RiArrowDownLine />
                 )
             }
-            onClick={() =>
-                setLocationWithParams({
-                    ordering: value,
-                    page: 1,
-                })
-            }
+            onClick={() => {
+                const urlSearchParams = getUrlSearchParams();
+                urlSearchParams.set('ordering', ordering);
+                urlSearchParams.set('page', '1');
+                setLocationParams(urlSearchParams);
+            }}
         >
             {label}
         </MenuItem>
@@ -70,10 +72,8 @@ const OrderingMenuItem = ({
 };
 
 const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
-    const {
-        params: { ordering },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [ordering] = useSyncedStringState('ordering', '');
+    const setLocationParams = useSetLocationParams();
 
     if (asc === undefined || desc === undefined) {
         return <Text>{label}</Text>;
@@ -82,9 +82,12 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
             <Flex
                 color="teal"
                 cursor="pointer"
-                onClick={() =>
-                    setLocationWithParams({ ordering: desc.value, page: 1 })
-                }
+                onClick={() => {
+                    const urlSearchParams = getUrlSearchParams();
+                    urlSearchParams.set('ordering', desc.value);
+                    urlSearchParams.set('page', '1');
+                    setLocationParams(urlSearchParams);
+                }}
             >
                 <Icon as={RiArrowUpLine} marginTop="1px" />
                 <Text>{label}</Text>
@@ -95,9 +98,12 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
             <Flex
                 cursor="pointer"
                 color="teal"
-                onClick={() =>
-                    setLocationWithParams({ ordering: asc.value, page: 1 })
-                }
+                onClick={() => {
+                    const urlSearchParams = getUrlSearchParams();
+                    urlSearchParams.set('ordering', asc.value);
+                    urlSearchParams.set('page', '1');
+                    setLocationParams(urlSearchParams);
+                }}
             >
                 <Icon as={RiArrowDownLine} marginTop="1px" />
                 <Text>{label}</Text>
@@ -107,9 +113,12 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
         return (
             <Text
                 cursor="pointer"
-                onClick={() =>
-                    setLocationWithParams({ ordering: desc.value, page: 1 })
-                }
+                onClick={() => {
+                    const urlSearchParams = getUrlSearchParams();
+                    urlSearchParams.set('ordering', desc.value);
+                    urlSearchParams.set('page', '1');
+                    setLocationParams(urlSearchParams);
+                }}
             >
                 {label}
             </Text>

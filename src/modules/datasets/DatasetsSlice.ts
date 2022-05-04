@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { SearchFilterType } from '@/libs/searchFilter';
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
@@ -47,7 +46,6 @@ const initialState: DatasetState = {
 };
 
 type listDatasetsArgs = {
-    filters: SearchFilterType[];
     page: number;
     ordering: string;
     match: string;
@@ -59,24 +57,20 @@ export const listDatasets = createAsyncThunk<
     PaginatedApiResponse<DatasetStubType>,
     listDatasetsArgs,
     { rejectValue: string }
->(
-    'datasets/list',
-    async ({ filters, ...params }: listDatasetsArgs, thunkAPI) => {
-        try {
-            const response = await DatasetAPI.listDatasets(
-                { searchFilters: filters, ...params },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('datasets/list', async (params: listDatasetsArgs, thunkAPI) => {
+    try {
+        const response = await DatasetAPI.listDatasets(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
+});
 
 export const retrieveDataset = createAsyncThunk<
     DatasetType,

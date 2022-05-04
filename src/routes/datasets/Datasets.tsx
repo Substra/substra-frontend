@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
     VStack,
     HStack,
@@ -12,9 +14,14 @@ import {
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useCreationDate, useOrdering, useOwner } from '@/hooks/useSyncedState';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
+import {
+    useCreationDate,
+    useMatch,
+    useOrdering,
+    useOwner,
+    usePage,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -47,18 +54,16 @@ import TableTitle from '@/components/TableTitle';
 
 const Datasets = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
-    const {
-        params: { page, search: searchFilters, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const { creationDateAfter, creationDateBefore } = useCreationDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    useSearchFiltersEffect(() => {
+    useEffect(() => {
         return dispatchWithAutoAbort(
             listDatasets({
-                filters: searchFilters,
                 page,
                 ordering,
                 match,
@@ -67,15 +72,7 @@ const Datasets = (): JSX.Element => {
                 creationDateBefore,
             })
         );
-    }, [
-        searchFilters,
-        page,
-        ordering,
-        match,
-        owner,
-        creationDateAfter,
-        creationDateBefore,
-    ]);
+    }, [page, ordering, match, owner, creationDateAfter, creationDateBefore]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets
@@ -209,7 +206,7 @@ const Datasets = (): JSX.Element => {
                                     <ClickableTr
                                         key={dataset.key}
                                         onClick={() =>
-                                            setLocationWithParams(
+                                            setLocationPreserveParams(
                                                 compilePath(PATHS.DATASET, {
                                                     key: dataset.key,
                                                 })

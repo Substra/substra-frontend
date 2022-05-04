@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
     VStack,
     HStack,
@@ -13,9 +15,14 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
-import useSearchFiltersEffect from '@/hooks/useSearchFiltersEffect';
-import { useCreationDate, useOrdering, useOwner } from '@/hooks/useSyncedState';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
+import {
+    useCreationDate,
+    useMatch,
+    useOrdering,
+    useOwner,
+    usePage,
+} from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFiltersContext,
@@ -51,18 +58,16 @@ import MetricDrawer from './components/MetricDrawer';
 
 const Metrics = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
-    const {
-        params: { page, search: searchFilters, match },
-        setLocationWithParams,
-    } = useLocationWithParams();
+    const [page] = usePage();
+    const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    useSearchFiltersEffect(() => {
+    useEffect(() => {
         return dispatchWithAutoAbort(
             listMetrics({
-                filters: searchFilters,
                 page,
                 ordering,
                 match,
@@ -71,15 +76,7 @@ const Metrics = (): JSX.Element => {
                 creationDateBefore,
             })
         );
-    }, [
-        searchFilters,
-        page,
-        ordering,
-        match,
-        owner,
-        creationDateAfter,
-        creationDateBefore,
-    ]);
+    }, [page, ordering, match, owner, creationDateAfter, creationDateBefore]);
 
     const metrics: MetricType[] = useAppSelector(
         (state: RootState) => state.metrics.metrics
@@ -206,7 +203,7 @@ const Metrics = (): JSX.Element => {
                                     <ClickableTr
                                         key={metric.key}
                                         onClick={() =>
-                                            setLocationWithParams(
+                                            setLocationPreserveParams(
                                                 compilePath(PATHS.METRIC, {
                                                     key: metric.key,
                                                 })

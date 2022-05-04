@@ -16,7 +16,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import useLocationWithParams from '@/hooks/useLocationWithParams';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     retrieveMetric,
     retrieveDescription,
@@ -36,7 +36,7 @@ import {
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
 const MetricDrawer = (): JSX.Element => {
-    const { setLocationWithParams } = useLocationWithParams();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const key = useKeyFromPath(PATHS.METRIC);
 
@@ -80,7 +80,7 @@ const MetricDrawer = (): JSX.Element => {
             isOpen={isOpen}
             placement="right"
             onClose={() => {
-                setLocationWithParams(PATHS.METRICS);
+                setLocationPreserveParams(PATHS.METRICS);
                 onClose();
             }}
             size="md"
@@ -94,7 +94,7 @@ const MetricDrawer = (): JSX.Element => {
                     storageAddress={metric?.address.storage_address}
                     filename={`metric-${key}.zip`}
                     onClose={() => {
-                        setLocationWithParams(PATHS.METRICS);
+                        setLocationPreserveParams(PATHS.METRICS);
                         onClose();
                     }}
                 />

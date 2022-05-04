@@ -11,7 +11,7 @@ import { useDisclosure } from '@chakra-ui/react';
 import {
     getUrlSearchParams,
     useSetLocationParams,
-} from '@/hooks/useSetLocationParams';
+} from '@/hooks/useLocationWithParams';
 import { AssetType } from '@/modules/common/CommonTypes';
 
 type ClearCallback = (urlSearchParams: URLSearchParams) => void;
