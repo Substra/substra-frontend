@@ -10,7 +10,8 @@ export interface MetricType {
     owner: string;
     permissions: PermissionsType;
     description: FileT;
-    address: FileT;
+    algorithm: FileT;
+    category: 'ALGO_METRIC';
     metadata: MetadataT;
     creation_date: string;
 }

@@ -91,7 +91,7 @@ const MetricDrawer = (): JSX.Element => {
                 <DrawerHeader
                     title={metric?.name}
                     loading={metricLoading}
-                    storageAddress={metric?.address.storage_address}
+                    storageAddress={metric?.algorithm.storage_address}
                     filename={`metric-${key}.zip`}
                     onClose={() => {
                         setLocationPreserveParams(PATHS.METRICS);

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed deadcode (#560)
 -   Mutualize synced state declarations (#557)
 -   Removed use of the search parameter (#556)
+-   Handle new metric type (#544)
 
 ## [0.20.0] - 2022-05-03
 
