@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Use csv url params values when filtering on multiple values for all fields (#561)
 -   Change all references to eu.gcr.io to gcr.io in skaffold configs (#474)
 -   Removed deadcode (#560)
 -   Mutualize synced state declarations (#557)

@@ -98,7 +98,7 @@ const ComputePlans = (): JSX.Element => {
                     match,
                     ordering,
                     status,
-                    key__in: key,
+                    key,
                     creationDateAfter,
                     creationDateBefore,
                     startDateAfter,

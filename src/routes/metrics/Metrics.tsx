@@ -71,7 +71,7 @@ const Metrics = (): JSX.Element => {
                 page,
                 ordering,
                 match,
-                owner__in: owner,
+                owner,
                 creationDateAfter,
                 creationDateBefore,
             })

@@ -78,7 +78,7 @@ const Algos = (): JSX.Element => {
                 page,
                 ordering,
                 match,
-                owner__in: owner,
+                owner,
                 category,
                 creationDateAfter,
                 creationDateBefore,
