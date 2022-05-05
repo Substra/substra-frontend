@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
     Box,
@@ -16,6 +16,7 @@ import { RiExternalLinkLine } from 'react-icons/ri';
 
 import useCookie, { toBool } from '@/hooks/useCookie';
 import useCookieSettings from '@/hooks/useCookieSettings';
+import useEffectOnce from '@/hooks/useEffectOnce';
 import { useToast } from '@/hooks/useToast';
 import NotFound from '@/routes/notfound/NotFound';
 
@@ -53,7 +54,7 @@ const Settings = (): JSX.Element => {
         setClarityChecked(false);
     };
 
-    useEffect(() => {
+    useEffectOnce(() => {
         if (displayNotification) {
             toast({
                 title: 'Settings saved',
@@ -63,7 +64,7 @@ const Settings = (): JSX.Element => {
             });
             setDisplayNotification(false);
         }
-    }, []);
+    });
 
     if (!MICROSOFT_CLARITY_ID) {
         return <NotFound />;

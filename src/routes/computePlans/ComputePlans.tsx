@@ -108,6 +108,7 @@ const ComputePlans = (): JSX.Element => {
                 })
             ),
         [
+            dispatchWithAutoAbort,
             page,
             match,
             ordering,

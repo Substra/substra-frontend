@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { HasKey } from '@/modules/common/CommonTypes';
 
 import useAppSelector from './useAppSelector';
 
 function useLoadSave<T>(localStorageKey: string, channel?: string) {
-    if (!channel) {
-        return {
-            load: () => [],
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            save: () => {},
-        };
-    }
     const channelLocalStorageKey = `${channel}-${localStorageKey}`;
-    const load = (): T[] => {
+
+    const load = useCallback((): T[] => {
+        if (!channel) {
+            return [];
+        }
         const jsonItems = localStorage.getItem(channelLocalStorageKey) || '[]';
         try {
             return JSON.parse(jsonItems);
@@ -21,11 +18,17 @@ function useLoadSave<T>(localStorageKey: string, channel?: string) {
             // do nothing
         }
         return [];
-    };
+    }, [channelLocalStorageKey, channel]);
 
-    const save = (items: T[]): void => {
-        localStorage.setItem(channelLocalStorageKey, JSON.stringify(items));
-    };
+    const save = useCallback(
+        (items: T[]): void => {
+            if (!channel) {
+                return;
+            }
+            localStorage.setItem(channelLocalStorageKey, JSON.stringify(items));
+        },
+        [channel, channelLocalStorageKey]
+    );
 
     return { load, save };
 }
@@ -50,7 +53,7 @@ function useLocalStorageItems<Type>(
         if (channel) {
             setStateItems(load());
         }
-    }, [channel]);
+    }, [channel, load]);
 
     const includesItem = (item: Type) => {
         for (const i of items) {

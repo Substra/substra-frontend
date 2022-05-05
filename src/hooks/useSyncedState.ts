@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
     getUrlSearchParams,
@@ -18,16 +18,19 @@ export const useSyncedState = <T>(
 ): [T, (value: T) => void] => {
     const setLocationParams = useSetLocationParams();
 
-    const setParam = (value: T) => {
-        const urlSearchParams = getUrlSearchParams();
-        urlSearchParams.set(param, toString(value));
-        setLocationParams(urlSearchParams);
-    };
+    const setParam = useCallback(
+        (value: T) => {
+            const urlSearchParams = getUrlSearchParams();
+            urlSearchParams.set(param, toString(value));
+            setLocationParams(urlSearchParams);
+        },
+        [param, setLocationParams, toString]
+    );
 
-    const getParam = () => {
+    const getParam = useCallback(() => {
         const urlSearchParams = getUrlSearchParams();
         return urlSearchParams.get(param);
-    };
+    }, [param]);
 
     const [state, setState] = useState<T>(() => {
         const value = getParam();
@@ -53,19 +56,24 @@ export const useSyncedState = <T>(
             // unregister handler
             events.forEach((e) => removeEventListener(e, updateState));
         };
-    }, []);
+    }, [getParam, originalValue, parse, setParam]);
 
     return [state, setParam];
 };
+
+const stringIdentity = (v: string): string => v;
 
 export const useSyncedStringState = (param: string, originalValue: string) =>
     useSyncedState<string>(
         param,
         originalValue,
-        (v) => v,
-        (v) => v
+        stringIdentity,
+        stringIdentity
     );
 
+const stringArrayParse = (valueAsString: string): string[] =>
+    valueAsString.split(',').filter((v) => !!v);
+const stringArrayToString = (v: string[]): string => v.join(',');
 export const useSyncedStringArrayState = (
     param: string,
     originalValue: string[]
@@ -73,10 +81,22 @@ export const useSyncedStringArrayState = (
     useSyncedState<string[]>(
         param,
         originalValue,
-        (valueAsString) => valueAsString.split(',').filter((v) => !!v),
-        (v) => v.join(',')
+        stringArrayParse,
+        stringArrayToString
     );
 
+const dateStringParse = (v: string): string => {
+    const timestamp = Date.parse(v);
+    if (isNaN(timestamp)) {
+        return '';
+    } else {
+        const d = new Date(timestamp);
+        const month = `${d.getMonth() + 1}`.padStart(2, '0');
+        const day = `${d.getDate()}`.padStart(2, '0');
+        const res = `${d.getFullYear()}-${month}-${day}`;
+        return res;
+    }
+};
 export const useSyncedDateStringState = (
     param: string,
     originalValue: string
@@ -84,28 +104,14 @@ export const useSyncedDateStringState = (
     useSyncedState<string>(
         param,
         originalValue,
-        (v) => {
-            const timestamp = Date.parse(v);
-            if (isNaN(timestamp)) {
-                return '';
-            } else {
-                const d = new Date(timestamp);
-                const month = `${d.getMonth() + 1}`.padStart(2, '0');
-                const day = `${d.getDate()}`.padStart(2, '0');
-                const res = `${d.getFullYear()}-${month}-${day}`;
-                return res;
-            }
-        },
-        (v) => v
+        dateStringParse,
+        stringIdentity
     );
 
+const numberParse = (v: string): number => parseInt(v);
+const numberToString = (v: number): string => v.toFixed(0);
 export const useSyncedNumberState = (param: string, originalValue: number) =>
-    useSyncedState<number>(
-        param,
-        originalValue,
-        (v) => parseInt(v),
-        (v) => v.toFixed(0)
-    );
+    useSyncedState<number>(param, originalValue, numberParse, numberToString);
 
 // Common number states
 export const usePage = () => useSyncedNumberState('page', 1);

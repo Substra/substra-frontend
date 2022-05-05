@@ -85,6 +85,7 @@ const Algos = (): JSX.Element => {
             })
         );
     }, [
+        dispatchWithAutoAbort,
         page,
         ordering,
         match,

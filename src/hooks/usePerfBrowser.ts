@@ -229,7 +229,7 @@ const usePerfBrowser = (
         setSelectedComputePlanKeys(
             computePlans.map((computePlan) => computePlan.key)
         );
-    }, [computePlans]);
+    }, [computePlans, setSelectedComputePlanKeys]);
 
     const seriesGroupsWithRounds = useMemo(() => {
         const groupsWithRounds = seriesGroups

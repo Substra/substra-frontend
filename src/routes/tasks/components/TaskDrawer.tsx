@@ -73,11 +73,10 @@ const TaskDrawer = ({
         if (taskKey) {
             if (!isOpen) {
                 onOpen();
+                dispatch(retrieveTask({ category, key: taskKey }));
             }
-
-            dispatch(retrieveTask({ category, key: taskKey }));
         }
-    }, [taskKey]);
+    }, [category, dispatch, isOpen, onOpen, taskKey]);
 
     const task = useAppSelector((state) => state.tasks.task);
     const taskLoading = useAppSelector((state) => state.tasks.taskLoading);

@@ -43,7 +43,7 @@ const Login = (): JSX.Element => {
         if (!forceLogout && authenticated) {
             setLocation(nextLocation);
         }
-    }, [forceLogout, authenticated]);
+    }, [forceLogout, authenticated, dispatch, setLocation, nextLocation]);
 
     return (
         <HStack backgroundColor="#F7FAFC" flex="1">

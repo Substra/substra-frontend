@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Text, Select, HStack, Input } from '@chakra-ui/react';
 
@@ -16,7 +16,7 @@ const TableFilterDate = ({
     setMinDate,
     setMaxDate,
 }: TableFilterDateProps): JSX.Element => {
-    const getMode = (): Mode | null => {
+    const getMode = useCallback((): Mode | null => {
         if (minDate && maxDate) {
             return 'between';
         } else if (minDate) {
@@ -25,7 +25,7 @@ const TableFilterDate = ({
             return 'before';
         }
         return null;
-    };
+    }, [minDate, maxDate]);
     const [mode, setMode] = useState<Mode>(() => getMode() || 'after');
 
     const onModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -43,7 +43,7 @@ const TableFilterDate = ({
         if (newMode) {
             setMode(newMode);
         }
-    }, [minDate, maxDate]);
+    }, [getMode]);
 
     return (
         <Box w="100%" paddingY="5" paddingX="30px">

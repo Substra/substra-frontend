@@ -45,17 +45,19 @@ const MetricDrawer = (): JSX.Element => {
         if (key) {
             if (!isOpen) {
                 onOpen();
-            }
 
-            dispatch(retrieveMetric(key))
-                .then(unwrapResult)
-                .then((metric: MetricType) => {
-                    dispatch(
-                        retrieveDescription(metric.description.storage_address)
-                    );
-                });
+                dispatch(retrieveMetric(key))
+                    .then(unwrapResult)
+                    .then((metric: MetricType) => {
+                        dispatch(
+                            retrieveDescription(
+                                metric.description.storage_address
+                            )
+                        );
+                    });
+            }
         }
-    }, [key]);
+    }, [dispatch, isOpen, key, onOpen]);
 
     const metric = useAppSelector((state) => state.metrics.metric);
     const metricLoading = useAppSelector(

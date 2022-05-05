@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
-
 import { useLocation } from 'wouter';
 
+import useEffectOnce from '@/hooks/useEffectOnce';
 import { PATHS } from '@/routes';
 
 const Home = (): null => {
     const [, setLocation] = useLocation();
 
-    useEffect(() => {
+    useEffectOnce(() => {
         setLocation(PATHS.COMPUTE_PLANS, { replace: true });
-    }, []);
+    });
 
     return null;
 };

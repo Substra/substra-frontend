@@ -72,7 +72,15 @@ const Datasets = (): JSX.Element => {
                 creationDateBefore,
             })
         );
-    }, [page, ordering, match, owner, creationDateAfter, creationDateBefore]);
+    }, [
+        dispatchWithAutoAbort,
+        page,
+        ordering,
+        match,
+        owner,
+        creationDateAfter,
+        creationDateBefore,
+    ]);
 
     const datasets: DatasetStubType[] = useAppSelector(
         (state) => state.datasets.datasets

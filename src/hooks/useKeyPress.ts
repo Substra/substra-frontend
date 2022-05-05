@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function useKeyPress(targetKey: string, callback: () => void) {
-    const upHandler = ({ key }: KeyboardEvent): void => {
-        if (key === targetKey) {
-            callback();
-        }
-    };
+    const upHandler = useCallback(
+        ({ key }: KeyboardEvent): void => {
+            if (key === targetKey) {
+                callback();
+            }
+        },
+        [targetKey, callback]
+    );
 
     // Add event listeners
     useEffect(() => {
@@ -15,5 +18,5 @@ export function useKeyPress(targetKey: string, callback: () => void) {
         return () => {
             window.removeEventListener('keyup', upHandler);
         };
-    }, []);
+    }, [upHandler]);
 }

@@ -21,7 +21,7 @@ export default () => {
                 { replace: true }
             );
         }
-    }, [key]);
+    }, [key, setLocation]);
 
     if (!key) {
         return <NotFound />;

@@ -43,17 +43,19 @@ const AlgoDrawer = (): JSX.Element => {
         if (key) {
             if (!isOpen) {
                 onOpen();
-            }
 
-            dispatch(retrieveAlgo(key))
-                .then(unwrapResult)
-                .then((algo: AlgoT) => {
-                    dispatch(
-                        retrieveDescription(algo.description.storage_address)
-                    );
-                });
+                dispatch(retrieveAlgo(key))
+                    .then(unwrapResult)
+                    .then((algo: AlgoT) => {
+                        dispatch(
+                            retrieveDescription(
+                                algo.description.storage_address
+                            )
+                        );
+                    });
+            }
         }
-    }, [key]);
+    }, [dispatch, isOpen, key, onOpen]);
 
     const algo = useAppSelector((state) => state.algos.algo);
     const algoLoading = useAppSelector((state) => state.algos.algoLoading);

@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useRoute } from 'wouter';
 
 import { VStack } from '@chakra-ui/react';
@@ -87,20 +89,35 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
-    const list = () =>
-        listTestTasks({
-            page,
-            ordering,
-            match,
-            status,
-            worker,
+    const list = useCallback(
+        () =>
+            listTestTasks({
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector((state) => state.tasks.testTasks);
     const count = useAppSelector((state) => state.tasks.testTasksCount);
 
@@ -145,20 +162,35 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
-    const list = () =>
-        listTrainTasks({
-            page,
-            ordering,
-            match,
-            status,
-            worker,
+    const list = useCallback(
+        () =>
+            listTrainTasks({
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector((state) => state.tasks.trainTasks);
     const count = useAppSelector((state) => state.tasks.trainTasksCount);
 
@@ -205,20 +237,35 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const loading = useAppSelector(
         (state) => state.tasks.compositeTasksLoading
     );
-    const list = () =>
-        listCompositeTasks({
-            page,
-            ordering,
-            match,
-            status,
-            worker,
+    const list = useCallback(
+        () =>
+            listCompositeTasks({
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector((state) => state.tasks.compositeTasks);
     const count = useAppSelector((state) => state.tasks.compositeTasksCount);
 
@@ -265,20 +312,35 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const loading = useAppSelector(
         (state) => state.tasks.aggregateTasksLoading
     );
-    const list = () =>
-        listAggregateTasks({
-            page,
-            ordering,
-            match,
-            status,
-            worker,
+    const list = useCallback(
+        () =>
+            listAggregateTasks({
+                page,
+                ordering,
+                match,
+                status,
+                worker: worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector((state) => state.tasks.aggregateTasks);
     const count = useAppSelector((state) => state.tasks.aggregateTasksCount);
 

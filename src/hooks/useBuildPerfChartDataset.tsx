@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { ChartDataset } from 'chart.js';
 
 import { XAxisMode } from '@/hooks/usePerfBrowser';
@@ -17,26 +19,29 @@ const useBuildPerfChartDataset = (): ((
 ) => PerfChartDataset) => {
     const datasetStyle = usePerfChartDatasetStyle();
 
-    return (
-        serie: SerieT,
-        xAxisMode: XAxisMode,
-        highlightedParams: HighlightedParams
-    ): PerfChartDataset => {
-        return {
-            label: serie.id,
-            data: serie.points.map(
-                (point): DataPoint => ({
-                    x: point[xAxisMode],
-                    y: point.perf as number,
-                    testTaskKey: point.testTaskKey,
-                    worker: serie.worker,
-                    computePlanKey: serie.computePlanKey,
-                    serieId: serie.id,
-                })
-            ),
-            parsing: false,
-            ...datasetStyle(serie, highlightedParams),
-        };
-    };
+    return useCallback(
+        (
+            serie: SerieT,
+            xAxisMode: XAxisMode,
+            highlightedParams: HighlightedParams
+        ): PerfChartDataset => {
+            return {
+                label: serie.id,
+                data: serie.points.map(
+                    (point): DataPoint => ({
+                        x: point[xAxisMode],
+                        y: point.perf as number,
+                        testTaskKey: point.testTaskKey,
+                        worker: serie.worker,
+                        computePlanKey: serie.computePlanKey,
+                        serieId: serie.id,
+                    })
+                ),
+                parsing: false,
+                ...datasetStyle(serie, highlightedParams),
+            };
+        },
+        [datasetStyle]
+    );
 };
 export default useBuildPerfChartDataset;

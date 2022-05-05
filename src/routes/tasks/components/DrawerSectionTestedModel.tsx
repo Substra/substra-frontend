@@ -58,7 +58,7 @@ const DrawerSectionTestedModel = ({
         };
 
         return withAbortController(retrieveParentTask);
-    }, [parentTaskStub.key]);
+    }, [parentTaskStub.category, parentTaskStub.key, withAbortController]);
 
     return (
         <DrawerSectionEntry

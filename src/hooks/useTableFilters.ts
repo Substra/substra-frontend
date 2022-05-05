@@ -1,13 +1,14 @@
 import React, {
     createContext,
+    useCallback,
     useContext,
-    useEffect,
     useRef,
     useState,
 } from 'react';
 
 import { useDisclosure } from '@chakra-ui/react';
 
+import useEffectOnce from '@/hooks/useEffectOnce';
 import {
     getUrlSearchParams,
     useSetLocationParams,
@@ -77,7 +78,7 @@ export const useTableFiltersContext = (
         };
     };
 
-    const clearAll = () => {
+    const clearAll = useCallback(() => {
         const urlSearchParams = getUrlSearchParams();
         for (const tableFilter of Object.values(tableFilters.current)) {
             if (tableFilter.clear.current) {
@@ -85,9 +86,9 @@ export const useTableFiltersContext = (
             }
         }
         setLocationParams(urlSearchParams);
-    };
+    }, [setLocationParams]);
 
-    const applyAll = () => {
+    const applyAll = useCallback(() => {
         const urlSearchParams = getUrlSearchParams();
         for (const tableFilter of Object.values(tableFilters.current)) {
             if (tableFilter.apply.current) {
@@ -96,15 +97,15 @@ export const useTableFiltersContext = (
         }
         urlSearchParams.set('page', '1');
         setLocationParams(urlSearchParams);
-    };
+    }, [setLocationParams]);
 
-    const resetAll = () => {
+    const resetAll = useCallback(() => {
         for (const tableFilter of Object.values(tableFilters.current)) {
             if (tableFilter.reset.current) {
                 tableFilter.reset.current();
             }
         }
-    };
+    }, []);
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -142,9 +143,9 @@ export const useTableFilterCallbackRefs = (filterKey: string) => {
 
     const { register } = useContext(TableFiltersContext);
 
-    useEffect(() => {
+    useEffectOnce(() => {
         register(filterKey, clearRef, applyRef, resetRef);
-    }, []);
+    });
 
     return {
         clearRef,

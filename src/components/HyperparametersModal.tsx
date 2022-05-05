@@ -122,7 +122,7 @@ const HyperparametersModal = ({
             }
         }
         return hpDiffList;
-    }, [computePlans]);
+    }, [computePlans, hyperparametersList]);
 
     const toggleDifferencesDisplay = () => {
         setIsShowingDiffs(true);

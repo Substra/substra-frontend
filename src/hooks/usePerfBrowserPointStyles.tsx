@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { IconType } from 'react-icons/lib';
 import {
@@ -89,34 +89,40 @@ const POINT_STYLES: Record<PointStyleIcon, Record<string, HTMLImageElement>> = {
 const usePerfBrowserPointStyles = () => {
     const { nodes } = useContext(PerfBrowserContext);
 
-    const getPointStyleIcon = (worker: string): PointStyleIcon | null => {
-        const index = nodes.map((n) => n.id).indexOf(worker);
+    const getPointStyleIcon = useCallback(
+        (worker: string): PointStyleIcon | null => {
+            const index = nodes.map((n) => n.id).indexOf(worker);
 
-        if (index === -1) {
-            return null;
-        }
+            if (index === -1) {
+                return null;
+            }
 
-        return POINT_STYLE_ICONS[index % POINT_STYLE_ICONS.length];
-    };
+            return POINT_STYLE_ICONS[index % POINT_STYLE_ICONS.length];
+        },
+        [nodes]
+    );
 
-    const getPointStyleComponent = (worker: string): IconType | null => {
-        const icon = getPointStyleIcon(worker);
-        if (icon === null) {
-            return null;
-        }
-        return POINT_STYLE_ICON_COMPONENTS[icon];
-    };
+    const getPointStyleComponent = useCallback(
+        (worker: string): IconType | null => {
+            const icon = getPointStyleIcon(worker);
+            if (icon === null) {
+                return null;
+            }
+            return POINT_STYLE_ICON_COMPONENTS[icon];
+        },
+        [getPointStyleIcon]
+    );
 
-    const getPointStyle = (
-        serie: SerieT,
-        color: string
-    ): HTMLImageElement | 'circle' => {
-        const icon = getPointStyleIcon(serie.worker);
-        if (icon === null) {
-            return 'circle';
-        }
-        return POINT_STYLES[icon][color] || 'circle';
-    };
+    const getPointStyle = useCallback(
+        (serie: SerieT, color: string): HTMLImageElement | 'circle' => {
+            const icon = getPointStyleIcon(serie.worker);
+            if (icon === null) {
+                return 'circle';
+            }
+            return POINT_STYLES[icon][color] || 'circle';
+        },
+        [getPointStyleIcon]
+    );
 
     return {
         getPointStyleIcon,

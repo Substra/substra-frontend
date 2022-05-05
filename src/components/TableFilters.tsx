@@ -68,7 +68,7 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
 
     useEffect(() => {
         resetAll();
-    }, [isPopoverOpen]);
+    }, [isPopoverOpen, resetAll]);
 
     const tabTitles: string[] = React.Children.toArray(children).map(
         (child) => {
@@ -339,7 +339,6 @@ export const ComputePlanFavoritesTableFilter = ({
     const { clearRef, applyRef } = useTableFilterCallbackRefs('favorites');
 
     const setLocationParams = useSetLocationParams();
-    const urlSearchParams = getUrlSearchParams();
 
     const isFavoritesOnly =
         favorites.length > 0 &&
@@ -357,15 +356,16 @@ export const ComputePlanFavoritesTableFilter = ({
 
     useEffect(() => {
         setFavoritesOnly(isFavoritesOnly);
-    }, [activeFavorites]);
+    }, [activeFavorites, isFavoritesOnly]);
 
     useEffect(() => {
+        const urlSearchParams = getUrlSearchParams();
         if (favoritesOnly) {
             urlSearchParams.set('key', favorites.join(','));
             urlSearchParams.set('page', '1');
             setLocationParams(urlSearchParams);
         }
-    }, [favorites]);
+    }, [favorites, favoritesOnly, setLocationParams]);
 
     const onChange = () => {
         if (favoritesOnly) {

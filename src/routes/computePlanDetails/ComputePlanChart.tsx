@@ -43,7 +43,7 @@ const ComputePlanChart = (): JSX.Element => {
             });
             setLocation(url);
         }
-    }, [computePlan?.status]);
+    }, [computePlan?.key, computePlan?.status, setLocation]);
 
     const dispatchWithAutoAbortSeries = useDispatchWithAutoAbort();
     const dispatchWithAutoAbortComputePlan = useDispatchWithAutoAbort();
@@ -63,7 +63,12 @@ const ComputePlanChart = (): JSX.Element => {
                 destructor();
             }
         };
-    }, [key]);
+    }, [
+        key,
+        computePlan?.key,
+        dispatchWithAutoAbortComputePlan,
+        dispatchWithAutoAbortSeries,
+    ]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle(`Compute plan ${key}`),

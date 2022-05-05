@@ -39,7 +39,7 @@ const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(retrieveLogs(task.key));
-    }, [task.key]);
+    }, [dispatch, task.key]);
 
     return (
         <Modal

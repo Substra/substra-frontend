@@ -55,7 +55,7 @@ const Dataset = (): JSX.Element => {
                     dispatch(retrieveOpener(dataset.opener.storage_address));
                 });
         }
-    }, [key, dataset?.key]);
+    }, [key, dataset?.key, dispatch]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {

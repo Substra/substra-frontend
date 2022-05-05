@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useRoute } from 'wouter';
 
@@ -65,7 +65,7 @@ const GenericTasks = ({
         if (key && key !== computePlan?.key) {
             return dispatchWithAutoAbort(retrieveComputePlan(key));
         }
-    }, [key, computePlan?.key]);
+    }, [key, computePlan?.key, dispatchWithAutoAbort]);
 
     return (
         <Flex direction="column" alignItems="stretch" flexGrow={1}>
@@ -127,21 +127,37 @@ const TestTasks = ({
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTestTasksLoading
     );
-    const list = () =>
-        retrieveComputePlanTestTasks({
+    const list = useCallback(
+        () =>
+            retrieveComputePlanTestTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             computePlanKey,
-            page,
-            ordering,
-            match,
-            status,
-            worker,
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTestTasks
     );
@@ -202,21 +218,37 @@ const TrainTasks = ({
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasksLoading
     );
-    const list = () =>
-        retrieveComputePlanTrainTasks({
+    const list = useCallback(
+        () =>
+            retrieveComputePlanTrainTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             computePlanKey,
-            page,
-            ordering,
-            match,
-            status,
-            worker,
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanTrainTasks
     );
@@ -276,21 +308,37 @@ const CompositeTasks = ({
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasksLoading
     );
-    const list = () =>
-        retrieveComputePlanCompositeTasks({
+    const list = useCallback(
+        () =>
+            retrieveComputePlanCompositeTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             computePlanKey,
-            page,
-            ordering,
-            match,
-            status,
-            worker,
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanCompositeTasks
     );
@@ -350,21 +398,37 @@ const AggregateTasks = ({
     const loading = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasksLoading
     );
-    const list = () =>
-        retrieveComputePlanAggregateTasks({
+    const list = useCallback(
+        () =>
+            retrieveComputePlanAggregateTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creationDateAfter,
+                creationDateBefore,
+                startDateAfter,
+                startDateBefore,
+                endDateAfter,
+                endDateBefore,
+            }),
+        [
             computePlanKey,
-            page,
-            ordering,
-            match,
-            status,
-            worker,
             creationDateAfter,
             creationDateBefore,
-            startDateAfter,
-            startDateBefore,
             endDateAfter,
             endDateBefore,
-        });
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
     const tasks = useAppSelector(
         (state) => state.computePlans.computePlanAggregateTasks
     );

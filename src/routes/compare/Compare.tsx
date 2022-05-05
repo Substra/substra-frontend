@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useRoute } from 'wouter';
 
 import { HStack, Flex, Box } from '@chakra-ui/react';
@@ -7,6 +5,7 @@ import { HStack, Flex, Box } from '@chakra-ui/react';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useEffectOnce from '@/hooks/useEffectOnce';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { retrieveComputePlans } from '@/modules/computePlans/CompareSlice';
 import { loadSeries } from '@/modules/series/SeriesSlice';
@@ -31,7 +30,7 @@ const Compare = (): JSX.Element => {
     const dispatchWithAutoAbortSeries = useDispatchWithAutoAbort();
     const dispatchWithAutoAbortComputePlans = useDispatchWithAutoAbort();
 
-    useEffect(() => {
+    useEffectOnce(() => {
         const destructors: (() => void)[] = [];
         destructors.push(
             dispatchWithAutoAbortComputePlans(
@@ -44,7 +43,7 @@ const Compare = (): JSX.Element => {
                 destructor();
             }
         };
-    }, []);
+    });
 
     const loading = useAppSelector((state) => state.series.loading);
     const series = useAppSelector((state) => state.series.series);

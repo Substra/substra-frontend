@@ -296,7 +296,7 @@ const NodeList = ({
                             serie.computePlanKey === computePlanKey
                     )
             ),
-        [allNodes, computePlanKey, isNodeIdSelected]
+        [allNodes, computePlanKey, isNodeIdSelected, series]
     );
 
     return (

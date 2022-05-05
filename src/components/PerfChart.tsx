@@ -5,6 +5,7 @@ import {
     useContext,
     useState,
     useEffect,
+    useCallback,
 } from 'react';
 
 import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
@@ -59,7 +60,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const chartRef = useRef<Chart<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
-            series,
             size === 'thumbnail'
         );
         const [isZoomed, setIsZoomed] = useState<boolean>(false);
@@ -67,23 +67,6 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         const [maxRank, maxRound] = useMemo(() => {
             return [getMaxRank(series), getMaxRound(series)];
         }, [series]);
-
-        const getMaxXAxisMode = () => {
-            let max: number;
-
-            switch (xAxisMode) {
-                case 'rank':
-                    max = maxRank;
-                    break;
-                case 'round':
-                    max = maxRound;
-                    break;
-                default:
-                    max = 0;
-            }
-
-            return max;
-        };
 
         const seriesDatasets = useMemo(
             () =>
@@ -100,16 +83,18 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 highlightedSerie,
                 highlightedComputePlanKey,
                 highlightedNodeId,
+                buildPerfChartDataset,
             ]
         );
 
-        const data = useMemo<ChartData<'line', DataPoint[]>>(
-            () => ({
-                labels: [...Array(getMaxXAxisMode() + 1).keys()],
+        const data = useMemo<ChartData<'line', DataPoint[]>>(() => {
+            const maxXAxis = xAxisMode === 'round' ? maxRound : maxRank;
+
+            return {
+                labels: [...Array(maxXAxis + 1).keys()],
                 datasets: seriesDatasets,
-            }),
-            [maxRank, maxRound, seriesDatasets, xAxisMode]
-        );
+            };
+        }, [maxRank, maxRound, seriesDatasets, xAxisMode]);
 
         const options = useMemo<ChartOptions<'line'>>(() => {
             const zoomPluginOptions: ZoomPluginOptions = {
@@ -221,29 +206,29 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     },
                 },
             };
-        }, [zoomEnabled, size, xAxisMode]);
+        }, [zoomEnabled, size, xAxisMode, tooltipPluginOptions]);
 
-        const onResetZoomClick = () => {
+        const onResetZoomClick = useCallback(() => {
             const chart = chartRef.current;
             if (chart) {
                 chart.resetZoom();
                 setIsZoomed(false);
             }
-        };
+        }, [chartRef, setIsZoomed]);
 
-        const onZoomInClick = () => {
+        const onZoomInClick = useCallback(() => {
             const chart = chartRef.current;
             if (chart) {
                 chart.zoom(1.1);
             }
-        };
+        }, [chartRef]);
 
-        const onZoomOutClick = () => {
+        const onZoomOutClick = useCallback(() => {
             const chart = chartRef.current;
             if (chart) {
                 chart.zoom(0.9);
             }
-        };
+        }, [chartRef]);
 
         // Keyboard interaction
         useKeyPress('r', onResetZoomClick);
@@ -257,13 +242,16 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             }
         }, [xAxisMode]);
 
-        const plugins: Plugin<'line'>[] = [
-            highlightRankPlugin({
-                isRankSelectable: size === 'full',
-                setHoveredRank,
-                setSelectedRank,
-            }) as Plugin<'line'>,
-        ];
+        const plugins: Plugin<'line'>[] = useMemo(
+            () => [
+                highlightRankPlugin({
+                    isRankSelectable: size === 'full',
+                    setHoveredRank,
+                    setSelectedRank,
+                }) as Plugin<'line'>,
+            ],
+            [setHoveredRank, setSelectedRank, size]
+        );
         if (zoomEnabled) {
             plugins.push(zoomPlugin as Plugin<'line'>);
         }
@@ -279,7 +267,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     />
                 </Box>
             ),
-            [data]
+            [data, options, ref, plugins]
         );
 
         return (

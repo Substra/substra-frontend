@@ -123,6 +123,8 @@ const TasksTable = ({
         }
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [
+        dispatchWithAutoAbort,
+        list,
         category,
         page,
         computePlan,

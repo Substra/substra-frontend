@@ -1,12 +1,11 @@
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { SerieT, DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPoint } from '@/modules/series/SeriesTypes';
 
 import PerfChartSummaryTooltip from '@/components/PerfChartSummaryTooltip';
 import PerfChartTooltip from '@/components/PerfChartTooltip';
 
 const usePerfChartTooltip = (
-    series: SerieT[],
     summary: boolean
 ): {
     tooltip: React.ReactNode;
@@ -25,13 +24,13 @@ const usePerfChartTooltip = (
         }
     };
 
-    const hideTooltip = () => {
+    const hideTooltip = useCallback(() => {
         if (summary) {
             setDisplayed(false);
         } else {
             timeout.current = setTimeout(() => setDisplayed(false), 1000);
         }
-    };
+    }, [summary]);
 
     const tooltip =
         displayed &&
@@ -52,36 +51,39 @@ const usePerfChartTooltip = (
             />
         ));
 
-    const tooltipPluginOptions = {
-        enabled: false,
-        external: function (context: {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            tooltip: any;
-            chart: { canvas: HTMLCanvasElement };
-        }) {
-            const tooltipModel = context.tooltip;
-            if (tooltipModel && tooltipModel.opacity) {
-                setPoints(
-                    tooltipModel.dataPoints.map(
-                        (dataPoint: { raw: DataPoint }) => dataPoint.raw
-                    )
-                );
-                if (summary) {
-                    setCanvasBoundingRect(
-                        context.chart.canvas.getBoundingClientRect()
+    const tooltipPluginOptions = useMemo(
+        () => ({
+            enabled: false,
+            external: function (context: {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                tooltip: any;
+                chart: { canvas: HTMLCanvasElement };
+            }) {
+                const tooltipModel = context.tooltip;
+                if (tooltipModel && tooltipModel.opacity) {
+                    setPoints(
+                        tooltipModel.dataPoints.map(
+                            (dataPoint: { raw: DataPoint }) => dataPoint.raw
+                        )
                     );
+                    if (summary) {
+                        setCanvasBoundingRect(
+                            context.chart.canvas.getBoundingClientRect()
+                        );
+                    } else {
+                        setPosition({
+                            x: parseInt(tooltipModel.caretX),
+                            y: parseInt(tooltipModel.caretY),
+                        });
+                    }
+                    showTooltip();
                 } else {
-                    setPosition({
-                        x: parseInt(tooltipModel.caretX),
-                        y: parseInt(tooltipModel.caretY),
-                    });
+                    hideTooltip();
                 }
-                showTooltip();
-            } else {
-                hideTooltip();
-            }
-        },
-    };
+            },
+        }),
+        [hideTooltip, summary]
+    );
 
     return {
         tooltip,

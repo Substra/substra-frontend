@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
@@ -6,14 +6,14 @@ import { Route, Switch, useLocation, useRoute } from 'wouter';
 import { Flex, Spinner } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
+import useEffectOnce from '@/hooks/useEffectOnce';
 import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
+import CookieBanner from '@/components/CookieBanner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
-
-import CookieBanner from './components/CookieBanner';
 
 const App = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const App = (): JSX.Element => {
     const [onLoginPage] = useRoute(PATHS.LOGIN);
     const [checkingCredentials, setCheckingCredentials] = useState(true);
 
-    useEffect(() => {
+    useEffectOnce(() => {
         /**
          * Perform authentication check at init.
          * If the refreshToken is expired, then redirect to the login page.
@@ -48,7 +48,7 @@ const App = (): JSX.Element => {
             .finally(() => {
                 setCheckingCredentials(false);
             });
-    }, []);
+    });
 
     if (checkingCredentials) {
         return (

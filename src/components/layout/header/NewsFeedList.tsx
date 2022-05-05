@@ -11,6 +11,7 @@ import { RiListCheck2 } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
+import useEffectOnce from '@/hooks/useEffectOnce';
 import {
     listNewsFeed,
     NEWS_FEED_PAGE_SIZE,
@@ -67,7 +68,7 @@ const NewsFeedList = (): JSX.Element => {
         promiseRef.current = dispatch(listNewsFeed({ firstPage: false }));
     };
 
-    useEffect(() => {
+    useEffectOnce(() => {
         fetchFirstPage();
 
         return () => {
@@ -75,7 +76,7 @@ const NewsFeedList = (): JSX.Element => {
                 promiseRef.current.abort();
             }
         };
-    }, []);
+    });
 
     // infinite scroll
     const rootRef = useRef<HTMLDivElement>(null);
@@ -106,7 +107,7 @@ const NewsFeedList = (): JSX.Element => {
                 observer.disconnect();
             };
         }
-    }, [rootRef.current, probeRef.current]);
+    }, []);
 
     if (!loading && !items.length) {
         return (

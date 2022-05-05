@@ -76,7 +76,15 @@ const Metrics = (): JSX.Element => {
                 creationDateBefore,
             })
         );
-    }, [page, ordering, match, owner, creationDateAfter, creationDateBefore]);
+    }, [
+        dispatchWithAutoAbort,
+        page,
+        ordering,
+        match,
+        owner,
+        creationDateAfter,
+        creationDateBefore,
+    ]);
 
     const metrics: MetricType[] = useAppSelector(
         (state: RootState) => state.metrics.metrics

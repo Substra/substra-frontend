@@ -10,6 +10,7 @@ export const useDocumentTitleEffect = (
     effect: (setDocumentTitle: SetDocumentTitle) => void,
     deps: React.DependencyList
 ): void => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => effect(setDocumentTitle), deps);
 };
 
