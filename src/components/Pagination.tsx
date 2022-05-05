@@ -28,7 +28,8 @@ const PageLink = ({
     isDisabled,
 }: PageLinkProps): JSX.Element => {
     return (
-        <Link href={getPageLocation(page)}>
+        // key is necessary here so that the same button component isn't repurposed when current page change.
+        <Link href={getPageLocation(page)} key={page}>
             <Button
                 as="a"
                 backgroundColor={activePage === page ? 'gray.200' : 'white'}
