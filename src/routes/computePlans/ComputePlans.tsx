@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
     VStack,
@@ -20,7 +20,7 @@ import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
 import {
     useCreationDate,
     useEndDate,
-    useKey,
+    useFavoritesOnly,
     useMatch,
     useOrdering,
     usePage,
@@ -69,7 +69,7 @@ const ComputePlans = (): JSX.Element => {
     const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
     const [status] = useStatus();
-    const [key] = useKey();
+    const [favoritesOnly] = useFavoritesOnly();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
@@ -89,6 +89,10 @@ const ComputePlans = (): JSX.Element => {
 
     const { favorites, setFavorites, isFavorite, onFavoriteChange } =
         useFavoriteComputePlans();
+
+    const key = useMemo(() => {
+        return favoritesOnly ? favorites : null;
+    }, [favoritesOnly, favorites]);
 
     useEffect(
         () =>

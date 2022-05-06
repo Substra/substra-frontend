@@ -145,6 +145,20 @@ const numberToString = (v: number): string => v.toFixed(0);
 export const useSyncedNumberState = (param: string, originalValue: number) =>
     useSyncedState<number>(param, originalValue, numberParse, numberToString);
 
+const booleanParse = (v: string): boolean => v === '1';
+const booleanToString = (v: boolean): string => (v ? '1' : '');
+const useSyncedBooleanState = (param: string, originalValue: boolean) =>
+    useSyncedState<boolean>(
+        param,
+        originalValue,
+        booleanParse,
+        booleanToString
+    );
+
+// Common boolean states
+export const useFavoritesOnly = () =>
+    useSyncedBooleanState('favorites_only', false);
+
 // Common number states
 export const usePage = () => useSyncedNumberState('page', 1);
 
@@ -158,7 +172,6 @@ export const useCanAccessLogs = () =>
     useSyncedStringArrayState('can_access_logs', []);
 export const useCanProcess = () => useSyncedStringArrayState('can_process', []);
 export const useCategory = () => useSyncedStringArrayState('category', []);
-export const useKey = () => useSyncedStringArrayState('key', []);
 export const useOwner = () => useSyncedStringArrayState('owner', []);
 export const useStatus = () => useSyncedStringArrayState('status', []);
 export const useWorker = () => useSyncedStringArrayState('worker', []);

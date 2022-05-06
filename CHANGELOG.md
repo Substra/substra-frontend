@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Handle new metric type (#544)
 -   Add ESLint to React hooks (#494)
 -   Improved filter tags display (#566)
+-   Favorites only now synced in URL as a boolean flag (#569)
 
 ## [0.20.0] - 2022-05-03
 

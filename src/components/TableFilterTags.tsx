@@ -2,7 +2,7 @@ import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 
 import {
     useCategory,
-    useKey,
+    useFavoritesOnly,
     useSyncedDateStringState,
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
@@ -142,13 +142,13 @@ export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
 };
 
 export const FavoritesTableFilterTag = (): JSX.Element | null => {
-    const [keys, setKeys] = useKey();
+    const [favoritesOnly, setFavoritesOnly] = useFavoritesOnly();
 
     const clear = () => {
-        setKeys([]);
+        setFavoritesOnly(false);
     };
 
-    if (keys.length) {
+    if (favoritesOnly) {
         return <FilterTag label="Favorites Only" clear={clear} />;
     }
 

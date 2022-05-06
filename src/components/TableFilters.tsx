@@ -22,24 +22,19 @@ import {
 import { RiAddLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import {
-    getUrlSearchParams,
-    useSetLocationParams,
-} from '@/hooks/useLocationWithParams';
 import useSelection from '@/hooks/useSelection';
 import {
     useSyncedDateStringState,
     useStatus,
     useCategory,
-    useKey,
     useSyncedStringArrayState,
+    useFavoritesOnly,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
     useTableFilterCallbackRefs,
 } from '@/hooks/useTableFilters';
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
-import { areSetEqual } from '@/libs/utils';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
@@ -332,50 +327,30 @@ export const ComputePlanFavoritesTableFilter = ({
 }: {
     favorites: string[];
 }): JSX.Element => {
-    const [tmpFavorites, setTmpFavorites] = useState<string[]>([]);
-    const [activeFavorites] = useKey();
-    const { clearRef, applyRef } = useTableFilterCallbackRefs('favorites');
+    const [tmpFavoritesOnly, setTmpFavoritesOnly] = useState(false);
 
-    const setLocationParams = useSetLocationParams();
-
-    const isFavoritesOnly =
-        favorites.length > 0 &&
-        areSetEqual(new Set(activeFavorites), new Set(favorites));
-
-    const [favoritesOnly, setFavoritesOnly] = useState(isFavoritesOnly);
+    const [activeFavoritesOnly] = useFavoritesOnly();
+    const { clearRef, applyRef, resetRef } =
+        useTableFilterCallbackRefs('favorites');
 
     clearRef.current = (urlSearchParams) => {
-        urlSearchParams.delete('key');
+        urlSearchParams.delete('favorites_only');
     };
 
     applyRef.current = (urlSearchParams) => {
-        if (tmpFavorites.length > 0) {
-            urlSearchParams.set('key', tmpFavorites.join(','));
+        if (tmpFavoritesOnly) {
+            urlSearchParams.set('favorites_only', '1');
         } else {
-            urlSearchParams.delete('key');
+            urlSearchParams.delete('favorites_only');
         }
     };
 
-    useEffect(() => {
-        setFavoritesOnly(isFavoritesOnly);
-    }, [activeFavorites, isFavoritesOnly]);
-
-    useEffect(() => {
-        const urlSearchParams = getUrlSearchParams();
-        if (favoritesOnly) {
-            urlSearchParams.set('key', favorites.join(','));
-            urlSearchParams.set('page', '1');
-            setLocationParams(urlSearchParams);
-        }
-    }, [favorites, favoritesOnly, setLocationParams]);
+    resetRef.current = () => {
+        setTmpFavoritesOnly(activeFavoritesOnly);
+    };
 
     const onChange = () => {
-        if (favoritesOnly) {
-            setTmpFavorites([]);
-        } else {
-            setTmpFavorites(favorites);
-        }
-        setFavoritesOnly(!favoritesOnly);
+        setTmpFavoritesOnly(!tmpFavoritesOnly);
     };
 
     return (
@@ -384,7 +359,7 @@ export const ComputePlanFavoritesTableFilter = ({
                 Filter by
             </Text>
             <Checkbox
-                isChecked={favoritesOnly}
+                isChecked={tmpFavoritesOnly}
                 isDisabled={!favorites.length}
                 onChange={onChange}
                 colorScheme="teal"
