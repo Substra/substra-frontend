@@ -203,7 +203,11 @@ const buildNodeTableFilter = (
         };
 
         applyRef.current = (urlSearchParams) => {
-            urlSearchParams.set(field, tmpNodes.join(','));
+            if (tmpNodes.length > 0) {
+                urlSearchParams.set(field, tmpNodes.join(','));
+            } else {
+                urlSearchParams.delete(field);
+            }
         };
 
         resetRef.current = () => {
@@ -253,7 +257,11 @@ export const TaskStatusTableFilter = (): JSX.Element => {
     };
 
     applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('status', tmpStatus.join(','));
+        if (tmpStatus.length > 0) {
+            urlSearchParams.set('status', tmpStatus.join(','));
+        } else {
+            urlSearchParams.delete('status');
+        }
     };
 
     resetRef.current = () => {
@@ -291,7 +299,11 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
     };
 
     applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('status', tmpStatus.join(','));
+        if (tmpStatus.length > 0) {
+            urlSearchParams.set('status', tmpStatus.join(','));
+        } else {
+            urlSearchParams.delete('status');
+        }
     };
 
     resetRef.current = () => {
@@ -337,7 +349,11 @@ export const ComputePlanFavoritesTableFilter = ({
     };
 
     applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('key', tmpFavorites.join(','));
+        if (tmpFavorites.length > 0) {
+            urlSearchParams.set('key', tmpFavorites.join(','));
+        } else {
+            urlSearchParams.delete('key');
+        }
     };
 
     useEffect(() => {
@@ -406,7 +422,11 @@ export const AlgoCategoryTableFilter = (): JSX.Element => {
     };
 
     applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('category', tmpCategories.join(','));
+        if (tmpCategories.length > 0) {
+            urlSearchParams.set('category', tmpCategories.join(','));
+        } else {
+            urlSearchParams.delete('category');
+        }
     };
 
     resetRef.current = () => {
@@ -448,8 +468,16 @@ const buildDateTableFilter = (field: string, title: string) => {
         };
 
         applyRef.current = (urlSearchParams) => {
-            urlSearchParams.set(`${field}_after`, tmpMinDate);
-            urlSearchParams.set(`${field}_before`, tmpMaxDate);
+            if (tmpMinDate) {
+                urlSearchParams.set(`${field}_after`, tmpMinDate);
+            } else {
+                urlSearchParams.delete(`${field}_after`);
+            }
+            if (tmpMaxDate) {
+                urlSearchParams.set(`${field}_before`, tmpMaxDate);
+            } else {
+                urlSearchParams.delete(`${field}_before`);
+            }
         };
 
         resetRef.current = () => {

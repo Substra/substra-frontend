@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import useEffectOnce from '@/hooks/useEffectOnce';
 import {
     getUrlSearchParams,
     useSetLocationParams,
@@ -19,12 +20,12 @@ export const useSyncedState = <T>(
     const setLocationParams = useSetLocationParams();
 
     const setParam = useCallback(
-        (value: T) => {
+        (value: string) => {
             const urlSearchParams = getUrlSearchParams();
-            urlSearchParams.set(param, toString(value));
+            urlSearchParams.set(param, value);
             setLocationParams(urlSearchParams);
         },
-        [param, setLocationParams, toString]
+        [param, setLocationParams]
     );
 
     const getParam = useCallback(() => {
@@ -32,21 +33,52 @@ export const useSyncedState = <T>(
         return urlSearchParams.get(param);
     }, [param]);
 
-    const [state, setState] = useState<T>(() => {
+    const deleteParam = useCallback(() => {
+        const urlSearchParams = getUrlSearchParams();
+        urlSearchParams.delete(param);
+        setLocationParams(urlSearchParams);
+    }, [param, setLocationParams]);
+
+    const [state, setInternalState] = useState<T>(() => {
         const value = getParam();
         return value === null ? originalValue : parse(value);
     });
 
-    useEffect(() => {
-        // set originalValue in URL if not defined at first
-        if (getParam() === null) {
-            setParam(originalValue);
-        }
+    const setState = useCallback(
+        (value: T) => {
+            const currentParamValue = getParam();
+            const newParamValue = toString(value);
 
-        // handler reacting to changes in URL
+            if (!newParamValue && currentParamValue) {
+                deleteParam();
+            } else if (currentParamValue !== newParamValue) {
+                setParam(newParamValue);
+            }
+        },
+        [deleteParam, getParam, setParam, toString]
+    );
+
+    // set originalValue in URL if not defined at first
+    useEffectOnce(() => {
+        const originalParamValue = toString(originalValue);
+        if (getParam() === null && originalParamValue) {
+            setParam(originalParamValue);
+        }
+    });
+
+    // register handler reacting to changes in URL
+    useEffect(() => {
         const updateState = () => {
-            const value = getParam();
-            setState(value === null ? originalValue : parse(value));
+            const paramValue = getParam();
+            setInternalState((currentValue) => {
+                const newValue =
+                    paramValue === null ? originalValue : parse(paramValue);
+                if (toString(currentValue) === toString(newValue)) {
+                    return currentValue;
+                } else {
+                    return newValue;
+                }
+            });
         };
 
         // register handler
@@ -56,9 +88,9 @@ export const useSyncedState = <T>(
             // unregister handler
             events.forEach((e) => removeEventListener(e, updateState));
         };
-    }, [getParam, originalValue, parse, setParam]);
+    }, [getParam, originalValue, parse, toString]);
 
-    return [state, setParam];
+    return [state, setState];
 };
 
 const stringIdentity = (v: string): string => v;
