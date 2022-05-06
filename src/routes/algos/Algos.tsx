@@ -80,8 +80,8 @@ const Algos = (): JSX.Element => {
                 match,
                 owner,
                 category,
-                creationDateAfter,
-                creationDateBefore,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
             })
         );
     }, [

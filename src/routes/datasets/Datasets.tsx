@@ -68,8 +68,8 @@ const Datasets = (): JSX.Element => {
                 ordering,
                 match,
                 owner,
-                creationDateAfter,
-                creationDateBefore,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
             })
         );
     }, [

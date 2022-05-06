@@ -99,12 +99,12 @@ const ComputePlans = (): JSX.Element => {
                     ordering,
                     status,
                     key,
-                    creationDateAfter,
-                    creationDateBefore,
-                    startDateAfter,
-                    startDateBefore,
-                    endDateAfter,
-                    endDateBefore,
+                    creation_date_after: creationDateAfter,
+                    creation_date_before: creationDateBefore,
+                    start_date_after: startDateAfter,
+                    start_date_before: startDateBefore,
+                    end_date_after: endDateAfter,
+                    end_date_before: endDateBefore,
                 })
             ),
         [
