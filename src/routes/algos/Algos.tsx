@@ -17,6 +17,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
+    useCanProcess,
     useCategory,
     useCreationDate,
     useMatch,
@@ -45,6 +46,7 @@ import {
     AlgoCategoryTableFilterTag,
     DateFilterTag,
     OwnerTableFilterTag,
+    PermissionsTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
 import {
@@ -52,6 +54,7 @@ import {
     OwnerTableFilter,
     AlgoCategoryTableFilter,
     CreationDateTableFilter,
+    PermissionsTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
@@ -62,6 +65,7 @@ const Algos = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
+    const [canProcess] = useCanProcess();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const [category] = useCategory();
@@ -82,6 +86,7 @@ const Algos = (): JSX.Element => {
                 category,
                 creation_date_after: creationDateAfter,
                 creation_date_before: creationDateBefore,
+                can_process: canProcess,
             })
         );
     }, [
@@ -93,6 +98,7 @@ const Algos = (): JSX.Element => {
         category,
         creationDateAfter,
         creationDateBefore,
+        canProcess,
     ]);
 
     const key = useKeyFromPath(PATHS.ALGO);
@@ -118,6 +124,7 @@ const Algos = (): JSX.Element => {
                         <OwnerTableFilter />
                         <AlgoCategoryTableFilter />
                         <CreationDateTableFilter />
+                        <PermissionsTableFilter />
                     </TableFilters>
                     <SearchBar />
                 </HStack>
@@ -128,6 +135,7 @@ const Algos = (): JSX.Element => {
                         urlParam="creation_date"
                         label="Creation date"
                     />
+                    <PermissionsTableFilterTag />
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"

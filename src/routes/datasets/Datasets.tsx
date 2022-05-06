@@ -16,6 +16,8 @@ import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
+    useCanAccessLogs,
+    useCanProcess,
     useCreationDate,
     useMatch,
     useOrdering,
@@ -41,12 +43,16 @@ import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     DateFilterTag,
+    LogsAccessTableFilterTag,
     OwnerTableFilterTag,
+    PermissionsTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
 import {
     CreationDateTableFilter,
+    LogsAccessTableFilter,
     OwnerTableFilter,
+    PermissionsTableFilter,
     TableFilters,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
@@ -56,6 +62,8 @@ const Datasets = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
+    const [canProcess] = useCanProcess();
+    const [canAccessLogs] = useCanAccessLogs();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const { creationDateAfter, creationDateBefore } = useCreationDate();
@@ -70,6 +78,8 @@ const Datasets = (): JSX.Element => {
                 owner,
                 creation_date_after: creationDateAfter,
                 creation_date_before: creationDateBefore,
+                can_process: canProcess,
+                can_access_logs: canAccessLogs,
             })
         );
     }, [
@@ -80,6 +90,8 @@ const Datasets = (): JSX.Element => {
         owner,
         creationDateAfter,
         creationDateBefore,
+        canProcess,
+        canAccessLogs,
     ]);
 
     const datasets: DatasetStubType[] = useAppSelector(
@@ -114,6 +126,8 @@ const Datasets = (): JSX.Element => {
                     <TableFilters>
                         <OwnerTableFilter />
                         <CreationDateTableFilter />
+                        <PermissionsTableFilter />
+                        <LogsAccessTableFilter />
                     </TableFilters>
                     <SearchBar />
                 </HStack>
@@ -123,6 +137,8 @@ const Datasets = (): JSX.Element => {
                         urlParam="creation_date"
                         label="Creation date"
                     />
+                    <PermissionsTableFilterTag />
+                    <LogsAccessTableFilterTag />
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"

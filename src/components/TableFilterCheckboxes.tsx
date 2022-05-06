@@ -13,6 +13,7 @@ const getOptionDescription = (option: Option) =>
     typeof option === 'string' ? null : option.description;
 
 interface TableFilterCheckboxesProps {
+    title?: string;
     value: string[];
     options: Option[];
     onChange: (
@@ -21,6 +22,7 @@ interface TableFilterCheckboxesProps {
 }
 
 const TableFilterCheckboxes = ({
+    title,
     value,
     onChange,
     options,
@@ -28,7 +30,7 @@ const TableFilterCheckboxes = ({
     return (
         <Box w="100%" paddingY="5" paddingX="30px">
             <Text color="gray.500" fontSize="xs" mb="2.5">
-                Filter by
+                {title ?? 'Filter by'}
             </Text>
             <VStack spacing="2.5" alignItems="flex-start">
                 {options.map((option) => (

@@ -17,6 +17,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
+    useCanProcess,
     useCreationDate,
     useMatch,
     useOrdering,
@@ -44,11 +45,13 @@ import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     DateFilterTag,
     OwnerTableFilterTag,
+    PermissionsTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
 import {
     CreationDateTableFilter,
     OwnerTableFilter,
+    PermissionsTableFilter,
     TableFilters,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
@@ -60,6 +63,7 @@ const Metrics = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
+    const [canProcess] = useCanProcess();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
     const { creationDateBefore, creationDateAfter } = useCreationDate();
@@ -74,6 +78,7 @@ const Metrics = (): JSX.Element => {
                 owner,
                 creation_date_after: creationDateAfter,
                 creation_date_before: creationDateBefore,
+                can_process: canProcess,
             })
         );
     }, [
@@ -84,6 +89,7 @@ const Metrics = (): JSX.Element => {
         owner,
         creationDateAfter,
         creationDateBefore,
+        canProcess,
     ]);
 
     const metrics: MetricType[] = useAppSelector(
@@ -117,6 +123,7 @@ const Metrics = (): JSX.Element => {
                     <TableFilters>
                         <OwnerTableFilter />
                         <CreationDateTableFilter />
+                        <PermissionsTableFilter />
                     </TableFilters>
                     <SearchBar />
                 </HStack>
@@ -126,6 +133,7 @@ const Metrics = (): JSX.Element => {
                         urlParam="creation_date"
                         label="Creation date"
                     />
+                    <PermissionsTableFilterTag />
                 </TableFilterTags>
                 <Box
                     backgroundColor="white"

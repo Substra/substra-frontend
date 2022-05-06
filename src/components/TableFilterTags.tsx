@@ -52,7 +52,7 @@ const FilterTagLabel = ({
     </>
 );
 
-interface CounterFilterTagProps {
+interface MultipleFilterTagProps {
     label: string;
     syncedArrayStateName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,7 +62,7 @@ const MultipleFilterTag = ({
     label,
     syncedArrayStateName,
     formatter,
-}: CounterFilterTagProps): JSX.Element | null => {
+}: MultipleFilterTagProps): JSX.Element | null => {
     const [values, setValues] = useSyncedStringArrayState(
         syncedArrayStateName,
         []
@@ -97,6 +97,17 @@ export const OwnerTableFilterTag = (): JSX.Element | null => (
 
 export const WorkerTableFilterTag = (): JSX.Element | null => (
     <MultipleFilterTag label="Worker" syncedArrayStateName="worker" />
+);
+
+export const PermissionsTableFilterTag = (): JSX.Element | null => (
+    <MultipleFilterTag label="Permissions" syncedArrayStateName="can_process" />
+);
+
+export const LogsAccessTableFilterTag = (): JSX.Element | null => (
+    <MultipleFilterTag
+        label="Logs access"
+        syncedArrayStateName="can_access_logs"
+    />
 );
 
 export const StatusTableFilterTag = (): JSX.Element | null => (

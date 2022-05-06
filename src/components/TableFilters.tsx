@@ -29,11 +29,10 @@ import {
 import useSelection from '@/hooks/useSelection';
 import {
     useSyncedDateStringState,
-    useOwner,
-    useWorker,
     useStatus,
     useCategory,
     useKey,
+    useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
 import {
     TableFiltersContext,
@@ -186,72 +185,59 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
     );
 };
 
-export const OwnerTableFilter = (): JSX.Element => {
-    const [tmpOwners, onTmpOwnerChange, resetTmpOwners, setTmpOwners] =
-        useSelection();
-    const [activeOwners] = useOwner();
-    const { clearRef, applyRef, resetRef } =
-        useTableFilterCallbackRefs('owner');
+const buildNodeTableFilter = (
+    field: string,
+    title: string,
+    subtitle?: string
+) => {
+    const NodeTableFilter = (): JSX.Element => {
+        const [tmpNodes, onTmpNodeChange, resetTmpNodes, setTmpNodes] =
+            useSelection();
+        const [activeNodes] = useSyncedStringArrayState(field, []);
+        const { clearRef, applyRef, resetRef } =
+            useTableFilterCallbackRefs(field);
 
-    clearRef.current = (urlSearchParams) => {
-        resetTmpOwners();
-        urlSearchParams.delete('owner');
+        clearRef.current = (urlSearchParams) => {
+            resetTmpNodes();
+            urlSearchParams.delete(field);
+        };
+
+        applyRef.current = (urlSearchParams) => {
+            urlSearchParams.set(field, tmpNodes.join(','));
+        };
+
+        resetRef.current = () => {
+            setTmpNodes(activeNodes);
+        };
+
+        const nodes = useAppSelector((state) => state.nodes.nodes);
+
+        return (
+            <TableFilterCheckboxes
+                title={subtitle}
+                options={nodes.map((node) => node.id)}
+                value={tmpNodes}
+                onChange={onTmpNodeChange}
+            />
+        );
     };
 
-    applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('owner', tmpOwners.join(','));
-    };
-
-    resetRef.current = () => {
-        setTmpOwners(activeOwners);
-    };
-
-    const nodes = useAppSelector((state) => state.nodes.nodes);
-
-    return (
-        <TableFilterCheckboxes
-            options={nodes.map((node) => node.id)}
-            value={tmpOwners}
-            onChange={onTmpOwnerChange}
-        />
-    );
+    NodeTableFilter.filterTitle = title;
+    return NodeTableFilter;
 };
 
-OwnerTableFilter.filterTitle = 'Owner';
-
-export const WorkerTableFilter = (): JSX.Element => {
-    const [tmpWorkers, onTmpWorkerChange, resetTmpWorkers, setTmpWorkers] =
-        useSelection();
-
-    const [activeWorkers] = useWorker();
-    const { clearRef, applyRef, resetRef } =
-        useTableFilterCallbackRefs('worker');
-
-    clearRef.current = (urlSearchParams) => {
-        resetTmpWorkers();
-        urlSearchParams.delete('worker');
-    };
-
-    applyRef.current = (urlSearchParams) => {
-        urlSearchParams.set('worker', tmpWorkers.join(','));
-    };
-
-    resetRef.current = () => {
-        setTmpWorkers(activeWorkers);
-    };
-
-    const nodes = useAppSelector((state) => state.nodes.nodes);
-
-    return (
-        <TableFilterCheckboxes
-            options={nodes.map((node) => node.id)}
-            value={tmpWorkers}
-            onChange={onTmpWorkerChange}
-        />
-    );
-};
-
-WorkerTableFilter.filterTitle = 'Worker';
+export const OwnerTableFilter = buildNodeTableFilter('owner', 'Owner');
+export const WorkerTableFilter = buildNodeTableFilter('worker', 'Worker');
+export const PermissionsTableFilter = buildNodeTableFilter(
+    'can_process',
+    'Permissions',
+    'Organizations which can process the assets'
+);
+export const LogsAccessTableFilter = buildNodeTableFilter(
+    'can_access_logs',
+    'Logs access',
+    'Organizations which can see the logs of a failed task using the dataset'
+);
 
 export const TaskStatusTableFilter = (): JSX.Element => {
     const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =

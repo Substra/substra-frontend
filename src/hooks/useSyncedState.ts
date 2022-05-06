@@ -122,6 +122,9 @@ export const useOrdering = (defaultValue: string) =>
     useSyncedStringState('ordering', defaultValue);
 
 // Common string arrays states
+export const useCanAccessLogs = () =>
+    useSyncedStringArrayState('can_access_logs', []);
+export const useCanProcess = () => useSyncedStringArrayState('can_process', []);
 export const useCategory = () => useSyncedStringArrayState('category', []);
 export const useKey = () => useSyncedStringArrayState('key', []);
 export const useOwner = () => useSyncedStringArrayState('owner', []);

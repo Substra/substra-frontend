@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Permission filters (#562)
+
 ### Fixed
 
 -   Trailing pagination focus (#563)
