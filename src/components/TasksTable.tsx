@@ -175,27 +175,9 @@ const TasksTable = ({
             <TableFilterTags>
                 <StatusTableFilterTag />
                 <WorkerTableFilterTag />
-                <DateFilterTag
-                    urlParam="creation_date_before"
-                    label="Max creation date"
-                />
-                <DateFilterTag
-                    urlParam="creation_date_after"
-                    label="Min creation date"
-                />
-                <DateFilterTag
-                    urlParam="start_date_before"
-                    label="Max start date"
-                />
-                <DateFilterTag
-                    urlParam="start_date_after"
-                    label="Min start date"
-                />
-                <DateFilterTag
-                    urlParam="end_date_before"
-                    label="Max end date"
-                />
-                <DateFilterTag urlParam="end_date_after" label="Min end date" />
+                <DateFilterTag urlParam="creation_date" label="Creation date" />
+                <DateFilterTag urlParam="start_date" label="Start date" />
+                <DateFilterTag urlParam="end_date" label="End date" />
             </TableFilterTags>
             <Box>
                 <Tabs

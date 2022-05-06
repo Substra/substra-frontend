@@ -1,4 +1,4 @@
-import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 
 import {
     useCategory,
@@ -19,7 +19,7 @@ export const TableFilterTags = ({
 }: TableFilterTagsProps): JSX.Element => <HStack>{children}</HStack>;
 
 interface FilterTagProps {
-    label: string;
+    label: string | JSX.Element;
     clear: () => void;
 }
 const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
@@ -37,33 +37,54 @@ const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
     </Tag>
 );
 
+const FilterTagLabel = ({
+    title,
+    content,
+}: {
+    title: string;
+    content: string;
+}): JSX.Element => (
+    <>
+        <Text as="span" fontWeight="semibold" marginRight="1">
+            {title}
+        </Text>
+        <Text as="span">{content}</Text>
+    </>
+);
+
 interface CounterFilterTagProps {
     label: string;
-    assetKey: string;
+    syncedArrayStateName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formatter?: (value: any) => string;
 }
-const CounterFilterTag = ({
+const MultipleFilterTag = ({
     label,
-    assetKey,
+    syncedArrayStateName,
     formatter,
 }: CounterFilterTagProps): JSX.Element | null => {
-    const [assetKeys, setAssetKeys] = useSyncedStringArrayState(assetKey, []);
+    const [values, setValues] = useSyncedStringArrayState(
+        syncedArrayStateName,
+        []
+    );
 
     const clear = () => {
-        setAssetKeys([]);
+        setValues([]);
     };
 
-    if (assetKeys.length === 1) {
+    if (values.length > 0) {
         return (
             <FilterTag
-                label={formatter ? formatter(assetKeys[0]) : assetKeys[0]}
+                label={
+                    <FilterTagLabel
+                        title={label}
+                        content={values
+                            .map((v) => (formatter ? formatter(v) : v))
+                            .join(', ')}
+                    />
+                }
                 clear={clear}
             />
-        );
-    } else if (assetKeys.length > 1) {
-        return (
-            <FilterTag label={`${label} (${assetKeys.length})`} clear={clear} />
         );
     }
 
@@ -71,17 +92,17 @@ const CounterFilterTag = ({
 };
 
 export const OwnerTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag label="Owners" assetKey="owner" />
+    <MultipleFilterTag label="Owner" syncedArrayStateName="owner" />
 );
 
 export const WorkerTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag label="Workers" assetKey="worker" />
+    <MultipleFilterTag label="Worker" syncedArrayStateName="worker" />
 );
 
 export const StatusTableFilterTag = (): JSX.Element | null => (
-    <CounterFilterTag
+    <MultipleFilterTag
         label="Status"
-        assetKey="status"
+        syncedArrayStateName="status"
         formatter={getStatusLabel}
     />
 );
@@ -130,12 +151,56 @@ export const DateFilterTag = ({
     urlParam: string;
     label: string;
 }) => {
-    const [date, setDate] = useSyncedDateStringState(urlParam, '');
+    const [dateBefore, setDateBefore] = useSyncedDateStringState(
+        `${urlParam}_before`,
+        ''
+    );
+    const [dateAfter, setDateAfter] = useSyncedDateStringState(
+        `${urlParam}_after`,
+        ''
+    );
+
     const clear = () => {
-        setDate('');
+        setDateBefore('');
+        setDateAfter('');
     };
-    if (date) {
-        return <FilterTag label={label} clear={clear} />;
+
+    if (dateBefore && dateAfter) {
+        return (
+            <FilterTag
+                label={
+                    <FilterTagLabel
+                        title={label}
+                        content={`between ${dateAfter} and ${dateBefore}`}
+                    />
+                }
+                clear={clear}
+            />
+        );
+    } else if (dateBefore) {
+        return (
+            <FilterTag
+                label={
+                    <FilterTagLabel
+                        title={label}
+                        content={`before ${dateBefore}`}
+                    />
+                }
+                clear={clear}
+            />
+        );
+    } else if (dateAfter) {
+        return (
+            <FilterTag
+                label={
+                    <FilterTagLabel
+                        title={label}
+                        content={`after ${dateAfter}`}
+                    />
+                }
+                clear={clear}
+            />
+        );
     }
     return null;
 };

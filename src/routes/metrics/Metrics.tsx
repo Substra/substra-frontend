@@ -123,12 +123,8 @@ const Metrics = (): JSX.Element => {
                 <TableFilterTags>
                     <OwnerTableFilterTag />
                     <DateFilterTag
-                        urlParam="creation_date_before"
-                        label="Max creation date"
-                    />
-                    <DateFilterTag
-                        urlParam="creation_date_after"
-                        label="Min creation date"
+                        urlParam="creation_date"
+                        label="Creation date"
                     />
                 </TableFilterTags>
                 <Box
