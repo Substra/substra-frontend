@@ -51,7 +51,7 @@ export const useSyncedState = <T>(
 
             if (!newParamValue && currentParamValue) {
                 deleteParam();
-            } else if (currentParamValue !== newParamValue) {
+            } else if (newParamValue && currentParamValue !== newParamValue) {
                 setParam(newParamValue);
             }
         },

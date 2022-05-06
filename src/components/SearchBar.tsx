@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     InputGroup,
@@ -38,6 +38,14 @@ const SearchBar = ({ placeholder }: SearchBarProps): JSX.Element => {
         setMatch(value);
         setPage(1);
     };
+
+    useEffect(() => {
+        if (match !== value) {
+            setValue(match);
+        }
+        // this effect is meant to be triggered only when match changes, not when value changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [match]);
 
     return (
         <form onSubmit={onSubmit}>

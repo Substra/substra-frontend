@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Trailing pagination focus (#563)
 -   Correct date filter params sent to backend (#565)
 -   Synced state handling for empty values are arrays (#567)
+-   Reset searchbar when clearing applied filters (#568)
 
 ### Changed
 
