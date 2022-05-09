@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Proper labels for status ordering (#574)
+-   Ordering options in table header dropdowns (#575)
 
 ## [0.21.0] - 2022-05-09
 

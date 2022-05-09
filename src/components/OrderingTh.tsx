@@ -61,7 +61,7 @@ const OrderingMenuItem = ({
             }
             onClick={() => {
                 const urlSearchParams = getUrlSearchParams();
-                urlSearchParams.set('ordering', ordering);
+                urlSearchParams.set('ordering', value);
                 urlSearchParams.set('page', '1');
                 setLocationParams(urlSearchParams);
             }}
