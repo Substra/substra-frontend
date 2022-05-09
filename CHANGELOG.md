@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Explicit keyboard shortcuts (#573)
+-   Empty API params aren't sent to the API anymore (#571)
 
 ## [0.21.0] - 2022-05-09
 

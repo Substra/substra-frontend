@@ -75,6 +75,7 @@ export const getApiOptions = ({
         };
     }
 
+    // send arrays as csv
     for (const param in otherParams) {
         if (!Array.isArray(otherParams[param])) {
             continue;
@@ -82,6 +83,15 @@ export const getApiOptions = ({
 
         const paramArray = otherParams[param] as Array<unknown>;
         otherParams[param] = paramArray.join(',');
+    }
+
+    // remove empty values
+    const keys = Object.keys(otherParams);
+    for (const key of keys) {
+        const value = otherParams[key];
+        if (value === undefined || value === null || value === '') {
+            delete otherParams[key];
+        }
     }
 
     const options = {
