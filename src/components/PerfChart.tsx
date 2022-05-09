@@ -282,6 +282,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                                 variant="outline"
                                 size="sm"
                                 backgroundColor="white"
+                                rightIcon={<Kbd backgroundColor="white">R</Kbd>}
                             >
                                 Reset zoom
                             </Button>

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Kbd } from '@chakra-ui/react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 
 import { useKeyPress } from '@/hooks/useKeyPress';
@@ -47,6 +47,7 @@ const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
                         variant="outline"
                         backgroundColor="white"
                         leftIcon={<RiArrowLeftLine />}
+                        rightIcon={<Kbd backgroundColor="white">Esc</Kbd>}
                         onClick={() => setSelectedMetricName('')}
                     >
                         Go back
