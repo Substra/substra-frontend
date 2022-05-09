@@ -281,11 +281,11 @@ const ComputePlans = (): JSX.Element => {
                                         {
                                             label: 'Status',
                                             asc: {
-                                                label: 'Sort status WAITING -> DONE',
+                                                label: 'Sort status EMPTY -> FAILED',
                                                 value: 'status',
                                             },
                                             desc: {
-                                                label: 'Sort status DONE -> WAITING',
+                                                label: 'Sort status FAILED -> EMPTY',
                                                 value: '-status',
                                             },
                                         },
