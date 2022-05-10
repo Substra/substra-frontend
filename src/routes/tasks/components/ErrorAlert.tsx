@@ -7,6 +7,7 @@ import {
     Text,
     Button,
     useDisclosure,
+    Link,
 } from '@chakra-ui/react';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
@@ -41,14 +42,32 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
         return (
             <ErrorAlertBase
                 title="Internal error"
-                description="An internal error occurred. Please contact support@owkin.com to get access to logs. "
+                description={
+                    <>
+                        An internal error occurred. Please contact{' '}
+                        <Link href="mailto:support@owkin.com">
+                            support@owkin.com
+                        </Link>{' '}
+                        to get access to logs.
+                    </>
+                }
             />
         );
     } else if (task.error_type === ErrorType.build) {
         return (
             <ErrorAlertBase
                 title="Build error"
-                description="An error occurred when building the container for the task execution. Please check your algorithm archive or metric archive, or contact support@owkin.com to get access to logs."
+                description={
+                    <>
+                        An error occurred when building the container for the
+                        task execution. Please check your algorithm archive or
+                        metric archive, or contact{' '}
+                        <Link href="mailto:support@owkin.com">
+                            support@owkin.com
+                        </Link>{' '}
+                        to get access to logs.
+                    </>
+                }
             />
         );
     } else {
@@ -57,7 +76,16 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
             return (
                 <ErrorAlertBase
                     title="Execution error"
-                    description="An error occurred during the task execution. Please check your code, or contact support@owkin.com to get access to logs."
+                    description={
+                        <>
+                            An error occurred during the task execution. Please
+                            check your code, or contact{' '}
+                            <Link href="mailto:support@owkin.com">
+                                support@owkin.com
+                            </Link>{' '}
+                            to get access to logs.
+                        </>
+                    }
                 />
             );
         } else {
