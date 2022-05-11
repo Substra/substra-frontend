@@ -45,7 +45,7 @@ export interface ComputePlanStub {
     canceled_count: number;
     failed_count: number;
     delete_intermediary_models: boolean;
-    tag: string;
+    name: string;
     creation_date: string;
     metadata: { [key: string]: string };
     start_date?: string;

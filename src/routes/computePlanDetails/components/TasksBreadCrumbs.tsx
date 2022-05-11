@@ -30,9 +30,7 @@ const ComputePlanTasksBreadcrumbs = (): JSX.Element => {
                         lineHeight="5"
                     >
                         {computePlanLoading && 'Loading'}
-                        {!computePlanLoading &&
-                            computePlan &&
-                            (computePlan.tag || 'Untagged compute plan')}
+                        {!computePlanLoading && computePlan && computePlan.name}
                     </Text>
                     {!computePlanLoading && computePlan && (
                         <Status

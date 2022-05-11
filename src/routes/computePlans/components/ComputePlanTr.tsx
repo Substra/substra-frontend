@@ -92,7 +92,7 @@ const ComputePlanTr = ({
                 backgroundColor="white"
                 {...rightBorderProps}
             >
-                <Text fontSize="xs">{computePlan.tag}</Text>
+                <Text fontSize="xs">{computePlan.name}</Text>
             </Td>
             <Td minWidth="255px">
                 <StatusCell computePlan={computePlan} />
@@ -108,7 +108,7 @@ const ComputePlanTr = ({
             </Td>
             {hyperparametersList.map((hp) => (
                 <Td
-                    key={`${computePlan.tag}-${hp}`}
+                    key={`${computePlan.key}-${hp}`}
                     fontSize="xs"
                     whiteSpace="nowrap"
                 >

@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Empty API params aren't sent to the API anymore (#571)
 -   Added check on dependencies (#579)
 -   Moved cypress to a dedicated package (#577)
+-   Use the name field of Compute Plans instead of tag (#578)
 
 ## [0.21.0] - 2022-05-09
 

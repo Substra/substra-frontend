@@ -37,7 +37,7 @@ const HyperparametersTr = ({
             </Th>
             {hyperparametersList.map((hp) => (
                 <Td
-                    key={`${computePlan.tag}-${hp}`}
+                    key={`${computePlan.key}-${hp}`}
                     fontSize="xs"
                     border="none"
                 >

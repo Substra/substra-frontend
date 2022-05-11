@@ -163,13 +163,13 @@ const ComputePlanCheckbox = ({
                 <Text as="span" fontSize="xs" fontWeight="semibold">
                     {`#${getComputePlanIndex(computePlanKey)}`}
                 </Text>
-                {computePlan?.tag && (
+                {computePlan && (
                     <>
                         <Text as="span" fontSize="xs" marginX="1">
                             •
                         </Text>
                         <Text as="span" fontSize="xs">
-                            {computePlan.tag}
+                            {computePlan.name}
                         </Text>
                     </>
                 )}

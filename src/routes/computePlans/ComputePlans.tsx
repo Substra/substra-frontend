@@ -158,13 +158,13 @@ const ComputePlans = (): JSX.Element => {
             // remove CP from selection
             unselectComputePlan({
                 key: computePlan.key,
-                name: computePlan.tag,
+                name: computePlan.name,
             });
         } else {
             // add CP to selection
             selectComputePlan({
                 key: computePlan.key,
-                name: computePlan.tag,
+                name: computePlan.name,
             });
         }
     };
@@ -196,7 +196,7 @@ const ComputePlans = (): JSX.Element => {
                             <StartDateTableFilter />
                             <EndDateTableFilter />
                         </TableFilters>
-                        <SearchBar placeholder="Search tag or key..." />
+                        <SearchBar />
                     </HStack>
                     {HYPERPARAMETERS && (
                         <CustomColumnsModal
@@ -257,14 +257,14 @@ const ComputePlans = (): JSX.Element => {
                                     minWidth="250px"
                                     options={[
                                         {
-                                            label: 'Tag',
+                                            label: 'Name',
                                             asc: {
-                                                label: 'Sort tag Z -> A',
-                                                value: '-tag',
+                                                label: 'Sort name Z -> A',
+                                                value: '-name',
                                             },
                                             desc: {
-                                                label: 'Sort tag A -> Z',
-                                                value: 'tag',
+                                                label: 'Sort name A -> Z',
+                                                value: 'name',
                                             },
                                         },
                                     ]}

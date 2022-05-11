@@ -9,7 +9,7 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 
 enum CSV_COLUMN_ID {
     computePlanKey = 'computePlanKey',
-    computePlanTag = 'computePlanTag',
+    computePlanName = 'computePlanName',
     computePlanStatus = 'computePlanStatus',
     computePlanStartDate = 'computePlanStartDate',
     computePlanEndDate = 'computePlanEndDate',
@@ -27,7 +27,7 @@ type Datas = Data[];
 
 const CSV_COLUMNS = [
     { displayName: 'Compute plan key', id: CSV_COLUMN_ID.computePlanKey },
-    { displayName: 'Compute plan tag', id: CSV_COLUMN_ID.computePlanTag },
+    { displayName: 'Compute plan name', id: CSV_COLUMN_ID.computePlanName },
     { displayName: 'Compute plan status', id: CSV_COLUMN_ID.computePlanStatus },
     {
         displayName: 'Compute plan start date',
@@ -64,7 +64,7 @@ const getDatas = (
             );
             datas.push({
                 computePlanKey: escape(computePlan?.key || 'NA'),
-                computePlanTag: escape(computePlan?.tag || 'NA'),
+                computePlanName: escape(computePlan?.name || 'NA'),
                 computePlanStatus: escape(computePlan?.status || 'NA'),
                 computePlanStartDate: escape(computePlan?.start_date || 'NA'),
                 computePlanEndDate: escape(computePlan?.end_date || 'NA'),

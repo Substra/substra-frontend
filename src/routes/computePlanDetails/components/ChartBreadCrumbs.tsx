@@ -42,7 +42,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                             {computePlanLoading && 'Loading'}
                             {!computePlanLoading &&
                                 computePlan &&
-                                (computePlan.tag || 'Untagged compute plan')}
+                                computePlan.name}
                         </Link>
                     ) : (
                         <Text
@@ -54,7 +54,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                             {computePlanLoading && 'Loading'}
                             {!computePlanLoading &&
                                 computePlan &&
-                                (computePlan.tag || 'Untagged compute plan')}
+                                computePlan.name}
                         </Text>
                     )}
                     {!computePlanLoading && computePlan && (
