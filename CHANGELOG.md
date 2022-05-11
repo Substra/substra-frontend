@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Proper labels for status ordering (#574)
 -   Ordering options in table header dropdowns (#575)
+-   Alignment issue with PerfBrowser checkboxes (#576)
 
 ### Changed
 

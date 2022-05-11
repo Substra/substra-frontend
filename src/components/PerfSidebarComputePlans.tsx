@@ -148,7 +148,7 @@ const ComputePlanCheckbox = ({
 
     return (
         <Flex
-            alignItems="center"
+            alignItems="flex-start"
             justifyContent="space-between"
             onMouseEnter={() => setHighlightedComputePlanKey(computePlanKey)}
             onMouseLeave={() => setHighlightedComputePlanKey(undefined)}
@@ -157,7 +157,8 @@ const ComputePlanCheckbox = ({
                 colorScheme={getColorScheme({ computePlanKey, worker: '' })}
                 onChange={onComputePlanKeySelectionChange(computePlanKey)}
                 isChecked={selectedComputePlanKeys.includes(computePlanKey)}
-                alignItems="center"
+                alignItems="baseline"
+                maxWidth="235px"
             >
                 <Text as="span" fontSize="xs" fontWeight="semibold">
                     {`#${getComputePlanIndex(computePlanKey)}`}
