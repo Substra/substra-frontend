@@ -9,3 +9,4 @@ dist-ssr
 .vscode
 
 cypress/videos/
+e2e-tests/cypress/videos/

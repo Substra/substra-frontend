@@ -3,7 +3,7 @@ kind: Config
 build:
     artifacts:
         - image: &imageref gcr.io/connect-314908/connect-frontend-tests
-          context: ..
+          context: ../e2e-tests
           docker:
               dockerfile: 'docker/connect-frontend-tests/Dockerfile'
 

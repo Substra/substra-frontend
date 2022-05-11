@@ -1,0 +1,19 @@
+{
+    "name": "connect-frontend-e2e-tests",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/owkin/connect-frontend.git"
+    },
+    "license": "UNLICENSED",
+    "private": "true",
+    "version": "0.1.0",
+    "scripts": {
+        "test:e2e": "npx cypress run"
+    },
+    "dependencies": {
+        "cypress": "9.1.1"
+    },
+    "engines": {
+        "node": ">= 16.13"
+    }
+}

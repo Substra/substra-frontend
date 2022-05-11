@@ -263,25 +263,14 @@ npm run test:unit
 
 ### E2E tests
 
-They are written using Cypress. All E2E tests are under `cypress/integration/` and end in `.spec.js`.
+They are written using Cypress. All E2E tests are under `e2e-tests/cypress/integration/` and end in `.spec.js`.
 
-To run these tests:
+To install cypress, move to the `e2e-tests` folder and run `npm install`.
 
-```sh
-npx cypress run
-```
+Then, still in this folder:
 
-or using our alias:
-
-```sh
-npm run test:e2e
-```
-
-To run these tests in dev mode:
-
-```sh
-npx cypress open
-```
+-   run these tests using `npx cypress run` or `npm run test:e2e`
+-   run these tests in dev mode using `npx cypress open`
 
 ## Microsoft Clarity
 
