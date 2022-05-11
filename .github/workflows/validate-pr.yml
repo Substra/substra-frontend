@@ -22,12 +22,14 @@ jobs:
               run: npx tsc
             - name: Deadcode
               run: npm run find-deadcode
+            - name: Unused dependencies
+              run: npm run find-unused-deps
             - name: Unit tests
               run: npm run test:unit
             - name: Helm
               run: sudo snap install helm --classic && helm lint charts/connect-frontend
 
-    build: #separate for parallelisation
+    build: #separate for parallelization
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2

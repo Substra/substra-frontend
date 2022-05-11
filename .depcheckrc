@@ -1,0 +1,12 @@
+ignores: [
+    "eslint-config-prettier",
+    "@trivago/prettier-plugin-sort-imports",
+    "assert",
+    "buffer",
+    "@testing-library/react",
+    "@testing-library/react-hooks",
+    "@types/jest",
+    "jest-environment-jsdom",
+    "ts-jest",
+    "ts-node"
+]

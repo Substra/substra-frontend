@@ -17,7 +17,8 @@
         "prepare": "npx husky install",
         "test:unit": "jest --passWithNoTests",
         "test:e2e": "npx cypress run",
-        "find-deadcode": "ts-prune -e"
+        "find-deadcode": "ts-prune -e",
+        "find-unused-deps": "depcheck"
     },
     "dependencies": {
         "@chakra-ui/react": "1.7.2",
@@ -30,8 +31,6 @@
         "framer-motion": "5.2.0",
         "github-markdown-css": "5.0.0",
         "html-to-image": "1.9.0",
-        "immer": "9.0.6",
-        "qs": "6.10.3",
         "react": "17.0.2",
         "react-chartjs-2": "3.3.0",
         "react-csv-downloader": "2.7.0",
@@ -41,7 +40,6 @@
         "react-player": "2.9.0",
         "react-redux": "7.2.6",
         "react-syntax-highlighter": "15.4.4",
-        "redux": "4.1.2",
         "remark-gfm": "3.0.1",
         "universal-cookie": "4.0.4",
         "uuid": "8.3.2",
@@ -54,7 +52,6 @@
         "@trivago/prettier-plugin-sort-imports": "3.1.0",
         "@types/jest": "27.0.2",
         "@types/node": "16.11.6",
-        "@types/qs": "6.9.7",
         "@types/react": "17.0.34",
         "@types/react-dom": "17.0.11",
         "@types/react-syntax-highlighter": "13.5.2",
@@ -65,6 +62,7 @@
         "assert": "2.0.0",
         "buffer": "6.0.3",
         "cypress": "9.1.1",
+        "depcheck": "1.4.3",
         "eslint": "8.1.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-cypress": "2.12.1",
