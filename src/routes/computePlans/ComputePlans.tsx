@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
     VStack,
@@ -9,7 +9,9 @@ import {
     Box,
     HStack,
     Flex,
+    Button,
 } from '@chakra-ui/react';
+import { RiDownloadLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
@@ -31,6 +33,8 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
+import { downloadBlob } from '@/libs/request';
+import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
@@ -172,6 +176,25 @@ const ComputePlans = (): JSX.Element => {
     const context = useTableFiltersContext('compute_plan');
     const { onPopoverOpen } = context;
 
+    const [downloading, setDownloading] = useState(false);
+
+    const download = async () => {
+        setDownloading(true);
+        const response = await exportPerformances({
+            match,
+            status,
+            key,
+            creation_date_after: creationDateAfter,
+            creation_date_before: creationDateBefore,
+            start_date_after: startDateAfter,
+            start_date_before: startDateBefore,
+            end_date_after: endDateAfter,
+            end_date_before: endDateBefore,
+        });
+        downloadBlob(response.data, 'performances.csv');
+        setDownloading(false);
+    };
+
     return (
         <TableFiltersContext.Provider value={context}>
             <VStack
@@ -198,18 +221,31 @@ const ComputePlans = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    {HYPERPARAMETERS && (
-                        <CustomColumnsModal
-                            computePlans={computePlans}
-                            customHyperparameters={customHyperparameters}
-                            storeCustomHyperparameters={
-                                storeCustomHyperparameters
-                            }
-                            clearCustomHyperparameters={
-                                clearCustomHyperparameters
-                            }
-                        />
-                    )}
+                    <HStack spacing="2.5">
+                        {HYPERPARAMETERS && (
+                            <CustomColumnsModal
+                                computePlans={computePlans}
+                                customHyperparameters={customHyperparameters}
+                                storeCustomHyperparameters={
+                                    storeCustomHyperparameters
+                                }
+                                clearCustomHyperparameters={
+                                    clearCustomHyperparameters
+                                }
+                            />
+                        )}
+                        {selectedKeys.length === 0 && (
+                            <Button
+                                size="sm"
+                                isLoading={downloading}
+                                loadingText="Downloading"
+                                leftIcon={<RiDownloadLine />}
+                                onClick={download}
+                            >
+                                Download
+                            </Button>
+                        )}
+                    </HStack>
                 </Flex>
                 <Box paddingX="6">
                     <TableFilterTags>

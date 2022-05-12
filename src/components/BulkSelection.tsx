@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useLocation } from 'wouter';
 
 import {
@@ -14,11 +16,14 @@ import {
 } from '@chakra-ui/react';
 import {
     RiCloseLine,
+    RiDownloadLine,
     RiInformationLine,
     RiLineChartLine,
     RiStarLine,
 } from 'react-icons/ri';
 
+import { downloadBlob } from '@/libs/request';
+import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 import { compilePath, PATHS } from '@/routes';
 
 interface BulkSelectionProps {
@@ -66,6 +71,16 @@ const BulkSelection = ({
             const newFavorites = [...favorites, ...notFavorites];
             setFavorites(newFavorites);
         }
+    };
+
+    const [downloading, setDownloading] = useState(false);
+    const download = async () => {
+        setDownloading(true);
+        const response = await exportPerformances({
+            key: selectedKeys,
+        });
+        downloadBlob(response.data, 'performances.csv');
+        setDownloading(false);
     };
 
     return (
@@ -123,6 +138,16 @@ const BulkSelection = ({
                     {areAllFavorites
                         ? 'Remove from favorites'
                         : 'Add to favorites'}
+                </Button>
+                <Button
+                    size="sm"
+                    colorScheme="teal"
+                    isLoading={downloading}
+                    loadingText="Downloading"
+                    leftIcon={<RiDownloadLine />}
+                    onClick={download}
+                >
+                    Download
                 </Button>
                 <Button
                     size="sm"

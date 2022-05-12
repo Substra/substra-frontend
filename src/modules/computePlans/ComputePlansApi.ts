@@ -23,6 +23,7 @@ const URLS = {
     LIST_COMPOSITE_TRAINTUPLES: '/compute_plan/__KEY__/composite_traintuple/',
     LIST_AGGREGATETUPLES: '/compute_plan/__KEY__/aggregatetuple/',
     LIST_PERFORMANCES: '/compute_plan/__KEY__/perf/',
+    EXPORT_PERFORMANCES: '/performance/export/',
 };
 
 interface ListComputePlansArgs extends APIListArgs {
@@ -101,4 +102,15 @@ export const listComputePlanPerformances = (
             ...config,
         }
     );
+};
+
+export const exportPerformances = (
+    apiListArgs: APIListArgs,
+    config?: AxiosRequestConfig
+) => {
+    return API.authenticatedGet(URLS.EXPORT_PERFORMANCES, {
+        ...getApiOptions(apiListArgs),
+        ...(config ?? {}),
+        responseType: 'blob',
+    });
 };
