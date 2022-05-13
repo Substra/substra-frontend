@@ -20,51 +20,26 @@ import {
 } from '@chakra-ui/react';
 import { RiInformationLine } from 'react-icons/ri';
 
-import useHyperparameters from '@/hooks/useHyperparameters';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import useAppSelector from '@/hooks/useAppSelector';
 
 import CopyButton from '@/components/CopyButton';
 
 interface CustomColumnsModalProps {
-    computePlans: ComputePlanT[];
-    customHyperparameters: string[];
-    storeCustomHyperparameters: (hyperparameters: string[]) => void;
-    clearCustomHyperparameters: () => void;
+    columns: string[];
+    setColumns: (columns: string[]) => void;
+    clearColumns: () => void;
 }
 
 const CustomColumnsModal = ({
-    computePlans,
-    customHyperparameters,
-    storeCustomHyperparameters,
-    clearCustomHyperparameters,
+    columns,
+    setColumns,
+    clearColumns,
 }: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const availableColumns = useAppSelector((state) => state.nodes.metadata);
 
-    const hyperparametersList = useHyperparameters(computePlans);
-
-    const initialValue = customHyperparameters.join(', ');
+    const initialValue = columns.join(', ');
     const [value, setValue] = useState<string>(initialValue);
-
-    // returns first half of the hyperpameters list
-    const getHPListLowerHalf = (): string[] => {
-        if (hyperparametersList.length % 2) {
-            return hyperparametersList.slice(
-                0,
-                hyperparametersList.length / 2 + 1
-            );
-        }
-        return hyperparametersList.slice(0, hyperparametersList.length / 2);
-    };
-
-    // returns second half of the hyperpameters list
-    const getHPListUpperHalf = (): string[] => {
-        if (hyperparametersList.length % 2) {
-            return hyperparametersList.slice(
-                hyperparametersList.length / 2 + 1
-            );
-        }
-        return hyperparametersList.slice(hyperparametersList.length / 2);
-    };
 
     const handleOnClose = () => {
         setValue(initialValue);
@@ -73,22 +48,16 @@ const CustomColumnsModal = ({
 
     const onSave = () => {
         if (!value) {
-            clearCustomHyperparameters();
+            clearColumns();
         } else {
             // remove white spaces and make array separating items using comas
-            const newCustomHyperparameters = value
-                .replace(/\s+/g, '')
-                .split(',');
+            const newColumns = value.replace(/\s+/g, '').split(',');
 
-            storeCustomHyperparameters(newCustomHyperparameters);
+            setColumns(newColumns);
         }
 
         onClose();
     };
-
-    if (hyperparametersList.length === 0) {
-        return null;
-    }
 
     return (
         <>
@@ -107,7 +76,7 @@ const CustomColumnsModal = ({
                     >
                         Customize Columns
                     </ModalHeader>
-                    <ModalBody>
+                    <ModalBody maxHeight="80vh" overflowY="auto">
                         <Text
                             color="black"
                             fontWeight="bold"
@@ -129,7 +98,7 @@ const CustomColumnsModal = ({
                             </Box>
                         </Box>
                         <Box
-                            padding="12px 48px"
+                            padding="12px 12px 12px 48px"
                             backgroundColor="blue.100"
                             position="relative"
                         >
@@ -142,18 +111,31 @@ const CustomColumnsModal = ({
                                 height="5"
                             />
                             <Text fontWeight="bold">Available Columns</Text>
-                            <HStack paddingX="2">
-                                <UnorderedList minWidth="230px">
-                                    {getHPListLowerHalf().map((hp) => (
-                                        <ListItem key={hp}>{hp}</ListItem>
+                            {availableColumns.length === 0 && (
+                                <Text>
+                                    Columns come from compute plans' metadata.
+                                    It appears none of the compute plans have
+                                    metadata set.
+                                </Text>
+                            )}
+                            {availableColumns.length > 0 && (
+                                <UnorderedList
+                                    width="100%"
+                                    display="flex"
+                                    flexWrap="wrap"
+                                    margin="0"
+                                >
+                                    {availableColumns.map((column) => (
+                                        <ListItem
+                                            key={column}
+                                            width="50%"
+                                            listStylePosition="inside"
+                                        >
+                                            {column}
+                                        </ListItem>
                                     ))}
                                 </UnorderedList>
-                                <UnorderedList minWidth="230px">
-                                    {getHPListUpperHalf().map((hp) => (
-                                        <ListItem key={hp}>{hp}</ListItem>
-                                    ))}
-                                </UnorderedList>
-                            </HStack>
+                            )}
                         </Box>
                     </ModalBody>
                     <ModalFooter>

@@ -12,6 +12,10 @@ interface NodesState {
     info: NodeInfoType;
     infoLoading: boolean;
     infoError: string;
+
+    metadata: string[];
+    metadataLoading: boolean;
+    metadataError: string;
 }
 
 const initialState: NodesState = {
@@ -26,6 +30,10 @@ const initialState: NodesState = {
     },
     infoLoading: false,
     infoError: '',
+
+    metadata: [],
+    metadataLoading: true,
+    metadataError: '',
 };
 
 export const listNodes = createAsyncThunk<
@@ -52,6 +60,23 @@ export const retrieveInfo = createAsyncThunk<
 >('nodes/info', async (withCredentials, thunkAPI) => {
     try {
         const response = await NodesAPI.retrieveInfo(withCredentials);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
+export const listMetadata = createAsyncThunk<
+    string[],
+    void,
+    { rejectValue: string }
+>('nodes/metadata', async (_, thunkAPI) => {
+    try {
+        const response = await NodesAPI.listMetadata();
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -99,6 +124,21 @@ const nodesSlice = createSlice({
                 state.info.version = undefined;
                 state.info.channel = undefined;
                 state.info.config.model_export_enabled = undefined;
+            })
+            .addCase(listMetadata.pending, (state) => {
+                state.metadata = [];
+                state.metadataLoading = true;
+                state.metadataError = '';
+            })
+            .addCase(listMetadata.fulfilled, (state, { payload }) => {
+                state.metadata = payload;
+                state.metadataLoading = false;
+                state.metadataError = '';
+            })
+            .addCase(listMetadata.rejected, (state, { payload }) => {
+                state.metadata = [];
+                state.metadataLoading = false;
+                state.metadataError = payload || 'Unknown error';
             });
     },
 });

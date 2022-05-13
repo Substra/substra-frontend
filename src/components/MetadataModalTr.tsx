@@ -5,15 +5,15 @@ import { HStack, Td, Text, Th, Tr } from '@chakra-ui/react';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-interface HyperparametersProps {
+interface MetadataModalTrProps {
     computePlan: ComputePlanT;
-    hyperparametersList: string[];
+    columns: string[];
 }
 
-const HyperparametersTr = ({
+const MetadataModalTr = ({
     computePlan,
-    hyperparametersList,
-}: HyperparametersProps): JSX.Element => {
+    columns,
+}: MetadataModalTrProps): JSX.Element => {
     const { getComputePlanIndex, computePlans } =
         useContext(PerfBrowserContext);
     return (
@@ -35,17 +35,17 @@ const HyperparametersTr = ({
                     <Text>{computePlan.metadata.name}</Text>
                 </HStack>
             </Th>
-            {hyperparametersList.map((hp) => (
+            {columns.map((column) => (
                 <Td
-                    key={`${computePlan.key}-${hp}`}
+                    key={`${computePlan.key}-${column}`}
                     fontSize="xs"
                     border="none"
                 >
-                    <Text>{computePlan.metadata[hp] || '-'}</Text>
+                    <Text>{computePlan.metadata[column] || '-'}</Text>
                 </Td>
             ))}
         </Tr>
     );
 };
 
-export default HyperparametersTr;
+export default MetadataModalTr;

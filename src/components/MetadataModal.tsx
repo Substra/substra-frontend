@@ -31,14 +31,13 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import useHyperparameters from '@/hooks/useHyperparameters';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import HyperparametersTr from '@/components/HyperparametersTr';
+import MetadataModalTr from '@/components/MetadataModalTr';
 
-interface HyperparametersModalProps {
+interface MetadataModalProps {
     // the computePlans props is to be used only when there's no PerfBrowserContext available
     computePlans?: ComputePlanT[];
 }
@@ -46,17 +45,24 @@ interface HyperparametersModalProps {
 const MotionModalContent = motion<ModalContentProps>(ModalContent);
 const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);
 
-const HyperparametersModal = ({
+const MetadataModal = ({
     computePlans: propsComputePlans,
-}: HyperparametersModalProps): JSX.Element => {
+}: MetadataModalProps): JSX.Element => {
     const { computePlans: perfBrowserComputePlans } =
         useContext(PerfBrowserContext);
 
-    const computePlans = propsComputePlans
-        ? propsComputePlans
-        : perfBrowserComputePlans;
+    const computePlans = useMemo(
+        () => (propsComputePlans ? propsComputePlans : perfBrowserComputePlans),
+        [propsComputePlans, perfBrowserComputePlans]
+    );
 
-    const hyperparametersList = useHyperparameters(computePlans);
+    const availableColumns = useMemo(() => {
+        let metadata: string[] = [];
+        for (const computePlan of computePlans) {
+            metadata = [...metadata, ...Object.keys(computePlan.metadata)];
+        }
+        return [...new Set(metadata)];
+    }, [computePlans]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isShowingDiffs, setIsShowingDiffs] = useState<boolean>(false);
@@ -82,7 +88,7 @@ const HyperparametersModal = ({
         setFilters([...filters, filter]);
         setInputValue('');
 
-        if (isShowingDiffs && !hpDiffList.includes(filter)) {
+        if (isShowingDiffs && !columnsWithDiff.includes(filter)) {
             setIsShowingDiffs(false);
         }
     };
@@ -100,33 +106,31 @@ const HyperparametersModal = ({
         setIsShowingDiffs(false);
     };
 
-    const activeHyperparameters = filters.length
-        ? filters
-        : hyperparametersList;
+    const activeColumns = filters.length ? filters : availableColumns;
 
-    const hpDiffList: string[] = useMemo(() => {
-        const hpDiffList: string[] = [];
+    const columnsWithDiff: string[] = useMemo(() => {
+        const columnsWithDiff: string[] = [];
         if (computePlans.length > 1) {
-            for (const hp of hyperparametersList) {
-                const reference = computePlans[0].metadata[hp];
-                let hpHasDiff = false;
+            for (const column of availableColumns) {
+                const reference = computePlans[0].metadata[column];
+                let columnHasDiff = false;
                 let index = 1;
 
-                while (!hpHasDiff && index < computePlans.length) {
-                    if (computePlans[index].metadata[hp] !== reference) {
-                        hpHasDiff = true;
-                        hpDiffList.push(hp);
+                while (!columnHasDiff && index < computePlans.length) {
+                    if (computePlans[index].metadata[column] !== reference) {
+                        columnHasDiff = true;
+                        columnsWithDiff.push(column);
                     }
                     index++;
                 }
             }
         }
-        return hpDiffList;
-    }, [computePlans, hyperparametersList]);
+        return columnsWithDiff;
+    }, [computePlans, availableColumns]);
 
     const toggleDifferencesDisplay = () => {
         setIsShowingDiffs(true);
-        setFilters(hpDiffList);
+        setFilters(columnsWithDiff);
     };
 
     const [grabbing, setGrabbing] = useState(false);
@@ -136,7 +140,7 @@ const HyperparametersModal = ({
     return (
         <>
             <Button onClick={toggle} size="xs">
-                {!isOpen ? 'Show hyperparameters' : 'Hide hyperparameters'}
+                {!isOpen ? 'Show metadata' : 'Hide metadata'}
             </Button>
             <Modal
                 isOpen={isOpen}
@@ -182,7 +186,7 @@ const HyperparametersModal = ({
                                 fontWeight="medium"
                                 lineHeight="6"
                             >
-                                Hyperparameters
+                                Metadata
                             </Text>
                             <VStack
                                 position="relative"
@@ -197,7 +201,7 @@ const HyperparametersModal = ({
                                         }
                                     />
                                     <Input
-                                        placeholder="Filter hyperparameters..."
+                                        placeholder="Filter metadata..."
                                         width="320px"
                                         variant="outline"
                                         colorScheme="gray"
@@ -232,15 +236,15 @@ const HyperparametersModal = ({
                                         boxShadow="md"
                                         overflowY="auto"
                                     >
-                                        {hyperparametersList
+                                        {availableColumns
                                             .filter(
-                                                (hp) =>
-                                                    !filters.includes(hp) &&
-                                                    hp.includes(inputValue)
+                                                (column) =>
+                                                    !filters.includes(column) &&
+                                                    column.includes(inputValue)
                                             )
-                                            .map((hp) => (
+                                            .map((column) => (
                                                 <Button
-                                                    key={hp}
+                                                    key={column}
                                                     variant="ghost"
                                                     height="30px"
                                                     paddingY="12px"
@@ -252,19 +256,19 @@ const HyperparametersModal = ({
                                                         e.preventDefault();
                                                     }}
                                                     onClick={() =>
-                                                        addFilter(hp)
+                                                        addFilter(column)
                                                     }
                                                 >
-                                                    {capitalize(hp)}
+                                                    {capitalize(column)}
                                                 </Button>
                                             ))}
                                     </VStack>
                                 )}
                             </VStack>
                         </HStack>
-                        {(hpDiffList.length > 0 || filters.length > 0) && (
+                        {(columnsWithDiff.length > 0 || filters.length > 0) && (
                             <HStack marginTop="3">
-                                {hpDiffList.length > 0 && (
+                                {columnsWithDiff.length > 0 && (
                                     <Button
                                         onClick={toggleDifferencesDisplay}
                                         size="xs"
@@ -331,9 +335,9 @@ const HyperparametersModal = ({
                                     >
                                         NAME
                                     </Th>
-                                    {activeHyperparameters.map((hp) => (
+                                    {activeColumns.map((column) => (
                                         <Th
-                                            key={hp}
+                                            key={column}
                                             color="gray.700"
                                             border="none"
                                             position="sticky"
@@ -341,19 +345,17 @@ const HyperparametersModal = ({
                                             zIndex="1"
                                             backgroundColor="white"
                                         >
-                                            {hp}
+                                            {column}
                                         </Th>
                                     ))}
                                 </Tr>
                             </Thead>
                             <Tbody>
                                 {computePlans.map((computePlan) => (
-                                    <HyperparametersTr
+                                    <MetadataModalTr
                                         key={computePlan.key}
                                         computePlan={computePlan}
-                                        hyperparametersList={
-                                            activeHyperparameters
-                                        }
+                                        columns={activeColumns}
                                     />
                                 ))}
                             </Tbody>
@@ -365,4 +367,4 @@ const HyperparametersModal = ({
     );
 };
 
-export default HyperparametersModal;
+export default MetadataModal;

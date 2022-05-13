@@ -11,7 +11,7 @@ import { retrieveComputePlans } from '@/modules/computePlans/CompareSlice';
 import { loadSeries } from '@/modules/series/SeriesSlice';
 import { PATHS } from '@/routes';
 
-import HyperparametersModal from '@/components/HyperparametersModal';
+import MetadataModal from '@/components/MetadataModal';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
@@ -72,7 +72,7 @@ const Compare = (): JSX.Element => {
                 >
                     <CompareBreadcrumbs />
                     <HStack paddingX="8">
-                        {HYPERPARAMETERS.length && <HyperparametersModal />}
+                        <MetadataModal />
                         <Box>
                             <PerfDownloadButton />
                         </Box>

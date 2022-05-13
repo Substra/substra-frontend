@@ -54,8 +54,6 @@ spec:
               value: {{ .Values.api.url | quote }}
             - name: MICROSOFT_CLARITY_ID
               value: {{ .Values.microsoftClarity.id | quote }}
-            - name: HYPERPARAMETERS
-              value: {{ .Values.hyperparameters | quote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -11,11 +11,6 @@
         <script>
             window.API_URL = '${API_URL}';
             window.MICROSOFT_CLARITY_ID = '${MICROSOFT_CLARITY_ID}';
-            try {
-                window.HYPERPARAMETERS = JSON.parse('${HYPERPARAMETERS}');
-            } catch {
-                window.HYPERPARAMETERS = [];
-            }
         </script>
         <script type="module" src="/src/main.tsx"></script>
     </body>

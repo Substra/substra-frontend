@@ -21,7 +21,7 @@ interface ComputePlanTrProps {
     onSelectionChange: () => void;
     isFavorite: boolean;
     onFavoriteChange: () => void;
-    hyperparametersList: string[];
+    customColumns: string[];
 }
 
 const ComputePlanTr = ({
@@ -30,7 +30,7 @@ const ComputePlanTr = ({
     onSelectionChange,
     isFavorite,
     onFavoriteChange,
-    hyperparametersList,
+    customColumns,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
 
@@ -106,13 +106,13 @@ const ComputePlanTr = ({
                 <Timing asset={computePlan} />
                 <Duration asset={computePlan} />
             </Td>
-            {hyperparametersList.map((hp) => (
+            {customColumns.map((column) => (
                 <Td
-                    key={`${computePlan.key}-${hp}`}
+                    key={`${computePlan.key}-${column}`}
                     fontSize="xs"
                     whiteSpace="nowrap"
                 >
-                    <Text>{computePlan.metadata[hp] || '-'}</Text>
+                    <Text>{computePlan.metadata[column] ?? '-'}</Text>
                 </Td>
             ))}
         </ClickableTr>

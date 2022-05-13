@@ -14,10 +14,10 @@ import {
 import { RiDownloadLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
+import useCustomColumns from '@/hooks/useCustomColumns';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import { useCustomHyperparameters } from '@/hooks/useHyperparameters';
 import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
 import {
     useCreationDate,
@@ -148,14 +148,7 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
-    const {
-        customHyperparameters,
-        storeCustomHyperparameters,
-        clearCustomHyperparameters,
-    } = useCustomHyperparameters();
-    const activeHyperparameters = customHyperparameters.length
-        ? customHyperparameters
-        : HYPERPARAMETERS;
+    const { columns, setColumns, clearColumns } = useCustomColumns();
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
@@ -249,18 +242,11 @@ const ComputePlans = (): JSX.Element => {
                         >
                             Refresh
                         </Button>
-                        {HYPERPARAMETERS && (
-                            <CustomColumnsModal
-                                computePlans={computePlans}
-                                customHyperparameters={customHyperparameters}
-                                storeCustomHyperparameters={
-                                    storeCustomHyperparameters
-                                }
-                                clearCustomHyperparameters={
-                                    clearCustomHyperparameters
-                                }
-                            />
-                        )}
+                        <CustomColumnsModal
+                            columns={columns}
+                            setColumns={setColumns}
+                            clearColumns={clearColumns}
+                        />
                         {selectedKeys.length === 0 && (
                             <Button
                                 size="sm"
@@ -268,6 +254,7 @@ const ComputePlans = (): JSX.Element => {
                                 loadingText="Downloading"
                                 leftIcon={<RiDownloadLine />}
                                 onClick={download}
+                                variant="outline"
                             >
                                 Download
                             </Button>
@@ -403,20 +390,20 @@ const ComputePlans = (): JSX.Element => {
                                         },
                                     ]}
                                 />
-                                {activeHyperparameters.map((hp) => (
+                                {columns.map((column) => (
                                     <OrderingTh
-                                        key={hp}
+                                        key={column}
                                         minWidth="125px"
                                         options={[
                                             {
-                                                label: hp,
+                                                label: column,
                                                 asc: {
-                                                    label: `Sort ${hp} Z -> A`,
-                                                    value: `-metadata__${hp}`,
+                                                    label: `Sort ${column} Z -> A`,
+                                                    value: `-metadata__${column}`,
                                                 },
                                                 desc: {
-                                                    label: `Sort ${hp} A -> Z`,
-                                                    value: `metadata__${hp}`,
+                                                    label: `Sort ${column} A -> Z`,
+                                                    value: `metadata__${column}`,
                                                 },
                                             },
                                         ]}
@@ -439,7 +426,7 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTrSkeleton
                                     computePlansCount={computePlansCount}
                                     page={page}
-                                    hyperparametersList={activeHyperparameters}
+                                    customColumns={columns}
                                 />
                             ) : (
                                 computePlans.map((computePlan) => (
@@ -456,9 +443,7 @@ const ComputePlans = (): JSX.Element => {
                                         onFavoriteChange={onFavoriteChange(
                                             computePlan.key
                                         )}
-                                        hyperparametersList={
-                                            activeHyperparameters
-                                        }
+                                        customColumns={columns}
                                     />
                                 ))
                             )}

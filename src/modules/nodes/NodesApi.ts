@@ -7,6 +7,7 @@ import { NodeInfoType, NodeType } from './NodesTypes';
 const URLS = {
     LIST: '/node/',
     INFO: '/info/',
+    METADATA: '/compute_plan_metadata/',
 };
 
 export const listNodes = (): AxiosPromise<NodeType[]> =>
@@ -21,3 +22,6 @@ export const retrieveInfo = (
 
     return API.anonymousGet(URLS.INFO);
 };
+
+export const listMetadata = (): AxiosPromise<string[]> =>
+    API.authenticatedGet(URLS.METADATA);

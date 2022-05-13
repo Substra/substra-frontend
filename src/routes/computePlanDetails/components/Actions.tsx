@@ -4,7 +4,7 @@ import { RiStarLine, RiStarFill } from 'react-icons/ri';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import HyperparametersModal from '@/components/HyperparametersModal';
+import MetadataModal from '@/components/MetadataModal';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 
 interface ActionsProps {
@@ -46,11 +46,7 @@ const Actions = ({
                     }
                 />
             </Tooltip>
-            {HYPERPARAMETERS.length && (
-                <HyperparametersModal
-                    computePlans={computePlan ? [computePlan] : []}
-                />
-            )}
+            <MetadataModal computePlans={computePlan ? [computePlan] : []} />
             {onRefresh && (
                 <Button
                     variant="outline"
