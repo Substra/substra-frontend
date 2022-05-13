@@ -218,11 +218,11 @@ const Algos = (): JSX.Element => {
                                         {
                                             label: 'Category',
                                             asc: {
-                                                label: 'Sort category Composite -> Aggregate -> Simple',
+                                                label: 'Sort category Z -> A',
                                                 value: '-category',
                                             },
                                             desc: {
-                                                label: 'Sort category Simple -> Aggregate -> Composite',
+                                                label: 'Sort category A -> Z',
                                                 value: 'category',
                                             },
                                         },
