@@ -9,6 +9,8 @@ import {
     Box,
     Text,
     Skeleton,
+    Button,
+    Flex,
 } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
@@ -112,25 +114,49 @@ const Datasets = (): JSX.Element => {
         []
     );
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            listDatasets({
+                page,
+                ordering,
+                match,
+                owner,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+            })
+        );
+    };
+
     return (
         <VStack
             paddingX="6"
             paddingY="8"
             marginX="auto"
             spacing="2.5"
-            alignItems="flex-start"
+            alignItems="stretch"
         >
             <TableFiltersContext.Provider value={context}>
                 <TableTitle title="Datasets" />
-                <HStack spacing="2.5">
-                    <TableFilters>
-                        <OwnerTableFilter />
-                        <CreationDateTableFilter />
-                        <PermissionsTableFilter />
-                        <LogsAccessTableFilter />
-                    </TableFilters>
-                    <SearchBar />
-                </HStack>
+                <Flex justifyContent="space-between">
+                    <HStack spacing="2.5">
+                        <TableFilters>
+                            <OwnerTableFilter />
+                            <CreationDateTableFilter />
+                            <PermissionsTableFilter />
+                            <LogsAccessTableFilter />
+                        </TableFilters>
+                        <SearchBar />
+                    </HStack>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={onRefresh}
+                        isLoading={datasetsLoading}
+                        loadingText="Loading"
+                    >
+                        Refresh
+                    </Button>
+                </Flex>
                 <TableFilterTags>
                     <OwnerTableFilterTag />
                     <DateFilterTag

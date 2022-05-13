@@ -9,6 +9,8 @@ import {
     Text,
     Skeleton,
     HStack,
+    Button,
+    Flex,
 } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
@@ -108,26 +110,52 @@ const Algos = (): JSX.Element => {
 
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            listAlgos({
+                page,
+                ordering,
+                match,
+                owner,
+                category,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                can_process: canProcess,
+            })
+        );
+    };
+
     return (
         <VStack
             marginX="auto"
             paddingY="8"
             paddingX="6"
             spacing="2.5"
-            alignItems="flex-start"
+            alignItems="stretch"
         >
             <AlgoDrawer />
             <TableFiltersContext.Provider value={context}>
                 <TableTitle title="Algorithms" />
-                <HStack spacing="2.5">
-                    <TableFilters>
-                        <OwnerTableFilter />
-                        <AlgoCategoryTableFilter />
-                        <CreationDateTableFilter />
-                        <PermissionsTableFilter />
-                    </TableFilters>
-                    <SearchBar />
-                </HStack>
+                <Flex justifyContent="space-between">
+                    <HStack spacing="2.5">
+                        <TableFilters>
+                            <OwnerTableFilter />
+                            <AlgoCategoryTableFilter />
+                            <CreationDateTableFilter />
+                            <PermissionsTableFilter />
+                        </TableFilters>
+                        <SearchBar />
+                    </HStack>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={onRefresh}
+                        isLoading={algosLoading}
+                        loadingText="Loading"
+                    >
+                        Refresh
+                    </Button>
+                </Flex>
                 <TableFilterTags>
                     <AlgoCategoryTableFilterTag />
                     <OwnerTableFilterTag />

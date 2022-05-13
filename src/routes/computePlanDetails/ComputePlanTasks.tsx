@@ -40,10 +40,14 @@ import TasksBreadcrumbs from './components/TasksBreadCrumbs';
 interface GenericTasksProps {
     tasksTable: React.ReactNode;
     taskDrawer: React.ReactNode;
+    onRefresh: () => void;
+    tasksLoading: boolean;
 }
 const GenericTasks = ({
     tasksTable,
     taskDrawer,
+    onRefresh,
+    tasksLoading,
 }: GenericTasksProps): JSX.Element => {
     const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
     const key = params?.key;
@@ -78,7 +82,12 @@ const GenericTasks = ({
             >
                 <HStack justifyContent="space-between">
                     <TasksBreadcrumbs />
-                    <Actions computePlan={computePlan} loading={loading} />
+                    <Actions
+                        computePlan={computePlan}
+                        loading={loading}
+                        onRefresh={onRefresh}
+                        tasksLoading={tasksLoading}
+                    />
                 </HStack>
                 <TabsNav />
             </Box>
@@ -114,6 +123,7 @@ const TestTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
@@ -168,8 +178,28 @@ const TestTasks = ({
         (state) => state.computePlans.computePlan
     );
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            retrieveComputePlanTestTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                start_date_after: startDateAfter,
+                start_date_before: startDateBefore,
+                end_date_after: endDateAfter,
+                end_date_before: endDateBefore,
+            })
+        );
+    };
+
     return (
         <GenericTasks
+            tasksLoading={loading}
             tasksTable={
                 <TasksTable
                     loading={loading}
@@ -195,6 +225,7 @@ const TestTasks = ({
                     setPageTitle={true}
                 />
             }
+            onRefresh={onRefresh}
         />
     );
 };
@@ -205,6 +236,7 @@ const TrainTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
@@ -259,8 +291,28 @@ const TrainTasks = ({
         (state) => state.computePlans.computePlan
     );
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            retrieveComputePlanTrainTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                start_date_after: startDateAfter,
+                start_date_before: startDateBefore,
+                end_date_after: endDateAfter,
+                end_date_before: endDateBefore,
+            })
+        );
+    };
+
     return (
         <GenericTasks
+            tasksLoading={loading}
             tasksTable={
                 <TasksTable
                     loading={loading}
@@ -286,6 +338,7 @@ const TrainTasks = ({
                     setPageTitle={true}
                 />
             }
+            onRefresh={onRefresh}
         />
     );
 };
@@ -295,6 +348,7 @@ const CompositeTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
@@ -349,8 +403,28 @@ const CompositeTasks = ({
         (state) => state.computePlans.computePlan
     );
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            retrieveComputePlanCompositeTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                start_date_after: startDateAfter,
+                start_date_before: startDateBefore,
+                end_date_after: endDateAfter,
+                end_date_before: endDateBefore,
+            })
+        );
+    };
+
     return (
         <GenericTasks
+            tasksLoading={loading}
             tasksTable={
                 <TasksTable
                     loading={loading}
@@ -376,6 +450,7 @@ const CompositeTasks = ({
                     setPageTitle={true}
                 />
             }
+            onRefresh={onRefresh}
         />
     );
 };
@@ -385,6 +460,7 @@ const AggregateTasks = ({
     compileListPath,
     compileDetailsPath,
 }: TasksProps): JSX.Element => {
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('-rank');
@@ -439,8 +515,28 @@ const AggregateTasks = ({
         (state) => state.computePlans.computePlan
     );
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            retrieveComputePlanAggregateTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                start_date_after: startDateAfter,
+                start_date_before: startDateBefore,
+                end_date_after: endDateAfter,
+                end_date_before: endDateBefore,
+            })
+        );
+    };
+
     return (
         <GenericTasks
+            tasksLoading={loading}
             tasksTable={
                 <TasksTable
                     loading={loading}
@@ -466,6 +562,7 @@ const AggregateTasks = ({
                     setPageTitle={true}
                 />
             }
+            onRefresh={onRefresh}
         />
     );
 };

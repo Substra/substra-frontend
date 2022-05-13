@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Mailto links in error alerts (#572)
 -   Download buttons on ComputePlans page (#581)
+-   Add a manual refresh button (#583)
 
 ### Fixed
 

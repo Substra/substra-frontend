@@ -9,6 +9,8 @@ import {
     Box,
     Text,
     Skeleton,
+    Flex,
+    Button,
 } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
@@ -108,25 +110,50 @@ const Metrics = (): JSX.Element => {
     const context = useTableFiltersContext('metric');
     const { onPopoverOpen } = context;
 
+    const onRefresh = () => {
+        dispatchWithAutoAbort(
+            listMetrics({
+                page,
+                ordering,
+                match,
+                owner,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                can_process: canProcess,
+            })
+        );
+    };
+
     return (
         <VStack
             paddingX="6"
             paddingY="8"
             marginX="auto"
             spacing="2.5"
-            alignItems="flex-start"
+            alignItems="stretch"
         >
             <MetricDrawer />
             <TableFiltersContext.Provider value={context}>
                 <TableTitle title="Metrics" />
-                <HStack spacing="2.5">
-                    <TableFilters>
-                        <OwnerTableFilter />
-                        <CreationDateTableFilter />
-                        <PermissionsTableFilter />
-                    </TableFilters>
-                    <SearchBar />
-                </HStack>
+                <Flex justifyContent="space-between">
+                    <HStack spacing="2.5">
+                        <TableFilters>
+                            <OwnerTableFilter />
+                            <CreationDateTableFilter />
+                            <PermissionsTableFilter />
+                        </TableFilters>
+                        <SearchBar />
+                    </HStack>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={onRefresh}
+                        isLoading={metricsLoading}
+                        loadingText="Loading"
+                    >
+                        Refresh
+                    </Button>
+                </Flex>
                 <TableFilterTags>
                     <OwnerTableFilterTag />
                     <DateFilterTag

@@ -4,6 +4,8 @@ import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { Link } from 'wouter';
 
 import {
+    Button,
+    Flex,
     VStack,
     Thead,
     Tr,
@@ -160,18 +162,36 @@ const TasksTable = ({
     const context = useTableFiltersContext(assetTypeByTaskCategory[category]);
     const { onPopoverOpen } = context;
 
+    const onRefresh = () => {
+        const action = list();
+        if (action) {
+            return dispatchWithAutoAbort(action);
+        }
+    };
+
     return (
         <TableFiltersContext.Provider value={context}>
-            <HStack spacing="2.5">
-                <TableFilters>
-                    <TaskStatusTableFilter />
-                    <WorkerTableFilter />
-                    <CreationDateTableFilter />
-                    <StartDateTableFilter />
-                    <EndDateTableFilter />
-                </TableFilters>
-                <SearchBar placeholder="Search key..." />
-            </HStack>
+            <Flex justifyContent="space-between" width="100%">
+                <HStack spacing="2.5">
+                    <TableFilters>
+                        <TaskStatusTableFilter />
+                        <WorkerTableFilter />
+                        <CreationDateTableFilter />
+                        <StartDateTableFilter />
+                        <EndDateTableFilter />
+                    </TableFilters>
+                    <SearchBar placeholder="Search key..." />
+                </HStack>
+                <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={onRefresh}
+                    isLoading={loading}
+                    loadingText="Loading"
+                >
+                    Refresh
+                </Button>
+            </Flex>
             <TableFilterTags>
                 <StatusTableFilterTag />
                 <WorkerTableFilterTag />
