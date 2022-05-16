@@ -41,7 +41,9 @@ import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import TableFilterCheckboxes from '@/components/TableFilterCheckboxes';
-import TableFilterDate from '@/components/TableFilterDate';
+import TableFilterDate, {
+    TableFilterDateProps,
+} from '@/components/TableFilterDate';
 
 interface TableFiltersProps {
     children: React.ReactNode | React.ReactNode[];
@@ -424,10 +426,15 @@ export const AlgoCategoryTableFilter = (): JSX.Element => {
 
 AlgoCategoryTableFilter.filterTitle = 'Category';
 
+const defaultFilterDateMode: TableFilterDateProps['mode'] = 'after';
+
 const buildDateTableFilter = (field: string, title: string) => {
     const DateTableFilter = (): JSX.Element => {
         const [tmpMinDate, setTmpMinDate] = useState<string>('');
         const [tmpMaxDate, setTmpMaxDate] = useState<string>('');
+        const [tmpMode, setTmpMode] = useState<TableFilterDateProps['mode']>(
+            defaultFilterDateMode
+        );
 
         const [activeMinDate] = useSyncedDateStringState(`${field}_after`, '');
         const [activeMaxDate] = useSyncedDateStringState(`${field}_before`, '');
@@ -443,12 +450,20 @@ const buildDateTableFilter = (field: string, title: string) => {
         };
 
         applyRef.current = (urlSearchParams) => {
-            if (tmpMinDate) {
+            if (
+                tmpMinDate &&
+                tmpMode &&
+                ['after', 'between'].includes(tmpMode)
+            ) {
                 urlSearchParams.set(`${field}_after`, tmpMinDate);
             } else {
                 urlSearchParams.delete(`${field}_after`);
             }
-            if (tmpMaxDate) {
+            if (
+                tmpMaxDate &&
+                tmpMode &&
+                ['before', 'between'].includes(tmpMode)
+            ) {
                 urlSearchParams.set(`${field}_before`, tmpMaxDate);
             } else {
                 urlSearchParams.delete(`${field}_before`);
@@ -460,12 +475,30 @@ const buildDateTableFilter = (field: string, title: string) => {
             setTmpMaxDate(activeMaxDate);
         };
 
+        useEffect(() => {
+            setTmpMinDate(activeMinDate);
+            setTmpMaxDate(activeMaxDate);
+
+            setTmpMode(() => {
+                if (activeMinDate && activeMaxDate) {
+                    return 'between';
+                } else if (activeMinDate) {
+                    return 'after';
+                } else if (activeMaxDate) {
+                    return 'before';
+                }
+                return defaultFilterDateMode;
+            });
+        }, [activeMinDate, activeMaxDate]);
+
         return (
             <TableFilterDate
                 minDate={tmpMinDate}
                 setMinDate={setTmpMinDate}
                 maxDate={tmpMaxDate}
                 setMaxDate={setTmpMaxDate}
+                mode={tmpMode}
+                setMode={setTmpMode}
             />
         );
     };

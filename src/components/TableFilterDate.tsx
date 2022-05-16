@@ -1,49 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box, Text, Select, HStack, Input } from '@chakra-ui/react';
 
-interface TableFilterDateProps {
+export interface TableFilterDateProps {
     minDate: string;
     maxDate: string;
+    mode: Mode;
     setMinDate: (date: string) => void;
     setMaxDate: (date: string) => void;
+    setMode: (mode: Mode) => void;
 }
 
 type Mode = 'after' | 'before' | 'between';
+
 const TableFilterDate = ({
     minDate,
     maxDate,
     setMinDate,
     setMaxDate,
+    mode,
+    setMode,
 }: TableFilterDateProps): JSX.Element => {
-    const getMode = useCallback((): Mode | null => {
-        if (minDate && maxDate) {
-            return 'between';
-        } else if (minDate) {
-            return 'after';
-        } else if (maxDate) {
-            return 'before';
-        }
-        return null;
-    }, [minDate, maxDate]);
-    const [mode, setMode] = useState<Mode>(() => getMode() || 'after');
-
     const onModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newMode = e.target.value as Mode;
         setMode(newMode);
-        if (newMode === 'after' && maxDate) {
-            setMaxDate('');
-        } else if (newMode === 'before' && minDate) {
-            setMinDate('');
-        }
     };
-
-    useEffect(() => {
-        const newMode = getMode();
-        if (newMode) {
-            setMode(newMode);
-        }
-    }, [getMode]);
 
     return (
         <Box w="100%" paddingY="5" paddingX="30px">
