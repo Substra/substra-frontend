@@ -22,6 +22,7 @@ import {
 import { RiAddLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
+import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import useSelection from '@/hooks/useSelection';
 import {
     useSyncedDateStringState,
@@ -66,14 +67,39 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
         resetAll();
     }, [isPopoverOpen, resetAll]);
 
-    const tabTitles: string[] = React.Children.toArray(children).map(
-        (child) => {
-            const firstChild = React.Children.toArray(child)[0];
-            // @ts-expect-error This is a custom property that is not part of any type, so it cannot be checked properly by TypeScript
-            const title = firstChild?.type?.filterTitle;
-            return title || 'Could not extract title from component';
+    interface TabObject {
+        title: string;
+        field: string;
+    }
+
+    const tabs: TabObject[] = React.Children.toArray(children).map((child) => {
+        const firstChild = React.Children.toArray(child)[0];
+
+        // @ts-expect-error This is a custom property that is not part of any type, so it cannot be checked properly by TypeScript
+        const title = firstChild?.type?.filterTitle;
+        // @ts-expect-error This is a custom property that is not part of any type, so it cannot be checked properly by TypeScript
+        const field = firstChild?.type?.filterField;
+
+        if (!title || !field) {
+            throw 'Could not extract title or field from component';
         }
-    );
+
+        return { title, field };
+    });
+
+    const isActive = (field: string) => {
+        const params = field.endsWith('_date')
+            ? [`${field}_after`, `${field}_before`]
+            : [field];
+        const urlSearchParams = getUrlSearchParams();
+
+        for (const param of params) {
+            if (urlSearchParams.get(param)) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     const onClear = () => {
         clearAll();
@@ -120,7 +146,7 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                 boxShadow="xl"
                                 minWidth="160px"
                             >
-                                {tabTitles.map((title, index) => (
+                                {tabs.map((tab, index) => (
                                     <Tab
                                         _selected={{
                                             backgroundColor: 'teal.50',
@@ -128,14 +154,24 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                         }}
                                         fontSize="sm"
                                         justifyContent="flex-start"
-                                        key={title}
+                                        key={tab.title}
                                         ref={
                                             index === tabIndex
                                                 ? initialFocusRef
                                                 : null
                                         }
                                     >
-                                        {title}
+                                        {tab.title}
+                                        {isActive(tab.field) && (
+                                            <Box
+                                                height="6px"
+                                                width="6px"
+                                                marginLeft="3px"
+                                                marginTop="-6px"
+                                                backgroundColor="teal.500"
+                                                borderRadius="50%"
+                                            />
+                                        )}
                                     </Tab>
                                 ))}
                             </TabList>
@@ -144,7 +180,7 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                     (child, index) => (
                                         <TabPanel
                                             padding="0"
-                                            key={tabTitles[index]}
+                                            key={tabs[index].title}
                                         >
                                             {child}
                                         </TabPanel>
@@ -224,6 +260,7 @@ const buildNodeTableFilter = (
     };
 
     NodeTableFilter.filterTitle = title;
+    NodeTableFilter.filterField = field;
     return NodeTableFilter;
 };
 
@@ -281,6 +318,7 @@ export const TaskStatusTableFilter = (): JSX.Element => {
 };
 
 TaskStatusTableFilter.filterTitle = 'Status';
+TaskStatusTableFilter.filterField = 'status';
 
 export const ComputePlanStatusTableFilter = (): JSX.Element => {
     const [tmpStatus, onTmpStatusChange, resetTmpStatus, setTmpStatus] =
@@ -323,6 +361,7 @@ export const ComputePlanStatusTableFilter = (): JSX.Element => {
 };
 
 ComputePlanStatusTableFilter.filterTitle = 'Status';
+ComputePlanStatusTableFilter.filterField = 'status';
 
 export const ComputePlanFavoritesTableFilter = ({
     favorites,
@@ -381,6 +420,7 @@ export const ComputePlanFavoritesTableFilter = ({
 };
 
 ComputePlanFavoritesTableFilter.filterTitle = 'Favorites';
+ComputePlanFavoritesTableFilter.filterField = 'favorites_only';
 
 export const AlgoCategoryTableFilter = (): JSX.Element => {
     const [
@@ -425,6 +465,7 @@ export const AlgoCategoryTableFilter = (): JSX.Element => {
 };
 
 AlgoCategoryTableFilter.filterTitle = 'Category';
+AlgoCategoryTableFilter.filterField = 'category';
 
 const defaultFilterDateMode: TableFilterDateProps['mode'] = 'after';
 
@@ -503,6 +544,7 @@ const buildDateTableFilter = (field: string, title: string) => {
         );
     };
     DateTableFilter.filterTitle = title;
+    DateTableFilter.filterField = field;
     return DateTableFilter;
 };
 

@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Indicate active filters in the popover (#582)
+
+## [0.22.0] - 2022-05-16
+
+### Added
+
 -   Mailto links in error alerts (#572)
 -   Download buttons on ComputePlans page (#581)
 -   Add a manual refresh button (#583)
