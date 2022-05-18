@@ -18,7 +18,7 @@ import useCustomColumns from '@/hooks/useCustomColumns';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import useLocalStorageKeyItems from '@/hooks/useLocalStorageItems';
+import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
 import {
     useCreationDate,
     useEndDate,
@@ -79,11 +79,11 @@ const ComputePlans = (): JSX.Element => {
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
     const {
-        items: selectedComputePlans,
+        state: selectedComputePlans,
         addItem: selectComputePlan,
         removeItem: unselectComputePlan,
-        clearItems: resetSelection,
-    } = useLocalStorageKeyItems<{ key: string; name: string }>(
+        clearState: resetSelection,
+    } = useLocalStorageKeyArrayState<{ key: string; name: string }>(
         'selected_compute_plans_'
     );
     // Adding an underscore at the end to create a new variable for selected compute plans.

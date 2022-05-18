@@ -5,6 +5,7 @@ import {
     Button,
     PopoverBody,
     PopoverFooter,
+    SlideFade,
     Text,
 } from '@chakra-ui/react';
 import { RiListCheck2 } from 'react-icons/ri';
@@ -45,11 +46,24 @@ const NewsFeedListSkeleton = (): JSX.Element => {
     );
 };
 
-const NewsFeedList = (): JSX.Element => {
+interface NewsFeedListArgs {
+    lastNewsSeen: string;
+    setLastNewsSeen: (timestamp: string) => void;
+}
+
+const NewsFeedList = ({
+    lastNewsSeen,
+    setLastNewsSeen,
+}: NewsFeedListArgs): JSX.Element => {
     const dispatch = useAppDispatch();
     const items = useAppSelector((state) => state.newsFeed.items);
     const loading = useAppSelector((state) => state.newsFeed.loading);
-    const isLastPage = useAppSelector((state) => state.newsFeed.isLastPage);
+    const actualizedCountLoading = useAppSelector(
+        (state) => state.newsFeed.actualizedCountLoading
+    );
+    const actualizedCount = useAppSelector(
+        (state) => state.newsFeed.actualizedCount
+    );
     const promiseRef = useRef<{ abort: () => void } | null>(null);
 
     const fetchFirstPage = () => {
@@ -65,10 +79,16 @@ const NewsFeedList = (): JSX.Element => {
             promiseRef.current.abort();
         }
 
-        promiseRef.current = dispatch(listNewsFeed({ firstPage: false }));
+        promiseRef.current = dispatch(
+            listNewsFeed({
+                timestamp_before: lastNewsSeen,
+                firstPage: false,
+            })
+        );
     };
 
     useEffectOnce(() => {
+        setLastNewsSeen(new Date().toISOString());
         fetchFirstPage();
 
         return () => {
@@ -120,6 +140,15 @@ const NewsFeedList = (): JSX.Element => {
         );
     }
 
+    const onRefresh = () => {
+        setLastNewsSeen(new Date().toISOString());
+        fetchFirstPage();
+        // Scroll back to the top
+        if (rootRef.current) {
+            rootRef.current.scrollTo(0, 0);
+        }
+    };
+
     return (
         <>
             <PopoverBody
@@ -128,6 +157,7 @@ const NewsFeedList = (): JSX.Element => {
                 maxWidth="350px"
                 padding="0"
                 ref={rootRef}
+                position="relative"
             >
                 {items.map((item) => (
                     <NewsFeedCard
@@ -139,20 +169,32 @@ const NewsFeedList = (): JSX.Element => {
 
                 <Box ref={probeRef} height="1px" />
             </PopoverBody>
-            <PopoverFooter padding="0" borderTop="0">
-                <Button
-                    size="sm"
-                    background="gray.50"
-                    width="100%"
-                    height="100%"
-                    align="center"
-                    disabled={loading || isLastPage}
-                    onClick={fetchFirstPage}
-                >
-                    <Text color="teal.600" fontSize="xs" paddingY="4">
-                        Refresh
-                    </Text>
-                </Button>
+            <PopoverFooter
+                padding="0"
+                borderTop="0"
+                position="absolute"
+                width="100%"
+                borderRadius="20%"
+                bottom="10px"
+                paddingLeft="30px"
+                paddingRight="30px"
+            >
+                <SlideFade in={actualizedCount > 0} offsetY="130%">
+                    <Button
+                        size="sm"
+                        colorScheme="teal"
+                        width="100%"
+                        height="100%"
+                        align="center"
+                        isDisabled={loading || actualizedCountLoading}
+                        onClick={onRefresh}
+                        borderRadius="10"
+                    >
+                        <Text fontSize="xs" paddingY="4">
+                            Refresh
+                        </Text>
+                    </Button>
+                </SlideFade>
             </PopoverFooter>
         </>
     );

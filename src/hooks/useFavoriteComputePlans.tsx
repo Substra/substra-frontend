@@ -1,4 +1,4 @@
-import { useLocalStorageStringItems } from '@/hooks/useLocalStorageItems';
+import { useLocalStorageStringArrayState } from '@/hooks/useLocalStorageState';
 
 const useFavoriteComputePlans = (): {
     favorites: string[];
@@ -9,12 +9,12 @@ const useFavoriteComputePlans = (): {
     onFavoriteChange: (cpKey: string) => () => void;
 } => {
     const {
-        items: favorites,
-        setItems: setFavorites,
+        state: favorites,
+        setState: setFavorites,
         includesItem: isFavorite,
         addItem: addToFavorites,
         removeItem: removeFromFavorites,
-    } = useLocalStorageStringItems('favorite_compute_plans');
+    } = useLocalStorageStringArrayState('favorite_compute_plans');
 
     const onFavoriteChange = (cpKey: string) => () => {
         if (isFavorite(cpKey)) {

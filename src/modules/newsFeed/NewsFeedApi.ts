@@ -12,6 +12,8 @@ const URLS = {
 type ListNewsFeedArgs = {
     page?: number;
     pageSize?: number;
+    timestamp_before?: string;
+    timestamp_after?: string;
 };
 
 export const listNewsFeed = (

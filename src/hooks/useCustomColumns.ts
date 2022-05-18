@@ -1,4 +1,4 @@
-import { useLocalStorageStringItems } from '@/hooks/useLocalStorageItems';
+import { useLocalStorageStringArrayState } from '@/hooks/useLocalStorageState';
 
 const useCustomColumns = (): {
     columns: string[];
@@ -6,10 +6,10 @@ const useCustomColumns = (): {
     clearColumns: () => void;
 } => {
     const {
-        items: columns,
-        setItems: setColumns,
-        clearItems: clearColumns,
-    } = useLocalStorageStringItems('custom_columns');
+        state: columns,
+        setState: setColumns,
+        clearState: clearColumns,
+    } = useLocalStorageStringArrayState('custom_columns');
 
     return {
         columns,
