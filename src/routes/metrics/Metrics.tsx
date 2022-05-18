@@ -30,7 +30,7 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { formatDate } from '@/libs/utils';
+import { endOfDay, formatDate } from '@/libs/utils';
 import { listMetrics } from '@/modules/metrics/MetricsSlice';
 import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { compilePath, PATHS } from '@/routes';
@@ -79,7 +79,7 @@ const Metrics = (): JSX.Element => {
                 match,
                 owner,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
             })
         );
@@ -118,7 +118,7 @@ const Metrics = (): JSX.Element => {
                 match,
                 owner,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
             })
         );

@@ -32,6 +32,7 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import { formatDate } from '@/libs/utils';
+import { endOfDay } from '@/libs/utils';
 import { listAlgos } from '@/modules/algos/AlgosSlice';
 import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 import { compilePath, PATHS } from '@/routes';
@@ -87,7 +88,7 @@ const Algos = (): JSX.Element => {
                 owner,
                 category,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
             })
         );
@@ -119,7 +120,7 @@ const Algos = (): JSX.Element => {
                 owner,
                 category,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
             })
         );

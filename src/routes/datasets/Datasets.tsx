@@ -30,7 +30,7 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { formatDate } from '@/libs/utils';
+import { endOfDay, formatDate } from '@/libs/utils';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { compilePath, PATHS } from '@/routes';
@@ -79,7 +79,7 @@ const Datasets = (): JSX.Element => {
                 match,
                 owner,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
                 can_access_logs: canAccessLogs,
             })
@@ -122,7 +122,7 @@ const Datasets = (): JSX.Element => {
                 match,
                 owner,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
             })
         );
     };

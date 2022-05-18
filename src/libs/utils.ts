@@ -41,6 +41,20 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
     return `${hours}h ${minutes}min ${seconds}s`;
 };
 
+export const endOfDay = (dateStringISO: string): string => {
+    if (!dateStringISO) {
+        return dateStringISO;
+    }
+    if (new Date(dateStringISO).toISOString().slice(0, 10) != dateStringISO) {
+        throw (
+            'expected a valid date in iso format YYYY-MM-DD, got ' +
+            dateStringISO
+        );
+    }
+
+    return dateStringISO + 'T23:59:59.999999Z';
+};
+
 export const capitalize = (word: string) => {
     const lower = word.toLowerCase();
     return word.charAt(0).toUpperCase() + lower.slice(1);

@@ -34,6 +34,7 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import { downloadBlob } from '@/libs/request';
+import { endOfDay } from '@/libs/utils';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
@@ -108,11 +109,11 @@ const ComputePlans = (): JSX.Element => {
                     status,
                     key,
                     creation_date_after: creationDateAfter,
-                    creation_date_before: creationDateBefore,
+                    creation_date_before: endOfDay(creationDateBefore),
                     start_date_after: startDateAfter,
-                    start_date_before: startDateBefore,
+                    start_date_before: endOfDay(startDateBefore),
                     end_date_after: endDateAfter,
-                    end_date_before: endDateBefore,
+                    end_date_before: endOfDay(endDateBefore),
                 })
             ),
         [
@@ -178,11 +179,11 @@ const ComputePlans = (): JSX.Element => {
             status,
             key,
             creation_date_after: creationDateAfter,
-            creation_date_before: creationDateBefore,
+            creation_date_before: endOfDay(creationDateBefore),
             start_date_after: startDateAfter,
-            start_date_before: startDateBefore,
+            start_date_before: endOfDay(startDateBefore),
             end_date_after: endDateAfter,
-            end_date_before: endDateBefore,
+            end_date_before: endOfDay(endDateBefore),
         });
         downloadBlob(response.data, 'performances.csv');
         setDownloading(false);
@@ -197,11 +198,11 @@ const ComputePlans = (): JSX.Element => {
                 status,
                 key,
                 creation_date_after: creationDateAfter,
-                creation_date_before: creationDateBefore,
+                creation_date_before: endOfDay(creationDateBefore),
                 start_date_after: startDateAfter,
-                start_date_before: startDateBefore,
+                start_date_before: endOfDay(startDateBefore),
                 end_date_after: endDateAfter,
-                end_date_before: endDateBefore,
+                end_date_before: endOfDay(endDateBefore),
             })
         );
     };

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Removed date filters glitch (#585)
+-   Consistent date filters - after and before (#590)
 
 ## [0.22.0] - 2022-05-16
 
