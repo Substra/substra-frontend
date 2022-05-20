@@ -260,12 +260,12 @@ const TasksTable = ({
                                         options={[
                                             {
                                                 label: 'Status',
-                                                asc: {
-                                                    label: 'Sort status EMPTY -> FAILED',
+                                                desc: {
+                                                    label: 'Sort status A -> Z',
                                                     value: 'status',
                                                 },
-                                                desc: {
-                                                    label: 'Sort status FAILED -> EMPTY',
+                                                asc: {
+                                                    label: 'Sort status Z -> A',
                                                     value: '-status',
                                                 },
                                             },

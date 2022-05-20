@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Removed date filters glitch (#585)
 -   Consistent date filters - after and before (#590)
 
+### Changed
+
+-   Tasks and compute plans status sort is now alphabetical (#593)
+
 ## [0.22.0] - 2022-05-16
 
 ### Added
