@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { Reorder, useDragControls } from 'framer-motion';
 
 import {
     Box,
+    BoxProps,
     Button,
+    Flex,
+    Heading,
     HStack,
     Icon,
-    ListItem,
+    IconButton,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -14,49 +19,154 @@ import {
     ModalHeader,
     ModalOverlay,
     Text,
-    Textarea,
-    UnorderedList,
     useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
-import { RiInformationLine } from 'react-icons/ri';
+import {
+    RiAddFill,
+    RiArrowLeftRightLine,
+    RiDeleteBin7Line,
+    RiFileWarningLine,
+    RiMenuLine,
+} from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 
-import CopyButton from '@/components/CopyButton';
+import EmptyState from '@/components/EmptyState';
+
+interface ColumnProps extends BoxProps {
+    title: string;
+    buttonLabel: string;
+    buttonOnClick: () => void;
+}
+const LayoutColumn = ({
+    title,
+    buttonLabel,
+    buttonOnClick,
+    children,
+    ...props
+}: ColumnProps) => (
+    <VStack
+        paddingY="4"
+        paddingX="6"
+        flexBasis="50%"
+        spacing="2.5"
+        alignItems="stretch"
+        {...props}
+    >
+        <Heading
+            size="xs"
+            fontWeight="medium"
+            display="flex"
+            justifyContent="space-between"
+        >
+            {title}
+            <Button
+                variant="link"
+                onClick={buttonOnClick}
+                size="xs"
+                colorScheme="teal"
+            >
+                {buttonLabel}
+            </Button>
+        </Heading>
+        <Box
+            border="1px solid"
+            borderColor="gray.100"
+            backgroundColor="white"
+            flexGrow="1"
+            height="570px"
+            overflow="auto"
+        >
+            {children}
+        </Box>
+    </VStack>
+);
+
+interface ReorderItemProps {
+    column: string;
+    remove: (column: string) => void;
+}
+const ReorderItem = ({ column, remove }: ReorderItemProps) => {
+    const controls = useDragControls();
+
+    return (
+        <Reorder.Item
+            value={column}
+            dragListener={false}
+            dragControls={controls}
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                padding: 'var(--chakra-sizes-2\\.5)',
+                border: '1px solid var(--chakra-colors-gray-100)',
+                width: '100%',
+                fontSize: 'var(--chakra-fontSizes-xs)',
+                marginBottom: 'var(--chakra-sizes-2\\.5)',
+            }}
+        >
+            <IconButton
+                icon={<Icon as={RiDeleteBin7Line} />}
+                size="xs"
+                onClick={() => remove(column)}
+                variant="ghost"
+                aria-label="Remove from selection"
+            />
+            <Text marginX="2.5">{column}</Text>
+            <Icon
+                as={RiMenuLine}
+                marginLeft="auto"
+                cursor="grab"
+                onPointerDown={(e) => controls.start(e)}
+            />
+        </Reorder.Item>
+    );
+};
 
 interface CustomColumnsModalProps {
     columns: string[];
     setColumns: (columns: string[]) => void;
-    clearColumns: () => void;
 }
 
 const CustomColumnsModal = ({
     columns,
     setColumns,
-    clearColumns,
 }: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const availableColumns = useAppSelector((state) => state.nodes.metadata);
 
-    const initialValue = columns.join(', ');
-    const [value, setValue] = useState<string>(initialValue);
+    const allColumns = useAppSelector((state) => state.nodes.metadata);
+    const [selectedColumns, setSelectedColumns] = useState<string[]>(columns);
+    const availableColumns = useMemo(
+        () => allColumns.filter((column) => !selectedColumns.includes(column)),
+        [selectedColumns, allColumns]
+    );
+
+    useEffect(() => {
+        setSelectedColumns(columns);
+    }, [columns]);
 
     const handleOnClose = () => {
-        setValue(initialValue);
+        setSelectedColumns(columns);
         onClose();
     };
 
     const onSave = () => {
-        if (!value) {
-            clearColumns();
-        } else {
-            // remove white spaces and make array separating items using comas
-            const newColumns = value.replace(/\s+/g, '').split(',');
-
-            setColumns(newColumns);
-        }
-
+        setColumns(selectedColumns);
         onClose();
+    };
+
+    const addColumn = (column: string) => {
+        setSelectedColumns([...selectedColumns, column]);
+    };
+    const removeColumn = (column: string) => {
+        setSelectedColumns(selectedColumns.filter((col) => col !== column));
+    };
+    const removeAll = () => {
+        setSelectedColumns([]);
+    };
+    const addAll = () => {
+        setSelectedColumns([...selectedColumns, ...availableColumns]);
     };
 
     return (
@@ -64,7 +174,12 @@ const CustomColumnsModal = ({
             <Button size="sm" variant="outline" onClick={onOpen}>
                 Customize Columns
             </Button>
-            <Modal isOpen={isOpen} onClose={handleOnClose} size="xl" isCentered>
+            <Modal
+                isOpen={isOpen}
+                onClose={handleOnClose}
+                size="4xl"
+                isCentered
+            >
                 <ModalOverlay />
                 <ModalContent fontSize="xs">
                     <ModalCloseButton size="sm" onClick={handleOnClose} />
@@ -76,67 +191,119 @@ const CustomColumnsModal = ({
                     >
                         Customize Columns
                     </ModalHeader>
-                    <ModalBody maxHeight="80vh" overflowY="auto">
-                        <Text
-                            color="black"
-                            fontWeight="bold"
-                            marginBottom="2.5"
-                        >
-                            Copy paste this value to share your custom layout to
-                            others
-                        </Text>
-                        <Box position="relative" marginBottom="2.5">
-                            <Textarea
-                                placeholder="Enter the name of the columns you wish to display separated by coma (ex: column1, column2)"
-                                fontSize="xs"
-                                onChange={(e) => setValue(e.target.value)}
-                                value={value}
-                                paddingRight="12"
-                            />
-                            <Box position="absolute" top="1" right="0">
-                                <CopyButton value={value} />
-                            </Box>
-                        </Box>
-                        <Box
-                            padding="12px 12px 12px 48px"
-                            backgroundColor="blue.100"
-                            position="relative"
-                        >
-                            <Icon
-                                as={RiInformationLine}
-                                position="absolute"
-                                top="3"
-                                left="4"
-                                width="5"
-                                height="5"
-                            />
-                            <Text fontWeight="bold">Available Columns</Text>
-                            {availableColumns.length === 0 && (
-                                <Text>
-                                    Columns come from compute plans' metadata.
-                                    It appears none of the compute plans have
-                                    metadata set.
-                                </Text>
-                            )}
-                            {availableColumns.length > 0 && (
-                                <UnorderedList
-                                    width="100%"
-                                    display="flex"
-                                    flexWrap="wrap"
-                                    margin="0"
+                    <ModalBody
+                        backgroundColor="gray.50"
+                        maxHeight="80vh"
+                        display="flex"
+                        alignItems="stretch"
+                        padding="0"
+                    >
+                        {allColumns.length === 0 && (
+                            <Flex
+                                padding="12"
+                                justifyContent="center"
+                                flexGrow="1"
+                            >
+                                <EmptyState
+                                    title="No columns available"
+                                    subtitle="Available columns come from compute plan metadata"
+                                    icon={<RiFileWarningLine />}
+                                />
+                            </Flex>
+                        )}
+                        {allColumns.length > 0 && (
+                            <>
+                                <LayoutColumn
+                                    title="Selected"
+                                    buttonLabel="Remove all"
+                                    buttonOnClick={removeAll}
                                 >
-                                    {availableColumns.map((column) => (
-                                        <ListItem
-                                            key={column}
-                                            width="50%"
-                                            listStylePosition="inside"
-                                        >
-                                            {column}
-                                        </ListItem>
-                                    ))}
-                                </UnorderedList>
-                            )}
-                        </Box>
+                                    <Reorder.Group
+                                        values={selectedColumns}
+                                        onReorder={setSelectedColumns}
+                                        style={{
+                                            listStyle: 'none',
+                                            width: '100%',
+                                            padding: 'var(--chakra-sizes-4)',
+                                        }}
+                                    >
+                                        {selectedColumns.map((column) => (
+                                            <ReorderItem
+                                                key={column}
+                                                column={column}
+                                                remove={removeColumn}
+                                            />
+                                        ))}
+                                    </Reorder.Group>
+                                </LayoutColumn>
+                                <VStack
+                                    color="gray.800"
+                                    spacing="3"
+                                    flexGrow="0"
+                                    flexBasis="20px"
+                                    flexShrink="0"
+                                >
+                                    <Box
+                                        with="1px"
+                                        borderRight="1px solid"
+                                        borderRightColor="gray.200"
+                                        flexGrow="1"
+                                    />
+                                    <Icon
+                                        as={RiArrowLeftRightLine}
+                                        fontSize="18px"
+                                    />
+                                    <Box
+                                        with="1px"
+                                        borderRight="1px solid"
+                                        borderRightColor="gray.200"
+                                        flexGrow="1"
+                                    />
+                                </VStack>
+                                <LayoutColumn
+                                    title="Available"
+                                    buttonLabel="Add all"
+                                    buttonOnClick={addAll}
+                                >
+                                    <VStack spacing="2.5" padding="4">
+                                        {availableColumns.map((column) => (
+                                            <Flex
+                                                key={column}
+                                                width="100%"
+                                                padding="2.5"
+                                                border="1px solid"
+                                                borderColor="gray.100"
+                                                fontSize="xs"
+                                                justifyContent="flex-start"
+                                                alignItems="center"
+                                            >
+                                                <IconButton
+                                                    icon={
+                                                        <Icon as={RiAddFill} />
+                                                    }
+                                                    variant="solid"
+                                                    colorScheme="teal"
+                                                    aria-label={
+                                                        'Add to selection'
+                                                    }
+                                                    size="xs"
+                                                    width="5"
+                                                    minWidth="5"
+                                                    height="5"
+                                                    borderRadius="10px"
+                                                    onClick={() =>
+                                                        addColumn(column)
+                                                    }
+                                                />
+                                                <Text marginX="2.5">
+                                                    {column}
+                                                </Text>
+                                            </Flex>
+                                        ))}
+                                    </VStack>
+                                </LayoutColumn>
+                            </>
+                        )}
                     </ModalBody>
                     <ModalFooter>
                         <HStack spacing="2">
@@ -147,13 +314,15 @@ const CustomColumnsModal = ({
                             >
                                 Cancel
                             </Button>
-                            <Button
-                                size="sm"
-                                colorScheme="teal"
-                                onClick={onSave}
-                            >
-                                Save
-                            </Button>
+                            {allColumns.length > 0 && (
+                                <Button
+                                    size="sm"
+                                    colorScheme="teal"
+                                    onClick={onSave}
+                                >
+                                    Save
+                                </Button>
+                            )}
                         </HStack>
                     </ModalFooter>
                 </ModalContent>

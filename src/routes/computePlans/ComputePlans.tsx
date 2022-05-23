@@ -149,7 +149,7 @@ const ComputePlans = (): JSX.Element => {
         []
     );
 
-    const { columns, setColumns, clearColumns } = useCustomColumns();
+    const { columns, setColumns } = useCustomColumns();
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
@@ -246,7 +246,6 @@ const ComputePlans = (): JSX.Element => {
                         <CustomColumnsModal
                             columns={columns}
                             setColumns={setColumns}
-                            clearColumns={clearColumns}
                         />
                         {selectedKeys.length === 0 && (
                             <Button
