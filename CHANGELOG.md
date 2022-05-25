@@ -18,20 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Dockerfile now include package-lock.json for better reproducibility (#600)
-
-### Fixed
-
 -   Prevent the dataset details sidebar from being crushed (#597)
-
-### Fixed
-
 -   Display correctly Markdown titles (#598)
+-   Dockerfile now include package-lock.json for better reproducibility (#600)
 
 ## [0.23.0] - 2022-05-23
 
 ### Added
 
+-   Indicate active filters in the popover (#582)
 -   News feed notifications (#588)
 
 ### Fixed
@@ -42,12 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Tasks and compute plans status sort is now alphabetical (#593)
-
-## [0.22.0] - 2022-05-16
-
-### Added
-
--   Indicate active filters in the popover (#582)
 
 ## [0.22.0] - 2022-05-16
 
