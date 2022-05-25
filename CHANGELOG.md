@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Proper UI for customizing columns (#591)
 -   OmniSearch (#589)
 
+### Fixed
+
+-   Dockerfile now include package-lock.json for better reproducibility (#600)
+
 ## [0.23.0] - 2022-05-23
 
 ### Added

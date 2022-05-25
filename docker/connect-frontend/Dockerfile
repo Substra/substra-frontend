@@ -5,6 +5,7 @@ ARG APP_VERSION
 WORKDIR /workspace
 
 COPY package.json .
+COPY package-lock.json .
 RUN npm install --unsafe-perm
 
 COPY . .

@@ -19,4 +19,3 @@ skaffold-values/
 
 # NPM dependencies
 node_modules/
-package-lock.json
