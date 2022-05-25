@@ -20,11 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Dockerfile now include package-lock.json for better reproducibility (#600)
 
+### Fixed
+
+-   Prevent the dataset details sidebar from being crushed (#597)
+
 ## [0.23.0] - 2022-05-23
 
 ### Added
 
--   Newsfeed notifications (#588)
+-   News feed notifications (#588)
 
 ### Fixed
 

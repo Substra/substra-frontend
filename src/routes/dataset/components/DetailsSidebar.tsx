@@ -17,7 +17,7 @@ import DataSamplesListItem from './DataSamplesListItem';
 const DetailsSidebar = (): JSX.Element => {
     const dataset = useAppSelector((state) => state.datasets.dataset);
     return (
-        <VStack spacing="8" width="md" alignItems="stretch">
+        <VStack spacing="8" width="md" alignItems="stretch" flexShrink="0">
             <DrawerSection title="General">
                 {dataset && (
                     <>
