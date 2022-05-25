@@ -23,6 +23,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { logOut } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
 
+import OmniSearch from '@/components/OmniSearch';
 import About from '@/components/layout/header/About';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
@@ -109,11 +110,14 @@ const Header = (): JSX.Element => {
             flexShrink={0}
             transition="height 300ms ease-in-out"
         >
-            <IconLink href={PATHS.HOME}>
-                <a>
-                    <OwkinConnectIconSvg />
-                </a>
-            </IconLink>
+            <HStack spacing="5">
+                <IconLink href={PATHS.HOME}>
+                    <a>
+                        <OwkinConnectIconSvg />
+                    </a>
+                </IconLink>
+                <OmniSearch />
+            </HStack>
             <HeaderNavigation navItems={NAV_ITEMS} isActive={isActive} />
             <HStack spacing="3.5">
                 <Box textAlign="right">
