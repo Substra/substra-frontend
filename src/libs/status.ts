@@ -26,7 +26,7 @@ enum ComputePlanStatusLabel {
     failed = 'Failed',
     todo = 'Todo',
     waiting = 'Waiting',
-    unknown = 'Empty',
+    empty = 'Empty',
 }
 
 enum TupleStatusLabel {
@@ -57,7 +57,7 @@ const statusLabelByComputePlanStatus: Record<
     [ComputePlanStatus.failed]: ComputePlanStatusLabel.failed,
     [ComputePlanStatus.todo]: ComputePlanStatusLabel.todo,
     [ComputePlanStatus.waiting]: ComputePlanStatusLabel.waiting,
-    [ComputePlanStatus.unknown]: ComputePlanStatusLabel.unknown,
+    [ComputePlanStatus.empty]: ComputePlanStatusLabel.empty,
 };
 
 export const getStatusLabel = (
@@ -159,7 +159,7 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'teal.500',
                 progressColor: 'teal.500',
             };
-        case ComputePlanStatus.unknown:
+        case ComputePlanStatus.empty:
             return {
                 icon: RiQuestionLine,
                 tagColor: 'gray.500',

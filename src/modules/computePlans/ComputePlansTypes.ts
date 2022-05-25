@@ -7,7 +7,7 @@ export enum ComputePlanStatus {
     done = 'PLAN_STATUS_DONE',
     canceled = 'PLAN_STATUS_CANCELED',
     failed = 'PLAN_STATUS_FAILED',
-    unknown = 'PLAN_STATUS_UNKNOWN',
+    empty = 'PLAN_STATUS_EMPTY',
 }
 
 export enum ComputePlanStatusDescription {
@@ -17,7 +17,7 @@ export enum ComputePlanStatusDescription {
     done = 'Compute plan finished without error',
     canceled = 'Compute plan was prematurely ended',
     failed = 'Compute plan has error',
-    unknown = 'Compute plan contains no tasks',
+    empty = 'Compute plan contains no tasks',
 }
 
 export const statusDescriptionByComputePlanStatus: Record<
@@ -30,7 +30,7 @@ export const statusDescriptionByComputePlanStatus: Record<
     [ComputePlanStatus.done]: ComputePlanStatusDescription.done,
     [ComputePlanStatus.canceled]: ComputePlanStatusDescription.canceled,
     [ComputePlanStatus.failed]: ComputePlanStatusDescription.failed,
-    [ComputePlanStatus.unknown]: ComputePlanStatusDescription.unknown,
+    [ComputePlanStatus.empty]: ComputePlanStatusDescription.empty,
 };
 
 export interface ComputePlanStub {
