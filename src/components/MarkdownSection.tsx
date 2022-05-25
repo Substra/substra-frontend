@@ -14,8 +14,10 @@ const MarkdownSection = ({ source }: MarkdownSectionProps): JSX.Element => (
             remarkPlugins={[remarkGfm]}
             children={source}
             components={{
-                h1: () => <Heading as="h1" fontSize="32px" />,
-                h2: () => <Heading fontSize="20px" />,
+                h1: ({ ...props }) => (
+                    <Heading as="h1" fontSize="32px" {...props} />
+                ),
+                h2: ({ ...props }) => <Heading fontSize="20px" {...props} />,
             }}
         />
     </Box>

@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Prevent the dataset details sidebar from being crushed (#597)
 
+### Fixed
+
+-   Display correctly Markdown titles (#598)
+
 ## [0.23.0] - 2022-05-23
 
 ### Added
