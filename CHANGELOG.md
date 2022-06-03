@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Compute plan name from metadata is deprecated, use cp name directly (#601)
+
 ## [0.24.0] - 2022-05-31
 
 ### Changed

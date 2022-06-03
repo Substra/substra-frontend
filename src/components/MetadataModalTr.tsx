@@ -32,7 +32,7 @@ const MetadataModalTr = ({
                             #{getComputePlanIndex(computePlan.key)}
                         </Text>
                     )}
-                    <Text>{computePlan.metadata.name}</Text>
+                    <Text>{computePlan.name}</Text>
                 </HStack>
             </Th>
             {columns.map((column) => (
