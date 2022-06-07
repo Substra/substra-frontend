@@ -19,6 +19,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import useLastNewsSeen from '@/hooks/useLastNewsSeen';
 import { retrieveActualizedCount } from '@/modules/newsFeed/NewsFeedSlice';
+import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
 
 import NewsFeedList from '@/components/layout/header/NewsFeedList';
 
@@ -28,15 +29,11 @@ const NewsFeed = (): JSX.Element => {
     const initialFocusRef = useRef(null);
     const { lastNewsSeen, setLastNewsSeen } = useLastNewsSeen();
 
-    const actualizedCountLoading = useAppSelector(
-        (state) => state.newsFeed.actualizedCountLoading
-    );
-
     const actualizedCount = useAppSelector(
         (state) => state.newsFeed.actualizedCount
     );
 
-    const displayPill = !actualizedCountLoading && actualizedCount > 0;
+    const displayPill = actualizedCount > 0;
 
     useEffect(() => {
         if (lastNewsSeen) {
@@ -48,7 +45,7 @@ const NewsFeed = (): JSX.Element => {
                 dispatch(
                     retrieveActualizedCount({ timestamp_after: lastNewsSeen })
                 );
-            }, 60000);
+            }, ACTUALIZE_NEWS_INTERVAL);
 
             return () => {
                 clearInterval(interval);

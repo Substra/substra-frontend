@@ -46,9 +46,9 @@ const initialState: DatasetState = {
 };
 
 type listDatasetsArgs = {
-    page: number;
-    ordering: string;
-    match: string;
+    page?: number;
+    ordering?: string;
+    match?: string;
 } & {
     [param: string]: unknown;
 };

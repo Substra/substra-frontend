@@ -9,7 +9,6 @@ import {
     Box,
     Text,
     Skeleton,
-    Button,
     Flex,
 } from '@chakra-ui/react';
 
@@ -41,6 +40,7 @@ import {
 } from '@/components/AssetsTable';
 import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
@@ -114,19 +114,6 @@ const Datasets = (): JSX.Element => {
         []
     );
 
-    const onRefresh = () => {
-        dispatchWithAutoAbort(
-            listDatasets({
-                page,
-                ordering,
-                match,
-                owner,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-            })
-        );
-    };
-
     return (
         <VStack
             paddingX="6"
@@ -147,15 +134,11 @@ const Datasets = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={onRefresh}
-                        isLoading={datasetsLoading}
-                        loadingText="Loading"
-                    >
-                        Refresh
-                    </Button>
+                    <RefreshButton
+                        loading={datasetsLoading}
+                        dispatchWithAutoAbort={dispatchWithAutoAbort}
+                        actionBuilder={() => listDatasets({})}
+                    />
                 </Flex>
                 <TableFilterTags>
                     <OwnerTableFilterTag />

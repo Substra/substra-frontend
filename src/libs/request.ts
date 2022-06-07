@@ -70,7 +70,7 @@ export const getApiOptions = ({
     if (page) {
         params = {
             ...params,
-            page_size: pageSize || DEFAULT_PAGE_SIZE,
+            page_size: pageSize ?? DEFAULT_PAGE_SIZE,
             page,
         };
     }

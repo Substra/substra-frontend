@@ -4,7 +4,7 @@ import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import useAppDispatch from './useAppDispatch';
 
-type DispatchWithAutoAbort = (
+export type DispatchWithAutoAbort = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action: AsyncThunkAction<any, any, any>
 ) => () => void;

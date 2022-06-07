@@ -38,9 +38,9 @@ const initialState: MetricState = {
 };
 
 type listMetricsArgs = {
-    page: number;
-    ordering: string;
-    match: string;
+    page?: number;
+    ordering?: string;
+    match?: string;
 } & { [param: string]: unknown };
 
 export const listMetrics = createAsyncThunk<

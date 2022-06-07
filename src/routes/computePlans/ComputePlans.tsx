@@ -42,6 +42,7 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import BulkSelection from '@/components/BulkSelection';
 import CustomColumnsModal from '@/components/CustomColumnsModal';
 import OrderingTh from '@/components/OrderingTh';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import {
     bottomBorderProps,
@@ -189,24 +190,6 @@ const ComputePlans = (): JSX.Element => {
         setDownloading(false);
     };
 
-    const onRefresh = () => {
-        dispatchWithAutoAbort(
-            listComputePlans({
-                page,
-                match,
-                ordering,
-                status,
-                key,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                start_date_after: startDateAfter,
-                start_date_before: endOfDay(startDateBefore),
-                end_date_after: endDateAfter,
-                end_date_before: endOfDay(endDateBefore),
-            })
-        );
-    };
-
     return (
         <TableFiltersContext.Provider value={context}>
             <VStack
@@ -234,15 +217,11 @@ const ComputePlans = (): JSX.Element => {
                         <SearchBar placeholder="Search name or key..." />
                     </HStack>
                     <HStack spacing="2.5">
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={onRefresh}
-                            isLoading={computePlansLoading}
-                            loadingText="Loading"
-                        >
-                            Refresh
-                        </Button>
+                        <RefreshButton
+                            loading={computePlansLoading}
+                            actionBuilder={() => listComputePlans({})}
+                            dispatchWithAutoAbort={dispatchWithAutoAbort}
+                        />
                         <CustomColumnsModal
                             columns={columns}
                             setColumns={setColumns}

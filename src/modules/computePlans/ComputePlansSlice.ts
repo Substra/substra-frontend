@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { timestampNow } from '@/libs/utils';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
+import {
+    ComputePlanStub,
+    ComputePlanT,
+} from '@/modules/computePlans/ComputePlansTypes';
 import {
     Aggregatetuple,
     CompositeTraintupleStub,
@@ -9,14 +15,12 @@ import {
     TraintupleStub,
 } from '@/modules/tasks/TuplesTypes';
 
-import * as ComputePlansApi from './ComputePlansApi';
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
-
 interface ComputePlansState {
     computePlans: ComputePlanStub[];
     computePlansLoading: boolean;
     computePlansError: string;
     computePlansCount: number;
+    computePlansCallTimestamp: string;
     computePlan: ComputePlanT | null;
     computePlanLoading: boolean;
     computePlanError: string;
@@ -43,6 +47,7 @@ const initialState: ComputePlansState = {
     computePlansLoading: true,
     computePlansError: '',
     computePlansCount: 0,
+    computePlansCallTimestamp: '',
     computePlanLoading: true,
     computePlanError: '',
     computePlan: null,
@@ -235,6 +240,7 @@ const computePlansSlice = createSlice({
                 state.computePlans = [];
                 state.computePlansLoading = true;
                 state.computePlansError = '';
+                state.computePlansCallTimestamp = timestampNow();
             })
             .addCase(listComputePlans.fulfilled, (state, { payload }) => {
                 state.computePlans = payload.results;

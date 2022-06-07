@@ -2,6 +2,8 @@ import { Flex } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 
+import Actualizer from '@/components/Actualizer';
+import RefreshBanner from '@/components/RefreshBanner';
 import Header from '@/components/layout/header/Header';
 
 type AppLayoutProps = {
@@ -18,6 +20,8 @@ const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
             width="100vw"
             minWidth="1200px"
         >
+            {isAuthenticated && <Actualizer />}
+            {isAuthenticated && <RefreshBanner />}
             {isAuthenticated && <Header />}
             <Flex
                 grow="1"

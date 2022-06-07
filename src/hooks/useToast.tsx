@@ -14,10 +14,14 @@ import {
     RiInformationLine,
 } from 'react-icons/ri';
 
+interface CustomUseToastOptions extends UseToastOptions {
+    description?: string | React.FunctionComponent<{ onClose: () => void }>;
+}
+
 export const useToast = () => {
     const toast = useChakraToast();
 
-    const returnFunction = (options: UseToastOptions) => {
+    const returnFunction = (options: CustomUseToastOptions) => {
         let duration = options.duration;
         if (duration === undefined) {
             if (typeof options.description === 'string') {
@@ -28,7 +32,7 @@ export const useToast = () => {
         }
 
         return toast({
-            position: 'bottom-right',
+            position: 'bottom-left',
             duration,
             render: ({ onClose }) => (
                 <Alert variant="subtle" status={options.status} width="sm">
@@ -46,7 +50,11 @@ export const useToast = () => {
                         <AlertTitle fontSize="sm">{options.title}</AlertTitle>
                         {options.description && (
                             <AlertDescription display="block" fontSize="sm">
-                                {options.description}
+                                {typeof options.description === 'string' ? (
+                                    options.description
+                                ) : (
+                                    <options.description onClose={onClose} />
+                                )}
                             </AlertDescription>
                         )}
                     </Box>

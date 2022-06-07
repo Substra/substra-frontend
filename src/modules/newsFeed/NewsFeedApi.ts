@@ -14,6 +14,8 @@ type ListNewsFeedArgs = {
     pageSize?: number;
     timestamp_before?: string;
     timestamp_after?: string;
+    important_news_only?: boolean;
+    ordering?: 'timestamp' | '-timestamp';
 };
 
 export const listNewsFeed = (

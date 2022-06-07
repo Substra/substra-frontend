@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Actualizer & Refresh Banner (#594)
+
 ### Changed
 
 -   Compute plan name from metadata is deprecated, use cp name directly (#601)

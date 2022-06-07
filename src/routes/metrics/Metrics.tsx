@@ -10,7 +10,6 @@ import {
     Text,
     Skeleton,
     Flex,
-    Button,
 } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
@@ -42,6 +41,7 @@ import {
 } from '@/components/AssetsTable';
 import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
@@ -110,20 +110,6 @@ const Metrics = (): JSX.Element => {
     const context = useTableFiltersContext('metric');
     const { onPopoverOpen } = context;
 
-    const onRefresh = () => {
-        dispatchWithAutoAbort(
-            listMetrics({
-                page,
-                ordering,
-                match,
-                owner,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                can_process: canProcess,
-            })
-        );
-    };
-
     return (
         <VStack
             paddingX="6"
@@ -144,15 +130,11 @@ const Metrics = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={onRefresh}
-                        isLoading={metricsLoading}
-                        loadingText="Loading"
-                    >
-                        Refresh
-                    </Button>
+                    <RefreshButton
+                        loading={metricsLoading}
+                        dispatchWithAutoAbort={dispatchWithAutoAbort}
+                        actionBuilder={() => listMetrics({})}
+                    />
                 </Flex>
                 <TableFilterTags>
                     <OwnerTableFilterTag />

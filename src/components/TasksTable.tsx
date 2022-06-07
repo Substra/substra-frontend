@@ -4,7 +4,6 @@ import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { Link } from 'wouter';
 
 import {
-    Button,
     Flex,
     VStack,
     Thead,
@@ -59,6 +58,7 @@ import { compilePath, PATHS } from '@/routes';
 import { AssetsTable } from '@/components/AssetsTable';
 import Duration from '@/components/Duration';
 import OrderingTh from '@/components/OrderingTh';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
@@ -81,7 +81,7 @@ import Timing from '@/components/Timing';
 
 interface TasksTableProps {
     loading: boolean;
-    list: () => null | AsyncThunkAction<
+    list: () => AsyncThunkAction<
         PaginatedApiResponse<AnyTupleT>,
         retrieveComputePlanTasksArgs | listTasksArgs,
         { rejectValue: string }
@@ -162,13 +162,6 @@ const TasksTable = ({
     const context = useTableFiltersContext(assetTypeByTaskCategory[category]);
     const { onPopoverOpen } = context;
 
-    const onRefresh = () => {
-        const action = list();
-        if (action) {
-            return dispatchWithAutoAbort(action);
-        }
-    };
-
     return (
         <TableFiltersContext.Provider value={context}>
             <Flex justifyContent="space-between" width="100%">
@@ -182,15 +175,11 @@ const TasksTable = ({
                     </TableFilters>
                     <SearchBar placeholder="Search key..." />
                 </HStack>
-                <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={onRefresh}
-                    isLoading={loading}
-                    loadingText="Loading"
-                >
-                    Refresh
-                </Button>
+                <RefreshButton
+                    loading={loading}
+                    dispatchWithAutoAbort={dispatchWithAutoAbort}
+                    actionBuilder={list}
+                />
             </Flex>
             <TableFilterTags>
                 <StatusTableFilterTag />

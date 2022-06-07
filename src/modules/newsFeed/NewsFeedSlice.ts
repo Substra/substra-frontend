@@ -34,17 +34,17 @@ const initialState: NewsFeedState = {
 
 export const NEWS_FEED_PAGE_SIZE = 10;
 
-type listNewsFeedArgs = {
+type listNewsFeedArgsT = {
     firstPage: boolean;
     timestamp_before?: string;
 };
 export const listNewsFeed = createAsyncThunk<
     PaginatedApiResponse<NewsItemType>,
-    listNewsFeedArgs,
+    listNewsFeedArgsT,
     { rejectValue: string }
 >(
     'newsFeed/list',
-    async ({ firstPage, timestamp_before }: listNewsFeedArgs, thunkAPI) => {
+    async ({ firstPage, timestamp_before }: listNewsFeedArgsT, thunkAPI) => {
         const state = thunkAPI.getState() as RootState;
         const page = firstPage ? 1 : state.newsFeed.currentPage;
 

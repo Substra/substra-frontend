@@ -9,7 +9,6 @@ import {
     Text,
     Skeleton,
     HStack,
-    Button,
     Flex,
 } from '@chakra-ui/react';
 
@@ -43,6 +42,7 @@ import {
 } from '@/components/AssetsTable';
 import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
@@ -111,21 +111,6 @@ const Algos = (): JSX.Element => {
 
     useAssetListDocumentTitleEffect('Algorithms list', key);
 
-    const onRefresh = () => {
-        dispatchWithAutoAbort(
-            listAlgos({
-                page,
-                ordering,
-                match,
-                owner,
-                category,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                can_process: canProcess,
-            })
-        );
-    };
-
     return (
         <VStack
             marginX="auto"
@@ -147,15 +132,11 @@ const Algos = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={onRefresh}
-                        isLoading={algosLoading}
-                        loadingText="Loading"
-                    >
-                        Refresh
-                    </Button>
+                    <RefreshButton
+                        loading={algosLoading}
+                        dispatchWithAutoAbort={dispatchWithAutoAbort}
+                        actionBuilder={() => listAlgos({})}
+                    />
                 </Flex>
                 <TableFilterTags>
                     <AlgoCategoryTableFilterTag />
