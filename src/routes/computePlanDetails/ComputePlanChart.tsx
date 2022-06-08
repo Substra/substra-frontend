@@ -15,6 +15,7 @@ import { loadSeries } from '@/modules/series/SeriesSlice';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
+import MetadataModal from '@/components/MetadataModal';
 import PerfBrowser from '@/components/PerfBrowser';
 import PerfSidebarLines from '@/components/PerfSidebarLines';
 
@@ -96,7 +97,17 @@ const ComputePlanChart = (): JSX.Element => {
                 >
                     <HStack justifyContent="space-between">
                         <ChartBreadcrumbs />
-                        <Actions computePlan={computePlan} loading={loading} />
+                        <Actions
+                            computePlan={computePlan}
+                            loading={loading}
+                            metadataModal={
+                                <MetadataModal
+                                    computePlans={
+                                        computePlan ? [computePlan] : []
+                                    }
+                                />
+                            }
+                        />
                     </HStack>
                     <TabsNav />
                 </Box>

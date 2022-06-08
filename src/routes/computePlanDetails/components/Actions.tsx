@@ -4,14 +4,18 @@ import { RiStarLine, RiStarFill } from 'react-icons/ri';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-import MetadataModal from '@/components/MetadataModal';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 
 interface ActionsProps {
     computePlan: ComputePlanT | null;
     loading: boolean;
+    metadataModal?: React.ReactNode;
 }
-const Actions = ({ computePlan, loading }: ActionsProps): JSX.Element => {
+const Actions = ({
+    computePlan,
+    loading,
+    metadataModal,
+}: ActionsProps): JSX.Element => {
     const { isFavorite, onFavoriteChange } = useFavoriteComputePlans();
 
     const favorite = !loading && computePlan && isFavorite(computePlan.key);
@@ -39,7 +43,7 @@ const Actions = ({ computePlan, loading }: ActionsProps): JSX.Element => {
                     }
                 />
             </Tooltip>
-            <MetadataModal computePlans={computePlan ? [computePlan] : []} />
+            {metadataModal}
             <Box>
                 <PerfDownloadButton />
             </Box>
