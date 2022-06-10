@@ -11,9 +11,9 @@ import {
     HStack,
     Icon,
     IconButton,
+    ModalCloseButton,
     Modal,
     ModalBody,
-    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
@@ -32,6 +32,8 @@ import {
 
 import useAppSelector from '@/hooks/useAppSelector';
 
+import CustomColumnImportPopover from '@/components/CustomColumnImportPopover';
+import CustomColumnSharePopover from '@/components/CustomColumnSharePopover';
 import EmptyState from '@/components/EmptyState';
 
 interface ColumnProps extends BoxProps {
@@ -181,15 +183,32 @@ const CustomColumnsModal = ({
                 isCentered
             >
                 <ModalOverlay />
-                <ModalContent fontSize="xs">
-                    <ModalCloseButton size="sm" onClick={handleOnClose} />
+                <ModalContent fontSize="xs" position="relative">
                     <ModalHeader
                         color="black"
                         fontSize="xl"
                         fontWeight="bold"
                         lineHeight="6"
                     >
-                        Customize Columns
+                        <Flex justifyContent="space-between">
+                            Customize Columns
+                            <HStack space="2" marginRight={6}>
+                                <CustomColumnImportPopover
+                                    allColumns={allColumns}
+                                    setSelectedColumns={setSelectedColumns}
+                                />
+                                <CustomColumnSharePopover
+                                    selectedColumns={selectedColumns}
+                                />
+                                <ModalCloseButton
+                                    size="sm"
+                                    onClick={handleOnClose}
+                                    position="absolute"
+                                    top="20px"
+                                    right="18px"
+                                />
+                            </HStack>
+                        </Flex>
                     </ModalHeader>
                     <ModalBody
                         backgroundColor="gray.50"
@@ -244,7 +263,7 @@ const CustomColumnsModal = ({
                                     flexShrink="0"
                                 >
                                     <Box
-                                        with="1px"
+                                        width="1px"
                                         borderRight="1px solid"
                                         borderRightColor="gray.200"
                                         flexGrow="1"
@@ -254,7 +273,7 @@ const CustomColumnsModal = ({
                                         fontSize="18px"
                                     />
                                     <Box
-                                        with="1px"
+                                        width="1px"
                                         borderRight="1px solid"
                                         borderRightColor="gray.200"
                                         flexGrow="1"
