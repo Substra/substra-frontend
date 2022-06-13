@@ -204,7 +204,10 @@ export const PermissionsDrawerSectionEntry = ({
                 {title || 'Permissions'}
             </Text>
             <Box flexGrow="1">
-                <PermissionTag permission={permission} listNodes={true} />
+                <PermissionTag
+                    permission={permission}
+                    listOrganizations={true}
+                />
             </Box>
         </DrawerSectionEntryWrapper>
     );

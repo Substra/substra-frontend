@@ -2,20 +2,20 @@ import { AxiosPromise } from 'axios';
 
 import API from '@/libs/request';
 
-import { NodeInfoType, NodeType } from './NodesTypes';
+import { OrganizationInfoType, OrganizationType } from './OrganizationsTypes';
 
 const URLS = {
-    LIST: '/node/',
+    LIST: '/organization/',
     INFO: '/info/',
     METADATA: '/compute_plan_metadata/',
 };
 
-export const listNodes = (): AxiosPromise<NodeType[]> =>
+export const listOrganizations = (): AxiosPromise<OrganizationType[]> =>
     API.authenticatedGet(URLS.LIST);
 
 export const retrieveInfo = (
     withCredentials: boolean
-): AxiosPromise<NodeInfoType> => {
+): AxiosPromise<OrganizationInfoType> => {
     if (withCredentials) {
         return API.authenticatedGet(URLS.INFO);
     }

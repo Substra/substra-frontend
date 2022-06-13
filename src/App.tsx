@@ -8,10 +8,10 @@ import { Flex, Spinner } from '@chakra-ui/react';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import {
-    listNodes,
+    listOrganizations,
     retrieveInfo,
     listMetadata,
-} from '@/modules/nodes/NodesSlice';
+} from '@/modules/organizations/OrganizationsSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
@@ -36,7 +36,7 @@ const App = (): JSX.Element => {
             .then(
                 () => {
                     return Promise.all([
-                        dispatch(listNodes()),
+                        dispatch(listOrganizations()),
                         dispatch(retrieveInfo(true)),
                         dispatch(listMetadata()),
                     ]);

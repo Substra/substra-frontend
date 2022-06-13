@@ -15,8 +15,8 @@ import {
 } from '@/hooks/useSyncedState';
 import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { NodeType } from '@/modules/nodes/NodesTypes';
-import { compareNodes } from '@/modules/nodes/NodesUtils';
+import { OrganizationType } from '@/modules/organizations/OrganizationsTypes';
+import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
 import {
     HighlightedSerie,
     SerieRankData,
@@ -28,7 +28,7 @@ import {
     compareSeries,
     getMaxRankWithPerf,
     getMaxRoundWithPerf,
-    getSeriesNodes,
+    getSeriesOrganizations,
 } from '@/modules/series/SeriesUtils';
 
 export type XAxisMode = 'round' | 'rank';
@@ -44,17 +44,17 @@ interface PerfBrowserContext {
     seriesGroups: SerieT[][];
     // List of groups of series sharing the same metric name where all points of the series contain the round metadata
     seriesGroupsWithRounds: SerieT[][];
-    // List of the nodes references by all the series
-    nodes: NodeType[];
+    // List of the organizations references by all the series
+    organizations: OrganizationType[];
     // How colors should be determined
-    colorMode: 'computePlan' | 'node';
+    colorMode: 'computePlan' | 'organization';
     // What unit to use for the x axis
     xAxisMode: XAxisMode;
     setXAxisMode: (xAxisMode: XAxisMode) => void;
-    // List of nodes for which display series (displayed if serie.worker is in selectedNodeIds)
-    selectedNodeIds: string[];
-    setSelectedNodeIds: (selectedNodeIds: string[]) => void;
-    isNodeIdSelected: (nodeId: string) => boolean;
+    // List of organizations for which display series (displayed if serie.worker is in selectedOrganizationIds)
+    selectedOrganizationIds: string[];
+    setSelectedOrganizationIds: (selectedOrganizationIds: string[]) => void;
+    isOrganizationIdSelected: (organizationId: string) => boolean;
     // List of compute plans for which to display series (display if serie.computePlanKey is in selectedComputePlanKeys)
     selectedComputePlanKeys: string[];
     setSelectedComputePlanKeys: (selectedComputePlanKeys: string[]) => void;
@@ -63,15 +63,15 @@ interface PerfBrowserContext {
     selectedMetricName: string;
     setSelectedMetricName: (name: string) => void;
     selectedSeriesGroup: SerieT[];
-    // Serie, compute plan and node to highlight on charts
+    // Serie, compute plan and organization to highlight on charts
     highlightedSerie: HighlightedSerie | undefined;
     setHighlightedSerie: (
         highlightedSerie: HighlightedSerie | undefined
     ) => void;
     highlightedComputePlanKey: string | undefined;
     setHighlightedComputePlanKey: (key: string | undefined) => void;
-    highlightedNodeId: string | undefined;
-    setHighlightedNodeId: (nodeId: string | undefined) => void;
+    highlightedOrganizationId: string | undefined;
+    setHighlightedOrganizationId: (organizationId: string | undefined) => void;
     // Hovered / selected rank on chart
     hoveredRank: number | null;
     setHoveredRank: (hoveredRank: number | null) => void;
@@ -85,7 +85,10 @@ interface PerfBrowserContext {
     setDrawerTestTaskKey: (key: string | null) => void;
     // indexes
     getComputePlanIndex: (computePlanKey: string) => string;
-    getNodeIndex: (computePlanKey: string, nodeId: string) => string;
+    getOrganizationIndex: (
+        computePlanKey: string,
+        organizationId: string
+    ) => string;
     getSerieIndex: (computePlanKey: string, serieId: string) => string;
 }
 
@@ -96,13 +99,13 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     series: [],
     seriesGroups: [],
     seriesGroupsWithRounds: [],
-    nodes: [],
-    colorMode: 'node',
+    organizations: [],
+    colorMode: 'organization',
     xAxisMode: 'rank',
     setXAxisMode: (xAxisMode) => {},
-    selectedNodeIds: [],
-    setSelectedNodeIds: (selectedNodeIds) => {},
-    isNodeIdSelected: (nodeId) => false,
+    selectedOrganizationIds: [],
+    setSelectedOrganizationIds: (selectedOrganizationIds) => {},
+    isOrganizationIdSelected: (organizationId) => false,
     selectedComputePlanKeys: [],
     setSelectedComputePlanKeys: (selectedComputePlanKeys) => {},
     onComputePlanKeySelectionChange:
@@ -115,8 +118,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     setHighlightedSerie: (highlightedSerie) => {},
     highlightedComputePlanKey: undefined,
     setHighlightedComputePlanKey: (computePlanKey) => {},
-    highlightedNodeId: undefined,
-    setHighlightedNodeId: (nodeId) => {},
+    highlightedOrganizationId: undefined,
+    setHighlightedOrganizationId: (organizationId) => {},
     hoveredRank: null,
     setHoveredRank: (hoveredRank) => {},
     selectedRank: null,
@@ -126,7 +129,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
     drawerTestTaskKey: null,
     setDrawerTestTaskKey: (key) => {},
     getComputePlanIndex: (computePlanKey: string) => '',
-    getNodeIndex: (computePlanKey: string, nodeId: string) => '',
+    getOrganizationIndex: (computePlanKey: string, organizationId: string) =>
+        '',
     getSerieIndex: (computePlanKey: string, serieId: string) => '',
 });
 /* eslint-enable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
@@ -134,15 +138,13 @@ export const PerfBrowserContext = createContext<PerfBrowserContext>({
 const usePerfBrowser = (
     series: SerieT[],
     unsortedComputePlans: ComputePlanT[],
-    colorMode: 'computePlan' | 'node',
+    colorMode: 'computePlan' | 'organization',
     loading: boolean
 ): {
     context: PerfBrowserContext;
 } => {
-    const [selectedNodeIds, setSelectedNodeIds] = useSyncedStringArrayState(
-        'selectedNodeIds',
-        []
-    );
+    const [selectedOrganizationIds, setSelectedOrganizationIds] =
+        useSyncedStringArrayState('selectedOrganizationIds', []);
     const [selectedComputePlanKeys, setSelectedComputePlanKeys] =
         useSyncedStringArrayState('selectedComputePlanKeys', []);
     const [hoveredRank, setHoveredRank] = useState<number | null>(null);
@@ -155,7 +157,8 @@ const usePerfBrowser = (
         useState<HighlightedSerie>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
         useState<string>();
-    const [highlightedNodeId, setHighlightedNodeId] = useState<string>();
+    const [highlightedOrganizationId, setHighlightedOrganizationId] =
+        useState<string>();
 
     const computePlans = useMemo(() => {
         const computePlans = [...unsortedComputePlans];
@@ -163,10 +166,11 @@ const usePerfBrowser = (
         return computePlans;
     }, [unsortedComputePlans]);
 
-    const isNodeIdSelected = useCallback(
-        (nodeId: string): boolean =>
-            selectedNodeIds.length === 0 || selectedNodeIds.includes(nodeId),
-        [selectedNodeIds]
+    const isOrganizationIdSelected = useCallback(
+        (organizationId: string): boolean =>
+            selectedOrganizationIds.length === 0 ||
+            selectedOrganizationIds.includes(organizationId),
+        [selectedOrganizationIds]
     );
 
     const onComputePlanKeySelectionChange =
@@ -191,10 +195,10 @@ const usePerfBrowser = (
             }
         };
 
-    const nodes = useMemo(() => {
-        const nodes = getSeriesNodes(series);
-        nodes.sort(compareNodes);
-        return nodes;
+    const organizations = useMemo(() => {
+        const organizations = getSeriesOrganizations(series);
+        organizations.sort(compareOrganizations);
+        return organizations;
     }, [series]);
 
     // Define seriesGroups and selectedSeriesGroup
@@ -202,10 +206,10 @@ const usePerfBrowser = (
         const filteredSeries = series.filter(
             (serie) =>
                 selectedComputePlanKeys.includes(serie.computePlanKey) &&
-                isNodeIdSelected(serie.worker)
+                isOrganizationIdSelected(serie.worker)
         );
         return buildSeriesGroups(filteredSeries);
-    }, [series, selectedComputePlanKeys, isNodeIdSelected]);
+    }, [series, selectedComputePlanKeys, isOrganizationIdSelected]);
 
     const selectedSeriesGroup = useMemo(() => {
         if (!selectedMetricName) {
@@ -305,65 +309,81 @@ const usePerfBrowser = (
         null
     );
 
-    const { getComputePlanIndex, getNodeIndex, getSerieIndex } = useMemo(() => {
-        // object where keys are compute plan keys, values are the index to display
-        const computePlanIndexes: Record<string, string> = {};
-        // object of objects where keys are compute plan keys, values are themselves
-        // objects where keys are node ids and values are the index to display
-        const nodeIndexes: Record<string, Record<string, string>> = {};
-        // object of objects where keys are compute plan keys, values are themselves
-        // objects where keys are serie ids and values are the index to display
-        const serieIndexes: Record<string, Record<string, string>> = {};
+    const { getComputePlanIndex, getOrganizationIndex, getSerieIndex } =
+        useMemo(() => {
+            // object where keys are compute plan keys, values are the index to display
+            const computePlanIndexes: Record<string, string> = {};
+            // object of objects where keys are compute plan keys, values are themselves
+            // objects where keys are organization ids and values are the index to display
+            const organizationIndexes: Record<
+                string,
+                Record<string, string>
+            > = {};
+            // object of objects where keys are compute plan keys, values are themselves
+            // objects where keys are serie ids and values are the index to display
+            const serieIndexes: Record<string, Record<string, string>> = {};
 
-        for (const [i, computePlan] of computePlans.entries()) {
-            const cpIndex = `${i + 1}`;
-            computePlanIndexes[computePlan.key] = cpIndex;
-            nodeIndexes[computePlan.key] = {};
-            serieIndexes[computePlan.key] = {};
+            for (const [i, computePlan] of computePlans.entries()) {
+                const cpIndex = `${i + 1}`;
+                computePlanIndexes[computePlan.key] = cpIndex;
+                organizationIndexes[computePlan.key] = {};
+                serieIndexes[computePlan.key] = {};
 
-            const cpSeries = series.filter(
-                (serie) => serie.computePlanKey === computePlan.key
-            );
-            const cpNodes = nodes.filter(
-                (node) => !!cpSeries.find((serie) => serie.worker === node.id)
-            );
-            for (const [j, node] of cpNodes.entries()) {
-                const nodeIndex =
-                    computePlans.length === 1
-                        ? `${j + 1}`
-                        : `${cpIndex}.${j + 1}`;
-                nodeIndexes[computePlan.key][node.id] = nodeIndex;
-
-                const cpNodeSeries = cpSeries.filter(
-                    (serie) => serie.worker === node.id
+                const cpSeries = series.filter(
+                    (serie) => serie.computePlanKey === computePlan.key
                 );
+                const cpOrganizations = organizations.filter(
+                    (organization) =>
+                        !!cpSeries.find(
+                            (serie) => serie.worker === organization.id
+                        )
+                );
+                for (const [j, organization] of cpOrganizations.entries()) {
+                    const organizationIndex =
+                        computePlans.length === 1
+                            ? `${j + 1}`
+                            : `${cpIndex}.${j + 1}`;
+                    organizationIndexes[computePlan.key][organization.id] =
+                        organizationIndex;
 
-                const seriesGroups = buildSeriesGroups(cpNodeSeries);
-                for (const serieGroup of seriesGroups) {
-                    if (serieGroup.length === 1) {
-                        serieIndexes[computePlan.key][serieGroup[0].id] =
-                            nodeIndex;
-                    } else if (serieGroup.length > 1) {
-                        serieGroup.sort(compareSeries);
-                        for (const [k, serie] of serieGroup.entries()) {
-                            const serieIndex = `${nodeIndex}.${k + 1}`;
-                            serieIndexes[computePlan.key][serie.id] =
-                                serieIndex;
+                    const cpOrganizationSeries = cpSeries.filter(
+                        (serie) => serie.worker === organization.id
+                    );
+
+                    const seriesGroups =
+                        buildSeriesGroups(cpOrganizationSeries);
+                    for (const serieGroup of seriesGroups) {
+                        if (serieGroup.length === 1) {
+                            serieIndexes[computePlan.key][serieGroup[0].id] =
+                                organizationIndex;
+                        } else if (serieGroup.length > 1) {
+                            serieGroup.sort(compareSeries);
+                            for (const [k, serie] of serieGroup.entries()) {
+                                const serieIndex = `${organizationIndex}.${
+                                    k + 1
+                                }`;
+                                serieIndexes[computePlan.key][serie.id] =
+                                    serieIndex;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        return {
-            getComputePlanIndex: (computePlanKey: string): string =>
-                computePlanIndexes[computePlanKey],
-            getNodeIndex: (computePlanKey: string, nodeId: string): string =>
-                nodeIndexes[computePlanKey][nodeId],
-            getSerieIndex: (computePlanKey: string, serieId: string): string =>
-                serieIndexes[computePlanKey][serieId],
-        };
-    }, [computePlans, nodes, series]);
+            return {
+                getComputePlanIndex: (computePlanKey: string): string =>
+                    computePlanIndexes[computePlanKey],
+                getOrganizationIndex: (
+                    computePlanKey: string,
+                    organizationId: string
+                ): string =>
+                    organizationIndexes[computePlanKey][organizationId],
+                getSerieIndex: (
+                    computePlanKey: string,
+                    serieId: string
+                ): string => serieIndexes[computePlanKey][serieId],
+            };
+        }, [computePlans, organizations, series]);
 
     return {
         context: {
@@ -373,15 +393,15 @@ const usePerfBrowser = (
             seriesGroups,
             seriesGroupsWithRounds,
             computePlans,
-            nodes,
+            organizations,
             colorMode,
             // xAxisMode
             xAxisMode,
             setXAxisMode,
-            // node IDs
-            selectedNodeIds,
-            setSelectedNodeIds,
-            isNodeIdSelected,
+            // organization IDs
+            selectedOrganizationIds,
+            setSelectedOrganizationIds,
+            isOrganizationIdSelected,
             // compute plan keys
             selectedComputePlanKeys,
             onComputePlanKeySelectionChange,
@@ -390,13 +410,13 @@ const usePerfBrowser = (
             selectedMetricName,
             setSelectedMetricName,
             selectedSeriesGroup,
-            // event: highlighted serie, compute plan or node
+            // event: highlighted serie, compute plan or organization
             highlightedSerie,
             setHighlightedSerie,
             highlightedComputePlanKey,
             setHighlightedComputePlanKey,
-            highlightedNodeId,
-            setHighlightedNodeId,
+            highlightedOrganizationId,
+            setHighlightedOrganizationId,
             // event: hovered/selected rank
             hoveredRank,
             setHoveredRank,
@@ -410,7 +430,7 @@ const usePerfBrowser = (
             setDrawerTestTaskKey,
             // indexes
             getComputePlanIndex,
-            getNodeIndex,
+            getOrganizationIndex,
             getSerieIndex,
         },
     };

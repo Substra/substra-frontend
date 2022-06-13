@@ -2,21 +2,21 @@
 
 ## Running the frontend in a local kubernetes cluster in prod mode
 
-1. Make sure `substra-frontend.node-1.com` and `substra-frontend.node-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
+1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
    a. If you use minikube, `minikube ip` will give you the cluster's ip
    b. If you use k3s, the cluster ip is `127.0.0.1`
 2. Run `skaffold run`
-3. Access the frontend at `http://substra-frontend.node-1.com`
+3. Access the frontend at `http://substra-frontend.org-1.com`
 
 ## Running the frontend locally in dev mode
 
-1. Make sure `substra-frontend.node-1.com` and `substra-frontend.node-2.com` are pointing to `127.0.0.1` in your `/etc/hosts`
+1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to `127.0.0.1` in your `/etc/hosts`
 2. Make sure you're using node 16.13.0 (`nvm install 16.13.0` and `nvm use 16.13.0`)
 3. Install dependencies: `npm install --dev`
 4. Run `npm run dev`
-5. Access the frontend at `http://substra-frontend.node-1.com:3000`
+5. Access the frontend at `http://substra-frontend.org-1.com:3000`
 
-Note: Backend is expected to be served at `http://substra-backend.node-1.com`on http port (80). In case you are using a development backend served on another url or port, you can set it using API_URL env var.
+Note: Backend is expected to be served at `http://substra-backend.org-1.com`on http port (80). In case you are using a development backend served on another url or port, you can set it using API_URL env var.
 ex: `API_URL=http://127.0.0.1:8000 npm run dev`
 
 ## Using a specific branch / commit of the backend and/or orchestrator

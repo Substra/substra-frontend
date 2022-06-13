@@ -60,36 +60,42 @@ export const PerfSidebarContainer = ({
     );
 };
 
-export const NodeListItem = ({
-    nodeId,
+export const OrganizationListItem = ({
+    organizationId,
     computePlanKey,
 }: {
-    nodeId: string;
+    organizationId: string;
     computePlanKey: string;
 }) => {
-    const { getNodeIndex, setHighlightedNodeId, setHighlightedComputePlanKey } =
-        useContext(PerfBrowserContext);
+    const {
+        getOrganizationIndex,
+        setHighlightedOrganizationId,
+        setHighlightedComputePlanKey,
+    } = useContext(PerfBrowserContext);
     return (
         <ListItem
             display="flex"
             alignItems="center"
             height="10"
             onMouseEnter={() => {
-                setHighlightedNodeId(nodeId);
+                setHighlightedOrganizationId(organizationId);
                 setHighlightedComputePlanKey(computePlanKey);
             }}
             onMouseLeave={() => {
-                setHighlightedNodeId(undefined);
+                setHighlightedOrganizationId(undefined);
                 setHighlightedComputePlanKey(undefined);
             }}
         >
             <HStack spacing="2.5" alignItems="center">
-                <PerfIconTag worker={nodeId} computePlanKey={computePlanKey} />
+                <PerfIconTag
+                    worker={organizationId}
+                    computePlanKey={computePlanKey}
+                />
                 <Tooltip
-                    label={`#${getNodeIndex(
+                    label={`#${getOrganizationIndex(
                         computePlanKey,
-                        nodeId
-                    )} • ${nodeId}`}
+                        organizationId
+                    )} • ${organizationId}`}
                     placement="top"
                 >
                     <HStack spacing="1">
@@ -101,9 +107,12 @@ export const NodeListItem = ({
                             isTruncated
                         >
                             <Text as="span" fontWeight="semibold">
-                                {`#${getNodeIndex(computePlanKey, nodeId)} • `}
+                                {`#${getOrganizationIndex(
+                                    computePlanKey,
+                                    organizationId
+                                )} • `}
                             </Text>
-                            {nodeId}
+                            {organizationId}
                         </Text>
                     </HStack>
                 </Tooltip>

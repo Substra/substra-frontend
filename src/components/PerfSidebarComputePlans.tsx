@@ -29,7 +29,7 @@ import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 import {
-    NodeListItem,
+    OrganizationListItem,
     PerfSidebarContainer,
     SerieListItem,
 } from '@/components/PerfSidebarCommon';
@@ -242,7 +242,7 @@ const SerieList = ({
 }: {
     computePlanKey: string;
 }): JSX.Element => {
-    const { rankData: allRankData, isNodeIdSelected } =
+    const { rankData: allRankData, isOrganizationIdSelected } =
         useContext(PerfBrowserContext);
 
     const rankData = useMemo(
@@ -250,9 +250,9 @@ const SerieList = ({
             allRankData.filter(
                 (serieRankData) =>
                     serieRankData.computePlanKey == computePlanKey &&
-                    isNodeIdSelected(serieRankData.worker)
+                    isOrganizationIdSelected(serieRankData.worker)
             ),
-        [allRankData, isNodeIdSelected, computePlanKey]
+        [allRankData, isOrganizationIdSelected, computePlanKey]
     );
 
     return (
@@ -275,29 +275,29 @@ const SerieList = ({
     );
 };
 
-const NodeList = ({
+const OrganizationList = ({
     computePlanKey,
 }: {
     computePlanKey: string;
 }): JSX.Element => {
     const {
-        nodes: allNodes,
-        isNodeIdSelected,
+        organizations: allOrganizations,
+        isOrganizationIdSelected,
         series,
     } = useContext(PerfBrowserContext);
 
-    const nodes = useMemo(
+    const organizations = useMemo(
         () =>
-            allNodes.filter(
-                (node) =>
-                    isNodeIdSelected(node.id) &&
+            allOrganizations.filter(
+                (organization) =>
+                    isOrganizationIdSelected(organization.id) &&
                     !!series.find(
                         (serie) =>
-                            serie.worker === node.id &&
+                            serie.worker === organization.id &&
                             serie.computePlanKey === computePlanKey
                     )
             ),
-        [allNodes, computePlanKey, isNodeIdSelected, series]
+        [allOrganizations, computePlanKey, isOrganizationIdSelected, series]
     );
 
     return (
@@ -310,10 +310,10 @@ const NodeList = ({
                 hlSpacing: 40,
             })}
         >
-            {nodes.map((node) => (
-                <NodeListItem
-                    key={node.id}
-                    nodeId={node.id}
+            {organizations.map((organization) => (
+                <OrganizationListItem
+                    key={organization.id}
+                    organizationId={organization.id}
                     computePlanKey={computePlanKey}
                 />
             ))}
@@ -352,7 +352,7 @@ const ComputePlanSection = ({
                 {selectedMetricName ? (
                     <SerieList computePlanKey={computePlanKey} />
                 ) : (
-                    <NodeList computePlanKey={computePlanKey} />
+                    <OrganizationList computePlanKey={computePlanKey} />
                 )}
             </Collapse>
         </ListItem>

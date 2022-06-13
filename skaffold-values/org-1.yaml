@@ -1,9 +1,9 @@
 api:
-    url: http://substra-backend.node-1.com
+    url: http://substra-backend.org-1.com
 ingress:
     enabled: true
     hosts:
-        - host: substra-frontend.node-1.com
+        - host: substra-frontend.org-1.com
           paths: ['/']
     annotations:
         kubernetes.io/ingress.class: nginx

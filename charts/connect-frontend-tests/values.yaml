@@ -72,7 +72,7 @@ cypress:
   config:
     baseUrl: "http://frontend"
     env:
-        USERNAME: "node-1"
+        USERNAME: "org-1"
         PASSWORD: "p@sswr0d44"
         BACKEND_API_URL: "http://backend"
     video: false

@@ -1,4 +1,4 @@
-import { NodeType } from './NodesTypes';
+import { OrganizationType } from './OrganizationsTypes';
 
 const compareString = (a: string, b: string): 1 | 0 | -1 => {
     if (a < b) {
@@ -10,9 +10,9 @@ const compareString = (a: string, b: string): 1 | 0 | -1 => {
     }
 };
 
-export const compareNodes = (
-    nodeA: NodeType | string,
-    nodeB: NodeType | string
+export const compareOrganizations = (
+    nodeA: OrganizationType | string,
+    nodeB: OrganizationType | string
 ): 1 | 0 | -1 => {
     const nodeALabel = typeof nodeA === 'string' ? nodeA : nodeA.id;
     const nodeBLabel = typeof nodeB === 'string' ? nodeB : nodeB.id;

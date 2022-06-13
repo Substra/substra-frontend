@@ -39,7 +39,7 @@ export const useLocalStorageState = <Type>(
     localStorageKey: string,
     originalValue: Type
 ): [Type, (value: Type) => void] => {
-    const channel = useAppSelector((state) => state.nodes.info.channel);
+    const channel = useAppSelector((state) => state.organizations.info.channel);
     const { load, save } = useLoadSave<Type>(localStorageKey, channel);
     const [state, setLocalState] = useState(() => load() ?? originalValue);
 

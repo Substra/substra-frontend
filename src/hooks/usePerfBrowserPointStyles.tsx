@@ -87,11 +87,11 @@ const POINT_STYLES: Record<PointStyleIcon, Record<string, HTMLImageElement>> = {
 };
 
 const usePerfBrowserPointStyles = () => {
-    const { nodes } = useContext(PerfBrowserContext);
+    const { organizations } = useContext(PerfBrowserContext);
 
     const getPointStyleIcon = useCallback(
         (worker: string): PointStyleIcon | null => {
-            const index = nodes.map((n) => n.id).indexOf(worker);
+            const index = organizations.map((n) => n.id).indexOf(worker);
 
             if (index === -1) {
                 return null;
@@ -99,7 +99,7 @@ const usePerfBrowserPointStyles = () => {
 
             return POINT_STYLE_ICONS[index % POINT_STYLE_ICONS.length];
         },
-        [nodes]
+        [organizations]
     );
 
     const getPointStyleComponent = useCallback(

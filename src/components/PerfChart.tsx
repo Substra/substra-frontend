@@ -53,7 +53,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             xAxisMode,
             highlightedSerie,
             highlightedComputePlanKey,
-            highlightedNodeId,
+            highlightedOrganizationId,
             setHoveredRank,
             setSelectedRank,
         } = useContext(PerfBrowserContext);
@@ -74,7 +74,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     buildPerfChartDataset(serie, xAxisMode, {
                         highlightedSerie,
                         highlightedComputePlanKey,
-                        highlightedNodeId,
+                        highlightedOrganizationId,
                     })
                 ),
             [
@@ -82,7 +82,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                 xAxisMode,
                 highlightedSerie,
                 highlightedComputePlanKey,
-                highlightedNodeId,
+                highlightedOrganizationId,
                 buildPerfChartDataset,
             ]
         );

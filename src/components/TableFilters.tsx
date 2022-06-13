@@ -218,60 +218,69 @@ export const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
     );
 };
 
-const buildNodeTableFilter = (
+const buildOrganizationTableFilter = (
     field: string,
     title: string,
     subtitle?: string
 ) => {
-    const NodeTableFilter = (): JSX.Element => {
-        const [tmpNodes, onTmpNodeChange, resetTmpNodes, setTmpNodes] =
-            useSelection();
-        const [activeNodes] = useSyncedStringArrayState(field, []);
+    const OrganizationTableFilter = (): JSX.Element => {
+        const [
+            tmpOrganizations,
+            onTmpOrganizationChange,
+            resetTmpOrganizations,
+            setTmpOrganizations,
+        ] = useSelection();
+        const [activeOrganizations] = useSyncedStringArrayState(field, []);
         const { clearRef, applyRef, resetRef } =
             useTableFilterCallbackRefs(field);
 
         clearRef.current = (urlSearchParams) => {
-            resetTmpNodes();
+            resetTmpOrganizations();
             urlSearchParams.delete(field);
         };
 
         applyRef.current = (urlSearchParams) => {
-            if (tmpNodes.length > 0) {
-                urlSearchParams.set(field, tmpNodes.join(','));
+            if (tmpOrganizations.length > 0) {
+                urlSearchParams.set(field, tmpOrganizations.join(','));
             } else {
                 urlSearchParams.delete(field);
             }
         };
 
         resetRef.current = () => {
-            setTmpNodes(activeNodes);
+            setTmpOrganizations(activeOrganizations);
         };
 
-        const nodes = useAppSelector((state) => state.nodes.nodes);
+        const organizations = useAppSelector(
+            (state) => state.organizations.organizations
+        );
 
         return (
             <TableFilterCheckboxes
                 title={subtitle}
-                options={nodes.map((node) => node.id)}
-                value={tmpNodes}
-                onChange={onTmpNodeChange}
+                options={organizations.map((organization) => organization.id)}
+                value={tmpOrganizations}
+                onChange={onTmpOrganizationChange}
             />
         );
     };
 
-    NodeTableFilter.filterTitle = title;
-    NodeTableFilter.filterField = field;
-    return NodeTableFilter;
+    OrganizationTableFilter.filterTitle = title;
+    OrganizationTableFilter.filterField = field;
+    return OrganizationTableFilter;
 };
 
-export const OwnerTableFilter = buildNodeTableFilter('owner', 'Owner');
-export const WorkerTableFilter = buildNodeTableFilter('worker', 'Worker');
-export const PermissionsTableFilter = buildNodeTableFilter(
+export const OwnerTableFilter = buildOrganizationTableFilter('owner', 'Owner');
+export const WorkerTableFilter = buildOrganizationTableFilter(
+    'worker',
+    'Worker'
+);
+export const PermissionsTableFilter = buildOrganizationTableFilter(
     'can_process',
     'Permissions',
     'Organizations which can process the assets'
 );
-export const LogsAccessTableFilter = buildNodeTableFilter(
+export const LogsAccessTableFilter = buildOrganizationTableFilter(
     'can_access_logs',
     'Logs access',
     'Organizations which can see the logs of a failed task using the dataset'

@@ -14,23 +14,23 @@ const usePerfChartDatasetStyle = () => {
             {
                 highlightedSerie,
                 highlightedComputePlanKey,
-                highlightedNodeId,
+                highlightedOrganizationId,
             }: HighlightedParams
         ) => {
             const isHighlighted =
                 // no highlight on chart
                 (highlightedSerie === undefined &&
                     highlightedComputePlanKey === undefined &&
-                    highlightedNodeId === undefined) ||
+                    highlightedOrganizationId === undefined) ||
                 // current serie matches highlightedSerie
                 (serie.id === highlightedSerie?.id &&
                     serie.computePlanKey ===
                         highlightedSerie?.computePlanKey) ||
                 // current serie matches highlighted compute plan
                 (serie.computePlanKey === highlightedComputePlanKey &&
-                    highlightedNodeId === undefined) ||
-                // current serie matches highlightedNodeId
-                (serie.worker === highlightedNodeId &&
+                    highlightedOrganizationId === undefined) ||
+                // current serie matches highlightedOrganizationId
+                (serie.worker === highlightedOrganizationId &&
                     serie.computePlanKey === highlightedComputePlanKey);
 
             const lineColor = isHighlighted

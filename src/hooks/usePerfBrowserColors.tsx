@@ -21,7 +21,8 @@ export const PERF_BROWSER_COLORSCHEMES = [
 ];
 
 const usePerfBrowserColors = () => {
-    const { colorMode, computePlans, nodes } = useContext(PerfBrowserContext);
+    const { colorMode, computePlans, organizations } =
+        useContext(PerfBrowserContext);
 
     const getColorScheme = useCallback(
         ({ computePlanKey, worker }: ColorDiscriminant): string => {
@@ -31,7 +32,9 @@ const usePerfBrowserColors = () => {
                     (computePlan) => computePlan.key === computePlanKey
                 );
             } else {
-                index = nodes.findIndex((node) => node.id === worker);
+                index = organizations.findIndex(
+                    (organization) => organization.id === worker
+                );
             }
 
             if (index === -1) {
@@ -41,7 +44,7 @@ const usePerfBrowserColors = () => {
                 index % PERF_BROWSER_COLORSCHEMES.length
             ];
         },
-        [colorMode, computePlans, nodes]
+        [colorMode, computePlans, organizations]
     );
 
     const getColor = useCallback(

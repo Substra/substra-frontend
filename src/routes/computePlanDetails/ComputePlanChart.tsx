@@ -80,7 +80,12 @@ const ComputePlanChart = (): JSX.Element => {
         () => (computePlan ? [computePlan] : []),
         [computePlan]
     );
-    const { context } = usePerfBrowser(series, computePlans, 'node', loading);
+    const { context } = usePerfBrowser(
+        series,
+        computePlans,
+        'organization',
+        loading
+    );
 
     return (
         <PerfBrowserContext.Provider value={context}>

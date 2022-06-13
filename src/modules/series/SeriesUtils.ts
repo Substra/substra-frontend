@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { areSetEqual } from '@/libs/utils';
-import { NodeType } from '@/modules/nodes/NodesTypes';
-import { compareNodes } from '@/modules/nodes/NodesUtils';
+import { OrganizationType } from '@/modules/organizations/OrganizationsTypes';
+import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
 import { PerformanceType } from '@/modules/perf/PerformancesTypes';
 
 import {
@@ -114,14 +114,19 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     return groups;
 }
 
-export const getSeriesNodes = (series: SerieT[]): NodeType[] => {
-    const nodes: string[] = [];
+export const getSeriesOrganizations = (
+    series: SerieT[]
+): OrganizationType[] => {
+    const organizations: string[] = [];
     for (const serie of series) {
-        if (!nodes.includes(serie.worker)) {
-            nodes.push(serie.worker);
+        if (!organizations.includes(serie.worker)) {
+            organizations.push(serie.worker);
         }
     }
-    return nodes.map((node) => ({ id: node, is_current: false }));
+    return organizations.map((organization) => ({
+        id: organization,
+        is_current: false,
+    }));
 };
 
 const getAllPoints = (series: SerieT[]): PointT[] => {
@@ -175,9 +180,9 @@ export const compareSerieRankData = (
     a: SerieRankData,
     b: SerieRankData
 ): -1 | 0 | 1 => {
-    const nodesRes = compareNodes(a.worker, b.worker);
-    if (nodesRes !== 0) {
-        return nodesRes;
+    const organizationsRes = compareOrganizations(a.worker, b.worker);
+    if (organizationsRes !== 0) {
+        return organizationsRes;
     }
     return compareSeries(a, b);
 };

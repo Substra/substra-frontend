@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Compute plan name from metadata is deprecated, use cp name directly (#601)
 -   Share metadata configuration (#603)
 -   Remove metadata modal from compute plan detail (#604)
+-   Rename node to organization (#610)
 
 ## [0.24.0] - 2022-05-31
 

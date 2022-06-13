@@ -21,7 +21,10 @@ import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import { listNodes, retrieveInfo } from '@/modules/nodes/NodesSlice';
+import {
+    listOrganizations,
+    retrieveInfo,
+} from '@/modules/organizations/OrganizationsSlice';
 import { loginPayload } from '@/modules/user/UserApi';
 import { logIn } from '@/modules/user/UserSlice';
 import { PATHS } from '@/routes';
@@ -33,7 +36,9 @@ const LoginForm = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
 
-    const nodeId = useAppSelector((state) => state.nodes.info.node_id);
+    const organizationId = useAppSelector(
+        (state) => state.organizations.info.organization_id
+    );
     const userLoading = useAppSelector((state) => state.user.loading);
     const userError = useAppSelector((state) => state.user.error);
 
@@ -50,8 +55,8 @@ const LoginForm = (): JSX.Element => {
             .then(unwrapResult)
             .then(
                 () => {
-                    // Fetch current node name to update the page's header
-                    dispatch(listNodes());
+                    // Fetch current organization name to update the page's header
+                    dispatch(listOrganizations());
                     dispatch(retrieveInfo(true));
                     setLocation(nextLocation);
                 },
@@ -71,7 +76,7 @@ const LoginForm = (): JSX.Element => {
                 }}
             >
                 <Text fontWeight="semibold" fontSize="3xl" marginBottom="4">
-                    Login to {nodeId}
+                    Login to {organizationId}
                 </Text>
                 {userError && (
                     <Alert

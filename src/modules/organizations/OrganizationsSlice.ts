@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import * as NodesAPI from './NodesApi';
-import { NodeInfoType, NodeType } from './NodesTypes';
+import * as OrganizationsAPI from './OrganizationsApi';
+import { OrganizationInfoType, OrganizationType } from './OrganizationsTypes';
 
-interface NodesState {
-    nodes: NodeType[];
-    nodesLoading: boolean;
-    nodesError: string;
+interface OrganizationsState {
+    organizations: OrganizationType[];
+    organizationsLoading: boolean;
+    organizationsError: string;
 
-    info: NodeInfoType;
+    info: OrganizationInfoType;
     infoLoading: boolean;
     infoError: string;
 
@@ -18,14 +18,14 @@ interface NodesState {
     metadataError: string;
 }
 
-const initialState: NodesState = {
-    nodes: [],
-    nodesLoading: false,
-    nodesError: '',
+const initialState: OrganizationsState = {
+    organizations: [],
+    organizationsLoading: false,
+    organizationsError: '',
 
     info: {
         host: API_URL,
-        node_id: '',
+        organization_id: '',
         config: {},
     },
     infoLoading: false,
@@ -36,13 +36,13 @@ const initialState: NodesState = {
     metadataError: '',
 };
 
-export const listNodes = createAsyncThunk<
-    NodeType[],
+export const listOrganizations = createAsyncThunk<
+    OrganizationType[],
     void,
     { rejectValue: string }
->('nodes/list', async (_, thunkAPI) => {
+>('organizations/list', async (_, thunkAPI) => {
     try {
-        const response = await NodesAPI.listNodes();
+        const response = await OrganizationsAPI.listOrganizations();
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -54,12 +54,12 @@ export const listNodes = createAsyncThunk<
 });
 
 export const retrieveInfo = createAsyncThunk<
-    NodeInfoType,
+    OrganizationInfoType,
     boolean,
     { rejectValue: string }
->('nodes/info', async (withCredentials, thunkAPI) => {
+>('organizations/info', async (withCredentials, thunkAPI) => {
     try {
-        const response = await NodesAPI.retrieveInfo(withCredentials);
+        const response = await OrganizationsAPI.retrieveInfo(withCredentials);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -74,9 +74,9 @@ export const listMetadata = createAsyncThunk<
     string[],
     void,
     { rejectValue: string }
->('nodes/metadata', async (_, thunkAPI) => {
+>('organizations/metadata', async (_, thunkAPI) => {
     try {
-        const response = await NodesAPI.listMetadata();
+        const response = await OrganizationsAPI.listMetadata();
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -87,25 +87,25 @@ export const listMetadata = createAsyncThunk<
     }
 });
 
-const nodesSlice = createSlice({
-    name: 'nodes',
+const organizationsSlice = createSlice({
+    name: 'organizations',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(listNodes.pending, (state) => {
-                state.nodesLoading = true;
-                state.nodesError = '';
+            .addCase(listOrganizations.pending, (state) => {
+                state.organizationsLoading = true;
+                state.organizationsError = '';
             })
-            .addCase(listNodes.fulfilled, (state, { payload }) => {
-                state.nodesLoading = false;
-                state.nodesError = '';
-                state.nodes = payload;
+            .addCase(listOrganizations.fulfilled, (state, { payload }) => {
+                state.organizationsLoading = false;
+                state.organizationsError = '';
+                state.organizations = payload;
             })
-            .addCase(listNodes.rejected, (state, { payload }) => {
-                state.nodes = [];
-                state.nodesLoading = false;
-                state.nodesError = payload || 'Unknown error';
+            .addCase(listOrganizations.rejected, (state, { payload }) => {
+                state.organizations = [];
+                state.organizationsLoading = false;
+                state.organizationsError = payload || 'Unknown error';
             })
             .addCase(retrieveInfo.pending, (state) => {
                 state.infoLoading = true;
@@ -143,4 +143,4 @@ const nodesSlice = createSlice({
     },
 });
 
-export default nodesSlice.reducer;
+export default organizationsSlice.reducer;

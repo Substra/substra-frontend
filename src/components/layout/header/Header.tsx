@@ -82,8 +82,10 @@ const Header = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
 
-    const nodeId = useAppSelector((state) => state.nodes.info.node_id);
-    const channel = useAppSelector((state) => state.nodes.info.channel);
+    const organizationId = useAppSelector(
+        (state) => state.organizations.info.organization_id
+    );
+    const channel = useAppSelector((state) => state.organizations.info.channel);
 
     const handleLogOut = () => {
         dispatch(logOut())
@@ -140,7 +142,7 @@ const Header = (): JSX.Element => {
                         lineHeight="120%"
                         fontWeight="medium"
                     >
-                        {nodeId} • {channel}
+                        {organizationId} • {channel}
                     </Text>
                 </Box>
                 <Box>

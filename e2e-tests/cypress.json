@@ -1,9 +1,9 @@
 {
-    "baseUrl": "http://substra-frontend.node-1.com:3000",
+    "baseUrl": "http://substra-frontend.org-1.com:3000",
     "env": {
-        "USERNAME": "node-1",
+        "USERNAME": "org-1",
         "PASSWORD": "p@sswr0d44",
-        "BACKEND_API_URL": "http://substra-backend.node-1.com"
+        "BACKEND_API_URL": "http://substra-backend.org-1.com"
     },
     "video": false,
     "defaultCommandTimeout": 20000

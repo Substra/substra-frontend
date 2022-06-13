@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
-import PerfSidebarSettingsNodes from '@/components/PerfSidebarSettingsNodes';
+import PerfSidebarSettingsOrganizations from '@/components/PerfSidebarSettingsOrganizations';
 import PerfSidebarSettingsUnits from '@/components/PerfSidebarSettingsUnits';
 
 const PerfSidebarSettings = (): JSX.Element => {
@@ -36,7 +36,7 @@ const PerfSidebarSettings = (): JSX.Element => {
             </Heading>
             <Collapse in={isOpen} animateOpacity>
                 <VStack marginTop={4} spacing={4} alignItems="stretch">
-                    <PerfSidebarSettingsNodes />
+                    <PerfSidebarSettingsOrganizations />
                     <PerfSidebarSettingsUnits />
                 </VStack>
             </Collapse>

@@ -39,7 +39,7 @@ export interface HighlightedSerie {
 export interface HighlightedParams {
     highlightedSerie?: HighlightedSerie;
     highlightedComputePlanKey?: string;
-    highlightedNodeId?: string;
+    highlightedOrganizationId?: string;
 }
 
 export type SerieRankData = {

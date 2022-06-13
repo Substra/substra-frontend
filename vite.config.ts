@@ -9,7 +9,7 @@ import { version } from './package.json';
 const APP_VERSION = process.env['APP_VERSION'] || `${version}+dev`;
 const MICROSOFT_CLARITY_ID = process.env['MICROSOFT_CLARITY_ID'] || '';
 const API_URL =
-    process.env['API_URL'] || 'http://substra-backend.node-1.com:8000';
+    process.env['API_URL'] || 'http://substra-backend.org-1.com:8000';
 
 // https://vitejs.dev/config/
 export default defineConfig({

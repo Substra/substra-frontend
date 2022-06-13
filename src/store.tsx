@@ -7,7 +7,7 @@ import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
-import nodesSlice from '@/modules/nodes/NodesSlice';
+import organizationsSlice from '@/modules/organizations/OrganizationsSlice';
 import seriesSlice from '@/modules/series/SeriesSlice';
 import tasksSlice from '@/modules/tasks/TasksSlice';
 import userSlice from '@/modules/user/UserSlice';
@@ -18,7 +18,7 @@ const store = configureStore({
         datasets: datasetsSlice,
         computePlans: computePlansSlice,
         compare: compareSlice,
-        nodes: nodesSlice,
+        organizations: organizationsSlice,
         newsFeed: newsFeedSlice,
         algos: algosSlice,
         metrics: metricsSlice,

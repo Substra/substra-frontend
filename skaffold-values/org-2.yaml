@@ -1,9 +1,9 @@
 api:
-    url: http://connect-backend.node-2.com
+    url: http://connect-backend.org-2.com
 ingress:
     enabled: true
     hosts:
-        - host: connect-frontend.node-2.com
+        - host: connect-frontend.org-2.com
           paths: ['/']
     annotations:
         kubernetes.io/ingress.class: nginx

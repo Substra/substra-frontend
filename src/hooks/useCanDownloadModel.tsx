@@ -4,7 +4,7 @@ import { PermissionsType } from '@/modules/common/CommonTypes';
 
 const useCanDownloadModel = (): ((permissions: PermissionsType) => boolean) => {
     const modelExportEnabled = useAppSelector(
-        (state) => !!state.nodes.info.config.model_export_enabled
+        (state) => !!state.organizations.info.config.model_export_enabled
     );
     const hasPermission = useHasPermission();
 

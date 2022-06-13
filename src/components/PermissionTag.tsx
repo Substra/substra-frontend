@@ -10,11 +10,11 @@ import { PermissionType } from '@/modules/common/CommonTypes';
 
 interface PermissionTagProps {
     permission: PermissionType;
-    listNodes?: boolean;
+    listOrganizations?: boolean;
 }
 const PermissionTag = ({
     permission,
-    listNodes,
+    listOrganizations,
 }: PermissionTagProps): JSX.Element => {
     if (permission.public) {
         return (
@@ -33,7 +33,7 @@ const PermissionTag = ({
         );
     }
 
-    if (listNodes) {
+    if (listOrganizations) {
         return (
             <Wrap spacing="2.5" justify="flex-start">
                 {permission.authorized_ids.map((nodeId) => (

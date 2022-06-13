@@ -1,11 +1,11 @@
-export interface NodeType {
+export interface OrganizationType {
     id: string;
     is_current: boolean;
 }
 
-export interface NodeInfoType {
+export interface OrganizationInfoType {
     host: string;
-    node_id: string;
+    organization_id: string;
     version?: string;
     orchestrator_version?: string;
     chaincode_version?: string;

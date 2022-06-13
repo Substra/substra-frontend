@@ -21,12 +21,14 @@ import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 const About = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const backendVersion = useAppSelector((state) => state.nodes.info.version);
+    const backendVersion = useAppSelector(
+        (state) => state.organizations.info.version
+    );
     const orchestratorVersion = useAppSelector(
-        (state) => state.nodes.info.orchestrator_version
+        (state) => state.organizations.info.orchestrator_version
     );
     const chaincodeVersion = useAppSelector(
-        (state) => state.nodes.info.chaincode_version
+        (state) => state.organizations.info.chaincode_version
     );
 
     return (

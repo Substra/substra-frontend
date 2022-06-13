@@ -5,25 +5,28 @@ import { List, ListItem, Checkbox, Text, Skeleton } from '@chakra-ui/react';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
 import {
-    NodeListItem,
+    OrganizationListItem,
     PerfSidebarContainer,
     SerieListItem,
 } from '@/components/PerfSidebarCommon';
 
-const NodeList = ({ computePlanKey }: { computePlanKey: string }) => {
-    const { nodes: allNodes, isNodeIdSelected } =
+const OrganizationList = ({ computePlanKey }: { computePlanKey: string }) => {
+    const { organizations: allOrganizations, isOrganizationIdSelected } =
         useContext(PerfBrowserContext);
-    const nodes = useMemo(
-        () => allNodes.filter((node) => isNodeIdSelected(node.id)),
-        [allNodes, isNodeIdSelected]
+    const organizations = useMemo(
+        () =>
+            allOrganizations.filter((organization) =>
+                isOrganizationIdSelected(organization.id)
+            ),
+        [allOrganizations, isOrganizationIdSelected]
     );
     return (
         <PerfSidebarContainer title="Lines">
             <List>
-                {nodes.map((node) => (
-                    <NodeListItem
-                        key={node.id}
-                        nodeId={node.id}
+                {organizations.map((organization) => (
+                    <OrganizationListItem
+                        key={organization.id}
+                        organizationId={organization.id}
                         computePlanKey={computePlanKey}
                     />
                 ))}
@@ -33,14 +36,14 @@ const NodeList = ({ computePlanKey }: { computePlanKey: string }) => {
 };
 
 const SerieList = () => {
-    const { rankData: allRankData, isNodeIdSelected } =
+    const { rankData: allRankData, isOrganizationIdSelected } =
         useContext(PerfBrowserContext);
     const rankData = useMemo(
         () =>
             allRankData.filter((serieRankData) =>
-                isNodeIdSelected(serieRankData.worker)
+                isOrganizationIdSelected(serieRankData.worker)
             ),
-        [allRankData, isNodeIdSelected]
+        [allRankData, isOrganizationIdSelected]
     );
     return (
         <PerfSidebarContainer title="Lines">
@@ -91,7 +94,7 @@ const PerfSidebarLines = (): JSX.Element => {
     }
 
     if (!selectedMetricName) {
-        return <NodeList computePlanKey={computePlanKey} />;
+        return <OrganizationList computePlanKey={computePlanKey} />;
     }
 
     return <SerieList />;

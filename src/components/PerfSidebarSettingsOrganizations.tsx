@@ -21,26 +21,35 @@ import { RiArrowDownSLine, RiCloseLine } from 'react-icons/ri';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-const PerfSidebarSettingsNodes = (): JSX.Element => {
-    const { nodes, selectedNodeIds, setSelectedNodeIds, loading } =
-        useContext(PerfBrowserContext);
+const PerfSidebarSettingsOrganizations = (): JSX.Element => {
+    const {
+        organizations,
+        selectedOrganizationIds,
+        setSelectedOrganizationIds,
+        loading,
+    } = useContext(PerfBrowserContext);
 
-    const remove = (nodeId: string) => () => {
-        setSelectedNodeIds(selectedNodeIds.filter((id) => id !== nodeId));
+    const remove = (organizationId: string) => () => {
+        setSelectedOrganizationIds(
+            selectedOrganizationIds.filter((id) => id !== organizationId)
+        );
     };
 
     const clear = () => {
-        setSelectedNodeIds([]);
+        setSelectedOrganizationIds([]);
     };
 
-    const add = (nodeId: string) => () => {
-        if (!selectedNodeIds.includes(nodeId)) {
-            setSelectedNodeIds([...selectedNodeIds, nodeId]);
+    const add = (organizationId: string) => () => {
+        if (!selectedOrganizationIds.includes(organizationId)) {
+            setSelectedOrganizationIds([
+                ...selectedOrganizationIds,
+                organizationId,
+            ]);
         }
     };
 
-    const notSelectedNodes = nodes.filter(
-        (node) => !selectedNodeIds.includes(node.id)
+    const notSelectedOrganizations = organizations.filter(
+        (organization) => !selectedOrganizationIds.includes(organization.id)
     );
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -79,7 +88,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                 }}
             >
                 <Flex float="right" marginRight="-7px" marginTop="-4px">
-                    {!!selectedNodeIds.length && (
+                    {!!selectedOrganizationIds.length && (
                         <>
                             <IconButton
                                 aria-label="Clear organizations"
@@ -111,7 +120,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                             isDisabled={loading}
                         />
                         <MenuList maxHeight="350px" overflowY="auto">
-                            {notSelectedNodes.length === 0 && (
+                            {notSelectedOrganizations.length === 0 && (
                                 <Text
                                     fontSize="sm"
                                     fontWeight="semibold"
@@ -121,7 +130,7 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                     No more options
                                 </Text>
                             )}
-                            {notSelectedNodes.length > 0 && (
+                            {notSelectedOrganizations.length > 0 && (
                                 <MenuGroup
                                     title="Organizations"
                                     fontSize="xs"
@@ -129,37 +138,39 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
                                     fontWeight="bold"
                                     color="gray.500"
                                 >
-                                    {notSelectedNodes.map((node) => (
-                                        <MenuItem
-                                            onClick={add(node.id)}
-                                            key={node.id}
-                                            fontSize="xs"
-                                            paddingX="4"
-                                            paddingY="1.5"
-                                        >
-                                            {node.id}
-                                        </MenuItem>
-                                    ))}
+                                    {notSelectedOrganizations.map(
+                                        (organization) => (
+                                            <MenuItem
+                                                onClick={add(organization.id)}
+                                                key={organization.id}
+                                                fontSize="xs"
+                                                paddingX="4"
+                                                paddingY="1.5"
+                                            >
+                                                {organization.id}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </MenuGroup>
                             )}
                         </MenuList>
                     </Menu>
                 </Flex>
-                {selectedNodeIds.map((nodeId) => {
+                {selectedOrganizationIds.map((organizationId) => {
                     return (
                         <Tag
                             size="sm"
                             colorScheme="teal"
                             variant="solid"
-                            key={nodeId}
+                            key={organizationId}
                             marginRight="1"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onClose();
                             }}
                         >
-                            <TagLabel>{nodeId}</TagLabel>
-                            <TagCloseButton onClick={remove(nodeId)} />
+                            <TagLabel>{organizationId}</TagLabel>
+                            <TagCloseButton onClick={remove(organizationId)} />
                         </Tag>
                     );
                 })}
@@ -169,4 +180,4 @@ const PerfSidebarSettingsNodes = (): JSX.Element => {
     );
 };
 
-export default PerfSidebarSettingsNodes;
+export default PerfSidebarSettingsOrganizations;
