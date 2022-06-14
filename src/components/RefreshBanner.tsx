@@ -58,7 +58,7 @@ const RefreshBanner = (): JSX.Element | null => {
             spacing="2"
             color="teal.700"
         >
-            <Icon icon={<RiInformationLine />} height="13px" width="13px" />
+            <Icon as={RiInformationLine} height="13px" width="13px" />
             <Text fontSize="sm">New important updates are available</Text>
             <Button
                 variant="ghost"

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 
@@ -95,7 +95,7 @@ export const listTrainTasks = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -114,7 +114,7 @@ export const listTestTasks = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -133,7 +133,7 @@ export const listCompositeTasks = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -152,7 +152,7 @@ export const listAggregateTasks = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -184,7 +184,7 @@ export const retrieveTask = createAsyncThunk<
         const response = await method(key, { signal: thunkAPI.signal });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -203,7 +203,7 @@ export const retrieveLogs = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;

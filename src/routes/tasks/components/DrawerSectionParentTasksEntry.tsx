@@ -71,7 +71,7 @@ const DrawerSectionParentTasksEntry = ({
                                 backgroundColor="gray.100"
                                 fill="gray.500"
                             />
-                            <Text isTruncated maxWidth="300px">
+                            <Text noOfLines={1} maxWidth="300px">
                                 <Link
                                     color="teal.500"
                                     fontWeight="semibold"

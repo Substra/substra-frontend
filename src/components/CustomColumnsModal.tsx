@@ -192,7 +192,7 @@ const CustomColumnsModal = ({
                     >
                         <Flex justifyContent="space-between">
                             Customize Columns
-                            <HStack space="2" marginRight={6}>
+                            <HStack spacing="2" marginRight={6}>
                                 <CustomColumnImportPopover
                                     allColumns={allColumns}
                                     setSelectedColumns={setSelectedColumns}

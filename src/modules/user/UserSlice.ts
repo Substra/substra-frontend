@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import Cookies from 'universal-cookie';
 
 import {
@@ -57,7 +57,7 @@ export const logIn = createAsyncThunk<
         const response = await postLogIn(payload);
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -76,7 +76,7 @@ export const logOut = createAsyncThunk('USERS_LOGOUT', async (_, thunkAPI) => {
         const response = await getLogOut();
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -93,7 +93,7 @@ export const refreshToken = createAsyncThunk<
         const response = await getRefreshToken();
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;

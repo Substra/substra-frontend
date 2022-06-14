@@ -36,7 +36,7 @@ const DrawerHeader = ({
         {loading && <Skeleton height="24px" width="250px" />}
         {!loading && (
             <Heading
-                isTruncated
+                noOfLines={1}
                 fontSize="md"
                 lineHeight="6"
                 fontWeight="semibold"

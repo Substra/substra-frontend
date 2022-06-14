@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
 import { RootState } from '@/store';
@@ -61,7 +61,7 @@ export const listNewsFeed = createAsyncThunk<
             );
             return response.data;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
             } else {
                 throw error;
@@ -84,7 +84,7 @@ export const retrieveActualizedCount = createAsyncThunk<
         );
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;

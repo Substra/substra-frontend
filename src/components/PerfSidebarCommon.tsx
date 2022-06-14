@@ -104,7 +104,7 @@ export const OrganizationListItem = ({
                             fontSize="xs"
                             fontWeight="normal"
                             maxWidth="250px"
-                            isTruncated
+                            noOfLines={1}
                         >
                             <Text as="span" fontWeight="semibold">
                                 {`#${getOrganizationIndex(
@@ -149,7 +149,7 @@ export const SerieListItem = ({
                             fontSize="xs"
                             fontWeight="normal"
                             maxWidth="190px"
-                            isTruncated
+                            noOfLines={1}
                         >
                             <Text as="span" fontWeight="semibold">
                                 {`#${getSerieIndex(

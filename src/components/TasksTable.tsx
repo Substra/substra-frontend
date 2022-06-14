@@ -368,7 +368,7 @@ const TasksTable = ({
                                                 <Skeleton>
                                                     <Text
                                                         fontSize="sm"
-                                                        isTruncated
+                                                        noOfLines={1}
                                                         maxWidth="auto"
                                                     >
                                                         xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -436,7 +436,7 @@ const TasksTable = ({
                                                     }
                                                 >
                                                     <Text
-                                                        isTruncated
+                                                        noOfLines={1}
                                                         maxWidth="auto"
                                                         textAlign="right"
                                                     >

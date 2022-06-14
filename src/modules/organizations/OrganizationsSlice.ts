@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import * as OrganizationsAPI from './OrganizationsApi';
 import { OrganizationInfoType, OrganizationType } from './OrganizationsTypes';
@@ -45,7 +45,7 @@ export const listOrganizations = createAsyncThunk<
         const response = await OrganizationsAPI.listOrganizations();
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -62,7 +62,7 @@ export const retrieveInfo = createAsyncThunk<
         const response = await OrganizationsAPI.retrieveInfo(withCredentials);
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -79,7 +79,7 @@ export const listMetadata = createAsyncThunk<
         const response = await OrganizationsAPI.listMetadata();
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;

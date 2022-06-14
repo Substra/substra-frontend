@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -54,7 +54,7 @@ export const listMetrics = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -73,7 +73,7 @@ export const retrieveMetric = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -92,7 +92,7 @@ export const retrieveDescription = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;

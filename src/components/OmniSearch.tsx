@@ -334,7 +334,8 @@ const OmniSearch = () => {
     const metricItems = items.filter((item) => item.asset === 'metric');
 
     const stateReducer: StateReducerT = useCallback(
-        (state, actionAndChanges) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (state: any, actionAndChanges: any) => {
             const { type, changes } = actionAndChanges;
             switch (type) {
                 case useCombobox.stateChangeTypes.ItemClick:

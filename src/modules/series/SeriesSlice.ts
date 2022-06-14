@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
@@ -39,7 +39,7 @@ const getComputePlanSeries = async (
             pageSize
         );
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -94,10 +94,12 @@ const seriesSlice = createSlice({
                 state.loading = false;
                 state.error = '';
             })
-            .addCase(loadSeries.rejected, (state, { payload }) => {
-                state.series = [];
-                state.loading = false;
-                state.error = payload || 'Unknown error';
+            .addCase(loadSeries.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.series = [];
+                    state.loading = false;
+                    state.error = payload || 'Unknown error';
+                }
             });
     },
 });

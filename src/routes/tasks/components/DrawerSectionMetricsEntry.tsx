@@ -18,7 +18,7 @@ const DrawerSectionMetricsEntry = ({
             {task.test.metrics.map((metric) => (
                 <ListItem key={metric.key}>
                     <Text
-                        isTruncated
+                        noOfLines={1}
                         maxWidth={DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH}
                     >
                         <Link

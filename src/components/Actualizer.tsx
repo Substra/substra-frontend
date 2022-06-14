@@ -80,7 +80,10 @@ const Actualizer = (): null => {
                         news.name
                     } ${getNewsItemStatusLabel(news.status)} !`,
                     isClosable: true,
-                    description: buildToastDescription(setLocation, news),
+                    descriptionComponent: buildToastDescription(
+                        setLocation,
+                        news
+                    ),
                 });
             }
         };

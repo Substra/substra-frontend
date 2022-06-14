@@ -185,7 +185,6 @@ const NewsFeedList = ({
                         colorScheme="teal"
                         width="100%"
                         height="100%"
-                        align="center"
                         isDisabled={loading || actualizedCountLoading}
                         onClick={onRefresh}
                         borderRadius="10"

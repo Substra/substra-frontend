@@ -205,7 +205,7 @@ const Dataset = (): JSX.Element => {
                                 >
                                     <CodeHighlighter
                                         language="python"
-                                        code={opener}
+                                        children={opener}
                                     />
                                 </Suspense>
                             )}

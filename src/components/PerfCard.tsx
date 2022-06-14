@@ -27,7 +27,7 @@ const PerfCard = ({
         >
             <Box flexGrow={1}>{children}</Box>
             <Tooltip label={title} fontSize="xs" hasArrow placement="bottom">
-                <Text isTruncated fontWeight="medium" fontSize="sm">
+                <Text noOfLines={1} fontWeight="medium" fontSize="sm">
                     {title}
                 </Text>
             </Tooltip>

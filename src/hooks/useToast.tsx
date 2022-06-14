@@ -14,8 +14,10 @@ import {
     RiInformationLine,
 } from 'react-icons/ri';
 
-interface CustomUseToastOptions extends UseToastOptions {
-    description?: string | React.FunctionComponent<{ onClose: () => void }>;
+interface CustomUseToastOptions extends Omit<UseToastOptions, 'description'> {
+    descriptionComponent?:
+        | string
+        | React.FunctionComponent<{ onClose: () => void }>;
 }
 
 export const useToast = () => {
@@ -24,8 +26,8 @@ export const useToast = () => {
     const returnFunction = (options: CustomUseToastOptions) => {
         let duration = options.duration;
         if (duration === undefined) {
-            if (typeof options.description === 'string') {
-                duration = options.description.length * 100;
+            if (typeof options.descriptionComponent === 'string') {
+                duration = options.descriptionComponent.length * 100;
             } else {
                 duration = 3000;
             }
@@ -48,12 +50,15 @@ export const useToast = () => {
                     )}
                     <Box flex="1">
                         <AlertTitle fontSize="sm">{options.title}</AlertTitle>
-                        {options.description && (
+                        {options.descriptionComponent && (
                             <AlertDescription display="block" fontSize="sm">
-                                {typeof options.description === 'string' ? (
-                                    options.description
+                                {typeof options.descriptionComponent ===
+                                'string' ? (
+                                    options.descriptionComponent
                                 ) : (
-                                    <options.description onClose={onClose} />
+                                    <options.descriptionComponent
+                                        onClose={onClose}
+                                    />
                                 )}
                             </AlertDescription>
                         )}

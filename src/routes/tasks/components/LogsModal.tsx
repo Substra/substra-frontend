@@ -109,7 +109,7 @@ const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
                         <Suspense fallback={<Text padding="6">Loading</Text>}>
                             <CodeHighlighter
                                 language="python-repl"
-                                code={logs}
+                                children={logs}
                                 customStyle={{
                                     backgroundColor:
                                         'var(--chakra-colors-gray-50)',

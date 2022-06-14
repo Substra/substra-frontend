@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import {
@@ -39,11 +39,11 @@ export const retrieveComputePlans = createAsyncThunk<
             responses = await Promise.all(promises);
             return responses.map((response) => response.data);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
             }
+
+            throw error;
         }
     }
 );
@@ -64,11 +64,16 @@ const compareSlice = createSlice({
                 state.loading = false;
                 state.error = '';
             })
-            .addCase(retrieveComputePlans.rejected, (state, { payload }) => {
-                state.computePlans = [];
-                state.loading = false;
-                state.error = payload || 'Unknown error';
-            });
+            .addCase(
+                retrieveComputePlans.rejected,
+                (state, { payload, error }) => {
+                    if (error.name !== 'AbortError') {
+                        state.computePlans = [];
+                        state.loading = false;
+                        state.error = payload || 'Unknown error';
+                    }
+                }
+            );
     },
 });
 

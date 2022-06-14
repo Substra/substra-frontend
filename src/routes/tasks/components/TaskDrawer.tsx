@@ -190,7 +190,7 @@ const TaskDrawer = ({
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Text
-                                    isTruncated
+                                    noOfLines={1}
                                     maxWidth={
                                         DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH
                                     }
@@ -262,7 +262,7 @@ const TaskDrawer = ({
                                             <Text
                                                 whiteSpace="nowrap"
                                                 width="410px"
-                                                isTruncated
+                                                noOfLines={1}
                                                 flexShrink="0"
                                             >
                                                 {metric.name}

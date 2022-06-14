@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import { timestampNow } from '@/libs/utils';
 import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
@@ -88,7 +88,7 @@ export const listComputePlans = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -107,7 +107,7 @@ export const retrieveComputePlan = createAsyncThunk<
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (error instanceof AxiosError) {
             return thunkAPI.rejectWithValue(error.response?.data);
         } else {
             throw error;
@@ -141,7 +141,7 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
             );
             return response.data;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
             } else {
                 throw error;
@@ -167,7 +167,7 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
             );
             return response.data;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
             } else {
                 throw error;
@@ -194,7 +194,7 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
                 );
             return response.data;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
             } else {
                 throw error;
@@ -221,7 +221,7 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
                 );
             return response.data;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
+            if (error instanceof AxiosError) {
                 return thunkAPI.rejectWithValue(error.response?.data);
             } else {
                 throw error;

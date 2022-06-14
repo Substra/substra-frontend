@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Chart, Plugin, ChartEvent } from 'chart.js';
+import { Chart as ChartJS, Plugin, ChartEvent } from 'chart.js';
 import { DistributiveArray } from 'chart.js/types/utils';
 
 import chakraTheme from '@/assets/chakraTheme';
@@ -7,7 +7,7 @@ import { DataPoint } from '@/modules/series/SeriesTypes';
 
 // this state management is taken from the ChartJS Zoom Plugin
 // https://github.com/chartjs/chartjs-plugin-zoom/blob/4e3a12dab1ea1d62923bb2ebfc6d4aeebd757207/src/state.js#L3
-const chartStates = new WeakMap<Chart, HighlightState>();
+const chartStates = new WeakMap<ChartJS, HighlightState>();
 
 const PAN_THRESHOLD = 10;
 
@@ -21,7 +21,7 @@ interface HighlightState {
     isDrag: boolean;
 }
 
-const getState = (chart: Chart): HighlightState => {
+const getState = (chart: ChartJS): HighlightState => {
     let state: HighlightState | undefined = chartStates.get(chart);
     if (!state) {
         state = {
@@ -37,13 +37,13 @@ const getState = (chart: Chart): HighlightState => {
     return state;
 };
 
-const removeState = (chart: Chart) => {
+const removeState = (chart: ChartJS) => {
     chartStates.delete(chart);
 };
 
 // Plugin
 
-const getRank = (chart: Chart, event: ChartEvent): number | null => {
+const getRank = (chart: ChartJS, event: ChartEvent): number | null => {
     const elements = chart.getElementsAtEventForMode(
         // @ts-ignore: event is not the right type
         event,
@@ -74,7 +74,7 @@ export const highlightRankPlugin = ({
     isRankSelectable,
 }: HighlightRankPluginProps): Plugin => ({
     id: 'HighlightedLinePlugin',
-    beforeDatasetDraw: (chart: Chart): void => {
+    beforeDatasetDraw: (chart: ChartJS): void => {
         const { ctx, chartArea, scales } = chart;
         const state = getState(chart);
 
@@ -96,7 +96,7 @@ export const highlightRankPlugin = ({
             highlightRank(state.hoveredRank, chakraTheme.colors.teal['300']);
         }
     },
-    beforeEvent: (chart: Chart, args): void => {
+    beforeEvent: (chart: ChartJS, args): void => {
         const event = args.event;
         const state = getState(chart);
         const newState: {
@@ -179,7 +179,7 @@ export const highlightRankPlugin = ({
             setSelectedRank(newState.selectedRank);
         }
     },
-    start: (chart: Chart): void => {
+    start: (chart: ChartJS): void => {
         chart.resetHighlightedRank = () => {
             const state = getState(chart);
             state.selectedRank = null;
@@ -189,7 +189,7 @@ export const highlightRankPlugin = ({
             chart.update();
         };
     },
-    stop: (chart: Chart): void => {
+    stop: (chart: ChartJS): void => {
         removeState(chart);
     },
 });

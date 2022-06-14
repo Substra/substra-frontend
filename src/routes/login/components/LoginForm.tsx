@@ -139,7 +139,7 @@ const LoginForm = (): JSX.Element => {
                     isLoading={userLoading}
                     type="submit"
                     colorScheme="teal"
-                    isFullWidth
+                    width="100%"
                 >
                     Login
                 </Button>

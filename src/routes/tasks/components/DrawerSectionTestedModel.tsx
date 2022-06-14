@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { AxiosError } from 'axios';
+
 import { Skeleton } from '@chakra-ui/react';
 
 import useWithAbortController from '@/hooks/useWithAbortController';
@@ -51,7 +53,11 @@ const DrawerSectionTestedModel = ({
                 });
                 setParentTask(response.data);
             } catch (error) {
-                console.error(error);
+                if (
+                    error instanceof AxiosError &&
+                    error.code !== AxiosError.ERR_CANCELED
+                )
+                    console.error(error);
             }
 
             setLoading(false);

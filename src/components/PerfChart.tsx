@@ -8,7 +8,16 @@ import {
     useCallback,
 } from 'react';
 
-import { Chart, ChartData, ChartOptions, Plugin } from 'chart.js';
+import {
+    Chart as ChartJS,
+    ChartData,
+    ChartOptions,
+    Plugin,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+} from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
 import { Line } from 'react-chartjs-2';
@@ -41,6 +50,14 @@ import { getMaxRank, getMaxRound } from '@/modules/series/SeriesUtils';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    LineElement,
+    PointElement,
+    zoomPlugin
+);
+
 interface PerfChartProps {
     series: SerieT[];
     size: 'full' | 'thumbnail';
@@ -57,7 +74,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             setHoveredRank,
             setSelectedRank,
         } = useContext(PerfBrowserContext);
-        const chartRef = useRef<Chart<'line'>>();
+        const chartRef = useRef<ChartJS<'line'>>();
         const buildPerfChartDataset = useBuildPerfChartDataset();
         const { tooltip, tooltipPluginOptions } = usePerfChartTooltip(
             size === 'thumbnail'

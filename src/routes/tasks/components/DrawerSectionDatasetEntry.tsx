@@ -26,7 +26,7 @@ const DrawerSectionDatasetEntry = ({
             aboveFold={
                 <>
                     <Text
-                        isTruncated
+                        noOfLines={1}
                         maxWidth={
                             DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH
                         }
