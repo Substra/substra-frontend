@@ -7,7 +7,6 @@ import { OrganizationInfoType, OrganizationType } from './OrganizationsTypes';
 const URLS = {
     LIST: '/organization/',
     INFO: '/info/',
-    METADATA: '/compute_plan_metadata/',
 };
 
 export const listOrganizations = (): AxiosPromise<OrganizationType[]> =>
@@ -22,6 +21,3 @@ export const retrieveInfo = (
 
     return API.anonymousGet(URLS.INFO);
 };
-
-export const listMetadata = (): AxiosPromise<string[]> =>
-    API.authenticatedGet(URLS.METADATA);

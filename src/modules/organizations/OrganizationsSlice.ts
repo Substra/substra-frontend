@@ -12,10 +12,6 @@ interface OrganizationsState {
     info: OrganizationInfoType;
     infoLoading: boolean;
     infoError: string;
-
-    metadata: string[];
-    metadataLoading: boolean;
-    metadataError: string;
 }
 
 const initialState: OrganizationsState = {
@@ -30,10 +26,6 @@ const initialState: OrganizationsState = {
     },
     infoLoading: false,
     infoError: '',
-
-    metadata: [],
-    metadataLoading: true,
-    metadataError: '',
 };
 
 export const listOrganizations = createAsyncThunk<
@@ -60,23 +52,6 @@ export const retrieveInfo = createAsyncThunk<
 >('organizations/info', async (withCredentials, thunkAPI) => {
     try {
         const response = await OrganizationsAPI.retrieveInfo(withCredentials);
-        return response.data;
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            return thunkAPI.rejectWithValue(error.response?.data);
-        } else {
-            throw error;
-        }
-    }
-});
-
-export const listMetadata = createAsyncThunk<
-    string[],
-    void,
-    { rejectValue: string }
->('organizations/metadata', async (_, thunkAPI) => {
-    try {
-        const response = await OrganizationsAPI.listMetadata();
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -124,21 +99,6 @@ const organizationsSlice = createSlice({
                 state.info.version = undefined;
                 state.info.channel = undefined;
                 state.info.config.model_export_enabled = undefined;
-            })
-            .addCase(listMetadata.pending, (state) => {
-                state.metadata = [];
-                state.metadataLoading = true;
-                state.metadataError = '';
-            })
-            .addCase(listMetadata.fulfilled, (state, { payload }) => {
-                state.metadata = payload;
-                state.metadataLoading = false;
-                state.metadataError = '';
-            })
-            .addCase(listMetadata.rejected, (state, { payload }) => {
-                state.metadata = [];
-                state.metadataLoading = false;
-                state.metadataError = payload || 'Unknown error';
             });
     },
 });

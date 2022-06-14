@@ -137,7 +137,7 @@ const CustomColumnsModal = ({
 }: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const allColumns = useAppSelector((state) => state.organizations.metadata);
+    const allColumns = useAppSelector((state) => state.metadata.metadata);
     const [selectedColumns, setSelectedColumns] = useState<string[]>(columns);
     const availableColumns = useMemo(
         () => allColumns.filter((column) => !selectedColumns.includes(column)),

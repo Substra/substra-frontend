@@ -24,6 +24,7 @@ import {
     useEndDate,
     useFavoritesOnly,
     useMatch,
+    useMetadataString,
     useOrdering,
     usePage,
     useStartDate,
@@ -53,6 +54,7 @@ import {
 import {
     DateFilterTag,
     FavoritesTableFilterTag,
+    MetadataFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
@@ -63,6 +65,7 @@ import {
     CreationDateTableFilter,
     StartDateTableFilter,
     EndDateTableFilter,
+    MetadataTableFilter,
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
@@ -79,6 +82,7 @@ const ComputePlans = (): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const [metadata] = useMetadataString();
     const {
         state: selectedComputePlans,
         addItem: selectComputePlan,
@@ -100,28 +104,21 @@ const ComputePlans = (): JSX.Element => {
         return favoritesOnly ? favorites : null;
     }, [favoritesOnly, favorites]);
 
-    useEffect(
-        () =>
-            dispatchWithAutoAbort(
-                listComputePlans({
-                    page,
-                    match,
-                    ordering,
-                    status,
-                    key,
-                    creation_date_after: creationDateAfter,
-                    creation_date_before: endOfDay(creationDateBefore),
-                    start_date_after: startDateAfter,
-                    start_date_before: endOfDay(startDateBefore),
-                    end_date_after: endDateAfter,
-                    end_date_before: endOfDay(endDateBefore),
-                })
-            ),
-        [
-            dispatchWithAutoAbort,
-            page,
+    const filters = useMemo(
+        () => ({
             match,
-            ordering,
+            status,
+            key,
+            creation_date_after: creationDateAfter,
+            creation_date_before: endOfDay(creationDateBefore),
+            start_date_after: startDateAfter,
+            start_date_before: endOfDay(startDateBefore),
+            end_date_after: endDateAfter,
+            end_date_before: endOfDay(endDateBefore),
+            metadata,
+        }),
+        [
+            match,
             status,
             key,
             creationDateAfter,
@@ -130,7 +127,16 @@ const ComputePlans = (): JSX.Element => {
             startDateBefore,
             endDateAfter,
             endDateBefore,
+            metadata,
         ]
+    );
+
+    useEffect(
+        () =>
+            dispatchWithAutoAbort(
+                listComputePlans({ page, ordering, ...filters })
+            ),
+        [dispatchWithAutoAbort, page, ordering, filters]
     );
 
     const computePlans: ComputePlanT[] = useAppSelector(
@@ -175,17 +181,7 @@ const ComputePlans = (): JSX.Element => {
 
     const download = async () => {
         setDownloading(true);
-        const response = await exportPerformances({
-            match,
-            status,
-            key,
-            creation_date_after: creationDateAfter,
-            creation_date_before: endOfDay(creationDateBefore),
-            start_date_after: startDateAfter,
-            start_date_before: endOfDay(startDateBefore),
-            end_date_after: endDateAfter,
-            end_date_before: endOfDay(endDateBefore),
-        });
+        const response = await exportPerformances(filters);
         downloadBlob(response.data, 'performances.csv');
         setDownloading(false);
     };
@@ -213,6 +209,7 @@ const ComputePlans = (): JSX.Element => {
                             <CreationDateTableFilter />
                             <StartDateTableFilter />
                             <EndDateTableFilter />
+                            <MetadataTableFilter />
                         </TableFilters>
                         <SearchBar placeholder="Search name or key..." />
                     </HStack>
@@ -253,6 +250,7 @@ const ComputePlans = (): JSX.Element => {
                             label="Start date"
                         />
                         <DateFilterTag urlParam="end_date" label="End date" />
+                        <MetadataFilterTag />
                     </TableFilterTags>
                 </Box>
                 <Box flexGrow={1} overflow="auto">
@@ -326,6 +324,7 @@ const ComputePlans = (): JSX.Element => {
                                 />
                                 <OrderingTh
                                     minWidth="255px"
+                                    openFilters={() => onPopoverOpen(2)}
                                     options={[
                                         {
                                             label: 'Creation',
@@ -344,6 +343,7 @@ const ComputePlans = (): JSX.Element => {
                                 <OrderingTh
                                     minWidth="300px"
                                     whiteSpace="nowrap"
+                                    openFilters={() => onPopoverOpen(3)}
                                     options={[
                                         {
                                             label: 'Start date',
@@ -373,6 +373,7 @@ const ComputePlans = (): JSX.Element => {
                                     <OrderingTh
                                         key={column}
                                         minWidth="125px"
+                                        openFilters={() => onPopoverOpen(5)}
                                         options={[
                                             {
                                                 label: column,

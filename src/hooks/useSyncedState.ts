@@ -5,6 +5,12 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
+import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
+import {
+    addUUID,
+    isMetadataFilter,
+    removeUUID,
+} from '@/modules/metadata/MetadataUtils';
 
 const eventPopstate = 'popstate';
 const eventPushState = 'pushState';
@@ -223,3 +229,39 @@ export const useEndDate = () => {
         setEndDateBefore,
     };
 };
+
+// Common JSON states
+// They need 2 exports:
+// * one that exposes the value as actual objects for edition
+// * one that exposes the value as string for inclusion in API calls
+export const metadataToString = (
+    metadata: MetadataFilterWithUUID[]
+): string => {
+    const cleanMetadata = metadata.filter(isMetadataFilter).map(removeUUID);
+    if (cleanMetadata.length > 0) {
+        return JSON.stringify(cleanMetadata);
+    } else {
+        return '';
+    }
+};
+const parseMetadata = (v: string): MetadataFilterWithUUID[] => {
+    let metadata;
+    try {
+        metadata = JSON.parse(v);
+    } catch {
+        return [];
+    }
+    if (!Array.isArray(metadata)) {
+        return [];
+    } else {
+        return metadata.filter(isMetadataFilter).map(addUUID);
+    }
+};
+export const useMetadataWithUUID = () =>
+    useSyncedState<MetadataFilterWithUUID[]>(
+        'metadata',
+        [],
+        parseMetadata,
+        metadataToString
+    );
+export const useMetadataString = () => useSyncedStringState('metadata', '');

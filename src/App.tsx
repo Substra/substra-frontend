@@ -7,10 +7,10 @@ import { Flex, Spinner } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useEffectOnce from '@/hooks/useEffectOnce';
+import { listMetadata } from '@/modules/metadata/MetadataSlice';
 import {
     listOrganizations,
     retrieveInfo,
-    listMetadata,
 } from '@/modules/organizations/OrganizationsSlice';
 import { refreshToken } from '@/modules/user/UserSlice';
 import { ROUTES, PATHS } from '@/routes';

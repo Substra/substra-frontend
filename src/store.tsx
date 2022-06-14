@@ -5,6 +5,7 @@ import algosSlice from '@/modules/algos/AlgosSlice';
 import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
+import metadataSlice from '@/modules/metadata/MetadataSlice';
 import metricsSlice from '@/modules/metrics/MetricsSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
 import organizationsSlice from '@/modules/organizations/OrganizationsSlice';
@@ -24,6 +25,7 @@ const store = configureStore({
         metrics: metricsSlice,
         tasks: tasksSlice,
         series: seriesSlice,
+        metadata: metadataSlice,
     },
 });
 

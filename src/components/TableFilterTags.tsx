@@ -3,12 +3,14 @@ import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 import {
     useCategory,
     useFavoritesOnly,
+    useMetadataWithUUID,
     useSyncedDateStringState,
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
 import { AlgoCategory } from '@/modules/algos/AlgosTypes';
 import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
+import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
 
 interface TableFilterTagsProps {
     children: React.ReactNode | React.ReactNode[];
@@ -211,6 +213,36 @@ export const DateFilterTag = ({
                 }
                 clear={clear}
             />
+        );
+    }
+    return null;
+};
+
+export const MetadataFilterTag = (): JSX.Element | null => {
+    const [filters, setFilters] = useMetadataWithUUID();
+
+    const clear = (filter: MetadataFilterWithUUID) => () => {
+        setFilters(filters.filter((f) => f.uuid !== filter.uuid));
+    };
+
+    if (filters.length) {
+        return (
+            <>
+                {filters.map((filter) => (
+                    <FilterTag
+                        key={filter.uuid}
+                        label={
+                            <FilterTagLabel
+                                title="Metadata"
+                                content={`${filter.key} ${filter.type} ${
+                                    filter.value ?? ''
+                                }`.trimEnd()}
+                            />
+                        }
+                        clear={clear(filter)}
+                    />
+                ))}
+            </>
         );
     }
     return null;
