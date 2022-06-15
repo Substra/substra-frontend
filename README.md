@@ -5,7 +5,7 @@
 1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
    a. If you use minikube, `minikube ip` will give you the cluster's ip
    b. If you use k3s, the cluster ip is `127.0.0.1`
-2. Run `skaffold run`
+2. Execute `skaffold [run|dev]`. You can use the `dev` skaffold profile (via `-p dev`) to use the `dev` docker target which serves files using `vite` instead `nginx` and benefits from hot reloading inside the cluster.
 3. Access the frontend at `http://substra-frontend.org-1.com`
 
 ## Running the frontend locally in dev mode
@@ -18,6 +18,15 @@
 
 Note: Backend is expected to be served at `http://substra-backend.org-1.com`on http port (80). In case you are using a development backend served on another url or port, you can set it using API_URL env var.
 ex: `API_URL=http://127.0.0.1:8000 npm run dev`
+
+Alternatively you can run it inside a container by using dev target.
+
+```sh
+docker build -f docker/connect-frontend/Dockerfile --target dev -t connect-frontend .
+docker run -it --rm -p 3000:3000 -v ${PWD}/src:/workspace/src connect-frontend
+```
+
+Note: Use `-e API_URL=http://127.0.0.1:8000` to specify another backend URL.
 
 ## Using a specific branch / commit of the backend and/or orchestrator
 

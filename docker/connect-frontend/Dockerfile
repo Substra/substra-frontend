@@ -1,17 +1,25 @@
-FROM node:16.13.0-alpine AS build
+FROM node:16.13.0-alpine AS common
 
 ARG APP_VERSION
 
 WORKDIR /workspace
 
-COPY package.json .
-COPY package-lock.json .
+COPY package.json package-lock.json ./
 RUN npm install --unsafe-perm
 
-COPY . .
 
+FROM common as dev
+
+COPY src public index.html vite.config.ts tsconfig.json ./
+CMD [ "npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000" ]
+
+
+FROM common as build
+
+COPY . .
 ENV NODE_ENV=production
 RUN npm run build
+
 
 FROM nginx:latest
 

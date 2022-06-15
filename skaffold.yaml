@@ -39,3 +39,8 @@ profiles:
       patches:
           - op: remove
             path: /deploy/helm/releases/1
+    - name: dev
+      patches:
+          - op: add
+            path: /build/artifacts/0/docker/target
+            value: dev
