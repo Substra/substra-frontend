@@ -66,7 +66,7 @@ const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
     value === 'metric';
 
 const isSeeMoreItem = (value: unknown): value is SeeMoreItemT => {
-    if (typeof value !== 'object') {
+    if (value === null || typeof value !== 'object') {
         return false;
     }
 
@@ -77,7 +77,7 @@ const isSeeMoreItem = (value: unknown): value is SeeMoreItemT => {
 };
 
 const isAssetItem = (value: unknown): value is AssetItemT => {
-    if (typeof value !== 'object') {
+    if (value === null || typeof value !== 'object') {
         return false;
     }
     return (

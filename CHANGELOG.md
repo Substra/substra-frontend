@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove metadata modal from compute plan detail (#604)
 -   Rename node to organization (#610)
 
+### Fixed
+
+-   Type guard in OmniSearch failing for null values (#605)
+
 ## [0.24.0] - 2022-05-31
 
 ### Changed
