@@ -35,12 +35,20 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
     let seconds: number | string = Math.floor((diff / 1000) % 60);
     let minutes: number | string = Math.floor((diff / (1000 * 60)) % 60);
     let hours: number | string = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const days: number = Math.floor(diff / (24 * 1000 * 60 * 60));
 
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    return `${hours}h ${minutes}min ${seconds}s`;
+    let daysPrefix = '';
+    if (days === 1) {
+        daysPrefix = '1 day, ';
+    } else if (days > 1) {
+        daysPrefix = `${days} days, `;
+    }
+
+    return `${daysPrefix}${hours}h ${minutes}min ${seconds}s`;
 };
 
 export const endOfDay = (dateStringISO: string): string => {

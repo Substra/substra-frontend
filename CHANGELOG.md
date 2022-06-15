@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Type guard in OmniSearch failing for null values (#605)
 
+### Fixed
+
+-   Include days in durations (#607)
+
 ## [0.24.0] - 2022-05-31
 
 ### Changed

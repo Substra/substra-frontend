@@ -19,9 +19,9 @@ const Duration = ({ asset }: DurationProps): JSX.Element | null => {
     }
 
     return (
-        <HStack color="gray.500" display="inline-flex">
+        <HStack color="gray.500" display="inline-flex" flexWrap="wrap">
             <Icon as={RiTimeLine} />
-            <Text>
+            <Text whiteSpace="nowrap">
                 {getDiffDates(asset.start_date, asset.end_date || 'now')}
             </Text>
             {isComputePlan(asset) &&
@@ -29,7 +29,7 @@ const Duration = ({ asset }: DurationProps): JSX.Element | null => {
                 asset.estimated_end_date && (
                     <>
                         <Text>•</Text>
-                        <Text>
+                        <Text whiteSpace="nowrap">
                             {`${getDiffDates(
                                 'now',
                                 asset.estimated_end_date
