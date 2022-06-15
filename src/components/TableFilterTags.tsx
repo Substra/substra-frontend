@@ -1,15 +1,12 @@
 import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 
 import {
-    useCategory,
     useFavoritesOnly,
     useMetadataWithUUID,
     useSyncedDateStringState,
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
-import { AlgoCategory } from '@/modules/algos/AlgosTypes';
-import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
 
 interface TableFilterTagsProps {
@@ -119,29 +116,6 @@ export const StatusTableFilterTag = (): JSX.Element | null => (
         formatter={getStatusLabel}
     />
 );
-
-export const AlgoCategoryTableFilterTag = (): JSX.Element | null => {
-    const [categories, setCategories] = useCategory();
-    const clear = (category: string) => () => {
-        setCategories(categories.filter((c) => c !== category));
-    };
-
-    if (categories.length) {
-        return (
-            <>
-                {categories.map((category) => (
-                    <FilterTag
-                        key={category}
-                        label={CATEGORY_LABEL[category as AlgoCategory]}
-                        clear={clear(category)}
-                    />
-                ))}
-            </>
-        );
-    }
-
-    return null;
-};
 
 export const FavoritesTableFilterTag = (): JSX.Element | null => {
     const [favoritesOnly, setFavoritesOnly] = useFavoritesOnly();

@@ -19,7 +19,6 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 import { PATHS } from '@/routes';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
@@ -105,13 +104,6 @@ const AlgoDrawer = (): JSX.Element => {
                     paddingY="8"
                 >
                     <DrawerSection title="General">
-                        <DrawerSectionEntry title="Category">
-                            {algoLoading || !algo ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                getAlgoCategory(algo)
-                            )}
-                        </DrawerSectionEntry>
                         <DrawerSectionKeyEntry
                             value={algo?.key}
                             loading={algoLoading}

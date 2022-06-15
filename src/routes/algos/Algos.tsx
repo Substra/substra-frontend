@@ -19,7 +19,6 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCanProcess,
-    useCategory,
     useCreationDate,
     useMatch,
     useOrdering,
@@ -33,7 +32,6 @@ import {
 import { formatDate } from '@/libs/utils';
 import { endOfDay } from '@/libs/utils';
 import { listAlgos } from '@/modules/algos/AlgosSlice';
-import { getAlgoCategory } from '@/modules/algos/AlgosUtils';
 import { compilePath, PATHS } from '@/routes';
 
 import {
@@ -46,7 +44,6 @@ import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
-    AlgoCategoryTableFilterTag,
     DateFilterTag,
     OwnerTableFilterTag,
     PermissionsTableFilterTag,
@@ -55,7 +52,6 @@ import {
 import {
     TableFilters,
     OwnerTableFilter,
-    AlgoCategoryTableFilter,
     CreationDateTableFilter,
     PermissionsTableFilter,
 } from '@/components/TableFilters';
@@ -71,7 +67,6 @@ const Algos = (): JSX.Element => {
     const [canProcess] = useCanProcess();
     const [ordering] = useOrdering('-creation_date');
     const [owner] = useOwner();
-    const [category] = useCategory();
     const { creationDateAfter, creationDateBefore } = useCreationDate();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
@@ -86,7 +81,6 @@ const Algos = (): JSX.Element => {
                 ordering,
                 match,
                 owner,
-                category,
                 creation_date_after: creationDateAfter,
                 creation_date_before: endOfDay(creationDateBefore),
                 can_process: canProcess,
@@ -98,7 +92,6 @@ const Algos = (): JSX.Element => {
         ordering,
         match,
         owner,
-        category,
         creationDateAfter,
         creationDateBefore,
         canProcess,
@@ -126,7 +119,6 @@ const Algos = (): JSX.Element => {
                     <HStack spacing="2.5">
                         <TableFilters>
                             <OwnerTableFilter />
-                            <AlgoCategoryTableFilter />
                             <CreationDateTableFilter />
                             <PermissionsTableFilter />
                         </TableFilters>
@@ -139,7 +131,6 @@ const Algos = (): JSX.Element => {
                     />
                 </Flex>
                 <TableFilterTags>
-                    <AlgoCategoryTableFilterTag />
                     <OwnerTableFilterTag />
                     <DateFilterTag
                         urlParam="creation_date"
@@ -194,29 +185,12 @@ const Algos = (): JSX.Element => {
                                         },
                                     ]}
                                 />
-                                <OrderingTh
-                                    openFilters={() => onPopoverOpen(1)}
-                                    options={[
-                                        {
-                                            label: 'Category',
-                                            asc: {
-                                                label: 'Sort category Z -> A',
-                                                value: '-category',
-                                            },
-                                            desc: {
-                                                label: 'Sort category A -> Z',
-                                                value: 'category',
-                                            },
-                                        },
-                                    ]}
-                                    width="140px"
-                                />
                                 <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
                         <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
                             {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={3} asset="algo" />
+                                <EmptyTr nbColumns={2} asset="algo" />
                             )}
                             {algosLoading ? (
                                 <TableSkeleton
@@ -232,13 +206,6 @@ const Algos = (): JSX.Element => {
                                             <Text fontSize="xs">
                                                 Created on YYYY-MM-DD HH:MM:SS
                                                 by Foo
-                                            </Text>
-                                        </Skeleton>
-                                    </Td>
-                                    <Td>
-                                        <Skeleton>
-                                            <Text fontSize="sm">
-                                                Lorem ipsum
                                             </Text>
                                         </Skeleton>
                                     </Td>
@@ -265,11 +232,6 @@ const Algos = (): JSX.Element => {
                                             <Text fontSize="xs">{`Created on ${formatDate(
                                                 algo.creation_date
                                             )} by ${algo.owner}`}</Text>
-                                        </Td>
-                                        <Td>
-                                            <Text fontSize="sm">
-                                                {getAlgoCategory(algo)}
-                                            </Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag

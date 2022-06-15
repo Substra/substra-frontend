@@ -177,7 +177,6 @@ export const useOrdering = (defaultValue: string) =>
 export const useCanAccessLogs = () =>
     useSyncedStringArrayState('can_access_logs', []);
 export const useCanProcess = () => useSyncedStringArrayState('can_process', []);
-export const useCategory = () => useSyncedStringArrayState('category', []);
 export const useOwner = () => useSyncedStringArrayState('owner', []);
 export const useStatus = () => useSyncedStringArrayState('status', []);
 export const useWorker = () => useSyncedStringArrayState('worker', []);

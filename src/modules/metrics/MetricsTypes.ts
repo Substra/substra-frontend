@@ -11,7 +11,6 @@ export interface MetricType {
     permissions: PermissionsType;
     description: FileT;
     algorithm: FileT;
-    category: 'ALGO_METRIC';
     metadata: MetadataT;
     creation_date: string;
 }

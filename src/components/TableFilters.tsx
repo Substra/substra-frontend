@@ -34,7 +34,6 @@ import useSelection from '@/hooks/useSelection';
 import {
     useSyncedDateStringState,
     useStatus,
-    useCategory,
     useSyncedStringArrayState,
     useFavoritesOnly,
     metadataToString,
@@ -45,8 +44,6 @@ import {
     useTableFilterCallbackRefs,
 } from '@/hooks/useTableFilters';
 import { getStatusDescription, getStatusLabel } from '@/libs/status';
-import { AlgoCategory } from '@/modules/algos/AlgosTypes';
-import { CATEGORY_LABEL } from '@/modules/algos/AlgosUtils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import {
     MetadataFilterType,
@@ -443,51 +440,6 @@ export const ComputePlanFavoritesTableFilter = ({
 
 ComputePlanFavoritesTableFilter.filterTitle = 'Favorites';
 ComputePlanFavoritesTableFilter.filterField = 'favorites_only';
-
-export const AlgoCategoryTableFilter = (): JSX.Element => {
-    const [
-        tmpCategories,
-        onTmpCategoryChange,
-        resetTmpCategories,
-        setTmpCategories,
-    ] = useSelection();
-    const [activeCategories] = useCategory();
-    const { clearRef, applyRef, resetRef } =
-        useTableFilterCallbackRefs('category');
-
-    clearRef.current = (urlSearchParams) => {
-        resetTmpCategories();
-        urlSearchParams.delete('category');
-    };
-
-    applyRef.current = (urlSearchParams) => {
-        if (tmpCategories.length > 0) {
-            urlSearchParams.set('category', tmpCategories.join(','));
-        } else {
-            urlSearchParams.delete('category');
-        }
-    };
-
-    resetRef.current = () => {
-        setTmpCategories(activeCategories);
-    };
-
-    const options = Object.values(AlgoCategory).map((category) => ({
-        value: category,
-        label: CATEGORY_LABEL[category],
-    }));
-
-    return (
-        <TableFilterCheckboxes
-            options={options}
-            value={tmpCategories}
-            onChange={onTmpCategoryChange}
-        />
-    );
-};
-
-AlgoCategoryTableFilter.filterTitle = 'Category';
-AlgoCategoryTableFilter.filterField = 'category';
 
 const defaultFilterDateMode: TableFilterDateProps['mode'] = 'after';
 
