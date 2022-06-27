@@ -21,9 +21,9 @@ import {
 
 import { shortFormatDate } from '@/libs/utils';
 import {
+    NewsItemAssetKind,
     NewsItemStatus,
     NewsItemType,
-    taskCategoryByCategoryNumber,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
@@ -36,7 +36,6 @@ interface StatusDescription {
     text: string;
     color: string;
     icon: IconType;
-    path: string;
 }
 
 type TaskMetadataT = Record<NewsItemStatus, StatusDescription>;
@@ -46,32 +45,66 @@ const taskMetadata: TaskMetadataT = {
         text: 'has been created',
         color: 'gray',
         icon: RiInformationLine,
-        path: PATHS.COMPUTE_PLAN,
     },
     STATUS_DOING: {
         text: 'is doing',
         color: 'blue',
         icon: RiPlayMiniLine,
-        path: PATHS.COMPUTE_PLAN_TASKS,
     },
     STATUS_FAILED: {
         text: 'has failed',
         color: 'red',
         icon: RiCloseFill,
-        path: PATHS.COMPUTE_PLAN_TASK,
     },
     STATUS_DONE: {
         text: 'is done',
         color: 'teal',
         icon: RiCheckFill,
-        path: PATHS.COMPUTE_PLAN_CHART,
     },
     STATUS_CANCELED: {
         text: 'has been canceled',
         color: 'gray',
         icon: RiIndeterminateCircleLine,
-        path: PATHS.COMPUTE_PLAN_TASKS,
     },
+};
+
+const COMPUTE_PLAN_STATUS_PATH: Record<NewsItemStatus, string> = {
+    STATUS_CREATED: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+    STATUS_DOING: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+    STATUS_DONE: PATHS.COMPUTE_PLAN_CHART,
+    STATUS_FAILED: PATHS.COMPUTE_PLAN_TASK,
+    STATUS_CANCELED: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+};
+const NON_CP_PATH: Record<
+    Exclude<NewsItemAssetKind, NewsItemAssetKind.computePlan>,
+    string
+> = {
+    ASSET_ALGO: PATHS.ALGO,
+    ASSET_METRIC: PATHS.METRIC,
+    ASSET_DATA_MANAGER: PATHS.DATASET,
+};
+const getItemPath = (newsItem: NewsItemType): string => {
+    if (newsItem.asset_kind === NewsItemAssetKind.computePlan) {
+        return COMPUTE_PLAN_STATUS_PATH[newsItem.status];
+    }
+
+    return NON_CP_PATH[newsItem.asset_kind];
+};
+
+const getItemHref = (newsItem: NewsItemType): string => {
+    const path = getItemPath(newsItem);
+    if (
+        newsItem.asset_kind === NewsItemAssetKind.computePlan &&
+        newsItem.status === NewsItemStatus.failed
+    ) {
+        return compilePath(path, {
+            key: newsItem.asset_key,
+            taskKey: newsItem.detail.first_failed_task_key || '',
+            category: TASK_CATEGORY_SLUGS[newsItem.detail.task_category] || '',
+        });
+    }
+
+    return compilePath(path, { key: newsItem.asset_key });
 };
 
 export const NewsFeedCardSkeleton = (): JSX.Element => {
@@ -176,17 +209,7 @@ export const NewsFeedCard = ({ newsItem }: NewsFeedCardProps): JSX.Element => {
                         </Text>
                     </Box>
                     <LinkOverlay
-                        href={compilePath(taskMetadata[taskStatus].path, {
-                            key: newsItem.asset_key,
-                            taskKey:
-                                newsItem.detail.first_failed_task_key || '',
-                            category:
-                                TASK_CATEGORY_SLUGS[
-                                    taskCategoryByCategoryNumber[
-                                        newsItem.detail.task_category
-                                    ]
-                                ] || '',
-                        })}
+                        href={getItemHref(newsItem)}
                         _hover={{ textDecoration: 'underline' }}
                     >
                         {taskStatus === 'STATUS_FAILED' && (
