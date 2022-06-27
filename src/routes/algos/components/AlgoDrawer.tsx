@@ -32,6 +32,8 @@ import {
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
+import InputsOutputsDrawerSection from './InputsOutputsDrawerSection';
+
 const AlgoDrawer = (): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -125,6 +127,16 @@ const AlgoDrawer = (): JSX.Element => {
                             permission={algo?.permissions.process}
                         />
                     </DrawerSection>
+                    <InputsOutputsDrawerSection
+                        loading={algoLoading}
+                        algo={algo}
+                        type="inputs"
+                    />
+                    <InputsOutputsDrawerSection
+                        loading={algoLoading}
+                        algo={algo}
+                        type="outputs"
+                    />
                     <MetadataDrawerSection
                         metadata={algo?.metadata}
                         loading={algoLoading}

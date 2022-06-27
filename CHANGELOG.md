@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Display algo inputs and outputs in drawer (#622)
+
 ### Fixed
 
 -   Newsfeed items link now redirecting to correct asset (#618)
