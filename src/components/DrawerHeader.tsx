@@ -47,7 +47,7 @@ const DrawerHeader = ({
         <HStack spacing="1">
             {storageAddress && filename && (
                 <IconButton
-                    aria-label="Download metrics"
+                    aria-label="Download"
                     variant="ghost"
                     fontSize="20px"
                     color="gray.500"

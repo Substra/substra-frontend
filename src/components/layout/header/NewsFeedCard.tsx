@@ -80,7 +80,6 @@ const NON_CP_PATH: Record<
     string
 > = {
     ASSET_ALGO: PATHS.ALGO,
-    ASSET_METRIC: PATHS.METRIC,
     ASSET_DATA_MANAGER: PATHS.DATASET,
 };
 const getItemPath = (newsItem: NewsItemType): string => {

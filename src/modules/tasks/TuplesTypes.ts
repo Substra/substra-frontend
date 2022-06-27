@@ -6,7 +6,6 @@ import {
     PermissionType,
 } from '@/modules/common/CommonTypes';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 
 import { Model } from './ModelsTypes';
 
@@ -129,7 +128,7 @@ interface TestDetailsStub {
 
 interface TestDetails extends TestDetailsStub {
     data_manager: DatasetStubType;
-    metrics: MetricType[];
+    metrics: AlgoT[];
 }
 
 export interface TesttupleStub extends BaseTupleStub {

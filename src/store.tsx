@@ -6,7 +6,6 @@ import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metadataSlice from '@/modules/metadata/MetadataSlice';
-import metricsSlice from '@/modules/metrics/MetricsSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
 import organizationsSlice from '@/modules/organizations/OrganizationsSlice';
 import seriesSlice from '@/modules/series/SeriesSlice';
@@ -22,7 +21,6 @@ const store = configureStore({
         organizations: organizationsSlice,
         newsFeed: newsFeedSlice,
         algos: algosSlice,
-        metrics: metricsSlice,
         tasks: tasksSlice,
         series: seriesSlice,
         metadata: metadataSlice,

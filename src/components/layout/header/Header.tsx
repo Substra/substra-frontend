@@ -71,11 +71,6 @@ const NAV_ITEMS = [
         href: PATHS.ALGOS,
         paths: [PATHS.ALGO, PATHS.ALGOS],
     },
-    {
-        label: 'Metrics',
-        href: PATHS.METRICS,
-        paths: [PATHS.METRIC, PATHS.METRICS],
-    },
 ];
 
 const Header = (): JSX.Element => {

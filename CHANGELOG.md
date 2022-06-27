@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Split the TableFilters components into multiple components (#619)
+-   Removed the metrics concept (#623)
 
 ## [0.26.0] - 2022-06-20
 

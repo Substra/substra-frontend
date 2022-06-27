@@ -22,7 +22,7 @@ const DrawerSectionMetricsEntry = ({
                         maxWidth={DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH}
                     >
                         <Link
-                            href={compilePath(PATHS.METRIC, {
+                            href={compilePath(PATHS.ALGO, {
                                 key: metric.key,
                             })}
                             color="teal.500"

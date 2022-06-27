@@ -12,7 +12,6 @@ import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
 import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
-import Metrics from '@/routes/metrics/Metrics';
 import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
 import TasksRoot from '@/routes/tasks/TasksRoot';
@@ -36,8 +35,6 @@ export const PATHS = {
     DATASET: '/datasets/:key',
     ALGOS: '/algorithms',
     ALGO: '/algorithms/:key',
-    METRICS: '/metrics',
-    METRIC: '/metrics/:key',
     SETTINGS: '/settings',
     TASKS_ROOT: '/tasks',
     TASKS: '/tasks/:category',
@@ -96,10 +93,6 @@ export const ROUTES: Record<string, IRoute> = {
     ALGOS: {
         path: '/algorithms/:key?',
         component: Algos,
-    },
-    METRICS: {
-        path: '/metrics/:key?',
-        component: Metrics,
     },
     SETTINGS: {
         path: PATHS.SETTINGS,

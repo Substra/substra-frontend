@@ -61,7 +61,7 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
                     <>
                         An error occurred when building the container for the
                         task execution. Please check your algorithm archive or
-                        metric archive, or contact{' '}
+                        contact{' '}
                         <Link href="mailto:support@owkin.com">
                             support@owkin.com
                         </Link>{' '}

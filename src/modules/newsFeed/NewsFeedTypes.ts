@@ -22,14 +22,12 @@ export const getNewsItemStatusLabel = (status: NewsItemStatus): string =>
 export enum NewsItemAssetKind {
     computePlan = 'ASSET_COMPUTE_PLAN',
     algo = 'ASSET_ALGO',
-    metric = 'ASSET_METRIC',
     dataset = 'ASSET_DATA_MANAGER',
 }
 
 const NewsItemAssetLabel: Record<NewsItemAssetKind, string> = {
     ASSET_COMPUTE_PLAN: 'Compute plan',
     ASSET_ALGO: 'Algorithm',
-    ASSET_METRIC: 'Metric',
     ASSET_DATA_MANAGER: 'Dataset',
 };
 

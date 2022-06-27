@@ -28,7 +28,6 @@ import {
     RiCodeSSlashLine,
     RiDatabase2Line,
     RiGitBranchLine,
-    RiLineChartFill,
     RiSearchLine,
 } from 'react-icons/ri';
 
@@ -40,13 +39,11 @@ import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import { ComputePlanStub } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
-import * as MetricsApi from '@/modules/metrics/MetricsApi';
-import { MetricType } from '@/modules/metrics/MetricsTypes';
 import { compilePath, PATHS } from '@/routes';
 
 const MAX_ASSETS_PER_SECTION = 5;
 
-type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset' | 'metric';
+type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset';
 type SeeMoreItemT = {
     asset: OmniSearchAssetT;
     count: number;
@@ -60,10 +57,7 @@ type ItemT = AssetItemT | SeeMoreItemT;
 type WithIndex<T extends ItemT> = T & { index: number };
 
 const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
-    value === 'algo' ||
-    value === 'compute_plan' ||
-    value === 'dataset' ||
-    value === 'metric';
+    value === 'algo' || value === 'compute_plan' || value === 'dataset';
 
 const isSeeMoreItem = (value: unknown): value is SeeMoreItemT => {
     if (value === null || typeof value !== 'object') {
@@ -97,7 +91,6 @@ const ASSET_ITEM_ICONS: Record<OmniSearchAssetT, IconType> = {
     algo: RiCodeSSlashLine,
     compute_plan: RiGitBranchLine,
     dataset: RiDatabase2Line,
-    metric: RiLineChartFill,
 };
 
 const AssetItem = ({
@@ -234,7 +227,7 @@ const NoResults = () => (
 
 const buildAssetItem = (
     assetType: OmniSearchAssetT,
-    asset: ComputePlanStub | AlgoT | DatasetStubType | MetricType
+    asset: ComputePlanStub | AlgoT | DatasetStubType
 ): AssetItemT => ({
     asset: assetType,
     name: asset.name,
@@ -253,14 +246,12 @@ const ASSET_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGO,
     compute_plan: PATHS.COMPUTE_PLAN,
     dataset: PATHS.DATASET,
-    metric: PATHS.METRIC,
 };
 
 const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGOS,
     compute_plan: PATHS.COMPUTE_PLANS,
     dataset: PATHS.DATASETS,
-    metric: PATHS.METRICS,
 };
 
 const OmniSearch = () => {
@@ -270,8 +261,6 @@ const OmniSearch = () => {
     const [algosCount, setAlgosCount] = useState(0);
     const [datasets, setDatasets] = useState<DatasetStubType[]>([]);
     const [datasetsCount, setDatasetsCount] = useState(0);
-    const [metrics, setMetrics] = useState<MetricType[]>([]);
-    const [metricsCount, setMetricsCount] = useState(0);
 
     const [loading, setLoading] = useState(false);
 
@@ -310,10 +299,6 @@ const OmniSearch = () => {
             ...(datasetsCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('dataset', datasetsCount)]
                 : []),
-            ...metrics.map((metric) => buildAssetItem('metric', metric)),
-            ...(metricsCount > MAX_ASSETS_PER_SECTION
-                ? [buildSeeMoreItem('metric', metricsCount)]
-                : []),
         ].map((item, index) => ({ ...item, index }));
     }, [
         algos,
@@ -322,8 +307,6 @@ const OmniSearch = () => {
         computePlansCount,
         datasets,
         datasetsCount,
-        metrics,
-        metricsCount,
     ]);
 
     const algoItems = items.filter((item) => item.asset === 'algo');
@@ -331,7 +314,6 @@ const OmniSearch = () => {
         (item) => item.asset === 'compute_plan'
     );
     const datasetItems = items.filter((item) => item.asset === 'dataset');
-    const metricItems = items.filter((item) => item.asset === 'metric');
 
     const stateReducer: StateReducerT = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -395,8 +377,6 @@ const OmniSearch = () => {
             setAlgosCount(0);
             setDatasets([]);
             setDatasetsCount(0);
-            setMetrics([]);
-            setMetricsCount(0);
 
             const params = {
                 page: 1,
@@ -409,17 +389,15 @@ const OmniSearch = () => {
             const promises: [
                 AxiosPromise<PaginatedApiResponse<ComputePlanStub>>,
                 AxiosPromise<PaginatedApiResponse<AlgoT>>,
-                AxiosPromise<PaginatedApiResponse<DatasetStubType>>,
-                AxiosPromise<PaginatedApiResponse<MetricType>>
+                AxiosPromise<PaginatedApiResponse<DatasetStubType>>
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
                 AlgosApi.listAlgos(params, config),
                 DatasetsApi.listDatasets(params, config),
-                MetricsApi.listMetrics(params, config),
             ];
             try {
                 const responses = await Promise.all(promises);
-                const [computePlansData, algosData, datasetsData, metricsData] =
+                const [computePlansData, algosData, datasetsData] =
                     responses.map((response) => response.data);
 
                 setComputePlans(
@@ -430,8 +408,6 @@ const OmniSearch = () => {
                 setAlgosCount(algosData['count']);
                 setDatasets(datasetsData['results'] as DatasetStubType[]);
                 setDatasetsCount(datasetsData['count']);
-                setMetrics(metricsData['results'] as MetricType[]);
-                setMetricsCount(metricsData['count']);
                 setLoading(false);
             } catch (error) {
                 if (
@@ -503,11 +479,6 @@ const OmniSearch = () => {
                         <ItemGroup
                             title="Datasets"
                             items={datasetItems}
-                            getItemProps={getItemProps}
-                        />
-                        <ItemGroup
-                            title="Metrics"
-                            items={metricItems}
                             getItemProps={getItemProps}
                         />
                     </>

@@ -10,7 +10,6 @@ export interface PermissionsType {
 
 export type AssetType =
     | 'dataset'
-    | 'metric'
     | 'algo'
     | 'composite_algo'
     | 'aggregate_algo'
