@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Newsfeed items link now redirecting to correct asset (#618)
 
+### Changed
+
+-   Split the TableFilters components into multiple components (#619)
+
 ## [0.26.0] - 2022-06-20
 
 ### Added
