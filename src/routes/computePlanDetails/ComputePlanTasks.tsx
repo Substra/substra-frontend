@@ -10,6 +10,7 @@ import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect'
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
+    useDuration,
     useEndDate,
     useMatch,
     useOrdering,
@@ -122,6 +123,7 @@ const TestTasks = ({
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -142,6 +144,8 @@ const TestTasks = ({
                 start_date_before: startDateBefore,
                 end_date_after: endDateAfter,
                 end_date_before: endDateBefore,
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             computePlanKey,
@@ -156,6 +160,8 @@ const TestTasks = ({
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector(
@@ -213,6 +219,7 @@ const TrainTasks = ({
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -233,6 +240,8 @@ const TrainTasks = ({
                 start_date_before: startDateBefore,
                 end_date_after: endDateAfter,
                 end_date_before: endDateBefore,
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             computePlanKey,
@@ -247,6 +256,8 @@ const TrainTasks = ({
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector(
@@ -303,6 +314,7 @@ const CompositeTasks = ({
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -323,6 +335,8 @@ const CompositeTasks = ({
                 start_date_before: startDateBefore,
                 end_date_after: endDateAfter,
                 end_date_before: endDateBefore,
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             computePlanKey,
@@ -337,6 +351,8 @@ const CompositeTasks = ({
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector(
@@ -393,6 +409,7 @@ const AggregateTasks = ({
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -413,6 +430,8 @@ const AggregateTasks = ({
                 start_date_before: startDateBefore,
                 end_date_after: endDateAfter,
                 end_date_before: endDateBefore,
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             computePlanKey,
@@ -427,6 +446,8 @@ const AggregateTasks = ({
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector(

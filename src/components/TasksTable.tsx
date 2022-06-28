@@ -30,6 +30,7 @@ import {
 } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
+    useDuration,
     useEndDate,
     useMatch,
     useOrdering,
@@ -64,12 +65,14 @@ import Status from '@/components/Status';
 import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
     DateFilterTag,
+    DurationFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
     WorkerTableFilterTag,
 } from '@/components/TableFilterTags';
 import {
     CreationDateTableFilter,
+    DurationTableFilter,
     EndDateTableFilter,
     StartDateTableFilter,
     TableFilters,
@@ -114,6 +117,7 @@ const TasksTable = ({
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const [, setLocationWithParams] = useLocationWithParams();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
@@ -140,6 +144,8 @@ const TasksTable = ({
         startDateBefore,
         endDateAfter,
         endDateBefore,
+        durationMin,
+        durationMax,
     ]);
 
     const tabs: [TaskCategory, string][] = [
@@ -172,6 +178,7 @@ const TasksTable = ({
                         <CreationDateTableFilter />
                         <StartDateTableFilter />
                         <EndDateTableFilter />
+                        <DurationTableFilter />
                     </TableFilters>
                     <SearchBar placeholder="Search key..." />
                 </HStack>
@@ -187,6 +194,7 @@ const TasksTable = ({
                 <DateFilterTag urlParam="creation_date" label="Creation date" />
                 <DateFilterTag urlParam="start_date" label="Start date" />
                 <DateFilterTag urlParam="end_date" label="End date" />
+                <DurationFilterTag />
             </TableFilterTags>
             <Box>
                 <Tabs
@@ -310,6 +318,17 @@ const TasksTable = ({
                                                 desc: {
                                                     label: 'Sort end date newest first',
                                                     value: 'end_date',
+                                                },
+                                            },
+                                            {
+                                                label: 'Duration',
+                                                asc: {
+                                                    label: 'Sort duration shortest first',
+                                                    value: '-duration',
+                                                },
+                                                desc: {
+                                                    label: 'Sort duration longest first',
+                                                    value: 'duration',
                                                 },
                                             },
                                         ]}

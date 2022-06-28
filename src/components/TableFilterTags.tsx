@@ -1,12 +1,14 @@
 import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 
 import {
+    useDuration,
     useFavoritesOnly,
     useMetadataWithUUID,
     useSyncedDateStringState,
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
+import { formatDuration } from '@/libs/utils';
 import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
 
 interface TableFilterTagsProps {
@@ -220,4 +222,36 @@ export const MetadataFilterTag = (): JSX.Element | null => {
         );
     }
     return null;
+};
+
+export const DurationFilterTag = () => {
+    const { durationMin, setDurationMin, durationMax, setDurationMax } =
+        useDuration();
+
+    const clear = () => {
+        setDurationMin(undefined);
+        setDurationMax(undefined);
+    };
+
+    let content = null;
+    if (durationMin !== undefined && durationMax !== undefined) {
+        content = `between ${formatDuration(durationMin)} and ${formatDuration(
+            durationMax
+        )}`;
+    } else if (durationMax) {
+        content = `below ${formatDuration(durationMax)}`;
+    } else if (durationMin) {
+        content = `above ${formatDuration(durationMin)}`;
+    }
+
+    if (content === null) {
+        return null;
+    }
+
+    return (
+        <FilterTag
+            label={<FilterTagLabel title="Duration" content={content} />}
+            clear={clear}
+        />
+    );
 };

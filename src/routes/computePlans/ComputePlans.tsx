@@ -21,6 +21,7 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
 import {
     useCreationDate,
+    useDuration,
     useEndDate,
     useFavoritesOnly,
     useMatch,
@@ -53,11 +54,13 @@ import {
 } from '@/components/Table';
 import {
     DateFilterTag,
+    DurationFilterTag,
     FavoritesTableFilterTag,
     MetadataFilterTag,
     StatusTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
+import { DurationTableFilter } from '@/components/TableFilters';
 import {
     TableFilters,
     ComputePlanStatusTableFilter,
@@ -82,6 +85,7 @@ const ComputePlans = (): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const [metadata] = useMetadataString();
     const {
         state: selectedComputePlans,
@@ -116,6 +120,8 @@ const ComputePlans = (): JSX.Element => {
             end_date_after: endDateAfter,
             end_date_before: endOfDay(endDateBefore),
             metadata,
+            duration_min: durationMin,
+            duration_max: durationMax,
         }),
         [
             match,
@@ -128,6 +134,8 @@ const ComputePlans = (): JSX.Element => {
             endDateAfter,
             endDateBefore,
             metadata,
+            durationMin,
+            durationMax,
         ]
     );
 
@@ -209,6 +217,7 @@ const ComputePlans = (): JSX.Element => {
                             <CreationDateTableFilter />
                             <StartDateTableFilter />
                             <EndDateTableFilter />
+                            <DurationTableFilter />
                             <MetadataTableFilter />
                         </TableFilters>
                         <SearchBar placeholder="Search name or key..." />
@@ -251,6 +260,7 @@ const ComputePlans = (): JSX.Element => {
                         />
                         <DateFilterTag urlParam="end_date" label="End date" />
                         <MetadataFilterTag />
+                        <DurationFilterTag />
                     </TableFilterTags>
                 </Box>
                 <Box flexGrow={1} overflow="auto">
@@ -365,6 +375,17 @@ const ComputePlans = (): JSX.Element => {
                                             desc: {
                                                 label: 'Sort end date newest first',
                                                 value: 'end_date',
+                                            },
+                                        },
+                                        {
+                                            label: 'Duration',
+                                            asc: {
+                                                label: 'Sort duration longest first',
+                                                value: '-duration',
+                                            },
+                                            desc: {
+                                                label: 'Sort duration shortest first',
+                                                value: 'duration',
                                             },
                                         },
                                     ]}

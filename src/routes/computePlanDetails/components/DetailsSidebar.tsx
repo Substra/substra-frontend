@@ -1,7 +1,7 @@
 import { VStack, Flex, Text } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import { getDiffDates } from '@/libs/utils';
+import { formatDuration, getDiffDates } from '@/libs/utils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 
 import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
@@ -81,9 +81,8 @@ const DetailsSidebar = (): JSX.Element => {
                                         >
                                             <Text>Duration</Text>
                                             <Text>
-                                                {getDiffDates(
-                                                    computePlan.start_date,
-                                                    'now'
+                                                {formatDuration(
+                                                    computePlan.duration
                                                 )}
                                             </Text>
                                         </Flex>

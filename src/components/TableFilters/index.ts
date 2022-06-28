@@ -1,5 +1,6 @@
 export { default as ComputePlanStatusTableFilter } from './ComputePlanStatusTableFilter';
 export { default as ComputePlanFavoritesTableFilter } from './ComputePlanFavoritesTableFilter';
+export { default as DurationTableFilter } from './DurationTableFilter';
 export { default as MetadataTableFilter } from './MetadataTableFilter';
 export {
     CreationDateTableFilter,

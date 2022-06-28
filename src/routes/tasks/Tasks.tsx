@@ -10,6 +10,7 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
+    useDuration,
     useEndDate,
     useMatch,
     useOrdering,
@@ -87,6 +88,7 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.testTasksLoading);
@@ -104,6 +106,8 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 start_date_before: endOfDay(startDateBefore),
                 end_date_after: endDateAfter,
                 end_date_before: endOfDay(endDateBefore),
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             creationDateAfter,
@@ -117,6 +121,8 @@ const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector((state) => state.tasks.testTasks);
@@ -160,6 +166,7 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector((state) => state.tasks.trainTasksLoading);
@@ -177,6 +184,8 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 start_date_before: endOfDay(startDateBefore),
                 end_date_after: endDateAfter,
                 end_date_before: endOfDay(endDateBefore),
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             creationDateAfter,
@@ -190,6 +199,8 @@ const TrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector((state) => state.tasks.trainTasks);
@@ -233,6 +244,7 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -252,6 +264,8 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 start_date_before: endOfDay(startDateBefore),
                 end_date_after: endDateAfter,
                 end_date_before: endOfDay(endDateBefore),
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             creationDateAfter,
@@ -265,6 +279,8 @@ const CompositeTrainTasks = ({ taskKey }: TasksProps): JSX.Element => {
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector((state) => state.tasks.compositeTasks);
@@ -308,6 +324,7 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const { creationDateBefore, creationDateAfter } = useCreationDate();
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const loading = useAppSelector(
@@ -327,6 +344,8 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
                 start_date_before: endOfDay(startDateBefore),
                 end_date_after: endDateAfter,
                 end_date_before: endOfDay(endDateBefore),
+                duration_min: durationMin,
+                duration_max: durationMax,
             }),
         [
             creationDateAfter,
@@ -340,6 +359,8 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
             startDateBefore,
             status,
             worker,
+            durationMin,
+            durationMax,
         ]
     );
     const tasks = useAppSelector((state) => state.tasks.aggregateTasks);

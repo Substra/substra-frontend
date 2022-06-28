@@ -31,11 +31,16 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
     const startDate = start === 'now' ? new Date() : new Date(start);
     const endDate = end === 'now' ? new Date() : new Date(end);
     const diff = endDate.getTime() - startDate.getTime();
+    // diff is in ms, but formatDuration expects seconds as input
+    return formatDuration(Math.round(diff / 1000));
+};
 
-    let seconds: number | string = Math.floor((diff / 1000) % 60);
-    let minutes: number | string = Math.floor((diff / (1000 * 60)) % 60);
-    let hours: number | string = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const days: number = Math.floor(diff / (24 * 1000 * 60 * 60));
+export const formatDuration = (duration: number): string => {
+    // duration is expected to be in seconds
+    let seconds: number | string = Math.floor(duration % 60);
+    let minutes: number | string = Math.floor((duration / 60) % 60);
+    let hours: number | string = Math.floor((duration / (60 * 60)) % 24);
+    const days: number = Math.floor(duration / (24 * 60 * 60));
 
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;

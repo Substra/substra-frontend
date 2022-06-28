@@ -76,6 +76,7 @@ interface BaseTupleStub {
     end_date?: string;
     error_type?: ErrorType;
     logs_permission?: PermissionType;
+    duration: number; // in seconds
 }
 
 interface BaseTuple extends BaseTupleStub {

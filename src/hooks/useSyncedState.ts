@@ -151,6 +151,27 @@ const numberToString = (v: number): string => v.toFixed(0);
 export const useSyncedNumberState = (param: string, originalValue: number) =>
     useSyncedState<number>(param, originalValue, numberParse, numberToString);
 
+const optionalNumberParse = (v: string): number | undefined => {
+    const res = parseInt(v);
+    if (isNaN(res)) {
+        return undefined;
+    }
+    return res;
+};
+const optionalNumberToString = (v: number | undefined): string => {
+    if (v === undefined) {
+        return '';
+    }
+    return v.toFixed(0);
+};
+const useSyncedOptionalNumberState = (param: string) =>
+    useSyncedState<number | undefined>(
+        param,
+        undefined,
+        optionalNumberParse,
+        optionalNumberToString
+    );
+
 const booleanParse = (v: string): boolean => v === '1';
 const booleanToString = (v: boolean): string => (v ? '1' : '');
 const useSyncedBooleanState = (param: string, originalValue: boolean) =>
@@ -167,6 +188,15 @@ export const useFavoritesOnly = () =>
 
 // Common number states
 export const usePage = () => useSyncedNumberState('page', 1);
+
+// Common optional number states
+export const useDuration = () => {
+    const [durationMin, setDurationMin] =
+        useSyncedOptionalNumberState('duration_min');
+    const [durationMax, setDurationMax] =
+        useSyncedOptionalNumberState('duration_max');
+    return { durationMin, setDurationMin, durationMax, setDurationMax };
+};
 
 // Common string states
 export const useMatch = () => useSyncedStringState('match', '');

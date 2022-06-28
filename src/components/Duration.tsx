@@ -1,7 +1,7 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import { RiTimeLine } from 'react-icons/ri';
 
-import { getDiffDates } from '@/libs/utils';
+import { formatDuration, getDiffDates } from '@/libs/utils';
 import {
     ComputePlanStatus,
     ComputePlanT,
@@ -21,9 +21,7 @@ const Duration = ({ asset }: DurationProps): JSX.Element | null => {
     return (
         <HStack color="gray.500" display="inline-flex" flexWrap="wrap">
             <Icon as={RiTimeLine} />
-            <Text whiteSpace="nowrap">
-                {getDiffDates(asset.start_date, asset.end_date || 'now')}
-            </Text>
+            <Text whiteSpace="nowrap">{formatDuration(asset.duration)}</Text>
             {isComputePlan(asset) &&
                 asset.status === ComputePlanStatus.doing &&
                 asset.estimated_end_date && (
