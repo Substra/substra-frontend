@@ -59,6 +59,7 @@ export const DrawerSectionEntryWrapper = (props: StackProps) => (
         borderBottomColor="gray.100"
         paddingY="4"
         width="100%"
+        overflow="hidden"
         _last={{ border: 'none' }}
         {...props}
     />
@@ -78,7 +79,9 @@ export const DrawerSectionEntry = ({
             <Text whiteSpace="nowrap" width="120px" flexShrink="0">
                 {capitalize(title)}
             </Text>
-            <Box flexGrow="1">{children}</Box>
+            <Box flexGrow="1" overflowX="hidden">
+                {children}
+            </Box>
         </DrawerSectionEntryWrapper>
     );
 };
@@ -173,9 +176,6 @@ export const DrawerSectionDateEntry = ({
         )}
     </DrawerSectionEntry>
 );
-
-export const DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH = '325px';
-export const DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH = '300px';
 
 export const PermissionsDrawerSectionEntry = ({
     title,

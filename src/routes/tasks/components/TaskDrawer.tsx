@@ -11,6 +11,7 @@ import {
     Text,
     Box,
     Skeleton,
+    HStack,
 } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -33,13 +34,13 @@ import {
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
 
+import DownloadIconButton from '@/components/DownloadIconButton';
 import DrawerHeader from '@/components/DrawerHeader';
 import {
     DrawerSection,
     DrawerSectionEntry,
     DrawerSectionDateEntry,
     DrawerSectionKeyEntry,
-    DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH,
     DrawerSectionEntryWrapper,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
@@ -189,23 +190,29 @@ const TaskDrawer = ({
                             {taskLoading || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
-                                <Text
-                                    noOfLines={1}
-                                    maxWidth={
-                                        DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH
-                                    }
-                                >
-                                    <Link
-                                        href={compilePath(PATHS.ALGO, {
-                                            key: task.algo.key,
-                                        })}
-                                        color="teal.500"
-                                        fontWeight="semibold"
-                                        isExternal
-                                    >
-                                        {task.algo.name}
-                                    </Link>
-                                </Text>
+                                <HStack spacing="2.5">
+                                    <Text noOfLines={1}>
+                                        <Link
+                                            href={compilePath(PATHS.ALGO, {
+                                                key: task.algo.key,
+                                            })}
+                                            color="teal.500"
+                                            fontWeight="semibold"
+                                            isExternal
+                                        >
+                                            {task.algo.name}
+                                        </Link>
+                                    </Text>
+                                    <DownloadIconButton
+                                        storageAddress={
+                                            task.algo.algorithm.storage_address
+                                        }
+                                        filename={`algo-${task.algo.key}.zip`}
+                                        aria-label="Download algo"
+                                        size="xs"
+                                        placement="top"
+                                    />
+                                </HStack>
                             )}
                         </DrawerSectionEntry>
                         {task && isTesttuple(task) && (

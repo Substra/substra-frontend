@@ -1,12 +1,10 @@
-import { Link, List, ListItem, Text } from '@chakra-ui/react';
+import { HStack, Link, List, ListItem, Text } from '@chakra-ui/react';
 
 import { Testtuple } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    DrawerSectionEntry,
-    DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH,
-} from '@/components/DrawerSection';
+import DownloadIconButton from '@/components/DownloadIconButton';
+import { DrawerSectionEntry } from '@/components/DrawerSection';
 
 const DrawerSectionMetricsEntry = ({
     task,
@@ -17,21 +15,27 @@ const DrawerSectionMetricsEntry = ({
         <List>
             {task.test.metrics.map((metric) => (
                 <ListItem key={metric.key}>
-                    <Text
-                        noOfLines={1}
-                        maxWidth={DRAWER_SECTION_ENTRY_LINK_MAX_WIDTH}
-                    >
-                        <Link
-                            href={compilePath(PATHS.ALGO, {
-                                key: metric.key,
-                            })}
-                            color="teal.500"
-                            fontWeight="semibold"
-                            isExternal
-                        >
-                            {metric.name}
-                        </Link>
-                    </Text>
+                    <HStack spacing="2.5">
+                        <Text noOfLines={1}>
+                            <Link
+                                href={compilePath(PATHS.ALGO, {
+                                    key: metric.key,
+                                })}
+                                color="teal.500"
+                                fontWeight="semibold"
+                                isExternal
+                            >
+                                {metric.name}
+                            </Link>
+                        </Text>
+                        <DownloadIconButton
+                            storageAddress={metric.algorithm.storage_address}
+                            filename={`metric-${metric.key}.zip`}
+                            aria-label="Download metric"
+                            size="xs"
+                            placement="top"
+                        />
+                    </HStack>
                 </ListItem>
             ))}
         </List>

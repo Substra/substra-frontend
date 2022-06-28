@@ -5,10 +5,8 @@ import AngleIcon from '@/assets/svg/angle-icon.svg';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
 import { compilePath, PATHS } from '@/routes';
 
-import {
-    DrawerSectionCollapsibleEntry,
-    DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH,
-} from '@/components/DrawerSection';
+import DownloadIconButton from '@/components/DownloadIconButton';
+import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
 
 interface DrawerSectionDatasetEntry {
@@ -25,23 +23,27 @@ const DrawerSectionDatasetEntry = ({
             title="Dataset"
             aboveFold={
                 <>
-                    <Text
-                        noOfLines={1}
-                        maxWidth={
-                            DRAWER_SECTION_COLLAPSIBLE_ENTRY_LINK_MAX_WIDTH
-                        }
-                    >
-                        <Link
-                            href={compilePath(PATHS.DATASET, {
-                                key: dataset.key,
-                            })}
-                            color="teal.500"
-                            fontWeight="semibold"
-                            isExternal
-                        >
-                            {dataset.name}
-                        </Link>
-                    </Text>
+                    <HStack spacing="2.5">
+                        <Text noOfLines={1}>
+                            <Link
+                                href={compilePath(PATHS.DATASET, {
+                                    key: dataset.key,
+                                })}
+                                color="teal.500"
+                                fontWeight="semibold"
+                                isExternal
+                            >
+                                {dataset.name}
+                            </Link>
+                        </Text>
+                        <DownloadIconButton
+                            storageAddress={dataset.opener.storage_address}
+                            filename={`opener-${dataset.key}.py`}
+                            aria-label="Download opener"
+                            size="xs"
+                            placement="top"
+                        />
+                    </HStack>
                     <Text color="gray.500">
                         {dataSampleKeys.length === 1
                             ? '1 data sample'
