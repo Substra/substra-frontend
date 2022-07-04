@@ -66,7 +66,11 @@ const TabsNavItem = ({
 const TabsNav = (): JSX.Element | null => {
     const [isChart, chartParams] = useRoute(ROUTES.COMPUTE_PLAN_CHART.path);
     const [isTasks, tasksParams] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
-    const computePlanKey = chartParams?.key || tasksParams?.key || '';
+    const [isWorkflow, workflowParams] = useRoute(
+        ROUTES.COMPUTE_PLAN_WORKFLOW.path
+    );
+    const computePlanKey =
+        chartParams?.key || tasksParams?.key || workflowParams?.key || '';
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
     );
@@ -87,6 +91,14 @@ const TabsNav = (): JSX.Element | null => {
                 })}
                 label="Details"
                 active={isTasks}
+                isChartTabDisabled={false}
+            />
+            <TabsNavItem
+                href={compilePath(PATHS.COMPUTE_PLAN_WORKFLOW, {
+                    key: computePlanKey,
+                })}
+                label="Workflow"
+                active={isWorkflow}
                 isChartTabDisabled={false}
             />
             <TabsNavItem

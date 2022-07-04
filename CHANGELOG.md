@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Display algo inputs and outputs in drawer (#622)
 -   Download buttons for algos, datasets and metrics in task drawers (#625)
 -   Duration filters (#620)
+-   ComputePlan Workflow Graph view (#634)
 
 ### Fixed
 

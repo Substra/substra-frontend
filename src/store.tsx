@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import algosSlice from '@/modules/algos/AlgosSlice';
 import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
+import cpWorkflowSlice from '@/modules/cpWorkflow/CPWorkflowSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
 import metadataSlice from '@/modules/metadata/MetadataSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
@@ -24,6 +25,7 @@ const store = configureStore({
         tasks: tasksSlice,
         series: seriesSlice,
         metadata: metadataSlice,
+        cpWorkflow: cpWorkflowSlice,
     },
 });
 

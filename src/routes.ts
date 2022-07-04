@@ -7,6 +7,7 @@ import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
 import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
 import ComputePlanTasksRoot from '@/routes/computePlanDetails/ComputePlanTasksRoot';
+import ComputePlanWorkflow from '@/routes/computePlanDetails/ComputePlanWorkflow';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
@@ -31,6 +32,7 @@ export const PATHS = {
     COMPUTE_PLAN_TASKS_ROOT: '/compute_plans/:key/tasks',
     COMPUTE_PLAN_TASKS: '/compute_plans/:key/tasks/:category',
     COMPUTE_PLAN_TASK: '/compute_plans/:key/tasks/:category/:taskKey',
+    COMPUTE_PLAN_WORKFLOW: '/compute_plans/:key/workflow',
     DATASETS: '/datasets',
     DATASET: '/datasets/:key',
     ALGOS: '/algorithms',
@@ -81,6 +83,10 @@ export const ROUTES: Record<string, IRoute> = {
         // the following path matches both PATHS.COMPUTE_PLAN_TASKS and PATHS.COMPUTE_PLAN_TASK
         path: '/compute_plans/:key/tasks/:category/:taskKey?',
         component: ComputePlanTasks,
+    },
+    COMPUTE_PLAN_WORKFLOW: {
+        path: PATHS.COMPUTE_PLAN_WORKFLOW,
+        component: ComputePlanWorkflow,
     },
     DATASET: {
         path: PATHS.DATASET,

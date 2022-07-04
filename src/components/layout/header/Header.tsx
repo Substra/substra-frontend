@@ -52,6 +52,7 @@ const NAV_ITEMS = [
             PATHS.COMPUTE_PLAN_CHART,
             PATHS.COMPUTE_PLAN_TASK,
             PATHS.COMPUTE_PLAN_TASKS,
+            PATHS.COMPUTE_PLAN_WORKFLOW,
             PATHS.COMPUTE_PLANS,
             PATHS.COMPARE,
         ],
@@ -93,6 +94,7 @@ const Header = (): JSX.Element => {
         PATHS.COMPUTE_PLAN_CHART,
         PATHS.COMPUTE_PLAN_TASKS,
         PATHS.COMPUTE_PLAN_TASK,
+        PATHS.COMPUTE_PLAN_WORKFLOW,
     ]);
 
     return (
