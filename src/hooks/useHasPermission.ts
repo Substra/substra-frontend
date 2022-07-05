@@ -3,7 +3,7 @@ import { PermissionType } from '@/modules/common/CommonTypes';
 
 const useHasPermission = (): ((permission: PermissionType) => boolean) => {
     const currentNodeID = useAppSelector(
-        (state) => state.organizations.info.organization_id
+        (state) => state.me.info.organization_id
     );
 
     return (permission: PermissionType): boolean =>

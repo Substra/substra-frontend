@@ -8,15 +8,22 @@ import {
     loginData,
     refreshToken as getRefreshToken,
     getLogOut,
-} from '@/modules/user/UserApi';
+    retrieveInfo as getInfo,
+} from '@/modules/me/MeApi';
 
-interface UserState {
+import { MeInfoType } from './MeTypes';
+
+interface MeState {
     authenticated: boolean;
     error: string;
     loading: boolean;
     refreshLoading: boolean;
     expiration: number | null;
     payload: loginData;
+
+    info: MeInfoType;
+    infoLoading: boolean;
+    infoError: string;
 }
 
 interface loginError {
@@ -29,7 +36,7 @@ const defaultPayload = {
     token_type: '',
 };
 
-const initialState: UserState = {
+const initialState: MeState = {
     authenticated: false,
     error: '',
     loading: false,
@@ -44,6 +51,14 @@ const initialState: UserState = {
      */
     expiration: null,
     payload: defaultPayload,
+
+    info: {
+        host: API_URL,
+        organization_id: '',
+        config: {},
+    },
+    infoLoading: false,
+    infoError: '',
 };
 
 export const logIn = createAsyncThunk<
@@ -52,7 +67,7 @@ export const logIn = createAsyncThunk<
     {
         rejectValue: loginError;
     }
->('USERS_LOGIN', async (payload, thunkAPI) => {
+>('ME_LOGIN', async (payload, thunkAPI) => {
     try {
         const response = await postLogIn(payload);
         return response.data;
@@ -65,7 +80,7 @@ export const logIn = createAsyncThunk<
     }
 });
 
-export const logOut = createAsyncThunk('USERS_LOGOUT', async (_, thunkAPI) => {
+export const logOut = createAsyncThunk('ME_LOGOUT', async (_, thunkAPI) => {
     // clean cookies
     const cookies = new Cookies();
     cookies.remove('header.payload');
@@ -88,7 +103,7 @@ export const refreshToken = createAsyncThunk<
     loginData,
     void,
     { rejectValue: loginError }
->('USERS_REFRESH_TOKEN', async (_, thunkAPI) => {
+>('ME_REFRESH_TOKEN', async (_, thunkAPI) => {
     try {
         const response = await getRefreshToken();
         return response.data;
@@ -101,8 +116,25 @@ export const refreshToken = createAsyncThunk<
     }
 });
 
-const userSlice = createSlice({
-    name: 'user',
+export const retrieveInfo = createAsyncThunk<
+    MeInfoType,
+    boolean,
+    { rejectValue: string }
+>('ME_INFO', async (withCredentials, thunkAPI) => {
+    try {
+        const response = await getInfo(withCredentials);
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
+const meSlice = createSlice({
+    name: 'me',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -131,6 +163,11 @@ const userSlice = createSlice({
             .addCase(logOut.pending, (state) => {
                 state.authenticated = false;
             })
+            .addCase(logOut.fulfilled, (state) => {
+                state.info.version = undefined;
+                state.info.channel = undefined;
+                state.info.config.model_export_enabled = undefined;
+            })
             .addCase(refreshToken.pending, (state) => {
                 state.refreshLoading = true;
             })
@@ -143,8 +180,21 @@ const userSlice = createSlice({
             .addCase(refreshToken.rejected, (state) => {
                 state.refreshLoading = false;
                 state.authenticated = false;
+            })
+            .addCase(retrieveInfo.pending, (state) => {
+                state.infoLoading = true;
+                state.infoError = '';
+            })
+            .addCase(retrieveInfo.fulfilled, (state, { payload }) => {
+                state.infoLoading = false;
+                state.infoError = '';
+                state.info = payload;
+            })
+            .addCase(retrieveInfo.rejected, (state, { payload }) => {
+                state.infoLoading = false;
+                state.infoError = payload || 'Unknown error';
             });
     },
 });
 
-export default userSlice.reducer;
+export default meSlice.reducer;

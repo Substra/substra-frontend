@@ -21,12 +21,10 @@ import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import {
-    listOrganizations,
-    retrieveInfo,
-} from '@/modules/organizations/OrganizationsSlice';
-import { loginPayload } from '@/modules/user/UserApi';
-import { logIn } from '@/modules/user/UserSlice';
+import { loginPayload } from '@/modules/me/MeApi';
+import { logIn } from '@/modules/me/MeSlice';
+import { retrieveInfo } from '@/modules/me/MeSlice';
+import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
 import { PATHS } from '@/routes';
 
 const LoginForm = (): JSX.Element => {
@@ -37,10 +35,10 @@ const LoginForm = (): JSX.Element => {
     const [, setLocation] = useLocation();
 
     const organizationId = useAppSelector(
-        (state) => state.organizations.info.organization_id
+        (state) => state.me.info.organization_id
     );
-    const userLoading = useAppSelector((state) => state.user.loading);
-    const userError = useAppSelector((state) => state.user.error);
+    const userLoading = useAppSelector((state) => state.me.loading);
+    const userError = useAppSelector((state) => state.me.error);
 
     const submitLogin = async (username: string, password: string) => {
         const payload: loginPayload = {

@@ -2,10 +2,13 @@ import { AxiosPromise } from 'axios';
 
 import API from '@/libs/request';
 
-const USERS_URL = {
+import { MeInfoType } from './MeTypes';
+
+const ME_URL = {
     LOGIN: `/user/login/?format=json`,
     LOGOUT: `/user/logout/`,
     REFRESH: '/user/refresh/',
+    INFO: '/info/',
 };
 
 export type loginPayload = {
@@ -21,13 +24,23 @@ export type loginData = {
 };
 
 export const postLogIn = (payload: loginPayload): AxiosPromise<loginData> => {
-    return API.post(USERS_URL.LOGIN, payload);
+    return API.post(ME_URL.LOGIN, payload);
 };
 
 export const getLogOut = (): AxiosPromise<void> => {
-    return API.get(USERS_URL.LOGOUT);
+    return API.get(ME_URL.LOGOUT);
 };
 
 export const refreshToken = (): AxiosPromise<loginData> => {
-    return API.post(USERS_URL.REFRESH);
+    return API.post(ME_URL.REFRESH);
+};
+
+export const retrieveInfo = (
+    withCredentials: boolean
+): AxiosPromise<MeInfoType> => {
+    if (withCredentials) {
+        return API.authenticatedGet(ME_URL.INFO);
+    }
+
+    return API.anonymousGet(ME_URL.INFO);
 };

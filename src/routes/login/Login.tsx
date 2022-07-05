@@ -17,7 +17,7 @@ import OwkinLogoBlack from '@/assets/svg/owkin-logo-black.svg';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import { logOut } from '@/modules/user/UserSlice';
+import { logOut } from '@/modules/me/MeSlice';
 import { PATHS } from '@/routes';
 
 import LoginForm from './components/LoginForm';
@@ -26,7 +26,7 @@ const Login = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
 
-    const authenticated = useAppSelector((state) => state.user.authenticated);
+    const authenticated = useAppSelector((state) => state.me.authenticated);
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;

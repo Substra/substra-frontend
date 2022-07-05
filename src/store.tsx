@@ -6,16 +6,16 @@ import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import cpWorkflowSlice from '@/modules/cpWorkflow/CPWorkflowSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
+import meSlice from '@/modules/me/MeSlice';
 import metadataSlice from '@/modules/metadata/MetadataSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
 import organizationsSlice from '@/modules/organizations/OrganizationsSlice';
 import seriesSlice from '@/modules/series/SeriesSlice';
 import tasksSlice from '@/modules/tasks/TasksSlice';
-import userSlice from '@/modules/user/UserSlice';
 
 const store = configureStore({
     reducer: {
-        user: userSlice,
+        me: meSlice,
         datasets: datasetsSlice,
         computePlans: computePlansSlice,
         compare: compareSlice,

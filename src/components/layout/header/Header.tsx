@@ -20,7 +20,7 @@ import { RiUser3Fill } from 'react-icons/ri';
 import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import { logOut } from '@/modules/user/UserSlice';
+import { logOut } from '@/modules/me/MeSlice';
 import { PATHS } from '@/routes';
 
 import OmniSearch from '@/components/OmniSearch';
@@ -79,9 +79,9 @@ const Header = (): JSX.Element => {
     const [, setLocation] = useLocation();
 
     const organizationId = useAppSelector(
-        (state) => state.organizations.info.organization_id
+        (state) => state.me.info.organization_id
     );
-    const channel = useAppSelector((state) => state.organizations.info.channel);
+    const channel = useAppSelector((state) => state.me.info.channel);
 
     const handleLogOut = () => {
         dispatch(logOut())

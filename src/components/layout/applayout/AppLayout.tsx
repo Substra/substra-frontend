@@ -11,7 +11,7 @@ type AppLayoutProps = {
 };
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
-    const isAuthenticated = useAppSelector((state) => state.user.authenticated);
+    const isAuthenticated = useAppSelector((state) => state.me.authenticated);
     return (
         <Flex
             direction="column"

@@ -7,12 +7,9 @@ import { Flex, Spinner } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useEffectOnce from '@/hooks/useEffectOnce';
+import { refreshToken, retrieveInfo } from '@/modules/me/MeSlice';
 import { listMetadata } from '@/modules/metadata/MetadataSlice';
-import {
-    listOrganizations,
-    retrieveInfo,
-} from '@/modules/organizations/OrganizationsSlice';
-import { refreshToken } from '@/modules/user/UserSlice';
+import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
 import { ROUTES, PATHS } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 

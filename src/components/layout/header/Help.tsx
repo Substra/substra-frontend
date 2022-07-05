@@ -30,13 +30,11 @@ import CopyButton from '@/components/CopyButton';
 const Help = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const backendVersion = useAppSelector(
-        (state) => state.organizations.info.version
-    );
+    const backendVersion = useAppSelector((state) => state.me.info.version);
     const orchestratorVersion = useAppSelector(
-        (state) => state.organizations.info.orchestrator_version
+        (state) => state.me.info.orchestrator_version
     );
-    const userId = useAppSelector((state) => state.user.payload.user_id);
+    const userId = useAppSelector((state) => state.me.payload.user_id);
 
     const date = new Date();
 
