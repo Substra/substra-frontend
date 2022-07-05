@@ -9,6 +9,8 @@ import {
     AggregatetupleStub,
     CompositeTraintuple,
     CompositeTraintupleStub,
+    Predicttuple,
+    PredicttupleStub,
     TaskCategory,
     Testtuple,
     TesttupleStub,
@@ -37,7 +39,18 @@ interface TasksState {
     aggregateTasksLoading: boolean;
     aggregateTasksError: string;
 
-    task: Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple | null;
+    predictTasks: PredicttupleStub[];
+    predictTasksCount: number;
+    predictTasksLoading: boolean;
+    predictTasksError: string;
+
+    task:
+        | Traintuple
+        | CompositeTraintuple
+        | Aggregatetuple
+        | Testtuple
+        | Predicttuple
+        | null;
     taskLoading: boolean;
     taskError: string;
 
@@ -66,6 +79,11 @@ const initialState: TasksState = {
     aggregateTasksCount: 0,
     aggregateTasksLoading: true,
     aggregateTasksError: '',
+
+    predictTasks: [],
+    predictTasksCount: 0,
+    predictTasksLoading: true,
+    predictTasksError: '',
 
     task: null,
     taskLoading: true,
@@ -160,22 +178,50 @@ export const listAggregateTasks = createAsyncThunk<
     }
 });
 
+export const listPredictTasks = createAsyncThunk<
+    PaginatedApiResponse<PredicttupleStub>,
+    listTasksArgs,
+    { rejectValue: string }
+>('tasks/listPredictTasks', async (params: listTasksArgs, thunkAPI) => {
+    try {
+        const response = await TasksApi.listPredicttuples(params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
 const retrieveMethods: Record<
     TaskCategory,
     (
         key: string,
         config: AxiosRequestConfig
     ) => AxiosPromise<
-        Testtuple | Traintuple | CompositeTraintuple | Aggregatetuple
+        | Testtuple
+        | Traintuple
+        | CompositeTraintuple
+        | Aggregatetuple
+        | Predicttuple
     >
 > = {
     [TaskCategory.test]: TasksApi.retrieveTesttuple,
     [TaskCategory.train]: TasksApi.retrieveTraintuple,
     [TaskCategory.composite]: TasksApi.retrieveCompositeTraintuple,
     [TaskCategory.aggregate]: TasksApi.retrieveAggregateTuple,
+    [TaskCategory.predict]: TasksApi.retrievePredicttuple,
 };
 export const retrieveTask = createAsyncThunk<
-    Traintuple | CompositeTraintuple | Aggregatetuple | Testtuple,
+    | Traintuple
+    | CompositeTraintuple
+    | Aggregatetuple
+    | Testtuple
+    | Predicttuple,
     { category: TaskCategory; key: string },
     { rejectValue: string }
 >('tasks/get', async ({ category, key }, thunkAPI) => {
@@ -299,6 +345,25 @@ const tasksSlice = createSlice({
                     }
                 }
             )
+            .addCase(listPredictTasks.pending, (state) => {
+                state.predictTasks = [];
+                state.predictTasksLoading = true;
+                state.predictTasksError = '';
+            })
+            .addCase(listPredictTasks.fulfilled, (state, { payload }) => {
+                state.predictTasks = payload.results;
+                state.predictTasksCount = payload.count;
+                state.predictTasksLoading = false;
+                state.predictTasksError = '';
+            })
+            .addCase(listPredictTasks.rejected, (state, { payload, error }) => {
+                if (error.name !== 'AbortError') {
+                    state.predictTasks = [];
+                    state.predictTasksCount = 0;
+                    state.predictTasksLoading = false;
+                    state.predictTasksError = payload || 'Unknown error';
+                }
+            })
             .addCase(retrieveTask.pending, (state) => {
                 state.taskLoading = true;
                 state.taskError = '';

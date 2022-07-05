@@ -13,8 +13,8 @@ import {
 import {
     Aggregatetuple,
     CompositeTraintuple,
+    Predicttuple,
     TaskCategory,
-    Testtuple,
     Traintuple,
 } from '@/modules/tasks/TuplesTypes';
 
@@ -25,7 +25,7 @@ import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryConte
 const DrawerSectionTestedModel = ({
     task,
 }: {
-    task: Testtuple;
+    task: Predicttuple;
 }): JSX.Element => {
     const [loading, setLoading] = useState<boolean>(true);
     const [parentTask, setParentTask] = useState<
@@ -70,8 +70,8 @@ const DrawerSectionTestedModel = ({
         <DrawerSectionEntry
             title={
                 parentTaskStub.category === TaskCategory.composite
-                    ? 'Tested models'
-                    : 'Tested model'
+                    ? 'Models'
+                    : 'Model'
             }
             alignItems="center"
         >

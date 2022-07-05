@@ -17,6 +17,7 @@ export type AssetType =
     | 'traintuple'
     | 'composite_traintuple'
     | 'aggregatetuple'
+    | 'predicttuple'
     | 'compute_plan';
 
 export type PaginatedApiResponse<T> = {

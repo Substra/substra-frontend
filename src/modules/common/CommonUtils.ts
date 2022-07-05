@@ -14,6 +14,7 @@ const ASSET_LABEL: Record<AssetType, string> = {
     composite_traintuple: 'composite train task',
     aggregatetuple: 'aggregate task',
     compute_plan: 'compute plan',
+    predicttuple: 'predict task',
 };
 
 export const getAssetLabel = (

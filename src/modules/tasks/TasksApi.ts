@@ -15,6 +15,8 @@ import {
     Testtuple,
     Traintuple,
     AggregatetupleStub,
+    PredicttupleStub,
+    Predicttuple,
 } from './TuplesTypes';
 
 export const URLS = {
@@ -22,11 +24,13 @@ export const URLS = {
     COMPOSITE_LIST: '/composite_traintuple/',
     TEST_LIST: '/testtuple/',
     TRAIN_LIST: '/traintuple/',
+    PREDICT_LIST: '/predicttuple/',
 
     AGGREGATE_RETRIEVE: '/aggregatetuple/__KEY__/',
     COMPOSITE_RETRIEVE: '/composite_traintuple/__KEY__/',
     TEST_RETRIEVE: '/testtuple/__KEY__/',
     TRAIN_RETRIEVE: '/traintuple/__KEY__/',
+    PREDICT_RETRIEVE: '/predicttuple/__KEY__/',
 
     LOGS_RETRIEVE: '/logs/__KEY__/file/',
 };
@@ -71,6 +75,16 @@ export const listTraintuples = (
     });
 };
 
+export const listPredicttuples = (
+    apiListArgs: APIListArgs,
+    config: AxiosRequestConfig
+): AxiosPromise<PaginatedApiResponse<PredicttupleStub>> => {
+    return API.authenticatedGet(URLS.PREDICT_LIST, {
+        ...getApiOptions(apiListArgs),
+        ...config,
+    });
+};
+
 export const retrieveAggregateTuple = (
     key: string,
     config: AxiosRequestConfig
@@ -100,6 +114,12 @@ export const retrieveTraintuple = (
     config: AxiosRequestConfig
 ): AxiosPromise<Traintuple> =>
     API.authenticatedGet(URLS.TRAIN_RETRIEVE.replace('__KEY__', key), config);
+
+export const retrievePredicttuple = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<Predicttuple> =>
+    API.authenticatedGet(URLS.PREDICT_RETRIEVE.replace('__KEY__', key), config);
 
 export const retrieveLogs = (
     key: string,

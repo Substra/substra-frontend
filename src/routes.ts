@@ -48,6 +48,7 @@ export const TASK_CATEGORY_SLUGS: Record<TaskCategory, string> = {
     [TaskCategory.train]: 'train',
     [TaskCategory.composite]: 'composite_train',
     [TaskCategory.aggregate]: 'aggregate',
+    [TaskCategory.predict]: 'predict',
 };
 
 export const ROUTES: Record<string, IRoute> = {

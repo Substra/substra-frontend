@@ -23,6 +23,7 @@ import {
     retrieveComputePlan,
     retrieveComputePlanAggregateTasks,
     retrieveComputePlanCompositeTasks,
+    retrieveComputePlanPredictTasks,
     retrieveComputePlanTestTasks,
     retrieveComputePlanTrainTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
@@ -491,6 +492,97 @@ const AggregateTasks = ({
     );
 };
 
+const PredictTasks = ({
+    taskKey,
+    computePlanKey,
+    compileListPath,
+    compileDetailsPath,
+}: TasksProps): JSX.Element => {
+    const [page] = usePage();
+    const [match] = useMatch();
+    const [ordering] = useOrdering('-rank');
+    const [status] = useStatus();
+    const [worker] = useWorker();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const { startDateBefore, startDateAfter } = useStartDate();
+    const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
+
+    const loading = useAppSelector(
+        (state) => state.computePlans.computePlanPredictTasksLoading
+    );
+    const list = useCallback(
+        () =>
+            retrieveComputePlanPredictTasks({
+                computePlanKey,
+                page,
+                ordering,
+                match,
+                status,
+                worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: creationDateBefore,
+                start_date_after: startDateAfter,
+                start_date_before: startDateBefore,
+                end_date_after: endDateAfter,
+                end_date_before: endDateBefore,
+            }),
+        [
+            computePlanKey,
+            creationDateAfter,
+            creationDateBefore,
+            endDateAfter,
+            endDateBefore,
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
+    const tasks = useAppSelector(
+        (state) => state.computePlans.computePlanPredictTasks
+    );
+    const count = useAppSelector(
+        (state) => state.computePlans.computePlanPredictTasksCount
+    );
+    const computePlan = useAppSelector(
+        (state) => state.computePlans.computePlan
+    );
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.predict}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                    computePlan={computePlan}
+                    tableProps={{ width: '100%' }}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.predict}
+                    onClose={() =>
+                        setLocationPreserveParams(
+                            compileListPath(TaskCategory.predict)
+                        )
+                    }
+                    taskKey={taskKey}
+                    setPageTitle={true}
+                />
+            }
+        />
+    );
+};
+
 const ComputePlanTasks = () => {
     const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
     const computePlanKey = params?.key;
@@ -547,6 +639,15 @@ const ComputePlanTasks = () => {
     } else if (params?.category === 'aggregate') {
         return (
             <AggregateTasks
+                computePlanKey={params?.key}
+                taskKey={params?.taskKey}
+                compileDetailsPath={compileDetailsPath}
+                compileListPath={compileListPath}
+            />
+        );
+    } else if (params?.category === 'predict') {
+        return (
+            <PredictTasks
                 computePlanKey={params?.key}
                 taskKey={params?.taskKey}
                 compileDetailsPath={compileDetailsPath}

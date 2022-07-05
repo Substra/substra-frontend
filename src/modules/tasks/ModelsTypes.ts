@@ -12,4 +12,5 @@ export interface Model {
     address?: FileT;
     permissions: PermissionsType;
     owner: string;
+    creation_date: string;
 }

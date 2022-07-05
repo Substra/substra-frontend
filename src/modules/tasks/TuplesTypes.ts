@@ -50,6 +50,7 @@ export enum TaskCategory {
     composite = 'TASK_COMPOSITE',
     test = 'TASK_TEST',
     aggregate = 'TASK_AGGREGATE',
+    predict = 'TASK_PREDICT',
 }
 
 export const assetTypeByTaskCategory: Record<TaskCategory, AssetType> = {
@@ -57,6 +58,7 @@ export const assetTypeByTaskCategory: Record<TaskCategory, AssetType> = {
     [TaskCategory.composite]: 'composite_traintuple',
     [TaskCategory.test]: 'testtuple',
     [TaskCategory.aggregate]: 'aggregatetuple',
+    [TaskCategory.predict]: 'predicttuple',
 };
 
 interface BaseTupleStub {
@@ -123,13 +125,12 @@ export interface Aggregatetuple extends BaseTuple {
 interface TestDetailsStub {
     data_manager_key: string;
     data_sample_keys: string[];
-    metric_keys: string[];
+    // perfs contains a single key: the key of the algo used to compute the perf
     perfs?: Record<string, number>;
 }
 
 interface TestDetails extends TestDetailsStub {
     data_manager: DatasetStubType;
-    metrics: AlgoT[];
 }
 
 export interface TesttupleStub extends BaseTupleStub {
@@ -159,6 +160,25 @@ export interface Traintuple extends BaseTuple {
     train: TrainDetails;
 }
 
+interface PredictDetailsStub {
+    data_manager_key: string;
+    data_sample_keys: string[];
+    models?: Model[];
+    prediction_permissions: PermissionsType;
+}
+
+interface PredictDetails extends PredictDetailsStub {
+    data_manager: DatasetStubType;
+}
+
+export interface PredicttupleStub extends BaseTupleStub {
+    predict: PredictDetailsStub;
+}
+
+export interface Predicttuple extends BaseTuple {
+    predict: PredictDetails;
+}
+
 export type AnyTupleT =
     | TraintupleStub
     | Traintuple
@@ -167,4 +187,6 @@ export type AnyTupleT =
     | AggregatetupleStub
     | Aggregatetuple
     | TesttupleStub
-    | Testtuple;
+    | Testtuple
+    | PredicttupleStub
+    | Predicttuple;

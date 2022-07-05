@@ -150,6 +150,7 @@ const TasksTable = ({
 
     const tabs: [TaskCategory, string][] = [
         [TaskCategory.test, 'Test'],
+        [TaskCategory.predict, 'Predict'],
         [TaskCategory.train, 'Train'],
         [TaskCategory.composite, 'Composite train'],
         [TaskCategory.aggregate, 'Aggregate'],

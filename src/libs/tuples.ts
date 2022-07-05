@@ -4,6 +4,8 @@ import {
     AnyTupleT,
     CompositeTraintuple,
     CompositeTraintupleStub,
+    Predicttuple,
+    PredicttupleStub,
     TaskCategory,
     Testtuple,
     TesttupleStub,
@@ -59,10 +61,7 @@ export const isTesttuple = (task: unknown): task is Testtuple => {
     if (!isTesttupleStub(task)) {
         return false;
     }
-    return (
-        (task as Testtuple).test.data_manager !== undefined &&
-        (task as Testtuple).test.metrics !== undefined
-    );
+    return (task as Testtuple).test.data_manager !== undefined;
 };
 
 export const isCompositeTraintupleStub = (
@@ -98,4 +97,19 @@ export const isAggregatetuple = (task: unknown): task is Aggregatetuple => {
         return false;
     }
     return (task as Aggregatetuple).parent_tasks !== undefined;
+};
+
+export const isPredicttupleStub = (task: unknown): task is PredicttupleStub => {
+    if (!isTuple(task)) {
+        return false;
+    }
+
+    return task.category === TaskCategory.predict;
+};
+
+export const isPredicttuple = (task: unknown): task is Predicttuple => {
+    if (!isPredicttupleStub(task)) {
+        return false;
+    }
+    return (task as Predicttuple).parent_tasks !== undefined;
 };

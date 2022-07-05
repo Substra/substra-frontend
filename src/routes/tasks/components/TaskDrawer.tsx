@@ -20,6 +20,7 @@ import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import {
     isAggregatetuple,
     isCompositeTraintuple,
+    isPredicttuple,
     isTesttuple,
     isTraintuple,
 } from '@/libs/tuples';
@@ -48,7 +49,6 @@ import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
 import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
-import DrawerSectionMetricsEntry from './DrawerSectionMetricsEntry';
 import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
 import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
 import DrawerSectionTestedModel from './DrawerSectionTestedModel';
@@ -215,16 +215,14 @@ const TaskDrawer = ({
                                 </HStack>
                             )}
                         </DrawerSectionEntry>
-                        {task && isTesttuple(task) && (
-                            <>
-                                <DrawerSectionTestedModel task={task} />
-                                <DrawerSectionMetricsEntry task={task} />
-                            </>
+                        {task && isPredicttuple(task) && (
+                            <DrawerSectionTestedModel task={task} />
                         )}
                         {taskLoading || !task ? (
                             <Skeleton height="4" width="250px" />
                         ) : (
                             (isTesttuple(task) ||
+                                isPredicttuple(task) ||
                                 isCompositeTraintuple(task) ||
                                 isTraintuple(task)) && (
                                 <DrawerSectionDatasetEntry
@@ -259,29 +257,24 @@ const TaskDrawer = ({
                         <Skeleton height="4" width="250px" />
                     ) : (
                         isTesttuple(task) && (
-                            <DrawerSection title="Performances">
-                                {task.test.metrics.map((metric) => {
-                                    const perf = getPerf(task, metric.key);
-                                    return (
-                                        <DrawerSectionEntryWrapper
-                                            key={metric.key}
-                                        >
-                                            <Text
-                                                whiteSpace="nowrap"
-                                                width="410px"
-                                                noOfLines={1}
-                                                flexShrink="0"
-                                            >
-                                                {metric.name}
-                                            </Text>
-                                            <Box flexGrow="1" textAlign="right">
-                                                {perf === null
-                                                    ? 'N/A'
-                                                    : perf.toFixed(3)}
-                                            </Box>
-                                        </DrawerSectionEntryWrapper>
-                                    );
-                                })}
+                            <DrawerSection title="Performance">
+                                <DrawerSectionEntryWrapper>
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        width="410px"
+                                        noOfLines={1}
+                                        flexShrink="0"
+                                    >
+                                        {task.algo.name}
+                                    </Text>
+                                    <Box flexGrow="1" textAlign="right">
+                                        {getPerf(task) === null
+                                            ? 'N/A'
+                                            : (getPerf(task) as number).toFixed(
+                                                  3
+                                              )}
+                                    </Box>
+                                </DrawerSectionEntryWrapper>
                             </DrawerSection>
                         )
                     )}

@@ -23,6 +23,7 @@ import { endOfDay } from '@/libs/utils';
 import {
     listAggregateTasks,
     listCompositeTasks,
+    listPredictTasks,
     listTestTasks,
     listTrainTasks,
 } from '@/modules/tasks/TasksSlice';
@@ -395,6 +396,79 @@ const AggregateTasks = ({ taskKey }: TasksProps): JSX.Element => {
     );
 };
 
+const PredictTasks = ({ taskKey }: TasksProps): JSX.Element => {
+    const [page] = usePage();
+    const [match] = useMatch();
+    const [ordering] = useOrdering('-rank');
+    const [status] = useStatus();
+    const [worker] = useWorker();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const { startDateBefore, startDateAfter } = useStartDate();
+    const { endDateBefore, endDateAfter } = useEndDate();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
+
+    const loading = useAppSelector((state) => state.tasks.predictTasksLoading);
+    const list = useCallback(
+        () =>
+            listPredictTasks({
+                page,
+                ordering,
+                match,
+                status,
+                worker: worker,
+                creation_date_after: creationDateAfter,
+                creation_date_before: endOfDay(creationDateBefore),
+                start_date_after: startDateAfter,
+                start_date_before: endOfDay(startDateBefore),
+                end_date_after: endDateAfter,
+                end_date_before: endOfDay(endDateBefore),
+            }),
+        [
+            creationDateAfter,
+            creationDateBefore,
+            endDateAfter,
+            endDateBefore,
+            match,
+            ordering,
+            page,
+            startDateAfter,
+            startDateBefore,
+            status,
+            worker,
+        ]
+    );
+    const tasks = useAppSelector((state) => state.tasks.predictTasks);
+    const count = useAppSelector((state) => state.tasks.predictTasksCount);
+
+    return (
+        <GenericTasks
+            tasksTable={
+                <TasksTable
+                    loading={loading}
+                    list={list}
+                    tasks={tasks}
+                    count={count}
+                    category={TaskCategory.predict}
+                    compileListPath={compileListPath}
+                    compileDetailsPath={compileDetailsPath}
+                />
+            }
+            taskDrawer={
+                <TaskDrawer
+                    category={TaskCategory.predict}
+                    onClose={() =>
+                        setLocationPreserveParams(
+                            compileListPath(TaskCategory.predict)
+                        )
+                    }
+                    taskKey={taskKey}
+                    setPageTitle={true}
+                />
+            }
+        />
+    );
+};
+
 const Tasks = () => {
     const [, params] = useRoute(ROUTES.TASKS.path);
 
@@ -406,6 +480,8 @@ const Tasks = () => {
         return <CompositeTrainTasks taskKey={params?.key} />;
     } else if (params?.category === 'aggregate') {
         return <AggregateTasks taskKey={params?.key} />;
+    } else if (params?.category === 'predict') {
+        return <PredictTasks taskKey={params?.key} />;
     } else {
         return <NotFound />;
     }
