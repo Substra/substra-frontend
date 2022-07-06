@@ -19,6 +19,7 @@ import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
 const URLS = {
     LIST: '/compute_plan/',
     RETRIEVE: '/compute_plan/__KEY__/',
+    CANCEL: '/compute_plan/__KEY__/cancel/',
     LIST_TESTTUPLES: '/compute_plan/__KEY__/testtuple/',
     LIST_TRAINTUPLES: '/compute_plan/__KEY__/traintuple/',
     LIST_COMPOSITE_TRAINTUPLES: '/compute_plan/__KEY__/composite_traintuple/',
@@ -45,6 +46,12 @@ export const retrieveComputePlan = (
     config: AxiosRequestConfig
 ): AxiosPromise<ComputePlanT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
+
+export const cancelComputePlan = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<ComputePlanT> =>
+    API.post(URLS.CANCEL.replace('__KEY__', key), config);
 
 type APIListCPTuplesArgs = APIListArgs & {
     key: string;

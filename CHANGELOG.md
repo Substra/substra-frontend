@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Support for predict tasks (#615)
+-   Cancel compute plan button (#608)
 
 ### Changed
 
