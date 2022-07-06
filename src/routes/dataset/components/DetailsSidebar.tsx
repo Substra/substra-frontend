@@ -5,8 +5,8 @@ import useAppSelector from '@/hooks/useAppSelector';
 import {
     DrawerSection,
     DrawerSectionDateEntry,
-    DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    OrganizationDrawerSectionEntry,
     PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import { DrawerSectionHeading } from '@/components/DrawerSection';
@@ -26,9 +26,10 @@ const DetailsSidebar = (): JSX.Element => {
                             title="Created"
                             date={dataset.creation_date}
                         />
-                        <DrawerSectionEntry title="Owner">
-                            {dataset.owner}
-                        </DrawerSectionEntry>
+                        <OrganizationDrawerSectionEntry
+                            title="Owner"
+                            organization={dataset.owner}
+                        />
                         <PermissionsDrawerSectionEntry
                             permission={dataset.permissions.process}
                         />

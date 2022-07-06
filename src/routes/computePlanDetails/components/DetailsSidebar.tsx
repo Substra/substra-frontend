@@ -10,6 +10,7 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    OrganizationDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import Duration from '@/components/Duration';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
@@ -127,9 +128,10 @@ const DetailsSidebar = (): JSX.Element => {
                             <Timing asset={computePlan} />
                             <Duration asset={computePlan} />
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Owner">
-                            {computePlan.owner}
-                        </DrawerSectionEntry>
+                        <OrganizationDrawerSectionEntry
+                            title="Owner"
+                            organization={computePlan.owner}
+                        />
                     </>
                 )}
             </DrawerSection>

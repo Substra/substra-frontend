@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Upgrade caniuse-lite (#639)
 -   Put current user info into /me module (#641)
+-   Updated owner information style in drawers (#638)
 
 ## [0.27.0] - 2022-07-05
 

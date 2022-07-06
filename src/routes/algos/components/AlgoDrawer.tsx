@@ -9,7 +9,6 @@ import {
     useDisclosure,
     DrawerBody,
     VStack,
-    Skeleton,
 } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -26,8 +25,8 @@ import DrawerHeader from '@/components/DrawerHeader';
 import {
     DrawerSection,
     DrawerSectionDateEntry,
-    DrawerSectionEntry,
     DrawerSectionKeyEntry,
+    OrganizationDrawerSectionEntry,
     PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
@@ -115,13 +114,11 @@ const AlgoDrawer = (): JSX.Element => {
                             date={algo?.creation_date}
                             loading={algoLoading}
                         />
-                        <DrawerSectionEntry title="Owner">
-                            {algoLoading || !algo ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                algo.owner
-                            )}
-                        </DrawerSectionEntry>
+                        <OrganizationDrawerSectionEntry
+                            title="Owner"
+                            loading={algoLoading}
+                            organization={algo?.owner}
+                        />
                         <PermissionsDrawerSectionEntry
                             loading={algoLoading}
                             permission={algo?.permissions.process}

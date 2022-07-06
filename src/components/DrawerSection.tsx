@@ -10,9 +10,12 @@ import {
     Collapse,
     StackProps,
     Skeleton,
+    Tag,
+    TagLabel,
+    TagRightIcon,
 } from '@chakra-ui/react';
 import { VStack } from '@chakra-ui/react';
-import { RiArrowRightSLine } from 'react-icons/ri';
+import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';
 import { PermissionType } from '@/modules/common/CommonTypes';
@@ -176,6 +179,32 @@ export const DrawerSectionDateEntry = ({
         )}
     </DrawerSectionEntry>
 );
+
+export const OrganizationDrawerSectionEntry = ({
+    title,
+    loading,
+    organization,
+}: {
+    title: string;
+    loading?: boolean;
+    organization?: string;
+}) => {
+    if (loading || !organization) {
+        return (
+            <DrawerSectionEntry title={title}>
+                <Skeleton height="4" width="250px" />
+            </DrawerSectionEntry>
+        );
+    }
+    return (
+        <DrawerSectionEntry title={title}>
+            <Tag size="sm">
+                <TagLabel>{organization}</TagLabel>
+                <TagRightIcon as={RiUserLine} />
+            </Tag>
+        </DrawerSectionEntry>
+    );
+};
 
 export const PermissionsDrawerSectionEntry = ({
     title,

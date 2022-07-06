@@ -43,6 +43,7 @@ import {
     DrawerSectionDateEntry,
     DrawerSectionKeyEntry,
     DrawerSectionEntryWrapper,
+    OrganizationDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
@@ -150,13 +151,11 @@ const TaskDrawer = ({
                                 <Timing asset={task} />
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Owner">
-                            {taskLoading || !task ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                task.owner
-                            )}
-                        </DrawerSectionEntry>
+                        <OrganizationDrawerSectionEntry
+                            title="Owner"
+                            loading={taskLoading}
+                            organization={task?.owner}
+                        />
                         <DrawerSectionEntry title="Compute plan">
                             {taskLoading || !task ? (
                                 <Skeleton height="4" width="250px" />
