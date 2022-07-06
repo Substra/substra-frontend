@@ -28,6 +28,7 @@ import {
     RiCodeSSlashLine,
     RiDatabase2Line,
     RiGitBranchLine,
+    RiGitCommitLine,
     RiSearchLine,
 } from 'react-icons/ri';
 
@@ -39,11 +40,30 @@ import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import { ComputePlanStub } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import * as TasksApi from '@/modules/tasks/TasksApi';
+import { getTaskCategory } from '@/modules/tasks/TasksUtils';
+import {
+    AggregatetupleStub,
+    CompositeTraintupleStub,
+    TesttupleStub,
+    TraintupleStub,
+    PredicttupleStub,
+    TaskCategory,
+} from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
 
 const MAX_ASSETS_PER_SECTION = 5;
 
-type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset';
+type OmniSearchAssetT =
+    | 'algo'
+    | 'compute_plan'
+    | 'dataset'
+    | 'traintuple'
+    | 'testtuple'
+    | 'predicttuple'
+    | 'aggregatetuple'
+    | 'composite_traintuple';
+
 type SeeMoreItemT = {
     asset: OmniSearchAssetT;
     count: number;
@@ -57,7 +77,14 @@ type ItemT = AssetItemT | SeeMoreItemT;
 type WithIndex<T extends ItemT> = T & { index: number };
 
 const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
-    value === 'algo' || value === 'compute_plan' || value === 'dataset';
+    value === 'algo' ||
+    value === 'compute_plan' ||
+    value === 'dataset' ||
+    value === 'traintuple' ||
+    value === 'testtuple' ||
+    value === 'predicttuple' ||
+    value === 'aggregatetuple' ||
+    value === 'composite_traintuple';
 
 const isSeeMoreItem = (value: unknown): value is SeeMoreItemT => {
     if (value === null || typeof value !== 'object') {
@@ -91,6 +118,11 @@ const ASSET_ITEM_ICONS: Record<OmniSearchAssetT, IconType> = {
     algo: RiCodeSSlashLine,
     compute_plan: RiGitBranchLine,
     dataset: RiDatabase2Line,
+    traintuple: RiGitCommitLine,
+    testtuple: RiGitCommitLine,
+    predicttuple: RiGitCommitLine,
+    aggregatetuple: RiGitCommitLine,
+    composite_traintuple: RiGitCommitLine,
 };
 
 const AssetItem = ({
@@ -234,6 +266,20 @@ const buildAssetItem = (
     key: asset.key,
 });
 
+const buildTupleItem = (
+    assetType: OmniSearchAssetT,
+    asset:
+        | TraintupleStub
+        | TesttupleStub
+        | PredicttupleStub
+        | AggregatetupleStub
+        | CompositeTraintupleStub
+): AssetItemT => ({
+    asset: assetType,
+    name: `${getTaskCategory(asset)} on ${asset.worker}`,
+    key: asset.key,
+});
+
 const buildSeeMoreItem = (
     assetType: OmniSearchAssetT,
     count: number
@@ -246,12 +292,30 @@ const ASSET_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGO,
     compute_plan: PATHS.COMPUTE_PLAN,
     dataset: PATHS.DATASET,
+    traintuple: compilePath(PATHS.TASK, { category: TaskCategory.train }),
+    testtuple: compilePath(PATHS.TASK, { category: TaskCategory.test }),
+    predicttuple: compilePath(PATHS.TASK, { category: TaskCategory.predict }),
+    aggregatetuple: compilePath(PATHS.TASK, {
+        category: TaskCategory.aggregate,
+    }),
+    composite_traintuple: compilePath(PATHS.TASK, {
+        category: TaskCategory.composite,
+    }),
 };
 
 const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGOS,
     compute_plan: PATHS.COMPUTE_PLANS,
     dataset: PATHS.DATASETS,
+    traintuple: compilePath(PATHS.TASKS, { category: TaskCategory.train }),
+    testtuple: compilePath(PATHS.TASKS, { category: TaskCategory.test }),
+    predicttuple: compilePath(PATHS.TASKS, { category: TaskCategory.predict }),
+    aggregatetuple: compilePath(PATHS.TASKS, {
+        category: TaskCategory.aggregate,
+    }),
+    composite_traintuple: compilePath(PATHS.TASKS, {
+        category: TaskCategory.composite,
+    }),
 };
 
 const OmniSearch = () => {
@@ -261,6 +325,21 @@ const OmniSearch = () => {
     const [algosCount, setAlgosCount] = useState(0);
     const [datasets, setDatasets] = useState<DatasetStubType[]>([]);
     const [datasetsCount, setDatasetsCount] = useState(0);
+    const [traintuples, setTraintuples] = useState<TraintupleStub[]>([]);
+    const [traintuplesCount, setTraintuplesCount] = useState(0);
+    const [testtuples, setTesttuples] = useState<TesttupleStub[]>([]);
+    const [testtuplesCount, setTesttuplesCount] = useState(0);
+    const [predicttuples, setPredicttuples] = useState<PredicttupleStub[]>([]);
+    const [predicttuplesCount, setPredicttuplesCount] = useState(0);
+    const [aggregatetuples, setAggregatetuples] = useState<
+        AggregatetupleStub[]
+    >([]);
+    const [aggregatetuplesCount, setAggregatetuplesCount] = useState(0);
+    const [compositeTraintuples, setCompositeTraintuples] = useState<
+        CompositeTraintupleStub[]
+    >([]);
+    const [compositeTraintuplesCount, setCompositeTraintuplesCount] =
+        useState(0);
 
     const [loading, setLoading] = useState(false);
 
@@ -299,6 +378,41 @@ const OmniSearch = () => {
             ...(datasetsCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('dataset', datasetsCount)]
                 : []),
+            ...traintuples.map((traintuple) =>
+                buildTupleItem('traintuple', traintuple)
+            ),
+            ...(traintuplesCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('traintuple', traintuplesCount)]
+                : []),
+            ...testtuples.map((testtuple) =>
+                buildTupleItem('testtuple', testtuple)
+            ),
+            ...(testtuplesCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('testtuple', testtuplesCount)]
+                : []),
+            ...predicttuples.map((predicttuple) =>
+                buildTupleItem('predicttuple', predicttuple)
+            ),
+            ...(predicttuplesCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('predicttuple', predicttuplesCount)]
+                : []),
+            ...aggregatetuples.map((aggregatetuple) =>
+                buildTupleItem('aggregatetuple', aggregatetuple)
+            ),
+            ...(aggregatetuplesCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('aggregatetuple', aggregatetuplesCount)]
+                : []),
+            ...compositeTraintuples.map((compositeTraintuple) =>
+                buildTupleItem('composite_traintuple', compositeTraintuple)
+            ),
+            ...(compositeTraintuplesCount > MAX_ASSETS_PER_SECTION
+                ? [
+                      buildSeeMoreItem(
+                          'composite_traintuple',
+                          compositeTraintuplesCount
+                      ),
+                  ]
+                : []),
         ].map((item, index) => ({ ...item, index }));
     }, [
         algos,
@@ -307,6 +421,16 @@ const OmniSearch = () => {
         computePlansCount,
         datasets,
         datasetsCount,
+        traintuples,
+        traintuplesCount,
+        testtuples,
+        testtuplesCount,
+        predicttuples,
+        predicttuplesCount,
+        aggregatetuples,
+        aggregatetuplesCount,
+        compositeTraintuples,
+        compositeTraintuplesCount,
     ]);
 
     const algoItems = items.filter((item) => item.asset === 'algo');
@@ -314,6 +438,17 @@ const OmniSearch = () => {
         (item) => item.asset === 'compute_plan'
     );
     const datasetItems = items.filter((item) => item.asset === 'dataset');
+    const traintupleItems = items.filter((item) => item.asset === 'traintuple');
+    const testtupleItems = items.filter((item) => item.asset === 'testtuple');
+    const predicttupleItems = items.filter(
+        (item) => item.asset === 'predicttuple'
+    );
+    const aggregatetupleItems = items.filter(
+        (item) => item.asset === 'aggregatetuple'
+    );
+    const compositeTraintupleItems = items.filter(
+        (item) => item.asset === 'composite_traintuple'
+    );
 
     const stateReducer: StateReducerT = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -377,6 +512,16 @@ const OmniSearch = () => {
             setAlgosCount(0);
             setDatasets([]);
             setDatasetsCount(0);
+            setTraintuples([]);
+            setTraintuplesCount(0);
+            setTesttuples([]);
+            setTesttuplesCount(0);
+            setPredicttuples([]);
+            setPredicttuplesCount(0);
+            setAggregatetuples([]);
+            setAggregatetuplesCount(0);
+            setCompositeTraintuples([]);
+            setCompositeTraintuplesCount(0);
 
             const params = {
                 page: 1,
@@ -389,16 +534,34 @@ const OmniSearch = () => {
             const promises: [
                 AxiosPromise<PaginatedApiResponse<ComputePlanStub>>,
                 AxiosPromise<PaginatedApiResponse<AlgoT>>,
-                AxiosPromise<PaginatedApiResponse<DatasetStubType>>
+                AxiosPromise<PaginatedApiResponse<DatasetStubType>>,
+                AxiosPromise<PaginatedApiResponse<TraintupleStub>>,
+                AxiosPromise<PaginatedApiResponse<TesttupleStub>>,
+                AxiosPromise<PaginatedApiResponse<PredicttupleStub>>,
+                AxiosPromise<PaginatedApiResponse<AggregatetupleStub>>,
+                AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>>
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
                 AlgosApi.listAlgos(params, config),
                 DatasetsApi.listDatasets(params, config),
+                TasksApi.listTraintuples(params, config),
+                TasksApi.listTesttuples(params, config),
+                TasksApi.listPredicttuples(params, config),
+                TasksApi.listAggregatetuples(params, config),
+                TasksApi.listCompositeTraintuples(params, config),
             ];
             try {
                 const responses = await Promise.all(promises);
-                const [computePlansData, algosData, datasetsData] =
-                    responses.map((response) => response.data);
+                const [
+                    computePlansData,
+                    algosData,
+                    datasetsData,
+                    traintuplesData,
+                    testtuplesData,
+                    predicttuplesData,
+                    aggregatetuplesData,
+                    compositeTraintuplesData,
+                ] = responses.map((response) => response.data);
 
                 setComputePlans(
                     computePlansData['results'] as ComputePlanStub[]
@@ -408,6 +571,24 @@ const OmniSearch = () => {
                 setAlgosCount(algosData['count']);
                 setDatasets(datasetsData['results'] as DatasetStubType[]);
                 setDatasetsCount(datasetsData['count']);
+                setTraintuples(traintuplesData['results'] as TraintupleStub[]);
+                setTraintuplesCount(traintuplesData['count']);
+                setTesttuples(testtuplesData['results'] as TesttupleStub[]);
+                setTesttuplesCount(testtuplesData['count']);
+                setPredicttuples(
+                    predicttuplesData['results'] as PredicttupleStub[]
+                );
+                setPredicttuplesCount(predicttuplesData['count']);
+                setAggregatetuples(
+                    aggregatetuplesData['results'] as AggregatetupleStub[]
+                );
+                setAggregatetuplesCount(aggregatetuplesData['count']);
+                setCompositeTraintuples(
+                    compositeTraintuplesData[
+                        'results'
+                    ] as CompositeTraintupleStub[]
+                );
+                setCompositeTraintuplesCount(compositeTraintuplesData['count']);
                 setLoading(false);
             } catch (error) {
                 if (
@@ -479,6 +660,31 @@ const OmniSearch = () => {
                         <ItemGroup
                             title="Datasets"
                             items={datasetItems}
+                            getItemProps={getItemProps}
+                        />
+                        <ItemGroup
+                            title="Train tasks"
+                            items={traintupleItems}
+                            getItemProps={getItemProps}
+                        />
+                        <ItemGroup
+                            title="Test tasks"
+                            items={testtupleItems}
+                            getItemProps={getItemProps}
+                        />
+                        <ItemGroup
+                            title="Predict tasks"
+                            items={predicttupleItems}
+                            getItemProps={getItemProps}
+                        />
+                        <ItemGroup
+                            title="Aggregate tasks"
+                            items={aggregatetupleItems}
+                            getItemProps={getItemProps}
+                        />
+                        <ItemGroup
+                            title="Composite train tasks"
+                            items={compositeTraintupleItems}
                             getItemProps={getItemProps}
                         />
                     </>
