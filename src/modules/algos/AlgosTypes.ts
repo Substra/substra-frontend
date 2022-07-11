@@ -8,6 +8,7 @@ export enum AssetKindT {
     dataSample = 'ASSET_DATA_SAMPLE',
     model = 'ASSET_MODEL',
     dataManager = 'ASSET_DATA_MANAGER',
+    performance = 'ASSET_PERFORMANCE',
 }
 export type InputT = {
     kind: AssetKindT;
