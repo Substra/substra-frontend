@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add "kind" label for algo performance output (#645)
 
+### Changed
+
+-   Add Hadolint to CI (#647)
+
 ## [0.28.0] - 2022-07-11
 
 ### Added

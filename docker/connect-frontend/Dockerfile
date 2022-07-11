@@ -21,7 +21,7 @@ ENV NODE_ENV=production
 RUN npm run build
 
 
-FROM nginx:latest
+FROM nginx:1.23.0
 
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/dist /usr/share/nginx/html
