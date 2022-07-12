@@ -225,7 +225,12 @@ const ComputePlans = (): JSX.Element => {
                     <HStack spacing="2.5">
                         <RefreshButton
                             loading={computePlansLoading}
-                            actionBuilder={() => listComputePlans({})}
+                            actionBuilder={() =>
+                                listComputePlans({
+                                    page: 1,
+                                    ordering: '-creation_date',
+                                })
+                            }
                             dispatchWithAutoAbort={dispatchWithAutoAbort}
                         />
                         <CustomColumnsModal

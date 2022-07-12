@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Add Hadolint to CI (#647)
+-   Reset compute plan filters when clicking on a refresh button (#643)
 
 ## [0.28.0] - 2022-07-11
 

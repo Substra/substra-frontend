@@ -19,7 +19,9 @@ const RefreshBanner = (): JSX.Element | null => {
         (state) => state.computePlans.computePlansCallTimestamp
     );
 
-    const handleRefresh = useHandleRefresh(() => listComputePlans({}));
+    const handleRefresh = useHandleRefresh(() =>
+        listComputePlans({ page: 1, ordering: '-creation_date' })
+    );
 
     useEffect(() => {
         const updateBanner = async () => {
