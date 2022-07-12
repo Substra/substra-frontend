@@ -17,6 +17,7 @@ import {
     LinearScale,
     PointElement,
     LineElement,
+    Tooltip,
 } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { ZoomPluginOptions } from 'chartjs-plugin-zoom/types/options';
@@ -55,6 +56,7 @@ ChartJS.register(
     LinearScale,
     LineElement,
     PointElement,
+    Tooltip,
     zoomPlugin
 );
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Add "kind" label for algo performance output (#645)
+-   Tooltips are now displayed on performance charts (#649)
 
 ### Changed
 
