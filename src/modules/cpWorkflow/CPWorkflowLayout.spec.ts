@@ -18,7 +18,6 @@ const twoTasksGraph: TaskGraphT = {
             category: TaskCategory.train,
             inputs: [],
             outputs: ['out_model'],
-            source_task_keys: [],
         },
         {
             key: 'b',
@@ -28,7 +27,6 @@ const twoTasksGraph: TaskGraphT = {
             category: TaskCategory.train,
             inputs: ['in_model'],
             outputs: [],
-            source_task_keys: ['a'],
         },
     ],
     edges: [
@@ -72,7 +70,6 @@ const twoTasksPlusTestTupleGraph: TaskGraphT = {
             category: TaskCategory.test,
             inputs: ['in_model'],
             outputs: [],
-            source_task_keys: ['a'],
         },
     ],
     edges: [
@@ -123,7 +120,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             category: TaskCategory.composite,
             inputs: [],
             outputs: ['out_head_model', 'out_trunk_model'],
-            source_task_keys: [],
         },
         {
             key: 'aggregate_a',
@@ -133,7 +129,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             category: TaskCategory.aggregate,
             inputs: ['in_models'],
             outputs: ['out_model'],
-            source_task_keys: ['composite_a'],
         },
         {
             key: 'composite_b',
@@ -143,7 +138,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             category: TaskCategory.composite,
             inputs: ['in_head_model', 'in_trunk_model'],
             outputs: [],
-            source_task_keys: ['composite_a', 'aggregate_a'],
         },
     ],
     edges: [

@@ -13,7 +13,6 @@ export type TaskT = {
     category: TaskCategory;
     inputs: string[];
     outputs: string[];
-    source_task_keys: string[];
 };
 
 export type PositionedTaskT = TaskT & {
