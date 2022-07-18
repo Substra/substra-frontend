@@ -36,15 +36,16 @@ const PerfChartSummaryTooltip = ({
     let top = 'calc(100% - 30px)';
 
     // check if there is enough space below the canvas to display the full tooltip
-    // if there isn't, then place tooltip above the canvas
+    // if there isn't, then place tooltip below the header, as we can't display it over
     if (canvasBoundingRect) {
         const tooltipHeight =
             18 + // header
             higherFivePoints.length * 36 + // items
             (remainingCount > 0 ? 30 : 0) + // footer
             24; // padding
+
         if (tooltipHeight + canvasBoundingRect.bottom > window.innerHeight) {
-            top = `calc(-${tooltipHeight}px - 10px)`;
+            top = `calc(-${canvasBoundingRect.top}px + 134px)`;
         }
     }
 
