@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { Link } from 'wouter';
+
+import { useHrefLocation } from '@/hooks/useLocationWithParams';
 
 const Nav = styled.nav`
     display: flex;
@@ -22,10 +23,12 @@ const Li = styled.li`
 
 type AProps = {
     active: boolean;
+    onClick: (path: string) => void;
 };
 const A = styled.a<AProps>`
     display: flex;
     align-items: center;
+    cursor: pointer;
     font-size: var(--chakra-fontSizes-sm);
     font-weight: var(--chakra-fontWeights-medium);
     line-height: var(--chakra-lineHeights-5);
@@ -50,6 +53,8 @@ const HeaderNavigation = ({
     navItems,
     isActive,
 }: HeaderNavigationProps): JSX.Element => {
+    const [, setHrefLocation] = useHrefLocation();
+
     /**
      * This component follows the accessibility recommendations of the W3C
      * https://www.w3.org/TR/wai-aria-practices/examples/menubar/menubar-1/menubar-1.html
@@ -59,11 +64,13 @@ const HeaderNavigation = ({
             <Ol role="menubar">
                 {navItems.map(({ label, href, paths }) => (
                     <Li role="none" key={href}>
-                        <Link href={href}>
-                            <A role="menuitem" active={isActive(paths)}>
-                                {label}
-                            </A>
-                        </Link>
+                        <A
+                            role="menuitem"
+                            active={isActive(paths)}
+                            onClick={() => setHrefLocation(href)}
+                        >
+                            {label}
+                        </A>
                     </Li>
                 ))}
             </Ol>

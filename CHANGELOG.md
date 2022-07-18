@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add "kind" label for algo performance output (#645)
 -   Tooltips are now displayed on performance charts (#649)
 -   Prevent the tooltip from being partly hidden on performance charts (#611)
+-   Params disappearing when clicking twice on a navigation tab (#651)
 
 ### Changed
 

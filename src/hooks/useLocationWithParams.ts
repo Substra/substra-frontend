@@ -44,3 +44,25 @@ export const useSetLocationPreserveParams = () => {
 
     return setLocationPreserveParams;
 };
+
+export const useHrefLocation = (): [string, (path: string) => void] => {
+    const [location, setLocation] = useLocation();
+    const setLocationParams = useSetLocationParams();
+
+    const setHrefLocation = (path: string) => {
+        if (path === location) {
+            const urlSearchParams = getUrlSearchParams();
+            const newUrlSearchParams = new URLSearchParams();
+            newUrlSearchParams.set('page', '1');
+            const ordering = urlSearchParams.get('ordering');
+            if (ordering) {
+                newUrlSearchParams.set('ordering', ordering);
+            }
+            setLocationParams(newUrlSearchParams);
+        } else {
+            setLocation(path);
+        }
+    };
+
+    return [location, setHrefLocation];
+};
