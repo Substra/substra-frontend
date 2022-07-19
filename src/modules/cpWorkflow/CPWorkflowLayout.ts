@@ -6,11 +6,14 @@ import {
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
-const taskHeight = 170;
-const cellWidth = 400;
-const rowBottomMargin = 30;
-const testTaskLeftPadding = 60;
-const AggregateTaskTopPadding = 60;
+export const NODE_WIDTH = 250;
+export const NODE_HEIGHT = 119;
+
+const NODE_BOTTOM_MARGIN = 51; // Add margin to the node height avoid stacking nodes
+const ROW_BOTTOM_MARGIN = 30;
+const TEST_TASK_LEFT_PADDING = 60;
+const AGGREGATE_TASK_TOP_PADDING = 60;
+const CELL_WIDTH = NODE_WIDTH + TEST_TASK_LEFT_PADDING + 90;
 
 type TaskInCellT = {
     taskRef: TaskT;
@@ -79,7 +82,9 @@ function addTasksToGrid(grid: GridT, tasks: TaskT[]) {
 
 function computeRowsHeight(rows: RowsT) {
     for (const row of Object.values(rows)) {
-        row.height = row.maxNbTasksInACell * taskHeight + rowBottomMargin;
+        row.height =
+            row.maxNbTasksInACell * (NODE_HEIGHT + NODE_BOTTOM_MARGIN) +
+            ROW_BOTTOM_MARGIN;
     }
 }
 
@@ -99,7 +104,7 @@ function computeRowsY(grid: GridT) {
 function computeCellsX(rows: RowsT) {
     for (const row of Object.values(rows)) {
         for (const [index, cell] of row.cells.entries()) {
-            cell.x = index * cellWidth;
+            cell.x = index * CELL_WIDTH;
         }
     }
 }
@@ -150,17 +155,18 @@ function computeTasksRelativePositionInCell(rows: RowsT) {
         cell: GridCellT
     ) {
         task.relativeXInCell = 0;
-        task.relativeYInCell = cell.tasks.indexOf(task) * taskHeight;
+        task.relativeYInCell =
+            cell.tasks.indexOf(task) * (NODE_HEIGHT + NODE_BOTTOM_MARGIN);
 
         if (task.taskRef.category === TaskCategory.test) {
             // Testtuples are drawn with a little shifting on the x axis
             // to symbolize they are executed after the other tasks of the same rank
-            task.relativeXInCell += testTaskLeftPadding;
+            task.relativeXInCell += TEST_TASK_LEFT_PADDING;
         }
         if (task.taskRef.category == TaskCategory.aggregate) {
             // Aggregatetuple are drawn with a little shifting on the y axis
             // to avoid they are drawn on top of composite-to-composite edges of the same worker
-            task.relativeYInCell += AggregateTaskTopPadding;
+            task.relativeYInCell += AGGREGATE_TASK_TOP_PADDING;
         }
     }
 

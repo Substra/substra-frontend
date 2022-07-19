@@ -63,7 +63,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                 {/*Header*/}
                 <Box
                     padding="6px"
-                    bgColor={NODE_BORDER_COLOR[data.status]}
+                    backgroundColor={NODE_BORDER_COLOR[data.status]}
                     color="white"
                 >
                     <Text fontWeight="bold">{`${
@@ -74,7 +74,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                         top="5px"
                         right="6px"
                         padding="2px 4px 2px 4px"
-                        bgColor={NODE_LABEL_COLOR[data.status]}
+                        backgroundColor={NODE_LABEL_COLOR[data.status]}
                         color="white"
                         borderRadius={3}
                         fontSize={10}

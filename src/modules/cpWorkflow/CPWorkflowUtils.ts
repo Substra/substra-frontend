@@ -6,6 +6,11 @@ import {
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
+import { NODE_WIDTH } from './CPWorkflowLayout';
+
+export const MAX_ZOOM_LEVEL = 1;
+export const MIN_ZOOM_LEVEL = 0.18;
+
 export const NODE_BORDER_COLOR: Record<TupleStatus, string> = {
     [TupleStatus.failed]: '#F31B61',
     [TupleStatus.waiting]: '#ADADAD',
@@ -40,7 +45,7 @@ export default function makeReactFlowGraph(graphItems: LayoutedTaskGraphT): {
             style: {
                 borderRadius: '4px',
                 zIndex: '3',
-                width: '250px',
+                width: NODE_WIDTH,
                 border: `2px solid ${NODE_BORDER_COLOR[task.status]}`,
                 color: NODE_LABEL_COLOR[task.status],
                 background: 'white',

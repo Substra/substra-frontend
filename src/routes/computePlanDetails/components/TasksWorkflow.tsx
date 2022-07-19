@@ -1,22 +1,31 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import ReactFlow, {
-    Controls,
     Background,
     useNodesState,
     useEdgesState,
     ReactFlowProvider,
-    PanOnScrollMode,
     Node,
+    useReactFlow,
+    useStoreApi,
 } from 'react-flow-renderer';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import { computeLayout } from '@/modules/cpWorkflow/CPWorkflowLayout';
+import { useKeyPress } from '@/hooks/useKeyPress';
+import {
+    computeLayout,
+    NODE_WIDTH,
+    NODE_HEIGHT,
+} from '@/modules/cpWorkflow/CPWorkflowLayout';
 import { PositionedTaskT } from '@/modules/cpWorkflow/CPWorkflowTypes';
-import makeReactFlowGraph from '@/modules/cpWorkflow/CPWorkflowUtils';
+import makeReactFlowGraph, {
+    MIN_ZOOM_LEVEL,
+    MAX_ZOOM_LEVEL,
+} from '@/modules/cpWorkflow/CPWorkflowUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
+import WorkflowControls from './WorkflowControls';
 import TaskNode from './WorkflowTaskNode';
 
 const nodeTypes = {
@@ -36,6 +45,12 @@ const TasksWorkflow = (): JSX.Element => {
     const [selectedTaskKey, setSelectedTaskKey] = useState('');
     const [selectedTaskCategory, setSelectedTaskCategory] =
         useState<TaskCategory>(TaskCategory.test);
+    const [currentZoom, setCurrentZoom] = useState(0.9);
+
+    const store = useStoreApi();
+    const fitViewOnInitDone = store.getState().fitViewOnInitDone;
+
+    const { zoomTo, getZoom, fitBounds } = useReactFlow();
 
     useEffect(() => {
         const rfGraph = makeReactFlowGraph(layoutedGraph);
@@ -50,8 +65,74 @@ const TasksWorkflow = (): JSX.Element => {
         }
     };
 
+    const updateZoomLevel = () => {
+        const zoomLevel = getZoom();
+        setCurrentZoom(zoomLevel);
+    };
+
+    const zoomOut = () => {
+        const zoomLevel = getZoom() - 0.3;
+        zoomTo(zoomLevel, { duration: 200 });
+    };
+
+    const zoomIn = () => {
+        const zoomLevel = getZoom() + 0.3;
+        zoomTo(zoomLevel, { duration: 200 });
+    };
+
+    const computeBoundingBox = (nodes: Node[]) => {
+        const xMin = Math.min(...nodes.map((node) => node.position.x));
+        const xMax =
+            Math.max(...nodes.map((node) => node.position.x)) + NODE_WIDTH;
+        const yMin = Math.min(...nodes.map((node) => node.position.y));
+        const yMax =
+            Math.max(...nodes.map((node) => node.position.y)) + NODE_HEIGHT;
+        return {
+            x: xMin,
+            y: yMin,
+            width: xMax - xMin,
+            height: yMax - yMin,
+        };
+    };
+
+    const resetZoom = () => {
+        if (nodes.length) {
+            let bBox;
+            const failedOrDoingNodes = nodes.filter(
+                (node) =>
+                    node.data.status === 'STATUS_DOING' ||
+                    node.data.status === 'STATUS_FAILED'
+            );
+            if (failedOrDoingNodes.length) {
+                bBox = computeBoundingBox(failedOrDoingNodes);
+            } else {
+                const lastRank = Math.max(
+                    ...nodes.map((node) => node.data.rank)
+                );
+                const lastRankNodes = nodes.filter(
+                    (node) => node.data.rank === lastRank
+                );
+                bBox = computeBoundingBox(lastRankNodes);
+            }
+
+            if (bBox) {
+                fitBounds(bBox, { duration: 800 });
+            }
+        }
+    };
+    useKeyPress('r', resetZoom);
+    useKeyPress('+', zoomIn);
+    useKeyPress('-', zoomOut);
+
+    // this is used to call resetZoom as soon as nodes are loaded. We don't want to
+    // use resetZoom in the dependencies, as it causes the hook to run multiple times.
+    useEffect(() => {
+        resetZoom();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fitViewOnInitDone]);
+
     return (
-        <ReactFlowProvider>
+        <div style={{ flexBasis: '100%' }}>
             <TaskDrawer
                 category={selectedTaskCategory}
                 onClose={() => {
@@ -61,24 +142,39 @@ const TasksWorkflow = (): JSX.Element => {
                 setPageTitle={false}
             />
             <ReactFlow
+                defaultPosition={[0, 1000]} // default is set so that no node is visible before the initial fitView - which will occur when all nodes are loaded
+                fitView={true}
                 nodeTypes={nodeTypes}
                 nodes={nodes}
                 edges={edges}
-                minZoom={0.18}
+                minZoom={MIN_ZOOM_LEVEL}
+                maxZoom={MAX_ZOOM_LEVEL}
+                defaultZoom={MIN_ZOOM_LEVEL}
                 nodesDraggable={false}
                 nodesConnectable={false}
                 onNodeClick={onNodeClick}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 zoomOnScroll={true}
-                panOnScroll={false}
-                panOnScrollMode={PanOnScrollMode.Horizontal}
+                attributionPosition="bottom-left"
+                onMove={updateZoomLevel}
+                deleteKeyCode={null}
             >
-                <Controls />
                 <Background color="#aaa" gap={16} />
             </ReactFlow>
-        </ReactFlowProvider>
+            <WorkflowControls
+                resetZoom={resetZoom}
+                zoomOut={zoomOut}
+                zoomIn={zoomIn}
+                zoomOutDisabled={currentZoom <= MIN_ZOOM_LEVEL}
+                zoomInDisabled={currentZoom >= MAX_ZOOM_LEVEL}
+            />
+        </div>
     );
 };
 
-export default TasksWorkflow;
+export default () => (
+    <ReactFlowProvider>
+        <TasksWorkflow />
+    </ReactFlowProvider>
+);
