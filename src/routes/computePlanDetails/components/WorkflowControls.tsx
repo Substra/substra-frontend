@@ -1,13 +1,13 @@
 import { Button, Flex, HStack, IconButton, Kbd } from '@chakra-ui/react';
 import { RiAddFill, RiSubtractFill } from 'react-icons/ri';
 
-interface WorkflowControlProps {
+type WorkflowControlProps = {
     resetZoom: () => void;
     zoomOut: () => void;
     zoomIn: () => void;
     zoomOutDisabled: boolean;
     zoomInDisabled: boolean;
-}
+};
 
 const WorkflowControls = ({
     resetZoom,

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-export type OnOptionChange = (
+export type OnOptionChangeT = (
     value: string
 ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 
 const useSelection = (
     initialSelection: string[] = []
-): [string[], OnOptionChange, () => void, (values: string[]) => void] => {
+): [string[], OnOptionChangeT, () => void, (values: string[]) => void] => {
     const [selection, setSelection] = useState<string[]>(initialSelection);
 
     const onSelectionChange =

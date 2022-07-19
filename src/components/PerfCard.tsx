@@ -1,10 +1,10 @@
 import { Tooltip, Flex, Text, Box } from '@chakra-ui/react';
 
-interface PerformanceCardProps {
+type PerformanceCardProps = {
     title: string;
     children: React.ReactNode;
     onClick: () => void;
-}
+};
 
 const PerfCard = ({
     title,

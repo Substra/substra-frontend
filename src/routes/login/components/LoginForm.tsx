@@ -21,7 +21,7 @@ import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import { loginPayload } from '@/modules/me/MeApi';
+import { LoginPayloadT } from '@/modules/me/MeApi';
 import { logIn } from '@/modules/me/MeSlice';
 import { retrieveInfo } from '@/modules/me/MeSlice';
 import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
@@ -41,7 +41,7 @@ const LoginForm = (): JSX.Element => {
     const userError = useAppSelector((state) => state.me.error);
 
     const submitLogin = async (username: string, password: string) => {
-        const payload: loginPayload = {
+        const payload: LoginPayloadT = {
             username,
             password,
         };

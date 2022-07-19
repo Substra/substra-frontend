@@ -4,19 +4,19 @@ import {
     isTraintupleStub,
 } from '@/libs/tuples';
 
-import { Model, ModelCategory } from './ModelsTypes';
+import { ModelT, ModelCategory } from './ModelsTypes';
 import {
-    Aggregatetuple,
-    CompositeTraintupleStub,
-    TraintupleStub,
+    AggregatetupleT,
+    CompositeTraintupleStubT,
+    TraintupleStubT,
 } from './TuplesTypes';
 
-type TupleWithModels =
-    | TraintupleStub
-    | CompositeTraintupleStub
-    | Aggregatetuple;
+type TupleWithModelsT =
+    | TraintupleStubT
+    | CompositeTraintupleStubT
+    | AggregatetupleT;
 
-function getModels(task: TupleWithModels): Model[] {
+function getModels(task: TupleWithModelsT): ModelT[] {
     let models;
     if (isAggregatetuple(task)) {
         models = task.aggregate.models;
@@ -28,12 +28,12 @@ function getModels(task: TupleWithModels): Model[] {
     return models || [];
 }
 
-export function getSimpleModel(task: TupleWithModels): Model | undefined {
+export function getSimpleModel(task: TupleWithModelsT): ModelT | undefined {
     const models = getModels(task);
     return models.find((model) => model.category === ModelCategory.simple);
 }
 
-export function getHeadModel(task: TupleWithModels): Model | undefined {
+export function getHeadModel(task: TupleWithModelsT): ModelT | undefined {
     const models = getModels(task);
     return models.find((model) => model.category === ModelCategory.head);
 }

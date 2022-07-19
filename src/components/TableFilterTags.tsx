@@ -9,20 +9,20 @@ import {
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
 import { formatDuration } from '@/libs/utils';
-import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
+import { MetadataFilterWithUuidT } from '@/modules/metadata/MetadataTypes';
 
-interface TableFilterTagsProps {
+type TableFilterTagsProps = {
     children: React.ReactNode | React.ReactNode[];
-}
+};
 
 export const TableFilterTags = ({
     children,
 }: TableFilterTagsProps): JSX.Element => <HStack>{children}</HStack>;
 
-interface FilterTagProps {
+type FilterTagProps = {
     label: string | JSX.Element;
     clear: () => void;
-}
+};
 const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
     <Tag
         size="md"
@@ -53,12 +53,12 @@ const FilterTagLabel = ({
     </>
 );
 
-interface MultipleFilterTagProps {
+type MultipleFilterTagProps = {
     label: string;
     syncedArrayStateName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formatter?: (value: any) => string;
-}
+};
 const MultipleFilterTag = ({
     label,
     syncedArrayStateName,
@@ -197,7 +197,7 @@ export const DateFilterTag = ({
 export const MetadataFilterTag = (): JSX.Element | null => {
     const [filters, setFilters] = useMetadataWithUUID();
 
-    const clear = (filter: MetadataFilterWithUUID) => () => {
+    const clear = (filter: MetadataFilterWithUuidT) => () => {
         setFilters(filters.filter((f) => f.uuid !== filter.uuid));
     };
 

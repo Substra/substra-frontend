@@ -321,12 +321,12 @@ const OrganizationList = ({
     );
 };
 
-interface ComputePlanSectionProps {
+type ComputePlanSectionProps = {
     computePlanKey: string;
     isFavorite: (cpkey: string) => boolean;
     addToFavorites: (favorite: string) => void;
     removeFromFavorites: (favorite: string) => void;
-}
+};
 const ComputePlanSection = ({
     computePlanKey,
     isFavorite,

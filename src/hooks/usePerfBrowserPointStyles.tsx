@@ -24,9 +24,9 @@ const POINT_STYLE_ICONS = [
     'cloudy-2',
 ] as const;
 
-type PointStyleIcon = typeof POINT_STYLE_ICONS[number];
+type PointStyleIconT = typeof POINT_STYLE_ICONS[number];
 
-const POINT_STYLE_ICON_COMPONENTS: Record<PointStyleIcon, IconType> = {
+const POINT_STYLE_ICON_COMPONENTS: Record<PointStyleIconT, IconType> = {
     play: RiPlayFill,
     'checkbox-blank': RiCheckboxBlankFill,
     heart: RiHeartFill,
@@ -35,7 +35,7 @@ const POINT_STYLE_ICON_COMPONENTS: Record<PointStyleIcon, IconType> = {
     'cloudy-2': RiCloudy2Fill,
 };
 
-const DATA_URL_BUILDER: Record<PointStyleIcon, (color: string) => string> = {
+const DATA_URL_BUILDER: Record<PointStyleIconT, (color: string) => string> = {
     play: (color: string) =>
         `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M19.376 12.416L8.777 19.482A.5.5 0 0 1 8 19.066V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832z' fill='${color}'/%3E%3C/svg%3E`,
     'checkbox-blank': (color: string): string =>
@@ -63,13 +63,15 @@ const ALL_COLORS: string[] = PERF_BROWSER_COLORSCHEMES.reduce(
     []
 );
 
-const getImg = (icon: PointStyleIcon, color: string) => {
+const getImg = (icon: PointStyleIconT, color: string) => {
     const img = new Image(10, 10);
     img.src = DATA_URL_BUILDER[icon](color.replace('#', '%23'));
     return img;
 };
 
-const getAllImgs = (icon: PointStyleIcon): Record<string, HTMLImageElement> => {
+const getAllImgs = (
+    icon: PointStyleIconT
+): Record<string, HTMLImageElement> => {
     const res: Record<string, HTMLImageElement> = {};
     for (const color of ALL_COLORS) {
         res[color] = getImg(icon, color);
@@ -77,7 +79,10 @@ const getAllImgs = (icon: PointStyleIcon): Record<string, HTMLImageElement> => {
     return res;
 };
 
-const POINT_STYLES: Record<PointStyleIcon, Record<string, HTMLImageElement>> = {
+const POINT_STYLES: Record<
+    PointStyleIconT,
+    Record<string, HTMLImageElement>
+> = {
     play: getAllImgs('play'),
     'checkbox-blank': getAllImgs('checkbox-blank'),
     heart: getAllImgs('heart'),
@@ -90,7 +95,7 @@ const usePerfBrowserPointStyles = () => {
     const { organizations } = useContext(PerfBrowserContext);
 
     const getPointStyleIcon = useCallback(
-        (worker: string): PointStyleIcon | null => {
+        (worker: string): PointStyleIconT | null => {
             const index = organizations.map((n) => n.id).indexOf(worker);
 
             if (index === -1) {

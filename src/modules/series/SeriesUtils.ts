@@ -1,20 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { areSetEqual } from '@/libs/utils';
-import { OrganizationType } from '@/modules/organizations/OrganizationsTypes';
+import { OrganizationT } from '@/modules/organizations/OrganizationsTypes';
 import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
-import { PerformanceType } from '@/modules/perf/PerformancesTypes';
+import { PerformanceT } from '@/modules/perf/PerformancesTypes';
 
 import {
-    DataPoint,
+    DataPointT,
     PointT,
     SerieFeaturesT,
-    SerieRankData,
+    SerieRankDataT,
     SerieT,
 } from './SeriesTypes';
 
 function buildSerieFeatures(
-    performance: PerformanceType,
+    performance: PerformanceT,
     computePlanKey: string
 ): SerieFeaturesT {
     return {
@@ -65,7 +65,7 @@ function getRoundAsNumber(str: string | null): number {
 }
 
 export function buildSeries(
-    cpPerformances: PerformanceType[],
+    cpPerformances: PerformanceT[],
     computePlanKey: string
 ): SerieT[] {
     // create series from test tasks
@@ -114,9 +114,7 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     return groups;
 }
 
-export const getSeriesOrganizations = (
-    series: SerieT[]
-): OrganizationType[] => {
+export const getSeriesOrganizations = (series: SerieT[]): OrganizationT[] => {
     const organizations: string[] = [];
     for (const serie of series) {
         if (!organizations.includes(serie.worker)) {
@@ -177,8 +175,8 @@ export const compareSeries = <T extends { id: string }>(
 };
 
 export const compareSerieRankData = (
-    a: SerieRankData,
-    b: SerieRankData
+    a: SerieRankDataT,
+    b: SerieRankDataT
 ): -1 | 0 | 1 => {
     const organizationsRes = compareOrganizations(a.worker, b.worker);
     if (organizationsRes !== 0) {
@@ -187,7 +185,7 @@ export const compareSerieRankData = (
     return compareSeries(a, b);
 };
 
-export const compareDataPoint = (a: DataPoint, b: DataPoint) => {
+export const compareDataPoint = (a: DataPointT, b: DataPointT) => {
     if (a.y < b.y) {
         return -1;
     }

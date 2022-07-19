@@ -14,14 +14,14 @@ import {
     getNewsItemAssetLabel,
     getNewsItemStatusLabel,
     NewsItemStatus,
-    NewsItemType,
+    NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 const buildToastDescription =
-    (setLocation: (location: string) => void, news: NewsItemType) =>
+    (setLocation: (location: string) => void, news: NewsItemT) =>
     ({ onClose }: { onClose: () => void }): JSX.Element =>
         (
             <Button
@@ -53,7 +53,7 @@ const Actualizer = (): null => {
         const getImportantNews = async () => {
             const pageSize = NEWS_FEED_PAGE_SIZE;
 
-            const importantNews = await getAllPages<NewsItemType>(
+            const importantNews = await getAllPages<NewsItemT>(
                 (page) =>
                     NewsFeedApi.listNewsFeed(
                         {

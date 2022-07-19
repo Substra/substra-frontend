@@ -6,9 +6,9 @@ import { RiGitCommitLine } from 'react-icons/ri';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
-    CompositeTraintupleStub,
-    TraintupleStub,
-    AggregatetupleStub,
+    CompositeTraintupleStubT,
+    TraintupleStubT,
+    AggregatetupleStubT,
 } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
@@ -20,15 +20,15 @@ const DrawerSectionParentTasksEntry = ({
     parentTasks,
 }: {
     parentTasks: (
-        | TraintupleStub
-        | AggregatetupleStub
-        | CompositeTraintupleStub
+        | TraintupleStubT
+        | AggregatetupleStubT
+        | CompositeTraintupleStubT
     )[];
 }): JSX.Element | null => {
     const [isTaskPath] = useRoute(PATHS.TASK);
 
     const getTaskHref = (
-        task: TraintupleStub | AggregatetupleStub | CompositeTraintupleStub
+        task: TraintupleStubT | AggregatetupleStubT | CompositeTraintupleStubT
     ): string => {
         if (isTaskPath) {
             return compilePath(PATHS.TASK, {

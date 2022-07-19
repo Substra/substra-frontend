@@ -2,9 +2,9 @@ import { AxiosPromise } from 'axios';
 
 import { capitalize as capitalizeString } from '@/libs/utils';
 
-import { AssetType, PaginatedApiResponse } from './CommonTypes';
+import { AssetT, PaginatedApiResponseT } from './CommonTypes';
 
-const ASSET_LABEL: Record<AssetType, string> = {
+const ASSET_LABEL: Record<AssetT, string> = {
     algo: 'algorithm',
     dataset: 'dataset',
     composite_algo: 'algorithm',
@@ -18,7 +18,7 @@ const ASSET_LABEL: Record<AssetType, string> = {
 };
 
 export const getAssetLabel = (
-    asset: AssetType,
+    asset: AssetT,
     { capitalize, plural }: { capitalize?: boolean; plural?: boolean }
 ): string => {
     let label = ASSET_LABEL[asset];
@@ -32,7 +32,7 @@ export const getAssetLabel = (
 };
 
 export const getAllPages = async <T>(
-    getPage: (page: number) => AxiosPromise<PaginatedApiResponse<T>>,
+    getPage: (page: number) => AxiosPromise<PaginatedApiResponseT<T>>,
     pageSize: number
 ): Promise<T[]> => {
     let res: T[] = [];

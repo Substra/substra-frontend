@@ -1,10 +1,10 @@
 import { Icon, Tag } from '@chakra-ui/react';
 
-export interface IconTagProps {
+export type IconTagProps = {
     icon: React.ElementType;
     backgroundColor: string;
     fill: string;
-}
+};
 const IconTag = ({
     icon,
     backgroundColor,

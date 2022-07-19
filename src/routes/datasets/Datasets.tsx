@@ -31,7 +31,7 @@ import {
 } from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import {
@@ -96,7 +96,7 @@ const Datasets = (): JSX.Element => {
         canAccessLogs,
     ]);
 
-    const datasets: DatasetStubType[] = useAppSelector(
+    const datasets: DatasetStubT[] = useAppSelector(
         (state) => state.datasets.datasets
     );
     const datasetsLoading = useAppSelector(

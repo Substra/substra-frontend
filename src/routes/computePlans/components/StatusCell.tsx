@@ -14,9 +14,9 @@ import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
 import ComputePlanTaskStatuses from '@/components/ComputePlanTaskStatuses';
 import Status from '@/components/Status';
 
-interface StatusCellProps {
+type StatusCellProps = {
     computePlan: ComputePlanT;
-}
+};
 const StatusCell = ({ computePlan }: StatusCellProps): JSX.Element => {
     return (
         <Popover trigger="hover" placement="bottom-start">

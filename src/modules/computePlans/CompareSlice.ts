@@ -3,32 +3,32 @@ import { AxiosError } from 'axios';
 
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import {
-    ComputePlanStub,
+    ComputePlanStubT,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
 
-interface CompareState {
-    computePlans: ComputePlanStub[];
+type CompareStateT = {
+    computePlans: ComputePlanStubT[];
     loading: boolean;
     error: string;
-}
+};
 
-const initialState: CompareState = {
+const initialState: CompareStateT = {
     computePlans: [],
     loading: true,
     error: '',
 };
 
-interface retrieveComputePlansArgs {
+type RetrieveComputePlansArgsProps = {
     computePlanKeys: string[];
-}
+};
 export const retrieveComputePlans = createAsyncThunk<
     ComputePlanT[],
-    retrieveComputePlansArgs,
+    RetrieveComputePlansArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getMultiple',
-    async ({ computePlanKeys }: retrieveComputePlansArgs, thunkAPI) => {
+    async ({ computePlanKeys }: RetrieveComputePlansArgsProps, thunkAPI) => {
         const promises = computePlanKeys.map((computePlanKey) =>
             ComputePlansApi.retrieveComputePlan(computePlanKey, {
                 signal: thunkAPI.signal,

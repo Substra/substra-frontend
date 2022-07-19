@@ -2,22 +2,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import * as OrganizationsAPI from './OrganizationsApi';
-import { OrganizationType } from './OrganizationsTypes';
+import { OrganizationT } from './OrganizationsTypes';
 
-interface OrganizationsState {
-    organizations: OrganizationType[];
+type OrganizationsStateT = {
+    organizations: OrganizationT[];
     organizationsLoading: boolean;
     organizationsError: string;
-}
+};
 
-const initialState: OrganizationsState = {
+const initialState: OrganizationsStateT = {
     organizations: [],
     organizationsLoading: false,
     organizationsError: '',
 };
 
 export const listOrganizations = createAsyncThunk<
-    OrganizationType[],
+    OrganizationT[],
     void,
     { rejectValue: string }
 >('organizations/list', async (_, thunkAPI) => {

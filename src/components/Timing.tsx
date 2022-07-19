@@ -7,9 +7,9 @@ import {
 } from '@/modules/computePlans/ComputePlansTypes';
 import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-interface TimingProps {
+type TimingProps = {
     asset: ComputePlanT | AnyTupleT;
-}
+};
 
 const Timing = ({ asset }: TimingProps): JSX.Element => {
     if (!asset.start_date) {

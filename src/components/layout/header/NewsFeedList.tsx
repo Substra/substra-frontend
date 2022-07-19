@@ -46,15 +46,15 @@ const NewsFeedListSkeleton = (): JSX.Element => {
     );
 };
 
-interface NewsFeedListArgs {
+type NewsFeedListProps = {
     lastNewsSeen: string;
     setLastNewsSeen: (timestamp: string) => void;
-}
+};
 
 const NewsFeedList = ({
     lastNewsSeen,
     setLastNewsSeen,
-}: NewsFeedListArgs): JSX.Element => {
+}: NewsFeedListProps): JSX.Element => {
     const dispatch = useAppDispatch();
     const items = useAppSelector((state) => state.newsFeed.items);
     const loading = useAppSelector((state) => state.newsFeed.loading);

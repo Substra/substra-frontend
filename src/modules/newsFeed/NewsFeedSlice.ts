@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
-import { RootState } from '@/store';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
+import { RootStateT } from '@/store';
 
 import * as NewsFeedApi from './NewsFeedApi';
-import { NewsItemType } from './NewsFeedTypes';
+import { NewsItemT } from './NewsFeedTypes';
 
-interface NewsFeedState {
-    items: NewsItemType[];
+type NewsFeedStateT = {
+    items: NewsItemT[];
     count: number;
     currentPage: number;
     loading: boolean;
@@ -18,9 +18,9 @@ interface NewsFeedState {
     actualizedCount: number;
     actualizedCountLoading: boolean;
     actualizedCountError: string;
-}
+};
 
-const initialState: NewsFeedState = {
+const initialState: NewsFeedStateT = {
     items: [],
     count: 0,
     loading: true,
@@ -34,18 +34,18 @@ const initialState: NewsFeedState = {
 
 export const NEWS_FEED_PAGE_SIZE = 10;
 
-type listNewsFeedArgsT = {
+type ListNewsFeedArgsT = {
     firstPage: boolean;
     timestamp_before?: string;
 };
 export const listNewsFeed = createAsyncThunk<
-    PaginatedApiResponse<NewsItemType>,
-    listNewsFeedArgsT,
+    PaginatedApiResponseT<NewsItemT>,
+    ListNewsFeedArgsT,
     { rejectValue: string }
 >(
     'newsFeed/list',
-    async ({ firstPage, timestamp_before }: listNewsFeedArgsT, thunkAPI) => {
-        const state = thunkAPI.getState() as RootState;
+    async ({ firstPage, timestamp_before }: ListNewsFeedArgsT, thunkAPI) => {
+        const state = thunkAPI.getState() as RootStateT;
         const page = firstPage ? 1 : state.newsFeed.currentPage;
 
         try {
@@ -71,7 +71,7 @@ export const listNewsFeed = createAsyncThunk<
 );
 
 export const retrieveActualizedCount = createAsyncThunk<
-    PaginatedApiResponse<NewsItemType>,
+    PaginatedApiResponseT<NewsItemT>,
     { timestamp_after: string },
     { rejectValue: string }
 >('newsFeed/actualizedCount', async ({ timestamp_after }, thunkAPI) => {

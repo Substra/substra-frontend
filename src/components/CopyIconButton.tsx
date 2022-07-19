@@ -6,9 +6,9 @@ import {
 } from '@chakra-ui/react';
 import { RiCheckLine, RiFileCopyLine } from 'react-icons/ri';
 
-interface CopyIconButtonProps extends IconButtonProps {
+type CopyIconButtonProps = IconButtonProps & {
     value: string;
-}
+};
 const CopyIconButton = ({
     value,
     ...props

@@ -8,7 +8,7 @@ const noDefaultBorderRadius = {
     baseStyle: noBorderRadius,
 };
 
-type ColorScheme = {
+type ColorSchemeT = {
     '50': string;
     '100': string;
     '200': string;
@@ -21,7 +21,7 @@ type ColorScheme = {
     '900': string;
 };
 
-const colors: Record<string, ColorScheme> = {
+const colors: Record<string, ColorSchemeT> = {
     gray: {
         '50': '#fafafa',
         '100': '#f1f1f1',

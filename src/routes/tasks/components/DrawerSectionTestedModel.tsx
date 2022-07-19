@@ -11,11 +11,11 @@ import {
     retrieveTraintuple,
 } from '@/modules/tasks/TasksApi';
 import {
-    Aggregatetuple,
-    CompositeTraintuple,
-    Predicttuple,
+    AggregatetupleT,
+    CompositeTraintupleT,
+    PredicttupleT,
     TaskCategory,
-    Traintuple,
+    TraintupleT,
 } from '@/modules/tasks/TuplesTypes';
 
 import { DrawerSectionEntry } from '@/components/DrawerSection';
@@ -25,11 +25,11 @@ import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryConte
 const DrawerSectionTestedModel = ({
     task,
 }: {
-    task: Predicttuple;
+    task: PredicttupleT;
 }): JSX.Element => {
     const [loading, setLoading] = useState<boolean>(true);
     const [parentTask, setParentTask] = useState<
-        Traintuple | CompositeTraintuple | Aggregatetuple
+        TraintupleT | CompositeTraintupleT | AggregatetupleT
     >();
     const withAbortController = useWithAbortController();
 

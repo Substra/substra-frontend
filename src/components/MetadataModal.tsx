@@ -37,10 +37,10 @@ import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import MetadataModalTr from '@/components/MetadataModalTr';
 
-interface MetadataModalProps {
+type MetadataModalProps = {
     // the computePlans props is to be used only when there's no PerfBrowserContext available
     computePlans?: ComputePlanT[];
-}
+};
 
 const MotionModalContent = motion<ModalContentProps>(ModalContent);
 const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);

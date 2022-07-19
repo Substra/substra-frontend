@@ -14,9 +14,9 @@ import {
     useSyncedStringState,
 } from '@/hooks/useSyncedState';
 
-interface SearchBarProps {
+type SearchBarProps = {
     placeholder?: string;
-}
+};
 const SearchBar = ({ placeholder }: SearchBarProps): JSX.Element => {
     const [match, setMatch] = useSyncedStringState('match', '');
     const [, setPage] = useSyncedNumberState('page', 1);

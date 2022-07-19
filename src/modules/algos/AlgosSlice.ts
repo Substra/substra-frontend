@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import * as CommonApi from '@/modules/common/CommonApi';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
 import * as AlgosApi from './AlgosApi';
 import { AlgoT } from './AlgosTypes';
 
-interface AlgoState {
+type AlgoStateT = {
     algos: AlgoT[];
     algosCount: number;
     algosLoading: boolean;
@@ -20,9 +20,9 @@ interface AlgoState {
     description: string;
     descriptionLoading: boolean;
     descriptionError: string;
-}
+};
 
-const initialState: AlgoState = {
+const initialState: AlgoStateT = {
     algos: [],
     algosCount: 0,
     algosLoading: true,
@@ -37,7 +37,7 @@ const initialState: AlgoState = {
     descriptionError: '',
 };
 
-type listAlgosArgs = {
+type ListAlgosProps = {
     page?: number;
     ordering?: string;
     match?: string;
@@ -46,10 +46,10 @@ type listAlgosArgs = {
 };
 
 export const listAlgos = createAsyncThunk<
-    PaginatedApiResponse<AlgoT>,
-    listAlgosArgs,
+    PaginatedApiResponseT<AlgoT>,
+    ListAlgosProps,
     { rejectValue: string }
->('algos/listAlgos', async (params: listAlgosArgs, thunkAPI) => {
+>('algos/listAlgos', async (params: ListAlgosProps, thunkAPI) => {
     try {
         const response = await AlgosApi.listAlgos(params, {
             signal: thunkAPI.signal,

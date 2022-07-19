@@ -2,10 +2,10 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import Pagination from '@/components/Pagination';
 
-interface TablePaginationProps {
+type TablePaginationProps = {
     currentPage: number;
     itemCount: number;
-}
+};
 
 const TablePagination = ({
     currentPage,

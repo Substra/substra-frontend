@@ -55,12 +55,12 @@ import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
 import DrawerSectionTestedModel from './DrawerSectionTestedModel';
 import ErrorAlert from './ErrorAlert';
 
-interface TaskDrawerProps {
+type TaskDrawerProps = {
     category: TaskCategory;
     onClose: () => void;
     taskKey: string | undefined | null;
     setPageTitle: boolean;
-}
+};
 
 const TaskDrawer = ({
     category,

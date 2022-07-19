@@ -26,14 +26,14 @@ import { downloadBlob } from '@/libs/request';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 import { compilePath, PATHS } from '@/routes';
 
-interface BulkSelectionProps {
+type BulkSelectionProps = {
     selectedComputePlans: { key: string; name: string }[];
     unselectComputePlan: (cp: { key: string; name: string }) => void;
     resetSelection: () => void;
     favorites: string[];
     setFavorites: (favorites: string[]) => void;
     isFavorite: (cpKey: string) => boolean;
-}
+};
 
 const BulkSelection = ({
     selectedComputePlans,

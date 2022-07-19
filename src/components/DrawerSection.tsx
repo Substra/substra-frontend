@@ -18,7 +18,7 @@ import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';
-import { PermissionType } from '@/modules/common/CommonTypes';
+import { PermissionT } from '@/modules/common/CommonTypes';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import PermissionTag from '@/components/PermissionTag';
@@ -213,7 +213,7 @@ export const PermissionsDrawerSectionEntry = ({
 }: {
     title?: string;
     loading?: boolean;
-    permission?: PermissionType;
+    permission?: PermissionT;
 }) => {
     if (loading || !permission) {
         return (

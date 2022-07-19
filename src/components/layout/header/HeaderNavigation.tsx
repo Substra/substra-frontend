@@ -41,14 +41,14 @@ const A = styled.a<AProps>`
             : 'var(--chakra-colors-gray-500)'};
 `;
 
-interface HeaderNavigationProps {
+type HeaderNavigationProps = {
     navItems: {
         label: string;
         href: string;
         paths: string[];
     }[];
     isActive: (paths: string[]) => boolean;
-}
+};
 const HeaderNavigation = ({
     navItems,
     isActive,

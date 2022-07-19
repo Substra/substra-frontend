@@ -36,11 +36,11 @@ import CustomColumnImportPopover from '@/components/CustomColumnImportPopover';
 import CustomColumnSharePopover from '@/components/CustomColumnSharePopover';
 import EmptyState from '@/components/EmptyState';
 
-interface ColumnProps extends BoxProps {
+type ColumnProps = BoxProps & {
     title: string;
     buttonLabel: string;
     buttonOnClick: () => void;
-}
+};
 const LayoutColumn = ({
     title,
     buttonLabel,
@@ -85,10 +85,10 @@ const LayoutColumn = ({
     </VStack>
 );
 
-interface ReorderItemProps {
+type ReorderItemProps = {
     column: string;
     remove: (column: string) => void;
-}
+};
 const ReorderItem = ({ column, remove }: ReorderItemProps) => {
     const controls = useDragControls();
 
@@ -126,10 +126,10 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
     );
 };
 
-interface CustomColumnsModalProps {
+type CustomColumnsModalProps = {
     columns: string[];
     setColumns: (columns: string[]) => void;
-}
+};
 
 const CustomColumnsModal = ({
     columns,

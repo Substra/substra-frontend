@@ -4,9 +4,9 @@ import remarkGfm from 'remark-gfm';
 
 import { Box, Heading } from '@chakra-ui/react';
 
-interface MarkdownSectionProps {
+type MarkdownSectionProps = {
     source: string;
-}
+};
 
 const MarkdownSection = ({ source }: MarkdownSectionProps): JSX.Element => (
     <Box width="100%" className="markdown-body">

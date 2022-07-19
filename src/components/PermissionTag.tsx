@@ -6,12 +6,12 @@ import {
     RiUserLine,
 } from 'react-icons/ri';
 
-import { PermissionType } from '@/modules/common/CommonTypes';
+import { PermissionT } from '@/modules/common/CommonTypes';
 
-interface PermissionTagProps {
-    permission: PermissionType;
+type PermissionTagProps = {
+    permission: PermissionT;
     listOrganizations?: boolean;
-}
+};
 const PermissionTag = ({
     permission,
     listOrganizations,

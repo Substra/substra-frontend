@@ -13,22 +13,22 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { AssetType } from '@/modules/common/CommonTypes';
+import { AssetT } from '@/modules/common/CommonTypes';
 
-type ClearCallback = (urlSearchParams: URLSearchParams) => void;
-type ApplyCallback = (urlSearchParams: URLSearchParams) => void;
-type ResetCallback = () => void;
+type ClearCallbackT = (urlSearchParams: URLSearchParams) => void;
+type ApplyCallbackT = (urlSearchParams: URLSearchParams) => void;
+type ResetCallbackT = () => void;
 
-type Register = (
+type RegisterT = (
     name: string,
-    clear: React.RefObject<ClearCallback>,
-    apply: React.RefObject<ApplyCallback>,
-    reset: React.RefObject<ResetCallback>
+    clear: React.RefObject<ClearCallbackT>,
+    apply: React.RefObject<ApplyCallbackT>,
+    reset: React.RefObject<ResetCallbackT>
 ) => void;
 
-interface TableFiltersContext {
-    asset: AssetType;
-    register: Register;
+type TableFiltersContextT = {
+    asset: AssetT;
+    register: RegisterT;
     clearAll: () => void;
     applyAll: () => void;
     resetAll: () => void;
@@ -37,10 +37,10 @@ interface TableFiltersContext {
     onPopoverClose: () => void;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
-}
+};
 
 /* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
-export const TableFiltersContext = createContext<TableFiltersContext>({
+export const TableFiltersContext = createContext<TableFiltersContextT>({
     asset: 'dataset',
     register: (name, clear, apply, reset) => {},
     clearAll: () => {},
@@ -54,23 +54,21 @@ export const TableFiltersContext = createContext<TableFiltersContext>({
 });
 /* eslint-enable @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
 
-export const useTableFiltersContext = (
-    asset: AssetType
-): TableFiltersContext => {
+export const useTableFiltersContext = (asset: AssetT): TableFiltersContextT => {
     const tableFilters = useRef<
         Record<
             string,
             {
-                clear: React.RefObject<ClearCallback>;
-                apply: React.RefObject<ApplyCallback>;
-                reset: React.RefObject<ResetCallback>;
+                clear: React.RefObject<ClearCallbackT>;
+                apply: React.RefObject<ApplyCallbackT>;
+                reset: React.RefObject<ResetCallbackT>;
             }
         >
     >({});
 
     const setLocationParams = useSetLocationParams();
 
-    const register: Register = (name, clear, apply, reset) => {
+    const register: RegisterT = (name, clear, apply, reset) => {
         tableFilters.current[name] = {
             clear,
             apply,
@@ -137,9 +135,9 @@ export const useTableFiltersContext = (
 };
 
 export const useTableFilterCallbackRefs = (filterKey: string) => {
-    const clearRef = useRef<ClearCallback | null>(null);
-    const applyRef = useRef<ApplyCallback | null>(null);
-    const resetRef = useRef<ResetCallback | null>(null);
+    const clearRef = useRef<ClearCallbackT | null>(null);
+    const applyRef = useRef<ApplyCallbackT | null>(null);
+    const resetRef = useRef<ResetCallbackT | null>(null);
 
     const { register } = useContext(TableFiltersContext);
 

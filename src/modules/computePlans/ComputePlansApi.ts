@@ -2,19 +2,19 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import {
-    APIListArgs,
-    PaginatedApiResponse,
+    APIListArgsProps,
+    PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
-import { PerformanceType } from '@/modules/perf/PerformancesTypes';
+import { PerformanceT } from '@/modules/perf/PerformancesTypes';
 import {
-    Aggregatetuple,
-    CompositeTraintupleStub,
-    Predicttuple,
-    TesttupleStub,
-    TraintupleStub,
+    AggregatetupleT,
+    CompositeTraintupleStubT,
+    PredicttupleT,
+    TesttupleStubT,
+    TraintupleStubT,
 } from '@/modules/tasks/TuplesTypes';
 
-import { ComputePlanStub, ComputePlanT } from './ComputePlansTypes';
+import { ComputePlanStubT, ComputePlanT } from './ComputePlansTypes';
 
 const URLS = {
     LIST: '/compute_plan/',
@@ -29,13 +29,13 @@ const URLS = {
     EXPORT_PERFORMANCES: '/performance/export/',
 };
 
-interface ListComputePlansArgs extends APIListArgs {
+type ListComputePlansArgsProps = APIListArgsProps & {
     match?: string;
-}
+};
 export const listComputePlans = (
-    apiListArgs: ListComputePlansArgs,
+    apiListArgs: ListComputePlansArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<ComputePlanStub>> =>
+): AxiosPromise<PaginatedApiResponseT<ComputePlanStubT>> =>
     API.authenticatedGet(URLS.LIST, {
         ...getApiOptions(apiListArgs),
         ...config,
@@ -53,32 +53,32 @@ export const cancelComputePlan = (
 ): AxiosPromise<ComputePlanT> =>
     API.post(URLS.CANCEL.replace('__KEY__', key), config);
 
-type APIListCPTuplesArgs = APIListArgs & {
+type APIListCPTuplesArgsProps = APIListArgsProps & {
     key: string;
 };
 
 export const listComputePlanTesttuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<TesttupleStub>> => {
+): AxiosPromise<PaginatedApiResponseT<TesttupleStubT>> => {
     return API.authenticatedGet(URLS.LIST_TESTTUPLES.replace('__KEY__', key), {
         ...getApiOptions(apiListArgs),
         ...config,
     });
 };
 export const listComputePlanTraintuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<TraintupleStub>> => {
+): AxiosPromise<PaginatedApiResponseT<TraintupleStubT>> => {
     return API.authenticatedGet(URLS.LIST_TRAINTUPLES.replace('__KEY__', key), {
         ...getApiOptions(apiListArgs),
         ...config,
     });
 };
 export const listComputePlanCompositeTraintuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>> => {
+): AxiosPromise<PaginatedApiResponseT<CompositeTraintupleStubT>> => {
     return API.authenticatedGet(
         URLS.LIST_COMPOSITE_TRAINTUPLES.replace('__KEY__', key),
         {
@@ -88,9 +88,9 @@ export const listComputePlanCompositeTraintuples = (
     );
 };
 export const listComputePlanAggregatetuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<Aggregatetuple>> => {
+): AxiosPromise<PaginatedApiResponseT<AggregatetupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
         {
@@ -101,9 +101,9 @@ export const listComputePlanAggregatetuples = (
 };
 
 export const listComputePlanPredicttuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<Predicttuple>> => {
+): AxiosPromise<PaginatedApiResponseT<PredicttupleT>> => {
     return API.authenticatedGet(
         URLS.LIST_PREDICTTUPLES.replace('__KEY__', key),
         {
@@ -114,9 +114,9 @@ export const listComputePlanPredicttuples = (
 };
 
 export const listComputePlanPerformances = (
-    { key, ...apiListArgs }: APIListCPTuplesArgs,
+    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<PerformanceType>> => {
+): AxiosPromise<PaginatedApiResponseT<PerformanceT>> => {
     return API.authenticatedGet(
         URLS.LIST_PERFORMANCES.replace('__KEY__', key),
         {
@@ -127,7 +127,7 @@ export const listComputePlanPerformances = (
 };
 
 export const exportPerformances = (
-    apiListArgs: APIListArgs,
+    apiListArgs: APIListArgsProps,
     config?: AxiosRequestConfig
 ) => {
     return API.authenticatedGet(URLS.EXPORT_PERFORMANCES, {

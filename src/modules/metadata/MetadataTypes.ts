@@ -1,11 +1,11 @@
-export type MetadataFilterType = 'contains' | 'exists' | 'is';
+export type MetadataFilterT = 'contains' | 'exists' | 'is';
 
-export type MetadataFilter = {
+export type MetadataFilterPropsT = {
     key: string;
-    type: MetadataFilterType;
+    type: MetadataFilterT;
     value?: string;
 };
 
-export type MetadataFilterWithUUID = MetadataFilter & {
+export type MetadataFilterWithUuidT = MetadataFilterPropsT & {
     uuid: string;
 };

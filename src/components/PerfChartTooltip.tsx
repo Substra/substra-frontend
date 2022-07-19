@@ -1,18 +1,18 @@
 import { List } from '@chakra-ui/react';
 
-import { DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/modules/series/SeriesTypes';
 
 import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 
 const TOOLTIP_WIDTH = 340;
 
-interface PerfChartTooltipProps {
+type PerfChartTooltipProps = {
     x: number;
     y: number;
     showTooltip: () => void;
     hideTooltip: () => void;
-    points: DataPoint[];
-}
+    points: DataPointT[];
+};
 
 const PerfChartTooltip = ({
     x,

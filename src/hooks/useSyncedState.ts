@@ -5,7 +5,7 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { MetadataFilterWithUUID } from '@/modules/metadata/MetadataTypes';
+import { MetadataFilterWithUuidT } from '@/modules/metadata/MetadataTypes';
 import {
     addUUID,
     isMetadataFilter,
@@ -264,7 +264,7 @@ export const useEndDate = () => {
 // * one that exposes the value as actual objects for edition
 // * one that exposes the value as string for inclusion in API calls
 export const metadataToString = (
-    metadata: MetadataFilterWithUUID[]
+    metadata: MetadataFilterWithUuidT[]
 ): string => {
     const cleanMetadata = metadata.filter(isMetadataFilter).map(removeUUID);
     if (cleanMetadata.length > 0) {
@@ -273,7 +273,7 @@ export const metadataToString = (
         return '';
     }
 };
-const parseMetadata = (v: string): MetadataFilterWithUUID[] => {
+const parseMetadata = (v: string): MetadataFilterWithUuidT[] => {
     let metadata;
     try {
         metadata = JSON.parse(v);
@@ -287,7 +287,7 @@ const parseMetadata = (v: string): MetadataFilterWithUUID[] => {
     }
 };
 export const useMetadataWithUUID = () =>
-    useSyncedState<MetadataFilterWithUUID[]>(
+    useSyncedState<MetadataFilterWithUuidT[]>(
         'metadata',
         [],
         parseMetadata,

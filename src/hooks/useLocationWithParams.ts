@@ -3,15 +3,18 @@ import { useLocation } from 'wouter';
 export const getUrlSearchParams = (): URLSearchParams =>
     new URLSearchParams(window.location.search);
 
-type SetLocationWithParams = (
+type SetLocationWithParamsProps = (
     to: string,
     params: URLSearchParams,
     options?: { replace?: boolean }
 ) => void;
 
-export const useLocationWithParams = (): [string, SetLocationWithParams] => {
+export const useLocationWithParams = (): [
+    string,
+    SetLocationWithParamsProps
+] => {
     const [location, setLocation] = useLocation();
-    const setLocationWithParams: SetLocationWithParams = (
+    const setLocationWithParams: SetLocationWithParamsProps = (
         to,
         params,
         options

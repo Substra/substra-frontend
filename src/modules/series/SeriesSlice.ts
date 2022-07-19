@@ -3,18 +3,18 @@ import { AxiosError } from 'axios';
 
 import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import { PerformanceType } from '@/modules/perf/PerformancesTypes';
+import { PerformanceT } from '@/modules/perf/PerformancesTypes';
 
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
 
-interface SeriesState {
+type SeriesStateT = {
     series: SerieT[];
     loading: boolean;
     error: string;
-}
+};
 
-const initialState: SeriesState = {
+const initialState: SeriesStateT = {
     series: [],
     loading: true,
     error: '',
@@ -26,7 +26,7 @@ const getComputePlanSeries = async (
     rejectWithValue: (value: string) => any,
     signal: AbortSignal
 ): Promise<SerieT[]> => {
-    let cpPerformances: PerformanceType[];
+    let cpPerformances: PerformanceT[];
 
     try {
         const pageSize = 100;

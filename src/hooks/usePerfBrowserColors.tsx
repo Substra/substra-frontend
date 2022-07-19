@@ -3,10 +3,10 @@ import { useCallback, useContext } from 'react';
 import chakraTheme from '@/assets/chakraTheme';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 
-interface ColorDiscriminant {
+type ColorDiscriminantProps = {
     computePlanKey: string;
     worker: string;
-}
+};
 
 export const PERF_BROWSER_COLORSCHEMES = [
     'teal',
@@ -25,7 +25,7 @@ const usePerfBrowserColors = () => {
         useContext(PerfBrowserContext);
 
     const getColorScheme = useCallback(
-        ({ computePlanKey, worker }: ColorDiscriminant): string => {
+        ({ computePlanKey, worker }: ColorDiscriminantProps): string => {
             let index = 0;
             if (colorMode === 'computePlan') {
                 index = computePlans.findIndex(
@@ -48,7 +48,10 @@ const usePerfBrowserColors = () => {
     );
 
     const getColor = useCallback(
-        (colorDiscriminant: ColorDiscriminant, intensity: string): string => {
+        (
+            colorDiscriminant: ColorDiscriminantProps,
+            intensity: string
+        ): string => {
             return chakraTheme.colors[getColorScheme(colorDiscriminant)][
                 intensity
             ];

@@ -15,11 +15,11 @@ import useCancelComputePlan from '@/routes/computePlanDetails/hooks/useCancelCom
 
 import PerfDownloadButton from '@/components/PerfDownloadButton';
 
-interface ActionsProps {
+type ActionsProps = {
     computePlan: ComputePlanT | null;
     loading: boolean;
     metadataModal?: React.ReactNode;
-}
+};
 const Actions = ({
     computePlan,
     loading,

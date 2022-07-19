@@ -1,55 +1,55 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError, AxiosPromise, AxiosRequestConfig } from 'axios';
 
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
 import * as TasksApi from './TasksApi';
 import {
-    Aggregatetuple,
-    AggregatetupleStub,
-    CompositeTraintuple,
-    CompositeTraintupleStub,
-    Predicttuple,
-    PredicttupleStub,
+    AggregatetupleT,
+    AggregatetupleStubT,
+    CompositeTraintupleT,
+    CompositeTraintupleStubT,
+    PredicttupleT,
+    PredicttupleStubT,
     TaskCategory,
-    Testtuple,
-    TesttupleStub,
-    Traintuple,
-    TraintupleStub,
+    TesttupleT,
+    TesttupleStubT,
+    TraintupleT,
+    TraintupleStubT,
 } from './TuplesTypes';
 
-interface TasksState {
-    trainTasks: TraintupleStub[];
+type TasksStateT = {
+    trainTasks: TraintupleStubT[];
     trainTasksCount: number;
     trainTasksLoading: boolean;
     trainTasksError: string;
 
-    testTasks: TesttupleStub[];
+    testTasks: TesttupleStubT[];
     testTasksCount: number;
     testTasksLoading: boolean;
     testTasksError: string;
 
-    compositeTasks: CompositeTraintupleStub[];
+    compositeTasks: CompositeTraintupleStubT[];
     compositeTasksCount: number;
     compositeTasksLoading: boolean;
     compositeTasksError: string;
 
-    aggregateTasks: AggregatetupleStub[];
+    aggregateTasks: AggregatetupleStubT[];
     aggregateTasksCount: number;
     aggregateTasksLoading: boolean;
     aggregateTasksError: string;
 
-    predictTasks: PredicttupleStub[];
+    predictTasks: PredicttupleStubT[];
     predictTasksCount: number;
     predictTasksLoading: boolean;
     predictTasksError: string;
 
     task:
-        | Traintuple
-        | CompositeTraintuple
-        | Aggregatetuple
-        | Testtuple
-        | Predicttuple
+        | TraintupleT
+        | CompositeTraintupleT
+        | AggregatetupleT
+        | TesttupleT
+        | PredicttupleT
         | null;
     taskLoading: boolean;
     taskError: string;
@@ -57,9 +57,9 @@ interface TasksState {
     logs: string;
     logsLoading: boolean;
     logsError: string;
-}
+};
 
-const initialState: TasksState = {
+const initialState: TasksStateT = {
     trainTasks: [],
     trainTasksCount: 0,
     trainTasksLoading: true,
@@ -94,7 +94,7 @@ const initialState: TasksState = {
     logsError: '',
 };
 
-export type listTasksArgs = {
+export type ListTasksProps = {
     page?: number;
     ordering?: string;
     match?: string;
@@ -103,10 +103,10 @@ export type listTasksArgs = {
 };
 
 export const listTrainTasks = createAsyncThunk<
-    PaginatedApiResponse<TraintupleStub>,
-    listTasksArgs,
+    PaginatedApiResponseT<TraintupleStubT>,
+    ListTasksProps,
     { rejectValue: string }
->('tasks/listTrainTasks', async (params: listTasksArgs, thunkAPI) => {
+>('tasks/listTrainTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
         const response = await TasksApi.listTraintuples(params, {
             signal: thunkAPI.signal,
@@ -122,10 +122,10 @@ export const listTrainTasks = createAsyncThunk<
 });
 
 export const listTestTasks = createAsyncThunk<
-    PaginatedApiResponse<TesttupleStub>,
-    listTasksArgs,
+    PaginatedApiResponseT<TesttupleStubT>,
+    ListTasksProps,
     { rejectValue: string }
->('tasks/listTestTasks', async (params: listTasksArgs, thunkAPI) => {
+>('tasks/listTestTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
         const response = await TasksApi.listTesttuples(params, {
             signal: thunkAPI.signal,
@@ -141,10 +141,10 @@ export const listTestTasks = createAsyncThunk<
 });
 
 export const listCompositeTasks = createAsyncThunk<
-    PaginatedApiResponse<CompositeTraintupleStub>,
-    listTasksArgs,
+    PaginatedApiResponseT<CompositeTraintupleStubT>,
+    ListTasksProps,
     { rejectValue: string }
->('tasks/listCompositeTasks', async (params: listTasksArgs, thunkAPI) => {
+>('tasks/listCompositeTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
         const response = await TasksApi.listCompositeTraintuples(params, {
             signal: thunkAPI.signal,
@@ -160,10 +160,10 @@ export const listCompositeTasks = createAsyncThunk<
 });
 
 export const listAggregateTasks = createAsyncThunk<
-    PaginatedApiResponse<AggregatetupleStub>,
-    listTasksArgs,
+    PaginatedApiResponseT<AggregatetupleStubT>,
+    ListTasksProps,
     { rejectValue: string }
->('tasks/listAggregateTasks', async (params: listTasksArgs, thunkAPI) => {
+>('tasks/listAggregateTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
         const response = await TasksApi.listAggregatetuples(params, {
             signal: thunkAPI.signal,
@@ -179,10 +179,10 @@ export const listAggregateTasks = createAsyncThunk<
 });
 
 export const listPredictTasks = createAsyncThunk<
-    PaginatedApiResponse<PredicttupleStub>,
-    listTasksArgs,
+    PaginatedApiResponseT<PredicttupleStubT>,
+    ListTasksProps,
     { rejectValue: string }
->('tasks/listPredictTasks', async (params: listTasksArgs, thunkAPI) => {
+>('tasks/listPredictTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
         const response = await TasksApi.listPredicttuples(params, {
             signal: thunkAPI.signal,
@@ -203,11 +203,11 @@ const retrieveMethods: Record<
         key: string,
         config: AxiosRequestConfig
     ) => AxiosPromise<
-        | Testtuple
-        | Traintuple
-        | CompositeTraintuple
-        | Aggregatetuple
-        | Predicttuple
+        | TesttupleT
+        | TraintupleT
+        | CompositeTraintupleT
+        | AggregatetupleT
+        | PredicttupleT
     >
 > = {
     [TaskCategory.test]: TasksApi.retrieveTesttuple,
@@ -217,11 +217,11 @@ const retrieveMethods: Record<
     [TaskCategory.predict]: TasksApi.retrievePredicttuple,
 };
 export const retrieveTask = createAsyncThunk<
-    | Traintuple
-    | CompositeTraintuple
-    | Aggregatetuple
-    | Testtuple
-    | Predicttuple,
+    | TraintupleT
+    | CompositeTraintupleT
+    | AggregatetupleT
+    | TesttupleT
+    | PredicttupleT,
     { category: TaskCategory; key: string },
     { rejectValue: string }
 >('tasks/get', async ({ category, key }, thunkAPI) => {

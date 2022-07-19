@@ -1,6 +1,6 @@
 import { ScatterDataPoint } from 'chart.js';
 
-export interface SerieFeaturesT {
+export type SerieFeaturesT = {
     algoKey: string;
     datasetKey: string;
     dataSampleKeys: string[];
@@ -8,41 +8,41 @@ export interface SerieFeaturesT {
     metricKey: string;
     metricName: string;
     computePlanKey: string;
-}
+};
 
-export interface PointT {
+export type PointT = {
     rank: number;
     round: number;
     perf: number | null;
     testTaskKey: string | null;
-}
+};
 
-export interface DataPoint extends ScatterDataPoint {
+export type DataPointT = ScatterDataPoint & {
     x: number;
     y: number;
     testTaskKey: string | null;
     worker: string;
     computePlanKey: string;
     serieId: string;
-}
+};
 
-export interface SerieT extends SerieFeaturesT {
+export type SerieT = SerieFeaturesT & {
     id: string;
     points: PointT[];
-}
+};
 
-export interface HighlightedSerie {
+export type HighlightedSerieT = {
     id: string;
     computePlanKey: string;
-}
+};
 
-export interface HighlightedParams {
-    highlightedSerie?: HighlightedSerie;
+export type HighlightedParamsProps = {
+    highlightedSerie?: HighlightedSerieT;
     highlightedComputePlanKey?: string;
     highlightedOrganizationId?: string;
-}
+};
 
-export type SerieRankData = {
+export type SerieRankDataT = {
     id: string;
     computePlanKey: string;
     testTaskKey: string | null;

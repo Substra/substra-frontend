@@ -4,13 +4,13 @@ import { getStatusLabel, getStatusStyle } from '@/libs/status';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-interface StatusProps {
+type StatusProps = {
     status: ComputePlanStatus | TupleStatus;
     size: TagProps['size'];
     variant?: TagProps['variant'];
     withIcon?: boolean;
     count?: number;
-}
+};
 
 const Status = ({
     status,

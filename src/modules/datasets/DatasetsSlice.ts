@@ -2,18 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import * as CommonApi from '@/modules/common/CommonApi';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
 import * as DatasetAPI from './DatasetsApi';
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
+import { DatasetT, DatasetStubT } from './DatasetsTypes';
 
-interface DatasetState {
-    datasets: DatasetStubType[];
+type DatasetStateT = {
+    datasets: DatasetStubT[];
     datasetsCount: number;
     datasetsLoading: boolean;
     datasetsError: string;
 
-    dataset: DatasetType | null;
+    dataset: DatasetT | null;
     datasetLoading: boolean;
     datasetError: string;
 
@@ -24,9 +24,9 @@ interface DatasetState {
     opener: string;
     openerLoading: boolean;
     openerError: string;
-}
+};
 
-const initialState: DatasetState = {
+const initialState: DatasetStateT = {
     datasets: [],
     datasetsCount: 0,
     datasetsLoading: true,
@@ -45,7 +45,7 @@ const initialState: DatasetState = {
     openerError: '',
 };
 
-type listDatasetsArgs = {
+type ListDatasetsArgsProps = {
     page?: number;
     ordering?: string;
     match?: string;
@@ -54,10 +54,10 @@ type listDatasetsArgs = {
 };
 
 export const listDatasets = createAsyncThunk<
-    PaginatedApiResponse<DatasetStubType>,
-    listDatasetsArgs,
+    PaginatedApiResponseT<DatasetStubT>,
+    ListDatasetsArgsProps,
     { rejectValue: string }
->('datasets/list', async (params: listDatasetsArgs, thunkAPI) => {
+>('datasets/list', async (params: ListDatasetsArgsProps, thunkAPI) => {
     try {
         const response = await DatasetAPI.listDatasets(params, {
             signal: thunkAPI.signal,
@@ -73,7 +73,7 @@ export const listDatasets = createAsyncThunk<
 });
 
 export const retrieveDataset = createAsyncThunk<
-    DatasetType,
+    DatasetT,
     string,
     { rejectValue: string }
 >('datasets/get', async (key: string, thunkAPI) => {

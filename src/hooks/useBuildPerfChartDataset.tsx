@@ -2,33 +2,33 @@ import { useCallback } from 'react';
 
 import { ChartDataset } from 'chart.js';
 
-import { XAxisMode } from '@/hooks/usePerfBrowser';
+import { XAxisModeT } from '@/hooks/usePerfBrowser';
 import usePerfChartDatasetStyle from '@/hooks/usePerfChartDatasetStyle';
 import {
-    DataPoint,
-    HighlightedParams,
+    DataPointT,
+    HighlightedParamsProps,
     SerieT,
 } from '@/modules/series/SeriesTypes';
 
-type PerfChartDataset = ChartDataset<'line', DataPoint[]>;
+type PerfChartDatasetProps = ChartDataset<'line', DataPointT[]>;
 
 const useBuildPerfChartDataset = (): ((
     serie: SerieT,
-    xAxisMode: XAxisMode,
-    highlightedParams: HighlightedParams
-) => PerfChartDataset) => {
+    xAxisMode: XAxisModeT,
+    highlightedParams: HighlightedParamsProps
+) => PerfChartDatasetProps) => {
     const datasetStyle = usePerfChartDatasetStyle();
 
     return useCallback(
         (
             serie: SerieT,
-            xAxisMode: XAxisMode,
-            highlightedParams: HighlightedParams
-        ): PerfChartDataset => {
+            xAxisMode: XAxisModeT,
+            highlightedParams: HighlightedParamsProps
+        ): PerfChartDatasetProps => {
             return {
                 label: serie.id,
                 data: serie.points.map(
-                    (point): DataPoint => ({
+                    (point): DataPointT => ({
                         x: point[xAxisMode],
                         y: point.perf as number,
                         testTaskKey: point.testTaskKey,

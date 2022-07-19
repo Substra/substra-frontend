@@ -15,7 +15,7 @@ import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
-import { SerieRankData } from '@/modules/series/SeriesTypes';
+import { SerieRankDataT } from '@/modules/series/SeriesTypes';
 
 import PerfIconTag from '@/components/PerfIconTag';
 
@@ -124,7 +124,7 @@ export const OrganizationListItem = ({
 export const SerieListItem = ({
     serieRankData,
 }: {
-    serieRankData: SerieRankData;
+    serieRankData: SerieRankDataT;
 }) => {
     const { setHighlightedSerie, setDrawerTestTaskKey, getSerieIndex } =
         useContext(PerfBrowserContext);

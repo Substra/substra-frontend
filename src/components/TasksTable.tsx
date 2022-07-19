@@ -43,10 +43,10 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
-import { retrieveComputePlanTasksArgs } from '@/modules/computePlans/ComputePlansSlice';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
+import { RetrieveComputePlanTasksArgsProps } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { listTasksArgs } from '@/modules/tasks/TasksSlice';
+import { ListTasksProps } from '@/modules/tasks/TasksSlice';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
     AnyTupleT,
@@ -82,11 +82,11 @@ import {
 import TablePagination from '@/components/TablePagination';
 import Timing from '@/components/Timing';
 
-interface TasksTableProps {
+type TasksTableProps = {
     loading: boolean;
     list: () => AsyncThunkAction<
-        PaginatedApiResponse<AnyTupleT>,
-        retrieveComputePlanTasksArgs | listTasksArgs,
+        PaginatedApiResponseT<AnyTupleT>,
+        RetrieveComputePlanTasksArgsProps | ListTasksProps,
         { rejectValue: string }
     >;
     tasks: AnyTupleT[];
@@ -96,7 +96,7 @@ interface TasksTableProps {
     compileListPath: (category: TaskCategory) => string;
     compileDetailsPath: (category: TaskCategory, key: string) => string;
     tableProps?: TableProps;
-}
+};
 
 const TasksTable = ({
     loading,

@@ -3,13 +3,13 @@ import { AxiosError } from 'axios';
 
 import * as MetadataApi from './MetadataApi';
 
-interface NodesState {
+type NodesStateT = {
     metadata: string[];
     metadataLoading: boolean;
     metadataError: string;
-}
+};
 
-const initialState: NodesState = {
+const initialState: NodesStateT = {
     metadata: [],
     metadataLoading: true,
     metadataError: '',

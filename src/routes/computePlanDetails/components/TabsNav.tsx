@@ -7,12 +7,12 @@ import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
 
-interface TabsNavItemProps {
+type TabsNavItemProps = {
     href: string;
     active: boolean;
     label: string;
     isChartTabDisabled: boolean;
-}
+};
 
 const TabsNavItem = ({
     href,

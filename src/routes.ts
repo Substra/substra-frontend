@@ -17,10 +17,10 @@ import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
 import TasksRoot from '@/routes/tasks/TasksRoot';
 
-interface IRoute {
+type IRouteT = {
     path: string;
     component: FC;
-}
+};
 
 export const PATHS = {
     HOME: '/',
@@ -51,7 +51,7 @@ export const TASK_CATEGORY_SLUGS: Record<TaskCategory, string> = {
     [TaskCategory.predict]: 'predict',
 };
 
-export const ROUTES: Record<string, IRoute> = {
+export const ROUTES: Record<string, IRouteT> = {
     HOME: {
         path: PATHS.HOME,
         component: Home,

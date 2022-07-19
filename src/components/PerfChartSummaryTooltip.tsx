@@ -4,17 +4,17 @@ import { List, ListItem } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
-import { DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/modules/series/SeriesTypes';
 import { compareDataPoint } from '@/modules/series/SeriesUtils';
 
 import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 
-interface PerfChartTooltipProps {
+type PerfChartTooltipProps = {
     showTooltip: () => void;
     hideTooltip: () => void;
     canvasBoundingRect: DOMRect | undefined;
-    points: DataPoint[];
-}
+    points: DataPointT[];
+};
 
 const PerfChartSummaryTooltip = ({
     showTooltip,

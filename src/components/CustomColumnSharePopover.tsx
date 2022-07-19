@@ -20,9 +20,9 @@ import { RiShareForwardLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
-interface CustomColumnSharePopoverProps {
+type CustomColumnSharePopoverProps = {
     selectedColumns: string[];
-}
+};
 
 const CustomColumnSharePopover = ({
     selectedColumns,

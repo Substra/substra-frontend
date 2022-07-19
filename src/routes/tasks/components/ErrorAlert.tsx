@@ -12,7 +12,7 @@ import {
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 import useHasPermission from '@/hooks/useHasPermission';
-import { AnyTupleT, ErrorType } from '@/modules/tasks/TuplesTypes';
+import { AnyTupleT, ErrorT } from '@/modules/tasks/TuplesTypes';
 
 import LogsModal from './LogsModal';
 
@@ -38,7 +38,7 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
 
     if (!task.error_type) {
         return null;
-    } else if (task.error_type === ErrorType.internal) {
+    } else if (task.error_type === ErrorT.internal) {
         return (
             <ErrorAlertBase
                 title="Internal error"
@@ -53,7 +53,7 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
                 }
             />
         );
-    } else if (task.error_type === ErrorType.build) {
+    } else if (task.error_type === ErrorT.build) {
         return (
             <ErrorAlertBase
                 title="Build error"
@@ -71,7 +71,7 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
             />
         );
     } else {
-        // task.error_type === ErrorType.execution
+        // task.error_type === ErrorT.execution
         if (!task.logs_permission || !hasPermission(task.logs_permission)) {
             return (
                 <ErrorAlertBase

@@ -9,13 +9,13 @@ import { RiDownload2Line, RiDownloadLine } from 'react-icons/ri';
 
 import { downloadFromApi } from '@/libs/request';
 
-interface DrawerHeaderProps {
+type DrawerHeaderProps = {
     loading: boolean;
     title?: string;
     onClose: () => void;
     storageAddress?: string;
     filename?: string;
-}
+};
 
 const DrawerHeader = ({
     loading,

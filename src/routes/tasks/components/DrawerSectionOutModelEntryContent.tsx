@@ -8,9 +8,9 @@ import {
 } from '@/libs/tuples';
 import { getHeadModel, getSimpleModel } from '@/modules/tasks/ModelsUtils';
 import {
-    Aggregatetuple,
-    CompositeTraintuple,
-    Traintuple,
+    AggregatetupleT,
+    CompositeTraintupleT,
+    TraintupleT,
     TupleStatus,
 } from '@/modules/tasks/TuplesTypes';
 
@@ -19,7 +19,7 @@ import DownloadIconButton from '@/components/DownloadIconButton';
 const DrawerSectionOutModelEntryContent = ({
     task,
 }: {
-    task: Traintuple | Aggregatetuple | CompositeTraintuple;
+    task: TraintupleT | AggregatetupleT | CompositeTraintupleT;
 }): JSX.Element | null => {
     const canDownloadModel = useCanDownloadModel();
 

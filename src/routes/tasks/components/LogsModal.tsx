@@ -25,11 +25,11 @@ const CodeHighlighter = React.lazy(
     () => import('@/components/CodeHighlighter')
 );
 
-interface LogsModalProps {
+type LogsModalProps = {
     isOpen: boolean;
     onClose: () => void;
     task: AnyTupleT;
-}
+};
 const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
     const initialFocusRef = useRef(null);
 

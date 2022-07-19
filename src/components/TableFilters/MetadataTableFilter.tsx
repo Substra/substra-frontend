@@ -18,8 +18,8 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { useMetadataWithUUID, metadataToString } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import {
-    MetadataFilterWithUUID,
-    MetadataFilterType,
+    MetadataFilterWithUuidT,
+    MetadataFilterT,
 } from '@/modules/metadata/MetadataTypes';
 
 const MetadataFilterForm = ({
@@ -27,15 +27,13 @@ const MetadataFilterForm = ({
     onChange,
     onRemove,
 }: {
-    value: MetadataFilterWithUUID;
-    onChange: (filter: MetadataFilterWithUUID) => void;
+    value: MetadataFilterWithUuidT;
+    onChange: (filter: MetadataFilterWithUuidT) => void;
     onRemove: () => void;
 }) => {
     const availableKeys = useAppSelector((state) => state.metadata.metadata);
     const [filterKey, setFilterKey] = useState<string>(value.key);
-    const [filterType, setFilterType] = useState<MetadataFilterType>(
-        value.type
-    );
+    const [filterType, setFilterType] = useState<MetadataFilterT>(value.type);
     const [filterValue, setFilterValue] = useState<string>(value.value ?? '');
     useEffect(() => {
         setFilterKey(value.key);
@@ -55,7 +53,7 @@ const MetadataFilterForm = ({
     };
 
     const onFilterTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newFilterType = e.target.value as MetadataFilterType;
+        const newFilterType = e.target.value as MetadataFilterT;
         setFilterType(newFilterType);
         setFilterValue(newFilterType === 'exists' ? '' : filterValue);
         if (value.key) {
@@ -137,7 +135,7 @@ const MetadataFilterForm = ({
 const MetadataTableFilter = (): JSX.Element => {
     const { clearRef, applyRef, resetRef } =
         useTableFilterCallbackRefs('metadata');
-    const [tmpFilters, setTmpFilters] = useState<MetadataFilterWithUUID[]>([]);
+    const [tmpFilters, setTmpFilters] = useState<MetadataFilterWithUuidT[]>([]);
     const [activeFilters] = useMetadataWithUUID();
 
     const metadata = useAppSelector((state) => state.metadata.metadata);

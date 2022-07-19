@@ -33,7 +33,7 @@ export const statusDescriptionByComputePlanStatus: Record<
     [ComputePlanStatus.empty]: ComputePlanStatusDescription.empty,
 };
 
-export interface ComputePlanStub {
+export type ComputePlanStubT = {
     key: string;
     owner: string;
     task_count: number;
@@ -52,11 +52,11 @@ export interface ComputePlanStub {
     end_date?: string;
     duration: number; // in seconds
     estimated_end_date?: string;
-}
+};
 
-export interface ComputePlanT extends ComputePlanStub {
+export type ComputePlanT = ComputePlanStubT & {
     failed_task?: { key: string; category: TaskCategory };
-}
+};
 
 export const isComputePlan = (
     computePlan: unknown

@@ -8,10 +8,10 @@ const MarkdownSection = React.lazy(
     () => import('@/components/MarkdownSection')
 );
 
-interface DescriptionDrawerSectionProps {
+type DescriptionDrawerSectionProps = {
     description?: string;
     loading: boolean;
-}
+};
 
 const DescriptionDrawerSection = ({
     description,

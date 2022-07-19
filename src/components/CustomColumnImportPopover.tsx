@@ -19,10 +19,10 @@ import { RiDownloadLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
-interface CustomColumnImportPopoverProps {
+type CustomColumnImportPopoverProps = {
     allColumns: string[];
     setSelectedColumns: (columns: string[]) => void;
-}
+};
 
 const CustomColumnImportPopover = ({
     allColumns,

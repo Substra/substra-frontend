@@ -2,16 +2,16 @@ import React from 'react';
 
 import { Box, Text, Select, HStack, Input } from '@chakra-ui/react';
 
-export interface TableFilterDateProps {
+export type TableFilterDateProps = {
     minDate: string;
     maxDate: string;
-    mode: Mode;
+    mode: ModeT;
     setMinDate: (date: string) => void;
     setMaxDate: (date: string) => void;
-    setMode: (mode: Mode) => void;
-}
+    setMode: (mode: ModeT) => void;
+};
 
-type Mode = 'after' | 'before' | 'between';
+type ModeT = 'after' | 'before' | 'between';
 
 const TableFilterDate = ({
     minDate,
@@ -22,7 +22,7 @@ const TableFilterDate = ({
     setMode,
 }: TableFilterDateProps): JSX.Element => {
     const onModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newMode = e.target.value as Mode;
+        const newMode = e.target.value as ModeT;
         setMode(newMode);
     };
 

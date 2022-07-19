@@ -3,15 +3,15 @@ import { Chart as ChartJS, Plugin, ChartEvent } from 'chart.js';
 import { DistributiveArray } from 'chart.js/types/utils';
 
 import chakraTheme from '@/assets/chakraTheme';
-import { DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/modules/series/SeriesTypes';
 
 // this state management is taken from the ChartJS Zoom Plugin
 // https://github.com/chartjs/chartjs-plugin-zoom/blob/4e3a12dab1ea1d62923bb2ebfc6d4aeebd757207/src/state.js#L3
-const chartStates = new WeakMap<ChartJS, HighlightState>();
+const chartStates = new WeakMap<ChartJS, HighlightStateProps>();
 
 const PAN_THRESHOLD = 10;
 
-interface HighlightState {
+type HighlightStateProps = {
     hoveredRank: number | null;
     selectedRank: number | null;
     // the following properties allow to differentiate between normal clicks and clicks at the end of drags
@@ -19,10 +19,10 @@ interface HighlightState {
     mouseDownAtX: number;
     mouseDownAtY: number;
     isDrag: boolean;
-}
+};
 
-const getState = (chart: ChartJS): HighlightState => {
-    let state: HighlightState | undefined = chartStates.get(chart);
+const getState = (chart: ChartJS): HighlightStateProps => {
+    let state: HighlightStateProps | undefined = chartStates.get(chart);
     if (!state) {
         state = {
             hoveredRank: null,
@@ -56,18 +56,18 @@ const getRank = (chart: ChartJS, event: ChartEvent): number | null => {
         const element = elements[0];
         const point = chart.data.datasets[element.datasetIndex].data[
             element.index
-        ] as DataPoint;
+        ] as DataPointT;
         return point.x;
     }
 
     return null;
 };
 
-interface HighlightRankPluginProps {
+type HighlightRankPluginProps = {
     setHoveredRank: (rank: number | null) => void;
     setSelectedRank: (rank: number | null) => void;
     isRankSelectable: boolean;
-}
+};
 export const highlightRankPlugin = ({
     setHoveredRank,
     setSelectedRank,

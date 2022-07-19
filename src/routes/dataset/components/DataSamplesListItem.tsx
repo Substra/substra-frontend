@@ -5,10 +5,10 @@ import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
 import IconTag from '@/components/IconTag';
 
-interface DataSamplesListItemProps {
+type DataSamplesListItemProps = {
     keys: string[];
     type: 'train' | 'test';
-}
+};
 const DataSamplesListItem = ({
     keys,
     type,

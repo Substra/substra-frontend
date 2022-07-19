@@ -36,10 +36,10 @@ import TasksTable from '@/components/TasksTable';
 
 import TaskDrawer from './components/TaskDrawer';
 
-interface GenericTasksProps {
+type GenericTasksProps = {
     tasksTable: React.ReactNode;
     taskDrawer: React.ReactNode;
-}
+};
 const GenericTasks = ({
     tasksTable,
     taskDrawer,
@@ -76,9 +76,9 @@ const compileDetailsPath = (category: TaskCategory, key: string): string => {
     });
 };
 
-interface TasksProps {
+type TasksProps = {
     taskKey: string | undefined;
-}
+};
 
 const TestTasks = ({ taskKey }: TasksProps): JSX.Element => {
     const [page] = usePage();

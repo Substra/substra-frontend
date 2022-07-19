@@ -1,8 +1,8 @@
 import { Box, TableCellProps, Td } from '@chakra-ui/react';
 
-interface CheckboxTdProps extends TableCellProps {
+type CheckboxTdProps = TableCellProps & {
     firstCol?: boolean;
-}
+};
 const CheckboxTd = ({
     firstCol,
     children,

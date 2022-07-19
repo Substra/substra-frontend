@@ -15,14 +15,14 @@ import CheckboxTd from './CheckboxTd';
 import FavoriteBox from './FavoriteBox';
 import StatusCell from './StatusCell';
 
-interface ComputePlanTrProps {
+type ComputePlanTrProps = {
     computePlan: ComputePlanT;
     isSelected: boolean;
     onSelectionChange: () => void;
     isFavorite: boolean;
     onFavoriteChange: () => void;
     customColumns: string[];
-}
+};
 
 const ComputePlanTr = ({
     computePlan,

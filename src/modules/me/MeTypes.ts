@@ -1,4 +1,4 @@
-export interface MeInfoType {
+export type MeInfoT = {
     host: string;
     organization_id: string;
     version?: string;
@@ -8,4 +8,4 @@ export interface MeInfoType {
     config: {
         model_export_enabled?: boolean;
     };
-}
+};

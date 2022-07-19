@@ -10,9 +10,9 @@ import { SerieT } from '@/modules/series/SeriesTypes';
 import PerfChart from '@/components/PerfChart';
 import PerfEmptyState from '@/components/PerfEmptyState';
 
-interface PerfDetailsProps {
+type PerfDetailsProps = {
     series: SerieT[];
-}
+};
 
 const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
     const { perfChartRef, setSelectedMetricName } =

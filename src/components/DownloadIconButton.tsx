@@ -8,12 +8,12 @@ import { RiDownloadLine } from 'react-icons/ri';
 
 import { downloadBlob, downloadFromApi } from '@/libs/request';
 
-interface DownloadIconButtonProps extends IconButtonProps {
+type DownloadIconButtonProps = IconButtonProps & {
     storageAddress?: string;
     blob?: Blob;
     filename: string;
     placement?: TooltipProps['placement'];
-}
+};
 const DownloadIconButton = ({
     storageAddress,
     blob,

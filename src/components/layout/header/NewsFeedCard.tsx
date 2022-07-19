@@ -23,22 +23,22 @@ import { shortFormatDate } from '@/libs/utils';
 import {
     NewsItemAssetKind,
     NewsItemStatus,
-    NewsItemType,
+    NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
 import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
-interface NewsFeedCardProps {
-    newsItem: NewsItemType;
-}
+type NewsFeedCardProps = {
+    newsItem: NewsItemT;
+};
 
-interface StatusDescription {
+type StatusDescriptionT = {
     text: string;
     color: string;
     icon: IconType;
-}
+};
 
-type TaskMetadataT = Record<NewsItemStatus, StatusDescription>;
+type TaskMetadataT = Record<NewsItemStatus, StatusDescriptionT>;
 
 const taskMetadata: TaskMetadataT = {
     STATUS_CREATED: {
@@ -82,7 +82,7 @@ const NON_CP_PATH: Record<
     ASSET_ALGO: PATHS.ALGO,
     ASSET_DATA_MANAGER: PATHS.DATASET,
 };
-const getItemPath = (newsItem: NewsItemType): string => {
+const getItemPath = (newsItem: NewsItemT): string => {
     if (newsItem.asset_kind === NewsItemAssetKind.computePlan) {
         return COMPUTE_PLAN_STATUS_PATH[newsItem.status];
     }
@@ -90,7 +90,7 @@ const getItemPath = (newsItem: NewsItemType): string => {
     return NON_CP_PATH[newsItem.asset_kind];
 };
 
-const getItemHref = (newsItem: NewsItemType): string => {
+const getItemHref = (newsItem: NewsItemT): string => {
     const path = getItemPath(newsItem);
     if (
         newsItem.asset_kind === NewsItemAssetKind.computePlan &&

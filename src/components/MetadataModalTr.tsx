@@ -5,10 +5,10 @@ import { HStack, Td, Text, Th, Tr } from '@chakra-ui/react';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
-interface MetadataModalTrProps {
+type MetadataModalTrProps = {
     computePlan: ComputePlanT;
     columns: string[];
-}
+};
 
 const MetadataModalTr = ({
     computePlan,

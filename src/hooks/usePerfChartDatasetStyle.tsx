@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
-import { HighlightedParams, SerieT } from '@/modules/series/SeriesTypes';
+import { HighlightedParamsProps, SerieT } from '@/modules/series/SeriesTypes';
 
 const usePerfChartDatasetStyle = () => {
     const { getColor } = usePerfBrowserColors();
@@ -15,7 +15,7 @@ const usePerfChartDatasetStyle = () => {
                 highlightedSerie,
                 highlightedComputePlanKey,
                 highlightedOrganizationId,
-            }: HighlightedParams
+            }: HighlightedParamsProps
         ) => {
             const isHighlighted =
                 // no highlight on chart

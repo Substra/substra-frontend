@@ -2,11 +2,11 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import {
-    APIListArgs,
-    PaginatedApiResponse,
+    APIListArgsProps,
+    PaginatedApiResponseT,
 } from '@/modules//common/CommonTypes';
 
-import { DatasetType, DatasetStubType } from './DatasetsTypes';
+import { DatasetT, DatasetStubT } from './DatasetsTypes';
 
 const URLS = {
     LIST: '/data_manager/',
@@ -14,9 +14,9 @@ const URLS = {
 };
 
 export const listDatasets = (
-    apiListArgs: APIListArgs,
+    apiListArgs: APIListArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponse<DatasetStubType>> => {
+): AxiosPromise<PaginatedApiResponseT<DatasetStubT>> => {
     return API.authenticatedGet(URLS.LIST, {
         ...getApiOptions(apiListArgs),
         ...config,
@@ -26,7 +26,7 @@ export const listDatasets = (
 export const retrieveDataset = (
     key: string,
     config: AxiosRequestConfig
-): AxiosPromise<DatasetType> =>
+): AxiosPromise<DatasetT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
 export const retrieveOpener = (

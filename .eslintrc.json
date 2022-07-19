@@ -10,5 +10,15 @@
         "plugin:react-hooks/recommended",
         "prettier"
     ],
+    "rules": {
+        "@typescript-eslint/naming-convention": [
+            "warn",
+            {
+                "selector": "typeAlias",
+                "format": ["PascalCase"],
+                "suffix": ["Props", "T"]
+            }
+        ]
+    },
     "ignorePatterns": ["dist/"]
 }

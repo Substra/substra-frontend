@@ -34,7 +34,7 @@ const NewsItemAssetLabel: Record<NewsItemAssetKind, string> = {
 export const getNewsItemAssetLabel = (asset_kind: NewsItemAssetKind): string =>
     NewsItemAssetLabel[asset_kind];
 
-export interface NewsItemType {
+export type NewsItemT = {
     asset_kind: NewsItemAssetKind;
     asset_key: string;
     name: string;
@@ -44,4 +44,4 @@ export interface NewsItemType {
         task_category: TaskCategory;
         first_failed_task_key?: string;
     };
-}
+};

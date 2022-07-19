@@ -3,11 +3,15 @@ import { useContext } from 'react';
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/modules/series/SeriesTypes';
 
 import PerfIconTag from '@/components/PerfIconTag';
 
-const PerfChartTooltipItem = ({ point }: { point: DataPoint }): JSX.Element => {
+const PerfChartTooltipItem = ({
+    point,
+}: {
+    point: DataPointT;
+}): JSX.Element => {
     const { getSerieIndex } = useContext(PerfBrowserContext);
 
     return (

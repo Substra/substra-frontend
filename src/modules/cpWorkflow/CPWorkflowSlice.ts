@@ -4,18 +4,18 @@ import { AxiosError } from 'axios';
 import * as CPWorkflowApi from '@/modules/cpWorkflow/CPWorkflowApi';
 import { TaskGraphT } from '@/modules/cpWorkflow/CPWorkflowTypes';
 
-interface WorkflowGraphState {
+type WorkflowGraphStateT = {
     graph: TaskGraphT;
     loading: boolean;
     error: string;
-}
+};
 
 const emptyGraph = {
     tasks: [],
     edges: [],
 };
 
-const initialState: WorkflowGraphState = {
+const initialState: WorkflowGraphStateT = {
     graph: emptyGraph,
     loading: false,
     error: '',

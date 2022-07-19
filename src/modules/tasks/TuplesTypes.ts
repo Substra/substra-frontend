@@ -1,13 +1,13 @@
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import {
-    AssetType,
+    AssetT,
     MetadataT,
-    PermissionsType,
-    PermissionType,
+    PermissionsT,
+    PermissionT,
 } from '@/modules/common/CommonTypes';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 
-import { Model } from './ModelsTypes';
+import { ModelT } from './ModelsTypes';
 
 export enum TupleStatus {
     waiting = 'STATUS_WAITING',
@@ -27,7 +27,7 @@ export enum TupleStatusDescription {
     failed = 'Task has error',
 }
 
-export enum ErrorType {
+export enum ErrorT {
     build = 'BUILD_ERROR',
     execution = 'EXECUTION_ERROR',
     internal = 'INTERNAL_ERROR',
@@ -53,7 +53,7 @@ export enum TaskCategory {
     predict = 'TASK_PREDICT',
 }
 
-export const assetTypeByTaskCategory: Record<TaskCategory, AssetType> = {
+export const assetTypeByTaskCategory: Record<TaskCategory, AssetT> = {
     [TaskCategory.train]: 'traintuple',
     [TaskCategory.composite]: 'composite_traintuple',
     [TaskCategory.test]: 'testtuple',
@@ -61,7 +61,7 @@ export const assetTypeByTaskCategory: Record<TaskCategory, AssetType> = {
     [TaskCategory.predict]: 'predicttuple',
 };
 
-interface BaseTupleStub {
+type BaseTupleStubT = {
     key: string;
     category: TaskCategory;
     creation_date: string;
@@ -76,117 +76,117 @@ interface BaseTupleStub {
     worker: string;
     start_date?: string;
     end_date?: string;
-    error_type?: ErrorType;
-    logs_permission?: PermissionType;
+    error_type?: ErrorT;
+    logs_permission?: PermissionT;
     duration: number; // in seconds
-}
+};
 
-interface BaseTuple extends BaseTupleStub {
+type BaseTupleT = BaseTupleStubT & {
     parent_tasks: (
-        | TraintupleStub
-        | CompositeTraintupleStub
-        | AggregatetupleStub
+        | TraintupleStubT
+        | CompositeTraintupleStubT
+        | AggregatetupleStubT
     )[];
-}
+};
 
-interface CompositeDetailsStub {
+type CompositeDetailsStubT = {
     data_manager_key: string;
     data_sample_keys: string[];
-    head_permissions: PermissionsType;
-    trunk_permissions: PermissionsType;
-    models?: Model[];
-}
+    head_permissions: PermissionsT;
+    trunk_permissions: PermissionsT;
+    models?: ModelT[];
+};
 
-interface CompositeDetails extends CompositeDetailsStub {
-    data_manager: DatasetStubType;
-}
+type CompositeDetailsT = CompositeDetailsStubT & {
+    data_manager: DatasetStubT;
+};
 
-export interface CompositeTraintupleStub extends BaseTupleStub {
-    composite: CompositeDetailsStub;
-}
+export type CompositeTraintupleStubT = BaseTupleStubT & {
+    composite: CompositeDetailsStubT;
+};
 
-export interface CompositeTraintuple extends BaseTuple {
-    composite: CompositeDetails;
-}
+export type CompositeTraintupleT = BaseTupleT & {
+    composite: CompositeDetailsT;
+};
 
-interface AggregateDetails {
-    model_permissions: PermissionsType;
-    models?: Model[];
-}
+type AggregateDetailsT = {
+    model_permissions: PermissionsT;
+    models?: ModelT[];
+};
 
-export interface AggregatetupleStub extends BaseTupleStub {
-    aggregate: AggregateDetails;
-}
+export type AggregatetupleStubT = BaseTupleStubT & {
+    aggregate: AggregateDetailsT;
+};
 
-export interface Aggregatetuple extends BaseTuple {
-    aggregate: AggregateDetails;
-}
+export type AggregatetupleT = BaseTupleT & {
+    aggregate: AggregateDetailsT;
+};
 
-interface TestDetailsStub {
+type TestDetailsStubT = {
     data_manager_key: string;
     data_sample_keys: string[];
     // perfs contains a single key: the key of the algo used to compute the perf
     perfs?: Record<string, number>;
-}
+};
 
-interface TestDetails extends TestDetailsStub {
-    data_manager: DatasetStubType;
-}
+type TestDetailsT = TestDetailsStubT & {
+    data_manager: DatasetStubT;
+};
 
-export interface TesttupleStub extends BaseTupleStub {
-    test: TestDetailsStub;
-}
+export type TesttupleStubT = BaseTupleStubT & {
+    test: TestDetailsStubT;
+};
 
-export interface Testtuple extends BaseTuple {
-    test: TestDetails;
-}
+export type TesttupleT = BaseTupleT & {
+    test: TestDetailsT;
+};
 
-interface TrainDetailsStub {
+type TrainDetailsStubT = {
     data_manager_key: string;
     data_sample_keys: string[];
-    model_permissions: PermissionsType;
-    models?: Model[];
-}
+    model_permissions: PermissionsT;
+    models?: ModelT[];
+};
 
-interface TrainDetails extends TrainDetailsStub {
-    data_manager: DatasetStubType;
-}
+type TrainDetailsT = TrainDetailsStubT & {
+    data_manager: DatasetStubT;
+};
 
-export interface TraintupleStub extends BaseTupleStub {
-    train: TrainDetailsStub;
-}
+export type TraintupleStubT = BaseTupleStubT & {
+    train: TrainDetailsStubT;
+};
 
-export interface Traintuple extends BaseTuple {
-    train: TrainDetails;
-}
+export type TraintupleT = BaseTupleT & {
+    train: TrainDetailsT;
+};
 
-interface PredictDetailsStub {
+type PredictDetailsStubT = {
     data_manager_key: string;
     data_sample_keys: string[];
-    models?: Model[];
-    prediction_permissions: PermissionsType;
-}
+    models?: ModelT[];
+    prediction_permissions: PermissionsT;
+};
 
-interface PredictDetails extends PredictDetailsStub {
-    data_manager: DatasetStubType;
-}
+type PredictDetailsT = PredictDetailsStubT & {
+    data_manager: DatasetStubT;
+};
 
-export interface PredicttupleStub extends BaseTupleStub {
-    predict: PredictDetailsStub;
-}
+export type PredicttupleStubT = BaseTupleStubT & {
+    predict: PredictDetailsStubT;
+};
 
-export interface Predicttuple extends BaseTuple {
-    predict: PredictDetails;
-}
+export type PredicttupleT = BaseTupleT & {
+    predict: PredictDetailsT;
+};
 
 export type AnyTupleT =
-    | TraintupleStub
-    | Traintuple
-    | CompositeTraintupleStub
-    | CompositeTraintuple
-    | AggregatetupleStub
-    | Aggregatetuple
-    | TesttupleStub
-    | Testtuple
-    | PredicttupleStub
-    | Predicttuple;
+    | TraintupleStubT
+    | TraintupleT
+    | CompositeTraintupleStubT
+    | CompositeTraintupleT
+    | AggregatetupleStubT
+    | AggregatetupleT
+    | TesttupleStubT
+    | TesttupleT
+    | PredicttupleStubT
+    | PredicttupleT;

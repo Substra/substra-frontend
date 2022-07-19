@@ -1,16 +1,16 @@
 import {
-    Aggregatetuple,
-    AggregatetupleStub,
+    AggregatetupleT,
+    AggregatetupleStubT,
     AnyTupleT,
-    CompositeTraintuple,
-    CompositeTraintupleStub,
-    Predicttuple,
-    PredicttupleStub,
+    CompositeTraintupleT,
+    CompositeTraintupleStubT,
+    PredicttupleT,
+    PredicttupleStubT,
     TaskCategory,
-    Testtuple,
-    TesttupleStub,
-    Traintuple,
-    TraintupleStub,
+    TesttupleT,
+    TesttupleStubT,
+    TraintupleT,
+    TraintupleStubT,
 } from '@/modules/tasks/TuplesTypes';
 
 const isTuple = (task: unknown): task is AnyTupleT => {
@@ -33,7 +33,7 @@ const isTuple = (task: unknown): task is AnyTupleT => {
     );
 };
 
-export const isTraintupleStub = (task: unknown): task is TraintupleStub => {
+export const isTraintupleStub = (task: unknown): task is TraintupleStubT => {
     if (!isTuple(task)) {
         return false;
     }
@@ -41,15 +41,15 @@ export const isTraintupleStub = (task: unknown): task is TraintupleStub => {
     return task.category === TaskCategory.train;
 };
 
-export const isTraintuple = (task: unknown): task is Traintuple => {
+export const isTraintuple = (task: unknown): task is TraintupleT => {
     if (!isTraintupleStub(task)) {
         return false;
     }
 
-    return (task as Traintuple).train.data_manager !== undefined;
+    return (task as TraintupleT).train.data_manager !== undefined;
 };
 
-export const isTesttupleStub = (task: unknown): task is TesttupleStub => {
+export const isTesttupleStub = (task: unknown): task is TesttupleStubT => {
     if (!isTuple(task)) {
         return false;
     }
@@ -57,16 +57,16 @@ export const isTesttupleStub = (task: unknown): task is TesttupleStub => {
     return task.category === TaskCategory.test;
 };
 
-export const isTesttuple = (task: unknown): task is Testtuple => {
+export const isTesttuple = (task: unknown): task is TesttupleT => {
     if (!isTesttupleStub(task)) {
         return false;
     }
-    return (task as Testtuple).test.data_manager !== undefined;
+    return (task as TesttupleT).test.data_manager !== undefined;
 };
 
 export const isCompositeTraintupleStub = (
     task: unknown
-): task is CompositeTraintupleStub => {
+): task is CompositeTraintupleStubT => {
     if (!isTuple(task)) {
         return false;
     }
@@ -76,15 +76,15 @@ export const isCompositeTraintupleStub = (
 
 export const isCompositeTraintuple = (
     task: unknown
-): task is CompositeTraintuple => {
+): task is CompositeTraintupleT => {
     if (!isCompositeTraintupleStub(task)) {
         return false;
     }
 
-    return (task as CompositeTraintuple).composite.data_manager !== undefined;
+    return (task as CompositeTraintupleT).composite.data_manager !== undefined;
 };
 
-const isAggregatetupleStub = (task: unknown): task is AggregatetupleStub => {
+const isAggregatetupleStub = (task: unknown): task is AggregatetupleStubT => {
     if (!isTuple(task)) {
         return false;
     }
@@ -92,14 +92,16 @@ const isAggregatetupleStub = (task: unknown): task is AggregatetupleStub => {
     return task.category === TaskCategory.aggregate;
 };
 
-export const isAggregatetuple = (task: unknown): task is Aggregatetuple => {
+export const isAggregatetuple = (task: unknown): task is AggregatetupleT => {
     if (!isAggregatetupleStub(task)) {
         return false;
     }
-    return (task as Aggregatetuple).parent_tasks !== undefined;
+    return (task as AggregatetupleT).parent_tasks !== undefined;
 };
 
-export const isPredicttupleStub = (task: unknown): task is PredicttupleStub => {
+export const isPredicttupleStub = (
+    task: unknown
+): task is PredicttupleStubT => {
     if (!isTuple(task)) {
         return false;
     }
@@ -107,9 +109,9 @@ export const isPredicttupleStub = (task: unknown): task is PredicttupleStub => {
     return task.category === TaskCategory.predict;
 };
 
-export const isPredicttuple = (task: unknown): task is Predicttuple => {
+export const isPredicttuple = (task: unknown): task is PredicttupleT => {
     if (!isPredicttupleStub(task)) {
         return false;
     }
-    return (task as Predicttuple).parent_tasks !== undefined;
+    return (task as PredicttupleT).parent_tasks !== undefined;
 };

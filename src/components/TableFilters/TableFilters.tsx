@@ -22,9 +22,9 @@ import { RiAddLine } from 'react-icons/ri';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import { TableFiltersContext } from '@/hooks/useTableFilters';
 
-interface TableFiltersProps {
+type TableFiltersProps = {
     children: React.ReactNode | React.ReactNode[];
-}
+};
 const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
     const {
         clearAll,
@@ -43,12 +43,12 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
         resetAll();
     }, [isPopoverOpen, resetAll]);
 
-    interface TabObject {
+    type TabObjectT = {
         title: string;
         field: string;
-    }
+    };
 
-    const tabs: TabObject[] = React.Children.toArray(children).map((child) => {
+    const tabs: TabObjectT[] = React.Children.toArray(children).map((child) => {
         const firstChild = React.Children.toArray(child)[0];
 
         // @ts-expect-error This is a custom property that is not part of any type, so it cannot be checked properly by TypeScript

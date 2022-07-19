@@ -11,9 +11,9 @@ import PerfList from '@/components/PerfList';
 import PerfLoadingState from '@/components/PerfLoadingState';
 import PerfSidebarSettings from '@/components/PerfSidebarSettings';
 
-interface PerfBrowserProps {
+type PerfBrowserProps = {
     SidebarComponent: React.FunctionComponent;
-}
+};
 
 const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
     const {

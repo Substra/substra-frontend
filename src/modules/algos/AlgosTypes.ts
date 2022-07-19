@@ -1,8 +1,4 @@
-import {
-    FileT,
-    MetadataT,
-    PermissionsType,
-} from '@/modules/common/CommonTypes';
+import { FileT, MetadataT, PermissionsT } from '@/modules/common/CommonTypes';
 
 export enum AssetKindT {
     dataSample = 'ASSET_DATA_SAMPLE',
@@ -21,15 +17,15 @@ type OutputT = {
     multiple: boolean;
 };
 
-export interface AlgoT {
+export type AlgoT = {
     key: string;
     name: string;
     owner: string;
-    permissions: PermissionsType;
+    permissions: PermissionsT;
     description: FileT;
     algorithm: FileT;
     metadata: MetadataT;
     creation_date: string;
     inputs: { [name: string]: InputT };
     outputs: { [name: string]: OutputT };
-}
+};

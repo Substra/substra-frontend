@@ -8,19 +8,19 @@ import {
     isTraintuple,
     isTraintupleStub,
 } from '@/libs/tuples';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 
 import {
     AnyTupleT,
     TaskCategory,
-    CompositeTraintupleStub,
-    TesttupleStub,
-    TraintupleStub,
-    Testtuple,
-    Traintuple,
-    CompositeTraintuple,
-    PredicttupleStub,
-    Predicttuple,
+    CompositeTraintupleStubT,
+    TesttupleStubT,
+    TraintupleStubT,
+    TesttupleT,
+    TraintupleT,
+    CompositeTraintupleT,
+    PredicttupleStubT,
+    PredicttupleT,
 } from './TuplesTypes';
 
 export const CATEGORY_LABEL: Record<TaskCategory, string> = {
@@ -36,8 +36,8 @@ export function getTaskCategory(task: AnyTupleT): string {
 }
 
 export function getTaskDataset(
-    task: Testtuple | Traintuple | CompositeTraintuple | Predicttuple
-): DatasetStubType {
+    task: TesttupleT | TraintupleT | CompositeTraintupleT | PredicttupleT
+): DatasetStubT {
     if (isTesttuple(task)) {
         return task.test.data_manager;
     }
@@ -55,14 +55,14 @@ export function getTaskDataset(
 
 export function getTaskDataSampleKeys(
     task:
-        | Testtuple
-        | TesttupleStub
-        | Traintuple
-        | TraintupleStub
-        | CompositeTraintuple
-        | CompositeTraintupleStub
-        | Predicttuple
-        | PredicttupleStub
+        | TesttupleT
+        | TesttupleStubT
+        | TraintupleT
+        | TraintupleStubT
+        | CompositeTraintupleT
+        | CompositeTraintupleStubT
+        | PredicttupleT
+        | PredicttupleStubT
 ): string[] {
     if (isTesttuple(task) || isTesttupleStub(task)) {
         return task.test.data_sample_keys;
@@ -79,7 +79,7 @@ export function getTaskDataSampleKeys(
     throw 'Invalid task types';
 }
 
-export function getPerf(task: TesttupleStub | Testtuple): number | null {
+export function getPerf(task: TesttupleStubT | TesttupleT): number | null {
     if (!task.test.perfs) {
         return null;
     }

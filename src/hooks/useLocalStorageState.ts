@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import { HasKey } from '@/modules/common/CommonTypes';
+import { HasKeyT } from '@/modules/common/CommonTypes';
 
 function useLoadSave<T>(localStorageKey: string, channel: string | undefined) {
     const channelLocalStorageKey = `${channel}-${localStorageKey}`;
@@ -95,9 +95,9 @@ const useLocalStorageArrayState = <Type>(
     };
 };
 
-const areKeyItemsEqual = <Type extends HasKey>(a: Type, b: Type) =>
+const areKeyItemsEqual = <Type extends HasKeyT>(a: Type, b: Type) =>
     a.key === b.key;
-export const useLocalStorageKeyArrayState = <Type extends HasKey>(
+export const useLocalStorageKeyArrayState = <Type extends HasKeyT>(
     localStorageKey: string
 ) => useLocalStorageArrayState<Type>(localStorageKey, areKeyItemsEqual);
 

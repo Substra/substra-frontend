@@ -1,4 +1,4 @@
-export interface PerformanceType {
+export type PerformanceT = {
     compute_task: {
         key: string;
         data_manager_key: string;
@@ -13,4 +13,4 @@ export interface PerformanceType {
         name: string;
     };
     perf: number | null;
-}
+};

@@ -13,7 +13,7 @@ import {
     retrieveDescription,
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
-import { DatasetType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetT } from '@/modules/datasets/DatasetsTypes';
 import { PATHS } from '@/routes';
 
 import CopyIconButton from '@/components/CopyIconButton';
@@ -48,7 +48,7 @@ const Dataset = (): JSX.Element => {
         if (key && key !== dataset?.key) {
             dispatch(retrieveDataset(key))
                 .then(unwrapResult)
-                .then((dataset: DatasetType) => {
+                .then((dataset: DatasetT) => {
                     dispatch(
                         retrieveDescription(dataset.description.storage_address)
                     );

@@ -17,11 +17,11 @@ const getPageLocation = (page: number) => {
     return `${window.location.pathname}?${urlSearchParams.toString()}`;
 };
 
-interface PageLinkProps {
+type PageLinkProps = {
     page: number;
     activePage: number;
     isDisabled?: boolean;
-}
+};
 const PageLink = ({
     page,
     activePage,
@@ -100,10 +100,10 @@ const NextPage = ({
     );
 };
 
-interface PaginationProps {
+type PaginationProps = {
     currentPage: number;
     lastPage: number;
-}
+};
 const Pagination = ({
     currentPage,
     lastPage,

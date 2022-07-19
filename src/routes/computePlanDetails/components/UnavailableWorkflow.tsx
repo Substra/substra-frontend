@@ -4,9 +4,9 @@ import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 
 import EmptyState from '@/components/EmptyState';
 
-interface UnavailableWorkflowProps {
+type UnavailableWorkflowProps = {
     subtitle: string;
-}
+};
 
 const UnavailableWorkflow = ({
     subtitle,

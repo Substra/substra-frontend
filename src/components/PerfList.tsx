@@ -6,10 +6,10 @@ import PerfCard from '@/components/PerfCard';
 import PerfChart from '@/components/PerfChart';
 import PerfEmptyState from '@/components/PerfEmptyState';
 
-interface PerfListProps {
+type PerfListProps = {
     seriesGroups: SerieT[][];
     onCardClick: (metricName: string) => void;
-}
+};
 const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
     return (
         <VStack

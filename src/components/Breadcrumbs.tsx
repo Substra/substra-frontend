@@ -19,12 +19,12 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     }
 `;
 
-interface BreadcrumbsProps {
+type BreadcrumbsProps = {
     rootIcon: IconTagProps['icon'];
     rootPath: string;
     rootLabel: string;
     children: React.ReactNode;
-}
+};
 
 const Breadcrumbs = ({
     rootIcon,

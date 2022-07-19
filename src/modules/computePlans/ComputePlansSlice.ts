@@ -2,22 +2,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import { timestampNow } from '@/libs/utils';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import {
-    ComputePlanStub,
+    ComputePlanStubT,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
 import {
-    Aggregatetuple,
-    CompositeTraintupleStub,
-    Predicttuple,
-    TesttupleStub,
-    TraintupleStub,
+    AggregatetupleT,
+    CompositeTraintupleStubT,
+    PredicttupleT,
+    TesttupleStubT,
+    TraintupleStubT,
 } from '@/modules/tasks/TuplesTypes';
 
-interface ComputePlansState {
-    computePlans: ComputePlanStub[];
+type ComputePlansStateT = {
+    computePlans: ComputePlanStubT[];
     computePlansLoading: boolean;
     computePlansError: string;
     computePlansCount: number;
@@ -25,29 +25,29 @@ interface ComputePlansState {
     computePlan: ComputePlanT | null;
     computePlanLoading: boolean;
     computePlanError: string;
-    computePlanTrainTasks: TraintupleStub[];
+    computePlanTrainTasks: TraintupleStubT[];
     computePlanTrainTasksCount: number;
     computePlanTrainTasksLoading: boolean;
     computePlanTrainTasksError: string;
-    computePlanTestTasks: TesttupleStub[];
+    computePlanTestTasks: TesttupleStubT[];
     computePlanTestTasksCount: number;
     computePlanTestTasksLoading: boolean;
     computePlanTestTasksError: string;
-    computePlanAggregateTasks: Aggregatetuple[];
+    computePlanAggregateTasks: AggregatetupleT[];
     computePlanAggregateTasksCount: number;
     computePlanAggregateTasksLoading: boolean;
     computePlanAggregateTasksError: string;
-    computePlanCompositeTasks: CompositeTraintupleStub[];
+    computePlanCompositeTasks: CompositeTraintupleStubT[];
     computePlanCompositeTasksCount: number;
     computePlanCompositeTasksLoading: boolean;
     computePlanCompositeTasksError: string;
-    computePlanPredictTasks: Predicttuple[];
+    computePlanPredictTasks: PredicttupleT[];
     computePlanPredictTasksCount: number;
     computePlanPredictTasksLoading: boolean;
     computePlanPredictTasksError: string;
-}
+};
 
-const initialState: ComputePlansState = {
+const initialState: ComputePlansStateT = {
     computePlans: [],
     computePlansLoading: true,
     computePlansError: '',
@@ -78,7 +78,7 @@ const initialState: ComputePlansState = {
     computePlanPredictTasksError: '',
 };
 
-type listComputePlansArgs = {
+type ListComputePlansArgsProps = {
     page?: number;
     match?: string;
     ordering?: string;
@@ -87,10 +87,10 @@ type listComputePlansArgs = {
 };
 
 export const listComputePlans = createAsyncThunk<
-    PaginatedApiResponse<ComputePlanStub>,
-    listComputePlansArgs,
+    PaginatedApiResponseT<ComputePlanStubT>,
+    ListComputePlansArgsProps,
     { rejectValue: string }
->('computePlans/list', async (params: listComputePlansArgs, thunkAPI) => {
+>('computePlans/list', async (params: ListComputePlansArgsProps, thunkAPI) => {
     try {
         const response = await ComputePlansApi.listComputePlans(params, {
             signal: thunkAPI.signal,
@@ -124,7 +124,7 @@ export const retrieveComputePlan = createAsyncThunk<
     }
 });
 
-export type retrieveComputePlanTasksArgs = {
+export type RetrieveComputePlanTasksArgsProps = {
     computePlanKey: string;
     page: number;
     ordering: string;
@@ -134,8 +134,8 @@ export type retrieveComputePlanTasksArgs = {
 };
 
 export const retrieveComputePlanTrainTasks = createAsyncThunk<
-    PaginatedApiResponse<TraintupleStub>,
-    retrieveComputePlanTasksArgs,
+    PaginatedApiResponseT<TraintupleStubT>,
+    RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getTrainTasks',
@@ -160,8 +160,8 @@ export const retrieveComputePlanTrainTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanTestTasks = createAsyncThunk<
-    PaginatedApiResponse<TesttupleStub>,
-    retrieveComputePlanTasksArgs,
+    PaginatedApiResponseT<TesttupleStubT>,
+    RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getTestTasks',
@@ -186,8 +186,8 @@ export const retrieveComputePlanTestTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanAggregateTasks = createAsyncThunk<
-    PaginatedApiResponse<Aggregatetuple>,
-    retrieveComputePlanTasksArgs,
+    PaginatedApiResponseT<AggregatetupleT>,
+    RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getAggregateTasks',
@@ -213,8 +213,8 @@ export const retrieveComputePlanAggregateTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanCompositeTasks = createAsyncThunk<
-    PaginatedApiResponse<CompositeTraintupleStub>,
-    retrieveComputePlanTasksArgs,
+    PaginatedApiResponseT<CompositeTraintupleStubT>,
+    RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getCompositeTasks',
@@ -240,8 +240,8 @@ export const retrieveComputePlanCompositeTasks = createAsyncThunk<
 );
 
 export const retrieveComputePlanPredictTasks = createAsyncThunk<
-    PaginatedApiResponse<Predicttuple>,
-    retrieveComputePlanTasksArgs,
+    PaginatedApiResponseT<PredicttupleT>,
+    RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >(
     'computePlans/getPredictTasks',

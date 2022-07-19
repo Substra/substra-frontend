@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { DataPoint } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/modules/series/SeriesTypes';
 
 import PerfChartSummaryTooltip from '@/components/PerfChartSummaryTooltip';
 import PerfChartTooltip from '@/components/PerfChartTooltip';
@@ -11,7 +11,7 @@ const usePerfChartTooltip = (
     tooltip: React.ReactNode;
     tooltipPluginOptions: Record<string, unknown>;
 } => {
-    const [points, setPoints] = useState<DataPoint[]>([]);
+    const [points, setPoints] = useState<DataPointT[]>([]);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [displayed, setDisplayed] = useState(false);
     const [canvasBoundingRect, setCanvasBoundingRect] = useState<DOMRect>();
@@ -63,7 +63,7 @@ const usePerfChartTooltip = (
                 if (tooltipModel && tooltipModel.opacity) {
                     setPoints(
                         tooltipModel.dataPoints.map(
-                            (dataPoint: { raw: DataPoint }) => dataPoint.raw
+                            (dataPoint: { raw: DataPointT }) => dataPoint.raw
                         )
                     );
                     if (summary) {

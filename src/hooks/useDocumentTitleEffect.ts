@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-type SetDocumentTitle = (title: string) => void;
+type SetDocumentTitleT = (title: string) => void;
 
-const setDocumentTitle: SetDocumentTitle = (title) => {
+const setDocumentTitle: SetDocumentTitleT = (title) => {
     document.title = `${title} - Owkin Connect`;
 };
 
 export const useDocumentTitleEffect = (
-    effect: (setDocumentTitle: SetDocumentTitle) => void,
+    effect: (setDocumentTitle: SetDocumentTitleT) => void,
     deps: React.DependencyList
 ): void => {
     // eslint-disable-next-line react-hooks/exhaustive-deps

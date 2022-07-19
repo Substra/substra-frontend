@@ -46,7 +46,7 @@ import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 import { capitalize } from '@/libs/utils';
-import { DataPoint, SerieT } from '@/modules/series/SeriesTypes';
+import { DataPointT, SerieT } from '@/modules/series/SeriesTypes';
 import { getMaxRank, getMaxRound } from '@/modules/series/SeriesUtils';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
@@ -60,11 +60,11 @@ ChartJS.register(
     zoomPlugin
 );
 
-interface PerfChartProps {
+type PerfChartProps = {
     series: SerieT[];
     size: 'full' | 'thumbnail';
     zoomEnabled: boolean;
-}
+};
 
 const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
     ({ series, size, zoomEnabled }: PerfChartProps, ref): JSX.Element => {
@@ -106,7 +106,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
             ]
         );
 
-        const data = useMemo<ChartData<'line', DataPoint[]>>(() => {
+        const data = useMemo<ChartData<'line', DataPointT[]>>(() => {
             const maxXAxis = xAxisMode === 'round' ? maxRound : maxRank;
 
             return {

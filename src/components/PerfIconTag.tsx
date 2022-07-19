@@ -4,10 +4,10 @@ import { RiGitCommitLine } from 'react-icons/ri';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
 
-interface PerfIconTagProps {
+type PerfIconTagProps = {
     worker: string;
     computePlanKey: string;
-}
+};
 const PerfIconTag = ({
     worker,
     computePlanKey,

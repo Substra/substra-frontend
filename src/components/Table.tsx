@@ -9,7 +9,7 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { AssetType } from '@/modules/common/CommonTypes';
+import { AssetT } from '@/modules/common/CommonTypes';
 import { getAssetLabel } from '@/modules/common/CommonUtils';
 
 import EmptyState from '@/components/EmptyState';
@@ -32,10 +32,10 @@ const getHasFilters = () => {
     return false;
 };
 
-interface EmptyTrProps {
+type EmptyTrProps = {
     nbColumns: number;
-    asset: AssetType;
-}
+    asset: AssetT;
+};
 
 export const EmptyTr = ({ nbColumns, asset }: EmptyTrProps): JSX.Element => {
     const setLocationParams = useSetLocationParams();
@@ -83,12 +83,12 @@ export const ClickableTr = styled(Tr)`
     }
 `;
 
-interface TableSkeletonProps {
+type TableSkeletonProps = {
     children: React.ReactNode;
     currentPage: number;
     itemCount: number;
     rowHeight?: string;
-}
+};
 export const TableSkeleton = ({
     children,
     currentPage,

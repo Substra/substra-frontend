@@ -11,9 +11,9 @@ import {
 } from '@/modules/cpWorkflow/CPWorkflowUtils';
 import { CATEGORY_LABEL } from '@/modules/tasks/TasksUtils';
 
-interface TaskNodeProps {
+type TaskNodeProps = {
     data: PositionedTaskT;
-}
+};
 
 const TaskNode = ({ data }: TaskNodeProps) => {
     const handleTopMargin = 48;

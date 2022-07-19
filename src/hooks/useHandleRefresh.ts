@@ -1,7 +1,7 @@
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import useAppDispatch from './useAppDispatch';
-import { DispatchWithAutoAbort } from './useDispatchWithAutoAbort';
+import { DispatchWithAutoAbortProps } from './useDispatchWithAutoAbort';
 import { useSetLocationParams } from './useLocationWithParams';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,7 +9,7 @@ export type ActionBuilderT = () => AsyncThunkAction<any, any, any>;
 
 const useHandleRefresh = (
     actionBuilder: ActionBuilderT,
-    dispatchWithAutoAbort?: DispatchWithAutoAbort
+    dispatchWithAutoAbort?: DispatchWithAutoAbortProps
 ): (() => void) => {
     const setLocationParams = useSetLocationParams();
     const dispatch = useAppDispatch();

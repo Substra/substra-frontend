@@ -2,22 +2,22 @@ import { List, ListItem, Text, Link, HStack } from '@chakra-ui/react';
 import { RiDatabase2Line } from 'react-icons/ri';
 
 import AngleIcon from '@/assets/svg/angle-icon.svg';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 import { compilePath, PATHS } from '@/routes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
 
-interface DrawerSectionDatasetEntry {
-    dataset: DatasetStubType;
+type DrawerSectionDatasetEntryProps = {
+    dataset: DatasetStubT;
     dataSampleKeys: string[];
-}
+};
 
 const DrawerSectionDatasetEntry = ({
     dataset,
     dataSampleKeys,
-}: DrawerSectionDatasetEntry): JSX.Element => {
+}: DrawerSectionDatasetEntryProps): JSX.Element => {
     return (
         <DrawerSectionCollapsibleEntry
             title="Dataset"

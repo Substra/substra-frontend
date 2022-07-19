@@ -5,11 +5,11 @@ import { getStatusCount } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
-interface ItemProps {
+type ItemProps = {
     status: TupleStatus;
     count: number;
     total: number;
-}
+};
 const Item = ({ status, count, total }: ItemProps): JSX.Element | null => {
     if (!count) {
         return null;

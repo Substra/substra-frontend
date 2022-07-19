@@ -93,18 +93,18 @@ export const getStatusDescription = (
     throw `Unknown status: '${status}'`;
 };
 
-interface StatusStyle {
+type StatusStyleProps = {
     icon: IconType;
     tagColor: string;
     tagBackgroundColor: string;
     tagSolidColor: string;
     tagSolidBackgroundColor: string;
     progressColor: string;
-}
+};
 
 export const getStatusStyle = (
     status: TupleStatus | ComputePlanStatus
-): StatusStyle => {
+): StatusStyleProps => {
     switch (status) {
         case TupleStatus.canceled:
         case ComputePlanStatus.canceled:

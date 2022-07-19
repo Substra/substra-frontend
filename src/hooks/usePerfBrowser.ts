@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react';
 
-import { OnOptionChange } from '@/hooks/useSelection';
+import { OnOptionChangeT } from '@/hooks/useSelection';
 import {
     useSyncedState,
     useSyncedStringArrayState,
@@ -15,11 +15,11 @@ import {
 } from '@/hooks/useSyncedState';
 import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { OrganizationType } from '@/modules/organizations/OrganizationsTypes';
+import { OrganizationT } from '@/modules/organizations/OrganizationsTypes';
 import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
 import {
-    HighlightedSerie,
-    SerieRankData,
+    HighlightedSerieT,
+    SerieRankDataT,
     SerieT,
 } from '@/modules/series/SeriesTypes';
 import {
@@ -31,9 +31,9 @@ import {
     getSeriesOrganizations,
 } from '@/modules/series/SeriesUtils';
 
-export type XAxisMode = 'round' | 'rank';
+export type XAxisModeT = 'round' | 'rank';
 
-interface PerfBrowserContext {
+type PerfBrowserContextT = {
     // Whether the compute plan and series are being loaded
     loading: boolean;
     // List of all compute plans we're browsing series for
@@ -45,12 +45,12 @@ interface PerfBrowserContext {
     // List of groups of series sharing the same metric name where all points of the series contain the round metadata
     seriesGroupsWithRounds: SerieT[][];
     // List of the organizations references by all the series
-    organizations: OrganizationType[];
+    organizations: OrganizationT[];
     // How colors should be determined
     colorMode: 'computePlan' | 'organization';
     // What unit to use for the x axis
-    xAxisMode: XAxisMode;
-    setXAxisMode: (xAxisMode: XAxisMode) => void;
+    xAxisMode: XAxisModeT;
+    setXAxisMode: (xAxisMode: XAxisModeT) => void;
     // List of organizations for which display series (displayed if serie.worker is in selectedOrganizationIds)
     selectedOrganizationIds: string[];
     setSelectedOrganizationIds: (selectedOrganizationIds: string[]) => void;
@@ -58,15 +58,15 @@ interface PerfBrowserContext {
     // List of compute plans for which to display series (display if serie.computePlanKey is in selectedComputePlanKeys)
     selectedComputePlanKeys: string[];
     setSelectedComputePlanKeys: (selectedComputePlanKeys: string[]) => void;
-    onComputePlanKeySelectionChange: OnOptionChange;
+    onComputePlanKeySelectionChange: OnOptionChangeT;
     // Currently selected metric with its series
     selectedMetricName: string;
     setSelectedMetricName: (name: string) => void;
     selectedSeriesGroup: SerieT[];
     // Serie, compute plan and organization to highlight on charts
-    highlightedSerie: HighlightedSerie | undefined;
+    highlightedSerie: HighlightedSerieT | undefined;
     setHighlightedSerie: (
-        highlightedSerie: HighlightedSerie | undefined
+        highlightedSerie: HighlightedSerieT | undefined
     ) => void;
     highlightedComputePlanKey: string | undefined;
     setHighlightedComputePlanKey: (key: string | undefined) => void;
@@ -77,7 +77,7 @@ interface PerfBrowserContext {
     setHoveredRank: (hoveredRank: number | null) => void;
     selectedRank: number | null;
     setSelectedRank: (selectedRank: number | null) => void;
-    rankData: SerieRankData[];
+    rankData: SerieRankDataT[];
     // chart reference for JPEG export
     perfChartRef: React.RefObject<HTMLDivElement>;
     // test task drawer
@@ -90,10 +90,10 @@ interface PerfBrowserContext {
         organizationId: string
     ) => string;
     getSerieIndex: (computePlanKey: string, serieId: string) => string;
-}
+};
 
 /* eslint-disable @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
-export const PerfBrowserContext = createContext<PerfBrowserContext>({
+export const PerfBrowserContext = createContext<PerfBrowserContextT>({
     loading: true,
     computePlans: [],
     series: [],
@@ -141,7 +141,7 @@ const usePerfBrowser = (
     colorMode: 'computePlan' | 'organization',
     loading: boolean
 ): {
-    context: PerfBrowserContext;
+    context: PerfBrowserContextT;
 } => {
     const [selectedOrganizationIds, setSelectedOrganizationIds] =
         useSyncedStringArrayState('selectedOrganizationIds', []);
@@ -154,7 +154,7 @@ const usePerfBrowser = (
         ''
     );
     const [highlightedSerie, setHighlightedSerie] =
-        useState<HighlightedSerie>();
+        useState<HighlightedSerieT>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
         useState<string>();
     const [highlightedOrganizationId, setHighlightedOrganizationId] =
@@ -251,10 +251,10 @@ const usePerfBrowser = (
         return groupsWithRounds;
     }, [seriesGroups]);
 
-    const [xAxisMode, setXAxisMode] = useSyncedState<XAxisMode>(
+    const [xAxisMode, setXAxisMode] = useSyncedState<XAxisModeT>(
         'xAxisMode',
         'rank',
-        (v) => v as XAxisMode,
+        (v) => v as XAxisModeT,
         (v) => v
     );
 
@@ -264,7 +264,7 @@ const usePerfBrowser = (
         if (selectedSeriesGroup.length === 0) {
             return [];
         }
-        const getRankData = (rank: number): SerieRankData[] => {
+        const getRankData = (rank: number): SerieRankDataT[] => {
             return selectedSeriesGroup.map((serie) => {
                 // Look for rank or round based on X axis mode
                 const point = serie.points.find((p) => p[xAxisMode] === rank);
@@ -284,7 +284,7 @@ const usePerfBrowser = (
             });
         };
 
-        let rankData: SerieRankData[] = [];
+        let rankData: SerieRankDataT[] = [];
         if (selectedRank !== null) {
             rankData = getRankData(selectedRank);
         } else if (hoveredRank !== null) {

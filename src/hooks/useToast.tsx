@@ -14,16 +14,16 @@ import {
     RiInformationLine,
 } from 'react-icons/ri';
 
-interface CustomUseToastOptions extends Omit<UseToastOptions, 'description'> {
+type CustomUseToastOptionsT = Omit<UseToastOptions, 'description'> & {
     descriptionComponent?:
         | string
         | React.FunctionComponent<{ onClose: () => void }>;
-}
+};
 
 export const useToast = () => {
     const toast = useChakraToast();
 
-    const returnFunction = (options: CustomUseToastOptions) => {
+    const returnFunction = (options: CustomUseToastOptionsT) => {
         let duration = options.duration;
         if (duration === undefined) {
             if (typeof options.descriptionComponent === 'string') {

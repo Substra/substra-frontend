@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { Box, Flex, Heading, Text, Select } from '@chakra-ui/react';
 
-import { PerfBrowserContext, XAxisMode } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext, XAxisModeT } from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsUnits = (): JSX.Element => {
     const { xAxisMode, setXAxisMode, seriesGroupsWithRounds } =
@@ -21,7 +21,7 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
                     size="xs"
                     fontWeight="semibold"
                     value={xAxisMode}
-                    onChange={(e) => setXAxisMode(e.target.value as XAxisMode)}
+                    onChange={(e) => setXAxisMode(e.target.value as XAxisModeT)}
                 >
                     <option value="rank">Ranks</option>
                     <option

@@ -1,12 +1,12 @@
 import { Box, Button, Text, VStack } from '@chakra-ui/react';
 
-interface EmptyStateProps {
+type EmptyStateProps = {
     title: string;
     subtitle?: string;
     buttonOnClick?: () => void;
     buttonLabel?: string;
     icon: React.ReactNode;
-}
+};
 const EmptyState = ({
     title,
     subtitle,

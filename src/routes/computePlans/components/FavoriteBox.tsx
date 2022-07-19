@@ -17,10 +17,10 @@ const StyledInput = styled('input')`
     position: absolute;
 `;
 
-interface FavoriteBoxProps {
+type FavoriteBoxProps = {
     isChecked: boolean;
     onChange: () => void;
-}
+};
 const FavoriteBox = ({
     isChecked,
     onChange,

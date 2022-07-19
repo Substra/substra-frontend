@@ -4,12 +4,12 @@ import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import useAppDispatch from './useAppDispatch';
 
-export type DispatchWithAutoAbort = (
+export type DispatchWithAutoAbortProps = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action: AsyncThunkAction<any, any, any>
 ) => () => void;
 
-const useDispatchWithAutoAbort = (): DispatchWithAutoAbort => {
+const useDispatchWithAutoAbort = (): DispatchWithAutoAbortProps => {
     const dispatch = useAppDispatch();
     const promiseRef = useRef<{ abort: () => void } | null>(null);
 

@@ -29,15 +29,15 @@ const store = configureStore({
     },
 });
 
-interface StoreProviderProps {
+type StoreProviderProps = {
     children: React.ReactNode;
-}
+};
 export const StoreProvider = ({
     children,
 }: StoreProviderProps): JSX.Element => (
     <Provider store={store} children={children} />
 );
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatchT = typeof store.dispatch;
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootStateT = ReturnType<typeof store.getState>;

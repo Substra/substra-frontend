@@ -28,11 +28,11 @@ import {
 } from '@/hooks/useLocationWithParams';
 import { useSyncedStringState } from '@/hooks/useSyncedState';
 
-interface OrderingOption {
+type OrderingOptionProps = {
     label: string;
     asc?: { label: string; value: string };
     desc?: { label: string; value: string };
-}
+};
 
 const OrderingMenuItem = ({
     label,
@@ -71,7 +71,7 @@ const OrderingMenuItem = ({
     );
 };
 
-const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
+const OrderingToggle = ({ label, asc, desc }: OrderingOptionProps) => {
     const [ordering] = useSyncedStringState('ordering', '');
     const setLocationParams = useSetLocationParams();
 
@@ -126,10 +126,10 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOption) => {
     }
 };
 
-interface OrderingThProps extends TableColumnHeaderProps {
-    options: OrderingOption[];
+type OrderingThProps = TableColumnHeaderProps & {
+    options: OrderingOptionProps[];
     openFilters?: () => void;
-}
+};
 const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
     return (
         <Th {...props}>

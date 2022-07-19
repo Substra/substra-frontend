@@ -4,31 +4,31 @@ import Cookies from 'universal-cookie';
 
 import {
     postLogIn,
-    loginPayload,
-    loginData,
+    LoginPayloadT,
+    LoginDataT,
     refreshToken as getRefreshToken,
     getLogOut,
     retrieveInfo as getInfo,
 } from '@/modules/me/MeApi';
 
-import { MeInfoType } from './MeTypes';
+import { MeInfoT } from './MeTypes';
 
-interface MeState {
+type MeStateT = {
     authenticated: boolean;
     error: string;
     loading: boolean;
     refreshLoading: boolean;
     expiration: number | null;
-    payload: loginData;
+    payload: LoginDataT;
 
-    info: MeInfoType;
+    info: MeInfoT;
     infoLoading: boolean;
     infoError: string;
-}
+};
 
-interface loginError {
+type LoginErrorT = {
     detail: string;
-}
+};
 const defaultPayload = {
     exp: 0,
     user_id: 0,
@@ -36,7 +36,7 @@ const defaultPayload = {
     token_type: '',
 };
 
-const initialState: MeState = {
+const initialState: MeStateT = {
     authenticated: false,
     error: '',
     loading: false,
@@ -62,10 +62,10 @@ const initialState: MeState = {
 };
 
 export const logIn = createAsyncThunk<
-    loginData,
-    loginPayload,
+    LoginDataT,
+    LoginPayloadT,
     {
-        rejectValue: loginError;
+        rejectValue: LoginErrorT;
     }
 >('ME_LOGIN', async (payload, thunkAPI) => {
     try {
@@ -100,9 +100,9 @@ export const logOut = createAsyncThunk('ME_LOGOUT', async (_, thunkAPI) => {
 });
 
 export const refreshToken = createAsyncThunk<
-    loginData,
+    LoginDataT,
     void,
-    { rejectValue: loginError }
+    { rejectValue: LoginErrorT }
 >('ME_REFRESH_TOKEN', async (_, thunkAPI) => {
     try {
         const response = await getRefreshToken();
@@ -117,7 +117,7 @@ export const refreshToken = createAsyncThunk<
 });
 
 export const retrieveInfo = createAsyncThunk<
-    MeInfoType,
+    MeInfoT,
     boolean,
     { rejectValue: string }
 >('ME_INFO', async (withCredentials, thunkAPI) => {

@@ -9,9 +9,9 @@ import {
 } from '@/modules/computePlans/ComputePlansTypes';
 import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
 
-interface DurationProps {
+type DurationProps = {
     asset: ComputePlanT | AnyTupleT;
-}
+};
 
 const Duration = ({ asset }: DurationProps): JSX.Element | null => {
     if (!asset.start_date) {

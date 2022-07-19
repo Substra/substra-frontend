@@ -39,10 +39,10 @@ import DetailsSidebar from './components/DetailsSidebar';
 import TabsNav from './components/TabsNav';
 import TasksBreadcrumbs from './components/TasksBreadCrumbs';
 
-interface GenericTasksProps {
+type GenericTasksProps = {
     tasksTable: React.ReactNode;
     taskDrawer: React.ReactNode;
-}
+};
 const GenericTasks = ({
     tasksTable,
     taskDrawer,
@@ -103,12 +103,12 @@ const GenericTasks = ({
     );
 };
 
-interface TasksProps {
+type TasksProps = {
     computePlanKey: string;
     taskKey: string | undefined;
     compileListPath: (category: TaskCategory) => string;
     compileDetailsPath: (category: TaskCategory, taskKey: string) => string;
-}
+};
 
 const TestTasks = ({
     taskKey,

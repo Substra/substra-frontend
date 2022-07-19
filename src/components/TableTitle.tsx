@@ -1,8 +1,8 @@
 import { Heading } from '@chakra-ui/react';
 
-interface TableTitleProps {
+type TableTitleProps = {
     title: string;
-}
+};
 const TableTitle = ({ title }: TableTitleProps): JSX.Element => (
     <Heading
         size="xxs"

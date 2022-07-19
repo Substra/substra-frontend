@@ -24,11 +24,11 @@ const ComputePlanProgressSkeleton = (): JSX.Element => (
     </Skeleton>
 );
 
-interface ComputePlanTrSkeletonProps {
+type ComputePlanTrSkeletonProps = {
     computePlansCount: number;
     page: number;
     customColumns: string[];
-}
+};
 const ComputePlanTrSkeleton = ({
     computePlansCount,
     page,

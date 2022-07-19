@@ -35,19 +35,19 @@ import {
 import useWithAbortController from '@/hooks/useWithAbortController';
 import * as AlgosApi from '@/modules/algos/AlgosApi';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { PaginatedApiResponse } from '@/modules/common/CommonTypes';
+import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import { ComputePlanStub } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanStubT } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
-import { DatasetStubType } from '@/modules/datasets/DatasetsTypes';
+import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
 import { getTaskCategory } from '@/modules/tasks/TasksUtils';
 import {
-    AggregatetupleStub,
-    CompositeTraintupleStub,
-    TesttupleStub,
-    TraintupleStub,
-    PredicttupleStub,
+    AggregatetupleStubT,
+    CompositeTraintupleStubT,
+    TesttupleStubT,
+    TraintupleStubT,
+    PredicttupleStubT,
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
@@ -74,7 +74,7 @@ type AssetItemT = {
     key: string;
 };
 type ItemT = AssetItemT | SeeMoreItemT;
-type WithIndex<T extends ItemT> = T & { index: number };
+type WithIndexT<T extends ItemT> = T & { index: number };
 
 const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
     value === 'algo' ||
@@ -108,11 +108,11 @@ const isAssetItem = (value: unknown): value is AssetItemT => {
     );
 };
 
-type StateReducerT = UseComboboxProps<WithIndex<ItemT>>['stateReducer'];
+type StateReducerT = UseComboboxProps<WithIndexT<ItemT>>['stateReducer'];
 type OnSelectedItemChangeT = UseComboboxProps<
-    WithIndex<ItemT>
+    WithIndexT<ItemT>
 >['onSelectedItemChange'];
-type GetItemProps = UseComboboxPropGetters<WithIndex<ItemT>>['getItemProps'];
+type GetItemProps = UseComboboxPropGetters<WithIndexT<ItemT>>['getItemProps'];
 
 const ASSET_ITEM_ICONS: Record<OmniSearchAssetT, IconType> = {
     algo: RiCodeSSlashLine,
@@ -129,7 +129,7 @@ const AssetItem = ({
     item,
     getItemProps,
 }: {
-    item: WithIndex<AssetItemT>;
+    item: WithIndexT<AssetItemT>;
     getItemProps: GetItemProps;
 }) => {
     const itemProps = getItemProps({ item, index: item.index });
@@ -169,7 +169,7 @@ const SeeMoreItem = ({
     item,
     getItemProps,
 }: {
-    item: WithIndex<SeeMoreItemT>;
+    item: WithIndexT<SeeMoreItemT>;
     getItemProps: GetItemProps;
 }) => {
     const itemProps = getItemProps({ item, index: item.index });
@@ -194,7 +194,7 @@ const ItemGroup = ({
     getItemProps,
 }: {
     title: string;
-    items: WithIndex<ItemT>[];
+    items: WithIndexT<ItemT>[];
     getItemProps: GetItemProps;
 }) => {
     if (!items.length) {
@@ -259,7 +259,7 @@ const NoResults = () => (
 
 const buildAssetItem = (
     assetType: OmniSearchAssetT,
-    asset: ComputePlanStub | AlgoT | DatasetStubType
+    asset: ComputePlanStubT | AlgoT | DatasetStubT
 ): AssetItemT => ({
     asset: assetType,
     name: asset.name,
@@ -269,11 +269,11 @@ const buildAssetItem = (
 const buildTupleItem = (
     assetType: OmniSearchAssetT,
     asset:
-        | TraintupleStub
-        | TesttupleStub
-        | PredicttupleStub
-        | AggregatetupleStub
-        | CompositeTraintupleStub
+        | TraintupleStubT
+        | TesttupleStubT
+        | PredicttupleStubT
+        | AggregatetupleStubT
+        | CompositeTraintupleStubT
 ): AssetItemT => ({
     asset: assetType,
     name: `${getTaskCategory(asset)} on ${asset.worker}`,
@@ -319,24 +319,24 @@ const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
 };
 
 const OmniSearch = () => {
-    const [computePlans, setComputePlans] = useState<ComputePlanStub[]>([]);
+    const [computePlans, setComputePlans] = useState<ComputePlanStubT[]>([]);
     const [computePlansCount, setComputePlansCount] = useState(0);
     const [algos, setAlgos] = useState<AlgoT[]>([]);
     const [algosCount, setAlgosCount] = useState(0);
-    const [datasets, setDatasets] = useState<DatasetStubType[]>([]);
+    const [datasets, setDatasets] = useState<DatasetStubT[]>([]);
     const [datasetsCount, setDatasetsCount] = useState(0);
-    const [traintuples, setTraintuples] = useState<TraintupleStub[]>([]);
+    const [traintuples, setTraintuples] = useState<TraintupleStubT[]>([]);
     const [traintuplesCount, setTraintuplesCount] = useState(0);
-    const [testtuples, setTesttuples] = useState<TesttupleStub[]>([]);
+    const [testtuples, setTesttuples] = useState<TesttupleStubT[]>([]);
     const [testtuplesCount, setTesttuplesCount] = useState(0);
-    const [predicttuples, setPredicttuples] = useState<PredicttupleStub[]>([]);
+    const [predicttuples, setPredicttuples] = useState<PredicttupleStubT[]>([]);
     const [predicttuplesCount, setPredicttuplesCount] = useState(0);
     const [aggregatetuples, setAggregatetuples] = useState<
-        AggregatetupleStub[]
+        AggregatetupleStubT[]
     >([]);
     const [aggregatetuplesCount, setAggregatetuplesCount] = useState(0);
     const [compositeTraintuples, setCompositeTraintuples] = useState<
-        CompositeTraintupleStub[]
+        CompositeTraintupleStubT[]
     >([]);
     const [compositeTraintuplesCount, setCompositeTraintuplesCount] =
         useState(0);
@@ -364,7 +364,7 @@ const OmniSearch = () => {
         setLocation(url);
     };
 
-    const items: WithIndex<ItemT>[] = useMemo(() => {
+    const items: WithIndexT<ItemT>[] = useMemo(() => {
         return [
             ...computePlans.map((cp) => buildAssetItem('compute_plan', cp)),
             ...(computePlansCount > MAX_ASSETS_PER_SECTION
@@ -532,14 +532,14 @@ const OmniSearch = () => {
                 signal: abortController.signal,
             };
             const promises: [
-                AxiosPromise<PaginatedApiResponse<ComputePlanStub>>,
-                AxiosPromise<PaginatedApiResponse<AlgoT>>,
-                AxiosPromise<PaginatedApiResponse<DatasetStubType>>,
-                AxiosPromise<PaginatedApiResponse<TraintupleStub>>,
-                AxiosPromise<PaginatedApiResponse<TesttupleStub>>,
-                AxiosPromise<PaginatedApiResponse<PredicttupleStub>>,
-                AxiosPromise<PaginatedApiResponse<AggregatetupleStub>>,
-                AxiosPromise<PaginatedApiResponse<CompositeTraintupleStub>>
+                AxiosPromise<PaginatedApiResponseT<ComputePlanStubT>>,
+                AxiosPromise<PaginatedApiResponseT<AlgoT>>,
+                AxiosPromise<PaginatedApiResponseT<DatasetStubT>>,
+                AxiosPromise<PaginatedApiResponseT<TraintupleStubT>>,
+                AxiosPromise<PaginatedApiResponseT<TesttupleStubT>>,
+                AxiosPromise<PaginatedApiResponseT<PredicttupleStubT>>,
+                AxiosPromise<PaginatedApiResponseT<AggregatetupleStubT>>,
+                AxiosPromise<PaginatedApiResponseT<CompositeTraintupleStubT>>
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
                 AlgosApi.listAlgos(params, config),
@@ -564,29 +564,29 @@ const OmniSearch = () => {
                 ] = responses.map((response) => response.data);
 
                 setComputePlans(
-                    computePlansData['results'] as ComputePlanStub[]
+                    computePlansData['results'] as ComputePlanStubT[]
                 );
                 setComputePlansCount(computePlansData['count']);
                 setAlgos(algosData['results'] as AlgoT[]);
                 setAlgosCount(algosData['count']);
-                setDatasets(datasetsData['results'] as DatasetStubType[]);
+                setDatasets(datasetsData['results'] as DatasetStubT[]);
                 setDatasetsCount(datasetsData['count']);
-                setTraintuples(traintuplesData['results'] as TraintupleStub[]);
+                setTraintuples(traintuplesData['results'] as TraintupleStubT[]);
                 setTraintuplesCount(traintuplesData['count']);
-                setTesttuples(testtuplesData['results'] as TesttupleStub[]);
+                setTesttuples(testtuplesData['results'] as TesttupleStubT[]);
                 setTesttuplesCount(testtuplesData['count']);
                 setPredicttuples(
-                    predicttuplesData['results'] as PredicttupleStub[]
+                    predicttuplesData['results'] as PredicttupleStubT[]
                 );
                 setPredicttuplesCount(predicttuplesData['count']);
                 setAggregatetuples(
-                    aggregatetuplesData['results'] as AggregatetupleStub[]
+                    aggregatetuplesData['results'] as AggregatetupleStubT[]
                 );
                 setAggregatetuplesCount(aggregatetuplesData['count']);
                 setCompositeTraintuples(
                     compositeTraintuplesData[
                         'results'
-                    ] as CompositeTraintupleStub[]
+                    ] as CompositeTraintupleStubT[]
                 );
                 setCompositeTraintuplesCount(compositeTraintuplesData['count']);
                 setLoading(false);

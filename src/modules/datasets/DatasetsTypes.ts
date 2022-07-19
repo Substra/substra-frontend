@@ -1,26 +1,26 @@
 import {
     FileT,
     MetadataT,
-    PermissionsType,
-    PermissionType,
+    PermissionsT,
+    PermissionT,
 } from '@/modules/common/CommonTypes';
 
-// DatasetStubType is returned when fetching a list of datasets
-export interface DatasetStubType {
+// DatasetStubT is returned when fetching a list of datasets
+export type DatasetStubT = {
     key: string;
     name: string;
     owner: string;
-    permissions: PermissionsType;
-    logs_permission: PermissionType;
+    permissions: PermissionsT;
+    logs_permission: PermissionT;
     description: FileT;
     opener: FileT;
     type: string;
     creation_date: string;
     metadata: MetadataT;
-}
+};
 
-// DatasetType is returned when fetching a single dataset
-export interface DatasetType extends DatasetStubType {
+// DatasetT is returned when fetching a single dataset
+export type DatasetT = DatasetStubT & {
     train_data_sample_keys: string[];
     test_data_sample_keys: string[];
-}
+};

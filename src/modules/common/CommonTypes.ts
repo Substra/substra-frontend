@@ -1,14 +1,14 @@
-export interface PermissionType {
+export type PermissionT = {
     public: boolean;
     authorized_ids: string[];
-}
+};
 
-export interface PermissionsType {
-    process: PermissionType;
-    download: PermissionType;
-}
+export type PermissionsT = {
+    process: PermissionT;
+    download: PermissionT;
+};
 
-export type AssetType =
+export type AssetT =
     | 'dataset'
     | 'algo'
     | 'composite_algo'
@@ -20,7 +20,7 @@ export type AssetType =
     | 'predicttuple'
     | 'compute_plan';
 
-export type PaginatedApiResponse<T> = {
+export type PaginatedApiResponseT<T> = {
     count: number;
     next: string | null;
     previous: string | null;
@@ -29,16 +29,16 @@ export type PaginatedApiResponse<T> = {
 
 export type MetadataT = Record<string, string>;
 
-export interface FileT {
+export type FileT = {
     checksum: string;
     storage_address: string;
-}
+};
 
-export interface HasKey {
+export type HasKeyT = {
     key: string;
-}
+};
 
-export type APIListArgs = {
+export type APIListArgsProps = {
     page?: number;
     ordering?: string;
     pageSize?: number;

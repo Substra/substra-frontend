@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react';
 
-import { DispatchWithAutoAbort } from '@/hooks/useDispatchWithAutoAbort';
+import { DispatchWithAutoAbortProps } from '@/hooks/useDispatchWithAutoAbort';
 import useHandleRefresh, { ActionBuilderT } from '@/hooks/useHandleRefresh';
 
 const RefreshButton = ({
@@ -10,7 +10,7 @@ const RefreshButton = ({
 }: {
     loading: boolean;
     actionBuilder: ActionBuilderT;
-    dispatchWithAutoAbort: DispatchWithAutoAbort;
+    dispatchWithAutoAbort: DispatchWithAutoAbortProps;
 }): JSX.Element => {
     const handleRefresh = useHandleRefresh(
         actionBuilder,

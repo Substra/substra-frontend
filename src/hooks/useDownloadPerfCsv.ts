@@ -22,8 +22,8 @@ enum CSV_COLUMN_ID {
     perf = 'perf',
 }
 
-type Data = Record<CSV_COLUMN_ID, string>;
-type Datas = Data[];
+type DataT = Record<CSV_COLUMN_ID, string>;
+type DatasT = DataT[];
 
 const CSV_COLUMNS = [
     { displayName: 'Compute plan key', id: CSV_COLUMN_ID.computePlanKey },
@@ -55,8 +55,8 @@ const getDatas = (
     series: SerieT[],
     computePlans: ComputePlanT[],
     getSerieIndex: (computePlanKey: string, serieId: string) => string
-): Datas => {
-    const datas: Datas = [];
+): DatasT => {
+    const datas: DatasT = [];
     for (const serie of series) {
         for (const point of serie.points) {
             const computePlan = computePlans.find(
@@ -87,7 +87,7 @@ const getDatas = (
     return datas;
 };
 
-const compareDatas = (a: Data, b: Data) => {
+const compareDatas = (a: DataT, b: DataT) => {
     // Order datas by:
     //   1. compute plan key
     //   2. metric name
@@ -130,8 +130,8 @@ const useDownloadPerfCsv = (seriesGroups: SerieT[][]) => {
         // https://github.com/dolezel/react-csv-downloader/blob/master/src/index.tsx
 
         // extract data from all groups
-        const datas: Datas = seriesGroups.reduce(
-            (allDatas: Datas, series: SerieT[]) => [
+        const datas: DatasT = seriesGroups.reduce(
+            (allDatas: DatasT, series: SerieT[]) => [
                 ...allDatas,
                 ...getDatas(series, computePlans, getSerieIndex),
             ],
