@@ -50,7 +50,7 @@ import {
     PredicttupleStubT,
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
 
 const MAX_ASSETS_PER_SECTION = 5;
 
@@ -292,14 +292,20 @@ const ASSET_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGO,
     compute_plan: PATHS.COMPUTE_PLAN,
     dataset: PATHS.DATASET,
-    traintuple: compilePath(PATHS.TASK, { category: TaskCategory.train }),
-    testtuple: compilePath(PATHS.TASK, { category: TaskCategory.test }),
-    predicttuple: compilePath(PATHS.TASK, { category: TaskCategory.predict }),
+    traintuple: compilePath(PATHS.TASK, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.train],
+    }),
+    testtuple: compilePath(PATHS.TASK, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.test],
+    }),
+    predicttuple: compilePath(PATHS.TASK, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.predict],
+    }),
     aggregatetuple: compilePath(PATHS.TASK, {
-        category: TaskCategory.aggregate,
+        category: TASK_CATEGORY_SLUGS[TaskCategory.aggregate],
     }),
     composite_traintuple: compilePath(PATHS.TASK, {
-        category: TaskCategory.composite,
+        category: TASK_CATEGORY_SLUGS[TaskCategory.composite],
     }),
 };
 
@@ -307,14 +313,20 @@ const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGOS,
     compute_plan: PATHS.COMPUTE_PLANS,
     dataset: PATHS.DATASETS,
-    traintuple: compilePath(PATHS.TASKS, { category: TaskCategory.train }),
-    testtuple: compilePath(PATHS.TASKS, { category: TaskCategory.test }),
-    predicttuple: compilePath(PATHS.TASKS, { category: TaskCategory.predict }),
+    traintuple: compilePath(PATHS.TASKS, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.train],
+    }),
+    testtuple: compilePath(PATHS.TASKS, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.test],
+    }),
+    predicttuple: compilePath(PATHS.TASKS, {
+        category: TASK_CATEGORY_SLUGS[TaskCategory.predict],
+    }),
     aggregatetuple: compilePath(PATHS.TASKS, {
-        category: TaskCategory.aggregate,
+        category: TASK_CATEGORY_SLUGS[TaskCategory.aggregate],
     }),
     composite_traintuple: compilePath(PATHS.TASKS, {
-        category: TaskCategory.composite,
+        category: TASK_CATEGORY_SLUGS[TaskCategory.composite],
     }),
 };
 

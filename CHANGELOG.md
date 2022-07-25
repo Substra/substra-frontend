@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Tooltips are now displayed on performance charts (#649)
 -   Prevent the tooltip from being partly hidden on performance charts (#611)
 -   Params disappearing when clicking twice on a navigation tab (#651)
+-   Tuples links in OmniSearch were not redirecting to the tuple (#656)
 
 ### Changed
 
