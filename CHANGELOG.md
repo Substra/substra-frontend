@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Do not trigger omnisearch for empty search strings (#664)
+
 ### Changed
 
 -   Refactoring of duration format functions (#663)

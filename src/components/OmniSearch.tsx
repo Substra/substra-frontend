@@ -257,6 +257,12 @@ const NoResults = () => (
     </ListItem>
 );
 
+const NoInputValue = () => (
+    <ListItem textAlign="center" color="gray.500" padding="4">
+        No search value
+    </ListItem>
+);
+
 const buildAssetItem = (
     assetType: OmniSearchAssetT,
     asset: ComputePlanStubT | AlgoT | DatasetStubT
@@ -497,6 +503,25 @@ const OmniSearch = () => {
         }
     };
 
+    const resetAssetLists = useCallback(() => {
+        setComputePlans([]);
+        setComputePlansCount(0);
+        setAlgos([]);
+        setAlgosCount(0);
+        setDatasets([]);
+        setDatasetsCount(0);
+        setTraintuples([]);
+        setTraintuplesCount(0);
+        setTesttuples([]);
+        setTesttuplesCount(0);
+        setPredicttuples([]);
+        setPredicttuplesCount(0);
+        setAggregatetuples([]);
+        setAggregatetuplesCount(0);
+        setCompositeTraintuples([]);
+        setCompositeTraintuplesCount(0);
+    }, []);
+
     const {
         isOpen,
         getMenuProps,
@@ -517,23 +542,7 @@ const OmniSearch = () => {
     useEffect(() => {
         const search = async (abortController: AbortController) => {
             setLoading(true);
-
-            setComputePlans([]);
-            setComputePlansCount(0);
-            setAlgos([]);
-            setAlgosCount(0);
-            setDatasets([]);
-            setDatasetsCount(0);
-            setTraintuples([]);
-            setTraintuplesCount(0);
-            setTesttuples([]);
-            setTesttuplesCount(0);
-            setPredicttuples([]);
-            setPredicttuplesCount(0);
-            setAggregatetuples([]);
-            setAggregatetuplesCount(0);
-            setCompositeTraintuples([]);
-            setCompositeTraintuplesCount(0);
+            resetAssetLists();
 
             const params = {
                 page: 1,
@@ -611,8 +620,14 @@ const OmniSearch = () => {
                 }
             }
         };
-        return withAbortController(search);
-    }, [inputValue, withAbortController]);
+
+        if (inputValue) {
+            return withAbortController(search);
+        } else {
+            setLoading(false);
+            resetAssetLists();
+        }
+    }, [inputValue, withAbortController, resetAssetLists]);
 
     return (
         <Box position="relative" width="360px">
@@ -658,7 +673,10 @@ const OmniSearch = () => {
                 {isOpen && (
                     <>
                         {loading && <Loading />}
-                        {!loading && items.length === 0 && <NoResults />}
+                        {!loading && !inputValue && <NoInputValue />}
+                        {!loading && inputValue && items.length === 0 && (
+                            <NoResults />
+                        )}
                         <ItemGroup
                             title="Compute plans"
                             items={computePlanItems}
