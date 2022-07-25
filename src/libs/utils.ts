@@ -35,16 +35,30 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
     return formatDuration(Math.round(diff / 1000));
 };
 
-export const formatDuration = (duration: number): string => {
+const getDurationParts = (duration: number) => {
     // duration is expected to be in seconds
-    let seconds: number | string = Math.floor(duration % 60);
-    let minutes: number | string = Math.floor((duration / 60) % 60);
-    let hours: number | string = Math.floor((duration / (60 * 60)) % 24);
-    const days: number = Math.floor(duration / (24 * 60 * 60));
+    const seconds = Math.floor(duration % 60);
+    const minutes = Math.floor((duration / 60) % 60);
+    const hours = Math.floor((duration / (60 * 60)) % 24);
+    const days = Math.floor(duration / (24 * 60 * 60));
 
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
+    return {
+        seconds,
+        minutes,
+        hours,
+        days,
+    };
+};
+
+const pad = (n: number): string => {
+    // transforms a number into a string,
+    // and adds "0" at the beginning to make the string 2 chars long
+    return n.toString().padStart(2, '0');
+};
+
+export const formatDuration = (duration: number): string => {
+    // format duration in the format "3 days, 01h 30min 10s"
+    const { hours, minutes, seconds, days } = getDurationParts(duration);
 
     let daysPrefix = '';
     if (days === 1) {
@@ -53,26 +67,24 @@ export const formatDuration = (duration: number): string => {
         daysPrefix = `${days} days, `;
     }
 
-    return `${daysPrefix}${hours}h ${minutes}min ${seconds}s`;
+    return `${daysPrefix}${pad(hours)}h ${pad(minutes)}min ${pad(seconds)}s`;
 };
 
 export const formatShortDuration = (duration: number): string => {
-    // duration is expected to be in seconds
-    const seconds: number | string = Math.floor(duration % 60);
-    const minutes: number | string = Math.floor((duration / 60) % 60);
-    const hours: number | string = Math.floor((duration / (60 * 60)) % 24);
-    const days: number = Math.floor(duration / (24 * 60 * 60));
+    // format a duration that is expected to be an exact number of days, hours, minutes or seconds
+    // if the duration is a mix of days, hours, minutes or seconds, then use the default duration format
+    const { hours, minutes, seconds, days } = getDurationParts(duration);
 
-    if (days) {
+    if (days && !hours && !minutes && !seconds) {
         return `${days}d`;
-    } else if (hours) {
+    } else if (!days && hours && !minutes && !seconds) {
         return `${hours}h`;
-    } else if (minutes) {
+    } else if (!days && !hours && minutes && !seconds) {
         return `${minutes}min`;
-    } else if (seconds) {
+    } else if (!days && !hours && !minutes && seconds) {
         return `${seconds}s`;
     } else {
-        return '';
+        return formatDuration(duration);
     }
 };
 
