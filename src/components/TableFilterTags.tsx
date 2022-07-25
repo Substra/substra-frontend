@@ -1,4 +1,4 @@
-import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
+import { Box, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 
 import {
     useDuration,
@@ -17,7 +17,7 @@ type TableFilterTagsProps = {
 
 export const TableFilterTags = ({
     children,
-}: TableFilterTagsProps): JSX.Element => <HStack>{children}</HStack>;
+}: TableFilterTagsProps): JSX.Element => <Box>{children}</Box>;
 
 type FilterTagProps = {
     label: string | JSX.Element;
@@ -31,6 +31,8 @@ const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
         backgroundColor="white"
         color="gray.800"
         boxShadow="0 0 0px 1px var(--chakra-colors-gray-100)"
+        marginBottom={1}
+        marginRight={1}
         {...props}
     >
         <TagLabel>{label}</TagLabel>

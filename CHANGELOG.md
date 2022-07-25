@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add Hadolint to CI (#647)
 -   Reset compute plan filters when clicking on a refresh button (#643)
 -   Add ESLint rule to enforce PascalCase and precise suffixes for types (#650)
+-   Stack applied filters vertically instead of using ellipsis (#661)
 
 ## [0.28.0] - 2022-07-11
 
