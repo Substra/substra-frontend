@@ -56,6 +56,26 @@ export const formatDuration = (duration: number): string => {
     return `${daysPrefix}${hours}h ${minutes}min ${seconds}s`;
 };
 
+export const formatShortDuration = (duration: number): string => {
+    // duration is expected to be in seconds
+    const seconds: number | string = Math.floor(duration % 60);
+    const minutes: number | string = Math.floor((duration / 60) % 60);
+    const hours: number | string = Math.floor((duration / (60 * 60)) % 24);
+    const days: number = Math.floor(duration / (24 * 60 * 60));
+
+    if (days) {
+        return `${days}d`;
+    } else if (hours) {
+        return `${hours}h`;
+    } else if (minutes) {
+        return `${minutes}min`;
+    } else if (seconds) {
+        return `${seconds}s`;
+    } else {
+        return '';
+    }
+};
+
 export const endOfDay = (dateStringISO: string): string => {
     if (!dateStringISO) {
         return dateStringISO;
