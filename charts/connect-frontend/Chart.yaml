@@ -4,5 +4,6 @@ description: Frontend for Owkin Connect
 
 type: application
 
-version: 0.15.0
+version: 1.0.0
+appVersion: 0.29.0 # should be same as in package.json
 kubeVersion: ">= 1.19.0-0"

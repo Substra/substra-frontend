@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   registry: gcr.io
   repository: connect-314908/connect-frontend
-  tag: latest
+  tag: null # default to AppVersion
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
