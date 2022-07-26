@@ -23,7 +23,7 @@ const DrawerSectionDatasetEntry = ({
             title="Dataset"
             aboveFold={
                 <>
-                    <HStack spacing="2.5">
+                    <HStack spacing="2.5" onClick={(e) => e.stopPropagation()}>
                         <Text noOfLines={1}>
                             <Link
                                 href={compilePath(PATHS.DATASET, {

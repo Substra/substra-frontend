@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Do not trigger omnisearch for empty search strings (#664)
 -   Spacing between and around filter tags (#666)
 -   Duration's active filter dot does not appear on filter popover (#654)
+-   Prevent task drawer dataset's dropdown from expanding/collapsing on dataset download (#660)
 
 ### Changed
 
