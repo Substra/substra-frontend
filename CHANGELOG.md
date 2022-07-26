@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Refactoring of duration format functions (#663)
+-   Wording update for deleted models in output (#669)
 
 ## [0.29.0] - 2022-07-25
 

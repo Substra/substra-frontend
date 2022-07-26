@@ -51,11 +51,7 @@ const DrawerSectionOutModelEntryContent = ({
                 </Text>
             );
         } else if (!simpleModel?.address?.storage_address) {
-            content = (
-                <Text color="gray.500">
-                    Intermediary simpleModel no longer available
-                </Text>
-            );
+            content = <Text color="gray.500">Intermediary model deleted</Text>;
         } else if (
             (isTraintuple(task) || isAggregatetuple(task)) &&
             simpleModel
