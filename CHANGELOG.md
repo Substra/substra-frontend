@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Do not trigger omnisearch for empty search strings (#664)
+-   Spacing between and around filter tags (#666)
 
 ### Changed
 

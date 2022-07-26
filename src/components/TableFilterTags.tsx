@@ -1,4 +1,11 @@
-import { Box, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
+import {
+    Tag,
+    TagCloseButton,
+    TagLabel,
+    Text,
+    Wrap,
+    WrapItem,
+} from '@chakra-ui/react';
 
 import {
     useDuration,
@@ -17,27 +24,31 @@ type TableFilterTagsProps = {
 
 export const TableFilterTags = ({
     children,
-}: TableFilterTagsProps): JSX.Element => <Box>{children}</Box>;
+}: TableFilterTagsProps): JSX.Element => (
+    <Wrap spacing="2" overflow="visible">
+        {children}
+    </Wrap>
+);
 
 type FilterTagProps = {
     label: string | JSX.Element;
     clear: () => void;
 };
 const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
-    <Tag
-        size="md"
-        variant="outline"
-        colorScheme="gray"
-        backgroundColor="white"
-        color="gray.800"
-        boxShadow="0 0 0px 1px var(--chakra-colors-gray-100)"
-        marginBottom={1}
-        marginRight={1}
-        {...props}
-    >
-        <TagLabel>{label}</TagLabel>
-        <TagCloseButton onClick={clear} />
-    </Tag>
+    <WrapItem>
+        <Tag
+            size="md"
+            variant="outline"
+            colorScheme="gray"
+            backgroundColor="white"
+            color="gray.800"
+            boxShadow="0 0 0px 1px var(--chakra-colors-gray-100)"
+            {...props}
+        >
+            <TagLabel>{label}</TagLabel>
+            <TagCloseButton onClick={clear} />
+        </Tag>
+    </WrapItem>
 );
 
 const FilterTagLabel = ({
