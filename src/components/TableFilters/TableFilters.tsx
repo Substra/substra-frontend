@@ -64,9 +64,15 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
     });
 
     const isActive = (field: string) => {
-        const params = field.endsWith('_date')
-            ? [`${field}_after`, `${field}_before`]
-            : [field];
+        let params: string[] = [];
+        if (field.endsWith('_date')) {
+            params = [`${field}_after`, `${field}_before`];
+        } else if (field.startsWith('duration')) {
+            params = [`${field}_min`, `${field}_max`];
+        } else {
+            params = [field];
+        }
+
         const urlSearchParams = getUrlSearchParams();
 
         for (const param of params) {
