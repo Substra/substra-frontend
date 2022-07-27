@@ -5,24 +5,20 @@ import {
     IconButton,
     HStack,
 } from '@chakra-ui/react';
-import { RiDownload2Line, RiDownloadLine } from 'react-icons/ri';
-
-import { downloadFromApi } from '@/libs/request';
+import { RiDownloadLine } from 'react-icons/ri';
 
 type DrawerHeaderProps = {
     loading: boolean;
     title?: string;
     onClose: () => void;
-    storageAddress?: string;
-    filename?: string;
+    extraButtons?: React.ReactNode;
 };
 
 const DrawerHeader = ({
     loading,
     title,
     onClose,
-    storageAddress,
-    filename,
+    extraButtons,
 }: DrawerHeaderProps): JSX.Element => (
     <ChakraDrawerHeader
         display="flex"
@@ -45,16 +41,7 @@ const DrawerHeader = ({
             </Heading>
         )}
         <HStack spacing="1">
-            {storageAddress && filename && (
-                <IconButton
-                    aria-label="Download"
-                    variant="ghost"
-                    fontSize="20px"
-                    color="gray.500"
-                    icon={<RiDownload2Line />}
-                    onClick={() => downloadFromApi(storageAddress, filename)}
-                />
-            )}
+            {extraButtons}
             <IconButton
                 aria-label="Close drawer"
                 variant="ghost"

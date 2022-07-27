@@ -9,13 +9,16 @@ import {
     useDisclosure,
     DrawerBody,
     VStack,
+    IconButton,
 } from '@chakra-ui/react';
+import { RiDownload2Line } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
+import { downloadFromApi } from '@/libs/request';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { PATHS } from '@/routes';
@@ -73,6 +76,12 @@ const AlgoDrawer = (): JSX.Element => {
         [algo?.name]
     );
 
+    const downloadAlgo = () => {
+        if (algo) {
+            downloadFromApi(algo.algorithm.storage_address, `algo-${key}.zip`);
+        }
+    };
+
     return (
         <Drawer
             isOpen={isOpen}
@@ -89,12 +98,21 @@ const AlgoDrawer = (): JSX.Element => {
                 <DrawerHeader
                     title={algo?.name}
                     loading={algoLoading}
-                    storageAddress={algo?.algorithm.storage_address}
-                    filename={`algo-${key}.zip`}
                     onClose={() => {
                         setLocationPreserveParams(PATHS.ALGOS);
                         onClose();
                     }}
+                    extraButtons={
+                        <IconButton
+                            aria-label="Download"
+                            variant="ghost"
+                            fontSize="20px"
+                            color="gray.500"
+                            icon={<RiDownload2Line />}
+                            isDisabled={algoLoading || !algo}
+                            onClick={downloadAlgo}
+                        />
+                    }
                 />
 
                 <DrawerBody
