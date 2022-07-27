@@ -296,7 +296,7 @@ const TasksTable = ({
                                         ]}
                                     />
                                     <OrderingTh
-                                        width="240px"
+                                        width="300px"
                                         whiteSpace="nowrap"
                                         options={[
                                             {
