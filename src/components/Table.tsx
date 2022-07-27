@@ -42,7 +42,11 @@ export const EmptyTr = ({ nbColumns, asset }: EmptyTrProps): JSX.Element => {
 
     const clearAll = () => {
         const urlSearchParams = getUrlSearchParams();
-        const keys = urlSearchParams.keys();
+        // urlSearchParams.keys is an iterator, so removing items from
+        // urlSearchParams will mess up the for loop, missing some values.
+        // The solution is to transform the iterator in a list and iter over
+        // the list (not affected by later changes of urlSearchParams)
+        const keys = [...urlSearchParams.keys()];
         for (const key of keys) {
             if (key !== 'page' && key !== 'ordering') {
                 urlSearchParams.delete(key);

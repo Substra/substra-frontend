@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Duration's active filter dot does not appear on filter popover (#654)
 -   Prevent task drawer dataset's dropdown from expanding/collapsing on dataset download (#660)
 -   Column width issue on tasks table (#673)
+-   Clear all filters button not clearing all filters (#675)
 
 ### Changed
 
