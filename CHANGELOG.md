@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Prevent task drawer dataset's dropdown from expanding/collapsing on dataset download (#660)
 -   Column width issue on tasks table (#673)
 -   Clear all filters button not clearing all filters (#675)
+-   Center no tasks message on dataset table (#674)
 
 ### Changed
 
