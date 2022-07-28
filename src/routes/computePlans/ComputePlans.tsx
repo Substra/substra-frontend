@@ -103,6 +103,8 @@ const ComputePlans = (): JSX.Element => {
 
     const { favorites, setFavorites, isFavorite, onFavoriteChange } =
         useFavoriteComputePlans();
+    const isFavoritesOnlyAndHasNoResults =
+        favoritesOnly && favorites.length === 0;
 
     const key = useMemo(() => {
         return favoritesOnly ? favorites : null;
@@ -422,19 +424,22 @@ const ComputePlans = (): JSX.Element => {
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
                         >
                             {!computePlansLoading &&
-                                computePlans.length === 0 && (
+                                (computePlans.length === 0 ||
+                                    isFavoritesOnlyAndHasNoResults) && (
                                     <EmptyTr
                                         nbColumns={6}
                                         asset="compute_plan"
                                     />
                                 )}
-                            {computePlansLoading ? (
+                            {computePlansLoading && (
                                 <ComputePlanTrSkeleton
                                     computePlansCount={computePlansCount}
                                     page={page}
                                     customColumns={columns}
                                 />
-                            ) : (
+                            )}
+                            {!computePlansLoading &&
+                                !isFavoritesOnlyAndHasNoResults &&
                                 computePlans.map((computePlan) => (
                                     <ComputePlanTr
                                         key={computePlan.key}
@@ -451,15 +456,18 @@ const ComputePlans = (): JSX.Element => {
                                         )}
                                         customColumns={columns}
                                     />
-                                ))
-                            )}
+                                ))}
                         </Tbody>
                     </Table>
                 </Box>
                 <Box paddingX="6">
                     <TablePagination
                         currentPage={page}
-                        itemCount={computePlansCount}
+                        itemCount={
+                            isFavoritesOnlyAndHasNoResults
+                                ? 0
+                                : computePlansCount
+                        }
                     />
                 </Box>
                 {selectedComputePlans.length > 0 && (
