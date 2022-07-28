@@ -221,7 +221,7 @@ const ComputePlans = (): JSX.Element => {
                             loading={computePlansLoading}
                             actionBuilder={() =>
                                 listComputePlans({
-                                    page: 1,
+                                    page: page,
                                     ordering: ordering,
                                 })
                             }

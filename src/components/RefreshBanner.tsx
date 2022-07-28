@@ -21,10 +21,11 @@ const RefreshBanner = (): JSX.Element | null => {
     );
 
     const urlSearchParams = getUrlSearchParams();
+    const page = parseInt(urlSearchParams.get('page') || '1');
     const ordering = urlSearchParams.get('ordering') || '';
 
     const handleRefresh = useHandleRefresh(() =>
-        listComputePlans({ page: 1, ordering: ordering })
+        listComputePlans({ page: page, ordering: ordering })
     );
 
     useEffect(() => {
