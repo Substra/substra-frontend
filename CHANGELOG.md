@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add capital letter R to reset zoom button
 -   Rename Connect to Substra in code and ci files
 -   Change primary color from teal to blue
+-   Filters are kept when using the refresh button or banner
 
 ### Fixed
 

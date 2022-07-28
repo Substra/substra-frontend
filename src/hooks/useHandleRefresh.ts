@@ -1,8 +1,9 @@
 import { AsyncThunkAction } from '@reduxjs/toolkit';
+import { useLocation } from 'wouter';
 
 import useAppDispatch from './useAppDispatch';
 import { DispatchWithAutoAbortProps } from './useDispatchWithAutoAbort';
-import { useSetLocationParams } from './useLocationWithParams';
+import { useSetLocationPreserveParams } from './useLocationWithParams';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ActionBuilderT = () => AsyncThunkAction<any, any, any>;
@@ -11,15 +12,12 @@ const useHandleRefresh = (
     actionBuilder: ActionBuilderT,
     dispatchWithAutoAbort?: DispatchWithAutoAbortProps
 ): (() => void) => {
-    const setLocationParams = useSetLocationParams();
+    const [location] = useLocation();
+    const setLocationPreserveParams = useSetLocationPreserveParams();
     const dispatch = useAppDispatch();
 
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.set('page', '1');
-    urlSearchParams.set('ordering', '-creation_date');
-
     return () => {
-        setLocationParams(urlSearchParams);
+        setLocationPreserveParams(location);
         if (dispatchWithAutoAbort) {
             dispatchWithAutoAbort(actionBuilder());
         } else {
