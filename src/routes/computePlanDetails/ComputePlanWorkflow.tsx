@@ -6,7 +6,10 @@ import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import {
+    useAssetListDocumentTitleEffect,
+    useDocumentTitleEffect,
+} from '@/hooks/useDocumentTitleEffect';
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 import { retrieveCPWorkflowGraph } from '@/modules/cpWorkflow/CPWorkflowSlice';
 import { ROUTES } from '@/routes';
@@ -24,6 +27,11 @@ const ComputePlanWorkflow = (): JSX.Element => {
     const graphTasks = useAppSelector((state) => state.cpWorkflow.graph.tasks);
     const [, params] = useRoute(ROUTES.COMPUTE_PLAN_WORKFLOW.path);
     const key = params?.key;
+
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle(`Compute plan ${key}`),
+        []
+    );
 
     useAssetListDocumentTitleEffect(`Compute plan ${key}`, params?.key || null);
 
@@ -52,6 +60,8 @@ const ComputePlanWorkflow = (): JSX.Element => {
         return <NotFound />;
     }
 
+    const isReady = computePlan && !graphLoading;
+
     return (
         <Flex
             direction="column"
@@ -75,15 +85,15 @@ const ComputePlanWorkflow = (): JSX.Element => {
                 </HStack>
                 <TabsNav />
             </Box>
-            {graphLoading && <Text padding="6">Loading</Text>}
-            {!graphLoading && (graphTasks.length === 0 || graphError) && (
+            {!isReady && <Text padding="6">Loading</Text>}
+            {isReady && (graphTasks.length === 0 || graphError) && (
                 <Flex justifyContent="center" alignItems="center" flexGrow={1}>
                     <UnavailableWorkflow
                         subtitle={graphError || 'The compute plan is empty'}
                     />
                 </Flex>
             )}
-            {!graphLoading && !graphError && graphTasks.length > 0 && (
+            {isReady && !graphError && graphTasks.length > 0 && (
                 <TasksWorkflow />
             )}
         </Flex>
