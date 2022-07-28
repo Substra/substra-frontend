@@ -60,21 +60,19 @@ const Actions = ({
             <Box>
                 <PerfDownloadButton />
             </Box>
-            {cancelComputePlanDialog && cancelComputePlanMenuItem && (
-                <Box>
-                    <Menu>
-                        <MenuButton
-                            as={IconButton}
-                            aria-label="Options"
-                            icon={<RiMoreLine />}
-                            variant="outline"
-                            size="xs"
-                        />
-                        <MenuList>{cancelComputePlanMenuItem}</MenuList>
-                    </Menu>
-                    {cancelComputePlanDialog}
-                </Box>
-            )}
+            <Box>
+                <Menu>
+                    <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<RiMoreLine />}
+                        variant="outline"
+                        size="xs"
+                    />
+                    <MenuList>{cancelComputePlanMenuItem}</MenuList>
+                </Menu>
+                {cancelComputePlanDialog}
+            </Box>
         </HStack>
     );
 };

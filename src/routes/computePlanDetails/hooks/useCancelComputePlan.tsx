@@ -84,10 +84,12 @@ const useCancelComputePlan = (
     }, [onClose, toast, computePlan]);
 
     const cancelComputePlanMenuItem = useMemo(
-        () =>
-            isCancellable ? (
-                <CancelComputePlanMenuItem onClick={onOpen} />
-            ) : null,
+        () => (
+            <CancelComputePlanMenuItem
+                isDisabled={!isCancellable}
+                onClick={onOpen}
+            />
+        ),
         [isCancellable, onOpen]
     );
 
