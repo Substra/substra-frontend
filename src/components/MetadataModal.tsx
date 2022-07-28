@@ -139,7 +139,7 @@ const MetadataModal = ({
 
     return (
         <>
-            <Button onClick={toggle} size="xs">
+            <Button onClick={toggle} size="xs" variant="outline">
                 {!isOpen ? 'Show metadata' : 'Hide metadata'}
             </Button>
             <Modal

@@ -48,6 +48,18 @@ const useCancelComputePlan = (
             await ComputePlansApi.cancelComputePlan(computePlan.key, {});
         } catch {
             setCanceling(false);
+            toast({
+                title: 'Could not cancel compute plan!',
+                descriptionComponent: () => (
+                    <Text>
+                        An unknown error occurred when trying to cancel this
+                        compute plan.
+                    </Text>
+                ),
+                status: 'error',
+                isClosable: true,
+            });
+
             return;
         }
 

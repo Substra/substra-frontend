@@ -49,7 +49,7 @@ const PerfDownloadButton = (): JSX.Element => {
             <Button
                 aria-label="Download chart"
                 leftIcon={<Icon as={RiDownloadLine} />}
-                variant="solid"
+                variant="outline"
                 colorScheme="teal"
                 size="xs"
                 isDisabled={loading}
@@ -67,7 +67,7 @@ const PerfDownloadButton = (): JSX.Element => {
                 aria-label="Download chart"
                 leftIcon={<Icon as={RiDownloadLine} />}
                 rightIcon={<Icon as={RiArrowDownSLine} />}
-                variant="solid"
+                variant="outline"
                 colorScheme="teal"
                 size="xs"
                 isDisabled={loading}

@@ -1,5 +1,4 @@
 import { MenuItemProps, MenuItem } from '@chakra-ui/react';
-import { RiStopLine } from 'react-icons/ri';
 
 type CancelComputePlanMenuItemProps = {
     onClick: MenuItemProps['onClick'];
@@ -7,9 +6,7 @@ type CancelComputePlanMenuItemProps = {
 const CancelComputePlanMenuItem = ({
     onClick,
 }: CancelComputePlanMenuItemProps) => (
-    <MenuItem icon={<RiStopLine />} color="red" onClick={onClick}>
-        Cancel execution
-    </MenuItem>
+    <MenuItem onClick={onClick}>Cancel execution</MenuItem>
 );
 
 export default CancelComputePlanMenuItem;

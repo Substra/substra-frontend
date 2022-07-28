@@ -48,6 +48,7 @@ const Actions = ({
                     icon={favorite ? <RiStarFill /> : <RiStarLine />}
                     color={favorite ? 'teal' : 'gray'}
                     isDisabled={loading || !computePlan}
+                    variant="outline"
                     onClick={
                         computePlan
                             ? onFavoriteChange(computePlan.key)

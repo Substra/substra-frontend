@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Refactoring of duration format functions (#663)
 -   Wording update for deleted models in output (#669)
 -   Refactoring of DrawerHeader extra buttons (#676)
+-   Some UI improvements for cancel CP feature (#659)
 
 ## [0.29.0] - 2022-07-25
 
