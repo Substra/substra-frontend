@@ -223,6 +223,7 @@ const ComputePlans = (): JSX.Element => {
                                 listComputePlans({
                                     page: page,
                                     ordering: ordering,
+                                    ...filters,
                                 })
                             }
                             dispatchWithAutoAbort={dispatchWithAutoAbort}

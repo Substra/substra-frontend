@@ -24,8 +24,21 @@ const RefreshBanner = (): JSX.Element | null => {
     const page = parseInt(urlSearchParams.get('page') || '1');
     const ordering = urlSearchParams.get('ordering') || '';
 
+    const filters = {
+        creation_date_after: urlSearchParams.get('creation_date_after'),
+        creation_date_before: urlSearchParams.get('creation_date_before'),
+        duration_max: urlSearchParams.get('duration_max'),
+        duration_min: urlSearchParams.get('duration_min'),
+        end_date_after: urlSearchParams.get('end_date_after'),
+        end_date_before: urlSearchParams.get('end_date_before'),
+        match: urlSearchParams.get('match') || '',
+        metadata: urlSearchParams.get('metadata'),
+        start_date_after: urlSearchParams.get('start_date_after'),
+        start_date_before: urlSearchParams.get('start_date_before'),
+        status: urlSearchParams.get('status')?.split(',') || [],
+    };
     const handleRefresh = useHandleRefresh(() =>
-        listComputePlans({ page: page, ordering: ordering })
+        listComputePlans({ page: page, ordering: ordering, ...filters })
     );
 
     useEffect(() => {
