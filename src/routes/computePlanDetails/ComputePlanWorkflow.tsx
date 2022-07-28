@@ -12,6 +12,7 @@ import { retrieveCPWorkflowGraph } from '@/modules/cpWorkflow/CPWorkflowSlice';
 import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
+import Actions from './components/Actions';
 import TabsNav from './components/TabsNav';
 import TasksBreadcrumbs from './components/TasksBreadCrumbs';
 import TasksWorkflow from './components/TasksWorkflow';
@@ -28,6 +29,9 @@ const ComputePlanWorkflow = (): JSX.Element => {
 
     const computePlan = useAppSelector(
         (state) => state.computePlans.computePlan
+    );
+    const computePlanLoading = useAppSelector(
+        (state) => state.computePlans.computePlanLoading
     );
 
     const dispatchWithAutoAbortComputePlan = useDispatchWithAutoAbort();
@@ -64,6 +68,10 @@ const ComputePlanWorkflow = (): JSX.Element => {
             >
                 <HStack justifyContent="space-between">
                     <TasksBreadcrumbs />
+                    <Actions
+                        computePlan={computePlan}
+                        loading={computePlanLoading}
+                    />
                 </HStack>
                 <TabsNav />
             </Box>

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Column width issue on tasks table (#673)
 -   Clear all filters button not clearing all filters (#675)
 -   Center no tasks message on dataset table (#674)
+-   Added missing actions on CP workflow page (#682)
 
 ### Changed
 
