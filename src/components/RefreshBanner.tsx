@@ -7,6 +7,7 @@ import { RiInformationLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useHandleRefresh from '@/hooks/useHandleRefresh';
+import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
@@ -19,8 +20,11 @@ const RefreshBanner = (): JSX.Element | null => {
         (state) => state.computePlans.computePlansCallTimestamp
     );
 
+    const urlSearchParams = getUrlSearchParams();
+    const ordering = urlSearchParams.get('ordering') || '';
+
     const handleRefresh = useHandleRefresh(() =>
-        listComputePlans({ page: 1, ordering: '-creation_date' })
+        listComputePlans({ page: 1, ordering: ordering })
     );
 
     useEffect(() => {

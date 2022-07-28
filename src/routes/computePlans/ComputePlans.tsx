@@ -222,7 +222,7 @@ const ComputePlans = (): JSX.Element => {
                             actionBuilder={() =>
                                 listComputePlans({
                                     page: 1,
-                                    ordering: '-creation_date',
+                                    ordering: ordering,
                                 })
                             }
                             dispatchWithAutoAbort={dispatchWithAutoAbort}
