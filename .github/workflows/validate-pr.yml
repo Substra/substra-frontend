@@ -27,7 +27,7 @@ jobs:
             - name: Unit tests
               run: npm run test:unit
             - name: Helm
-              run: sudo snap install helm --classic && helm lint charts/connect-frontend
+              run: helm lint charts/connect-frontend
 
     build: #separate for parallelization
         runs-on: ubuntu-latest
