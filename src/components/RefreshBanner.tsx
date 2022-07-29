@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import { useLocation } from 'wouter';
 
@@ -6,8 +6,20 @@ import { HStack, Icon, Button, Text } from '@chakra-ui/react';
 import { RiInformationLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
+import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import useHandleRefresh from '@/hooks/useHandleRefresh';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
+import {
+    usePage,
+    useMatch,
+    useStatus,
+    useFavoritesOnly,
+    useCreationDate,
+    useStartDate,
+    useEndDate,
+    useDuration,
+    useMetadataString,
+} from '@/hooks/useSyncedState';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
@@ -15,27 +27,43 @@ import { PATHS } from '@/paths';
 
 const RefreshBanner = (): JSX.Element | null => {
     const [location] = useLocation();
+    const [page] = usePage();
+    const [match] = useMatch();
+    const [status] = useStatus();
+    const [favoritesOnly] = useFavoritesOnly();
+    const { creationDateBefore, creationDateAfter } = useCreationDate();
+    const { startDateBefore, startDateAfter } = useStartDate();
+    const { endDateBefore, endDateAfter } = useEndDate();
+    const { durationMin, durationMax } = useDuration();
+    const [metadata] = useMetadataString();
+
     const [refreshAvailable, setRefreshAvailable] = useState(false);
     const computePlansCallTimestamp = useAppSelector(
         (state) => state.computePlans.computePlansCallTimestamp
     );
 
     const urlSearchParams = getUrlSearchParams();
-    const page = parseInt(urlSearchParams.get('page') || '1');
     const ordering = urlSearchParams.get('ordering') || '';
 
+    const { favorites } = useFavoriteComputePlans();
+
+    const key = useMemo(() => {
+        return favoritesOnly ? favorites : null;
+    }, [favoritesOnly, favorites]);
+
     const filters = {
-        creation_date_after: urlSearchParams.get('creation_date_after'),
-        creation_date_before: urlSearchParams.get('creation_date_before'),
-        duration_max: urlSearchParams.get('duration_max'),
-        duration_min: urlSearchParams.get('duration_min'),
-        end_date_after: urlSearchParams.get('end_date_after'),
-        end_date_before: urlSearchParams.get('end_date_before'),
-        match: urlSearchParams.get('match') || '',
-        metadata: urlSearchParams.get('metadata'),
-        start_date_after: urlSearchParams.get('start_date_after'),
-        start_date_before: urlSearchParams.get('start_date_before'),
-        status: urlSearchParams.get('status')?.split(',') || [],
+        creation_date_after: creationDateAfter,
+        creation_date_before: creationDateBefore,
+        duration_max: durationMax,
+        duration_min: durationMin,
+        end_date_after: endDateAfter,
+        end_date_before: endDateBefore,
+        key: key,
+        match: match,
+        metadata: metadata,
+        start_date_after: startDateAfter,
+        start_date_before: startDateBefore,
+        status: status,
     };
     const handleRefresh = useHandleRefresh(() =>
         listComputePlans({ page: page, ordering: ordering, ...filters })
