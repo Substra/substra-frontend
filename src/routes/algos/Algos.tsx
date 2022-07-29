@@ -126,7 +126,18 @@ const Algos = (): JSX.Element => {
                     <RefreshButton
                         loading={algosLoading}
                         dispatchWithAutoAbort={dispatchWithAutoAbort}
-                        actionBuilder={() => listAlgos({})}
+                        actionBuilder={() =>
+                            listAlgos({
+                                page,
+                                ordering,
+                                match,
+                                owner,
+                                creation_date_after: creationDateAfter,
+                                creation_date_before:
+                                    endOfDay(creationDateBefore),
+                                can_process: canProcess,
+                            })
+                        }
                     />
                 </Flex>
                 <TableFilterTags>

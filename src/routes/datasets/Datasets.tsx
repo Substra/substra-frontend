@@ -137,7 +137,19 @@ const Datasets = (): JSX.Element => {
                     <RefreshButton
                         loading={datasetsLoading}
                         dispatchWithAutoAbort={dispatchWithAutoAbort}
-                        actionBuilder={() => listDatasets({})}
+                        actionBuilder={() =>
+                            listDatasets({
+                                page,
+                                ordering,
+                                match,
+                                owner,
+                                creation_date_after: creationDateAfter,
+                                creation_date_before:
+                                    endOfDay(creationDateBefore),
+                                can_process: canProcess,
+                                can_access_logs: canAccessLogs,
+                            })
+                        }
                     />
                 </Flex>
                 <TableFilterTags>
