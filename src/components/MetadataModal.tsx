@@ -273,9 +273,7 @@ const MetadataModal = ({
                                         onClick={toggleDifferencesDisplay}
                                         size="xs"
                                         variant="outline"
-                                        disabled={
-                                            !isShowingDiffs ? false : true
-                                        }
+                                        disabled={isShowingDiffs}
                                     >
                                         Show only differences
                                     </Button>

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Add new ESLint rules to ensure code quality (#684)
+
 ## [0.30.0] - 2022-08-01
 
 ### Fixed

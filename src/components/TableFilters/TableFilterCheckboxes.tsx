@@ -1,5 +1,4 @@
-import { Box, VStack, Text } from '@chakra-ui/react';
-import { Checkbox } from '@chakra-ui/react';
+import { Box, Checkbox, VStack, Text } from '@chakra-ui/react';
 
 type OptionT = { value: string; label: string; description?: string } | string;
 

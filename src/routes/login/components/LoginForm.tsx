@@ -22,8 +22,7 @@ import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { LoginPayloadT } from '@/modules/me/MeApi';
-import { logIn } from '@/modules/me/MeSlice';
-import { retrieveInfo } from '@/modules/me/MeSlice';
+import { logIn, retrieveInfo } from '@/modules/me/MeSlice';
 import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
 import { PATHS } from '@/routes';
 

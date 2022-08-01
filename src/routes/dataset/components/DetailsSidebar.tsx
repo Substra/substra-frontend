@@ -5,11 +5,11 @@ import useAppSelector from '@/hooks/useAppSelector';
 import {
     DrawerSection,
     DrawerSectionDateEntry,
+    DrawerSectionHeading,
     DrawerSectionKeyEntry,
     OrganizationDrawerSectionEntry,
     PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
-import { DrawerSectionHeading } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
 import DataSamplesListItem from './DataSamplesListItem';

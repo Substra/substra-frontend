@@ -18,7 +18,11 @@
                 "format": ["PascalCase"],
                 "suffix": ["Props", "T"]
             }
-        ]
+        ],
+        "eqeqeq": "warn",
+        "no-unneeded-ternary": "warn",
+        "no-duplicate-imports": "warn",
+        "no-console": ["warn", { "allow": ["warn", "error"] }]
     },
     "ignorePatterns": ["dist/"]
 }

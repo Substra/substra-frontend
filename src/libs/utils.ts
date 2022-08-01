@@ -92,7 +92,7 @@ export const endOfDay = (dateStringISO: string): string => {
     if (!dateStringISO) {
         return dateStringISO;
     }
-    if (new Date(dateStringISO).toISOString().slice(0, 10) != dateStringISO) {
+    if (new Date(dateStringISO).toISOString().slice(0, 10) !== dateStringISO) {
         throw (
             'expected a valid date in iso format YYYY-MM-DD, got ' +
             dateStringISO

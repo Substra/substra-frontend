@@ -13,8 +13,8 @@ import {
     Tag,
     TagLabel,
     TagRightIcon,
+    VStack,
 } from '@chakra-ui/react';
-import { VStack } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';

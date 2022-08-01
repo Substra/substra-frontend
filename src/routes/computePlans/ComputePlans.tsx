@@ -60,12 +60,12 @@ import {
     StatusTableFilterTag,
     TableFilterTags,
 } from '@/components/TableFilterTags';
-import { DurationTableFilter } from '@/components/TableFilters';
 import {
     TableFilters,
     ComputePlanStatusTableFilter,
     ComputePlanFavoritesTableFilter,
     CreationDateTableFilter,
+    DurationTableFilter,
     StartDateTableFilter,
     EndDateTableFilter,
     MetadataTableFilter,

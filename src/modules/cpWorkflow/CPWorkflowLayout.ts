@@ -91,7 +91,7 @@ function computeRowsHeight(rows: RowsT) {
 function computeRowsY(grid: GridT) {
     for (const [index, workerName] of grid.workerNamesInYOrder.entries()) {
         const row = grid.rows[workerName];
-        if (index == 0) {
+        if (index === 0) {
             row.y = 0;
         } else {
             const previousWorkerName = grid.workerNamesInYOrder[index - 1];
@@ -124,7 +124,7 @@ function orderTasksInEachCell(rows: RowsT, edges: EdgeT[]) {
         for (const cell of row.cells) {
             cell.tasks.sort((firstTask, secondTask) => {
                 function makeSortName(task: TaskT) {
-                    if (task.category == TaskCategory.test) {
+                    if (task.category === TaskCategory.test) {
                         // test_tuples should follow their parentTask if it is in the cell
                         // So we concatenate the key of their parentTasks to their key to build a name used for sorting
                         const upstreamTaskKeys = taskKeyToUpstreamEdgeMap[
@@ -163,7 +163,7 @@ function computeTasksRelativePositionInCell(rows: RowsT) {
             // to symbolize they are executed after the other tasks of the same rank
             task.relativeXInCell += TEST_TASK_LEFT_PADDING;
         }
-        if (task.taskRef.category == TaskCategory.aggregate) {
+        if (task.taskRef.category === TaskCategory.aggregate) {
             // Aggregatetuple are drawn with a little shifting on the y axis
             // to avoid they are drawn on top of composite-to-composite edges of the same worker
             task.relativeYInCell += AGGREGATE_TASK_TOP_PADDING;
@@ -199,7 +199,7 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
         const row = grid.rows[task.worker];
         const cell = row.cells[task.rank];
         const taskInCell = cell.tasks.find((taskInCell) => {
-            return taskInCell.taskRef.key == task.key;
+            return taskInCell.taskRef.key === task.key;
         });
 
         return {

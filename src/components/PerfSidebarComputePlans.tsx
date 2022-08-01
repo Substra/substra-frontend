@@ -249,7 +249,7 @@ const SerieList = ({
         () =>
             allRankData.filter(
                 (serieRankData) =>
-                    serieRankData.computePlanKey == computePlanKey &&
+                    serieRankData.computePlanKey === computePlanKey &&
                     isOrganizationIdSelected(serieRankData.worker)
             ),
         [allRankData, isOrganizationIdSelected, computePlanKey]

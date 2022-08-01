@@ -29,8 +29,7 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { formatDate } from '@/libs/utils';
-import { endOfDay } from '@/libs/utils';
+import { endOfDay, formatDate } from '@/libs/utils';
 import { listAlgos } from '@/modules/algos/AlgosSlice';
 import { compilePath, PATHS } from '@/routes';
 
