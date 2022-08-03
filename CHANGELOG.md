@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add new ESLint rules to ensure code quality (#684)
 
+### Fixed
+
+-   Overflow issue on task drawer dataset section (#677)
+
 ## [0.30.0] - 2022-08-01
 
 ### Fixed

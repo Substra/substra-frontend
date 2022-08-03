@@ -119,7 +119,9 @@ export const DrawerSectionCollapsibleEntry = ({
                 <Text whiteSpace="nowrap" width="120px" flexShrink="0">
                     {capitalize(title)}
                 </Text>
-                <Box flexGrow="1">{aboveFold}</Box>
+                <Box flexGrow="1" overflow="hidden">
+                    {aboveFold}
+                </Box>
                 <Icon
                     as={RiArrowRightSLine}
                     width="16px"
