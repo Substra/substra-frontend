@@ -19,9 +19,12 @@ import { RiDownloadLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
+import { ColumnT } from './CustomColumnsTypes';
+import { isColumn, includesColumn } from './CustomColumnsUtils';
+
 type CustomColumnImportPopoverProps = {
-    allColumns: string[];
-    setSelectedColumns: (columns: string[]) => void;
+    allColumns: ColumnT[];
+    setSelectedColumns: (columns: ColumnT[]) => void;
 };
 
 const CustomColumnImportPopover = ({
@@ -43,31 +46,67 @@ const CustomColumnImportPopover = ({
         },
     });
 
-    const onImport = () => {
-        // Remove white spaces and make array separating items using comas
-        const valuesToArray = inputValue.replace(/\s+/g, '').split(',');
-        // Make sure values are available columns
-        const newColumns = valuesToArray.filter((el) =>
-            allColumns.includes(el)
-        );
-        // Remove duplicated column import
-        const uniqueNewColumns = [...new Set(newColumns)];
+    const onImportError = () => {
+        onClose();
+        setSelectedColumns([]);
+        toast({
+            title: 'An error occurred when importing the customization',
+            status: 'error',
+            isClosable: true,
+        });
+        setInputValue('');
+    };
+
+    const onImportSuccess = (uniqueNewColumns: ColumnT[]) => {
         onClose();
         setSelectedColumns(uniqueNewColumns);
-        if (uniqueNewColumns.length > 0) {
-            toast({
-                title: 'Customization imported!',
-                status: 'success',
-                isClosable: true,
-            });
-        } else {
-            toast({
-                title: 'An error occurred when importing the customization',
-                status: 'error',
-                isClosable: true,
-            });
-        }
+        toast({
+            title: 'Customization imported!',
+            status: 'success',
+            isClosable: true,
+        });
         setInputValue('');
+    };
+
+    const onImport = () => {
+        let data;
+
+        // Load values and make sure it's an array
+        try {
+            data = JSON.parse(inputValue);
+        } catch {
+            onImportError();
+            return;
+        }
+
+        if (!Array.isArray(data)) {
+            onImportError();
+            return;
+        }
+
+        // Filter out non valid columns
+        const newColumns: ColumnT[] = data.filter(
+            (column) => isColumn(column) && includesColumn(allColumns, column)
+        );
+
+        // Remove duplicate columns
+        const uniqueNewColumns: ColumnT[] = newColumns.reduce(
+            (uniqueColumns: ColumnT[], column: ColumnT) => {
+                if (includesColumn(uniqueColumns, column)) {
+                    return uniqueColumns;
+                } else {
+                    return [...uniqueColumns, column];
+                }
+            },
+            []
+        );
+
+        // Save values
+        if (uniqueNewColumns.length > 0) {
+            onImportSuccess(uniqueNewColumns);
+        } else {
+            onImportError();
+        }
     };
 
     return (

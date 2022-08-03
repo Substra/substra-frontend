@@ -20,8 +20,10 @@ import { RiShareForwardLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
+import { ColumnT } from './CustomColumnsTypes';
+
 type CustomColumnSharePopoverProps = {
-    selectedColumns: string[];
+    selectedColumns: ColumnT[];
 };
 
 const CustomColumnSharePopover = ({
@@ -29,9 +31,12 @@ const CustomColumnSharePopover = ({
 }: CustomColumnSharePopoverProps): JSX.Element => {
     const initialFocusRef = useRef(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { onCopy } = useClipboard(selectedColumns.join(', '));
     const toast = useToast();
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const stringifiedColumns = JSON.stringify(selectedColumns);
+    const { onCopy } = useClipboard(stringifiedColumns);
+
     useOutsideClick({
         enabled: isOpen,
         ref: containerRef,
@@ -41,11 +46,12 @@ const CustomColumnSharePopover = ({
             }
         },
     });
+
     const onCopyMetadata = () => {
         onCopy();
         onClose();
         toast({
-            title: 'Copied in clipboard',
+            title: 'Copied to clipboard',
             status: 'success',
             isClosable: true,
         });
@@ -70,8 +76,8 @@ const CustomColumnSharePopover = ({
                             Share customization
                         </Text>
                         <Textarea
-                            isDisabled
-                            value={selectedColumns.join(', ')}
+                            isReadOnly
+                            value={stringifiedColumns}
                             fontSize="xs"
                             paddingRight="12"
                         />
@@ -87,7 +93,6 @@ const CustomColumnSharePopover = ({
                                 ref={initialFocusRef}
                                 onClick={onCopyMetadata}
                                 size="sm"
-                                value={selectedColumns.join(', ')}
                                 textTransform="capitalize"
                                 colorScheme="teal"
                                 variant="solid"

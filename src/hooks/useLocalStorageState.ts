@@ -4,7 +4,11 @@ import useAppSelector from '@/hooks/useAppSelector';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import { HasKeyT } from '@/modules/common/CommonTypes';
 
-function useLoadSave<T>(localStorageKey: string, channel: string | undefined) {
+function useLoadSave<T>(
+    localStorageKey: string,
+    channel: string | undefined,
+    migrate?: (data: unknown) => T
+) {
     const channelLocalStorageKey = `${channel}-${localStorageKey}`;
 
     const load = useCallback((): T | null => {
@@ -13,14 +17,20 @@ function useLoadSave<T>(localStorageKey: string, channel: string | undefined) {
         }
         const jsonItems = localStorage.getItem(channelLocalStorageKey) || null;
         try {
+            let items;
             if (jsonItems) {
-                return JSON.parse(jsonItems);
+                items = JSON.parse(jsonItems);
+            }
+            if (migrate) {
+                return migrate(items);
+            } else {
+                return items;
             }
         } catch {
             // do nothing
         }
         return null;
-    }, [channelLocalStorageKey, channel]);
+    }, [channelLocalStorageKey, channel, migrate]);
 
     const save = useCallback(
         (items: T | null): void => {
@@ -37,10 +47,11 @@ function useLoadSave<T>(localStorageKey: string, channel: string | undefined) {
 
 export const useLocalStorageState = <Type>(
     localStorageKey: string,
-    originalValue: Type
+    originalValue: Type,
+    migrate?: (data: unknown) => Type
 ): [Type, (value: Type) => void] => {
     const channel = useAppSelector((state) => state.me.info.channel);
-    const { load, save } = useLoadSave<Type>(localStorageKey, channel);
+    const { load, save } = useLoadSave<Type>(localStorageKey, channel, migrate);
     const [state, setLocalState] = useState(() => load() ?? originalValue);
 
     useEffectOnce(() => {
@@ -58,11 +69,16 @@ export const useLocalStorageState = <Type>(
     return [state, setState];
 };
 
-const useLocalStorageArrayState = <Type>(
+export const useLocalStorageArrayState = <Type>(
     localStorageKey: string,
-    areEqual: (a: Type, b: Type) => boolean
+    areEqual: (a: Type, b: Type) => boolean,
+    migrate?: (data: unknown) => Type[]
 ) => {
-    const [state, setState] = useLocalStorageState<Type[]>(localStorageKey, []);
+    const [state, setState] = useLocalStorageState<Type[]>(
+        localStorageKey,
+        [],
+        migrate
+    );
 
     const clearState = () => setState([]);
 

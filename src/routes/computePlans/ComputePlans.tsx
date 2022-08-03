@@ -1,20 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import {
-    VStack,
-    Table,
-    Thead,
-    Tr,
-    Th,
-    Box,
-    HStack,
-    Flex,
-    Button,
-} from '@chakra-ui/react';
+import { VStack, Table, Box, HStack, Flex, Button } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
+import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
+import useCustomColumns from '@/features/customColumns/useCustomColumns';
 import useAppSelector from '@/hooks/useAppSelector';
-import useCustomColumns from '@/hooks/useCustomColumns';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
@@ -42,16 +33,9 @@ import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 
 import BulkSelection from '@/components/BulkSelection';
-import CustomColumnsModal from '@/components/CustomColumnsModal';
-import OrderingTh from '@/components/OrderingTh';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import {
-    bottomBorderProps,
-    bottomRightBorderProps,
-    EmptyTr,
-    Tbody,
-} from '@/components/Table';
+import { EmptyTr, Tbody } from '@/components/Table';
 import {
     DateFilterTag,
     DurationFilterTag,
@@ -72,6 +56,7 @@ import {
 } from '@/components/TableFilters';
 import TablePagination from '@/components/TablePagination';
 
+import ComputePlanTHead from './components/ComputePlanTHead';
 import ComputePlanTr from './components/ComputePlanTr';
 import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
 
@@ -272,154 +257,10 @@ const ComputePlans = (): JSX.Element => {
                 </Box>
                 <Box flexGrow={1} overflow="auto">
                     <Table size="md">
-                        <Thead
-                            position="sticky"
-                            top={0}
-                            backgroundColor="white"
-                            zIndex="2"
-                        >
-                            <Tr>
-                                <Th
-                                    padding="0"
-                                    minWidth="50px"
-                                    position="sticky"
-                                    left="0"
-                                    zIndex="1"
-                                    backgroundColor="white"
-                                    {...bottomBorderProps}
-                                ></Th>
-                                <Th
-                                    padding="0"
-                                    minWidth="36px"
-                                    position="sticky"
-                                    left="50px"
-                                    zIndex="1"
-                                    backgroundColor="white"
-                                    {...bottomBorderProps}
-                                ></Th>
-                                <OrderingTh
-                                    minWidth="250px"
-                                    options={[
-                                        {
-                                            label: 'Name',
-                                            asc: {
-                                                label: 'Sort name Z -> A',
-                                                value: '-name',
-                                            },
-                                            desc: {
-                                                label: 'Sort name A -> Z',
-                                                value: 'name',
-                                            },
-                                        },
-                                    ]}
-                                    position="sticky"
-                                    left="86px"
-                                    zIndex="1"
-                                    backgroundColor="white"
-                                    {...bottomRightBorderProps}
-                                />
-                                <OrderingTh
-                                    minWidth="255px"
-                                    openFilters={() => onPopoverOpen(0)}
-                                    options={[
-                                        {
-                                            label: 'Status',
-                                            desc: {
-                                                label: 'Sort status A -> Z',
-                                                value: 'status',
-                                            },
-                                            asc: {
-                                                label: 'Sort status Z -> A',
-                                                value: '-status',
-                                            },
-                                        },
-                                        {
-                                            label: 'Tasks',
-                                        },
-                                    ]}
-                                    {...bottomBorderProps}
-                                />
-                                <OrderingTh
-                                    minWidth="255px"
-                                    openFilters={() => onPopoverOpen(2)}
-                                    options={[
-                                        {
-                                            label: 'Creation',
-                                            asc: {
-                                                label: 'Sort creation oldest first',
-                                                value: 'creation_date',
-                                            },
-                                            desc: {
-                                                label: 'Sort creation newest first',
-                                                value: '-creation_date',
-                                            },
-                                        },
-                                    ]}
-                                    {...bottomBorderProps}
-                                />
-                                <OrderingTh
-                                    minWidth="300px"
-                                    whiteSpace="nowrap"
-                                    openFilters={() => onPopoverOpen(3)}
-                                    options={[
-                                        {
-                                            label: 'Start date',
-                                            asc: {
-                                                label: 'Sort start date oldest first',
-                                                value: '-start_date',
-                                            },
-                                            desc: {
-                                                label: 'Sort start date newest first',
-                                                value: 'start_date',
-                                            },
-                                        },
-                                        {
-                                            label: 'End date',
-                                            asc: {
-                                                label: 'Sort end date oldest first',
-                                                value: '-end_date',
-                                            },
-                                            desc: {
-                                                label: 'Sort end date newest first',
-                                                value: 'end_date',
-                                            },
-                                        },
-                                        {
-                                            label: 'Duration',
-                                            asc: {
-                                                label: 'Sort duration longest first',
-                                                value: '-duration',
-                                            },
-                                            desc: {
-                                                label: 'Sort duration shortest first',
-                                                value: 'duration',
-                                            },
-                                        },
-                                    ]}
-                                />
-                                {columns.map((column) => (
-                                    <OrderingTh
-                                        key={column}
-                                        minWidth="125px"
-                                        openFilters={() => onPopoverOpen(5)}
-                                        options={[
-                                            {
-                                                label: column,
-                                                asc: {
-                                                    label: `Sort ${column} Z -> A`,
-                                                    value: `-metadata__${column}`,
-                                                },
-                                                desc: {
-                                                    label: `Sort ${column} A -> Z`,
-                                                    value: `metadata__${column}`,
-                                                },
-                                            },
-                                        ]}
-                                        {...bottomBorderProps}
-                                    />
-                                ))}
-                            </Tr>
-                        </Thead>
+                        <ComputePlanTHead
+                            onPopoverOpen={onPopoverOpen}
+                            columns={columns}
+                        />
                         <Tbody
                             data-cy={computePlansLoading ? 'loading' : 'loaded'}
                         >
@@ -427,7 +268,7 @@ const ComputePlans = (): JSX.Element => {
                                 (computePlans.length === 0 ||
                                     isFavoritesOnlyAndHasNoResults) && (
                                     <EmptyTr
-                                        nbColumns={6}
+                                        nbColumns={3 + columns.length}
                                         asset="compute_plan"
                                     />
                                 )}
@@ -435,7 +276,7 @@ const ComputePlans = (): JSX.Element => {
                                 <ComputePlanTrSkeleton
                                     computePlansCount={computePlansCount}
                                     page={page}
-                                    customColumns={columns}
+                                    columns={columns}
                                 />
                             )}
                             {!computePlansLoading &&
@@ -454,7 +295,7 @@ const ComputePlans = (): JSX.Element => {
                                         onFavoriteChange={onFavoriteChange(
                                             computePlan.key
                                         )}
-                                        customColumns={columns}
+                                        columns={columns}
                                     />
                                 ))}
                         </Tbody>

@@ -2,6 +2,11 @@ import { useLocation } from 'wouter';
 
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 
+import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
+import {
+    GeneralColumnName,
+    getColumnId,
+} from '@/features/customColumns/CustomColumnsUtils';
 import { shortFormatDate } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
@@ -15,13 +20,64 @@ import CheckboxTd from './CheckboxTd';
 import FavoriteBox from './FavoriteBox';
 import StatusCell from './StatusCell';
 
+type ColumnTdProps = {
+    column: ColumnT;
+    computePlan: ComputePlanT;
+};
+
+const ColumnTd = ({ column, computePlan }: ColumnTdProps) => {
+    if (column.type === 'metadata') {
+        return (
+            <Td fontSize="xs" whiteSpace="nowrap">
+                <Text>{computePlan.metadata[column.name] ?? '-'}</Text>
+            </Td>
+        );
+    } else if (
+        column.type === 'general' &&
+        column.name === GeneralColumnName.status
+    ) {
+        return (
+            <Td minWidth="255px">
+                <StatusCell computePlan={computePlan} />
+            </Td>
+        );
+    } else if (
+        column.type === 'general' &&
+        column.name === GeneralColumnName.creation
+    ) {
+        return (
+            <Td>
+                <Text fontSize="xs">
+                    {shortFormatDate(computePlan.creation_date)}
+                </Text>
+            </Td>
+        );
+    } else if (
+        column.type === 'general' &&
+        column.name === GeneralColumnName.dates
+    ) {
+        return (
+            <Td minWidth="255px" fontSize="xs">
+                <Timing asset={computePlan} />
+                <Duration asset={computePlan} />
+            </Td>
+        );
+    } else {
+        return (
+            <Td>
+                <Text fontSize="xs">{`Unknown column ${column.name}`}</Text>
+            </Td>
+        );
+    }
+};
+
 type ComputePlanTrProps = {
     computePlan: ComputePlanT;
     isSelected: boolean;
     onSelectionChange: () => void;
     isFavorite: boolean;
     onFavoriteChange: () => void;
-    customColumns: string[];
+    columns: ColumnT[];
 };
 
 const ComputePlanTr = ({
@@ -30,7 +86,7 @@ const ComputePlanTr = ({
     onSelectionChange,
     isFavorite,
     onFavoriteChange,
-    customColumns,
+    columns,
 }: ComputePlanTrProps): JSX.Element => {
     const [, setLocation] = useLocation();
 
@@ -94,26 +150,12 @@ const ComputePlanTr = ({
             >
                 <Text fontSize="xs">{computePlan.name}</Text>
             </Td>
-            <Td minWidth="255px">
-                <StatusCell computePlan={computePlan} />
-            </Td>
-            <Td>
-                <Text fontSize="xs">
-                    {shortFormatDate(computePlan.creation_date)}
-                </Text>
-            </Td>
-            <Td minWidth="255px" fontSize="xs">
-                <Timing asset={computePlan} />
-                <Duration asset={computePlan} />
-            </Td>
-            {customColumns.map((column) => (
-                <Td
-                    key={`${computePlan.key}-${column}`}
-                    fontSize="xs"
-                    whiteSpace="nowrap"
-                >
-                    <Text>{computePlan.metadata[column] ?? '-'}</Text>
-                </Td>
+            {columns.map((column) => (
+                <ColumnTd
+                    key={getColumnId(column)}
+                    column={column}
+                    computePlan={computePlan}
+                />
             ))}
         </ClickableTr>
     );

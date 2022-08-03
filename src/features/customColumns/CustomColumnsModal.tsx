@@ -32,9 +32,17 @@ import {
 
 import useAppSelector from '@/hooks/useAppSelector';
 
-import CustomColumnImportPopover from '@/components/CustomColumnImportPopover';
-import CustomColumnSharePopover from '@/components/CustomColumnSharePopover';
 import EmptyState from '@/components/EmptyState';
+
+import CustomColumnImportPopover from './CustomColumnImportPopover';
+import CustomColumnSharePopover from './CustomColumnSharePopover';
+import { ColumnT } from './CustomColumnsTypes';
+import {
+    areColumnsEqual,
+    GENERAL_COLUMNS,
+    getColumnId,
+    includesColumn,
+} from './CustomColumnsUtils';
 
 type ColumnProps = BoxProps & {
     title: string;
@@ -86,8 +94,8 @@ const LayoutColumn = ({
 );
 
 type ReorderItemProps = {
-    column: string;
-    remove: (column: string) => void;
+    column: ColumnT;
+    remove: (column: ColumnT) => void;
 };
 const ReorderItem = ({ column, remove }: ReorderItemProps) => {
     const controls = useDragControls();
@@ -115,7 +123,7 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
                 variant="ghost"
                 aria-label="Remove from selection"
             />
-            <Text marginX="2.5">{column}</Text>
+            <Text marginX="2.5">{column.name}</Text>
             <Icon
                 as={RiMenuLine}
                 marginLeft="auto"
@@ -127,8 +135,8 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
 };
 
 type CustomColumnsModalProps = {
-    columns: string[];
-    setColumns: (columns: string[]) => void;
+    columns: ColumnT[];
+    setColumns: (columns: ColumnT[]) => void;
 };
 
 const CustomColumnsModal = ({
@@ -137,10 +145,20 @@ const CustomColumnsModal = ({
 }: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const allColumns = useAppSelector((state) => state.metadata.metadata);
-    const [selectedColumns, setSelectedColumns] = useState<string[]>(columns);
+    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const allColumns: ColumnT[] = useMemo(
+        () => [
+            ...GENERAL_COLUMNS,
+            ...metadata.map((name) => ({ name, type: 'metadata' } as ColumnT)),
+        ],
+        [metadata]
+    );
+    const [selectedColumns, setSelectedColumns] = useState<ColumnT[]>(columns);
     const availableColumns = useMemo(
-        () => allColumns.filter((column) => !selectedColumns.includes(column)),
+        () =>
+            allColumns.filter(
+                (column) => !includesColumn(selectedColumns, column)
+            ),
         [selectedColumns, allColumns]
     );
 
@@ -158,11 +176,13 @@ const CustomColumnsModal = ({
         onClose();
     };
 
-    const addColumn = (column: string) => {
+    const addColumn = (column: ColumnT) => {
         setSelectedColumns([...selectedColumns, column]);
     };
-    const removeColumn = (column: string) => {
-        setSelectedColumns(selectedColumns.filter((col) => col !== column));
+    const removeColumn = (column: ColumnT) => {
+        setSelectedColumns(
+            selectedColumns.filter((col) => !areColumnsEqual(col, column))
+        );
     };
     const removeAll = () => {
         setSelectedColumns([]);
@@ -248,7 +268,7 @@ const CustomColumnsModal = ({
                                     >
                                         {selectedColumns.map((column) => (
                                             <ReorderItem
-                                                key={column}
+                                                key={getColumnId(column)}
                                                 column={column}
                                                 remove={removeColumn}
                                             />
@@ -287,7 +307,7 @@ const CustomColumnsModal = ({
                                     <VStack spacing="2.5" padding="4">
                                         {availableColumns.map((column) => (
                                             <Flex
-                                                key={column}
+                                                key={getColumnId(column)}
                                                 width="100%"
                                                 padding="2.5"
                                                 border="1px solid"
@@ -315,7 +335,7 @@ const CustomColumnsModal = ({
                                                     }
                                                 />
                                                 <Text marginX="2.5">
-                                                    {column}
+                                                    {column.name}
                                                 </Text>
                                             </Flex>
                                         ))}

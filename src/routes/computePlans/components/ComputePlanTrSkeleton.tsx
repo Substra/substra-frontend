@@ -1,5 +1,10 @@
 import { Skeleton, Text, Progress, Td, VStack, Flex } from '@chakra-ui/react';
 
+import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
+import {
+    GeneralColumnName,
+    getColumnId,
+} from '@/features/customColumns/CustomColumnsUtils';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 
 import Status from '@/components/Status';
@@ -27,12 +32,12 @@ const ComputePlanProgressSkeleton = (): JSX.Element => (
 type ComputePlanTrSkeletonProps = {
     computePlansCount: number;
     page: number;
-    customColumns: string[];
+    columns: ColumnT[];
 };
 const ComputePlanTrSkeleton = ({
     computePlansCount,
     page,
-    customColumns,
+    columns,
 }: ComputePlanTrSkeletonProps): JSX.Element => (
     <TableSkeleton itemCount={computePlansCount} currentPage={page}>
         <Td paddingRight="2.5">
@@ -42,31 +47,24 @@ const ComputePlanTrSkeleton = ({
             <Skeleton width="16px" height="16px" />
         </Td>
         <Td>
-            <ComputePlanProgressSkeleton />
-        </Td>
-        <Td>
             <Skeleton>
                 <Text fontSize="xs" whiteSpace="nowrap">
                     Lorem ipsum dolor sit amet
                 </Text>
             </Skeleton>
         </Td>
-        <Td>
-            <Skeleton>
-                <Text fontSize="xs">YYYY-MM-DD HH:MM:SS</Text>
-            </Skeleton>
-        </Td>
-        <Td>
-            <Skeleton>
-                <Text fontSize="xs">YYYY-MM-DD HH:MM:SS</Text>
-            </Skeleton>
-        </Td>
-
-        {customColumns.map((column) => (
-            <Td key={column}>
-                <Skeleton>
-                    <Text fontSize="xs">Foo</Text>
-                </Skeleton>
+        {columns.map((column) => (
+            <Td key={getColumnId(column)}>
+                {column.type === 'general' &&
+                column.name === GeneralColumnName.status ? (
+                    <ComputePlanProgressSkeleton />
+                ) : (
+                    <Skeleton>
+                        <Text fontSize="xs" whiteSpace="nowrap">
+                            Lorem ipsum
+                        </Text>
+                    </Skeleton>
+                )}
             </Td>
         ))}
     </TableSkeleton>

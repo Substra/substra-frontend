@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Allow selection of non-metadata columns in custom columns (#678)
+
 ### Changed
 
 -   Add new ESLint rules to ensure code quality (#684)
