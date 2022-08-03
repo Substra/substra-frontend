@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Support for log scale display (#672)
 -   Allow selection of non-metadata columns in custom columns (#678)
 
 ### Changed

@@ -2,11 +2,20 @@ import { useContext } from 'react';
 
 import { Box, Flex, Heading, Text, Select } from '@chakra-ui/react';
 
-import { PerfBrowserContext, XAxisModeT } from '@/hooks/usePerfBrowser';
+import {
+    PerfBrowserContext,
+    XAxisModeT,
+    YAxisModeT,
+} from '@/hooks/usePerfBrowser';
 
 const PerfSidebarSettingsUnits = (): JSX.Element => {
-    const { xAxisMode, setXAxisMode, seriesGroupsWithRounds } =
-        useContext(PerfBrowserContext);
+    const {
+        xAxisMode,
+        setXAxisMode,
+        yAxisMode,
+        setYAxisMode,
+        seriesGroupsWithRounds,
+    } = useContext(PerfBrowserContext);
 
     return (
         <Box>
@@ -17,7 +26,7 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
                 <Text fontSize="xs">X axis</Text>
                 <Select
                     variant="filled"
-                    width="90px"
+                    width="115px"
                     size="xs"
                     fontWeight="semibold"
                     value={xAxisMode}
@@ -30,6 +39,20 @@ const PerfSidebarSettingsUnits = (): JSX.Element => {
                     >
                         Rounds
                     </option>
+                </Select>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="center">
+                <Text fontSize="xs">Y axis</Text>
+                <Select
+                    variant="filled"
+                    width="115px"
+                    size="xs"
+                    fontWeight="semibold"
+                    value={yAxisMode}
+                    onChange={(e) => setYAxisMode(e.target.value as YAxisModeT)}
+                >
+                    <option value="linear">Linear</option>
+                    <option value="logarithmic">Logarithmic</option>
                 </Select>
             </Flex>
         </Box>

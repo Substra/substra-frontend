@@ -32,6 +32,7 @@ import {
 } from '@/modules/series/SeriesUtils';
 
 export type XAxisModeT = 'round' | 'rank';
+export type YAxisModeT = 'linear' | 'logarithmic';
 
 type PerfBrowserContextT = {
     // Whether the compute plan and series are being loaded
@@ -51,6 +52,9 @@ type PerfBrowserContextT = {
     // What unit to use for the x axis
     xAxisMode: XAxisModeT;
     setXAxisMode: (xAxisMode: XAxisModeT) => void;
+    // What type to use for the y axis
+    yAxisMode: YAxisModeT;
+    setYAxisMode: (yAxisMode: YAxisModeT) => void;
     // List of organizations for which display series (displayed if serie.worker is in selectedOrganizationIds)
     selectedOrganizationIds: string[];
     setSelectedOrganizationIds: (selectedOrganizationIds: string[]) => void;
@@ -103,6 +107,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContextT>({
     colorMode: 'organization',
     xAxisMode: 'rank',
     setXAxisMode: (xAxisMode) => {},
+    yAxisMode: 'linear',
+    setYAxisMode: (yAxisMode) => {},
     selectedOrganizationIds: [],
     setSelectedOrganizationIds: (selectedOrganizationIds) => {},
     isOrganizationIdSelected: (organizationId) => false,
@@ -258,6 +264,13 @@ const usePerfBrowser = (
         (v) => v
     );
 
+    const [yAxisMode, setYAxisMode] = useSyncedState<YAxisModeT>(
+        'yAxisMode',
+        'linear',
+        (v) => v as YAxisModeT,
+        (v) => v
+    );
+
     const perfChartRef = useRef<HTMLDivElement>(null);
 
     const rankData = useMemo(() => {
@@ -398,6 +411,9 @@ const usePerfBrowser = (
             // xAxisMode
             xAxisMode,
             setXAxisMode,
+            // yAxisMode
+            yAxisMode,
+            setYAxisMode,
             // organization IDs
             selectedOrganizationIds,
             setSelectedOrganizationIds,

@@ -15,6 +15,7 @@ import {
     Plugin,
     CategoryScale,
     LinearScale,
+    LogarithmicScale,
     PointElement,
     LineElement,
     Tooltip,
@@ -54,6 +55,7 @@ import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 ChartJS.register(
     CategoryScale,
     LinearScale,
+    LogarithmicScale,
     LineElement,
     PointElement,
     Tooltip,
@@ -70,6 +72,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
     ({ series, size, zoomEnabled }: PerfChartProps, ref): JSX.Element => {
         const {
             xAxisMode,
+            yAxisMode,
             highlightedSerie,
             highlightedComputePlanKey,
             highlightedOrganizationId,
@@ -200,7 +203,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         },
                     },
                     y: {
-                        type: 'linear',
+                        type: yAxisMode,
                         title: {
                             display: true,
                             text: 'Performance',
@@ -225,7 +228,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                     },
                 },
             };
-        }, [zoomEnabled, size, xAxisMode, tooltipPluginOptions]);
+        }, [zoomEnabled, size, xAxisMode, yAxisMode, tooltipPluginOptions]);
 
         const onResetZoomClick = useCallback(() => {
             const chart = chartRef.current;
