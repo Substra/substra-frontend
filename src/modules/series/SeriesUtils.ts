@@ -3,7 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { areSetEqual } from '@/libs/utils';
 import { OrganizationT } from '@/modules/organizations/OrganizationsTypes';
 import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
-import { PerformanceT } from '@/modules/perf/PerformancesTypes';
+import {
+    ComputePlanStatisticsT,
+    PerformanceT,
+} from '@/modules/perf/PerformancesTypes';
 
 import {
     DataPointT,
@@ -66,7 +69,8 @@ function getRoundAsNumber(str: string | null): number {
 
 export function buildSeries(
     cpPerformances: PerformanceT[],
-    computePlanKey: string
+    computePlanKey: string,
+    cpStats: ComputePlanStatisticsT
 ): SerieT[] {
     // create series from test tasks
     const series: SerieT[] = [];
@@ -84,12 +88,26 @@ export function buildSeries(
         const serie = findSerie(series, serieFeatures);
         if (serie) {
             serie.points.push(point);
+            if (point.perf !== null) {
+                serie.maxRankWithPerf = Math.max(
+                    serie.maxRankWithPerf,
+                    point.rank
+                );
+                serie.maxRoundWithPerf = Math.max(
+                    serie.maxRoundWithPerf,
+                    point.round
+                );
+            }
         } else {
             series.push({
                 // The couple (computePlanKey, id) should be unique
                 // id is an incremented number
                 id: uuidv4(),
                 points: [point],
+                maxRank: Math.max(0, ...cpStats.compute_tasks_distinct_ranks),
+                maxRankWithPerf: point.perf !== null ? point.rank : 0,
+                maxRound: Math.max(0, ...cpStats.compute_tasks_distinct_rounds),
+                maxRoundWithPerf: point.perf !== null ? point.round : 0,
                 ...serieFeatures,
             });
         }
@@ -127,38 +145,20 @@ export const getSeriesOrganizations = (series: SerieT[]): OrganizationT[] => {
     }));
 };
 
-const getAllPoints = (series: SerieT[]): PointT[] => {
-    let res: PointT[] = [];
-    for (const serie of series) {
-        res = [...res, ...serie.points];
-    }
-    return res;
-};
-
 export const getMaxRank = (series: SerieT[]): number => {
-    const points = getAllPoints(series);
-    const ranks = points.map((p) => p.rank);
-    return Math.max(0, ...ranks);
+    return Math.max(0, ...series.map((s) => s.maxRank));
 };
 
 export const getMaxRankWithPerf = (series: SerieT[]): number => {
-    const points = getAllPoints(series);
-    const ranks = points.filter((p) => p.perf !== null).map((p) => p.rank);
-    return Math.max(0, ...ranks);
+    return Math.max(0, ...series.map((s) => s.maxRankWithPerf));
 };
 
 export const getMaxRound = (series: SerieT[]): number => {
-    const points = getAllPoints(series);
-    const rounds = points.filter((p) => !isNaN(p.round)).map((p) => p.round);
-    return Math.max(0, ...rounds);
+    return Math.max(0, ...series.map((s) => s.maxRound));
 };
 
 export const getMaxRoundWithPerf = (series: SerieT[]): number => {
-    const points = getAllPoints(series);
-    const rounds = points
-        .filter((p) => p.perf !== null && !isNaN(p.round))
-        .map((p) => p.round);
-    return Math.max(0, ...rounds);
+    return Math.max(0, ...series.map((s) => s.maxRoundWithPerf));
 };
 
 export const compareSeries = <T extends { id: string }>(

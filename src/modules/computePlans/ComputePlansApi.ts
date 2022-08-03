@@ -5,7 +5,10 @@ import {
     APIListArgsProps,
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
-import { PerformanceT } from '@/modules/perf/PerformancesTypes';
+import {
+    ComputePlanStatisticsT,
+    PerformanceT,
+} from '@/modules/perf/PerformancesTypes';
 import {
     AggregatetupleT,
     CompositeTraintupleStubT,
@@ -113,10 +116,13 @@ export const listComputePlanPredicttuples = (
     );
 };
 
+type PaginatedPerformanceResponseT = PaginatedApiResponseT<PerformanceT> & {
+    compute_plan_statistics: ComputePlanStatisticsT;
+};
 export const listComputePlanPerformances = (
     { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<PerformanceT>> => {
+): AxiosPromise<PaginatedPerformanceResponseT> => {
     return API.authenticatedGet(
         URLS.LIST_PERFORMANCES.replace('__KEY__', key),
         {

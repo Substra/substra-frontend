@@ -28,6 +28,10 @@ export type DataPointT = ScatterDataPoint & {
 
 export type SerieT = SerieFeaturesT & {
     id: string;
+    maxRank: number;
+    maxRankWithPerf: number;
+    maxRound: number;
+    maxRoundWithPerf: number;
     points: PointT[];
 };
 

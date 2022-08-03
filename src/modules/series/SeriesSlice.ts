@@ -3,7 +3,10 @@ import { AxiosError } from 'axios';
 
 import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import { PerformanceT } from '@/modules/perf/PerformancesTypes';
+import {
+    ComputePlanStatisticsT,
+    PerformanceT,
+} from '@/modules/perf/PerformancesTypes';
 
 import { SerieT } from './SeriesTypes';
 import { buildSeries } from './SeriesUtils';
@@ -26,7 +29,26 @@ const getComputePlanSeries = async (
     rejectWithValue: (value: string) => any,
     signal: AbortSignal
 ): Promise<SerieT[]> => {
+    let cpStats: ComputePlanStatisticsT;
     let cpPerformances: PerformanceT[];
+
+    try {
+        const response = await ComputePlansApi.listComputePlanPerformances(
+            {
+                key: computePlanKey,
+                pageSize: 0,
+                page: 1,
+            },
+            { signal }
+        );
+        cpStats = response.data.compute_plan_statistics;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
 
     try {
         const pageSize = 100;
@@ -47,7 +69,7 @@ const getComputePlanSeries = async (
     }
 
     // build series
-    const series = buildSeries(cpPerformances, computePlanKey);
+    const series = buildSeries(cpPerformances, computePlanKey, cpStats);
 
     return series;
 };

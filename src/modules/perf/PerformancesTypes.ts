@@ -14,3 +14,8 @@ export type PerformanceT = {
     };
     perf: number | null;
 };
+
+export type ComputePlanStatisticsT = {
+    compute_tasks_distinct_ranks: number[];
+    compute_tasks_distinct_rounds: number[];
+};
