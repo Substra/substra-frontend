@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Custom columns modal style improvements (#671)
 -   Add new ESLint rules to ensure code quality (#684)
 
 ### Fixed

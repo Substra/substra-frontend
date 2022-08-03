@@ -15,7 +15,7 @@ import {
     useDisclosure,
     useOutsideClick,
 } from '@chakra-ui/react';
-import { RiDownloadLine } from 'react-icons/ri';
+import { RiDraftLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
@@ -116,7 +116,7 @@ const CustomColumnImportPopover = ({
                     <IconButton
                         size="sm"
                         variant="ghost"
-                        icon={<RiDownloadLine />}
+                        icon={<RiDraftLine />}
                         onClick={onOpen}
                         aria-label="Import customization"
                     />

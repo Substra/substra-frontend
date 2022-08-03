@@ -16,7 +16,7 @@ import {
     useDisclosure,
     useOutsideClick,
 } from '@chakra-ui/react';
-import { RiShareForwardLine } from 'react-icons/ri';
+import { RiFileCopyLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
@@ -64,7 +64,7 @@ const CustomColumnSharePopover = ({
                     <IconButton
                         size="sm"
                         variant="ghost"
-                        icon={<RiShareForwardLine />}
+                        icon={<RiFileCopyLine />}
                         onClick={onOpen}
                         aria-label="Share customization"
                     />

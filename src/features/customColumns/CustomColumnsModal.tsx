@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Reorder, useDragControls } from 'framer-motion';
 
@@ -48,11 +48,13 @@ type ColumnProps = BoxProps & {
     title: string;
     buttonLabel: string;
     buttonOnClick: () => void;
+    isButtonDisabled: boolean;
 };
 const LayoutColumn = ({
     title,
     buttonLabel,
     buttonOnClick,
+    isButtonDisabled,
     children,
     ...props
 }: ColumnProps) => (
@@ -76,6 +78,7 @@ const LayoutColumn = ({
                 onClick={buttonOnClick}
                 size="xs"
                 colorScheme="teal"
+                isDisabled={isButtonDisabled}
             >
                 {buttonLabel}
             </Button>
@@ -109,11 +112,11 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                padding: 'var(--chakra-sizes-2\\.5)',
+                padding: 'var(--chakra-sizes-2-5)',
                 border: '1px solid var(--chakra-colors-gray-100)',
                 width: '100%',
                 fontSize: 'var(--chakra-fontSizes-xs)',
-                marginBottom: 'var(--chakra-sizes-2\\.5)',
+                marginBottom: 'var(--chakra-sizes-2-5)',
             }}
         >
             <IconButton
@@ -162,6 +165,8 @@ const CustomColumnsModal = ({
         [selectedColumns, allColumns]
     );
 
+    const initialFocusRef = useRef(null);
+
     useEffect(() => {
         setSelectedColumns(columns);
     }, [columns]);
@@ -199,6 +204,7 @@ const CustomColumnsModal = ({
             <Modal
                 isOpen={isOpen}
                 onClose={handleOnClose}
+                initialFocusRef={initialFocusRef}
                 size="4xl"
                 isCentered
             >
@@ -256,6 +262,9 @@ const CustomColumnsModal = ({
                                     title="Selected"
                                     buttonLabel="Remove all"
                                     buttonOnClick={removeAll}
+                                    isButtonDisabled={
+                                        selectedColumns.length === 0
+                                    }
                                 >
                                     <Reorder.Group
                                         values={selectedColumns}
@@ -303,6 +312,9 @@ const CustomColumnsModal = ({
                                     title="Available"
                                     buttonLabel="Add all"
                                     buttonOnClick={addAll}
+                                    isButtonDisabled={
+                                        availableColumns.length === 0
+                                    }
                                 >
                                     <VStack spacing="2.5" padding="4">
                                         {availableColumns.map((column) => (
@@ -358,6 +370,7 @@ const CustomColumnsModal = ({
                                     size="sm"
                                     colorScheme="teal"
                                     onClick={onSave}
+                                    ref={initialFocusRef}
                                 >
                                     Save
                                 </Button>
