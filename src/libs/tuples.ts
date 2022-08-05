@@ -1,6 +1,4 @@
 import {
-    AggregatetupleT,
-    AggregatetupleStubT,
     AnyTupleT,
     CompositeTraintupleT,
     CompositeTraintupleStubT,
@@ -82,21 +80,6 @@ export const isCompositeTraintuple = (
     }
 
     return (task as CompositeTraintupleT).composite.data_manager !== undefined;
-};
-
-const isAggregatetupleStub = (task: unknown): task is AggregatetupleStubT => {
-    if (!isTuple(task)) {
-        return false;
-    }
-
-    return task.category === TaskCategory.aggregate;
-};
-
-export const isAggregatetuple = (task: unknown): task is AggregatetupleT => {
-    if (!isAggregatetupleStub(task)) {
-        return false;
-    }
-    return (task as AggregatetupleT).parent_tasks !== undefined;
 };
 
 export const isPredicttupleStub = (

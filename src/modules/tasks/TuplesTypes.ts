@@ -1,4 +1,4 @@
-import { AlgoT } from '@/modules/algos/AlgosTypes';
+import { AlgoT, InputT, OutputT } from '@/modules/algos/AlgosTypes';
 import {
     AssetT,
     MetadataT,
@@ -79,6 +79,8 @@ type BaseTupleStubT = {
     error_type?: ErrorT;
     logs_permission?: PermissionT;
     duration: number; // in seconds
+    inputs: { [name: string]: InputT };
+    outputs: { [name: string]: OutputT };
 };
 
 type BaseTupleT = BaseTupleStubT & {

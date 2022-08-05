@@ -78,17 +78,3 @@ export function getTaskDataSampleKeys(
     }
     throw 'Invalid task types';
 }
-
-export function getPerf(task: TesttupleStubT | TesttupleT): number | null {
-    if (!task.test.perfs) {
-        return null;
-    }
-
-    const perf = task.test.perfs[task.algo.key];
-
-    if (perf === undefined) {
-        return null;
-    }
-
-    return perf;
-}

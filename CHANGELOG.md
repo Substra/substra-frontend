@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Some UI improvements for cancel CP feature (#659)
 -   Display disabled cancel CP button when user is not owner of the current CP (#658)
 -   Filtering by favorites when not having any will return an empty table (#657)
+-   Add outputs section in task drawer adapted to generic task (#679)
 
 ## [0.29.0] - 2022-07-25
 

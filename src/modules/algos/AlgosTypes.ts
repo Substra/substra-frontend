@@ -1,4 +1,5 @@
 import { FileT, MetadataT, PermissionsT } from '@/modules/common/CommonTypes';
+import { ModelT } from '@/modules/tasks/ModelsTypes';
 
 export enum AssetKindT {
     dataSample = 'ASSET_DATA_SAMPLE',
@@ -6,15 +7,17 @@ export enum AssetKindT {
     dataManager = 'ASSET_DATA_MANAGER',
     performance = 'ASSET_PERFORMANCE',
 }
+
 export type InputT = {
     kind: AssetKindT;
     multiple: boolean;
     optional: boolean;
 };
 
-type OutputT = {
+export type OutputT = {
     kind: AssetKindT;
     multiple: boolean;
+    value: number | ModelT;
 };
 
 export type AlgoT = {

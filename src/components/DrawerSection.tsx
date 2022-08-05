@@ -54,7 +54,7 @@ export const DrawerSection = ({
     </VStack>
 );
 
-export const DrawerSectionEntryWrapper = (props: StackProps) => (
+const DrawerSectionEntryWrapper = (props: StackProps) => (
     <HStack
         spacing="2"
         fontSize="xs"

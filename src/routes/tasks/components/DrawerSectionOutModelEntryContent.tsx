@@ -1,103 +1,75 @@
-import { Text, HStack } from '@chakra-ui/react';
+import { Icon, HStack, Text, Tooltip } from '@chakra-ui/react';
+import { RiEyeOffLine } from 'react-icons/ri';
 
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import {
-    isAggregatetuple,
-    isCompositeTraintuple,
-    isTraintuple,
-} from '@/libs/tuples';
-import { getHeadModel, getSimpleModel } from '@/modules/tasks/ModelsUtils';
-import {
-    AggregatetupleT,
-    CompositeTraintupleT,
-    TraintupleT,
-    TupleStatus,
-} from '@/modules/tasks/TuplesTypes';
+import { ModelT } from '@/modules/tasks/ModelsTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 
 const DrawerSectionOutModelEntryContent = ({
-    task,
+    model,
+    taskStatus,
 }: {
-    task: TraintupleT | AggregatetupleT | CompositeTraintupleT;
+    model: ModelT | null;
+    taskStatus: TupleStatus;
 }): JSX.Element | null => {
     const canDownloadModel = useCanDownloadModel();
 
     let content = null;
 
-    if (task.status === TupleStatus.waiting) {
+    if (taskStatus === TupleStatus.waiting) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
-    } else if (task.status === TupleStatus.todo) {
+    } else if (taskStatus === TupleStatus.todo) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
-    } else if (task.status === TupleStatus.doing) {
+    } else if (taskStatus === TupleStatus.doing) {
         content = <Text color="gray.500">Model still training</Text>;
-    } else if (task.status === TupleStatus.failed) {
+    } else if (taskStatus === TupleStatus.failed) {
         content = <Text color="gray.500">Model training failed</Text>;
-    } else if (task.status === TupleStatus.canceled) {
+    } else if (taskStatus === TupleStatus.canceled) {
         content = <Text color="gray.500">Model training canceled</Text>;
-    } else if (task.status === TupleStatus.done) {
-        const simpleModel = getSimpleModel(task);
-        const headModel = getHeadModel(task);
-
-        if (simpleModel && !canDownloadModel(simpleModel.permissions)) {
-            content = (
-                <Text color="gray.500">
-                    Not enough permissions to see the model or missing required
-                    configuration on the server.
-                </Text>
-            );
-        } else if (!simpleModel?.address?.storage_address) {
-            content = <Text color="gray.500">Intermediary model deleted</Text>;
-        } else if (
-            (isTraintuple(task) || isAggregatetuple(task)) &&
-            simpleModel
-        ) {
-            content = (
-                <HStack spacing="1.5">
-                    <Text>Model</Text>
-                    <DownloadIconButton
-                        storageAddress={simpleModel.address.storage_address}
-                        filename={`model_${simpleModel.key}`}
-                        aria-label="Download model"
-                        size="xs"
+    } else if (taskStatus === TupleStatus.done) {
+        if (model === null) {
+            content = <Text color="gray.500">Model is not available</Text>;
+        } else {
+            const permissions = model.permissions;
+            if (permissions && !canDownloadModel(permissions)) {
+                content = (
+                    <Tooltip
+                        label="Not enough permissions to see the model or missing required
+                configuration on the server."
+                        fontSize="xs"
+                        hasArrow
                         placement="top"
-                    />
-                </HStack>
-            );
-        } else if (isCompositeTraintuple(task) && simpleModel && headModel) {
-            content = (
-                <HStack spacing="1">
+                        shouldWrapChildren
+                    >
+                        <Icon color="gray.500" as={RiEyeOffLine} />
+                    </Tooltip>
+                );
+            } else if (!model.address?.storage_address) {
+                content = (
+                    <Text color="gray.500">
+                        Intermediary model no longer available
+                    </Text>
+                );
+            } else {
+                content = (
                     <HStack spacing="1.5">
-                        <Text>Head model</Text>
+                        <Text>Model</Text>
                         <DownloadIconButton
-                            storageAddress={
-                                headModel.address?.storage_address || ''
-                            }
-                            filename={`model_${headModel.key}`}
-                            aria-label="Download head model"
+                            storageAddress={model.address.storage_address}
+                            filename={`model_${model.key}`}
+                            aria-label="Download model"
                             size="xs"
                             placement="top"
                         />
                     </HStack>
-                    <Text>,</Text>
-                    <HStack spacing="1.5">
-                        <Text>Trunk model</Text>
-                        <DownloadIconButton
-                            storageAddress={
-                                simpleModel.address?.storage_address || ''
-                            }
-                            filename={`model_${simpleModel.key}`}
-                            aria-label="Download trunk model"
-                            size="xs"
-                            placement="top"
-                        />
-                    </HStack>
-                </HStack>
-            );
+                );
+            }
         }
     }
     return content;

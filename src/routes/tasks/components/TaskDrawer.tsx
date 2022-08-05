@@ -9,7 +9,6 @@ import {
     VStack,
     Link,
     Text,
-    Box,
     Skeleton,
     HStack,
 } from '@chakra-ui/react';
@@ -18,7 +17,6 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import {
-    isAggregatetuple,
     isCompositeTraintuple,
     isPredicttuple,
     isTesttuple,
@@ -27,13 +25,13 @@ import {
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import {
     CATEGORY_LABEL,
-    getPerf,
     getTaskCategory,
     getTaskDataSampleKeys,
     getTaskDataset,
 } from '@/modules/tasks/TasksUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/routes';
+import TaskInputsOutputsDrawerSection from '@/routes/tasks/components/TaskInputsOutputsDrawerSection';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 import DrawerHeader from '@/components/DrawerHeader';
@@ -42,7 +40,6 @@ import {
     DrawerSectionEntry,
     DrawerSectionDateEntry,
     DrawerSectionKeyEntry,
-    DrawerSectionEntryWrapper,
     OrganizationDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
@@ -50,9 +47,7 @@ import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
 import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
-import DrawerSectionOutModelEntry from './DrawerSectionOutModelEntry';
 import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
-import DrawerSectionTestedModel from './DrawerSectionTestedModel';
 import ErrorAlert from './ErrorAlert';
 
 type TaskDrawerProps = {
@@ -214,9 +209,6 @@ const TaskDrawer = ({
                                 </HStack>
                             )}
                         </DrawerSectionEntry>
-                        {task && isPredicttuple(task) && (
-                            <DrawerSectionTestedModel task={task} />
-                        )}
                         {taskLoading || !task ? (
                             <Skeleton height="4" width="250px" />
                         ) : (
@@ -239,44 +231,11 @@ const TaskDrawer = ({
                             />
                         )}
                     </DrawerSection>
-
-                    {taskLoading || !task ? (
-                        <Skeleton height="4" width="250px" />
-                    ) : (
-                        (isTraintuple(task) ||
-                            isCompositeTraintuple(task) ||
-                            isAggregatetuple(task)) && (
-                            <DrawerSection title="Output">
-                                <DrawerSectionOutModelEntry task={task} />
-                            </DrawerSection>
-                        )
-                    )}
-
-                    {taskLoading || !task ? (
-                        <Skeleton height="4" width="250px" />
-                    ) : (
-                        isTesttuple(task) && (
-                            <DrawerSection title="Performance">
-                                <DrawerSectionEntryWrapper>
-                                    <Text
-                                        whiteSpace="nowrap"
-                                        width="410px"
-                                        noOfLines={1}
-                                        flexShrink="0"
-                                    >
-                                        {task.algo.name}
-                                    </Text>
-                                    <Box flexGrow="1" textAlign="right">
-                                        {getPerf(task) === null
-                                            ? 'N/A'
-                                            : (getPerf(task) as number).toFixed(
-                                                  3
-                                              )}
-                                    </Box>
-                                </DrawerSectionEntryWrapper>
-                            </DrawerSection>
-                        )
-                    )}
+                    <TaskInputsOutputsDrawerSection
+                        loading={taskLoading}
+                        task={task || null}
+                        type="outputs"
+                    />
                     <MetadataDrawerSection
                         metadata={task?.metadata}
                         loading={taskLoading}
