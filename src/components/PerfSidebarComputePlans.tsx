@@ -25,8 +25,8 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import { useToast } from '@/hooks/useToast';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 import {
     OrganizationListItem,

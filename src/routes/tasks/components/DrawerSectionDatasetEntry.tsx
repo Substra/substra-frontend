@@ -3,7 +3,7 @@ import { RiDatabase2Line } from 'react-icons/ri';
 
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';

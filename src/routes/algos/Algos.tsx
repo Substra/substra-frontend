@@ -31,7 +31,7 @@ import {
 } from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
 import { listAlgos } from '@/modules/algos/AlgosSlice';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 import {
     AssetsTable,

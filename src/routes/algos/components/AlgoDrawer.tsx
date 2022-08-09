@@ -21,7 +21,7 @@ import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { downloadFromApi } from '@/libs/request';
 import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
 import DrawerHeader from '@/components/DrawerHeader';

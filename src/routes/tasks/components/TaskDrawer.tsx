@@ -30,7 +30,7 @@ import {
     getTaskDataset,
 } from '@/modules/tasks/TasksUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 import TaskInputsOutputsDrawerSection from '@/routes/tasks/components/TaskInputsOutputsDrawerSection';
 
 import DownloadIconButton from '@/components/DownloadIconButton';

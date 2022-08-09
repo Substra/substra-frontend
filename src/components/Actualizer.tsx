@@ -17,8 +17,8 @@ import {
     NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 const buildToastDescription =
     (setLocation: (location: string) => void, news: NewsItemT) =>

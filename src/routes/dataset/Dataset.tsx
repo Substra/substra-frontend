@@ -14,7 +14,7 @@ import {
     retrieveOpener,
 } from '@/modules/datasets/DatasetsSlice';
 import { DatasetT } from '@/modules/datasets/DatasetsTypes';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';

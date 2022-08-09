@@ -9,7 +9,7 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { retrieveComputePlans } from '@/modules/computePlans/CompareSlice';
 import { loadSeries } from '@/modules/series/SeriesSlice';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
 import PerfBrowser from '@/components/PerfBrowser';

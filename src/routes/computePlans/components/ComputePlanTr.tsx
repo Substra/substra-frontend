@@ -9,8 +9,8 @@ import {
 } from '@/features/customColumns/CustomColumnsUtils';
 import { shortFormatDate } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 import Duration from '@/components/Duration';
 import { ClickableTr, rightBorderProps } from '@/components/Table';

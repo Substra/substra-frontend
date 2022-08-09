@@ -21,7 +21,7 @@ import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { logOut } from '@/modules/me/MeSlice';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import OmniSearch from '@/components/OmniSearch';
 import About from '@/components/layout/header/About';

@@ -26,7 +26,8 @@ import {
     NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 type NewsFeedCardProps = {
     newsItem: NewsItemT;

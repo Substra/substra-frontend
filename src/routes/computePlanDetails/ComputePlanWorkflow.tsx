@@ -12,7 +12,7 @@ import {
 } from '@/hooks/useDocumentTitleEffect';
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 import { retrieveCPWorkflowGraph } from '@/modules/cpWorkflow/CPWorkflowSlice';
-import { ROUTES } from '@/routes';
+import { PATHS } from '@/paths';
 import NotFound from '@/routes/notfound/NotFound';
 
 import Actions from './components/Actions';
@@ -25,7 +25,7 @@ const ComputePlanWorkflow = (): JSX.Element => {
     const graphLoading = useAppSelector((state) => state.cpWorkflow.loading);
     const graphError = useAppSelector((state) => state.cpWorkflow.error);
     const graphTasks = useAppSelector((state) => state.cpWorkflow.graph.tasks);
-    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_WORKFLOW.path);
+    const [, params] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
     const key = params?.key;
 
     useDocumentTitleEffect(

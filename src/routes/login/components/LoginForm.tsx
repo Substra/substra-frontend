@@ -24,7 +24,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { LoginPayloadT } from '@/modules/me/MeApi';
 import { logIn, retrieveInfo } from '@/modules/me/MeSlice';
 import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 const LoginForm = (): JSX.Element => {
     const [username, setUsername] = useState('');

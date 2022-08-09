@@ -4,8 +4,8 @@ import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, ROUTES, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 type TabsNavItemProps = {
     href: string;
@@ -64,11 +64,9 @@ const TabsNavItem = ({
 };
 
 const TabsNav = (): JSX.Element | null => {
-    const [isChart, chartParams] = useRoute(ROUTES.COMPUTE_PLAN_CHART.path);
-    const [isTasks, tasksParams] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
-    const [isWorkflow, workflowParams] = useRoute(
-        ROUTES.COMPUTE_PLAN_WORKFLOW.path
-    );
+    const [isChart, chartParams] = useRoute(PATHS.COMPUTE_PLAN_CHART);
+    const [isTasks, tasksParams] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
+    const [isWorkflow, workflowParams] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
     const computePlanKey =
         chartParams?.key || tasksParams?.key || workflowParams?.key || '';
     const computePlan = useAppSelector(

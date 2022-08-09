@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 import NotFound from '@/routes/notfound/NotFound';
 
 export default () => {

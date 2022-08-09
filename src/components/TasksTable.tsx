@@ -54,7 +54,7 @@ import {
     assetTypeByTaskCategory,
     TaskCategory,
 } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 import { AssetsTable } from '@/components/AssetsTable';
 import Duration from '@/components/Duration';

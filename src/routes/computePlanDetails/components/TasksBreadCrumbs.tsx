@@ -2,7 +2,7 @@ import { BreadcrumbItem, HStack, Text } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Status from '@/components/Status';

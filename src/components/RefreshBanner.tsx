@@ -10,7 +10,7 @@ import useHandleRefresh from '@/hooks/useHandleRefresh';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 const RefreshBanner = (): JSX.Element | null => {
     const [location] = useLocation();

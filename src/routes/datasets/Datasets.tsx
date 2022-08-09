@@ -32,7 +32,7 @@ import {
 import { endOfDay, formatDate } from '@/libs/utils';
 import { listDatasets } from '@/modules/datasets/DatasetsSlice';
 import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 import {
     AssetsTable,

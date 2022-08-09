@@ -12,8 +12,8 @@ import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
+import { compilePath, PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
 import PerfBrowser from '@/components/PerfBrowser';

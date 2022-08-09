@@ -49,8 +49,9 @@ import {
     TraintupleStubT,
     PredicttupleStubT,
     TaskCategory,
+    TASK_CATEGORY_SLUGS,
 } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 const MAX_ASSETS_PER_SECTION = 5;
 

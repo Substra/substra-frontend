@@ -1,7 +1,7 @@
 import { useLocation } from 'wouter';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 const Home = (): null => {
     const [, setLocation] = useLocation();

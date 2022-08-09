@@ -18,7 +18,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { logOut } from '@/modules/me/MeSlice';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import LoginForm from './components/LoginForm';
 

@@ -24,7 +24,7 @@ import {
 
 import { downloadBlob } from '@/libs/request';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
-import { compilePath, PATHS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 type BulkSelectionProps = {
     selectedComputePlans: { key: string; name: string }[];

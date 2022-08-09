@@ -10,7 +10,8 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 import { refreshToken, retrieveInfo } from '@/modules/me/MeSlice';
 import { listMetadata } from '@/modules/metadata/MetadataSlice';
 import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
-import { ROUTES, PATHS } from '@/routes';
+import { PATHS } from '@/paths';
+import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
 import CookieBanner from '@/components/CookieBanner';

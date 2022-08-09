@@ -9,8 +9,9 @@ import {
     CompositeTraintupleStubT,
     TraintupleStubT,
     AggregatetupleStubT,
+    TASK_CATEGORY_SLUGS,
 } from '@/modules/tasks/TuplesTypes';
-import { compilePath, PATHS, TASK_CATEGORY_SLUGS } from '@/routes';
+import { compilePath, PATHS } from '@/paths';
 
 import { DrawerSectionCollapsibleEntry } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';

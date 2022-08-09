@@ -53,6 +53,14 @@ export enum TaskCategory {
     predict = 'TASK_PREDICT',
 }
 
+export const TASK_CATEGORY_SLUGS: Record<TaskCategory, string> = {
+    [TaskCategory.test]: 'test',
+    [TaskCategory.train]: 'train',
+    [TaskCategory.composite]: 'composite_train',
+    [TaskCategory.aggregate]: 'aggregate',
+    [TaskCategory.predict]: 'predict',
+};
+
 export const assetTypeByTaskCategory: Record<TaskCategory, AssetT> = {
     [TaskCategory.train]: 'traintuple',
     [TaskCategory.composite]: 'composite_traintuple',

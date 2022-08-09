@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import { RiFileWarningLine } from 'react-icons/ri';
 
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import { PATHS } from '@/routes';
+import { PATHS } from '@/paths';
 
 import EmptyState from '@/components/EmptyState';
 
