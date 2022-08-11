@@ -18,8 +18,13 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
+import useUpdateName from '@/hooks/useUpdateName';
 import { downloadFromApi } from '@/libs/request';
-import { retrieveAlgo, retrieveDescription } from '@/modules/algos/AlgosSlice';
+import {
+    retrieveAlgo,
+    retrieveDescription,
+    updateAlgo,
+} from '@/modules/algos/AlgosSlice';
 import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { PATHS } from '@/paths';
 
@@ -82,6 +87,14 @@ const AlgoDrawer = (): JSX.Element => {
         }
     };
 
+    const { updateNameDialog, updateNameButton } = useUpdateName({
+        dialogTitle: 'Rename algorithm',
+        assetKey: algo?.key ?? '',
+        assetName: algo?.name ?? '',
+        assetUpdating: useAppSelector((state) => state.algos.algoUpdating),
+        updateSlice: updateAlgo,
+    });
+
     return (
         <Drawer
             isOpen={isOpen}
@@ -113,6 +126,8 @@ const AlgoDrawer = (): JSX.Element => {
                             onClick={downloadAlgo}
                         />
                     }
+                    updateNameButton={updateNameButton}
+                    updateNameDialog={updateNameDialog}
                 />
 
                 <DrawerBody

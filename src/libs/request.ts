@@ -52,6 +52,7 @@ const API = {
     authenticatedGet: withRetry(instance.get),
     get: instance.get,
     post: instance.post,
+    put: instance.put,
     anonymousGet: anonymousInstance.get,
 };
 

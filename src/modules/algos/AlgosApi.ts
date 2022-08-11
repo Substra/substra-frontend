@@ -27,3 +27,10 @@ export const retrieveAlgo = (
     config: AxiosRequestConfig
 ): AxiosPromise<AlgoT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
+
+export const updateAlgo = (
+    key: string,
+    algo: { name: string },
+    config: AxiosRequestConfig
+): AxiosPromise<AlgoT> =>
+    API.put(URLS.RETRIEVE.replace('__KEY__', key), algo, config);

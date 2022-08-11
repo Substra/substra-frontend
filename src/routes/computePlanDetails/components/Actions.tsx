@@ -9,7 +9,10 @@ import {
 } from '@chakra-ui/react';
 import { RiStarLine, RiStarFill, RiMoreLine } from 'react-icons/ri';
 
+import useAppSelector from '@/hooks/useAppSelector';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
+import useUpdateName from '@/hooks/useUpdateName';
+import { updateComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import useCancelComputePlan from '@/routes/computePlanDetails/hooks/useCancelComputePlan';
 
@@ -32,6 +35,15 @@ const Actions = ({
 
     const { cancelComputePlanDialog, cancelComputePlanMenuItem } =
         useCancelComputePlan(computePlan);
+    const { updateNameDialog, updateNameMenuItem } = useUpdateName({
+        dialogTitle: 'Rename compute plan',
+        assetKey: computePlan?.key ?? '',
+        assetName: computePlan?.name ?? '',
+        assetUpdating: useAppSelector(
+            (state) => state.computePlans.computePlanUpdating
+        ),
+        updateSlice: updateComputePlan,
+    });
 
     return (
         <HStack paddingX="8">
@@ -69,8 +81,12 @@ const Actions = ({
                         variant="outline"
                         size="xs"
                     />
-                    <MenuList>{cancelComputePlanMenuItem}</MenuList>
+                    <MenuList>
+                        {updateNameMenuItem}
+                        {cancelComputePlanMenuItem}
+                    </MenuList>
                 </Menu>
+                {updateNameDialog}
                 {cancelComputePlanDialog}
             </Box>
         </HStack>

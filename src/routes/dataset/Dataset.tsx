@@ -8,16 +8,19 @@ import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useUpdateName from '@/hooks/useUpdateName';
 import {
     retrieveDataset,
     retrieveDescription,
     retrieveOpener,
+    updateDataset,
 } from '@/modules/datasets/DatasetsSlice';
 import { DatasetT } from '@/modules/datasets/DatasetsTypes';
 import { PATHS } from '@/paths';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
+import MoreMenu from '@/components/MoreMenu';
 
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
@@ -57,6 +60,16 @@ const Dataset = (): JSX.Element => {
         }
     }, [key, dataset?.key, dispatch]);
 
+    const { updateNameDialog, updateNameMenuItem } = useUpdateName({
+        dialogTitle: 'Rename dataset',
+        assetKey: dataset?.key ?? '',
+        assetName: dataset?.name ?? '',
+        assetUpdating: useAppSelector(
+            (state) => state.datasets.datasetUpdating
+        ),
+        updateSlice: updateDataset,
+    });
+
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (dataset?.name) {
@@ -73,14 +86,18 @@ const Dataset = (): JSX.Element => {
             flexGrow={1}
             overflow="hidden"
         >
-            <Box
+            <HStack
+                justifyContent="space-between"
                 background="white"
                 borderBottomColor="gray.100"
                 borderBottomStyle="solid"
                 borderBottomWidth="1px"
+                paddingRight="8"
             >
                 <Breadcrumbs />
-            </Box>
+                <MoreMenu>{updateNameMenuItem}</MoreMenu>
+                {updateNameDialog}
+            </HStack>
             <HStack
                 spacing="16"
                 padding="8"

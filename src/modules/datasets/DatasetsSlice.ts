@@ -17,6 +17,9 @@ type DatasetStateT = {
     datasetLoading: boolean;
     datasetError: string;
 
+    datasetUpdating: boolean;
+    datasetUpdateError: string;
+
     description: string;
     descriptionLoading: boolean;
     descriptionError: string;
@@ -35,6 +38,9 @@ const initialState: DatasetStateT = {
     dataset: null,
     datasetLoading: true,
     datasetError: '',
+
+    datasetUpdating: false,
+    datasetUpdateError: '',
 
     description: '',
     descriptionLoading: true,
@@ -129,6 +135,38 @@ export const retrieveOpener = createAsyncThunk<
     }
 });
 
+export const updateDataset = createAsyncThunk<
+    DatasetT,
+    { key: string; name: string },
+    { rejectValue: string }
+>('datasets/update', async ({ key, name }, thunkAPI) => {
+    try {
+        await DatasetAPI.updateDataset(
+            key,
+            { name },
+            {
+                signal: thunkAPI.signal,
+            }
+        );
+        const response = await DatasetAPI.retrieveDataset(key, {});
+        response.data.name = name;
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const data = error.response?.data;
+            let msg;
+            if (typeof data === 'object' && data.detail) {
+                msg = data.detail;
+            } else {
+                msg = JSON.stringify(data);
+            }
+            return thunkAPI.rejectWithValue(msg);
+        } else {
+            throw error;
+        }
+    }
+});
+
 const datasetsSlice = createSlice({
     name: 'dataset',
     initialState,
@@ -191,6 +229,19 @@ const datasetsSlice = createSlice({
             .addCase(retrieveOpener.rejected, (state, { payload }) => {
                 state.openerLoading = false;
                 state.openerError = payload || 'Unknown error';
+            })
+            .addCase(updateDataset.pending, (state) => {
+                state.datasetUpdating = true;
+                state.datasetUpdateError = '';
+            })
+            .addCase(updateDataset.fulfilled, (state, { payload }) => {
+                state.dataset = payload;
+                state.datasetUpdating = false;
+                state.datasetUpdateError = '';
+            })
+            .addCase(updateDataset.rejected, (state, { payload }) => {
+                state.datasetUpdating = false;
+                state.datasetUpdateError = payload || 'unknown error';
             });
     },
 });

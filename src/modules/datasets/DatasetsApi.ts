@@ -33,3 +33,10 @@ export const retrieveOpener = (
     url: string,
     config: AxiosRequestConfig
 ): AxiosPromise<string> => API.authenticatedGet(url, config);
+
+export const updateDataset = (
+    key: string,
+    dataset: { name: string },
+    config: AxiosRequestConfig
+): AxiosPromise<DatasetT> =>
+    API.put(URLS.RETRIEVE.replace('__KEY__', key), dataset, config);

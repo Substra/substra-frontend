@@ -17,6 +17,9 @@ type AlgoStateT = {
     algoLoading: boolean;
     algoError: string;
 
+    algoUpdating: boolean;
+    algoUpdateError: string;
+
     description: string;
     descriptionLoading: boolean;
     descriptionError: string;
@@ -31,6 +34,9 @@ const initialState: AlgoStateT = {
     algo: null,
     algoLoading: true,
     algoError: '',
+
+    algoUpdating: false,
+    algoUpdateError: '',
 
     description: '',
     descriptionLoading: true,
@@ -103,6 +109,38 @@ export const retrieveDescription = createAsyncThunk<
     }
 });
 
+export const updateAlgo = createAsyncThunk<
+    AlgoT,
+    { key: string; name: string },
+    { rejectValue: string }
+>('algos/update', async ({ key, name }, thunkAPI) => {
+    try {
+        await AlgosApi.updateAlgo(
+            key,
+            { name },
+            {
+                signal: thunkAPI.signal,
+            }
+        );
+        const response = await AlgosApi.retrieveAlgo(key, {});
+        response.data.name = name;
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const data = error.response?.data;
+            let msg;
+            if (typeof data === 'object' && data.detail) {
+                msg = data.detail;
+            } else {
+                msg = JSON.stringify(data);
+            }
+            return thunkAPI.rejectWithValue(msg);
+        } else {
+            throw error;
+        }
+    }
+});
+
 const algosSlice = createSlice({
     name: 'algo',
     initialState,
@@ -153,6 +191,23 @@ const algosSlice = createSlice({
             .addCase(retrieveDescription.rejected, (state, { payload }) => {
                 state.descriptionLoading = false;
                 state.descriptionError = payload || 'Unknown error';
+            })
+            .addCase(updateAlgo.pending, (state) => {
+                state.algoUpdating = true;
+                state.algoUpdateError = '';
+            })
+            .addCase(updateAlgo.fulfilled, (state, { payload }) => {
+                state.algo = payload;
+                state.algoUpdating = false;
+                state.algoUpdateError = '';
+                // update name in list
+                state.algos = state.algos.map((algo) =>
+                    algo.key === payload.key ? payload : algo
+                );
+            })
+            .addCase(updateAlgo.rejected, (state, { payload }) => {
+                state.algoUpdating = false;
+                state.algoUpdateError = payload || 'unknown error';
             });
     },
 });

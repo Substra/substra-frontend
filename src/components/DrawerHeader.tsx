@@ -12,6 +12,8 @@ type DrawerHeaderProps = {
     title?: string;
     onClose: () => void;
     extraButtons?: React.ReactNode;
+    updateNameButton?: React.ReactNode;
+    updateNameDialog?: React.ReactNode;
 };
 
 const DrawerHeader = ({
@@ -19,15 +21,16 @@ const DrawerHeader = ({
     title,
     onClose,
     extraButtons,
+    updateNameButton,
+    updateNameDialog,
 }: DrawerHeaderProps): JSX.Element => (
     <ChakraDrawerHeader
-        display="flex"
-        justifyContent="space-between"
-        paddingX="5"
-        paddingY="3"
-        alignItems="center"
         borderBottom="1px solid"
         borderBottomColor="gray.100"
+        display="flex"
+        alignItems="center"
+        paddingX="5"
+        paddingY="3"
     >
         {loading && <Skeleton height="24px" width="250px" />}
         {!loading && (
@@ -36,12 +39,15 @@ const DrawerHeader = ({
                 fontSize="md"
                 lineHeight="6"
                 fontWeight="semibold"
+                flexGrow="1"
             >
                 {title}
             </Heading>
         )}
         <HStack spacing="1">
             {extraButtons}
+            {updateNameButton}
+            {updateNameDialog}
             <IconButton
                 aria-label="Close drawer"
                 variant="ghost"

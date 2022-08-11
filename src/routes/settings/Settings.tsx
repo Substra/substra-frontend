@@ -58,7 +58,7 @@ const Settings = (): JSX.Element => {
         if (displayNotification) {
             toast({
                 title: 'Settings saved',
-                description: 'Your preferences have been saved.',
+                descriptionComponent: 'Your preferences have been saved.',
                 status: 'success',
                 isClosable: true,
             });

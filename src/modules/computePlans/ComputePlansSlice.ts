@@ -25,6 +25,8 @@ type ComputePlansStateT = {
     computePlan: ComputePlanT | null;
     computePlanLoading: boolean;
     computePlanError: string;
+    computePlanUpdating: boolean;
+    computePlanUpdateError: string;
     computePlanTrainTasks: TraintupleStubT[];
     computePlanTrainTasksCount: number;
     computePlanTrainTasksLoading: boolean;
@@ -56,6 +58,8 @@ const initialState: ComputePlansStateT = {
     computePlanLoading: true,
     computePlanError: '',
     computePlan: null,
+    computePlanUpdating: false,
+    computePlanUpdateError: '',
     computePlanTrainTasks: [],
     computePlanTrainTasksCount: 0,
     computePlanTrainTasksLoading: true,
@@ -265,6 +269,38 @@ export const retrieveComputePlanPredictTasks = createAsyncThunk<
     }
 );
 
+export const updateComputePlan = createAsyncThunk<
+    ComputePlanT,
+    { key: string; name: string },
+    { rejectValue: string }
+>('computePlans/update', async ({ key, name }, thunkAPI) => {
+    try {
+        await ComputePlansApi.updateComputePlan(
+            key,
+            { name },
+            {
+                signal: thunkAPI.signal,
+            }
+        );
+        const response = await ComputePlansApi.retrieveComputePlan(key, {});
+        response.data.name = name;
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const data = error.response?.data;
+            let msg;
+            if (typeof data === 'object' && data.detail) {
+                msg = data.detail;
+            } else {
+                msg = JSON.stringify(data);
+            }
+            return thunkAPI.rejectWithValue(msg);
+        } else {
+            throw error;
+        }
+    }
+});
+
 const computePlansSlice = createSlice({
     name: 'computePlan',
     initialState,
@@ -438,7 +474,20 @@ const computePlansSlice = createSlice({
                             payload || 'Unknown error';
                     }
                 }
-            );
+            )
+            .addCase(updateComputePlan.pending, (state) => {
+                state.computePlanUpdating = true;
+                state.computePlanUpdateError = '';
+            })
+            .addCase(updateComputePlan.fulfilled, (state, { payload }) => {
+                state.computePlan = payload;
+                state.computePlanUpdating = false;
+                state.computePlanUpdateError = '';
+            })
+            .addCase(updateComputePlan.rejected, (state, { payload }) => {
+                state.computePlanUpdating = false;
+                state.computePlanUpdateError = payload || 'Unknown error';
+            });
     },
 });
 

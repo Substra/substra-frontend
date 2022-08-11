@@ -142,3 +142,10 @@ export const exportPerformances = (
         responseType: 'blob',
     });
 };
+
+export const updateComputePlan = (
+    key: string,
+    computePlan: { name: string },
+    config: AxiosRequestConfig
+): AxiosPromise<ComputePlanT> =>
+    API.put(URLS.RETRIEVE.replace('__KEY__', key), computePlan, config);
