@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Remove existing circular dependencies (#686)
 
+### Fixed
+
+-   Use route tasks path for task drawer (#689)
+
 ## [0.31.0] - 2022-08-09
 
 ### Added

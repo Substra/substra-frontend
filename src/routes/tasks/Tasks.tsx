@@ -29,6 +29,7 @@ import {
 } from '@/modules/tasks/TasksSlice';
 import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
+import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
 import TableTitle from '@/components/TableTitle';
@@ -470,7 +471,7 @@ const PredictTasks = ({ taskKey }: TasksProps): JSX.Element => {
 };
 
 const Tasks = () => {
-    const [, params] = useRoute(PATHS.TASKS);
+    const [, params] = useRoute(ROUTES.TASKS.path);
 
     if (params?.category === 'test') {
         return <TestTasks taskKey={params?.key} />;
