@@ -69,8 +69,10 @@ const GenericRangeInput = <T extends unknown>({
     };
 
     useEffect(() => {
-        setMode(getMode(minValue, maxValue, defaultMode));
-    }, [minValue, maxValue, defaultMode]);
+        if (mode !== 'between') {
+            setMode(getMode(minValue, maxValue, defaultMode));
+        }
+    }, [minValue, maxValue, defaultMode, mode]);
 
     return (
         <Flex wrap="wrap" margin="-1" alignItems="center">
