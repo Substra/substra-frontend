@@ -29,6 +29,7 @@ import {
 } from '@/modules/computePlans/ComputePlansSlice';
 import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
+import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
@@ -47,7 +48,7 @@ const GenericTasks = ({
     tasksTable,
     taskDrawer,
 }: GenericTasksProps): JSX.Element => {
-    const [, params] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
+    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
     const key = params?.key;
 
     useAssetListDocumentTitleEffect(
@@ -584,7 +585,7 @@ const PredictTasks = ({
 };
 
 const ComputePlanTasks = () => {
-    const [, params] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
+    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
     const computePlanKey = params?.key;
 
     if (!computePlanKey) {

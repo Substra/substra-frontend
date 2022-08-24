@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   fix: use route tasks path for task drawer in compute plan page (#694)
+
 ## [0.32.0] - 2022-08-17
 
 ### Added
