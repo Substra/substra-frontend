@@ -120,7 +120,7 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
             }}
         >
             <IconButton
-                icon={<Icon as={RiDeleteBin7Line} />}
+                icon={<Icon color="gray.300" as={RiDeleteBin7Line} />}
                 size="xs"
                 onClick={() => remove(column)}
                 variant="ghost"
@@ -132,6 +132,7 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
                 marginLeft="auto"
                 cursor="grab"
                 onPointerDown={(e) => controls.start(e)}
+                color="gray.300"
             />
         </Reorder.Item>
     );
