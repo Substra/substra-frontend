@@ -117,6 +117,7 @@ const ReorderItem = ({ column, remove }: ReorderItemProps) => {
                 width: '100%',
                 fontSize: 'var(--chakra-fontSizes-xs)',
                 marginBottom: 'var(--chakra-sizes-2-5)',
+                userSelect: 'none',
             }}
         >
             <IconButton
