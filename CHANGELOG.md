@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Change Customize Columns items icon color (#692)
+-   Increase page size to 30 (#703)
 
 ### Fixed
 

@@ -21,7 +21,7 @@ export default defineConfig({
                   MICROSOFT_CLARITY_ID: `'${MICROSOFT_CLARITY_ID}'`,
               }
             : {}),
-        DEFAULT_PAGE_SIZE: '10',
+        DEFAULT_PAGE_SIZE: '30',
         'process.env': {},
     },
     plugins: [
