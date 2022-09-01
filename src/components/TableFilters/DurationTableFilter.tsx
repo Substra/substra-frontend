@@ -6,7 +6,9 @@ import { useDuration } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 
 import DurationInput from '@/components/DurationInput';
-import GenericRangeInput from '@/components/GenericRangeInput';
+import GenericRangeInput, { ModeT } from '@/components/GenericRangeInput';
+
+const defaultFilterDurationMode = 'min';
 
 const DurationTableFilter = (): JSX.Element => {
     const [tmpMinDuration, setTmpMinDuration] = useState<number | undefined>(
@@ -15,7 +17,7 @@ const DurationTableFilter = (): JSX.Element => {
     const [tmpMaxDuration, setTmpMaxDuration] = useState<number | undefined>(
         undefined
     );
-
+    const [tmpMode, setTmpMode] = useState<ModeT>(defaultFilterDurationMode);
     const { durationMax: activeMaxDuration, durationMin: activeMinDuration } =
         useDuration();
 
@@ -50,6 +52,17 @@ const DurationTableFilter = (): JSX.Element => {
     useEffect(() => {
         setTmpMinDuration(activeMinDuration);
         setTmpMaxDuration(activeMaxDuration);
+
+        setTmpMode(() => {
+            if (activeMinDuration && activeMaxDuration) {
+                return 'between';
+            } else if (activeMinDuration) {
+                return 'min';
+            } else if (activeMaxDuration) {
+                return 'max';
+            }
+            return defaultFilterDurationMode;
+        });
     }, [activeMinDuration, activeMaxDuration]);
 
     return (
@@ -64,11 +77,8 @@ const DurationTableFilter = (): JSX.Element => {
                 onMaxValueChange={setTmpMaxDuration}
                 InputComponent={DurationInput}
                 defaultMode="min"
-                modeLabels={{
-                    min: 'Above',
-                    max: 'Below',
-                    between: 'Between',
-                }}
+                mode={tmpMode}
+                setMode={setTmpMode}
             />
         </Box>
     );

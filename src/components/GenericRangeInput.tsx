@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
-
 import { ChakraProps, Flex, Select, Text } from '@chakra-ui/react';
 
-type ModeT = 'min' | 'max' | 'between';
+export type ModeT = 'min' | 'max' | 'between';
 
 type InputComponentProps<T> = ChakraProps & {
     value: T | undefined;
@@ -12,6 +10,7 @@ type InputComponentProps<T> = ChakraProps & {
 type GenericRangeInputProps<T> = {
     minValue: T | undefined;
     maxValue: T | undefined;
+    mode: ModeT;
     onMinValueChange: (v: T | undefined) => void;
     onMaxValueChange: (v: T | undefined) => void;
     InputComponent: ({
@@ -19,24 +18,7 @@ type GenericRangeInputProps<T> = {
         onChange,
     }: InputComponentProps<T>) => JSX.Element;
     defaultMode: ModeT;
-    modeLabels: Record<ModeT, string>;
-};
-
-const getMode = (
-    minValue: unknown | undefined,
-    maxValue: unknown | undefined,
-    defaultMode: ModeT
-): ModeT => {
-    if (minValue === undefined && maxValue === undefined) {
-        return defaultMode;
-    }
-    if (minValue === undefined) {
-        return 'max';
-    }
-    if (maxValue === undefined) {
-        return 'min';
-    }
-    return 'between';
+    setMode: (mode: ModeT) => void;
 };
 
 // In the following, T is a generic type.
@@ -50,14 +32,10 @@ const GenericRangeInput = <T extends unknown>({
     onMinValueChange,
     maxValue,
     onMaxValueChange,
-    defaultMode,
-    modeLabels,
+    mode,
+    setMode,
     InputComponent,
 }: GenericRangeInputProps<T>): JSX.Element => {
-    const [mode, setMode] = useState<ModeT>(() =>
-        getMode(minValue, maxValue, defaultMode)
-    );
-
     const onModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newMode: ModeT = e.target.value as ModeT;
         setMode(newMode as ModeT);
@@ -67,12 +45,6 @@ const GenericRangeInput = <T extends unknown>({
             onMaxValueChange(undefined);
         }
     };
-
-    useEffect(() => {
-        if (mode !== 'between') {
-            setMode(getMode(minValue, maxValue, defaultMode));
-        }
-    }, [minValue, maxValue, defaultMode, mode]);
 
     return (
         <Flex wrap="wrap" margin="-1" alignItems="center">
@@ -84,9 +56,9 @@ const GenericRangeInput = <T extends unknown>({
                 flexShrink="0"
                 margin="1"
             >
-                <option value="min">{modeLabels.min}</option>
-                <option value="max">{modeLabels.max}</option>
-                <option value="between">{modeLabels.between}</option>
+                <option value="min">Above</option>
+                <option value="max">Below</option>
+                <option value="between">Between</option>
             </Select>
             {['min', 'between'].includes(mode) && (
                 <InputComponent

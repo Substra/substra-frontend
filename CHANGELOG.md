@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Elements being highlighted when drag and drop Customize Columns items (#693)
 -   Can edit by deleting the input number in CP duration filter (#696)
+-   CP duration filter is broken on refresh and for below mode (#699)
 
 ## [0.32.1] - 2022-08-24
 
