@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import {
-    APIListArgsProps,
+    APIListArgsT,
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 
@@ -14,7 +14,7 @@ const URLS = {
 };
 
 export const listAlgos = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<AlgoT>> =>
     API.authenticatedGet(URLS.LIST, {

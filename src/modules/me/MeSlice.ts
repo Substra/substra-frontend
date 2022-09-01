@@ -10,6 +10,7 @@ import {
     getLogOut,
     retrieveInfo as getInfo,
 } from '@/modules/me/MeApi';
+import { UserRolesT } from '@/modules/users/UsersTypes';
 
 import { MeInfoT } from './MeTypes';
 
@@ -44,7 +45,7 @@ const initialState: MeStateT = {
     /**
      * expiration is a timestamp, it can be fetched as a date using the following selector:
      *
-     * const expiration = useAppSelector((state) => new Date(state.user.expiration * 1000);
+     * const expiration = useAppSelector((state) => new Date(state.me.expiration * 1000);
      *
      * It cannot be stored in the state as a Date object because Date objects are mutable and non
      * serializable.
@@ -56,6 +57,8 @@ const initialState: MeStateT = {
         host: API_URL,
         organization_id: '',
         config: {},
+        user: '',
+        user_role: UserRolesT.user,
     },
     infoLoading: false,
     infoError: '',

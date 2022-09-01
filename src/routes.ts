@@ -12,9 +12,11 @@ import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
 import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
+import ResetPassword from '@/routes/resetPassword/ResetPassword';
 import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
 import TasksRoot from '@/routes/tasks/TasksRoot';
+import Users from '@/routes/users/Users';
 
 import { PATHS } from './paths';
 
@@ -84,5 +86,13 @@ export const ROUTES: Record<string, IRouteT> = {
     TASKS: {
         path: '/tasks/:category/:key?',
         component: Tasks,
+    },
+    USERS: {
+        path: '/users/:key?',
+        component: Users,
+    },
+    RESET_PASSWORD: {
+        path: PATHS.RESET_PASSWORD,
+        component: ResetPassword,
     },
 };

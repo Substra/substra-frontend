@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import {
-    APIListArgsProps,
+    APIListArgsT,
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 
@@ -36,7 +36,7 @@ export const URLS = {
 };
 
 export const listAggregatetuples = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<AggregatetupleStubT>> => {
     return API.authenticatedGet(URLS.AGGREGATE_LIST, {
@@ -46,7 +46,7 @@ export const listAggregatetuples = (
 };
 
 export const listCompositeTraintuples = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<CompositeTraintupleStubT>> => {
     return API.authenticatedGet(URLS.COMPOSITE_LIST, {
@@ -56,7 +56,7 @@ export const listCompositeTraintuples = (
 };
 
 export const listTesttuples = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<TesttupleStubT>> => {
     return API.authenticatedGet(URLS.TEST_LIST, {
@@ -66,7 +66,7 @@ export const listTesttuples = (
 };
 
 export const listTraintuples = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<TraintupleStubT>> => {
     return API.authenticatedGet(URLS.TRAIN_LIST, {
@@ -76,7 +76,7 @@ export const listTraintuples = (
 };
 
 export const listPredicttuples = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedApiResponseT<PredicttupleStubT>> => {
     return API.authenticatedGet(URLS.PREDICT_LIST, {

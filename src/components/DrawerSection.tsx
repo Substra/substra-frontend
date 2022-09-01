@@ -75,7 +75,7 @@ export const DrawerSectionEntry = ({
 }: {
     title: string;
     children?: React.ReactNode;
-    alignItems?: 'flex-start' | 'center';
+    alignItems?: 'flex-start' | 'center' | 'baseline';
 }): JSX.Element => {
     return (
         <DrawerSectionEntryWrapper alignItems={alignItems || 'center'}>

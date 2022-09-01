@@ -18,7 +18,8 @@ export type AssetT =
     | 'composite_traintuple'
     | 'aggregatetuple'
     | 'predicttuple'
-    | 'compute_plan';
+    | 'compute_plan'
+    | 'user';
 
 export type PaginatedApiResponseT<T> = {
     count: number;
@@ -38,7 +39,7 @@ export type HasKeyT = {
     key: string;
 };
 
-export type APIListArgsProps = {
+export type APIListArgsT = {
     page?: number;
     ordering?: string;
     pageSize?: number;

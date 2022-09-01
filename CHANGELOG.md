@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+-   Users management v1 (#538)
+
 ### Changed
 
 -   Change Customize Columns items icon color (#692)

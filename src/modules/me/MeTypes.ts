@@ -1,3 +1,5 @@
+import { UserRolesT } from '@/modules/users/UsersTypes';
+
 export type MeInfoT = {
     host: string;
     organization_id: string;
@@ -8,4 +10,6 @@ export type MeInfoT = {
     config: {
         model_export_enabled?: boolean;
     };
+    user: string;
+    user_role: UserRolesT;
 };

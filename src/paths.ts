@@ -17,6 +17,9 @@ export const PATHS = {
     TASKS_ROOT: '/tasks',
     TASKS: '/tasks/:category',
     TASK: '/tasks/:category/:key',
+    USERS: '/users',
+    USER: '/users/:key',
+    RESET_PASSWORD: '/reset_password/:key',
 };
 
 export function compilePath(

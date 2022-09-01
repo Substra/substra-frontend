@@ -53,6 +53,7 @@ const API = {
     get: instance.get,
     post: instance.post,
     put: instance.put,
+    delete: instance.delete,
     anonymousGet: anonymousInstance.get,
 };
 

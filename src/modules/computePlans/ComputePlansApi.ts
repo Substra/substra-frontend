@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 import API, { getApiOptions } from '@/libs/request';
 import {
-    APIListArgsProps,
+    APIListArgsT,
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 import {
@@ -32,7 +32,7 @@ const URLS = {
     EXPORT_PERFORMANCES: '/performance/export/',
 };
 
-type ListComputePlansArgsProps = APIListArgsProps & {
+type ListComputePlansArgsProps = APIListArgsT & {
     match?: string;
 };
 export const listComputePlans = (
@@ -56,7 +56,7 @@ export const cancelComputePlan = (
 ): AxiosPromise<ComputePlanT> =>
     API.post(URLS.CANCEL.replace('__KEY__', key), config);
 
-type APIListCPTuplesArgsProps = APIListArgsProps & {
+type APIListCPTuplesArgsProps = APIListArgsT & {
     key: string;
 };
 
@@ -133,7 +133,7 @@ export const listComputePlanPerformances = (
 };
 
 export const exportPerformances = (
-    apiListArgs: APIListArgsProps,
+    apiListArgs: APIListArgsT,
     config?: AxiosRequestConfig
 ) => {
     return API.authenticatedGet(URLS.EXPORT_PERFORMANCES, {

@@ -5,9 +5,9 @@ import API from '@/libs/request';
 import { MeInfoT } from './MeTypes';
 
 const ME_URL = {
-    LOGIN: `/user/login/?format=json`,
-    LOGOUT: `/user/logout/`,
-    REFRESH: '/user/refresh/',
+    LOGIN: `/me/login/?format=json`,
+    LOGOUT: `/me/logout/`,
+    REFRESH: '/me/refresh/',
     INFO: '/info/',
 };
 

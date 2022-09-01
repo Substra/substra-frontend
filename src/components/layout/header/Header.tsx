@@ -82,6 +82,7 @@ const Header = (): JSX.Element => {
         (state) => state.me.info.organization_id
     );
     const channel = useAppSelector((state) => state.me.info.channel);
+    const userRole = useAppSelector((state) => state.me.info.user_role);
 
     const handleLogOut = () => {
         dispatch(logOut())
@@ -162,6 +163,13 @@ const Header = (): JSX.Element => {
                             )}
                             <Help />
                             <About />
+                            {userRole === 'ADMIN' && (
+                                <MenuItem>
+                                    <Link href={PATHS.USERS}>
+                                        Users Management
+                                    </Link>
+                                </MenuItem>
+                            )}
                             <MenuDivider color="gray.200" />
                             <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                         </MenuList>

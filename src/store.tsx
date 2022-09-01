@@ -12,6 +12,7 @@ import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
 import organizationsSlice from '@/modules/organizations/OrganizationsSlice';
 import seriesSlice from '@/modules/series/SeriesSlice';
 import tasksSlice from '@/modules/tasks/TasksSlice';
+import usersSlice from '@/modules/users/UsersSlice';
 
 const store = configureStore({
     reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
         series: seriesSlice,
         metadata: metadataSlice,
         cpWorkflow: cpWorkflowSlice,
+        users: usersSlice,
     },
 });
 

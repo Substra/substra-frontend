@@ -15,6 +15,7 @@ const ASSET_LABEL: Record<AssetT, string> = {
     aggregatetuple: 'aggregate task',
     compute_plan: 'compute plan',
     predicttuple: 'predict task',
+    user: 'user',
 };
 
 export const getAssetLabel = (

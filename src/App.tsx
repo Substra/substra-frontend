@@ -21,6 +21,7 @@ const App = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
     const [onLoginPage] = useRoute(PATHS.LOGIN);
+    const [onResetPage] = useRoute(PATHS.RESET_PASSWORD);
     const [checkingCredentials, setCheckingCredentials] = useState(true);
 
     useEffectOnce(() => {
@@ -40,7 +41,7 @@ const App = (): JSX.Element => {
                     ]);
                 },
                 () => {
-                    if (!onLoginPage) {
+                    if (!onLoginPage && !onResetPage) {
                         const url = encodeURI(
                             `${PATHS.LOGIN}?next=${window.location.pathname}${window.location.search}`
                         );
