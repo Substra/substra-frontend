@@ -38,14 +38,7 @@ const getDuration = (
 const parseDuration = (
     duration: number | undefined
 ): { number: number | undefined; unit: UnitT } => {
-    if (duration === undefined) {
-        return {
-            number: undefined,
-            unit: 'seconds',
-        };
-    }
-
-    if (duration === 0) {
+    if (duration === undefined || duration === 0) {
         return {
             number: 0,
             unit: 'seconds',
@@ -98,6 +91,11 @@ const DurationInput = ({
 
     const onNumberChange = (newNumber: string) => {
         const newNumberAsNumber = parseInt(newNumber);
+
+        if (newNumber === '') {
+            setNumber(0);
+        }
+
         if (isNaN(newNumberAsNumber)) {
             console.warn(`${newNumber} is not a valid integer`);
             return;
