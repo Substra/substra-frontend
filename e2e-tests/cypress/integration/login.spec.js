@@ -2,7 +2,7 @@
 
 describe('Login page', () => {
     beforeEach(() => {
-        cy.request('GET', `${Cypress.env('BACKEND_API_URL')}/user/logout`);
+        cy.request('GET', `${Cypress.env('BACKEND_API_URL')}/me/logout`);
     });
 
     it('redirects to /login automatically', () => {

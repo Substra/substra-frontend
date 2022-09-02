@@ -21,7 +21,7 @@ import './commands';
 beforeEach(() => {
     cy.request(
         'POST',
-        `${Cypress.env('BACKEND_API_URL')}/user/login/?format=json`,
+        `${Cypress.env('BACKEND_API_URL')}/me/login/?format=json`,
         {
             username: Cypress.env('USERNAME'),
             password: Cypress.env('PASSWORD'),
