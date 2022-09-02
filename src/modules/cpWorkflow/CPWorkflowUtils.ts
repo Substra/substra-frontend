@@ -9,7 +9,7 @@ import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 import { NODE_WIDTH } from './CPWorkflowLayout';
 
 export const MAX_ZOOM_LEVEL = 1;
-export const MIN_ZOOM_LEVEL = 0.18;
+export const MIN_ZOOM_LEVEL = 0.05;
 
 export const NODE_BORDER_COLOR: Record<TupleStatus, string> = {
     [TupleStatus.failed]: '#F31B61',
