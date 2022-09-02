@@ -11,11 +11,13 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import { capitalize } from '@/libs/utils';
-import { InputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import {
+    AnyFullTupleT,
+    AnyTupleT,
+    TupleStatus,
+} from '@/modules/tasks/TuplesTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
@@ -61,24 +63,21 @@ const displayModel = (value: ModelT | null, taskStatus: TupleStatus) => {
     );
 };
 
-const TaskInputsOutputsDrawerSection = ({
+const TaskOutputsDrawerSection = ({
     loading,
     task,
-    type,
 }: {
     loading: boolean;
-    task: AnyTupleT | null;
-    type: 'inputs' | 'outputs';
+    task: AnyFullTupleT | null;
 }) => {
     return (
-        <DrawerSection title={capitalize(type)}>
+        <DrawerSection title="Outputs">
             <TableContainer alignSelf="stretch">
                 <Table size="md" width="100%" fontSize="xs">
                     <Thead>
                         <Tr>
                             <Th width="100%" />
                             <Th>Kind</Th>
-                            {type === 'inputs' && <Th>Optional</Th>}
                             <Th paddingRight="0 !important">Multiple</Th>
                             <Th>Value</Th>
                         </Tr>
@@ -93,11 +92,6 @@ const TaskInputsOutputsDrawerSection = ({
                                     <Td>
                                         <Skeleton>Dummy</Skeleton>
                                     </Td>
-                                    {type === 'inputs' && (
-                                        <Td>
-                                            <Skeleton>yes</Skeleton>
-                                        </Td>
-                                    )}
                                     <Td
                                         paddingRight="0 !important"
                                         textAlign="center"
@@ -111,43 +105,41 @@ const TaskInputsOutputsDrawerSection = ({
                             ))}
                         {!loading &&
                             task &&
-                            Object.entries(task[type]).map(([key, input]) => {
-                                const kind = getOutputKind(task, key);
-                                const multiple = isMultipleOutput(task, key);
-                                return (
-                                    <Tr key={key}>
-                                        <Td paddingLeft="0 !important">
-                                            <Code fontSize="xs">{key}</Code>
-                                        </Td>
-                                        <Td>{getAssetKindLabel(kind)}</Td>
-                                        {type === 'inputs' && (
-                                            <Td textAlign="center">
-                                                {(input as InputT).optional
-                                                    ? 'yes'
-                                                    : 'no'}
+                            Object.entries(task.outputs).map(
+                                ([key, output]) => {
+                                    const kind = getOutputKind(task, key);
+                                    const multiple = isMultipleOutput(
+                                        task,
+                                        key
+                                    );
+                                    return (
+                                        <Tr key={key}>
+                                            <Td paddingLeft="0 !important">
+                                                <Code fontSize="xs">{key}</Code>
                                             </Td>
-                                        )}
-                                        <Td
-                                            paddingRight="0 !important"
-                                            textAlign="center"
-                                        >
-                                            {multiple ? 'yes' : 'no'}
-                                        </Td>
-                                        <Td textAlign="center">
-                                            {kind === 'ASSET_PERFORMANCE' &&
-                                                displayPerformance(
-                                                    input.value,
-                                                    task.status
-                                                )}
-                                            {kind === 'ASSET_MODEL' &&
-                                                displayModel(
-                                                    input.value,
-                                                    task.status
-                                                )}
-                                        </Td>
-                                    </Tr>
-                                );
-                            })}
+                                            <Td>{getAssetKindLabel(kind)}</Td>
+                                            <Td
+                                                paddingRight="0 !important"
+                                                textAlign="center"
+                                            >
+                                                {multiple ? 'yes' : 'no'}
+                                            </Td>
+                                            <Td textAlign="center">
+                                                {kind === 'ASSET_PERFORMANCE' &&
+                                                    displayPerformance(
+                                                        output.value as number,
+                                                        task.status
+                                                    )}
+                                                {kind === 'ASSET_MODEL' &&
+                                                    displayModel(
+                                                        output.value as ModelT | null,
+                                                        task.status
+                                                    )}
+                                            </Td>
+                                        </Tr>
+                                    );
+                                }
+                            )}
                     </Tbody>
                 </Table>
             </TableContainer>
@@ -155,4 +147,4 @@ const TaskInputsOutputsDrawerSection = ({
     );
 };
 
-export default TaskInputsOutputsDrawerSection;
+export default TaskOutputsDrawerSection;

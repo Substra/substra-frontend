@@ -43,7 +43,7 @@ const DetailsSidebar = (): JSX.Element => {
             {dataset && <MetadataDrawerSection metadata={dataset.metadata} />}
             {dataset && (
                 <VStack spacing={5} alignItems="flex-start">
-                    <DrawerSectionHeading title="DataT samples">
+                    <DrawerSectionHeading title="Data samples">
                         <Badge
                             variant="subtle"
                             colorScheme="gray"

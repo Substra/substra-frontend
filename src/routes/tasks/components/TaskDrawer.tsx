@@ -16,22 +16,11 @@ import {
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import {
-    isCompositeTraintuple,
-    isPredicttuple,
-    isTesttuple,
-    isTraintuple,
-} from '@/libs/tuples';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
-import {
-    CATEGORY_LABEL,
-    getTaskCategory,
-    getTaskDataSampleKeys,
-    getTaskDataset,
-} from '@/modules/tasks/TasksUtils';
+import { CATEGORY_LABEL, getTaskCategory } from '@/modules/tasks/TasksUtils';
 import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
-import TaskInputsOutputsDrawerSection from '@/routes/tasks/components/TaskInputsOutputsDrawerSection';
+import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 import DrawerHeader from '@/components/DrawerHeader';
@@ -46,9 +35,8 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
-import DrawerSectionDatasetEntry from './DrawerSectionDatasetEntry';
-import DrawerSectionParentTasksEntry from './DrawerSectionParentTasksEntry';
 import ErrorAlert from './ErrorAlert';
+import TaskInputsDrawerSection from './TaskInputsDrawerSection';
 
 type TaskDrawerProps = {
     category: TaskCategory;
@@ -170,16 +158,6 @@ const TaskDrawer = ({
                                 </Link>
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Rank">
-                            {taskLoading || !task ? (
-                                <Skeleton height="4" width="250px" />
-                            ) : (
-                                task.rank
-                            )}
-                        </DrawerSectionEntry>
-                    </DrawerSection>
-
-                    <DrawerSection title="Input">
                         <DrawerSectionEntry title="Algorithm">
                             {taskLoading || !task ? (
                                 <Skeleton height="4" width="250px" />
@@ -209,32 +187,21 @@ const TaskDrawer = ({
                                 </HStack>
                             )}
                         </DrawerSectionEntry>
-                        {taskLoading || !task ? (
-                            <Skeleton height="4" width="250px" />
-                        ) : (
-                            (isTesttuple(task) ||
-                                isPredicttuple(task) ||
-                                isCompositeTraintuple(task) ||
-                                isTraintuple(task)) && (
-                                <DrawerSectionDatasetEntry
-                                    dataset={getTaskDataset(task)}
-                                    dataSampleKeys={getTaskDataSampleKeys(task)}
-                                />
-                            )
-                        )}
-
-                        {taskLoading || !task ? (
-                            <Skeleton height="4" width="250px" />
-                        ) : (
-                            <DrawerSectionParentTasksEntry
-                                parentTasks={task.parent_tasks}
-                            />
-                        )}
+                        <DrawerSectionEntry title="Rank">
+                            {taskLoading || !task ? (
+                                <Skeleton height="4" width="250px" />
+                            ) : (
+                                task.rank
+                            )}
+                        </DrawerSectionEntry>
                     </DrawerSection>
-                    <TaskInputsOutputsDrawerSection
+                    <TaskInputsDrawerSection
                         loading={taskLoading}
                         task={task || null}
-                        type="outputs"
+                    />
+                    <TaskOutputsDrawerSection
+                        loading={taskLoading}
+                        task={task || null}
                     />
                     <MetadataDrawerSection
                         metadata={task?.metadata}

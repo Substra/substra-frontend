@@ -1,5 +1,5 @@
 import { Icon, HStack, Text, Tooltip } from '@chakra-ui/react';
-import { RiEyeOffLine } from 'react-icons/ri';
+import { RiLockLine } from 'react-icons/ri';
 
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
@@ -47,7 +47,7 @@ const DrawerSectionOutModelEntryContent = ({
                         placement="top"
                         shouldWrapChildren
                     >
-                        <Icon color="gray.500" as={RiEyeOffLine} />
+                        <Icon color="gray.500" as={RiLockLine} />
                     </Tooltip>
                 );
             } else if (!model.address?.storage_address) {

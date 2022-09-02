@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.32.1] - 2022-08-24
 
+### Changed
+
+-   Task inputs section overhauled for generic tasks (#697)
+
 ### Fixed
 
 -   fix: use route tasks path for task drawer in compute plan page (#694)

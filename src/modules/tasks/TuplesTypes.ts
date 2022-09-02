@@ -1,6 +1,7 @@
-import { AlgoT, InputT, OutputT } from '@/modules/algos/AlgosTypes';
+import { AlgoT, OutputT } from '@/modules/algos/AlgosTypes';
 import {
     AssetT,
+    FileT,
     MetadataT,
     PermissionsT,
     PermissionT,
@@ -69,6 +70,15 @@ export const assetTypeByTaskCategory: Record<TaskCategory, AssetT> = {
     [TaskCategory.predict]: 'predicttuple',
 };
 
+export type TaskInputT = {
+    asset_key: string;
+    identifier: string;
+    addressable?: FileT;
+    permissions?: PermissionsT;
+    parent_task_key?: string;
+    parent_task_output_identifier?: string;
+};
+
 type BaseTupleStubT = {
     key: string;
     category: TaskCategory;
@@ -87,7 +97,7 @@ type BaseTupleStubT = {
     error_type?: ErrorT;
     logs_permission?: PermissionT;
     duration: number; // in seconds
-    inputs: { [name: string]: InputT };
+    inputs: { [key: number]: TaskInputT };
     outputs: { [name: string]: OutputT };
 };
 
@@ -199,4 +209,11 @@ export type AnyTupleT =
     | TesttupleStubT
     | TesttupleT
     | PredicttupleStubT
+    | PredicttupleT;
+
+export type AnyFullTupleT =
+    | TraintupleT
+    | CompositeTraintupleT
+    | AggregatetupleT
+    | TesttupleT
     | PredicttupleT;

@@ -16,6 +16,7 @@ import {
     TesttupleStubT,
     TraintupleT,
     TraintupleStubT,
+    AnyFullTupleT,
 } from './TuplesTypes';
 
 type TasksStateT = {
@@ -44,13 +45,7 @@ type TasksStateT = {
     predictTasksLoading: boolean;
     predictTasksError: string;
 
-    task:
-        | TraintupleT
-        | CompositeTraintupleT
-        | AggregatetupleT
-        | TesttupleT
-        | PredicttupleT
-        | null;
+    task: AnyFullTupleT | null;
     taskLoading: boolean;
     taskError: string;
 
