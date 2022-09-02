@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Can edit by deleting the input number in CP duration filter (#696)
 -   CP duration filter is broken on refresh and for below mode (#699)
 -   Use correct login url in cypress tests
+-   Display all general columns by default in CP page
 
 ## [0.32.1] - 2022-08-24
 
