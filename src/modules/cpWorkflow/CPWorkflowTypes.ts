@@ -19,7 +19,7 @@ export type PositionedTaskT = TaskT & {
     position: PositionT;
 };
 
-export type EdgeT = {
+type EdgeT = {
     source_task_key: string;
     source_output_name: string;
     target_task_key: string;

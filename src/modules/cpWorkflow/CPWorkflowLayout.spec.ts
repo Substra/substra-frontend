@@ -44,27 +44,36 @@ const twoTasksLayoutedGraph: LayoutedTaskGraphT = {
         {
             ...twoTasksGraph.tasks[0],
             position: {
-                x: 0,
-                y: 0,
+                x: 0, // 0 ("in first column")
+                y: 0, // 0 ("first task in the row")
             },
         },
         {
             ...twoTasksGraph.tasks[1],
             position: {
-                x: 400,
-                y: 200,
+                x: 400, // 1 * CELL_WIDTH ("task in second column")
+                y: 200, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("1 task in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in second row")
             },
         },
     ],
     edges: twoTasksGraph.edges,
 };
 
-const twoTasksPlusTestTupleGraph: TaskGraphT = {
+const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
     tasks: [
         ...twoTasksGraph.tasks,
         {
+            key: 'predict_a',
+            rank: 1,
+            worker: 'pharma1',
+            status: TupleStatus.done,
+            category: TaskCategory.predict,
+            inputs: ['in_model'],
+            outputs: ['out_model'],
+        },
+        {
             key: 'test_a',
-            rank: 0,
+            rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
             category: TaskCategory.test,
@@ -77,37 +86,50 @@ const twoTasksPlusTestTupleGraph: TaskGraphT = {
         {
             source_task_key: 'a',
             source_output_name: 'out_model',
+            target_task_key: 'predict_a',
+            target_input_name: 'in_model',
+        },
+        {
+            source_task_key: 'predict_a',
+            source_output_name: 'out_model',
             target_task_key: 'test_a',
             target_input_name: 'in_model',
         },
     ],
 };
 
-const twoTasksPlusTestTupleLayoutedGraph: LayoutedTaskGraphT = {
+const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
     tasks: [
         {
-            ...twoTasksPlusTestTupleGraph.tasks[0],
+            ...twoTasksPlusPredictAndTestTupleGraph.tasks[0],
             position: {
-                x: 0,
-                y: 0,
+                x: 0, // 0 ("in first column")
+                y: 0, // 0 ("first task in the row")
             },
         },
         {
-            ...twoTasksPlusTestTupleGraph.tasks[1],
+            ...twoTasksPlusPredictAndTestTupleGraph.tasks[1],
             position: {
-                x: 400,
-                y: 370,
+                x: 400, // 1 * CELL_WIDTH ("task in second column")
+                y: 540, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row")
             },
         },
         {
-            ...twoTasksPlusTestTupleGraph.tasks[2],
+            ...twoTasksPlusPredictAndTestTupleGraph.tasks[2],
             position: {
-                x: 60,
-                y: 170,
+                x: 30, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
+                y: 170, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("second task in the row")
+            },
+        },
+        {
+            ...twoTasksPlusPredictAndTestTupleGraph.tasks[3],
+            position: {
+                x: 60, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
+                y: 340, // 2 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("thirsd task in the row")
             },
         },
     ],
-    edges: twoTasksPlusTestTupleGraph.edges,
+    edges: twoTasksPlusPredictAndTestTupleGraph.edges,
 };
 
 const compositeAndAggregateGraph: TaskGraphT = {
@@ -167,22 +189,22 @@ const compositeAndAggregateLAyoutedGraph: LayoutedTaskGraphT = {
         {
             ...compositeAndAggregateGraph.tasks[0],
             position: {
-                x: 0,
-                y: 0,
+                x: 0, // 0 ("in first column")
+                y: 0, // 0 ("first task in the row")
             },
         },
         {
             ...compositeAndAggregateGraph.tasks[1],
             position: {
-                x: 400,
-                y: 60,
+                x: 400, // 1 * CELL_WIDTH ("task in second column")
+                y: 52, // // 0 ("first task in the row") + AGGREGATE_TASK_TOP_PADDING
             },
         },
         {
             ...compositeAndAggregateGraph.tasks[2],
             position: {
-                x: 800,
-                y: 0,
+                x: 800, // 2 * CELL_WIDTH ("task in third column")
+                y: 0, // 0 ("first task in the row")
             },
         },
     ],
@@ -192,8 +214,8 @@ const compositeAndAggregateLAyoutedGraph: LayoutedTaskGraphT = {
 test('computeLayout', () => {
     expect(computeLayout(emptyGraph)).toStrictEqual(emptyGraph);
     expect(computeLayout(twoTasksGraph)).toStrictEqual(twoTasksLayoutedGraph);
-    expect(computeLayout(twoTasksPlusTestTupleGraph)).toStrictEqual(
-        twoTasksPlusTestTupleLayoutedGraph
+    expect(computeLayout(twoTasksPlusPredictAndTestTupleGraph)).toStrictEqual(
+        twoTasksPlusPredictAndTestTupleLayoutedGraph
     );
     expect(computeLayout(compositeAndAggregateGraph)).toStrictEqual(
         compositeAndAggregateLAyoutedGraph

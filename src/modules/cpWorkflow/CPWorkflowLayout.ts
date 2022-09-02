@@ -1,6 +1,5 @@
 import {
     LayoutedTaskGraphT,
-    EdgeT,
     TaskGraphT,
     TaskT,
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
@@ -11,8 +10,9 @@ export const NODE_HEIGHT = 119;
 
 const NODE_BOTTOM_MARGIN = 51; // Add margin to the node height avoid stacking nodes
 const ROW_BOTTOM_MARGIN = 30;
+const PREDICT_TASK_LEFT_PADDING = 30;
 const TEST_TASK_LEFT_PADDING = 60;
-const AGGREGATE_TASK_TOP_PADDING = 60;
+const AGGREGATE_TASK_TOP_PADDING = 52;
 const CELL_WIDTH = NODE_WIDTH + TEST_TASK_LEFT_PADDING + 90;
 
 type TaskInCellT = {
@@ -61,10 +61,22 @@ function initEmptyGrid(workerNamesInYOrder: string[], maxRank: number) {
     return grid;
 }
 
+function getColumnIndex(task: TaskT) {
+    let correctedRank: number;
+    if (task.category === TaskCategory.predict) {
+        correctedRank = task.rank - 1;
+    } else if (task.category === TaskCategory.test) {
+        correctedRank = task.rank - 2;
+    } else {
+        correctedRank = task.rank;
+    }
+    return Math.max(0, correctedRank);
+}
+
 function addTasksToGrid(grid: GridT, tasks: TaskT[]) {
     // Assign tasks to their cell
     for (const task of tasks) {
-        const cell = grid.rows[task.worker].cells[task.rank];
+        const cell = grid.rows[task.worker].cells[getColumnIndex(task)];
         cell.tasks.push({
             taskRef: task,
             relativeXInCell: 0,
@@ -109,32 +121,31 @@ function computeCellsX(rows: RowsT) {
     }
 }
 
-function orderTasksInEachCell(rows: RowsT, edges: EdgeT[]) {
-    const taskKeyToUpstreamEdgeMap: { [task_key: string]: EdgeT[] } = {};
-    for (const edge of edges) {
-        const taskUpstreamEdges =
-            taskKeyToUpstreamEdgeMap[edge.target_task_key] ?? [];
-        taskKeyToUpstreamEdgeMap[edge.target_task_key] = [
-            ...taskUpstreamEdges,
-            edge,
-        ];
+function orderTasksInEachCell(rows: RowsT, graph: TaskGraphT) {
+    const taskKeyToTaskMap: { [task_key: string]: TaskT } = {};
+    for (const task of graph.tasks) {
+        taskKeyToTaskMap[task.key] = task;
+    }
+
+    const taskKeyToParentTasksMap: { [task_key: string]: TaskT[] } = {};
+    for (const edge of graph.edges) {
+        const targetTaskKey = edge.target_task_key;
+        const parentTask = taskKeyToTaskMap[edge.source_task_key];
+
+        const parentTasks = taskKeyToParentTasksMap[targetTaskKey] ?? [];
+        taskKeyToParentTasksMap[targetTaskKey] = [...parentTasks, parentTask];
     }
 
     for (const row of Object.values(rows)) {
         for (const cell of row.cells) {
             cell.tasks.sort((firstTask, secondTask) => {
-                function makeSortName(task: TaskT) {
-                    if (task.category === TaskCategory.test) {
-                        // test_tuples should follow their parentTask if it is in the cell
-                        // So we concatenate the key of their parentTasks to their key to build a name used for sorting
-                        const upstreamTaskKeys = taskKeyToUpstreamEdgeMap[
-                            task.key
-                        ]?.map((edge) => edge.source_task_key);
-                        return upstreamTaskKeys?.join() + task.key;
-                    } else {
-                        return task.key;
-                    }
+                function makeSortName(task: TaskT): string {
+                    // recursive function chaining the key of all ancestor tasks in the cell
+                    // Needed to stack vertically train, then predict, then test task
+                    const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
+                    return parentTasks.map(makeSortName).join() + task.key;
                 }
+
                 const firstNodeSortName = makeSortName(firstTask.taskRef);
                 const secondNodeSortName = makeSortName(secondTask.taskRef);
                 if (firstNodeSortName < secondNodeSortName) {
@@ -163,6 +174,10 @@ function computeTasksRelativePositionInCell(rows: RowsT) {
             // to symbolize they are executed after the other tasks of the same rank
             task.relativeXInCell += TEST_TASK_LEFT_PADDING;
         }
+        if (task.taskRef.category === TaskCategory.predict) {
+            // Same as Testtuples
+            task.relativeXInCell += PREDICT_TASK_LEFT_PADDING;
+        }
         if (task.taskRef.category === TaskCategory.aggregate) {
             // Aggregatetuple are drawn with a little shifting on the y axis
             // to avoid they are drawn on top of composite-to-composite edges of the same worker
@@ -183,7 +198,9 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
     const workerNames = [...new Set(graph.tasks.map((task) => task.worker))];
     workerNames.sort();
 
-    const maxRank = Math.max(...graph.tasks.map((task) => task.rank));
+    const maxRank = Math.max(
+        ...graph.tasks.map((task) => getColumnIndex(task))
+    );
 
     const grid: GridT = initEmptyGrid(workerNames, maxRank);
     addTasksToGrid(grid, graph.tasks);
@@ -192,12 +209,12 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
     computeRowsY(grid);
     computeCellsX(grid.rows);
 
-    orderTasksInEachCell(grid.rows, graph.edges);
+    orderTasksInEachCell(grid.rows, graph);
     computeTasksRelativePositionInCell(grid.rows);
 
     const positionedTasks = graph.tasks.map((task) => {
         const row = grid.rows[task.worker];
-        const cell = row.cells[task.rank];
+        const cell = row.cells[getColumnIndex(task)];
         const taskInCell = cell.tasks.find((taskInCell) => {
             return taskInCell.taskRef.key === task.key;
         });
