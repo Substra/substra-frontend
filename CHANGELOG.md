@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 
--   Users management v1 (#538)
+-   Users management v1
+-   Added license file
 
 ### Changed
 
