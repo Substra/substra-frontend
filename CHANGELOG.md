@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   CP Workflow graph: update layout for predict tasks and test tasks
 -   Change Connect branding to Substra
 -   Add capital letter R to reset zoom button
+-   Rename Connect to Substra in code and ci files
 
 ### Fixed
 

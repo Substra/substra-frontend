@@ -1,8 +1,8 @@
 {
-    "name": "connect-frontend-e2e-tests",
+    "name": "substra-frontend-e2e-tests",
     "repository": {
         "type": "git",
-        "url": "https://github.com/owkin/connect-frontend.git"
+        "url": "https://github.com/Substra/susbtra-frontend.git"
     },
     "license": "UNLICENSED",
     "private": "true",

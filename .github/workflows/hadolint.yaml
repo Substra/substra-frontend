@@ -11,8 +11,8 @@ jobs:
         strategy:
             matrix:
                 dockerfile:
-                    - docker/connect-frontend/Dockerfile
-                    - docker/connect-frontend-tests/Dockerfile
+                    - docker/substra-frontend/Dockerfile
+                    - docker/substra-frontend-tests/Dockerfile
         steps:
             - uses: actions/checkout@v2
             - uses: hadolint/hadolint-action@v1.6.0

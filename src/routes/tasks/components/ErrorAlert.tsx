@@ -45,8 +45,11 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
                 description={
                     <>
                         An internal error occurred. Please contact{' '}
-                        <Link href="mailto:support@owkin.com">
-                            support@owkin.com
+                        <Link
+                            href="https://lfaifoundation.slack.com/#substra-help"
+                            isExternal
+                        >
+                            substra-help Slack channel
                         </Link>{' '}
                         to get access to logs.
                     </>
@@ -62,8 +65,11 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
                         An error occurred when building the container for the
                         task execution. Please check your algorithm archive or
                         contact{' '}
-                        <Link href="mailto:support@owkin.com">
-                            support@owkin.com
+                        <Link
+                            href="https://lfaifoundation.slack.com/#substra-help"
+                            isExternal
+                        >
+                            substra-help Slack channel
                         </Link>{' '}
                         to get access to logs.
                     </>
@@ -80,8 +86,11 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
                         <>
                             An error occurred during the task execution. Please
                             check your code, or contact{' '}
-                            <Link href="mailto:support@owkin.com">
-                                support@owkin.com
+                            <Link
+                                href="https://lfaifoundation.slack.com/#substra-help"
+                                isExternal
+                            >
+                                substra-help Slack channel
                             </Link>{' '}
                             to get access to logs.
                         </>

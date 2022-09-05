@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "connect-frontend-tests.fullname" . }}
+  name: {{ include "substra-frontend-tests.fullname" . }}
   labels:
-    {{- include "connect-frontend-tests.labels" . | nindent 4 }}
+    {{- include "substra-frontend-tests.labels" . | nindent 4 }}
 spec:
   template:
     metadata:
@@ -12,13 +12,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "connect-frontend-tests.selectorLabels" . | nindent 8 }}
+        {{- include "substra-frontend-tests.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "connect-frontend-tests.serviceAccountName" . }}
+      serviceAccountName: {{ include "substra-frontend-tests.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -103,7 +103,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
 {{- end }}
   labels:
-    {{- include "connect-frontend-tests.selectorLabels" . | nindent 4 }}
+    {{- include "substra-frontend-tests.selectorLabels" . | nindent 4 }}
     role: cypress-screenshots-retriever
   name: {{ .Release.Name | trunc 30 | trimSuffix "-" }}-cypress-screenshots-retriever
 spec:
@@ -111,7 +111,7 @@ spec:
   imagePullSecrets:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  serviceAccountName: {{ include "connect-frontend-tests.serviceAccountName" . }}
+  serviceAccountName: {{ include "substra-frontend-tests.serviceAccountName" . }}
   securityContext:
     {{- toYaml .Values.podSecurityContext | nindent 4 }}
   containers:

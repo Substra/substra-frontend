@@ -19,7 +19,7 @@ def main():
     # so they can be treated the same
     version_files = {
         "app": "package.json",
-        "helm": "charts/connect-frontend/Chart.yaml",
+        "helm": "charts/substra-frontend/Chart.yaml",
     }
 
     parser = argparse.ArgumentParser(description=helpMsg)

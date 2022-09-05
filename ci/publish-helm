@@ -9,7 +9,7 @@ from cilib import command, helm
 from cilib.file_system import get_from_repo_root
 
 HELM_REPOSITORY = "https://core.harbor.tooling.owkin.com/chartrepo/connect-frontend/"  # don't forget the final /
-HELM_CHART_NAME = "connect-frontend"
+HELM_CHART_NAME = "substra-frontend"
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 logger = logging.getLogger()

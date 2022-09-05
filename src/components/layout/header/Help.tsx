@@ -82,29 +82,16 @@ Backend: version ${backendVersion}`;
                                         to use our tools and concepts, browse by
                                         topic or search by feature in our{' '}
                                         <Link
-                                            href="https://connect-docs.owkin.com"
+                                            href="https://github.com/Substra/substra-frontend"
                                             isExternal
                                             fontWeight="semibold"
                                         >
-                                            documentation
+                                            Github repo
                                         </Link>
                                         !
                                     </AlertDescription>
                                 </Box>
                             </Alert>
-                            <Text fontSize="sm" marginBottom="3">
-                                Do you want some help or give us some feedback?
-                                We will do our best to help you! Please send us
-                                an email with all the details at&nbsp;
-                                <Link
-                                    color="teal.500"
-                                    href={`mailto:support@owkin.com?body=${encodeURI(
-                                        bodyContent
-                                    )}`}
-                                >
-                                    support@owkin.com
-                                </Link>
-                            </Text>
                             <Text fontSize="sm" fontWeight="semibold">
                                 Github
                             </Text>

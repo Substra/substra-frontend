@@ -2,16 +2,16 @@ apiVersion: skaffold/v2beta17
 kind: Config
 build:
     artifacts:
-        - image: &imageref gcr.io/connect-314908/connect-frontend-tests
+        - image: &imageref gcr.io/connect-314908/substra-frontend-tests
           context: ../e2e-tests
           docker:
-              dockerfile: 'docker/connect-frontend-tests/Dockerfile'
+              dockerfile: 'docker/substra-frontend-tests/Dockerfile'
 
 deploy:
     helm:
         releases:
             - name: test
-              chartPath: ../charts/connect-frontend-tests
+              chartPath: ../charts/substra-frontend-tests
               namespace: org-1
               createNamespace: true
               artifactOverrides:

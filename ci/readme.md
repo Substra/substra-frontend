@@ -3,7 +3,7 @@
 Packages are versioned using a Python script called `ci/version` which reads the version from:
 
 -   `package.json` for the app version
--   `charts/connect-frontend/Chart.yaml` for the Helm chart version
+-   `charts/substra-frontend/Chart.yaml` for the Helm chart version
 
 The `--insert-dev-info` option will also add info from the current commit, which is used to create "continuous" packages.
 

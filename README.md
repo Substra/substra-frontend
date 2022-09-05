@@ -22,8 +22,8 @@ ex: `API_URL=http://127.0.0.1:8000 npm run dev`
 Alternatively you can run it inside a container by using dev target.
 
 ```sh
-docker build -f docker/connect-frontend/Dockerfile --target dev -t connect-frontend .
-docker run -it --rm -p 3000:3000 -v ${PWD}/src:/workspace/src connect-frontend
+docker build -f docker/substra-frontend/Dockerfile --target dev -t substra-frontend .
+docker run -it --rm -p 3000:3000 -v ${PWD}/src:/workspace/src substra-frontend
 ```
 
 Note: Use `-e API_URL=http://127.0.0.1:8000` to specify another backend URL.
@@ -33,7 +33,7 @@ Note: Use `-e API_URL=http://127.0.0.1:8000` to specify another backend URL.
 Many developments done in the frontend go hand in hand with API changes coming from either the backend or the orchestrator. These changes aren't always available in the last release and sometimes aren't even merged in the `main` branches. In order to use them, you'll need to:
 
 1. Check out the branches / commits in your local clones of the repos
-2. In each repo, run `skaffold run` (with your usual options, for example `-p single-org` for `connect-backend`)
+2. In each repo, run `skaffold run` (with your usual options, for example `-p single-org` for `substra-backend`)
 
 ## Generic dump/restore commands
 
@@ -58,7 +58,7 @@ To **restore** the orchestrator DB from `orchestrator.sql`:
 cat orchestrator.sql| kubectl exec -n org-1 -i orchestrator-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/orchestrator
 ```
 
-To **restore** the backend DB of org-1 from `connect-backend.sql`:
+To **restore** the backend DB of org-1 from `backend.sql`:
 
 ```sh
 # Example with an `org-1` organization and a backend's postgres pod with name `backend-org-1-postgresql-0`

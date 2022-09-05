@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   registry: gcr.io
-  repository: connect-314908/connect-frontend
+  repository: connect-314908/substra-frontend
   tag: null # default to AppVersion
   pullPolicy: IfNotPresent
 
@@ -69,7 +69,7 @@ tolerations: []
 affinity: {}
 
 api:
-  url: "http://connect-backend.local:8000"
+  url: "http://substra-backend.local:8000"
 
 microsoftClarity:
   id: ""

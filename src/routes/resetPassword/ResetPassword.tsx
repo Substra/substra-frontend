@@ -95,12 +95,12 @@ const ResetPassword = (): JSX.Element => {
                     Federated Learning software
                 </Text>
                 <Link
-                    href="https://owkin.com/owkin-connect/"
+                    href="https://github.com/Substra/substra-frontend/"
                     isExternal
                     color="white"
                 >
                     <Button variant="outline" colorScheme="whiteAlpha">
-                        <Text color="white">Tell me more!</Text>
+                        <Text color="white">Learn more on Github!</Text>
                     </Button>
                 </Link>
             </Flex>

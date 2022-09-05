@@ -12,7 +12,7 @@ env: {}
 on:
     push:
         branches: [main]
-        paths: ['charts/connect-frontend/**']
+        paths: ['charts/substra-frontend/**']
     workflow_dispatch: {} # For running by hand from the web UI
 jobs:
     build-helm:
@@ -25,5 +25,5 @@ jobs:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
-            - run: helm lint charts/connect-frontend
+            - run: helm lint charts/substra-frontend
             - run: ci/publish-helm '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}'

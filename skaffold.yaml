@@ -2,16 +2,16 @@ apiVersion: skaffold/v2beta16
 kind: Config
 build:
     artifacts:
-        - image: &imageref gcr.io/connect-314908/connect-frontend
+        - image: &imageref gcr.io/connect-314908/substra-frontend
           context: .
           docker:
-              dockerfile: docker/connect-frontend/Dockerfile
+              dockerfile: docker/substra-frontend/Dockerfile
 
 deploy:
     helm:
         releases:
             - name: frontend-org-1
-              chartPath: charts/connect-frontend
+              chartPath: charts/substra-frontend
               namespace: org-1
               createNamespace: true
               artifactOverrides:
@@ -23,7 +23,7 @@ deploy:
                   - 'skaffold-values/org-1.yaml'
 
             - name: frontend-org-2
-              chartPath: charts/connect-frontend
+              chartPath: charts/substra-frontend
               namespace: org-2
               createNamespace: true
               artifactOverrides:
