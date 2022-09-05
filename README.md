@@ -40,25 +40,29 @@ Many developments done in the frontend go hand in hand with API changes coming f
 To **dump** the orchestrator DB into `orchestrator.sql`:
 
 ```sh
-kubectl exec -n org-1 -i owkin-orchestrator-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/orchestrator > orchestrator.sql
+# Example with an 'org-1' organization and an orchestrator's postgres pod with name 'orchestrator-org-1-postgresql-0'
+kubectl exec -n org-1 -i orchestrator-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/orchestrator > orchestrator.sql
 ```
 
-To **dump** the backend DB of org-1 into `connect-backend.sql`:
+To **dump** the backend DB of org-1 into `backend.sql`:
 
 ```sh
-kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/substra > connect-backend.sql
+# Example with an `org-1` organization and a backend's postgres pod with name `backend-org-1-postgresql-0`
+kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- pg_dump --clean --no-owner postgresql://postgres:postgres@localhost/substra > backend.sql
 ```
 
 To **restore** the orchestrator DB from `orchestrator.sql`:
 
 ```sh
-cat orchestrator.sql| kubectl exec -n org-1 -i owkin-orchestrator-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/orchestrator
+# Example with an `org-1` organization and an orchestrator's postgres pod with name `orchestrator-org-1-postgresql-0`
+cat orchestrator.sql| kubectl exec -n org-1 -i orchestrator-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/orchestrator
 ```
 
 To **restore** the backend DB of org-1 from `connect-backend.sql`:
 
 ```sh
-cat connect-backend.sql| kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/substra
+# Example with an `org-1` organization and a backend's postgres pod with name `backend-org-1-postgresql-0`
+cat backend.sql| kubectl exec -n org-1 -i backend-org-1-postgresql-0 -- psql postgresql://postgres:postgres@localhost/substra
 ```
 
 ## Development setup

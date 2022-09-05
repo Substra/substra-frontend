@@ -11,19 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Users management v1
 -   Added license file
+-   Removed references to close-source items
 
 ### Changed
 
--   Change Customize Columns items icon color (#692)
--   Increase page size to 30 (#703)
+-   Change Customize Columns items icon color
+-   Increase page size to 30
 -   CP Workflow graph: Allow a higher min zoom to show more tasks
 -   CP Workflow graph: update layout for predict tasks and test tasks
 
 ### Fixed
 
--   Elements being highlighted when drag and drop Customize Columns items (#693)
--   Can edit by deleting the input number in CP duration filter (#696)
--   CP duration filter is broken on refresh and for below mode (#699)
+-   Elements being highlighted when drag and drop Customize Columns items
+-   Can edit by deleting the input number in CP duration filter
+-   CP duration filter is broken on refresh and for below mode
 -   Use correct login url in cypress tests
 -   Display all general columns by default in CP page
 
@@ -31,451 +32,451 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   Task inputs section overhauled for generic tasks (#697)
+-   Task inputs section overhauled for generic tasks
 
 ### Fixed
 
--   fix: use route tasks path for task drawer in compute plan page (#694)
--   Duration filter mode "Between" don't jump to other filtering mode (#668)
+-   fix: use route tasks path for task drawer in compute plan page
+-   Duration filter mode "Between" don't jump to other filtering mode
 
 ## [0.32.0] - 2022-08-17
 
 ### Added
 
--   Ability to edit asset names (#624)
+-   Ability to edit asset names
 
 ### Changed
 
--   Remove existing circular dependencies (#686)
+-   Remove existing circular dependencies
 
 ### Fixed
 
--   Use route tasks path for task drawer (#689)
+-   Use route tasks path for task drawer
 
 ## [0.31.0] - 2022-08-09
 
 ### Added
 
--   Support for log scale display (#672)
--   Allow selection of non-metadata columns in custom columns (#678)
+-   Support for log scale display
+-   Allow selection of non-metadata columns in custom columns
 
 ### Changed
 
--   Custom columns modal style improvements (#671)
--   Add new ESLint rules to ensure code quality (#684)
--   Use max rank and round from perf endpoint stats (#670)
+-   Custom columns modal style improvements
+-   Add new ESLint rules to ensure code quality
+-   Use max rank and round from perf endpoint stats
 
 ### Fixed
 
--   Overflow issue on task drawer dataset section (#677)
+-   Overflow issue on task drawer dataset section
 
 ## [0.30.0] - 2022-08-01
 
 ### Fixed
 
--   Do not trigger omnisearch for empty search strings (#664)
--   Spacing between and around filter tags (#666)
--   Duration's active filter dot does not appear on filter popover (#654)
--   Prevent task drawer dataset's dropdown from expanding/collapsing on dataset download (#660)
--   Column width issue on tasks table (#673)
--   Clear all filters button not clearing all filters (#675)
--   Center no tasks message on dataset table (#674)
--   Added missing actions on CP workflow page (#682)
--   Wrong page title on compute plan workflow (#683)
+-   Do not trigger omnisearch for empty search strings
+-   Spacing between and around filter tags
+-   Duration's active filter dot does not appear on filter popover
+-   Prevent task drawer dataset's dropdown from expanding/collapsing on dataset download
+-   Column width issue on tasks table
+-   Clear all filters button not clearing all filters
+-   Center no tasks message on dataset table
+-   Added missing actions on CP workflow page
+-   Wrong page title on compute plan workflow
 
 ### Changed
 
--   Refactoring of duration format functions (#663)
--   Wording update for deleted models in output (#669)
--   Refactoring of DrawerHeader extra buttons (#676)
--   Some UI improvements for cancel CP feature (#659)
--   Display disabled cancel CP button when user is not owner of the current CP (#658)
--   Filtering by favorites when not having any will return an empty table (#657)
--   Add outputs section in task drawer adapted to generic task (#679)
+-   Refactoring of duration format functions
+-   Wording update for deleted models in output
+-   Refactoring of DrawerHeader extra buttons
+-   Some UI improvements for cancel CP feature
+-   Display disabled cancel CP button when user is not owner of the current CP
+-   Filtering by favorites when not having any will return an empty table
+-   Add outputs section in task drawer adapted to generic task
 
 ## [0.29.0] - 2022-07-25
 
 ### Added
 
--   Zoom controls on compute plan workflows (#644)
+-   Zoom controls on compute plan workflows
 
 ### Fixed
 
--   Add "kind" label for algo performance output (#645)
--   Tooltips are now displayed on performance charts (#649)
--   Prevent the tooltip from being partly hidden on performance charts (#611)
--   Params disappearing when clicking twice on a navigation tab (#651)
--   Tuples links in OmniSearch were not redirecting to the tuple (#656)
+-   Add "kind" label for algo performance output
+-   Tooltips are now displayed on performance charts
+-   Prevent the tooltip from being partly hidden on performance charts
+-   Params disappearing when clicking twice on a navigation tab
+-   Tuples links in OmniSearch were not redirecting to the tuple
 
 ### Changed
 
--   Add Hadolint to CI (#647)
--   Reset compute plan filters when clicking on a refresh button (#643)
--   Add ESLint rule to enforce PascalCase and precise suffixes for types (#650)
--   Stack applied filters vertically instead of using ellipsis (#661)
--   Add simplified display for duration applied filter (#655)
+-   Add Hadolint to CI
+-   Reset compute plan filters when clicking on a refresh button
+-   Add ESLint rule to enforce PascalCase and precise suffixes for types
+-   Stack applied filters vertically instead of using ellipsis
+-   Add simplified display for duration applied filter
 
 ## [0.28.0] - 2022-07-11
 
 ### Added
 
--   Support for predict tasks (#615)
--   Cancel compute plan button (#608)
--   Add tuples to OmniSearch (#642)
+-   Support for predict tasks
+-   Cancel compute plan button
+-   Add tuples to OmniSearch
 
 ### Changed
 
--   Upgrade caniuse-lite (#639)
--   Put current user info into /me module (#641)
--   Updated owner information style in drawers (#638)
+-   Upgrade caniuse-lite
+-   Put current user info into /me module
+-   Updated owner information style in drawers
 
 ## [0.27.0] - 2022-07-05
 
 ### Added
 
--   Display algo inputs and outputs in drawer (#622)
--   Download buttons for algos, datasets and metrics in task drawers (#625)
--   Duration filters (#620)
--   ComputePlan Workflow Graph view (#634)
+-   Display algo inputs and outputs in drawer
+-   Download buttons for algos, datasets and metrics in task drawers
+-   Duration filters
+-   ComputePlan Workflow Graph view
 
 ### Fixed
 
--   Newsfeed items link now redirecting to correct asset (#618)
+-   Newsfeed items link now redirecting to correct asset
 
 ### Changed
 
--   Split the TableFilters components into multiple components (#619)
--   Removed the metrics concept (#623)
+-   Split the TableFilters components into multiple components
+-   Removed the metrics concept
 
 ## [0.26.0] - 2022-06-20
 
 ### Added
 
--   Metadata filters (#586)
+-   Metadata filters
 
 ### Changed
 
--   Upgrade outdated dependencies packages and upgrade to React 18 (#595)
--   Removed algo category (#564)
+-   Upgrade outdated dependencies packages and upgrade to React 18
+-   Removed algo category
 
 ## [0.25.0] - 2022-06-14
 
 ### Added
 
--   Actualizer & Refresh Banner (#594)
+-   Actualizer & Refresh Banner
 
 ### Changed
 
--   Compute plan name from metadata is deprecated, use cp name directly (#601)
--   Share metadata configuration (#603)
--   Remove metadata modal from compute plan detail (#604)
--   Rename node to organization (#610)
+-   Compute plan name from metadata is deprecated, use cp name directly
+-   Share metadata configuration
+-   Remove metadata modal from compute plan detail
+-   Rename node to organization
 
 ### Fixed
 
--   Type guard in OmniSearch failing for null values (#605)
+-   Type guard in OmniSearch failing for null values
 
 ### Fixed
 
--   Include days in durations (#607)
+-   Include days in durations
 
 ## [0.24.0] - 2022-05-31
 
 ### Changed
 
--   Replace compute plan unknown status by empty status (#592)
+-   Replace compute plan unknown status by empty status
 
 ### Added
 
--   Proper UI for customizing columns (#591)
--   OmniSearch (#589)
+-   Proper UI for customizing columns
+-   OmniSearch
 
 ### Fixed
 
--   Prevent the dataset details sidebar from being crushed (#597)
--   Display correctly Markdown titles (#598)
--   Dockerfile now include package-lock.json for better reproducibility (#600)
+-   Prevent the dataset details sidebar from being crushed
+-   Display correctly Markdown titles
+-   Dockerfile now include package-lock.json for better reproducibility
 
 ## [0.23.0] - 2022-05-23
 
 ### Added
 
--   Indicate active filters in the popover (#582)
--   News feed notifications (#588)
+-   Indicate active filters in the popover
+-   News feed notifications
 
 ### Fixed
 
--   Removed date filters glitch (#585)
--   Consistent date filters - after and before (#590)
+-   Removed date filters glitch
+-   Consistent date filters - after and before
 
 ### Changed
 
--   Tasks and compute plans status sort is now alphabetical (#593)
+-   Tasks and compute plans status sort is now alphabetical
 
 ## [0.22.0] - 2022-05-16
 
 ### Added
 
--   Mailto links in error alerts (#572)
--   Download buttons on ComputePlans page (#581)
--   Add a manual refresh button (#583)
+-   Mailto links in error alerts
+-   Download buttons on ComputePlans page
+-   Add a manual refresh button
 
 ### Fixed
 
--   Proper labels for status ordering (#574)
--   Ordering options in table header dropdowns (#575)
--   Alignment issue with PerfBrowser checkboxes (#576)
+-   Proper labels for status ordering
+-   Ordering options in table header dropdowns
+-   Alignment issue with PerfBrowser checkboxes
 
 ### Changed
 
--   Explicit keyboard shortcuts (#573)
--   Empty API params aren't sent to the API anymore (#571)
--   Added check on dependencies (#579)
--   Moved cypress to a dedicated package (#577)
--   Use the name field of Compute Plans instead of tag (#578)
--   Algo sorting by category is based on category names (#584)
--   Removed concept of hyperparameters in favor of metadata (#580)
+-   Explicit keyboard shortcuts
+-   Empty API params aren't sent to the API anymore
+-   Added check on dependencies
+-   Moved cypress to a dedicated package
+-   Use the name field of Compute Plans instead of tag
+-   Algo sorting by category is based on category names
+-   Removed concept of hyperparameters in favor of metadata
 
 ## [0.21.0] - 2022-05-09
 
 ### Added
 
--   Permission filters (#562)
+-   Permission filters
 
 ### Fixed
 
--   Trailing pagination focus (#563)
--   Correct date filter params sent to backend (#565)
--   Synced state handling for empty values are arrays (#567)
--   Reset searchbar when clearing applied filters (#568)
+-   Trailing pagination focus
+-   Correct date filter params sent to backend
+-   Synced state handling for empty values are arrays
+-   Reset searchbar when clearing applied filters
 
 ### Changed
 
--   Use csv url params values when filtering on multiple values for all fields (#561)
--   Change all references to eu.gcr.io to gcr.io in skaffold configs (#474)
--   Removed deadcode (#560)
--   Mutualize synced state declarations (#557)
--   Removed use of the search parameter (#556)
--   Handle new metric type (#544)
--   Add ESLint to React hooks (#494)
--   Improved filter tags display (#566)
--   Favorites only now synced in URL as a boolean flag (#569)
+-   Use csv url params values when filtering on multiple values for all fields
+-   Change all references to eu.gcr.io to gcr.io in skaffold configs
+-   Removed deadcode
+-   Mutualize synced state declarations
+-   Removed use of the search parameter
+-   Handle new metric type
+-   Add ESLint to React hooks
+-   Improved filter tags display
+-   Favorites only now synced in URL as a boolean flag
 
 ## [0.20.0] - 2022-05-03
 
 ### Added
 
--   Add rounds as x axis on perf charts (#549)
--   Display logs permissions on datasets table and details page (#551)
--   New filters (#516)
+-   Add rounds as x axis on perf charts
+-   Display logs permissions on datasets table and details page
+-   New filters
 
 ### Fixed
 
--   Make "Permissions" row top aligned in drawers and sidebars (#540)
--   Add empty state message in performance chart filter (#541)
--   Synced state init issue (#543)
--   Switch icons & wordings for ordering (#545)
--   Close news feed on blur (#546)
--   Hide "Customize columns" button if no hyperparameters are defined (#550)
--   Bad redirects breaking browsers back buttons (#552)
+-   Make "Permissions" row top aligned in drawers and sidebars
+-   Add empty state message in performance chart filter
+-   Synced state init issue
+-   Switch icons & wordings for ordering
+-   Close news feed on blur
+-   Hide "Customize columns" button if no hyperparameters are defined
+-   Bad redirects breaking browsers back buttons
 
 ### Changed
 
--   Use paginated results for the newsfeed (#524)
--   Newsfeed card icon for canceled compute plans (#525)
--   More explicit download button in perf browser (#547)
--   Updated layout with 1200px min width (#554)
--   Rename master branch into main (#541)
--   Removed all MELLODDY specific code and features (#555)
+-   Use paginated results for the newsfeed
+-   Newsfeed card icon for canceled compute plans
+-   More explicit download button in perf browser
+-   Updated layout with 1200px min width
+-   Rename master branch into main
+-   Removed all MELLODDY specific code and features
 
 ## [0.19.0] - 2022-04-19
 
 ## Changed
 
--   Restrict filtering option only for concerned table columns (#523)
+-   Restrict filtering option only for concerned table columns
 
 ## [0.18.1] - 2022-04-14
 
 ### Fixed
 
--   Fix search by name and key on datasets page (#520)
--   Fix localStorage migration issue for hyperparameters (#521)
+-   Fix search by name and key on datasets page
+-   Fix localStorage migration issue for hyperparameters
 
 ### Changed
 
--   Use a separate store for computePlans compare (#513)
+-   Use a separate store for computePlans compare
 
 ## [0.18.0] - 2022-04-11
 
 ### Added
 
--   Allow keyboard interaction with the chart (#482)
--   Ordering (#446)
--   Favorites filter (#510)
--   Bulk selection (#517)
+-   Allow keyboard interaction with the chart
+-   Ordering
+-   Favorites filter
+-   Bulk selection
 
 ### Fixed
 
--   Hide show diff button in single cp page (#492)
--   Fix owkin-logo-black svg by putting back proper width & height (#493)
--   Glitchy selected compute plans on compare page (#491)
--   Handle invalid statuses (#490)
--   Open node settings on click in box (#496)
--   Hide clear button when no filters are applied in hp modal (#498)
--   Max updated depth issue on ComputePlanChart (#502)
--   Favorites management in compare page (#507)
--   useSyncedState hook doesn't remove param from url on unmount (#509)
--   localStorage values not loaded after login (#515)
+-   Hide show diff button in single cp page
+-   Fix brand-logo-black svg by putting back proper width & height
+-   Glitchy selected compute plans on compare page
+-   Handle invalid statuses
+-   Open node settings on click in box
+-   Hide clear button when no filters are applied in hp modal
+-   Max updated depth issue on ComputePlanChart
+-   Favorites management in compare page
+-   useSyncedState hook doesn't remove param from url on unmount
+-   localStorage values not loaded after login
 
 ### Changed
 
--   Fix version of vite-plugin-svgr-component dependency (#489)
--   Hooks cleanup (removed dead code) (#499)
--   Change favicon svg (#503)
--   Use performance endpoint (#504)
--   Remove "Select all" option from filters in performance page and hide clear icon when no filters are applied (#505)
--   Favorite stays at their place in the cp list (#506)
--   Search filter now searches in both name and key (#508)
+-   Fix version of vite-plugin-svgr-component dependency
+-   Hooks cleanup (removed dead code)
+-   Change favicon svg
+-   Use performance endpoint
+-   Remove "Select all" option from filters in performance page and hide clear icon when no filters are applied
+-   Favorite stays at their place in the cp list
+-   Search filter now searches in both name and key
 
 ## [0.17.0] - 2022-03-24
 
 ### Fixed
 
--   Faulty favorites count when filter are applied (#480)
--   Fixed security issues in axios & nth-check dependencies (#487)
+-   Faulty favorites count when filter are applied
+-   Fixed security issues in axios & nth-check dependencies
 
 ### Changed
 
--   Filters also apply to favorites (#469)
--   Favorites / selected compute plan rows are collapsible (#470)
--   Replace compute plan key by its name in news feed (#495)
+-   Filters also apply to favorites
+-   Favorites / selected compute plan rows are collapsible
+-   Replace compute plan key by its name in news feed
 
 ## [0.16.1] - 2022-03-24
 
 ### Added
 
--   Hyperparameters columns in cp list are customizable (#453)
--   Hyperparameters modal now draggable (#467)
--   Sticky columns on compute plans page (#468)
--   Hyperparameters modal now resizable (#475)
--   Change drag zoom background color (#478)
--   Add buttons to show diffs only & clear filters in hp modal (#481)
+-   Hyperparameters columns in cp list are customizable
+-   Hyperparameters modal now draggable
+-   Sticky columns on compute plans page
+-   Hyperparameters modal now resizable
+-   Change drag zoom background color
+-   Add buttons to show diffs only & clear filters in hp modal
 
 ### Fixed
 
--   Get compute plan index from PerfBrowserContext in HP modal (#448)
--   Remove warning related to breadcrumb component on dataset page (#458)
--   Fix large border into chart zoom button group (#459)
--   Rename csv files downloaded from the comparison interface (#476)
--   Close hyperparameters list on modal escape (#477)
+-   Get compute plan index from PerfBrowserContext in HP modal
+-   Remove warning related to breadcrumb component on dataset page
+-   Fix large border into chart zoom button group
+-   Rename csv files downloaded from the comparison interface
+-   Close hyperparameters list on modal escape
 
 ### Changed
 
--   In PerfBrowser, an empty node filters list means all node are displayed (#460)
+-   In PerfBrowser, an empty node filters list means all node are displayed
 
 ## [0.16.0] - 2022-03-10
 
 ### Added
 
--   Add a news feed for compute plan task events (#336)
--   Show hyperparameters on the compare page (#434)
--   Favorite and selected compute plans are updated when new data is available (#428)
--   Hyperparameters columns in cp list table (#450)
--   Full text search on CP list (#452)
--   Drag to zoom on charts (#455)
+-   Add a news feed for compute plan task events
+-   Show hyperparameters on the compare page
+-   Favorite and selected compute plans are updated when new data is available
+-   Hyperparameters columns in cp list table
+-   Full text search on CP list
+-   Drag to zoom on charts
 
 ### Fixed
 
--   Inject hyperparameters at deploy time (#445)
+-   Inject hyperparameters at deploy time
 
 ## [0.15.0] - 2022-03-03
 
 ### Added
 
--   New PerfBrowser layout and behavior (#411)
+-   New PerfBrowser layout and behavior
 
 ### Fixed
 
--   Add missing space in Timing component (#424)
--   Restore clickable table headers on Compute Plans page (#425)
--   Fix rank/epoch switch (#426)
--   Uniqueness issue of average series IDs (#437)
--   Sort point by score in tooltip summary (#441)
--   Set a max height for filter menu (#442)
--   Highlight only related node on hover in comparison mode (#444)
+-   Add missing space in Timing component
+-   Restore clickable table headers on Compute Plans page
+-   Fix rank/epoch switch
+-   Uniqueness issue of average series IDs
+-   Sort point by score in tooltip summary
+-   Set a max height for filter menu
+-   Highlight only related node on hover in comparison mode
 
 ### Changed
 
--   Do not display copy/download buttons for empty data sample lists (#427)
+-   Do not display copy/download buttons for empty data sample lists
 
 ## [0.14.0] - 2022-02-24
 
 ### Added
 
--   Add to favorite button in CP details page (#404)
--   Add metrics to breadcrumb in CP chart page (#410)
--   Nodes settings in Compute Plan Chart page (#413)
--   Add zoom buttons on charts (#415)
--   Breadcrumb and actions for Compare page (#418)
+-   Add to favorite button in CP details page
+-   Add metrics to breadcrumb in CP chart page
+-   Nodes settings in Compute Plan Chart page
+-   Add zoom buttons on charts
+-   Breadcrumb and actions for Compare page
 
 ### Fixed
 
--   Rank/epoch typo in perf chart tooltip (#408)
--   Add channel namespace to values stored in localStorage (#412)
--   Catch cancel error when voluntarily aborting CP details calls (#414)
--   Improve responsiveness of charts (#423)
+-   Rank/epoch typo in perf chart tooltip
+-   Add channel namespace to values stored in localStorage
+-   Catch cancel error when voluntarily aborting CP details calls
+-   Improve responsiveness of charts
 
 ### Changed
 
--   Removed loading of compute plan counts and statuses in separate calls (reverts #383 and #390) (#400)
--   Improved the PerfSidebarSettingsNodes component (#402)
--   Removed dynamic average (#407)
--   Auto cancel pending HTTP calls when changing route or url params (#409)
--   Changed wording and controls in perf chart settings (#416)
--   Move all PerfBrowser inner state to PerfBrowserContext (#417)
--   Enabled filters on compute plans page (#421)
+-   Removed loading of compute plan counts and statuses in separate calls (reverts #383 and #390)
+-   Improved the PerfSidebarSettingsNodes component
+-   Removed dynamic average
+-   Auto cancel pending HTTP calls when changing route or url params
+-   Changed wording and controls in perf chart settings
+-   Move all PerfBrowser inner state to PerfBrowserContext
+-   Enabled filters on compute plans page
 
 ## [0.13.0] - 2022-02-17
 
 ### Added
 
--   Tooltip hover compute plan pin icon (#368)
--   Support for epochs as X Axis values (#394)
--   Custom markers on charts (#386)
+-   Tooltip hover compute plan pin icon
+-   Support for epochs as X Axis values
+-   Custom markers on charts
 
 ### Fixed
 
--   Logout loop because of planned calls (#397)
--   Restore "Download as CSV" button on compare perf details page (#405)
+-   Logout loop because of planned calls
+-   Restore "Download as CSV" button on compare perf details page
 
 ### Changed
 
--   Align duration display in cp details with the one in cp list (#393)
--   Increase toast font size (#395)
--   Upgrade chartjs to 3.7.1 (#399)
--   Make full PerfBrowser sidebar section clickable (#401)
--   Page title issue on perf chart with task drawer open (#403)
+-   Align duration display in cp details with the one in cp list
+-   Increase toast font size
+-   Upgrade chartjs to 3.7.1
+-   Make full PerfBrowser sidebar section clickable
+-   Page title issue on perf chart with task drawer open
 
 ## [0.12.0] - 2022-02-10
 
 ### Added
 
--   Compute plans selected for comparison are now persisted (same as pinned items) (#372)
+-   Compute plans selected for comparison are now persisted (same as pinned items)
 
 ### Fixed
 
--   Alignment issue between checkboxes and their labels (#376)
--   Scroll on performance legend overlaps on header "Rank X" (#381)
--   Restore metadata section to task drawers (#384)
+-   Alignment issue between checkboxes and their labels
+-   Scroll on performance legend overlaps on header "Rank X"
+-   Restore metadata section to task drawers
 
 ### Changed
 
--   Put status "done" in first position in progress bar (#374)
--   Compute plan performance opens task drawer in the performance screen (#380)
--   Perf tab on Compute Plan page is enabled during loading (#385)
--   Load compute plans task counts and status in separate calls (#383)
--   Handle errors returned by the backend on list calls as if there was no results for the call (#387)
--   Retrieve compute plans task counts and status sequentially (#390)
+-   Put status "done" in first position in progress bar
+-   Compute plan performance opens task drawer in the performance screen
+-   Perf tab on Compute Plan page is enabled during loading
+-   Load compute plans task counts and status in separate calls
+-   Handle errors returned by the backend on list calls as if there was no results for the call
+-   Retrieve compute plans task counts and status sequentially
 
 ## [0.11.0] - 2022-02-03
 
@@ -483,43 +484,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Handle perf rank detail Y overflow (#370)
--   Race conditions in compare page (#373)
+-   Handle perf rank detail Y overflow
+-   Race conditions in compare page
 
 ### Changed
 
--   Disable performance chart for waiting/todo CP (#365)
--   Use 3 decimals instead of 2 for performance value (#366)
--   Naming: display organization instead of node (#367)
--   Chart: hovering a legend item should highlight the related line and values (#369)
--   Use click instead of shift+click to pan (#375)
+-   Disable performance chart for waiting/todo CP
+-   Use 3 decimals instead of 2 for performance value
+-   Naming: display organization instead of node
+-   Chart: hovering a legend item should highlight the related line and values
+-   Use click instead of shift+click to pan
 
 ## [0.10.0] - 2022-01-27
 
 ### Added
 
--   Added API_URL env var (#358)
--   UI: add loading state into drawers (#359)
--   MELLODDY: new pharma_average series (#362)
+-   Added API_URL env var
+-   UI: add loading state into drawers
+-   MELLODDY: new pharma_average series
 
 ### Fixed
 
--   Added space around nodes tags in PerfBrowser (#346)
--   zIndex of perf chart tooltip (#347)
--   Full height layout on NotFound, Compare and CP chart pages (#351)
--   Perf tooltip position now depends on content size and position of canvas (#352)
--   Repeating key in PerfList that was causing lots of bugs (#353)
--   Broken metric name comparison causing perf browser to show as empty (#354)
--   Broken highlight / selection of rank 0 in perf charts (#355)
--   Broken clear button on compute plans page (#357)
--   Browser's previous page fixed on compute plans list page (#356)
+-   Added space around nodes tags in PerfBrowser
+-   zIndex of perf chart tooltip
+-   Full height layout on NotFound, Compare and CP chart pages
+-   Perf tooltip position now depends on content size and position of canvas
+-   Repeating key in PerfList that was causing lots of bugs
+-   Broken metric name comparison causing perf browser to show as empty
+-   Broken highlight / selection of rank 0 in perf charts
+-   Broken clear button on compute plans page
+-   Browser's previous page fixed on compute plans list page
 
 ### Changed
 
--   Add spacing below navigation (#348)
--   No more delay before hiding tooltip on perf chart cards (#352)
--   Removed redundant spaces in tables (#361)
--   Compute plan ID label now "#" instead of "CP" (#363)
+-   Add spacing below navigation
+-   No more delay before hiding tooltip on perf chart cards
+-   Removed redundant spaces in tables
+-   Compute plan ID label now "#" instead of "CP"
 
 ## [0.9.2] - 2022-01-25
 
@@ -527,12 +528,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Fix typos, textarea width and style on feedback & help modal (#301)
--   Correct large5/small5 groups (#349)
+-   Fix typos, textarea width and style on feedback & help modal
+-   Correct large5/small5 groups
 
 ### Changed
 
--   Make table headers clickable (#332)
+-   Make table headers clickable
 
 ## [0.9.1] - 2022-01-21
 
@@ -540,7 +541,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   MELLODDY: Removed pseudonymization from frontend (it will be done on backend side) (#344)
+-   MELLODDY: Removed pseudonymization from frontend (it will be done on backend side)
 
 ### Changed
 
@@ -548,289 +549,287 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Tooltips for chart thumbnails (#327)
--   MELLODDY: add hardcoded node labels (#337)
--   Tooltip over the average switch (#335)
--   MELLODDY: add hardcoded average series (#338)
--   Error logs (#329)
--   Link to documentation in help modal (#330)
--   Pseudonymize asset names (#342)
+-   Tooltips for chart thumbnails
+-   MELLODDY: add hardcoded node labels
+-   Tooltip over the average switch
+-   MELLODDY: add hardcoded average series
+-   Error logs
+-   Link to documentation in help modal
+-   Pseudonymize asset names
 
 ### Fixed
 
--   Do not include zoom and help buttons on chart JPEG export (#324)
--   Misc alignment issues (#325)
--   Fix overflow on metric name (#334)
--   Case insensitive sort of node labels (#340)
+-   Do not include zoom and help buttons on chart JPEG export
+-   Misc alignment issues
+-   Fix overflow on metric name
+-   Case insensitive sort of node labels
 
 ### Changed
 
--   Only display "reset zoom" button when the chart is zoomed in (#326)
--   Lazy load code highlighter and markdown formatter components (#328)
--   Sort nodes alphabetically on perf browser (#333)
--   Change request timeout from 10s to 2min (#341)
--   Change wording for ErrorAlert messages (#388)
+-   Only display "reset zoom" button when the chart is zoomed in
+-   Lazy load code highlighter and markdown formatter components
+-   Sort nodes alphabetically on perf browser
+-   Change request timeout from 10s to 2min
+-   Change wording for ErrorAlert messages
 
 ## [0.8.0] - 2022-01-07
 
 ### Added
 
--   Button to download the perfs of multiple charts at once (#312)
--   Buttons to download the tested models in a test task drawer (#319)
--   Hierarchy background to PerfBrowser compute plan filters (#321)
--   MELLODDY flag to extract compute plan name from metadata (#322)
+-   Button to download the perfs of multiple charts at once
+-   Buttons to download the tested models in a test task drawer
+-   Hierarchy background to PerfBrowser compute plan filters
+-   MELLODDY flag to extract compute plan name from metadata
 
 ### Fixed
 
 ### Changed
 
--   Updated drawers and sidebars look and feel (#315)
--   Improved look for the PerfBrowser loading state (#318)
--   Improved look for the PerfBrowser empty state (#320)
+-   Updated drawers and sidebars look and feel
+-   Improved look for the PerfBrowser loading state
+-   Improved look for the PerfBrowser empty state
 
 ## [0.7.0] - 2022-01-06
 
 ### Added
 
--   Preserve filters across task types (#265)
--   Explicit messages for why models cannot be downloaded (#263)
--   New help & feedback modal (#273)
--   Add support for Microsoft Clarity (optional) with a cookie banner (#241)
--   Display estimation end date for compute plan (#280)
--   Highlight task category containing failed tasks in compute plan details (#285)
--   Settings page (#283)
--   Disable current page pagination button (#288)
--   Added specific routes for each task category (#299)
--   Display test task performances in task drawer (#303)
--   Add link to compute plan in tasks list and tasks drawer (#302)
--   New and improved empty table message (#309)
+-   Preserve filters across task types
+-   Explicit messages for why models cannot be downloaded
+-   New help & feedback modal
+-   Add support for Microsoft Clarity (optional) with a cookie banner
+-   Display estimation end date for compute plan
+-   Highlight task category containing failed tasks in compute plan details
+-   Settings page
+-   Disable current page pagination button
+-   Added specific routes for each task category
+-   Display test task performances in task drawer
+-   Add link to compute plan in tasks list and tasks drawer
+-   New and improved empty table message
 
 ### Fixed
 
--   Fixed status filter displayed value and date/duration layout (#257)
--   Fixed race condition that resulted in an infinite redirect loop (#259)
--   Fixed spacing around permissions (#262)
--   Fix vertical align in drawer (#266)
--   Fixed pagination when there are no results (#267)
--   Fixed padding in drawers (#268)
--   Fix dark theme issue by disabling it (#271)
--   Reduce font size on "download as" menu items (#261)
--   Uniformize file extension across the app (#264)
--   Prevents URL params to leak from computeplan list page to computeplan details page (#282)
--   Fixed warning in console (#284)
--   Remove old theme used before chakra (#286)
--   Removed "Other" label in compute plan settings when not necessary (#260)
--   Fix time collapsed on a CP when training - no end_date (#287)
--   Fix outmodel message color when model is not downloadable (#289)
--   Fix useless ellipsis on asset key in drawers (#291)
--   Add failed tasks to progress count in CP progression bar (#292)
--   Center "No data to display" message on CPs page when it's empty (#293)
--   Increased searchbar's width to prevent keys from being cutted (#294)
--   Fix focus color on searchbar (#297)
--   Fixed unexpected zoom reset when hovering perf rank details (#290)
--   Fix varying widthes for tables (#298)
--   Do not display parent task section in drawers if there are no parent tasks (#304)
--   Fixed font size in popover menus (#300)
--   Remove unnecessary padding in drawer tables (#295)
--   Disable Dark theme for Markdown content (#306)
--   Fix Header width in drawer + markdown width (#307)
--   Fix broken link in perf chart rank details (#310)
--   Handle non available perfs on testtuples (#316)
+-   Fixed status filter displayed value and date/duration layout
+-   Fixed race condition that resulted in an infinite redirect loop
+-   Fixed spacing around permissions
+-   Fix vertical align in drawer
+-   Fixed pagination when there are no results
+-   Fixed padding in drawers
+-   Fix dark theme issue by disabling it
+-   Reduce font size on "download as" menu items
+-   Uniformize file extension across the app
+-   Prevents URL params to leak from computeplan list page to computeplan details page
+-   Fixed warning in console
+-   Remove old theme used before chakra
+-   Removed "Other" label in compute plan settings when not necessary
+-   Fix time collapsed on a CP when training - no end_date
+-   Fix outmodel message color when model is not downloadable
+-   Fix useless ellipsis on asset key in drawers
+-   Add failed tasks to progress count in CP progression bar
+-   Center "No data to display" message on CPs page when it's empty
+-   Increased searchbar's width to prevent keys from being cutted
+-   Fix focus color on searchbar
+-   Fixed unexpected zoom reset when hovering perf rank details
+-   Fix varying widthes for tables
+-   Do not display parent task section in drawers if there are no parent tasks
+-   Fixed font size in popover menus
+-   Remove unnecessary padding in drawer tables
+-   Disable Dark theme for Markdown content
+-   Fix Header width in drawer + markdown width
+-   Fix broken link in perf chart rank details
+-   Handle non available perfs on testtuples
 
 ### Changed
 
--   Update internal type for compute plan list (#254)
--   Changed file structure for dockerfile (#256)
--   Better empty table message (#270)
--   Removed "unknown" task status and renamed "unknown" compute plan status in "empty" (#269)
--   Hovering charts highlights rank instead of points (#272)
--   Better page titles (#275)
--   Update Cypress version (#276)
--   Remove number of parent tasks in TaskTable (#277)
--   Switch train and test tasks tabs (#278)
--   Add capital letter to frontend in the about modal (#278)
--   General improvements of the perf browser component (#279)
--   Added ellipsis to too long links (#274)
--   New logo (#281)
--   Align TaskDrawer children to the left (#305)
--   Change Download button appearance (#308)
--   Added ellipsis to too long link (#314)
--   Disable interpretation of dates on CP table (#313)
+-   Update internal type for compute plan list
+-   Changed file structure for dockerfile
+-   Better empty table message
+-   Removed "unknown" task status and renamed "unknown" compute plan status in "empty"
+-   Hovering charts highlights rank instead of points
+-   Better page titles
+-   Update Cypress version
+-   Remove number of parent tasks in TaskTable
+-   Switch train and test tasks tabs
+-   Add capital letter to frontend in the about modal
+-   General improvements of the perf browser component
+-   Added ellipsis to too long links
+-   New logo
+-   Align TaskDrawer children to the left
+-   Change Download button appearance
+-   Added ellipsis to too long link
+-   Disable interpretation of dates on CP table
 
 ## [0.6.0] - 2021-12-01
 
 ### Added
 
--   New login page (#220)
--   Ability to pin compute plans to the top of the table (#222)
--   About modal that opens from the user menu (#223)
--   New page not found page (#224)
--   Open assets links in task drawer in a new tab (#232)
--   Tasks details popover in compute plans table (#233)
--   New layout for performance charts (#226)
--   Help popover on charts (#228)
--   New filters on compare compute plans (#243)
--   Add start date and end date on compute plan's tasks (#227)
--   Start and end dates for compute plans (#249)
--   Description for status in table filters (#251)
--   Display tasks' duration (#252)
+-   New login page
+-   Ability to pin compute plans to the top of the table
+-   About modal that opens from the user menu
+-   New page not found page
+-   Open assets links in task drawer in a new tab
+-   Tasks details popover in compute plans table
+-   New layout for performance charts
+-   Help popover on charts
+-   New filters on compare compute plans
+-   Add start date and end date on compute plan's tasks
+-   Start and end dates for compute plans
+-   Description for status in table filters
+-   Display tasks' duration
 
 ### Fixed
 
--   Fix rounding for progression percentage (#218)
--   Fix error in console due to bad markup (#213)
--   Removed warning in the console (#221)
--   Fix infinite load on the train tasks compute plan on first load (#225)
--   Added min width to compute plans table columns to fix display when there are no results (#229)
--   Truncate TableDrawerSectionKeyEntry value when too long (#234)
--   Set minWidth on a compute plan tag in order to avoid to many multilines (#235)
--   Avoid NaN progression percentage (#238)
--   Fix the Inter font (#244 & #245)
--   Add fixed version package for `@cypress/request` (#247)
--   Fix filter tags behavior (#248)
--   Fix missing "unknown" status for compute plans (#249)
+-   Fix rounding for progression percentage
+-   Fix error in console due to bad markup
+-   Removed warning in the console
+-   Fix infinite load on the train tasks compute plan on first load
+-   Added min width to compute plans table columns to fix display when there are no results
+-   Truncate TableDrawerSectionKeyEntry value when too long
+-   Set minWidth on a compute plan tag in order to avoid to many multilines
+-   Avoid NaN progression percentage
+-   Fix the Inter font
+-   Add fixed version package for `@cypress/request`
+-   Fix filter tags behavior
+-   Fix missing "unknown" status for compute plans
 
 ### Changed
 
--   New design for compute plan performance page (#203)
--   On compute plan table, the click area for the checkboxes is the full cell (#214)
--   Updated all dependencies to latest versions (#216)
--   Improve chart style (#215)
--   Wording update composite tasks now labeled as "Composite train" (#230)
--   New branding (#231)
--   Display N/A when there is no parent task in the drawer (#239)
--   Zoom on charts works on full chart and not just axes (#228)
+-   New design for compute plan performance page
+-   On compute plan table, the click area for the checkboxes is the full cell
+-   Updated all dependencies to latest versions
+-   Improve chart style
+-   Wording update composite tasks now labeled as "Composite train"
+-   New branding
+-   Display N/A when there is no parent task in the drawer
+-   Zoom on charts works on full chart and not just axes
 
 ## [0.5.0] - 2021-11-02
 
 ### Added
 
--   New filters (#180)
--   Focus on first tab when opening filters (#207)
+-   New filters
+-   Focus on first tab when opening filters
 
 ### Fixed
 
--   Add ellipsis to the Performance card title when it is too long (#182)
--   Fix routing issue with deprecated /compute_plan/ route (#197)
--   Dataset details page now takes full available height (#202)
--   Removed warning and errors in the console (#202)
--   Fix number of columns in the compute plan table (#199)
--   Removed double borders at the bottom of tables (#210)
--   Added rounded top corners in tasks table (#211)
+-   Add ellipsis to the Performance card title when it is too long
+-   Fix routing issue with deprecated /compute_plan/ route
+-   Dataset details page now takes full available height
+-   Removed warning and errors in the console
+-   Fix number of columns in the compute plan table
+-   Removed double borders at the bottom of tables
+-   Added rounded top corners in tasks table
 
 ### Changed
 
--   New design for datasets table (#171)
--   New style for the Compute Plans page (#172)
--   Dataset sider replaced by independent page (#175)
--   New layout for compute plan tasks (#177)
--   New design for compute plan tasks table (#178)
--   Owkin logo link now points to homepage (#184)
--   New design for algos table and drawer (#187)
--   New design for tasks table (#186)
--   Make tasks the default compute plan tab (#195)
--   New design for compute plan tasks drawer (#179)
--   Switch to "Permissions" from "Downloadable by / Processable by" (#200)
--   Layout improvements on Compute Plans page (#206)
--   Add clear button to searchbar (#209)
--   Small visual changes (#208)
+-   New design for datasets table
+-   New style for the Compute Plans page
+-   Dataset sider replaced by independent page
+-   New layout for compute plan tasks
+-   New design for compute plan tasks table
+-   Owkin logo link now points to homepage
+-   New design for algos table and drawer
+-   New design for tasks table
+-   Make tasks the default compute plan tab
+-   New design for compute plan tasks drawer
+-   Switch to "Permissions" from "Downloadable by / Processable by"
+-   Layout improvements on Compute Plans page
+-   Add clear button to searchbar
+-   Small visual changes
 
 ## [0.4.0] - 2021-10-19
 
 ### Added
 
--   Add nodePort config for K8s service (#174)
--   Refactor tables with Chakra (#147)
--   Add missing dependency `buffer` (#156)
--   Add download button for the data sample keys in dataset sider (#151)
--   Add Fullscreen mode on the charts in the Compute Plans comparison page (#149)
--   Filter by status on compute plan tasks page (#169)
--   Download model button in chart tooltip (#145)
--   Support for multi-metric testtuples (#119)
+-   Add nodePort config for K8s service
+-   Refactor tables with Chakra
+-   Add missing dependency `buffer`
+-   Add download button for the data sample keys in dataset sider
+-   Add Fullscreen mode on the charts in the Compute Plans comparison page
+-   Filter by status on compute plan tasks page
+-   Download model button in chart tooltip
+-   Support for multi-metric testtuples
 
 ### Fixed
 
--   Fix broken imports when using chakra UI components (#162)
--   Removed console error about unknown component props (#163)
--   Automated redirects now replace history state instead of creating a new one (#161)
--   Table filters do not cancel each other (#168)
+-   Fix broken imports when using chakra UI components
+-   Removed console error about unknown component props
+-   Automated redirects now replace history state instead of creating a new one
+-   Table filters do not cancel each other
 
 ### Changed
 
--   Dropped CSS reset and Lato font in favor of a full Chakra theme (#159)
--   Include key in filename when downloading a model (#160)
--   Made /compute_plans the landing page (#161)
--   New visual style for navigation on compute plan page (#158)
--   New style for searchbar (#164)
--   Simplify layout (no more vertical/horizontal scroll wrappers) and tables (#166)
--   Only collapse header height for deep routes (#167)
--   New design for metrics table (#170)
+-   Dropped CSS reset and Lato font in favor of a full Chakra theme
+-   Include key in filename when downloading a model
+-   Made /compute_plans the landing page
+-   New visual style for navigation on compute plan page
+-   New style for searchbar
+-   Simplify layout (no more vertical/horizontal scroll wrappers) and tables
+-   Only collapse header height for deep routes
+-   New design for metrics table
 
 ## [0.3.0] - 2021-10-04
 
 ### Added
 
--   Ability to zoom and pan on performance charts (#115)
--   Support for testtuples which parent is an aggregatetuple (#113)
--   Expired credentials will try to be renewed before triggering a log out (#112)
--   Display both "download" and "process" permissions (#110)
--   Download button for models (#110)
--   Add CSV export (#117)
--   Compute Plans comparison page (#130)
--   Owner section in compute plan sider (#140)
--   Display backend version (#143)
--   Filters on worker in tasks and compute plan tasks pages (#144)
+-   Ability to zoom and pan on performance charts
+-   Support for testtuples which parent is an aggregatetuple
+-   Expired credentials will try to be renewed before triggering a log out
+-   Display both "download" and "process" permissions
+-   Download button for models
+-   Add CSV export
+-   Compute Plans comparison page
+-   Owner section in compute plan sider
+-   Display backend version
+-   Filters on worker in tasks and compute plan tasks pages
 
 ### Fixed
 
--   Sider scroll not preserved across different assets anymore (#114)
--   Handle deleted intermediary models (#118)
--   Removed emotion warning about non-boolean attribute (#121)
--   Display short commit sha in user menu (#122)
--   Listing of a compute plan's datasets when building series (#123)
--   Default chart styles for unknown nodes (#132)
--   Add missing marker to perf chart legend (#136)
--   Fix cropped Jpeg export (#138)
--   Header now contains Node ID or channel name depending on logged in status (#137)
--   Security issues in dependencies (#139)
--   Fix Markdown style in production (#141)
+-   Sider scroll not preserved across different assets anymore
+-   Handle deleted intermediary models
+-   Removed emotion warning about non-boolean attribute
+-   Display short commit sha in user menu
+-   Listing of a compute plan's datasets when building series
+-   Default chart styles for unknown nodes
+-   Add missing marker to perf chart legend
+-   Fix cropped Jpeg export
+-   Header now contains Node ID or channel name depending on logged in status
+-   Security issues in dependencies
+-   Fix Markdown style in production
 
 ### Changed
 
--   Works with orchestrator-powered backends only (#100)
--   Removed the "Timeline" section for tasks and compute plan that was "coming soon" (#111)
--   Use dedicated sub asset routes to retrieve compute plan tuples (#116, #120)
--   Use dedicated sub asset routes to list all tuples from a compute plan (#127)
--   Only fetch testtuples when building charts (#135)
--   Chart tooltips are now interactive (#142)
--   All algos are now listed in the same table (#128)
--   Display current node id on login page (#148)
--   New navigation menu (#150)
+-   Works with orchestrator-powered backends only
+-   Removed the "Timeline" section for tasks and compute plan that was "coming soon"
+-   Use dedicated sub asset routes to retrieve compute plan tuples
+-   Use dedicated sub asset routes to list all tuples from a compute plan
+-   Only fetch testtuples when building charts
+-   Chart tooltips are now interactive
+-   All algos are now listed in the same table
+-   Display current node id on login page
+-   New navigation menu
 
 ## [0.2.0] - 2021-09-02
 
 ### Added
 
--   Add the name of the current node to the account menu (#96)
--   Add Chakra UI as a UI library (#106)
--   Add GitHub style to the markdown content (#103)
--   Add JPEG export (#94)
--   Add routes for compute plan details page's tabs (#104)
+-   Add the name of the current node to the account menu
+-   Add Chakra UI as a UI library
+-   Add GitHub style to the markdown content
+-   Add JPEG export
+-   Add routes for compute plan details page's tabs
 
 ### Fixed
 
--   Patch circular import in mdast-util-to-hast dependency (#99)
--   Display intermediary state while checking credentials (#102)
--   Applying filters on a list moves back to the first page of results (#105)
--   In Chart, display node separation option only for numerous series (#101)
--   Add the task type for failed task (#124)
+-   Patch circular import in mdast-util-to-hast dependency
+-   Display intermediary state while checking credentials
+-   Applying filters on a list moves back to the first page of results
+-   In Chart, display node separation option only for numerous series
+-   Add the task type for failed task
 
 ### Changed
 
--   Display channel name in header instead of node ID (#97)
--   Add out_model key and permissions in Sider (#98)
--   Always group series by lowercase metric name (#95)
+-   Display channel name in header instead of node ID
+-   Add out_model key and permissions in Sider
+-   Always group series by lowercase metric name
 
 ## [0.1.0] - 2021-08-04
-
-[unreleased]: https://github.com/owkin/connect-frontend/compare/0.1.0...HEAD

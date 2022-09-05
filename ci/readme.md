@@ -44,4 +44,4 @@ See [validate-pr.yaml](/.github/workflows/validate-pr.yaml)
 
 ## End-to-end tests
 
-End-to-end tests are hosted here, but the CI that runs them is on [connect-tests](https://github.com/owkin/connect-tests)
+End-to-end tests are hosted here, but the CI that runs them is on [substra-tests](https://github.com/Substra/substra-tests)
