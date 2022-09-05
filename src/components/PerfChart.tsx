@@ -253,6 +253,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
         }, [chartRef]);
 
         // Keyboard interaction
+        useKeyPress('R', onResetZoomClick);
         useKeyPress('r', onResetZoomClick);
         useKeyPress('+', onZoomInClick);
         useKeyPress('-', onZoomOutClick);

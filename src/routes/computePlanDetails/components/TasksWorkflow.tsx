@@ -120,6 +120,7 @@ const TasksWorkflow = (): JSX.Element => {
             }
         }
     };
+    useKeyPress('R', resetZoom);
     useKeyPress('r', resetZoom);
     useKeyPress('+', zoomIn);
     useKeyPress('-', zoomOut);

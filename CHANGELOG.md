@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   CP Workflow graph: Allow a higher min zoom to show more tasks
 -   CP Workflow graph: update layout for predict tasks and test tasks
 -   Change Connect branding to Substra
+-   Add capital letter R to reset zoom button
 
 ### Fixed
 
