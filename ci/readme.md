@@ -24,9 +24,9 @@ On the CI, they are built continuously by GitHub Actions workflow called [build.
 -   pushing a tag
 -   [running it manually](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) via the github interface or a HTTP API call
 
-The registry is `gcr.io/connect-314908` _(ie the registry for the `connect` project on GCP)_
+The registry is `ghcr.io/substra`
 
-The helm chart repository is `core.harbor.tooling.owkin.com/chartrepo/connect-frontend`.
+The helm chart repository is `https://substra.github.io/charts/substra-frontend`.
 
 ## Release
 

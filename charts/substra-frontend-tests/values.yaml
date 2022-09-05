@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  registry: gcr.io
-  repository: connect-314908/substra-frontend
+  registry: ghcr.io
+  repository: substra/substra-frontend
   tag: null # defaults to AppVersion
   pullPolicy: IfNotPresent
 

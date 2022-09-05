@@ -6,9 +6,8 @@ name: Build
 #  docker: ci/version app tag --insert-dev-info [--ref COMMIT_ID]
 #          (or just replacing + with _ in the app version, basically)
 env:
-    GCP_DOCKER_SERVER: gcr.io
+    REGISTRY: ghcr.io
 # secrets:
-#   GCP_SERVICE_ACCOUNT_KEY_JSON
 #   HELM_REPO_USERNAME
 #   HELM_REPO_PASSWORD
 #   GH_PAT_USERNAME
@@ -27,8 +26,11 @@ jobs:
               with:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
-
-            - run: printf '${{ secrets.GCP_SERVICE_ACCOUNT_KEY_JSON }}' | docker login -u _json_key --password-stdin https://$GCP_DOCKER_SERVER
+            - uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
 
             - run: ci/publish-docker --dev
 

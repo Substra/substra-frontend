@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta16
 kind: Config
 build:
     artifacts:
-        - image: &imageref gcr.io/connect-314908/substra-frontend
+        - image: &imageref ghcr.io/substra/substra-frontend
           context: .
           docker:
               dockerfile: docker/substra-frontend/Dockerfile

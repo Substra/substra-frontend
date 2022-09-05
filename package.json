@@ -2,7 +2,7 @@
     "name": "substra-frontend",
     "repository": {
         "type": "git",
-        "url": "https://github.com/owkin/connect-frontend.git"
+        "url": "https://github.com/Substra/substra-frontend.git"
     },
     "license": "UNLICENSED",
     "private": "true",

@@ -4,7 +4,6 @@ name: Publish Helm
 # chart repo (that is to say it is released without further ado)
 env: {}
 # secrets:
-#   GCP_SERVICE_ACCOUNT_KEY_JSON
 #   HELM_REPO_USERNAME
 #   HELM_REPO_PASSWORD
 #   GH_PAT_USERNAME
