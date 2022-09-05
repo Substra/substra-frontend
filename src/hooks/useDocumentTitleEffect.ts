@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 type SetDocumentTitleT = (title: string) => void;
 
 const setDocumentTitle: SetDocumentTitleT = (title) => {
-    document.title = `${title} - Owkin Connect`;
+    document.title = `${title} - Substra`;
 };
 
 export const useDocumentTitleEffect = (

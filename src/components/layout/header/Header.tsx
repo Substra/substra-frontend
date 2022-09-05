@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { RiUser3Fill } from 'react-icons/ri';
 
-import OwkinConnectIconSvg from '@/assets/svg/owkin-connect-icon-black-and-white.svg';
+import SubstraLogo from '@/assets/svg/substra-logo.svg';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { logOut } from '@/modules/me/MeSlice';
@@ -113,7 +113,7 @@ const Header = (): JSX.Element => {
             <HStack spacing="5">
                 <IconLink href={PATHS.HOME}>
                     <a>
-                        <OwkinConnectIconSvg />
+                        <SubstraLogo />
                     </a>
                 </IconLink>
                 <OmniSearch />

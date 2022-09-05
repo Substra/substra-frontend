@@ -1,19 +1,19 @@
 import { useState } from 'react';
 
-import ReactPlayer from 'react-player';
 import { useLocation } from 'wouter';
 
 import {
-    AspectRatio,
     Box,
     HStack,
     Text,
     VStack,
     Link,
     Button,
+    Flex,
 } from '@chakra-ui/react';
 
-import OwkinLogoBlack from '@/assets/svg/owkin-logo-black.svg';
+import LoginBackground from '@/assets/login-background.png';
+import SubstraLogoBlack from '@/assets/svg/substra-full-name-logo.svg';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
@@ -68,45 +68,42 @@ const ResetPassword = (): JSX.Element => {
             >
                 <Box padding="8">
                     <Link href="/login" _focus={{ border: 'none' }}>
-                        <OwkinLogoBlack />
+                        <SubstraLogoBlack />
                     </Link>
                 </Box>
                 <Box alignItems="center" width="100%">
                     <ResetForm />
                 </Box>
                 <Text color="gray.500" fontSize="xs" paddingX="5" paddingY="8">
-                    © Owkin - All rights reserved. Frontend vers.
+                    Frontend vers.
                     {__APP_VERSION__}
                 </Text>
             </VStack>
-            <Box padding="12" flex="auto">
-                <AspectRatio ratio={16 / 9}>
-                    <ReactPlayer
-                        url="https://vimeo.com/541687596"
-                        controls
-                        width="100%"
-                        height="100%"
-                        config={{
-                            vimeo: {
-                                playerOptions: {
-                                    byline: true,
-                                    portrait: true,
-                                    title: true,
-                                },
-                            },
-                        }}
-                    />
-                </AspectRatio>
-                <Text marginY="4" fontSize="2xl">
+            <Flex
+                flexDirection="column"
+                height="100vh"
+                padding="10%"
+                backgroundImage={LoginBackground}
+                justifyContent="center"
+                style={{
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                }}
+            >
+                <Text marginY="4" fontSize="2xl" color="white">
                     Unlock AI, break data silos, and protect privacy with our
                     Federated Learning software
                 </Text>
-                <Link href="https://owkin.com/owkin-connect/" isExternal>
-                    <Button variant="outline" colorScheme="black">
-                        <Text>Tell me more!</Text>
+                <Link
+                    href="https://owkin.com/owkin-connect/"
+                    isExternal
+                    color="white"
+                >
+                    <Button variant="outline" colorScheme="whiteAlpha">
+                        <Text color="white">Tell me more!</Text>
                     </Button>
                 </Link>
-            </Box>
+            </Flex>
         </HStack>
     );
 };

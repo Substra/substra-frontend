@@ -78,10 +78,9 @@ Backend: version ${backendVersion}`;
                                 <Box>
                                     <AlertTitle>Know more, do more</AlertTitle>
                                     <AlertDescription lineHeight="4">
-                                        Get the most out of Owkin Connect! Learn
-                                        how to use our tools and concepts,
-                                        browse by topic or search by feature in
-                                        our{' '}
+                                        Get the most out of Substra! Learn how
+                                        to use our tools and concepts, browse by
+                                        topic or search by feature in our{' '}
                                         <Link
                                             href="https://connect-docs.owkin.com"
                                             isExternal
@@ -106,7 +105,44 @@ Backend: version ${backendVersion}`;
                                     support@owkin.com
                                 </Link>
                             </Text>
-
+                            <Text fontSize="sm" fontWeight="semibold">
+                                Github
+                            </Text>
+                            <Text fontSize="sm" marginBottom="3">
+                                For bug reports you can raise&nbsp;
+                                <Link
+                                    color="teal.500"
+                                    href="https://github.com/Substra/substra/issues"
+                                    isExternal
+                                >
+                                    issues on Github.
+                                </Link>
+                            </Text>
+                            <Text fontSize="sm" fontWeight="semibold">
+                                Slack
+                            </Text>
+                            <Text fontSize="sm" marginBottom="3">
+                                A real-time chat room to ask questions, give
+                                feedback and chat about anything related to
+                                Substra. Our Slack workspace is hosted by the
+                                Linux Foundation for AI and Data. Please join
+                                the&nbsp;
+                                <Link
+                                    color="teal.500"
+                                    href="https://lfaifoundation.slack.com/#substra-general"
+                                    isExternal
+                                >
+                                    substra-general channel
+                                </Link>
+                                &nbsp;and the&nbsp;
+                                <Link
+                                    color="teal.500"
+                                    href="https://lfaifoundation.slack.com/#substra-help"
+                                    isExternal
+                                >
+                                    substra-help channel.
+                                </Link>
+                            </Text>
                             <Text fontSize="sm" fontWeight="semibold">
                                 Help us understand your problem
                             </Text>
@@ -131,11 +167,9 @@ Backend: version ${backendVersion}`;
                                     </ListItem>
                                 </UnorderedList>
                             </Box>
-
                             <Text fontSize="sm" fontWeight="semibold">
                                 Information to add to your message
                             </Text>
-
                             <Box position="relative">
                                 <Text
                                     fontSize="sm"

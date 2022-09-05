@@ -1,4 +1,4 @@
-# Connect frontend
+# Substra frontend
 
 ## Running the frontend in a local kubernetes cluster in prod mode
 

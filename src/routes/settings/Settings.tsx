@@ -92,10 +92,10 @@ const Settings = (): JSX.Element => {
                     informations about your preferences.
                 </Text>
                 <Text fontSize="sm">
-                    Owkin Connect being a young product, we use cookies to
-                    better understand your needs, expectations and pain points.
-                    By allowing us to use cookies you help us improve the
-                    quality and the accuracy of our services!
+                    Substra being a young product, we use cookies to better
+                    understand your needs, expectations and pain points. By
+                    allowing us to use cookies you help us improve the quality
+                    and the accuracy of our services!
                 </Text>
                 <VStack spacing="5" alignItems="stretch">
                     <Flex justifyContent="space-between" alignItems="center">
@@ -138,7 +138,7 @@ const Settings = (): JSX.Element => {
                         <Text fontSize="xs">
                             Clarity is a free user behavior analytics tool that
                             helps us understand how users are interacting with
-                            Connect through session replays and heatmaps.
+                            Substra through session replays and heatmaps.
                         </Text>
                         <Switch
                             size="sm"
