@@ -13,13 +13,28 @@ jobs:
         name: Package Helm chart
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-python@v2
               with:
                   python-version: '>=3.9.0 <4.0.0'
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
             - run: helm lint charts/substra-frontend
+
+            - uses: azure/setup-helm@v3.3
+              with:
+                  version: 'v3.5.0'
+              id: install
+
+            - name: Add dependencies repo
+              run: |
+                  helm repo add bitnami https://charts.bitnami.com/bitnami
+
+            - name: Package chart
+              run: |
+                  helm dep build charts/substra-frontend
+                  helm package charts/substra-frontend
+
             - name: Clone Substra charts
               uses: actions/checkout@v3
               with:
