@@ -3,11 +3,6 @@ name: Publish Helm
 # That is, any helm chart change that gets to main is immediately uploaded to the
 # chart repo (that is to say it is released without further ado)
 env: {}
-# secrets:
-#   HELM_REPO_USERNAME
-#   HELM_REPO_PASSWORD
-#   GH_PAT_USERNAME
-#   GH_PAT
 on:
     push:
         branches: [main]
@@ -25,4 +20,21 @@ jobs:
             - run: python3 -m pip install -r ci/cilib/requirements.txt
 
             - run: helm lint charts/substra-frontend
-            - run: ci/publish-helm '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}'
+            - name: Clone Substra charts
+              uses: actions/checkout@v3
+              with:
+                  repository: Substra/charts
+                  ref: 'main'
+                  token: ${{ secrets.CHARTS_GITHUB_TOKEN }}
+                  path: substra-charts
+
+            - name: Publish chart
+              run: |
+                  mv substra-frontend-$(grep -e "^version" charts/substra-frontend/Chart.yaml | cut -c10-).tgz substra-charts/
+                  cd substra-charts
+                  helm repo index .
+                  git add .
+                  git config --global user.email "gh-actions@github.com"
+                  git config --global user.name "GitHub Action"
+                  git commit -s --message "GitHub Action: ${{ github.repository }}@${{ github.sha }}"
+                  git push --quiet --set-upstream origin main

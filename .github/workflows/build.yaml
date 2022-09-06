@@ -7,11 +7,6 @@ name: Build
 #          (or just replacing + with _ in the app version, basically)
 env:
     REGISTRY: ghcr.io
-# secrets:
-#   HELM_REPO_USERNAME
-#   HELM_REPO_PASSWORD
-#   GH_PAT_USERNAME
-#   GH_PAT
 on:
     push:
         branches: [main]
@@ -50,4 +45,3 @@ jobs:
               with:
                   path: substra-frontend-*.tgz
                   if-no-files-found: error
-            - run: ci/publish-helm '${{ secrets.HELM_REPO_USERNAME }}:${{ secrets.HELM_REPO_PASSWORD }}' --dev
