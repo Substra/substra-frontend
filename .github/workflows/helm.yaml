@@ -13,13 +13,17 @@ jobs:
         name: Package Helm chart
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-python@v2
+            - uses: actions/checkout@v3
+            - uses: azure/setup-helm@v3.3
               with:
-                  python-version: '>=3.9.0 <4.0.0'
-            - run: python3 -m pip install -r ci/cilib/requirements.txt
-
+                  version: 'v3.5.0'
+              id: install
             - run: helm lint charts/substra-frontend
+
+            - name: Package chart
+              run: |
+                  helm package charts/substra-frontend
+
             - name: Clone Substra charts
               uses: actions/checkout@v3
               with:
