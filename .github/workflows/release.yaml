@@ -6,11 +6,6 @@ on:
         # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#push
 env:
     REGISTRY: ghcr.io
-# secrets:
-#   HELM_REPO_USERNAME
-#   HELM_REPO_PASSWORD
-#   GH_PAT_USERNAME
-#   GH_PAT
 jobs:
     issue-release:
         runs-on: ubuntu-latest
