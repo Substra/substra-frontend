@@ -128,7 +128,7 @@ export const DrawerSectionCollapsibleEntry = ({
                     height="16px"
                     transform={isOpen ? 'rotate(90deg)' : ''}
                     alignSelf="center"
-                    fill="teal.600"
+                    fill="primary.600"
                 />
             </HStack>
             <Collapse in={isOpen} animateOpacity>

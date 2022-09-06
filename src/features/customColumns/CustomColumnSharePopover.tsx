@@ -94,7 +94,7 @@ const CustomColumnSharePopover = ({
                                 onClick={onCopyMetadata}
                                 size="sm"
                                 textTransform="capitalize"
-                                colorScheme="teal"
+                                colorScheme="primary"
                                 variant="solid"
                                 aria-label="Copy metadata"
                             >

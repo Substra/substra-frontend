@@ -34,7 +34,9 @@ const FavoriteBox = ({
             transitionDuration="normal"
         >
             {!isChecked && <RiStarLine fill="var(--chakra-colors-gray-300)" />}
-            {isChecked && <RiStarFill fill="var(--chakra-colors-teal-500)" />}
+            {isChecked && (
+                <RiStarFill fill="var(--chakra-colors-primary-500)" />
+            )}
             <StyledInput
                 type="checkbox"
                 onChange={onChange}

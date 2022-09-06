@@ -48,8 +48,8 @@ const Breadcrumbs = ({
                 >
                     <HStack spacing="2.5">
                         <IconTag
-                            backgroundColor="teal.100"
-                            fill="teal.500"
+                            backgroundColor="primary.100"
+                            fill="primary.500"
                             icon={rootIcon}
                         />
                         <span>{rootLabel}</span>

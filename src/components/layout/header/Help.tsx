@@ -98,7 +98,7 @@ Backend: version ${backendVersion}`;
                             <Text fontSize="sm" marginBottom="3">
                                 For bug reports you can raise&nbsp;
                                 <Link
-                                    color="teal.500"
+                                    color="primary.500"
                                     href="https://github.com/Substra/substra/issues"
                                     isExternal
                                 >
@@ -115,7 +115,7 @@ Backend: version ${backendVersion}`;
                                 Linux Foundation for AI and Data. Please join
                                 the&nbsp;
                                 <Link
-                                    color="teal.500"
+                                    color="primary.500"
                                     href="https://lfaifoundation.slack.com/#substra-general"
                                     isExternal
                                 >
@@ -123,7 +123,7 @@ Backend: version ${backendVersion}`;
                                 </Link>
                                 &nbsp;and the&nbsp;
                                 <Link
-                                    color="teal.500"
+                                    color="primary.500"
                                     href="https://lfaifoundation.slack.com/#substra-help"
                                     isExternal
                                 >

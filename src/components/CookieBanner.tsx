@@ -109,7 +109,7 @@ const CookieBanner = (): JSX.Element | null => {
                             >
                                 <Heading
                                     as="h2"
-                                    color="teal.600"
+                                    color="primary.600"
                                     fontSize="sm"
                                     fontWeight="semibold"
                                 >
@@ -133,12 +133,12 @@ const CookieBanner = (): JSX.Element | null => {
                                                 <Icon
                                                     as={RiExternalLinkLine}
                                                     marginLeft="2.5"
-                                                    fill="teal.600"
+                                                    fill="primary.600"
                                                 />
                                             </Link>
                                         </Heading>
                                         <Switch
-                                            colorScheme="teal"
+                                            colorScheme="primary"
                                             isChecked={clarityChecked}
                                             onChange={() =>
                                                 setClarityChecked(
@@ -173,7 +173,7 @@ const CookieBanner = (): JSX.Element | null => {
                     <Button
                         variant="solid"
                         size="sm"
-                        colorScheme="teal"
+                        colorScheme="primary"
                         onClick={acceptSelection}
                     >
                         Accept selection

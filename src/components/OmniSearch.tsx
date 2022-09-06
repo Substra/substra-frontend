@@ -147,8 +147,8 @@ const AssetItem = ({
                     width="28px"
                     height="28px"
                     borderRadius="14px"
-                    backgroundColor="teal.100"
-                    color="teal.500"
+                    backgroundColor="primary.100"
+                    color="primary.500"
                     fontSize="xs"
                     alignItems="center"
                     justifyContent="center"
@@ -178,7 +178,7 @@ const SeeMoreItem = ({
     return (
         <ListItem
             textAlign="center"
-            color="teal.500"
+            color="primary.500"
             padding="4"
             cursor="pointer"
             textDecoration={selected ? 'underline' : ''}
@@ -648,7 +648,7 @@ const OmniSearch = () => {
                     backgroundColor="gray.100"
                     _focus={{
                         backgroundColor: 'white',
-                        borderColor: 'teal.500',
+                        borderColor: 'primary.500',
                     }}
                     {...getInputProps()}
                 />

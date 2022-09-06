@@ -21,7 +21,7 @@ const PerfCard = ({
             backgroundColor="white"
             justifyContent="space-between"
             border="2px solid transparent"
-            _hover={{ borderColor: 'teal.500', borderWidth: 2 }}
+            _hover={{ borderColor: 'primary.500', borderWidth: 2 }}
             onClick={onClick}
             cursor="pointer"
         >

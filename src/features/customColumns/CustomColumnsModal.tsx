@@ -77,7 +77,7 @@ const LayoutColumn = ({
                 variant="link"
                 onClick={buttonOnClick}
                 size="xs"
-                colorScheme="teal"
+                colorScheme="primary"
                 isDisabled={isButtonDisabled}
             >
                 {buttonLabel}
@@ -335,7 +335,7 @@ const CustomColumnsModal = ({
                                                         <Icon as={RiAddFill} />
                                                     }
                                                     variant="solid"
-                                                    colorScheme="teal"
+                                                    colorScheme="primary"
                                                     aria-label={
                                                         'Add to selection'
                                                     }
@@ -370,7 +370,7 @@ const CustomColumnsModal = ({
                             {allColumns.length > 0 && (
                                 <Button
                                     size="sm"
-                                    colorScheme="teal"
+                                    colorScheme="primary"
                                     onClick={onSave}
                                     ref={initialFocusRef}
                                 >

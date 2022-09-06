@@ -319,7 +319,11 @@ const ComputePlans = (): JSX.Element => {
                     />
                 </Box>
                 {selectedComputePlans.length > 0 && (
-                    <Box paddingX="4" paddingY="3" backgroundColor="teal.500">
+                    <Box
+                        paddingX="4"
+                        paddingY="3"
+                        backgroundColor="primary.500"
+                    >
                         <BulkSelection
                             selectedComputePlans={selectedComputePlans}
                             unselectComputePlan={unselectComputePlan}

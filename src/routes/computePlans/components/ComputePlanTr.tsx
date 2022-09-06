@@ -112,7 +112,7 @@ const ComputePlanTr = ({
                 <Checkbox
                     isChecked={isSelected}
                     onChange={onSelectionChange}
-                    colorScheme="teal"
+                    colorScheme="primary"
                 />
             </CheckboxTd>
             <CheckboxTd

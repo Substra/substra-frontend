@@ -92,7 +92,7 @@ const CreateUserForm = ({
                     <Button size="sm" variant="outline" onClick={closeHandler}>
                         Cancel
                     </Button>
-                    <Button size="sm" colorScheme="teal" onClick={onSave}>
+                    <Button size="sm" colorScheme="primary" onClick={onSave}>
                         Save
                     </Button>
                 </HStack>

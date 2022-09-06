@@ -9,7 +9,7 @@ type ColorDiscriminantProps = {
 };
 
 export const PERF_BROWSER_COLORSCHEMES = [
-    'teal',
+    'primary',
     'orange',
     'blue',
     'pink',
@@ -38,7 +38,7 @@ const usePerfBrowserColors = () => {
             }
 
             if (index === -1) {
-                return 'teal';
+                return 'primary';
             }
             return PERF_BROWSER_COLORSCHEMES[
                 index % PERF_BROWSER_COLORSCHEMES.length
