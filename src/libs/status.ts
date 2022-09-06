@@ -153,11 +153,11 @@ export const getStatusStyle = (
         case ComputePlanStatus.done:
             return {
                 icon: RiCheckLine,
-                tagColor: 'primary.600',
-                tagBackgroundColor: 'primary.50',
+                tagColor: 'teal.600',
+                tagBackgroundColor: 'teal.50',
                 tagSolidColor: 'white',
-                tagSolidBackgroundColor: 'primary.500',
-                progressColor: 'primary.500',
+                tagSolidBackgroundColor: 'teal.500',
+                progressColor: 'teal.500',
             };
         case ComputePlanStatus.empty:
             return {

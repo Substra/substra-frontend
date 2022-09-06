@@ -59,7 +59,7 @@ const taskMetadata: TaskMetadataT = {
     },
     STATUS_DONE: {
         text: 'is done',
-        color: 'primary',
+        color: 'teal',
         icon: RiCheckFill,
     },
     STATUS_CANCELED: {

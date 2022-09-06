@@ -14,7 +14,7 @@ export const MIN_ZOOM_LEVEL = 0.05;
 export const NODE_BORDER_COLOR: Record<TupleStatus, string> = {
     [TupleStatus.failed]: '#F31B61',
     [TupleStatus.waiting]: '#ADADAD',
-    [TupleStatus.done]: '#4525EE',
+    [TupleStatus.done]: '#2F9797',
     [TupleStatus.todo]: '#ADADAD',
     [TupleStatus.doing]: '#0084DC',
     [TupleStatus.canceled]: '#545454',
@@ -23,7 +23,7 @@ export const NODE_BORDER_COLOR: Record<TupleStatus, string> = {
 export const NODE_LABEL_COLOR: Record<TupleStatus, string> = {
     [TupleStatus.failed]: '#CB1C51',
     [TupleStatus.waiting]: '#7F7F7F',
-    [TupleStatus.done]: '#18115F',
+    [TupleStatus.done]: '#2D7A7A',
     [TupleStatus.todo]: '#7F7F7F',
     [TupleStatus.doing]: '#006EBD',
     [TupleStatus.canceled]: '#373737',
