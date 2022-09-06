@@ -1,6 +1,11 @@
 apiVersion: v2
 name: substra-frontend
 description: Frontend for Substra
+icon: https://avatars.githubusercontent.com/u/84009910?s=400
+keywords:
+  - substra
+sources:
+  - https://github.com/Substra/substra-frontend
 
 type: application
 
