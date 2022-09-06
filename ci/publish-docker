@@ -9,7 +9,7 @@ from cilib import command, docker
 from cilib.file_system import get_repo_base_dir
 
 DOCKERFILE_PATH = "docker/substra-frontend/Dockerfile"
-DOCKER_REGISTRY = "gcr.io/connect-314908"
+DOCKER_REGISTRY = "ghcr.io/substra"
 DOCKER_IMAGE_NAME = "substra-frontend"
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
@@ -28,7 +28,7 @@ def main():
     args = parse_args()
     try:
         version = command.get_output(["ci/version", "app"] + (["--insert-dev-info"] if args.dev else []))
-        
+
         if args.tag:
             tag = args.tag
         else:

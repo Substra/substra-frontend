@@ -1,6 +1,6 @@
 apiVersion: v2
 name: substra-frontend-tests
-description: Tests for the Connect Frontend
+description: Tests for the Substra Frontend
 
 type: application
 
