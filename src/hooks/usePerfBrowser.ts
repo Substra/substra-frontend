@@ -239,7 +239,9 @@ const usePerfBrowser = (
         setSelectedComputePlanKeys(
             computePlans.map((computePlan) => computePlan.key)
         );
-    }, [computePlans, setSelectedComputePlanKeys]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [computePlans]);
 
     const seriesGroupsWithRounds = useMemo(() => {
         const groupsWithRounds = seriesGroups
