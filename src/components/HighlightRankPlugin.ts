@@ -91,9 +91,12 @@ export const highlightRankPlugin = ({
         };
 
         if (state.selectedRank !== null) {
-            highlightRank(state.selectedRank, chakraTheme.colors.teal['500']);
+            highlightRank(
+                state.selectedRank,
+                chakraTheme.colors.primary['500']
+            );
         } else if (state.hoveredRank !== null) {
-            highlightRank(state.hoveredRank, chakraTheme.colors.teal['300']);
+            highlightRank(state.hoveredRank, chakraTheme.colors.primary['300']);
         }
     },
     beforeEvent: (chart: ChartJS, args): void => {

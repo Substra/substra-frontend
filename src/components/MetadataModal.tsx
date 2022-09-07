@@ -212,7 +212,7 @@ const MetadataModal = ({
                                         backgroundColor="gray.100"
                                         value={inputValue}
                                         _focus={{
-                                            border: '2px solid var(--chakra-colors-teal-500)',
+                                            border: '2px solid var(--chakra-colors-primary-500)',
                                             backgroundColor: 'white',
                                         }}
                                         onChange={(e) =>

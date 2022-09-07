@@ -96,7 +96,7 @@ const BulkSelection = ({
                         <IconButton
                             icon={<RiInformationLine />}
                             aria-label="Selected compute plans list"
-                            colorScheme="teal"
+                            colorScheme="primary"
                         />
                     </PopoverTrigger>
                     <PopoverContent
@@ -124,7 +124,7 @@ const BulkSelection = ({
                     </PopoverContent>
                 </Popover>
                 <Text fontSize="sm">{selectedKeys.length} selected</Text>
-                <Button size="sm" onClick={onClear} colorScheme="teal">
+                <Button size="sm" onClick={onClear} colorScheme="primary">
                     Clear
                 </Button>
             </HStack>
@@ -133,7 +133,7 @@ const BulkSelection = ({
                     size="sm"
                     leftIcon={<RiStarLine />}
                     onClick={onFavoriteChange}
-                    colorScheme="teal"
+                    colorScheme="primary"
                 >
                     {areAllFavorites
                         ? 'Remove from favorites'
@@ -141,7 +141,7 @@ const BulkSelection = ({
                 </Button>
                 <Button
                     size="sm"
-                    colorScheme="teal"
+                    colorScheme="primary"
                     isLoading={downloading}
                     loadingText="Downloading"
                     leftIcon={<RiDownloadLine />}
@@ -154,7 +154,7 @@ const BulkSelection = ({
                     leftIcon={<RiLineChartLine />}
                     disabled={selectedKeys.length < 2}
                     onClick={onCompare}
-                    colorScheme="teal"
+                    colorScheme="primary"
                 >
                     Compare selection
                 </Button>

@@ -54,7 +54,7 @@ const TabsNavItem = ({
                 color="gray.800"
                 borderBottomWidth="2px"
                 borderBottomStyle="solid"
-                borderBottomColor={active ? 'teal.500' : 'transparent'}
+                borderBottomColor={active ? 'primary.500' : 'transparent'}
                 paddingBottom="2.5"
             >
                 {label}

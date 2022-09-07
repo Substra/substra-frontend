@@ -105,7 +105,7 @@ const ResetForm = (): JSX.Element => {
                                     as={showPassword ? RiEyeOffLine : RiEyeLine}
                                 />
                             }
-                            colorScheme="teal"
+                            colorScheme="primary"
                             variant="link"
                             onClick={() => setShowPassword(!showPassword)}
                         >
@@ -183,7 +183,7 @@ const ResetForm = (): JSX.Element => {
                     disabled={userLoading}
                     isLoading={userLoading}
                     type="submit"
-                    colorScheme="teal"
+                    colorScheme="primary"
                     width="100%"
                 >
                     Reset

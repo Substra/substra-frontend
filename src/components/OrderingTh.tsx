@@ -48,7 +48,7 @@ const OrderingMenuItem = ({
 
     return (
         <MenuItem
-            color={value === ordering ? 'teal' : ''}
+            color={value === ordering ? 'primary' : ''}
             fontWeight={value === ordering ? 'semibold' : ''}
             icon={
                 value === ordering ? (
@@ -80,7 +80,7 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOptionProps) => {
     } else if (ordering === asc.value) {
         return (
             <Flex
-                color="teal"
+                color="primary"
                 cursor="pointer"
                 onClick={() => {
                     const urlSearchParams = getUrlSearchParams();
@@ -97,7 +97,7 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOptionProps) => {
         return (
             <Flex
                 cursor="pointer"
-                color="teal"
+                color="primary"
                 onClick={() => {
                     const urlSearchParams = getUrlSearchParams();
                     urlSearchParams.set('ordering', asc.value);

@@ -44,7 +44,7 @@ const ComputePlanFavoritesTableFilter = ({
             <Checkbox
                 isChecked={tmpFavoritesOnly}
                 onChange={onChange}
-                colorScheme="teal"
+                colorScheme="primary"
                 alignItems="start"
             >
                 <Text fontSize="sm" lineHeight="1.2">

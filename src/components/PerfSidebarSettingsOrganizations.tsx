@@ -160,7 +160,7 @@ const PerfSidebarSettingsOrganizations = (): JSX.Element => {
                     return (
                         <Tag
                             size="sm"
-                            colorScheme="teal"
+                            colorScheme="primary"
                             variant="solid"
                             key={organizationId}
                             marginRight="1"

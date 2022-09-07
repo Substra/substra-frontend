@@ -212,7 +212,7 @@ const TasksTable = ({
                                 <Tab
                                     key={tabCategory}
                                     _selected={{
-                                        color: 'teal.600',
+                                        color: 'primary.600',
                                         bg: 'white',
                                         borderColor: 'gray.100',
                                         borderBottomColor: 'white',
@@ -469,7 +469,7 @@ const TasksTable = ({
                                                             )}
                                                         >
                                                             <ChakraLink
-                                                                color="teal.500"
+                                                                color="primary.500"
                                                                 fontSize="xs"
                                                             >
                                                                 {

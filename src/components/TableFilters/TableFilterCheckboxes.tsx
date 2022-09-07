@@ -37,7 +37,7 @@ const TableFilterCheckboxes = ({
                         value={getOptionValue(option)}
                         isChecked={value.includes(getOptionValue(option))}
                         onChange={onChange(getOptionValue(option))}
-                        colorScheme="teal"
+                        colorScheme="primary"
                         key={getOptionValue(option)}
                         alignItems="start"
                     >

@@ -34,7 +34,7 @@ const A = styled.a<AProps>`
     line-height: var(--chakra-lineHeights-5);
     border-bottom: 2px solid
         ${({ active }) =>
-            active ? 'var(--chakra-colors-teal-500)' : 'transparent'};
+            active ? 'var(--chakra-colors-primary-500)' : 'transparent'};
     color: ${({ active }) =>
         active
             ? 'var(--chakra-colors-gray-800)'

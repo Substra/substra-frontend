@@ -145,7 +145,7 @@ const CustomColumnImportPopover = ({
                             </Button>
                             <Button
                                 isDisabled={!inputValue.length}
-                                colorScheme="teal"
+                                colorScheme="primary"
                                 size="sm"
                                 onClick={onImport}
                             >

@@ -182,7 +182,7 @@ const NewsFeedList = ({
                 <SlideFade in={actualizedCount > 0} offsetY="130%">
                     <Button
                         size="sm"
-                        colorScheme="teal"
+                        colorScheme="primary"
                         width="100%"
                         height="100%"
                         isDisabled={loading || actualizedCountLoading}

@@ -22,6 +22,18 @@ type ColorSchemeT = {
 };
 
 const colors: Record<string, ColorSchemeT> = {
+    primary: {
+        '50': '#f2f4ff',
+        '100': '#dde3ff',
+        '200': '#c0caff',
+        '300': '#96a4fe',
+        '400': '#656eef',
+        '500': '#5752ff',
+        '600': '#4525ee',
+        '700': '#2a119d',
+        '800': '#18115f',
+        '900': '#0c0e2f',
+    },
     gray: {
         '50': '#fafafa',
         '100': '#f1f1f1',

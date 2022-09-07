@@ -54,17 +54,17 @@ const RefreshBanner = (): JSX.Element | null => {
 
     return (
         <HStack
-            background="teal.100"
+            background="primary.100"
             justify="center"
             alignItems="center"
             spacing="2"
-            color="teal.700"
+            color="primary.700"
         >
             <Icon as={RiInformationLine} height="13px" width="13px" />
             <Text fontSize="sm">New important updates are available</Text>
             <Button
                 variant="ghost"
-                colorScheme="teal"
+                colorScheme="primary"
                 size="sm"
                 lineHeight="1"
                 onClick={handleRefresh}

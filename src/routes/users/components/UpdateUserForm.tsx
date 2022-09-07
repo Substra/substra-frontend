@@ -207,7 +207,7 @@ const UpdateUserForm = ({
                         ) : (
                             <Button
                                 size="sm"
-                                colorScheme="teal"
+                                colorScheme="primary"
                                 onClick={onReset}
                             >
                                 Generate reset link
@@ -221,7 +221,7 @@ const UpdateUserForm = ({
                     <Button size="sm" variant="outline" onClick={closeHandler}>
                         Cancel
                     </Button>
-                    <Button size="sm" colorScheme="teal" onClick={onEdit}>
+                    <Button size="sm" colorScheme="primary" onClick={onEdit}>
                         Edit
                     </Button>
                 </HStack>

@@ -144,7 +144,7 @@ const TaskDrawer = ({
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Link
-                                    color="teal.500"
+                                    color="primary.500"
                                     fontWeight="semibold"
                                     isExternal
                                     href={compilePath(
@@ -168,7 +168,7 @@ const TaskDrawer = ({
                                             href={compilePath(PATHS.ALGO, {
                                                 key: task.algo.key,
                                             })}
-                                            color="teal.500"
+                                            color="primary.500"
                                             fontWeight="semibold"
                                             isExternal
                                         >

@@ -117,7 +117,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                     <PopoverBody padding="0" overflow="hidden">
                         <Tabs
                             variant="soft-rounded"
-                            colorScheme="teal"
+                            colorScheme="primary"
                             orientation="vertical"
                             isLazy={false}
                             index={tabIndex}
@@ -131,8 +131,8 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                 {tabs.map((tab, index) => (
                                     <Tab
                                         _selected={{
-                                            backgroundColor: 'teal.50',
-                                            color: 'teal.500',
+                                            backgroundColor: 'primary.50',
+                                            color: 'primary.500',
                                         }}
                                         fontSize="sm"
                                         justifyContent="flex-start"
@@ -150,7 +150,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                                 width="6px"
                                                 marginLeft="3px"
                                                 marginTop="-6px"
-                                                backgroundColor="teal.500"
+                                                backgroundColor="primary.500"
                                                 borderRadius="50%"
                                             />
                                         )}
@@ -187,7 +187,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                             </Button>
                             <Button
                                 color="white"
-                                colorScheme="teal"
+                                colorScheme="primary"
                                 onClick={onApply}
                             >
                                 Apply

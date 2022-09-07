@@ -73,7 +73,7 @@ const Users = (): JSX.Element => {
                 <SearchBar placeholder="Search username..." />
                 <Button
                     size="sm"
-                    colorScheme="teal"
+                    colorScheme="primary"
                     leftIcon={<RiAddLine />}
                     onClick={() =>
                         setLocationPreserveParams(

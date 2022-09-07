@@ -21,7 +21,7 @@ const ComputePlanProgressSkeleton = (): JSX.Element => (
             </Flex>
             <Progress
                 size="xs"
-                colorScheme="teal"
+                colorScheme="primary"
                 hasStripe={false}
                 value={100}
             />

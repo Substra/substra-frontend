@@ -131,7 +131,7 @@ const Settings = (): JSX.Element => {
                                 <Icon
                                     as={RiExternalLinkLine}
                                     marginLeft="2.5"
-                                    fill="teal.600"
+                                    fill="primary.600"
                                 />
                             </Link>
                         </Heading>
@@ -142,7 +142,7 @@ const Settings = (): JSX.Element => {
                         </Text>
                         <Switch
                             size="sm"
-                            colorScheme="teal"
+                            colorScheme="primary"
                             isChecked={clarityChecked}
                             isDisabled={saving}
                             onChange={() => setClarityChecked(!clarityChecked)}
@@ -152,7 +152,7 @@ const Settings = (): JSX.Element => {
                 <Box textAlign="right">
                     <Button
                         size="md"
-                        colorScheme="teal"
+                        colorScheme="primary"
                         onClick={saveSettings}
                         isDisabled={saving}
                     >

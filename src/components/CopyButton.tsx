@@ -10,7 +10,7 @@ const CopyButton = ({ value }: CopyButtonProps): JSX.Element => {
     return (
         <Button
             variant="ghost"
-            color="teal.500"
+            color="primary.500"
             textTransform="uppercase"
             size="xs"
             onClick={onCopy}

@@ -28,7 +28,7 @@ const DrawerSectionOpenerEntry = ({
                                 href={compilePath(PATHS.DATASET, {
                                     key: dataset.key,
                                 })}
-                                color="teal.500"
+                                color="primary.500"
                                 fontWeight="semibold"
                                 isExternal
                             >

@@ -18,7 +18,7 @@ const PasswordValidationMessage = ({
     let icon = RiCheckboxBlankCircleLine;
 
     if (!isEmpty) {
-        color = isValid ? 'teal.500' : 'red.500';
+        color = isValid ? 'primary.500' : 'red.500';
         icon = isValid ? RiCheckLine : RiCloseLine;
     }
 
