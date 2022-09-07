@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Use correct login url in cypress tests
 -   Display all general columns by default in CP page
 
+### Removed
+
+-   Model category
+
 ## [0.32.1] - 2022-08-24
 
 ### Changed
