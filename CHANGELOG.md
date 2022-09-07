@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   CP duration filter is broken on refresh and for below mode
 -   Use correct login url in cypress tests
 -   Display all general columns by default in CP page
+-   Broken unselection of CPs in comparison page
 
 ### Removed
 
