@@ -8,7 +8,6 @@ import { RiInformationLine } from 'react-icons/ri';
 import useAppSelector from '@/hooks/useAppSelector';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import useHandleRefresh from '@/hooks/useHandleRefresh';
-import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import {
     usePage,
     useMatch,
@@ -19,6 +18,7 @@ import {
     useEndDate,
     useDuration,
     useMetadataString,
+    useOrdering,
 } from '@/hooks/useSyncedState';
 import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
 import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
@@ -36,14 +36,12 @@ const RefreshBanner = (): JSX.Element | null => {
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
     const [metadata] = useMetadataString();
+    const [ordering] = useOrdering('');
 
     const [refreshAvailable, setRefreshAvailable] = useState(false);
     const computePlansCallTimestamp = useAppSelector(
         (state) => state.computePlans.computePlansCallTimestamp
     );
-
-    const urlSearchParams = getUrlSearchParams();
-    const ordering = urlSearchParams.get('ordering') || '';
 
     const { favorites } = useFavoriteComputePlans();
 
