@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Display all general columns by default in CP page
 -   Broken unselection of CPs in comparison page
 
+### Removed
+
+-   Model category
+
 ## [0.32.1] - 2022-08-24
 
 ### Changed
