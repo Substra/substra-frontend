@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add capital letter R to reset zoom button
 -   Rename Connect to Substra in code and ci files
 -   Change primary color from teal to blue
+-   Keep filtering/ordering setup when refreshing an asset list page
 
 ### Fixed
 
