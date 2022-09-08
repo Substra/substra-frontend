@@ -153,6 +153,15 @@ const ComputePlans = (): JSX.Element => {
 
     const { columns, setColumns } = useCustomColumns();
 
+    // Display general columns by default
+    useEffect(() => {
+        if (columns.length === 0) {
+            setColumns(GENERAL_COLUMNS);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [columns]);
+
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
             // remove CP from selection
