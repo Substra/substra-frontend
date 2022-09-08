@@ -1,7 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import useAppSelector from '@/hooks/useAppSelector';
-import useEffectOnce from '@/hooks/useEffectOnce';
 import { HasKeyT } from '@/modules/common/CommonTypes';
 
 function useLoadSave<T>(
@@ -54,9 +53,11 @@ export const useLocalStorageState = <Type>(
     const { load, save } = useLoadSave<Type>(localStorageKey, channel, migrate);
     const [state, setLocalState] = useState(() => load() ?? originalValue);
 
-    useEffectOnce(() => {
+    useEffect(() => {
         setLocalState(load() ?? originalValue);
-    });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [channel]);
 
     const setState = useCallback(
         (state: Type) => {
