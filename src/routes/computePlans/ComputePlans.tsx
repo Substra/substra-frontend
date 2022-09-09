@@ -4,12 +4,10 @@ import { VStack, Table, Box, HStack, Flex, Button } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
 import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
-import { GENERAL_COLUMNS } from '@/features/customColumns/CustomColumnsUtils';
 import useCustomColumns from '@/features/customColumns/useCustomColumns';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useEffectOnce from '@/hooks/useEffectOnce';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
 import {
@@ -154,11 +152,6 @@ const ComputePlans = (): JSX.Element => {
     );
 
     const { columns, setColumns } = useCustomColumns();
-
-    // Display general columns by default
-    useEffectOnce(() => {
-        setColumns(GENERAL_COLUMNS);
-    });
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
