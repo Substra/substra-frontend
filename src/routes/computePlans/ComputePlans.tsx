@@ -4,6 +4,7 @@ import { VStack, Table, Box, HStack, Flex, Button } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
 import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
+import { GENERAL_COLUMNS } from '@/features/customColumns/CustomColumnsUtils';
 import useCustomColumns from '@/features/customColumns/useCustomColumns';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
