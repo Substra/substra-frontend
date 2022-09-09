@@ -73,11 +73,12 @@ export const useLocalStorageState = <Type>(
 export const useLocalStorageArrayState = <Type>(
     localStorageKey: string,
     areEqual: (a: Type, b: Type) => boolean,
-    migrate?: (data: unknown) => Type[]
+    migrate?: (data: unknown) => Type[],
+    originalValue?: Type[]
 ) => {
     const [state, setState] = useLocalStorageState<Type[]>(
         localStorageKey,
-        [],
+        originalValue ?? [],
         migrate
     );
 

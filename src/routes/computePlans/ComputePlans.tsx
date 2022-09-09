@@ -4,7 +4,6 @@ import { VStack, Table, Box, HStack, Flex, Button } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
 import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
-import { GENERAL_COLUMNS } from '@/features/customColumns/CustomColumnsUtils';
 import useCustomColumns from '@/features/customColumns/useCustomColumns';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
@@ -153,15 +152,6 @@ const ComputePlans = (): JSX.Element => {
     );
 
     const { columns, setColumns } = useCustomColumns();
-
-    // Display general columns by default
-    useEffect(() => {
-        if (columns.length === 0) {
-            setColumns(GENERAL_COLUMNS);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [columns]);
 
     const onSelectionChange = (computePlan: ComputePlanT) => () => {
         if (selectedKeys.includes(computePlan.key)) {
