@@ -45,7 +45,8 @@ const useCustomColumns = (): {
     } = useLocalStorageArrayState<ColumnT>(
         'custom_columns',
         areColumnsEqual,
-        migrate
+        migrate,
+        GENERAL_COLUMNS
     );
 
     return {

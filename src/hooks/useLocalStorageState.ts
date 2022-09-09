@@ -20,7 +20,7 @@ function useLoadSave<T>(
             if (jsonItems) {
                 items = JSON.parse(jsonItems);
             }
-            if (migrate) {
+            if (migrate && items) {
                 return migrate(items);
             } else {
                 return items;
@@ -73,14 +73,14 @@ export const useLocalStorageState = <Type>(
 export const useLocalStorageArrayState = <Type>(
     localStorageKey: string,
     areEqual: (a: Type, b: Type) => boolean,
-    migrate?: (data: unknown) => Type[]
+    migrate?: (data: unknown) => Type[],
+    originalValue?: Type[]
 ) => {
     const [state, setState] = useLocalStorageState<Type[]>(
         localStorageKey,
-        [],
+        originalValue ?? [],
         migrate
     );
-
     const clearState = () => setState([]);
 
     const includesItem = (item: Type) => {
