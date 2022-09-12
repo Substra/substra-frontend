@@ -90,6 +90,7 @@ const ComputePlanChart = (): JSX.Element => {
     return (
         <PerfBrowserContext.Provider value={context}>
             <Flex
+                data-cy="cp-chart"
                 direction="column"
                 alignItems="stretch"
                 flexGrow={1}
