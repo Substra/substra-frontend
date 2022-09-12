@@ -90,6 +90,6 @@ def manifest_inspect(tag) -> Union[Dict, None]:
         )
         return json.loads(o)
     except command.SubProcessException as e:
-        if "no such manifest" in e.message:
+        if "no such manifest" or "manifest unknown" in e.message:
             return None
         raise e
