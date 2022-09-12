@@ -143,6 +143,7 @@ const TasksWorkflow = (): JSX.Element => {
                 setPageTitle={false}
             />
             <ReactFlow
+                data-cy="workflow-graph"
                 defaultPosition={[0, 1000]} // default is set so that no node is visible before the initial fitView - which will occur when all nodes are loaded
                 fitView={true}
                 nodeTypes={nodeTypes}
