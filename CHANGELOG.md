@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Cypress tests for compute plan pages Workflow and Performances
 
+### Fixed
+
+-   Handle both gcr and ghcr manifest not found error in release workflow ci
+
 ## [0.33.0] - 2022-09-12
 
 ## Added
