@@ -9,6 +9,6 @@ sources:
 
 type: application
 
-version: 1.0.4
-appVersion: 0.33.0 # should be same as in package.json
+version: 1.0.6
+appVersion: 0.34.0 # should be same as in package.json
 kubeVersion: ">= 1.19.0-0"

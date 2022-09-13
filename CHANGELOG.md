@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.34.0] - 2022-09-13
+
 ## Added
 
 -   Cypress tests for compute plan pages Workflow and Performances
