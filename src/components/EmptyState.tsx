@@ -6,6 +6,7 @@ type EmptyStateProps = {
     buttonOnClick?: () => void;
     buttonLabel?: string;
     icon: React.ReactNode;
+    dataCy?: string;
 };
 const EmptyState = ({
     title,
@@ -13,9 +14,10 @@ const EmptyState = ({
     buttonOnClick,
     icon,
     buttonLabel,
+    dataCy,
 }: EmptyStateProps) => {
     return (
-        <VStack spacing="5">
+        <VStack spacing="5" data-cy={dataCy}>
             <Box
                 width="20"
                 height="20"

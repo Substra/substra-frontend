@@ -18,6 +18,7 @@ const UnavailableWorkflow = ({
 
     return (
         <EmptyState
+            dataCy="workflow-graph"
             icon={<RiEyeOffLine />}
             title="Unable to display this workflow"
             subtitle={subtitle}
