@@ -71,8 +71,8 @@ export const assetTypeByTaskCategory: Record<TaskCategory, AssetT> = {
 };
 
 export type TaskInputT = {
-    asset_key: string;
     identifier: string;
+    asset_key?: string;
     addressable?: FileT;
     permissions?: PermissionsT;
     parent_task_key?: string;
@@ -97,7 +97,7 @@ type BaseTupleStubT = {
     error_type?: ErrorT;
     logs_permission?: PermissionT;
     duration: number; // in seconds
-    inputs: { [key: number]: TaskInputT };
+    inputs: TaskInputT[];
     outputs: { [name: string]: OutputT };
 };
 

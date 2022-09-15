@@ -14,6 +14,7 @@ import {
     TagLabel,
     TagRightIcon,
     VStack,
+    Code,
 } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
@@ -70,18 +71,26 @@ const DrawerSectionEntryWrapper = (props: StackProps) => (
 
 export const DrawerSectionEntry = ({
     title,
+    titleStyle,
     children,
     alignItems,
+    icon,
 }: {
     title: string;
+    titleStyle?: 'capitalize' | 'code';
     children?: React.ReactNode;
     alignItems?: 'flex-start' | 'center' | 'baseline';
+    icon?: JSX.Element;
 }): JSX.Element => {
     return (
         <DrawerSectionEntryWrapper alignItems={alignItems || 'center'}>
-            <Text whiteSpace="nowrap" width="120px" flexShrink="0">
-                {capitalize(title)}
-            </Text>
+            {icon}
+            {titleStyle === 'code' && <Code fontSize="xs">{title}</Code>}
+            {!titleStyle && (
+                <Text whiteSpace="nowrap" width="120px" flexShrink="0">
+                    {capitalize(title)}
+                </Text>
+            )}
             <Box flexGrow="1" overflowX="hidden">
                 {children}
             </Box>
@@ -91,12 +100,16 @@ export const DrawerSectionEntry = ({
 
 export const DrawerSectionCollapsibleEntry = ({
     title,
+    titleStyle,
     aboveFold,
     children,
+    icon,
 }: {
     title: string;
+    titleStyle?: 'capitalize' | 'code';
     aboveFold?: React.ReactNode;
     children?: React.ReactNode;
+    icon?: JSX.Element;
 }): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: false,
@@ -116,9 +129,13 @@ export const DrawerSectionCollapsibleEntry = ({
                 cursor="pointer"
                 onClick={onToggle}
             >
-                <Text whiteSpace="nowrap" width="120px" flexShrink="0">
-                    {capitalize(title)}
-                </Text>
+                {icon}
+                {titleStyle === 'code' && <Code fontSize="xs">{title}</Code>}
+                {!titleStyle && (
+                    <Text whiteSpace="nowrap" width="120px" flexShrink="0">
+                        {capitalize(title)}
+                    </Text>
+                )}
                 <Box flexGrow="1" overflow="hidden">
                     {aboveFold}
                 </Box>
