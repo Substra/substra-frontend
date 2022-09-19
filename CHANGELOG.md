@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+-   Prevent the last admin from being deleted
+
 ### Fixed
 
 -   Fix rank tooltip on perfcards in CP performances page (#108)
