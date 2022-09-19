@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta17
 kind: Config
 build:
     artifacts:
-        - image: &imageref gcr.io/substra/substra-frontend-tests
+        - image: &imageref substra/substra-frontend-tests
           context: ../e2e-tests
           docker:
               dockerfile: 'docker/substra-frontend-tests/Dockerfile'
