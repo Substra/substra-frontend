@@ -15,6 +15,7 @@ import {
     Skeleton,
     DrawerFooter,
     HStack,
+    Text,
     useClipboard,
     useDisclosure,
 } from '@chakra-ui/react';
@@ -22,15 +23,19 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
+import { useMatch, useOrdering, usePage } from '@/hooks/useSyncedState';
 import { useToast } from '@/hooks/useToast';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
     deleteUser,
+    listUsers,
     retrieveUser,
     updateUser,
 } from '@/modules/users/UsersSlice';
 import { UserRolesT } from '@/modules/users/UsersTypes';
+import { isLastAdmin } from '@/modules/users/UsersUtils';
 import { compilePath, PATHS } from '@/paths';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -44,6 +49,7 @@ const UpdateUserForm = ({
     closeHandler: () => void;
 }): JSX.Element => {
     const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const toast = useToast();
     const key = useKeyFromPath(PATHS.USER);
 
@@ -58,8 +64,13 @@ const UpdateUserForm = ({
     const cancelRef = useRef<HTMLButtonElement>(null);
 
     const user = useAppSelector((state) => state.users.user);
+    const users = useAppSelector((state) => state.users.users);
     const userLoading = useAppSelector((state) => state.users.userLoading);
     const deleting = useAppSelector((state) => state.users.deleting);
+
+    const [page] = usePage();
+    const [match] = useMatch();
+    const [ordering] = useOrdering('username');
 
     const [role, setRole] = useState(UserRolesT.user);
 
@@ -106,6 +117,10 @@ const UpdateUserForm = ({
     }, [onCopy, toast]);
 
     useEffect(() => {
+        return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
+    }, [page, ordering, match, dispatchWithAutoAbort]);
+
+    useEffect(() => {
         if (resetUrl !== '') {
             copyTokenAndToast();
         }
@@ -124,6 +139,11 @@ const UpdateUserForm = ({
         }
     }, [user]);
 
+    let isDisabled = false;
+    if (isLastAdmin(users) && user?.role === UserRolesT.admin) {
+        isDisabled = true;
+    }
+
     return (
         <DrawerContent data-cy="drawer">
             <DrawerHeader
@@ -131,14 +151,24 @@ const UpdateUserForm = ({
                 loading={userLoading}
                 onClose={closeHandler}
                 extraButtons={
-                    <IconButton
-                        aria-label="Delete asset"
-                        variant="ghost"
-                        fontSize="20px"
-                        color="gray.500"
-                        icon={<RiDeleteBinLine />}
-                        onClick={onConfirmOpen}
-                    />
+                    isDisabled ? (
+                        <Text
+                            fontSize="16px"
+                            color="gray.500"
+                            fontWeight="normal"
+                        >
+                            You cannot delete the last admin
+                        </Text>
+                    ) : (
+                        <IconButton
+                            aria-label="Delete asset"
+                            variant="ghost"
+                            fontSize="20px"
+                            color="gray.500"
+                            icon={<RiDeleteBinLine />}
+                            onClick={onConfirmOpen}
+                        />
+                    )
                 }
             />
             <AlertDialog
@@ -221,7 +251,12 @@ const UpdateUserForm = ({
                     <Button size="sm" variant="outline" onClick={closeHandler}>
                         Cancel
                     </Button>
-                    <Button size="sm" colorScheme="primary" onClick={onEdit}>
+                    <Button
+                        size="sm"
+                        colorScheme="primary"
+                        onClick={onEdit}
+                        disabled={isDisabled}
+                    >
                         Edit
                     </Button>
                 </HStack>
