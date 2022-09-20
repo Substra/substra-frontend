@@ -25,7 +25,6 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import { useMatch, useOrdering, usePage } from '@/hooks/useSyncedState';
 import { useToast } from '@/hooks/useToast';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
@@ -67,10 +66,6 @@ const UpdateUserForm = ({
     const users = useAppSelector((state) => state.users.users);
     const userLoading = useAppSelector((state) => state.users.userLoading);
     const deleting = useAppSelector((state) => state.users.deleting);
-
-    const [page] = usePage();
-    const [match] = useMatch();
-    const [ordering] = useOrdering('username');
 
     const [role, setRole] = useState(UserRolesT.user);
 
@@ -117,8 +112,8 @@ const UpdateUserForm = ({
     }, [onCopy, toast]);
 
     useEffect(() => {
-        return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
-    }, [page, ordering, match, dispatchWithAutoAbort]);
+        return dispatchWithAutoAbort(listUsers({}));
+    }, [dispatchWithAutoAbort]);
 
     useEffect(() => {
         if (resetUrl !== '') {
