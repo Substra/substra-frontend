@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix rank tooltip on perfcards in CP performances page (#108)
+
 ## [0.34.0] - 2022-09-13
 
 ## Added
