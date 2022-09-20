@@ -33,7 +33,7 @@ const PerfChartSummaryTooltip = ({
 
     // Position
     // defaults to tooltip below the canvas
-    let top = 'calc(100% - 30px)';
+    let top = 'calc(100% - 60px)';
 
     // check if there is enough space below the canvas to display the full tooltip
     // if there isn't, then place tooltip below the header, as we can't display it over
