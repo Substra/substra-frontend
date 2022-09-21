@@ -112,7 +112,7 @@ const UpdateUserForm = ({
     }, [onCopy, toast]);
 
     const getAllUsers = async () => {
-        const pageSize = 30; // refers to DEFAULT_PAGE_SIZE
+        const pageSize = DEFAULT_PAGE_SIZE;
 
         const allUsers = await getAllPages<UserT>(
             (page) => UsersApi.listUsers({ page }, {}),
