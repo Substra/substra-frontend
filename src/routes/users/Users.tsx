@@ -50,9 +50,7 @@ const Users = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Users management', key);
 
     useEffect(() => {
-        if (!key) {
-            return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
-        }
+        return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
     }, [page, key, ordering, match, dispatchWithAutoAbort]);
 
     if (userRole !== UserRolesT.admin) {

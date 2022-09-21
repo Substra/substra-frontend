@@ -15,26 +15,26 @@ import {
     Skeleton,
     DrawerFooter,
     HStack,
-    Text,
     useClipboard,
     useDisclosure,
+    Tooltip,
 } from '@chakra-ui/react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import useEffectOnce from '@/hooks/useEffectOnce';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useToast } from '@/hooks/useToast';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
     deleteUser,
-    listUsers,
     retrieveUser,
     updateUser,
 } from '@/modules/users/UsersSlice';
-import { UserRolesT } from '@/modules/users/UsersTypes';
-import { isLastAdmin } from '@/modules/users/UsersUtils';
+import { UserRolesT, UserT } from '@/modules/users/UsersTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -63,11 +63,11 @@ const UpdateUserForm = ({
     const cancelRef = useRef<HTMLButtonElement>(null);
 
     const user = useAppSelector((state) => state.users.user);
-    const users = useAppSelector((state) => state.users.users);
     const userLoading = useAppSelector((state) => state.users.userLoading);
     const deleting = useAppSelector((state) => state.users.deleting);
 
     const [role, setRole] = useState(UserRolesT.user);
+    const [isLastAdmin, setIsLastAdmin] = useState<boolean>(false);
 
     const onEdit = () => {
         if (user && role !== user.role) {
@@ -111,9 +111,25 @@ const UpdateUserForm = ({
         });
     }, [onCopy, toast]);
 
-    useEffect(() => {
-        return dispatchWithAutoAbort(listUsers({}));
-    }, [dispatchWithAutoAbort]);
+    const getAllUsers = async () => {
+        const pageSize = 30; // refers to DEFAULT_PAGE_SIZE
+
+        const allUsers = await getAllPages<UserT>(
+            (page) => UsersApi.listUsers({ page }, {}),
+            pageSize
+        );
+
+        return allUsers;
+    };
+
+    useEffectOnce(() => {
+        getAllUsers().then((response) => {
+            const userAdminList = response.filter(
+                (user) => user.role === UserRolesT.admin
+            );
+            setIsLastAdmin(userAdminList.length === 1);
+        });
+    });
 
     useEffect(() => {
         if (resetUrl !== '') {
@@ -124,9 +140,9 @@ const UpdateUserForm = ({
 
     useEffect(() => {
         if (key) {
-            dispatch(retrieveUser(key));
+            dispatchWithAutoAbort(retrieveUser(key));
         }
-    }, [dispatch, key]);
+    }, [dispatchWithAutoAbort, key]);
 
     useEffect(() => {
         if (user?.role) {
@@ -135,7 +151,7 @@ const UpdateUserForm = ({
     }, [user]);
 
     let isDisabled = false;
-    if (isLastAdmin(users) && user?.role === UserRolesT.admin) {
+    if (isLastAdmin && user?.role === UserRolesT.admin) {
         isDisabled = true;
     }
 
@@ -146,15 +162,14 @@ const UpdateUserForm = ({
                 loading={userLoading}
                 onClose={closeHandler}
                 extraButtons={
-                    isDisabled ? (
-                        <Text
-                            fontSize="16px"
-                            color="gray.500"
-                            fontWeight="normal"
-                        >
-                            You cannot delete the last admin
-                        </Text>
-                    ) : (
+                    <Tooltip
+                        label="You cannot delete the last admin"
+                        fontSize="xs"
+                        isDisabled={!isDisabled}
+                        hasArrow
+                        placement="bottom"
+                        shouldWrapChildren
+                    >
                         <IconButton
                             aria-label="Delete asset"
                             variant="ghost"
@@ -162,8 +177,9 @@ const UpdateUserForm = ({
                             color="gray.500"
                             icon={<RiDeleteBinLine />}
                             onClick={onConfirmOpen}
+                            disabled={isDisabled}
                         />
-                    )
+                    </Tooltip>
                 }
             />
             <AlertDialog

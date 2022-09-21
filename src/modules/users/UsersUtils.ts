@@ -1,4 +1,4 @@
-import { UserRolesT, UserT } from './UsersTypes';
+import { UserRolesT } from './UsersTypes';
 
 export const UserRolesToLabel: Record<UserRolesT, string> = {
     [UserRolesT.admin]: 'Admin',
@@ -44,12 +44,4 @@ export const checkPasswordErrors = (
         !hasNumber(password) &&
         !hasLowerAndUpperChar(password)
     );
-};
-
-export const isLastAdmin = (users: UserT[]) => {
-    const userAdminList = users.filter(
-        (user) => user.role === UserRolesT.admin
-    );
-
-    return userAdminList.length === 1;
 };
