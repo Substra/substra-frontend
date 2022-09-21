@@ -24,7 +24,6 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import useEffectOnce from '@/hooks/useEffectOnce';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useToast } from '@/hooks/useToast';
 import { getAllPages } from '@/modules/common/CommonUtils';
@@ -122,14 +121,16 @@ const UpdateUserForm = ({
         return allUsers;
     };
 
-    useEffectOnce(() => {
-        getAllUsers().then((response) => {
-            const userAdminList = response.filter(
-                (user) => user.role === UserRolesT.admin
-            );
-            setIsLastAdmin(userAdminList.length === 1);
-        });
-    });
+    useEffect(() => {
+        if (user?.role === UserRolesT.admin) {
+            getAllUsers().then((response) => {
+                const userAdminList = response.filter(
+                    (user) => user.role === UserRolesT.admin
+                );
+                setIsLastAdmin(userAdminList.length === 1);
+            });
+        }
+    }, [user]);
 
     useEffect(() => {
         if (resetUrl !== '') {
