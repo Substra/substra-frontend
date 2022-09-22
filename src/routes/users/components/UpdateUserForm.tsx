@@ -17,20 +17,23 @@ import {
     HStack,
     useClipboard,
     useDisclosure,
+    Tooltip,
 } from '@chakra-ui/react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useToast } from '@/hooks/useToast';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
     deleteUser,
     retrieveUser,
     updateUser,
 } from '@/modules/users/UsersSlice';
-import { UserRolesT } from '@/modules/users/UsersTypes';
+import { UserRolesT, UserT } from '@/modules/users/UsersTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -44,6 +47,7 @@ const UpdateUserForm = ({
     closeHandler: () => void;
 }): JSX.Element => {
     const dispatch = useAppDispatch();
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const toast = useToast();
     const key = useKeyFromPath(PATHS.USER);
 
@@ -62,6 +66,7 @@ const UpdateUserForm = ({
     const deleting = useAppSelector((state) => state.users.deleting);
 
     const [role, setRole] = useState(UserRolesT.user);
+    const [isLastAdmin, setIsLastAdmin] = useState<boolean>(false);
 
     const onEdit = () => {
         if (user && role !== user.role) {
@@ -105,6 +110,28 @@ const UpdateUserForm = ({
         });
     }, [onCopy, toast]);
 
+    const getAllUsers = async () => {
+        const pageSize = DEFAULT_PAGE_SIZE;
+
+        const allUsers = await getAllPages<UserT>(
+            (page) => UsersApi.listUsers({ page }, {}),
+            pageSize
+        );
+
+        return allUsers;
+    };
+
+    useEffect(() => {
+        if (user?.role === UserRolesT.admin) {
+            getAllUsers().then((response) => {
+                const userAdminList = response.filter(
+                    (user) => user.role === UserRolesT.admin
+                );
+                setIsLastAdmin(userAdminList.length === 1);
+            });
+        }
+    }, [user]);
+
     useEffect(() => {
         if (resetUrl !== '') {
             copyTokenAndToast();
@@ -114,15 +141,17 @@ const UpdateUserForm = ({
 
     useEffect(() => {
         if (key) {
-            dispatch(retrieveUser(key));
+            dispatchWithAutoAbort(retrieveUser(key));
         }
-    }, [dispatch, key]);
+    }, [dispatchWithAutoAbort, key]);
 
     useEffect(() => {
         if (user?.role) {
             setRole(user.role);
         }
     }, [user]);
+
+    const isDisabled = isLastAdmin && user?.role === UserRolesT.admin;
 
     return (
         <DrawerContent data-cy="drawer">
@@ -131,14 +160,24 @@ const UpdateUserForm = ({
                 loading={userLoading}
                 onClose={closeHandler}
                 extraButtons={
-                    <IconButton
-                        aria-label="Delete asset"
-                        variant="ghost"
-                        fontSize="20px"
-                        color="gray.500"
-                        icon={<RiDeleteBinLine />}
-                        onClick={onConfirmOpen}
-                    />
+                    <Tooltip
+                        label="You cannot delete the last admin"
+                        fontSize="xs"
+                        isDisabled={!isDisabled}
+                        hasArrow
+                        placement="bottom"
+                        shouldWrapChildren
+                    >
+                        <IconButton
+                            aria-label="Delete asset"
+                            variant="ghost"
+                            fontSize="20px"
+                            color="gray.500"
+                            icon={<RiDeleteBinLine />}
+                            onClick={onConfirmOpen}
+                            disabled={isDisabled}
+                        />
+                    </Tooltip>
                 }
             />
             <AlertDialog
@@ -221,7 +260,12 @@ const UpdateUserForm = ({
                     <Button size="sm" variant="outline" onClick={closeHandler}>
                         Cancel
                     </Button>
-                    <Button size="sm" colorScheme="primary" onClick={onEdit}>
+                    <Button
+                        size="sm"
+                        colorScheme="primary"
+                        onClick={onEdit}
+                        disabled={isDisabled}
+                    >
                         Edit
                     </Button>
                 </HStack>
