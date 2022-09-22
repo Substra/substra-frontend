@@ -274,21 +274,25 @@ const UpdateUserForm = ({
                     <Button size="sm" variant="outline" onClick={closeHandler}>
                         Cancel
                     </Button>
-                    <Button
-                        size="sm"
-                        colorScheme="primary"
-<<<<<<< HEAD
-                        onClick={onEdit}
-                        disabled={isDisabled}
+                    <Tooltip
+                        label="You cannot update the last admin"
+                        fontSize="xs"
+                        isDisabled={
+                            user?.role !== UserRolesT.admin && !isLastAdmin
+                        }
+                        hasArrow
+                        placement="bottom"
+                        shouldWrapChildren
                     >
-                        Edit
-=======
-                        onClick={onUpdate}
-                        disabled={role === user?.role}
-                    >
-                        Update
->>>>>>> 95b62c04 (feat: Disable edit user button if no change detected and rename it update)
-                    </Button>
+                        <Button
+                            size="sm"
+                            colorScheme="primary"
+                            onClick={onUpdate}
+                            disabled={role === user?.role || isLastAdmin}
+                        >
+                            Update
+                        </Button>
+                    </Tooltip>
                 </HStack>
             </DrawerFooter>
         </DrawerContent>
