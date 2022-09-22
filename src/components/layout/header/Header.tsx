@@ -165,9 +165,7 @@ const Header = (): JSX.Element => {
                             <About />
                             {userRole === 'ADMIN' && (
                                 <MenuItem>
-                                    <Link href={PATHS.USERS}>
-                                        Users Management
-                                    </Link>
+                                    <Link href={PATHS.USERS}>Users</Link>
                                 </MenuItem>
                             )}
                             <MenuDivider color="gray.200" />

@@ -47,7 +47,7 @@ const Users = (): JSX.Element => {
     const usersLoading = useAppSelector((state) => state.users.usersLoading);
 
     const key = useKeyFromPath(PATHS.USER);
-    useAssetListDocumentTitleEffect('Users management', key);
+    useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {
         return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
