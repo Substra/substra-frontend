@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Prevent the last admin from being deleted
 -   Rename Users Management by Users
+-   Missing deletion feedback in user management
 
 ### Fixed
 

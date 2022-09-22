@@ -15,6 +15,7 @@ import {
     Skeleton,
     DrawerFooter,
     HStack,
+    Text,
     useClipboard,
     useDisclosure,
     Tooltip,
@@ -85,8 +86,21 @@ const UpdateUserForm = ({
 
     const onDelete = () => {
         if (!key) return;
-        dispatch(deleteUser(key));
-        closeHandler();
+
+        if (user) {
+            dispatch(deleteUser(key));
+
+            toast({
+                title: `User deleted`,
+                descriptionComponent: () => (
+                    <Text>{user.username} was successfully deleted</Text>
+                ),
+                status: 'success',
+                isClosable: true,
+            });
+
+            closeHandler();
+        }
     };
 
     const onReset = async () => {
