@@ -69,7 +69,7 @@ const UpdateUserForm = ({
     const [role, setRole] = useState(UserRolesT.user);
     const [isLastAdmin, setIsLastAdmin] = useState<boolean>(false);
 
-    const onEdit = () => {
+    const onUpdate = () => {
         if (user && role !== user.role) {
             dispatch(updateUser({ key: user.username, payload: { role } }));
 
@@ -277,10 +277,17 @@ const UpdateUserForm = ({
                     <Button
                         size="sm"
                         colorScheme="primary"
+<<<<<<< HEAD
                         onClick={onEdit}
                         disabled={isDisabled}
                     >
                         Edit
+=======
+                        onClick={onUpdate}
+                        disabled={role === user?.role}
+                    >
+                        Update
+>>>>>>> 95b62c04 (feat: Disable edit user button if no change detected and rename it update)
                     </Button>
                 </HStack>
             </DrawerFooter>
