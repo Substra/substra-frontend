@@ -9,7 +9,6 @@ import {
     NODE_BORDER_COLOR,
     NODE_LABEL_COLOR,
 } from '@/modules/cpWorkflow/CPWorkflowUtils';
-import { CATEGORY_LABEL } from '@/modules/tasks/TasksUtils';
 
 type TaskNodeProps = {
     data: PositionedTaskT;
@@ -23,11 +22,11 @@ const TaskNode = ({ data }: TaskNodeProps) => {
         <>
             {/*Handles*/}
             {data.inputs.map((value, index) => (
-                <Box key={value}>
+                <Box key={value.id}>
                     <Handle
                         type="target"
                         position={Position.Left}
-                        id={value}
+                        id={value.id}
                         style={{
                             borderRadius: handleRadius,
                             top: handleTopMargin + handleElementMargin * index,
@@ -41,11 +40,11 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                 </Box>
             ))}
             {data.outputs.map((value, index) => (
-                <Box key={value}>
+                <Box key={value.id}>
                     <Handle
                         type="source"
                         position={Position.Right}
-                        id={value}
+                        id={value.id}
                         style={{
                             borderRadius: handleRadius,
                             top: handleTopMargin + handleElementMargin * index,
@@ -66,9 +65,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                     backgroundColor={NODE_BORDER_COLOR[data.status]}
                     color="white"
                 >
-                    <Text fontWeight="bold">{`${
-                        CATEGORY_LABEL[data.category]
-                    } task`}</Text>
+                    <Text fontWeight="bold">_</Text>
                     <Text
                         pos="absolute"
                         top="5px"
@@ -94,15 +91,15 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                     <Flex display="flex" gap="6px">
                         <Box flex="50%" textAlign="left">
                             {data.inputs.map((value) => (
-                                <Text margin="0 auto 0 3px" key={value}>
-                                    {value}
+                                <Text margin="0 auto 0 3px" key={value.id}>
+                                    {value.id}
                                 </Text>
                             ))}
                         </Box>
                         <Box flex="50%" textAlign="right">
                             {data.outputs.map((value) => (
-                                <Text margin="0 3px 0 auto" key={value}>
-                                    {value}
+                                <Text margin="0 3px 0 auto" key={value.id}>
+                                    {value.id}
                                 </Text>
                             ))}
                         </Box>
