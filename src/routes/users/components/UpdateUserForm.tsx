@@ -151,10 +151,7 @@ const UpdateUserForm = ({
         }
     }, [user]);
 
-    let isDisabled = false;
-    if (isLastAdmin && user?.role === UserRolesT.admin) {
-        isDisabled = true;
-    }
+    const isDisabled = isLastAdmin && user?.role === UserRolesT.admin;
 
     return (
         <DrawerContent data-cy="drawer">
