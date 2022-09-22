@@ -29,7 +29,7 @@ const withRetry =
     (url: string, config?: AxiosRequestConfig) => {
         return instanceMethod(url, config).catch((error) => {
             if (error.response && error.response.status === 401) {
-                return instance.post('/user/refresh/').then(
+                return instance.post('/me/refresh/').then(
                     () => instanceMethod(url, config),
                     () => {
                         if (!window.location.pathname.startsWith('/login')) {
