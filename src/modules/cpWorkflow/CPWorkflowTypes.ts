@@ -1,4 +1,4 @@
-import { TaskCategory, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 type PositionT = {
     x: number;
@@ -15,7 +15,6 @@ export type TaskT = {
     rank: number;
     worker: string;
     status: TupleStatus;
-    category: TaskCategory;
     inputs: PlugT[];
     outputs: PlugT[];
 };
