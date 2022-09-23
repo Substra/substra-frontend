@@ -125,7 +125,7 @@ export const DrawerSectionCollapsibleEntry = ({
         >
             <HStack
                 spacing="2"
-                alignItems="flex-start"
+                alignItems="center"
                 cursor="pointer"
                 onClick={onToggle}
             >

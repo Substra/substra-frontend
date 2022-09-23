@@ -57,7 +57,7 @@ const inputIcon = (inputKind: AssetKindT): JSX.Element => {
         case AssetKindT.model:
             return (
                 <IconTag
-                    icon={RiCodepenLine} //RiCodepenLine?
+                    icon={RiCodepenLine}
                     backgroundColor="gray.100"
                     fill="gray.500"
                 />
@@ -65,13 +65,13 @@ const inputIcon = (inputKind: AssetKindT): JSX.Element => {
         case AssetKindT.performance:
             return (
                 <IconTag
-                    icon={RiLineChartFill} //RiCodepenLine?
+                    icon={RiLineChartFill}
                     backgroundColor="gray.100"
                     fill="gray.500"
                 />
             );
         default:
-            return <p>pas de logo</p>;
+            return <></>;
     }
 };
 
@@ -256,17 +256,17 @@ const TaskInputRepresentation = ({
                     variant="solid"
                     size="sm"
                 />
-                {(parentTasks[input.parent_task_key].status ===
+                {parentTasks[input.parent_task_key].status ===
                     TupleStatus.done && (
                     <TaskInputValueRepresentation
                         assetKind={assetKind}
                         input={input}
                     />
-                )) ||
-                    (parentTasks[input.parent_task_key].status ===
-                        TupleStatus.failed && <Text>N/A</Text>) || ( // TODO: come up with an icon + tooltip
-                        <Text>N/A</Text>
-                    )}
+                )}
+                {(parentTasks[input.parent_task_key].status ===
+                    TupleStatus.failed && <Text>N/A</Text>) || ( // TODO: come up with an icon + tooltip
+                    <Text>N/A</Text>
+                )}
             </HStack>
         );
     } else {
