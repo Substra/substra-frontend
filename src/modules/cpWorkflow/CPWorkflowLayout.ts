@@ -3,14 +3,12 @@ import {
     TaskGraphT,
     TaskT,
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 export const NODE_WIDTH = 250;
 export const NODE_HEIGHT = 119;
 
 const NODE_BOTTOM_MARGIN = 51; // Add margin to the node height avoid stacking nodes
 const ROW_BOTTOM_MARGIN = 30;
-const AGGREGATE_TASK_TOP_PADDING = 52;
 const CELL_WIDTH = NODE_WIDTH + 150;
 
 type TaskInCellT = {
@@ -167,12 +165,6 @@ function computeTasksRelativePositionInCell(
             taskRankInSecondaryBranch[task.taskRef.key];
         if (rankInSecondaryBranch) {
             task.relativeXInCell += rankInSecondaryBranch * 30;
-        }
-
-        if (task.taskRef.category === TaskCategory.aggregate) {
-            // Aggregatetuple are drawn with a little shifting on the y axis
-            // to avoid they are drawn on top of composite-to-composite edges of the same worker
-            task.relativeYInCell += AGGREGATE_TASK_TOP_PADDING;
         }
     }
 
