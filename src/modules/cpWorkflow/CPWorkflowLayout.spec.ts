@@ -17,7 +17,7 @@ const twoTasksGraph: TaskGraphT = {
             status: TupleStatus.done,
             category: TaskCategory.train,
             inputs: [],
-            outputs: ['out_model'],
+            outputs: [{ id: 'out_model', kind: 'model' }],
         },
         {
             key: 'b',
@@ -25,7 +25,7 @@ const twoTasksGraph: TaskGraphT = {
             worker: 'pharma2',
             status: TupleStatus.failed,
             category: TaskCategory.train,
-            inputs: ['in_model'],
+            inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [],
         },
     ],
@@ -52,7 +52,7 @@ const twoTasksLayoutedGraph: LayoutedTaskGraphT = {
             ...twoTasksGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
-                y: 200, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("1 task in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in second row")
+                y: 208, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("1 task in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in second row") + 8 ("uneven column top padding")
             },
         },
     ],
@@ -68,8 +68,8 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             worker: 'pharma1',
             status: TupleStatus.done,
             category: TaskCategory.predict,
-            inputs: ['in_model'],
-            outputs: ['out_model'],
+            inputs: [{ id: 'in_model', kind: 'model' }],
+            outputs: [{ id: 'out_model', kind: 'model' }],
         },
         {
             key: 'test_a',
@@ -77,8 +77,8 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             worker: 'pharma1',
             status: TupleStatus.done,
             category: TaskCategory.test,
-            inputs: ['in_model'],
-            outputs: [],
+            inputs: [{ id: 'in_model', kind: 'model' }],
+            outputs: [{ id: 'perf', kind: 'performance' }],
         },
     ],
     edges: [
@@ -111,7 +111,7 @@ const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
             ...twoTasksPlusPredictAndTestTupleGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
-                y: 540, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row")
+                y: 548, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row") + 8 ("uneven column top padding")
             },
         },
         {
@@ -141,7 +141,10 @@ const compositeAndAggregateGraph: TaskGraphT = {
             status: TupleStatus.done,
             category: TaskCategory.composite,
             inputs: [],
-            outputs: ['out_head_model', 'out_trunk_model'],
+            outputs: [
+                { id: 'out_head_model', kind: 'model' },
+                { id: 'out_trunk_model', kind: 'model' },
+            ],
         },
         {
             key: 'aggregate_a',
@@ -149,8 +152,8 @@ const compositeAndAggregateGraph: TaskGraphT = {
             worker: 'pharma1',
             status: TupleStatus.failed,
             category: TaskCategory.aggregate,
-            inputs: ['in_models'],
-            outputs: ['out_model'],
+            inputs: [{ id: 'in_models', kind: 'model' }],
+            outputs: [{ id: 'out_model', kind: 'model' }],
         },
         {
             key: 'composite_b',
@@ -158,7 +161,10 @@ const compositeAndAggregateGraph: TaskGraphT = {
             worker: 'pharma1',
             status: TupleStatus.done,
             category: TaskCategory.composite,
-            inputs: ['in_head_model', 'in_trunk_model'],
+            inputs: [
+                { id: 'in_head_model', kind: 'model' },
+                { id: 'in_trunk_model', kind: 'model' },
+            ],
             outputs: [],
         },
     ],
@@ -197,7 +203,7 @@ const compositeAndAggregateLAyoutedGraph: LayoutedTaskGraphT = {
             ...compositeAndAggregateGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
-                y: 52, // // 0 ("first task in the row") + AGGREGATE_TASK_TOP_PADDING
+                y: 8, // // 0 ("first task in the row") + 8 ("uneven column top padding")
             },
         },
         {
