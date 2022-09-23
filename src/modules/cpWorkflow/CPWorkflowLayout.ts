@@ -20,6 +20,7 @@ type TaskInCellT = {
 type GridCellT = {
     tasks: TaskInCellT[];
     x: number;
+    y: number;
 };
 
 type GridRowT = {
@@ -46,9 +47,10 @@ function initEmptyGrid(workerNamesInYOrder: string[], maxRank: number) {
     for (const workerName of workerNamesInYOrder) {
         grid.rows[workerName] = {
             maxNbTasksInACell: 0,
-            cells: Array.from({ length: maxRank + 1 }, () => ({
+            cells: Array.from({ length: maxRank + 1 }, (_, index) => ({
                 tasks: [],
                 x: 0,
+                y: (index % 2) * 8, // Add a small vertical padding every 2 column to help avoiding some edges to overlap
             })),
             y: 0,
             height: 0,
@@ -312,7 +314,7 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
             ...task,
             position: {
                 x: cell.x + (taskInCell as TaskInCellT).relativeXInCell,
-                y: row.y + (taskInCell as TaskInCellT).relativeYInCell,
+                y: row.y + cell.y + (taskInCell as TaskInCellT).relativeYInCell,
             },
         };
     });
