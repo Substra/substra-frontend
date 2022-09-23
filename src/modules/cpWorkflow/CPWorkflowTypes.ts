@@ -6,8 +6,8 @@ type PositionT = {
 };
 
 type PlugT = {
-    id: 'string';
-    kind: 'string';
+    id: string;
+    kind: string;
 };
 
 export type TaskT = {
