@@ -7,7 +7,7 @@ import {
 export const NODE_WIDTH = 250;
 export const NODE_HEIGHT = 119;
 
-const NODE_BOTTOM_MARGIN = 51; // Add margin to the node height avoid stacking nodes
+const NODE_BOTTOM_MARGIN = 71; // Add margin to the node height avoid stacking nodes
 const ROW_BOTTOM_MARGIN = 30;
 const CELL_WIDTH = NODE_WIDTH + 150;
 
@@ -189,7 +189,7 @@ function findSecondaryBranches(
         );
         return (
             outputKinds.size === 1 &&
-            outputKinds.values().next().value === 'performance'
+            outputKinds.values().next().value === 'ASSET_PERFORMANCE'
         );
     }
 
@@ -210,7 +210,7 @@ function findSecondaryBranches(
         );
         if (parents.length === 0) {
             // The secondary branch is not connected to the rest of the workflow
-            // Let us not tune the layout for this specific case
+            // Let us not tune the layout for this specific case. Could be a single train task chain
             return null;
         } else if (parents.length === 1) {
             const parent = parents[0];
@@ -279,7 +279,12 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
         const parentTask = taskKeyToTaskMap[edge.source_task_key];
 
         const parentTasks = taskKeyToParentTasksMap[targetTaskKey] ?? [];
-        taskKeyToParentTasksMap[targetTaskKey] = [...parentTasks, parentTask];
+        if (!parentTasks.includes(parentTask)) {
+            taskKeyToParentTasksMap[targetTaskKey] = [
+                ...parentTasks,
+                parentTask,
+            ];
+        }
     }
 
     const taskRankInSecondaryBranch = findSecondaryBranches(
