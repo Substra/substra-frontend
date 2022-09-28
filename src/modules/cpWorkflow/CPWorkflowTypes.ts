@@ -5,14 +5,19 @@ type PositionT = {
     y: number;
 };
 
+type PlugT = {
+    id: string;
+    kind: string;
+};
+
 export type TaskT = {
     key: string;
     rank: number;
     worker: string;
     status: TupleStatus;
     category: TaskCategory;
-    inputs: string[];
-    outputs: string[];
+    inputs: PlugT[];
+    outputs: PlugT[];
 };
 
 export type PositionedTaskT = TaskT & {

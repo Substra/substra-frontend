@@ -3,17 +3,13 @@ import {
     TaskGraphT,
     TaskT,
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 
 export const NODE_WIDTH = 250;
 export const NODE_HEIGHT = 119;
 
 const NODE_BOTTOM_MARGIN = 51; // Add margin to the node height avoid stacking nodes
 const ROW_BOTTOM_MARGIN = 30;
-const PREDICT_TASK_LEFT_PADDING = 30;
-const TEST_TASK_LEFT_PADDING = 60;
-const AGGREGATE_TASK_TOP_PADDING = 52;
-const CELL_WIDTH = NODE_WIDTH + TEST_TASK_LEFT_PADDING + 90;
+const CELL_WIDTH = NODE_WIDTH + 150;
 
 type TaskInCellT = {
     taskRef: TaskT;
@@ -24,6 +20,7 @@ type TaskInCellT = {
 type GridCellT = {
     tasks: TaskInCellT[];
     x: number;
+    y: number;
 };
 
 type GridRowT = {
@@ -50,9 +47,10 @@ function initEmptyGrid(workerNamesInYOrder: string[], maxRank: number) {
     for (const workerName of workerNamesInYOrder) {
         grid.rows[workerName] = {
             maxNbTasksInACell: 0,
-            cells: Array.from({ length: maxRank + 1 }, () => ({
+            cells: Array.from({ length: maxRank + 1 }, (_, index) => ({
                 tasks: [],
                 x: 0,
+                y: (index % 2) * 8, // Add a small vertical padding every 2 column to help avoiding some edges to overlap
             })),
             y: 0,
             height: 0,
@@ -61,22 +59,26 @@ function initEmptyGrid(workerNamesInYOrder: string[], maxRank: number) {
     return grid;
 }
 
-function getColumnIndex(task: TaskT) {
-    let correctedRank: number;
-    if (task.category === TaskCategory.predict) {
-        correctedRank = task.rank - 1;
-    } else if (task.category === TaskCategory.test) {
-        correctedRank = task.rank - 2;
-    } else {
-        correctedRank = task.rank;
-    }
+function getColumnIndex(
+    task: TaskT,
+    taskRankInSecondaryBranch: { [task_key: string]: number }
+) {
+    const correctedRank: number =
+        task.rank - (taskRankInSecondaryBranch[task.key] ?? 0);
     return Math.max(0, correctedRank);
 }
 
-function addTasksToGrid(grid: GridT, tasks: TaskT[]) {
+function addTasksToGrid(
+    grid: GridT,
+    tasks: TaskT[],
+    taskRankInSecondaryBranch: { [task_key: string]: number }
+) {
     // Assign tasks to their cell
     for (const task of tasks) {
-        const cell = grid.rows[task.worker].cells[getColumnIndex(task)];
+        const cell =
+            grid.rows[task.worker].cells[
+                getColumnIndex(task, taskRankInSecondaryBranch)
+            ];
         cell.tasks.push({
             taskRef: task,
             relativeXInCell: 0,
@@ -121,21 +123,10 @@ function computeCellsX(rows: RowsT) {
     }
 }
 
-function orderTasksInEachCell(rows: RowsT, graph: TaskGraphT) {
-    const taskKeyToTaskMap: { [task_key: string]: TaskT } = {};
-    for (const task of graph.tasks) {
-        taskKeyToTaskMap[task.key] = task;
-    }
-
-    const taskKeyToParentTasksMap: { [task_key: string]: TaskT[] } = {};
-    for (const edge of graph.edges) {
-        const targetTaskKey = edge.target_task_key;
-        const parentTask = taskKeyToTaskMap[edge.source_task_key];
-
-        const parentTasks = taskKeyToParentTasksMap[targetTaskKey] ?? [];
-        taskKeyToParentTasksMap[targetTaskKey] = [...parentTasks, parentTask];
-    }
-
+function orderTasksInEachCell(
+    rows: RowsT,
+    taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
+) {
     for (const row of Object.values(rows)) {
         for (const cell of row.cells) {
             cell.tasks.sort((firstTask, secondTask) => {
@@ -160,7 +151,10 @@ function orderTasksInEachCell(rows: RowsT, graph: TaskGraphT) {
     }
 }
 
-function computeTasksRelativePositionInCell(rows: RowsT) {
+function computeTasksRelativePositionInCell(
+    rows: RowsT,
+    taskRankInSecondaryBranch: { [task_key: string]: number }
+) {
     function computeTaskRelativePositionInCell(
         task: TaskInCellT,
         cell: GridCellT
@@ -169,19 +163,10 @@ function computeTasksRelativePositionInCell(rows: RowsT) {
         task.relativeYInCell =
             cell.tasks.indexOf(task) * (NODE_HEIGHT + NODE_BOTTOM_MARGIN);
 
-        if (task.taskRef.category === TaskCategory.test) {
-            // Testtuples are drawn with a little shifting on the x axis
-            // to symbolize they are executed after the other tasks of the same rank
-            task.relativeXInCell += TEST_TASK_LEFT_PADDING;
-        }
-        if (task.taskRef.category === TaskCategory.predict) {
-            // Same as Testtuples
-            task.relativeXInCell += PREDICT_TASK_LEFT_PADDING;
-        }
-        if (task.taskRef.category === TaskCategory.aggregate) {
-            // Aggregatetuple are drawn with a little shifting on the y axis
-            // to avoid they are drawn on top of composite-to-composite edges of the same worker
-            task.relativeYInCell += AGGREGATE_TASK_TOP_PADDING;
+        const rankInSecondaryBranch =
+            taskRankInSecondaryBranch[task.taskRef.key];
+        if (rankInSecondaryBranch) {
+            task.relativeXInCell += rankInSecondaryBranch * 30;
         }
     }
 
@@ -194,27 +179,133 @@ function computeTasksRelativePositionInCell(rows: RowsT) {
     }
 }
 
+function findSecondaryBranches(
+    graph: TaskGraphT,
+    taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
+): { [task_key: string]: number } {
+    function producesOnlyPerformances(task: TaskT) {
+        const outputKinds = new Set(
+            Object.values(task.outputs).map((output) => output.kind)
+        );
+        return (
+            outputKinds.size === 1 &&
+            outputKinds.values().next().value === 'performance'
+        );
+    }
+
+    function computeNbOfChildren(graph: TaskGraphT, task: TaskT) {
+        return graph.edges.filter((edge) => edge.source_task_key === task.key)
+            .length;
+    }
+
+    // Recusrsive function to walk through parent tasks as long as it is a linear chain to find the secondary branch
+    function recFindSecondaryBranch(
+        task: TaskT,
+        graph: TaskGraphT,
+        taskKeyToParentTasksMap: { [task_key: string]: TaskT[] },
+        tasksInSecondaryBranches: { [task_key: string]: number }
+    ) {
+        const parents: TaskT[] = Object.values(
+            taskKeyToParentTasksMap[task.key]
+        );
+        if (parents.length === 0) {
+            // The secondary branch is not connected to the rest of the workflow
+            // Let us not tune the layout for this specific case
+            return null;
+        } else if (parents.length === 1) {
+            const parent = parents[0];
+
+            if (computeNbOfChildren(graph, parent) === 1) {
+                // The parent has no other child than this task, it is part of the secondary branch
+                // We recursively continue to walk through its parents
+                const parentRankInSecondaryBranch = recFindSecondaryBranch(
+                    parent,
+                    graph,
+                    taskKeyToParentTasksMap,
+                    tasksInSecondaryBranches
+                );
+                if (parentRankInSecondaryBranch !== null) {
+                    tasksInSecondaryBranches[task.key] =
+                        parentRankInSecondaryBranch + 1;
+                    return tasksInSecondaryBranches[task.key];
+                } else {
+                    return null;
+                }
+            } else {
+                // The parent has other children so it is the point where the secondary branch starts
+                // The task is first in the secondary branch
+                tasksInSecondaryBranches[task.key] = 1;
+                return tasksInSecondaryBranches[task.key];
+            }
+        } else {
+            // The task has several parents so it is not in the secondary branch
+            return 0;
+        }
+    }
+
+    const taskRanksInSecondaryBranch: { [task_key: string]: number } = {};
+
+    const endOfSecondaryBranches = graph.tasks.filter((task) => {
+        return (
+            computeNbOfChildren(graph, task) === 0 &&
+            producesOnlyPerformances(task)
+        );
+    });
+
+    for (const task of endOfSecondaryBranches) {
+        recFindSecondaryBranch(
+            task,
+            graph,
+            taskKeyToParentTasksMap,
+            taskRanksInSecondaryBranch
+        );
+    }
+
+    return taskRanksInSecondaryBranch;
+}
+
 export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
     const workerNames = [...new Set(graph.tasks.map((task) => task.worker))];
     workerNames.sort();
 
+    const taskKeyToTaskMap: { [task_key: string]: TaskT } = {};
+    for (const task of graph.tasks) {
+        taskKeyToTaskMap[task.key] = task;
+    }
+
+    const taskKeyToParentTasksMap: { [task_key: string]: TaskT[] } = {};
+    for (const edge of graph.edges) {
+        const targetTaskKey = edge.target_task_key;
+        const parentTask = taskKeyToTaskMap[edge.source_task_key];
+
+        const parentTasks = taskKeyToParentTasksMap[targetTaskKey] ?? [];
+        taskKeyToParentTasksMap[targetTaskKey] = [...parentTasks, parentTask];
+    }
+
+    const taskRankInSecondaryBranch = findSecondaryBranches(
+        graph,
+        taskKeyToParentTasksMap
+    );
+
     const maxRank = Math.max(
-        ...graph.tasks.map((task) => getColumnIndex(task))
+        ...graph.tasks.map((task) =>
+            getColumnIndex(task, taskRankInSecondaryBranch)
+        )
     );
 
     const grid: GridT = initEmptyGrid(workerNames, maxRank);
-    addTasksToGrid(grid, graph.tasks);
+    addTasksToGrid(grid, graph.tasks, taskRankInSecondaryBranch);
 
     computeRowsHeight(grid.rows);
     computeRowsY(grid);
     computeCellsX(grid.rows);
 
-    orderTasksInEachCell(grid.rows, graph);
-    computeTasksRelativePositionInCell(grid.rows);
+    orderTasksInEachCell(grid.rows, taskKeyToParentTasksMap);
+    computeTasksRelativePositionInCell(grid.rows, taskRankInSecondaryBranch);
 
     const positionedTasks = graph.tasks.map((task) => {
         const row = grid.rows[task.worker];
-        const cell = row.cells[getColumnIndex(task)];
+        const cell = row.cells[getColumnIndex(task, taskRankInSecondaryBranch)];
         const taskInCell = cell.tasks.find((taskInCell) => {
             return taskInCell.taskRef.key === task.key;
         });
@@ -223,7 +314,7 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
             ...task,
             position: {
                 x: cell.x + (taskInCell as TaskInCellT).relativeXInCell,
-                y: row.y + (taskInCell as TaskInCellT).relativeYInCell,
+                y: row.y + cell.y + (taskInCell as TaskInCellT).relativeYInCell,
             },
         };
     });
