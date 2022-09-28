@@ -75,7 +75,9 @@ const UpdateUserForm = ({
 
             toast({
                 title: `User updated`,
-                description: `${user.username} was successfully updated!`,
+                descriptionComponent: () => (
+                    <Text>{user.username} was successfully updated!</Text>
+                ),
                 status: 'success',
                 isClosable: true,
             });
