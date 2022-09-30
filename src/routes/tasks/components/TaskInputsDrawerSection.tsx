@@ -385,15 +385,19 @@ const TaskInputsDrawerSection = ({
                     ([
                         identifier,
                         { algoInput: algoInput, inputs: inputs },
-                    ]) => (
-                        <TaskInputSectionEntry
-                            key={identifier}
-                            identifier={identifier}
-                            algoInput={algoInput}
-                            inputs={inputs}
-                            parentTasks={parentTasks}
-                        />
-                    )
+                    ]) => {
+                        if (inputs.length > 0) {
+                            return (
+                                <TaskInputSectionEntry
+                                    key={identifier}
+                                    identifier={identifier}
+                                    algoInput={algoInput}
+                                    inputs={inputs}
+                                    parentTasks={parentTasks}
+                                />
+                            );
+                        }
+                    }
                 )}
         </DrawerSection>
     );
