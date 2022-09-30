@@ -1,5 +1,5 @@
 import { computeLayout } from '@/modules/cpWorkflow/CPWorkflowLayout';
-import { TaskCategory, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { LayoutedTaskGraphT, TaskGraphT } from './CPWorkflowTypes';
 
@@ -15,7 +15,6 @@ const twoTasksGraph: TaskGraphT = {
             rank: 0,
             worker: 'pharma1',
             status: TupleStatus.done,
-            category: TaskCategory.train,
             inputs: [],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -24,7 +23,6 @@ const twoTasksGraph: TaskGraphT = {
             rank: 1,
             worker: 'pharma2',
             status: TupleStatus.failed,
-            category: TaskCategory.train,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [],
         },
@@ -67,7 +65,6 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             rank: 1,
             worker: 'pharma1',
             status: TupleStatus.done,
-            category: TaskCategory.predict,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -76,7 +73,6 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
-            category: TaskCategory.test,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [{ id: 'perf', kind: 'performance' }],
         },
@@ -139,7 +135,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             rank: 0,
             worker: 'pharma1',
             status: TupleStatus.done,
-            category: TaskCategory.composite,
             inputs: [],
             outputs: [
                 { id: 'out_head_model', kind: 'model' },
@@ -151,7 +146,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             rank: 1,
             worker: 'pharma1',
             status: TupleStatus.failed,
-            category: TaskCategory.aggregate,
             inputs: [{ id: 'in_models', kind: 'model' }],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -160,7 +154,6 @@ const compositeAndAggregateGraph: TaskGraphT = {
             rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
-            category: TaskCategory.composite,
             inputs: [
                 { id: 'in_head_model', kind: 'model' },
                 { id: 'in_trunk_model', kind: 'model' },

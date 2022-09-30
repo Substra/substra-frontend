@@ -9,13 +9,7 @@ import {
     ComputePlanStatisticsT,
     PerformanceT,
 } from '@/modules/perf/PerformancesTypes';
-import {
-    AggregatetupleT,
-    CompositeTraintupleStubT,
-    PredicttupleT,
-    TesttupleStubT,
-    TraintupleStubT,
-} from '@/modules/tasks/TuplesTypes';
+import { TupleT } from '@/modules/tasks/TuplesTypes';
 
 import { ComputePlanStubT, ComputePlanT } from './ComputePlansTypes';
 
@@ -23,11 +17,7 @@ const URLS = {
     LIST: '/compute_plan/',
     RETRIEVE: '/compute_plan/__KEY__/',
     CANCEL: '/compute_plan/__KEY__/cancel/',
-    LIST_TESTTUPLES: '/compute_plan/__KEY__/testtuple/',
-    LIST_TRAINTUPLES: '/compute_plan/__KEY__/traintuple/',
-    LIST_COMPOSITE_TRAINTUPLES: '/compute_plan/__KEY__/composite_traintuple/',
-    LIST_AGGREGATETUPLES: '/compute_plan/__KEY__/aggregatetuple/',
-    LIST_PREDICTTUPLES: '/compute_plan/__KEY__/predicttuple/',
+    LIST_TUPLES: '/compute_plan/__KEY__/task/',
     LIST_PERFORMANCES: '/compute_plan/__KEY__/perf/',
     EXPORT_PERFORMANCES: '/performance/export/',
 };
@@ -60,60 +50,14 @@ type APIListCPTuplesArgsProps = APIListArgsT & {
     key: string;
 };
 
-export const listComputePlanTesttuples = (
+export const listComputePlanTuples = (
     { key, ...apiListArgs }: APIListCPTuplesArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<TesttupleStubT>> => {
-    return API.authenticatedGet(URLS.LIST_TESTTUPLES.replace('__KEY__', key), {
+): AxiosPromise<PaginatedApiResponseT<TupleT>> => {
+    return API.authenticatedGet(URLS.LIST_TUPLES.replace('__KEY__', key), {
         ...getApiOptions(apiListArgs),
         ...config,
     });
-};
-export const listComputePlanTraintuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
-    config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<TraintupleStubT>> => {
-    return API.authenticatedGet(URLS.LIST_TRAINTUPLES.replace('__KEY__', key), {
-        ...getApiOptions(apiListArgs),
-        ...config,
-    });
-};
-export const listComputePlanCompositeTraintuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
-    config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<CompositeTraintupleStubT>> => {
-    return API.authenticatedGet(
-        URLS.LIST_COMPOSITE_TRAINTUPLES.replace('__KEY__', key),
-        {
-            ...getApiOptions(apiListArgs),
-            ...config,
-        }
-    );
-};
-export const listComputePlanAggregatetuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
-    config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<AggregatetupleT>> => {
-    return API.authenticatedGet(
-        URLS.LIST_AGGREGATETUPLES.replace('__KEY__', key),
-        {
-            ...getApiOptions(apiListArgs),
-            ...config,
-        }
-    );
-};
-
-export const listComputePlanPredicttuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
-    config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<PredicttupleT>> => {
-    return API.authenticatedGet(
-        URLS.LIST_PREDICTTUPLES.replace('__KEY__', key),
-        {
-            ...getApiOptions(apiListArgs),
-            ...config,
-        }
-    );
 };
 
 type PaginatedPerformanceResponseT = PaginatedApiResponseT<PerformanceT> & {

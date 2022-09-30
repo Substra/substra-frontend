@@ -9,12 +9,8 @@ const ASSET_LABEL: Record<AssetT, string> = {
     dataset: 'dataset',
     composite_algo: 'algorithm',
     aggregate_algo: 'algorithm',
-    testtuple: 'test task',
-    traintuple: 'train task',
-    composite_traintuple: 'composite train task',
-    aggregatetuple: 'aggregate task',
+    tuple: 'task',
     compute_plan: 'compute plan',
-    predicttuple: 'predict task',
     user: 'user',
 };
 

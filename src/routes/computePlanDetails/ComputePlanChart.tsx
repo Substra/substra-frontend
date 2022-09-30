@@ -12,7 +12,6 @@ import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { retrieveComputePlan } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { loadSeries } from '@/modules/series/SeriesSlice';
-import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
@@ -40,7 +39,6 @@ const ComputePlanChart = (): JSX.Element => {
         ) {
             const url = compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                 key: computePlan?.key,
-                category: TASK_CATEGORY_SLUGS[TaskCategory.test],
             });
             setLocation(url);
         }

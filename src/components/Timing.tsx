@@ -5,10 +5,10 @@ import {
     ComputePlanStatus,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
-import { AnyTupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 type TimingProps = {
-    asset: ComputePlanT | AnyTupleT;
+    asset: ComputePlanT | TupleT;
 };
 
 const Timing = ({ asset }: TimingProps): JSX.Element => {

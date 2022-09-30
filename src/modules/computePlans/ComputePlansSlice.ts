@@ -8,13 +8,7 @@ import {
     ComputePlanStubT,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
-import {
-    AggregatetupleT,
-    CompositeTraintupleStubT,
-    PredicttupleT,
-    TesttupleStubT,
-    TraintupleStubT,
-} from '@/modules/tasks/TuplesTypes';
+import { TupleT } from '@/modules/tasks/TuplesTypes';
 
 type ComputePlansStateT = {
     computePlans: ComputePlanStubT[];
@@ -27,26 +21,10 @@ type ComputePlansStateT = {
     computePlanError: string;
     computePlanUpdating: boolean;
     computePlanUpdateError: string;
-    computePlanTrainTasks: TraintupleStubT[];
-    computePlanTrainTasksCount: number;
-    computePlanTrainTasksLoading: boolean;
-    computePlanTrainTasksError: string;
-    computePlanTestTasks: TesttupleStubT[];
-    computePlanTestTasksCount: number;
-    computePlanTestTasksLoading: boolean;
-    computePlanTestTasksError: string;
-    computePlanAggregateTasks: AggregatetupleT[];
-    computePlanAggregateTasksCount: number;
-    computePlanAggregateTasksLoading: boolean;
-    computePlanAggregateTasksError: string;
-    computePlanCompositeTasks: CompositeTraintupleStubT[];
-    computePlanCompositeTasksCount: number;
-    computePlanCompositeTasksLoading: boolean;
-    computePlanCompositeTasksError: string;
-    computePlanPredictTasks: PredicttupleT[];
-    computePlanPredictTasksCount: number;
-    computePlanPredictTasksLoading: boolean;
-    computePlanPredictTasksError: string;
+    computePlanTasks: TupleT[];
+    computePlanTasksCount: number;
+    computePlanTasksLoading: boolean;
+    computePlanTasksError: string;
 };
 
 const initialState: ComputePlansStateT = {
@@ -60,26 +38,10 @@ const initialState: ComputePlansStateT = {
     computePlan: null,
     computePlanUpdating: false,
     computePlanUpdateError: '',
-    computePlanTrainTasks: [],
-    computePlanTrainTasksCount: 0,
-    computePlanTrainTasksLoading: true,
-    computePlanTrainTasksError: '',
-    computePlanTestTasks: [],
-    computePlanTestTasksCount: 0,
-    computePlanTestTasksLoading: true,
-    computePlanTestTasksError: '',
-    computePlanAggregateTasks: [],
-    computePlanAggregateTasksCount: 0,
-    computePlanAggregateTasksLoading: true,
-    computePlanAggregateTasksError: '',
-    computePlanCompositeTasks: [],
-    computePlanCompositeTasksCount: 0,
-    computePlanCompositeTasksLoading: true,
-    computePlanCompositeTasksError: '',
-    computePlanPredictTasks: [],
-    computePlanPredictTasksCount: 0,
-    computePlanPredictTasksLoading: true,
-    computePlanPredictTasksError: '',
+    computePlanTasks: [],
+    computePlanTasksCount: 0,
+    computePlanTasksLoading: true,
+    computePlanTasksError: '',
 };
 
 type ListComputePlansArgsProps = {
@@ -137,137 +99,28 @@ export type RetrieveComputePlanTasksArgsProps = {
     [param: string]: unknown;
 };
 
-export const retrieveComputePlanTrainTasks = createAsyncThunk<
-    PaginatedApiResponseT<TraintupleStubT>,
+export const retrieveComputePlanTasks = createAsyncThunk<
+    PaginatedApiResponseT<TupleT>,
     RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
->(
-    'computePlans/getTrainTasks',
-    async ({ computePlanKey, ...params }, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.listComputePlanTraintuples(
-                {
-                    key: computePlanKey,
-                    ...params,
-                },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
+>('computePlans/getTasks', async ({ computePlanKey, ...params }, thunkAPI) => {
+    try {
+        const response = await ComputePlansApi.listComputePlanTuples(
+            {
+                key: computePlanKey,
+                ...params,
+            },
+            { signal: thunkAPI.signal }
+        );
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
         }
     }
-);
-
-export const retrieveComputePlanTestTasks = createAsyncThunk<
-    PaginatedApiResponseT<TesttupleStubT>,
-    RetrieveComputePlanTasksArgsProps,
-    { rejectValue: string }
->(
-    'computePlans/getTestTasks',
-    async ({ computePlanKey, ...params }, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.listComputePlanTesttuples(
-                {
-                    key: computePlanKey,
-                    ...params,
-                },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
-        }
-    }
-);
-
-export const retrieveComputePlanAggregateTasks = createAsyncThunk<
-    PaginatedApiResponseT<AggregatetupleT>,
-    RetrieveComputePlanTasksArgsProps,
-    { rejectValue: string }
->(
-    'computePlans/getAggregateTasks',
-    async ({ computePlanKey, ...params }, thunkAPI) => {
-        try {
-            const response =
-                await ComputePlansApi.listComputePlanAggregatetuples(
-                    {
-                        key: computePlanKey,
-                        ...params,
-                    },
-                    { signal: thunkAPI.signal }
-                );
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
-        }
-    }
-);
-
-export const retrieveComputePlanCompositeTasks = createAsyncThunk<
-    PaginatedApiResponseT<CompositeTraintupleStubT>,
-    RetrieveComputePlanTasksArgsProps,
-    { rejectValue: string }
->(
-    'computePlans/getCompositeTasks',
-    async ({ computePlanKey, ...params }, thunkAPI) => {
-        try {
-            const response =
-                await ComputePlansApi.listComputePlanCompositeTraintuples(
-                    {
-                        key: computePlanKey,
-                        ...params,
-                    },
-                    { signal: thunkAPI.signal }
-                );
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
-        }
-    }
-);
-
-export const retrieveComputePlanPredictTasks = createAsyncThunk<
-    PaginatedApiResponseT<PredicttupleT>,
-    RetrieveComputePlanTasksArgsProps,
-    { rejectValue: string }
->(
-    'computePlans/getPredictTasks',
-    async ({ computePlanKey, ...params }, thunkAPI) => {
-        try {
-            const response = await ComputePlansApi.listComputePlanPredicttuples(
-                {
-                    key: computePlanKey,
-                    ...params,
-                },
-                { signal: thunkAPI.signal }
-            );
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                return thunkAPI.rejectWithValue(error.response?.data);
-            } else {
-                throw error;
-            }
-        }
-    }
-);
+});
 
 export const updateComputePlan = createAsyncThunk<
     ComputePlanT,
@@ -331,10 +184,7 @@ const computePlansSlice = createSlice({
                 state.computePlanLoading = true;
                 state.computePlanError = '';
                 state.computePlan = null;
-                state.computePlanTrainTasks = [];
-                state.computePlanTestTasks = [];
-                state.computePlanAggregateTasks = [];
-                state.computePlanAggregateTasks = [];
+                state.computePlanTasks = [];
             })
             .addCase(retrieveComputePlan.fulfilled, (state, { payload }) => {
                 state.computePlan = payload;
@@ -345,132 +195,28 @@ const computePlansSlice = createSlice({
                 state.computePlanLoading = false;
                 state.computePlanError = payload || 'Unknown error';
             })
-            .addCase(retrieveComputePlanTrainTasks.pending, (state) => {
-                state.computePlanTrainTasksLoading = true;
-                state.computePlanTrainTasksError = '';
-                state.computePlanTrainTasks = [];
+            .addCase(retrieveComputePlanTasks.pending, (state) => {
+                state.computePlanTasksLoading = true;
+                state.computePlanTasksError = '';
+                state.computePlanTasks = [];
             })
             .addCase(
-                retrieveComputePlanTrainTasks.fulfilled,
+                retrieveComputePlanTasks.fulfilled,
                 (state, { payload }) => {
-                    state.computePlanTrainTasks = payload.results;
-                    state.computePlanTrainTasksCount = payload.count;
-                    state.computePlanTrainTasksLoading = false;
-                    state.computePlanTrainTasksError = '';
+                    state.computePlanTasks = payload.results;
+                    state.computePlanTasksCount = payload.count;
+                    state.computePlanTasksLoading = false;
+                    state.computePlanTasksError = '';
                 }
             )
             .addCase(
-                retrieveComputePlanTrainTasks.rejected,
+                retrieveComputePlanTasks.rejected,
                 (state, { payload, error }) => {
                     if (error.name !== 'AbortError') {
-                        state.computePlanTrainTasks = [];
-                        state.computePlanTrainTasksCount = 0;
-                        state.computePlanTrainTasksLoading = false;
-                        state.computePlanTrainTasksError =
-                            payload || 'Unknown error';
-                    }
-                }
-            )
-            .addCase(retrieveComputePlanTestTasks.pending, (state) => {
-                state.computePlanTestTasksLoading = true;
-                state.computePlanTestTasksError = '';
-                state.computePlanTestTasks = [];
-            })
-            .addCase(
-                retrieveComputePlanTestTasks.fulfilled,
-                (state, { payload }) => {
-                    state.computePlanTestTasks = payload.results;
-                    state.computePlanTestTasksCount = payload.count;
-                    state.computePlanTestTasksLoading = false;
-                    state.computePlanTestTasksError = '';
-                }
-            )
-            .addCase(
-                retrieveComputePlanTestTasks.rejected,
-                (state, { payload, error }) => {
-                    if (error.name !== 'AbortError') {
-                        state.computePlanTestTasks = [];
-                        state.computePlanTestTasksCount = 0;
-                        state.computePlanTestTasksLoading = false;
-                        state.computePlanTestTasksError =
-                            payload || 'Unknown error';
-                    }
-                }
-            )
-            .addCase(retrieveComputePlanAggregateTasks.pending, (state) => {
-                state.computePlanAggregateTasksLoading = true;
-                state.computePlanAggregateTasksError = '';
-                state.computePlanAggregateTasks = [];
-            })
-            .addCase(
-                retrieveComputePlanAggregateTasks.fulfilled,
-                (state, { payload }) => {
-                    state.computePlanAggregateTasks = payload.results;
-                    state.computePlanAggregateTasksCount = payload.count;
-                    state.computePlanAggregateTasksLoading = false;
-                    state.computePlanAggregateTasksError = '';
-                }
-            )
-            .addCase(
-                retrieveComputePlanAggregateTasks.rejected,
-                (state, { payload, error }) => {
-                    if (error.name !== 'AbortError') {
-                        state.computePlanAggregateTasks = [];
-                        state.computePlanAggregateTasksCount = 0;
-                        state.computePlanAggregateTasksLoading = false;
-                        state.computePlanAggregateTasksError =
-                            payload || 'Unknown error';
-                    }
-                }
-            )
-            .addCase(retrieveComputePlanCompositeTasks.pending, (state) => {
-                state.computePlanCompositeTasksLoading = true;
-                state.computePlanCompositeTasksError = '';
-                state.computePlanCompositeTasks = [];
-            })
-            .addCase(
-                retrieveComputePlanCompositeTasks.fulfilled,
-                (state, { payload }) => {
-                    state.computePlanCompositeTasks = payload.results;
-                    state.computePlanCompositeTasksCount = payload.count;
-                    state.computePlanCompositeTasksLoading = false;
-                    state.computePlanCompositeTasksError = '';
-                }
-            )
-            .addCase(
-                retrieveComputePlanCompositeTasks.rejected,
-                (state, { payload, error }) => {
-                    if (error.name !== 'AbortError') {
-                        state.computePlanCompositeTasks = [];
-                        state.computePlanCompositeTasksCount = 0;
-                        state.computePlanCompositeTasksLoading = false;
-                        state.computePlanCompositeTasksError =
-                            payload || 'Unknown error';
-                    }
-                }
-            )
-            .addCase(retrieveComputePlanPredictTasks.pending, (state) => {
-                state.computePlanPredictTasksLoading = true;
-                state.computePlanPredictTasksError = '';
-                state.computePlanPredictTasks = [];
-            })
-            .addCase(
-                retrieveComputePlanPredictTasks.fulfilled,
-                (state, { payload }) => {
-                    state.computePlanPredictTasks = payload.results;
-                    state.computePlanPredictTasksCount = payload.count;
-                    state.computePlanPredictTasksLoading = false;
-                    state.computePlanPredictTasksError = '';
-                }
-            )
-            .addCase(
-                retrieveComputePlanPredictTasks.rejected,
-                (state, { payload, error }) => {
-                    if (error.name !== 'AbortError') {
-                        state.computePlanPredictTasks = [];
-                        state.computePlanPredictTasksCount = 0;
-                        state.computePlanPredictTasksLoading = false;
-                        state.computePlanPredictTasksError =
+                        state.computePlanTasks = [];
+                        state.computePlanTasksCount = 0;
+                        state.computePlanTasksLoading = false;
+                        state.computePlanTasksError =
                             payload || 'Unknown error';
                     }
                 }

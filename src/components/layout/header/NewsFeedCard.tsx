@@ -26,7 +26,6 @@ import {
     NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
-import { TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 type NewsFeedCardProps = {
@@ -70,11 +69,11 @@ const taskMetadata: TaskMetadataT = {
 };
 
 const COMPUTE_PLAN_STATUS_PATH: Record<NewsItemStatus, string> = {
-    STATUS_CREATED: PATHS.COMPUTE_PLAN_TASKS_ROOT,
-    STATUS_DOING: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+    STATUS_CREATED: PATHS.COMPUTE_PLAN_TASKS,
+    STATUS_DOING: PATHS.COMPUTE_PLAN_TASKS,
     STATUS_DONE: PATHS.COMPUTE_PLAN_CHART,
     STATUS_FAILED: PATHS.COMPUTE_PLAN_TASK,
-    STATUS_CANCELED: PATHS.COMPUTE_PLAN_TASKS_ROOT,
+    STATUS_CANCELED: PATHS.COMPUTE_PLAN_TASKS,
 };
 const NON_CP_PATH: Record<
     Exclude<NewsItemAssetKind, NewsItemAssetKind.computePlan>,
@@ -100,7 +99,6 @@ const getItemHref = (newsItem: NewsItemT): string => {
         return compilePath(path, {
             key: newsItem.asset_key,
             taskKey: newsItem.detail.first_failed_task_key || '',
-            category: TASK_CATEGORY_SLUGS[newsItem.detail.task_category] || '',
         });
     }
 

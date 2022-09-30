@@ -17,7 +17,6 @@ import {
     NewsItemT,
 } from '@/modules/newsFeed/NewsFeedTypes';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
-import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 const buildToastDescription =
@@ -33,7 +32,6 @@ const buildToastDescription =
                     setLocation(
                         compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                             key: news.asset_key,
-                            category: TASK_CATEGORY_SLUGS[TaskCategory.test],
                         })
                     );
                     onClose();

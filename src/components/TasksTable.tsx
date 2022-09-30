@@ -11,23 +11,14 @@ import {
     Td,
     Box,
     Text,
-    Tabs,
-    TabList,
-    Tab,
     Skeleton,
     HStack,
-    Icon,
     Link as ChakraLink,
     TableProps,
 } from '@chakra-ui/react';
-import { RiAlertLine } from 'react-icons/ri';
 
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import {
-    useLocationWithParams,
-    useSetLocationPreserveParams,
-    getUrlSearchParams,
-} from '@/hooks/useLocationWithParams';
+import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
     useDuration,
@@ -47,13 +38,7 @@ import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import { RetrieveComputePlanTasksArgsProps } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { ListTasksProps } from '@/modules/tasks/TasksSlice';
-import { getTaskCategory } from '@/modules/tasks/TasksUtils';
-import {
-    AnyTupleT,
-    TupleStatus,
-    assetTypeByTaskCategory,
-    TaskCategory,
-} from '@/modules/tasks/TuplesTypes';
+import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import { AssetsTable } from '@/components/AssetsTable';
@@ -85,16 +70,13 @@ import Timing from '@/components/Timing';
 type TasksTableProps = {
     loading: boolean;
     list: () => AsyncThunkAction<
-        PaginatedApiResponseT<AnyTupleT>,
+        PaginatedApiResponseT<TupleT>,
         RetrieveComputePlanTasksArgsProps | ListTasksProps,
         { rejectValue: string }
     >;
-    tasks: AnyTupleT[];
+    tasks: TupleT[];
     count: number;
-    category: TaskCategory;
     computePlan?: ComputePlanT | null;
-    compileListPath: (category: TaskCategory) => string;
-    compileDetailsPath: (category: TaskCategory, key: string) => string;
     tableProps?: TableProps;
 };
 
@@ -103,10 +85,7 @@ const TasksTable = ({
     list,
     tasks,
     count,
-    category,
     computePlan,
-    compileListPath,
-    compileDetailsPath,
     tableProps,
 }: TasksTableProps): JSX.Element => {
     const [page] = usePage();
@@ -118,7 +97,6 @@ const TasksTable = ({
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
-    const [, setLocationWithParams] = useLocationWithParams();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
@@ -131,7 +109,6 @@ const TasksTable = ({
     }, [
         dispatchWithAutoAbort,
         list,
-        category,
         page,
         computePlan,
         ordering,
@@ -148,25 +125,7 @@ const TasksTable = ({
         durationMax,
     ]);
 
-    const tabs: [TaskCategory, string][] = [
-        [TaskCategory.test, 'Test'],
-        [TaskCategory.predict, 'Predict'],
-        [TaskCategory.train, 'Train'],
-        [TaskCategory.composite, 'Composite train'],
-        [TaskCategory.aggregate, 'Aggregate'],
-    ];
-
-    const tabIndex = tabs.findIndex((tab) => tab[0] === category);
-
-    const onTabsChange = (index: number) => {
-        const newCategory = tabs[index][0];
-
-        const urlSearchParams = getUrlSearchParams();
-        urlSearchParams.set('page', '1');
-        setLocationWithParams(compileListPath(newCategory), urlSearchParams);
-    };
-
-    const context = useTableFiltersContext(assetTypeByTaskCategory[category]);
+    const context = useTableFiltersContext('tuple');
     const { onPopoverOpen } = context;
 
     return (
@@ -198,50 +157,6 @@ const TasksTable = ({
                 <DurationFilterTag />
             </TableFilterTags>
             <Box>
-                <Tabs
-                    index={tabIndex}
-                    onChange={onTabsChange}
-                    variant="enclosed"
-                    size="sm"
-                    position="relative"
-                >
-                    <TabList borderBottom="none">
-                        {tabs.map(([tabCategory, tabLabel]) => {
-                            return computePlan?.failed_task?.category !==
-                                tabCategory ? (
-                                <Tab
-                                    key={tabCategory}
-                                    _selected={{
-                                        color: 'primary.600',
-                                        bg: 'white',
-                                        borderColor: 'gray.100',
-                                        borderBottomColor: 'white',
-                                    }}
-                                >
-                                    {tabLabel}
-                                </Tab>
-                            ) : (
-                                <Tab
-                                    key={tabCategory}
-                                    _selected={{
-                                        bg: 'white',
-                                        borderColor: 'gray.100',
-                                        borderBottomColor: 'white',
-                                    }}
-                                    color="red.500"
-                                    fontWeight="semibold"
-                                >
-                                    {tabLabel}
-                                    <Icon
-                                        as={RiAlertLine}
-                                        fill="red.500"
-                                        marginLeft={1}
-                                    />
-                                </Tab>
-                            );
-                        })}
-                    </TabList>
-                </Tabs>
                 <VStack display="inline-block" spacing="2.5">
                     <Box
                         backgroundColor="white"
@@ -411,9 +326,7 @@ const TasksTable = ({
                                 {!loading && tasks.length === 0 && (
                                     <EmptyTr
                                         nbColumns={computePlan ? 3 : 4}
-                                        asset={
-                                            assetTypeByTaskCategory[category]
-                                        }
+                                        asset="tuple"
                                     />
                                 )}
                                 {!loading &&
@@ -422,10 +335,9 @@ const TasksTable = ({
                                             key={task.key}
                                             onClick={() =>
                                                 setLocationPreserveParams(
-                                                    compileDetailsPath(
-                                                        category,
-                                                        task.key
-                                                    )
+                                                    compilePath(PATHS.TASK, {
+                                                        key: task.key,
+                                                    })
                                                 )
                                             }
                                         >
@@ -438,9 +350,7 @@ const TasksTable = ({
                                                 />
                                             </Td>
                                             <Td>
-                                                <Text fontSize="sm">{`${getTaskCategory(
-                                                    task
-                                                )} on ${task.worker}`}</Text>
+                                                <Text fontSize="sm">{`Task on ${task.worker}`}</Text>
                                                 <Text fontSize="xs">
                                                     {`Rank ${task.rank}`}
                                                 </Text>
@@ -462,7 +372,7 @@ const TasksTable = ({
                                                     >
                                                         <Link
                                                             href={compilePath(
-                                                                PATHS.COMPUTE_PLAN_TASKS_ROOT,
+                                                                PATHS.COMPUTE_PLAN_TASKS,
                                                                 {
                                                                     key: task.compute_plan_key,
                                                                 }

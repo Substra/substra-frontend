@@ -4,7 +4,6 @@ import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 type TabsNavItemProps = {
@@ -83,9 +82,6 @@ const TabsNav = (): JSX.Element | null => {
         <HStack paddingLeft={8} paddingRight={8} spacing={5}>
             <TabsNavItem
                 href={compilePath(PATHS.COMPUTE_PLAN_TASKS, {
-                    category: tasksParams
-                        ? tasksParams.category
-                        : TASK_CATEGORY_SLUGS[TaskCategory.test],
                     key: computePlanKey,
                 })}
                 label="Details"

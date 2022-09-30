@@ -1,5 +1,3 @@
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 export enum ComputePlanStatus {
     waiting = 'PLAN_STATUS_WAITING',
     todo = 'PLAN_STATUS_TODO',
@@ -55,7 +53,7 @@ export type ComputePlanStubT = {
 };
 
 export type ComputePlanT = ComputePlanStubT & {
-    failed_task?: { key: string; category: TaskCategory };
+    failed_task?: { key: string };
 };
 
 export const isComputePlan = (

@@ -9,10 +9,7 @@ type SetLocationWithParamsProps = (
     options?: { replace?: boolean }
 ) => void;
 
-export const useLocationWithParams = (): [
-    string,
-    SetLocationWithParamsProps
-] => {
+const useLocationWithParams = (): [string, SetLocationWithParamsProps] => {
     const [location, setLocation] = useLocation();
     const setLocationWithParams: SetLocationWithParamsProps = (
         to,
