@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   CP workflow graph is now built independently of the task categories (#114)
 -   Empty task inputs make drawer crash (#120)
 
+### Changed
+
+-   Container build error logs are now accessible
+
 ## [0.35.0] - 2022-09-26
 
 ## Added
