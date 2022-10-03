@@ -1,6 +1,14 @@
 # Changelog
 
+## 1.0.8
+
+### Changed
+
+- Upgraded AppVersion to 0.36.0
+
 ## 1.0.7
+
+### Changed
 
 - Upgraded AppVersion to 0.35.0
 
