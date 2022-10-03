@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Display user description after role update (#117)
 -   Empty task inputs make drawer crash (#120)
 
+### Changed
+
+-   Container build error logs are now accessible
+
 ## [0.35.0] - 2022-09-26
 
 ## Added

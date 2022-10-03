@@ -57,25 +57,52 @@ const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
             />
         );
     } else if (task.error_type === ErrorT.build) {
-        return (
-            <ErrorAlertBase
-                title="Build error"
-                description={
-                    <>
-                        An error occurred when building the container for the
-                        task execution. Please check your algorithm archive or
-                        contact{' '}
-                        <Link
-                            href="https://lfaifoundation.slack.com/#substra-help"
-                            isExternal
-                        >
-                            substra-help Slack channel
-                        </Link>{' '}
-                        to get access to logs.
-                    </>
-                }
-            />
-        );
+        if (!task.logs_permission || !hasPermission(task.logs_permission)) {
+            return (
+                <ErrorAlertBase
+                    title="Build error"
+                    description={
+                        <>
+                            An error occurred when building the container for
+                            the task execution. Please check your algorithm
+                            archive or contact{' '}
+                            <Link
+                                href="https://lfaifoundation.slack.com/#substra-help"
+                                isExternal
+                            >
+                                substra-help Slack channel
+                            </Link>{' '}
+                            to get access to logs.
+                        </>
+                    }
+                />
+            );
+        } else {
+            return (
+                <>
+                    <ErrorAlertBase
+                        title="Build error"
+                        description={
+                            <>
+                                <Text>
+                                    An error occurred when building the
+                                    container for the task execution.{' '}
+                                    <Button
+                                        variant="link"
+                                        size="xs"
+                                        color="red.900"
+                                        onClick={onOpen}
+                                    >
+                                        See complete logs
+                                    </Button>
+                                </Text>
+                            </>
+                        }
+                    />
+                    <LogsModal isOpen={isOpen} onClose={onClose} task={task} />
+                </>
+            );
+        }
     } else {
         // task.error_type === ErrorT.execution
         if (!task.logs_permission || !hasPermission(task.logs_permission)) {
