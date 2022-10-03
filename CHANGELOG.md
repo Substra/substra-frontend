@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.36.0] - 2022-10-03
+
+### Changed
+
+-   CP workflow graph is now built independently of the task categories (#114)
+
 ### Fixed
 
 -   Display user description after role update (#117)
--   CP workflow graph is now built independently of the task categories (#114)
 -   Empty task inputs make drawer crash (#120)
 
 ### Changed
