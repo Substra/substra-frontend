@@ -46,32 +46,40 @@ const Login = (): JSX.Element => {
     }, [forceLogout, authenticated, dispatch, setLocation, nextLocation]);
 
     return (
-        <HStack backgroundColor="#F7FAFC" flex="1" spacing="0">
+        <HStack
+            backgroundColor="#F7FAFC"
+            flex="1"
+            spacing="0"
+            alignItems="stretch"
+        >
             <VStack
                 height="100vh"
                 width="500px"
                 backgroundColor="white"
                 alignItems="flex-start"
                 justifyContent="space-between"
+                padding="8"
+                spacing="8"
             >
-                <Box padding="8">
+                <Box>
                     <SubstraLogoBlack />
                 </Box>
                 <Box alignItems="center" width="100%">
                     <LoginForm />
                 </Box>
-                <Text color="gray.500" fontSize="xs" paddingX="5" paddingY="8">
-                    Frontend vers.
-                    {__APP_VERSION__}
+                <Text color="gray.500" fontSize="xs">
+                    {`Frontend v.  ${__APP_VERSION__}`}
                 </Text>
             </VStack>
             <Flex
                 flexDirection="column"
-                height="100vh"
+                flexGrow="1"
+                alignItems="flex-start"
                 padding="10%"
                 backgroundImage={LoginBackground}
                 justifyContent="center"
                 style={{
+                    backgroundPosition: 'center center',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                 }}
@@ -80,15 +88,19 @@ const Login = (): JSX.Element => {
                     Unlock AI, break data silos, and protect privacy with our
                     Federated Learning software
                 </Text>
-                <Link
-                    href="https://github.com/Substra/substra-frontend"
-                    isExternal
+                <Button
+                    as={Link}
+                    variant="outline"
+                    colorScheme="whiteAlpha"
                     color="white"
+                    href="https://docs.substra.org/"
+                    _hover={{
+                        textDecoration: 'none',
+                    }}
+                    isExternal
                 >
-                    <Button variant="outline" colorScheme="whiteAlpha">
-                        <Text color="white">Learn more on Github!</Text>
-                    </Button>
-                </Link>
+                    Learn more!
+                </Button>
             </Flex>
         </HStack>
     );
