@@ -132,6 +132,10 @@ export const StatusTableFilterTag = (): JSX.Element | null => (
     />
 );
 
+export const CreatorTableFilterTag = (): JSX.Element | null => (
+    <MultipleFilterTag label="Creator" syncedArrayStateName="creator" />
+);
+
 export const FavoritesTableFilterTag = (): JSX.Element | null => {
     const [favoritesOnly, setFavoritesOnly] = useFavoritesOnly();
 

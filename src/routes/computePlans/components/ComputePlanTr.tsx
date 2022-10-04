@@ -61,6 +61,15 @@ const ColumnTd = ({ column, computePlan }: ColumnTdProps) => {
                 <Duration asset={computePlan} />
             </Td>
         );
+    } else if (
+        column.type === 'general' &&
+        column.name === GeneralColumnName.creator
+    ) {
+        return (
+            <Td fontSize="xs" whiteSpace="nowrap">
+                <Text>{computePlan.creator ?? '-'}</Text>
+            </Td>
+        );
     } else {
         return (
             <Td>
