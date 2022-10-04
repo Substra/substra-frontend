@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.35.1] - 2022-10-04
+
+### Fixed
+
+-   Empty task inputs make drawer crash (#120)
+
 ## [0.35.0] - 2022-09-26
 
 ## Added
