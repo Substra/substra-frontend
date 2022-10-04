@@ -23,7 +23,7 @@ import {
     retrieveComputePlan,
     retrieveComputePlanTasks,
 } from '@/modules/computePlans/ComputePlansSlice';
-import { PATHS } from '@/paths';
+import { compilePath, PATHS } from '@/paths';
 import { ROUTES } from '@/routes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
@@ -119,7 +119,11 @@ const Tasks = ({ computePlanKey }: { computePlanKey: string }): JSX.Element => {
         <Flex direction="column" alignItems="stretch" flexGrow={1}>
             <TaskDrawer
                 onClose={() =>
-                    setLocationPreserveParams(PATHS.COMPUTE_PLAN_TASKS)
+                    setLocationPreserveParams(
+                        compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                            key: computePlanKey,
+                        })
+                    )
                 }
                 taskKey={taskKey}
                 setPageTitle={true}
