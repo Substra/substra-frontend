@@ -5,7 +5,7 @@ Packages are versioned using a Python script called `ci/version` which reads the
 -   `package.json` for the app version
 -   `charts/substra-frontend/Chart.yaml` for the Helm chart version
 
-The `--insert-dev-info` option will also add info from the current commit, which is used to create "continuous" packages.
+The `--insert-dev-info` option will also add info from the current commit if needed.
 
 Example usage:
 
@@ -15,8 +15,6 @@ ci/version app --insert-dev-info
 ```
 
 ## Build
-
-Docker images (containing the app) are built by `ci/publish-docker`, and Helm charts by `ci/publish-helm`.
 
 On the CI, they are built continuously by GitHub Actions workflow called [build.yaml](/.github/workflows/build.yaml), which gives them "dev" versions based on commit info. This workflow can be triggered by:
 
