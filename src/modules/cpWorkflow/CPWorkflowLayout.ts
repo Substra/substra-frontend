@@ -198,9 +198,12 @@ function findSecondaryBranches(
             .length;
     }
 
+    const SECONDARY_BRANCH_MAX_LENGTH = 2;
+
     // Recusrsive function to walk through parent tasks as long as it is a linear chain to find the secondary branch
     function recFindSecondaryBranch(
         task: TaskT,
+        taskRankInSecondaryBranchFromLeaf: number,
         graph: TaskGraphT,
         taskKeyToParentTasksMap: { [task_key: string]: TaskT[] },
         tasksInSecondaryBranches: { [task_key: string]: number }
@@ -215,11 +218,16 @@ function findSecondaryBranches(
         } else if (parents.length === 1) {
             const parent = parents[0];
 
-            if (computeNbOfChildren(graph, parent) === 1) {
+            if (
+                taskRankInSecondaryBranchFromLeaf + 1 <
+                    SECONDARY_BRANCH_MAX_LENGTH &&
+                computeNbOfChildren(graph, parent) === 1
+            ) {
                 // The parent has no other child than this task, it is part of the secondary branch
                 // We recursively continue to walk through its parents
                 const parentRankInSecondaryBranch = recFindSecondaryBranch(
                     parent,
+                    taskRankInSecondaryBranchFromLeaf + 1,
                     graph,
                     taskKeyToParentTasksMap,
                     tasksInSecondaryBranches
@@ -255,6 +263,7 @@ function findSecondaryBranches(
     for (const task of endOfSecondaryBranches) {
         recFindSecondaryBranch(
             task,
+            0,
             graph,
             taskKeyToParentTasksMap,
             taskRanksInSecondaryBranch

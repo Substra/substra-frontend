@@ -1,5 +1,5 @@
 import { computeLayout } from '@/modules/cpWorkflow/CPWorkflowLayout';
-import { TaskCategory, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { LayoutedTaskGraphT, TaskGraphT } from './CPWorkflowTypes';
 
@@ -9,22 +9,30 @@ const emptyGraph = {
 };
 
 const twoTasksGraph: TaskGraphT = {
+    //.......................
+    // pharma1
+    //         a ---+
+    //              |
+    //.......................
+    // pharma2      |
+    //              +-> b
+
     tasks: [
         {
             key: 'a',
             rank: 0,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs: [],
-            outputs: [{ id: 'out_model', kind: 'model' }],
+            inputs_specs: [],
+            outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
         {
             key: 'b',
             rank: 1,
             worker: 'pharma2',
             status: TupleStatus.failed,
-            inputs: [{ id: 'in_model', kind: 'model' }],
-            outputs: [],
+            inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
+            outputs_specs: [],
         },
     ],
     edges: [
@@ -50,7 +58,7 @@ const twoTasksLayoutedGraph: LayoutedTaskGraphT = {
             ...twoTasksGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
-                y: 208, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("1 task in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in second row") + 8 ("uneven column top padding")
+                y: 228, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("1 task in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in second row") + 8 ("uneven column top padding")
             },
         },
     ],
@@ -58,6 +66,16 @@ const twoTasksLayoutedGraph: LayoutedTaskGraphT = {
 };
 
 const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
+    //............................
+    // pharma1
+    //         a --------------+
+    //         |               |
+    //         +-> predict_a   |
+    //             |           |
+    //             +-> test_a  |
+    //............................
+    // pharma2                 |
+    //                         +-> b
     tasks: [
         ...twoTasksGraph.tasks,
         {
@@ -65,16 +83,16 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             rank: 1,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs: [{ id: 'in_model', kind: 'model' }],
-            outputs: [{ id: 'out_model', kind: 'model' }],
+            inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
+            outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
         {
             key: 'test_a',
             rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs: [{ id: 'in_model', kind: 'model' }],
-            outputs: [{ id: 'perf', kind: 'performance' }],
+            inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
+            outputs_specs: [{ identifier: 'perf', kind: 'ASSET_PERFORMANCE' }],
         },
     ],
     edges: [
@@ -107,21 +125,21 @@ const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
             ...twoTasksPlusPredictAndTestTupleGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
-                y: 548, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row") + 8 ("uneven column top padding")
+                y: 608, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row") + 8 ("uneven column top padding")
             },
         },
         {
             ...twoTasksPlusPredictAndTestTupleGraph.tasks[2],
             position: {
                 x: 30, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
-                y: 170, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("second task in the row")
+                y: 190, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("second task in the row")
             },
         },
         {
             ...twoTasksPlusPredictAndTestTupleGraph.tasks[3],
             position: {
                 x: 60, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
-                y: 340, // 2 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("thirsd task in the row")
+                y: 380, // 2 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("thirsd task in the row")
             },
         },
     ],
@@ -129,16 +147,19 @@ const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
 };
 
 const compositeAndAggregateGraph: TaskGraphT = {
+    //............................
+    // pharma1
+    //         composite_a -> aggregate_a -> composite_b
     tasks: [
         {
             key: 'composite_a',
             rank: 0,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs: [],
-            outputs: [
-                { id: 'out_head_model', kind: 'model' },
-                { id: 'out_trunk_model', kind: 'model' },
+            inputs_specs: [],
+            outputs_specs: [
+                { identifier: 'out_head_model', kind: 'ASSET_MODEL' },
+                { identifier: 'out_trunk_model', kind: 'ASSET_MODEL' },
             ],
         },
         {
@@ -146,19 +167,19 @@ const compositeAndAggregateGraph: TaskGraphT = {
             rank: 1,
             worker: 'pharma1',
             status: TupleStatus.failed,
-            inputs: [{ id: 'in_models', kind: 'model' }],
-            outputs: [{ id: 'out_model', kind: 'model' }],
+            inputs_specs: [{ identifier: 'in_models', kind: 'ASSET_MODEL' }],
+            outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
         {
             key: 'composite_b',
             rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs: [
-                { id: 'in_head_model', kind: 'model' },
-                { id: 'in_trunk_model', kind: 'model' },
+            inputs_specs: [
+                { identifier: 'in_head_model', kind: 'ASSET_MODEL' },
+                { identifier: 'in_trunk_model', kind: 'ASSET_MODEL' },
             ],
-            outputs: [],
+            outputs_specs: [],
         },
     ],
     edges: [
