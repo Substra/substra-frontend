@@ -17,8 +17,6 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { retrieveTask } from '@/modules/tasks/TasksSlice';
-import { CATEGORY_LABEL, getTaskCategory } from '@/modules/tasks/TasksUtils';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
@@ -39,14 +37,12 @@ import ErrorAlert from './ErrorAlert';
 import TaskInputsDrawerSection from './TaskInputsDrawerSection';
 
 type TaskDrawerProps = {
-    category: TaskCategory;
     onClose: () => void;
     taskKey: string | undefined | null;
     setPageTitle: boolean;
 };
 
 const TaskDrawer = ({
-    category,
     onClose,
     taskKey,
     setPageTitle,
@@ -58,10 +54,10 @@ const TaskDrawer = ({
         if (taskKey) {
             if (!isOpen) {
                 onOpen();
-                dispatch(retrieveTask({ category, key: taskKey }));
+                dispatch(retrieveTask(taskKey));
             }
         }
-    }, [category, dispatch, isOpen, onOpen, taskKey]);
+    }, [dispatch, isOpen, onOpen, taskKey]);
 
     const task = useAppSelector((state) => state.tasks.task);
     const taskLoading = useAppSelector((state) => state.tasks.taskLoading);
@@ -69,10 +65,10 @@ const TaskDrawer = ({
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (setPageTitle && taskKey) {
-                setDocumentTitle(`${CATEGORY_LABEL[category]} task ${taskKey}`);
+                setDocumentTitle(`Task ${taskKey}`);
             }
         },
-        [taskKey, category]
+        [taskKey]
     );
 
     const handleOnClose = () => {
@@ -91,9 +87,7 @@ const TaskDrawer = ({
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
-                    title={
-                        task ? `${getTaskCategory(task)} on ${task.worker}` : ''
-                    }
+                    title={task ? `Task on ${task.worker}` : ''}
                     loading={taskLoading}
                     onClose={handleOnClose}
                 />
@@ -148,7 +142,7 @@ const TaskDrawer = ({
                                     fontWeight="semibold"
                                     isExternal
                                     href={compilePath(
-                                        PATHS.COMPUTE_PLAN_TASKS_ROOT,
+                                        PATHS.COMPUTE_PLAN_TASKS,
                                         {
                                             key: task.compute_plan_key,
                                         }

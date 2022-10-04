@@ -9,7 +9,6 @@ import {
 } from '@/features/customColumns/CustomColumnsUtils';
 import { shortFormatDate } from '@/libs/utils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import Duration from '@/components/Duration';
@@ -97,7 +96,6 @@ const ComputePlanTr = ({
                 setLocation(
                     compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                         key: computePlan.key,
-                        category: TASK_CATEGORY_SLUGS[TaskCategory.test],
                     })
                 )
             }

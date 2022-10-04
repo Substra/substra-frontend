@@ -5,7 +5,6 @@ import Compare from '@/routes/compare/Compare';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
 import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
-import ComputePlanTasksRoot from '@/routes/computePlanDetails/ComputePlanTasksRoot';
 import ComputePlanWorkflow from '@/routes/computePlanDetails/ComputePlanWorkflow';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
@@ -15,7 +14,6 @@ import Login from '@/routes/login/Login';
 import ResetPassword from '@/routes/resetPassword/ResetPassword';
 import Settings from '@/routes/settings/Settings';
 import Tasks from '@/routes/tasks/Tasks';
-import TasksRoot from '@/routes/tasks/TasksRoot';
 import Users from '@/routes/users/Users';
 
 import { PATHS } from './paths';
@@ -50,13 +48,9 @@ export const ROUTES: Record<string, IRouteT> = {
         path: PATHS.COMPUTE_PLAN_CHART,
         component: ComputePlanChart,
     },
-    COMPUTE_PLAN_TASKS_ROOT: {
-        path: PATHS.COMPUTE_PLAN_TASKS_ROOT,
-        component: ComputePlanTasksRoot,
-    },
     COMPUTE_PLAN_TASKS: {
         // the following path matches both PATHS.COMPUTE_PLAN_TASKS and PATHS.COMPUTE_PLAN_TASK
-        path: '/compute_plans/:key/tasks/:category/:taskKey?',
+        path: '/compute_plans/:key/tasks/:taskKey?',
         component: ComputePlanTasks,
     },
     COMPUTE_PLAN_WORKFLOW: {
@@ -79,12 +73,8 @@ export const ROUTES: Record<string, IRouteT> = {
         path: PATHS.SETTINGS,
         component: Settings,
     },
-    TASKS_ROOT: {
-        path: PATHS.TASKS_ROOT,
-        component: TasksRoot,
-    },
     TASKS: {
-        path: '/tasks/:category/:key?',
+        path: '/tasks/:key?',
         component: Tasks,
     },
     USERS: {

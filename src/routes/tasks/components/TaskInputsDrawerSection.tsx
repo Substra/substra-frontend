@@ -14,13 +14,7 @@ import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { AssetKindT, InputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
-import {
-    AnyFullTupleT,
-    TaskInputT,
-    TupleStatus,
-    TaskCategory,
-    TASK_CATEGORY_SLUGS,
-} from '@/modules/tasks/TuplesTypes';
+import { TaskInputT, TupleT } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -30,7 +24,6 @@ import {
     DrawerSectionEntry,
 } from '@/components/DrawerSection';
 import IconTag from '@/components/IconTag';
-import Status from '@/components/Status';
 
 const makeCompactAssetKey = (key: string): string => {
     return `${key.slice(0, 5)}...${key.slice(-5)}`;
@@ -215,13 +208,9 @@ const TaskInputValueRepresentation = ({
 const TaskInputRepresentation = ({
     assetKind,
     input,
-    parentTasks,
 }: {
     assetKind: string;
     input: TaskInputT;
-    parentTasks: {
-        [_: string]: { status: TupleStatus; category: TaskCategory };
-    };
 }): JSX.Element => {
     let content;
 
@@ -236,10 +225,6 @@ const TaskInputRepresentation = ({
                     From{' '}
                     <Link
                         href={compilePath(PATHS.TASK, {
-                            category:
-                                TASK_CATEGORY_SLUGS[
-                                    parentTasks[input.parent_task_key].category
-                                ],
                             key: input.parent_task_key,
                         })}
                         color="primary.500"
@@ -250,23 +235,10 @@ const TaskInputRepresentation = ({
                     </Link>
                     {''}.{input.parent_task_output_identifier}
                 </Text>
-                <Status
-                    status={parentTasks[input.parent_task_key].status}
-                    withIcon={false}
-                    variant="solid"
-                    size="sm"
+                <TaskInputValueRepresentation
+                    assetKind={assetKind}
+                    input={input}
                 />
-                {parentTasks[input.parent_task_key].status ===
-                    TupleStatus.done && (
-                    <TaskInputValueRepresentation
-                        assetKind={assetKind}
-                        input={input}
-                    />
-                )}
-                {(parentTasks[input.parent_task_key].status ===
-                    TupleStatus.failed && <Text>N/A</Text>) || ( // TODO: come up with an icon + tooltip
-                    <Text>N/A</Text>
-                )}
             </HStack>
         );
     } else {
@@ -279,14 +251,10 @@ const TaskInputSectionEntry = ({
     identifier,
     algoInput,
     inputs,
-    parentTasks,
 }: {
     identifier: string;
     algoInput: InputT;
     inputs: TaskInputT[];
-    parentTasks: {
-        [_: string]: { status: TupleStatus; category: TaskCategory };
-    };
 }): JSX.Element => {
     const icon = inputIcon(algoInput.kind);
     const title = identifier;
@@ -314,7 +282,6 @@ const TaskInputSectionEntry = ({
                             <TaskInputRepresentation
                                 assetKind={algoInput.kind}
                                 input={input}
-                                parentTasks={parentTasks}
                             />
                         </HStack>
                     ))}
@@ -332,7 +299,6 @@ const TaskInputSectionEntry = ({
                 <TaskInputRepresentation
                     assetKind={algoInput.kind}
                     input={inputs[0]}
-                    parentTasks={parentTasks}
                 />
             </DrawerSectionEntry>
         );
@@ -344,7 +310,7 @@ const TaskInputsDrawerSection = ({
     task,
 }: {
     loading: boolean;
-    task: AnyFullTupleT | null;
+    task: TupleT | null;
 }): JSX.Element => {
     // Fusion algoInputs and task inputs in an object to have the 'multiple' and 'optional' property
     const inputsPerIdentifier: {
@@ -359,22 +325,6 @@ const TaskInputsDrawerSection = ({
         }
         for (const input of task.inputs) {
             inputsPerIdentifier[input.identifier].inputs.push(input);
-        }
-    }
-
-    // Copy parent task statuses in a map parent for later use in each TaskInputRepresentation
-    const parentTasks: {
-        [identifier: string]: {
-            status: TupleStatus;
-            category: TaskCategory;
-        };
-    } = {};
-    if (!loading && task) {
-        for (const parentTask of task.parent_tasks) {
-            parentTasks[parentTask.key] = {
-                status: parentTask.status,
-                category: parentTask.category,
-            };
         }
     }
 
@@ -393,7 +343,6 @@ const TaskInputsDrawerSection = ({
                                     identifier={identifier}
                                     algoInput={algoInput}
                                     inputs={inputs}
-                                    parentTasks={parentTasks}
                                 />
                             );
                         }

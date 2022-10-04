@@ -22,7 +22,6 @@ import makeReactFlowGraph, {
     MIN_ZOOM_LEVEL,
     MAX_ZOOM_LEVEL,
 } from '@/modules/cpWorkflow/CPWorkflowUtils';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import WorkflowControls from './WorkflowControls';
@@ -43,8 +42,6 @@ const TasksWorkflow = (): JSX.Element => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [selectedTaskKey, setSelectedTaskKey] = useState('');
-    const [selectedTaskCategory, setSelectedTaskCategory] =
-        useState<TaskCategory>(TaskCategory.test);
     const [currentZoom, setCurrentZoom] = useState(0.9);
 
     const store = useStoreApi();
@@ -61,7 +58,6 @@ const TasksWorkflow = (): JSX.Element => {
     const onNodeClick = (e: React.MouseEvent, node: Node<PositionedTaskT>) => {
         if (node) {
             setSelectedTaskKey(node.data.key);
-            setSelectedTaskCategory(node.data.category);
         }
     };
 
@@ -135,7 +131,6 @@ const TasksWorkflow = (): JSX.Element => {
     return (
         <div style={{ flexBasis: '100%' }}>
             <TaskDrawer
-                category={selectedTaskCategory}
                 onClose={() => {
                     setSelectedTaskKey('');
                 }}

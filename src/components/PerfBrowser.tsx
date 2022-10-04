@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Flex, HStack } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import PerfDetails from '@/components/PerfDetails';
@@ -31,7 +30,6 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
     return (
         <>
             <TaskDrawer
-                category={TaskCategory.test}
                 taskKey={drawerTestTaskKey}
                 onClose={() => setDrawerTestTaskKey(null)}
                 setPageTitle={false}

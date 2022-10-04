@@ -1,5 +1,3 @@
-import { TaskCategory } from '@/modules/tasks/TuplesTypes';
-
 export enum NewsItemStatus {
     created = 'STATUS_CREATED',
     doing = 'STATUS_DOING',
@@ -41,7 +39,6 @@ export type NewsItemT = {
     status: NewsItemStatus;
     timestamp: string;
     detail: {
-        task_category: TaskCategory;
         first_failed_task_key?: string;
     };
 };

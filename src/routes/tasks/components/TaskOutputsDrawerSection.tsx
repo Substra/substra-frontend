@@ -13,21 +13,17 @@ import {
 
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import {
-    AnyFullTupleT,
-    AnyTupleT,
-    TupleStatus,
-} from '@/modules/tasks/TuplesTypes';
+import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
-const getOutputKind = (task: AnyTupleT, output_id: string) => {
+const getOutputKind = (task: TupleT, output_id: string) => {
     return task.algo.outputs[output_id].kind;
 };
 
-const isMultipleOutput = (task: AnyTupleT, output_id: string) => {
+const isMultipleOutput = (task: TupleT, output_id: string) => {
     return task.algo.outputs[output_id].multiple;
 };
 
@@ -68,7 +64,7 @@ const TaskOutputsDrawerSection = ({
     task,
 }: {
     loading: boolean;
-    task: AnyFullTupleT | null;
+    task: TupleT | null;
 }) => {
     return (
         <DrawerSection title="Outputs">

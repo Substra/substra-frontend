@@ -16,7 +16,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { URLS } from '@/modules/tasks/TasksApi';
 import { retrieveLogs } from '@/modules/tasks/TasksSlice';
-import { AnyTupleT } from '@/modules/tasks/TuplesTypes';
+import { TupleT } from '@/modules/tasks/TuplesTypes';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -28,7 +28,7 @@ const CodeHighlighter = React.lazy(
 type LogsModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    task: AnyTupleT;
+    task: TupleT;
 };
 const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
     const initialFocusRef = useRef(null);

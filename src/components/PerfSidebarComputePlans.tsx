@@ -25,7 +25,6 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import { useToast } from '@/hooks/useToast';
-import { TaskCategory, TASK_CATEGORY_SLUGS } from '@/modules/tasks/TuplesTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import {
@@ -194,8 +193,6 @@ const ComputePlanCheckbox = ({
                             <Link
                                 href={compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                                     key: computePlanKey,
-                                    category:
-                                        TASK_CATEGORY_SLUGS[TaskCategory.test],
                                 })}
                                 isExternal
                                 _hover={{ textDecoration: 'none' }}

@@ -12,7 +12,7 @@ import {
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 import useHasPermission from '@/hooks/useHasPermission';
-import { AnyTupleT, ErrorT } from '@/modules/tasks/TuplesTypes';
+import { ErrorT, TupleT } from '@/modules/tasks/TuplesTypes';
 
 import LogsModal from './LogsModal';
 
@@ -32,7 +32,7 @@ const ErrorAlertBase = ({
     </Alert>
 );
 
-const ErrorAlert = ({ task }: { task: AnyTupleT }): JSX.Element | null => {
+const ErrorAlert = ({ task }: { task: TupleT }): JSX.Element | null => {
     const hasPermission = useHasPermission();
     const { isOpen, onOpen, onClose } = useDisclosure();
 

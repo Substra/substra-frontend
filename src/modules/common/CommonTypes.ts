@@ -13,11 +13,7 @@ export type AssetT =
     | 'algo'
     | 'composite_algo'
     | 'aggregate_algo'
-    | 'testtuple'
-    | 'traintuple'
-    | 'composite_traintuple'
-    | 'aggregatetuple'
-    | 'predicttuple'
+    | 'tuple'
     | 'compute_plan'
     | 'user';
 
