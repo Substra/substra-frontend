@@ -14,59 +14,96 @@ import {
 } from '@chakra-ui/react';
 import { RiExternalLinkLine } from 'react-icons/ri';
 
-import useCookie, { toBool } from '@/hooks/useCookie';
-import useCookieSettings, {
-    useGoogleAnalyticsCookieSettings,
-} from '@/hooks/useCookieSettings';
+import {
+    useGoogleAnalyticsCookie,
+    useMicrosoftClarityCookie,
+} from '@/hooks/useSettingsCookies';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import { useToast } from '@/hooks/useToast';
 import NotFound from '@/routes/notfound/NotFound';
+import { useBooleanCookie } from '@/hooks/useCookie';
+
+type CookieCardProps = {
+    title: string;
+    titleLink: string;
+    description: string;
+    isChecked: boolean;
+    setIsChecked: (checked: boolean) => void;
+    isDisabled: boolean;
+};
+const CookieCard = ({
+    title,
+    titleLink,
+    description,
+    isChecked,
+    setIsChecked,
+    isDisabled,
+}: CookieCardProps): JSX.Element => (
+    <HStack
+        background="gray.50"
+        padding="4"
+        spacing="5"
+        alignItems="flex-start"
+    >
+        <Heading as="h4" size="xs" fontSize="sm" whiteSpace="nowrap">
+            <Link href={titleLink} isExternal>
+                {title}
+                <Icon
+                    as={RiExternalLinkLine}
+                    marginLeft="2.5"
+                    fill="primary.600"
+                />
+            </Link>
+        </Heading>
+        <Text fontSize="xs">{description}</Text>
+        <Switch
+            size="sm"
+            colorScheme="primary"
+            isChecked={isChecked}
+            isDisabled={isDisabled}
+            onChange={() => setIsChecked(!isChecked)}
+        />
+    </HStack>
+);
 
 const Settings = (): JSX.Element => {
     const toast = useToast();
-    const [displayNotification, setDisplayNotification] = useCookie(
-        'displaySavedSettingsNotification',
-        toBool
+    const [displayNotification, setDisplayNotification] = useBooleanCookie(
+        'displaySavedSettingsNotification'
     );
-    const { isClarityAccepted, acceptClarity, rejectClarity } =
-        useCookieSettings();
-    const {
-        isGoogleAnalyticsAccepted,
-        acceptGoogleAnalytics,
-        rejectGoogleAnalytics,
-    } = useGoogleAnalyticsCookieSettings();
+    const microsoftClarity = useMicrosoftClarityCookie();
+    const googleAnalytics = useGoogleAnalyticsCookie();
 
-    const [clarityChecked, setClarityChecked] = useState<boolean>(
-        !!isClarityAccepted
-    );
+    const [microsoftClarityChecked, setMicrosoftClarityChecked] =
+        useState<boolean>(!!microsoftClarity.isAccepted);
     const [googleAnalyticsChecked, setGoogleAnalyticsChecked] =
-        useState<boolean>(!!isGoogleAnalyticsAccepted);
+        useState<boolean>(!!googleAnalytics.isAccepted);
 
     const [saving, setSaving] = useState<boolean>(false);
 
     const saveSettings = () => {
         setSaving(true);
-        if (clarityChecked) {
-            acceptClarity();
+        if (microsoftClarityChecked) {
+            microsoftClarity.accept();
         } else {
-            rejectClarity();
+            microsoftClarity.reject();
         }
         if (googleAnalyticsChecked) {
-            acceptGoogleAnalytics();
+            googleAnalytics.accept();
         } else {
-            rejectGoogleAnalytics();
+            googleAnalytics.reject();
         }
         setDisplayNotification(true);
         window.location.reload();
     };
 
     const selectAll = () => {
-        setClarityChecked(true);
+        setMicrosoftClarityChecked(true);
         setGoogleAnalyticsChecked(true);
     };
 
     const unselectAll = () => {
-        setClarityChecked(false);
+        setMicrosoftClarityChecked(false);
         setGoogleAnalyticsChecked(false);
     };
 
@@ -127,84 +164,22 @@ const Settings = (): JSX.Element => {
                             </Button>
                         </HStack>
                     </Flex>
-                    <HStack
-                        background="gray.50"
-                        padding="4"
-                        spacing="5"
-                        alignItems="flex-start"
-                    >
-                        <Heading
-                            as="h4"
-                            size="xs"
-                            fontSize="sm"
-                            whiteSpace="nowrap"
-                        >
-                            <Link
-                                href="https://clarity.microsoft.com/"
-                                isExternal
-                            >
-                                Microsoft clarity
-                                <Icon
-                                    as={RiExternalLinkLine}
-                                    marginLeft="2.5"
-                                    fill="primary.600"
-                                />
-                            </Link>
-                        </Heading>
-                        <Text fontSize="xs">
-                            Clarity is a free user behavior analytics tool that
-                            helps us understand how users are interacting with
-                            Substra through session replays and heatmaps.
-                        </Text>
-                        <Switch
-                            size="sm"
-                            colorScheme="primary"
-                            isChecked={clarityChecked}
-                            isDisabled={saving}
-                            onChange={() => setClarityChecked(!clarityChecked)}
-                        />
-                    </HStack>
-                    <HStack
-                        background="gray.50"
-                        padding="4"
-                        spacing="5"
-                        alignItems="flex-start"
-                    >
-                        <Heading
-                            as="h4"
-                            size="xs"
-                            fontSize="sm"
-                            whiteSpace="nowrap"
-                        >
-                            <Link
-                                href="https://analytics.google.com"
-                                isExternal
-                            >
-                                Google analytics
-                                <Icon
-                                    as={RiExternalLinkLine}
-                                    marginLeft="2.5"
-                                    fill="primary.600"
-                                />
-                            </Link>
-                        </Heading>
-                        <Text fontSize="xs">
-                            Google Analytics is a web analytics service that
-                            provides us statistics and basic analytical tools
-                            for SEO and marketing purposes.
-                        </Text>
-                        <Switch
-                            size="sm"
-                            colorScheme="primary"
-                            isChecked={googleAnalyticsChecked}
-                            isDisabled={saving}
-                            onChange={() =>
-                                setGoogleAnalyticsChecked(
-                                    !googleAnalyticsChecked
-                                )
-                            }
-                        />
-                    </HStack>
+                    <CookieCard
+                        title={microsoftClarity.title}
+                        titleLink={microsoftClarity.titleLink}
+                        description={microsoftClarity.description}
+                        isChecked={microsoftClarityChecked}
+                        setIsChecked={setMicrosoftClarityChecked}
+                        isDisabled={saving}
+                    />
+                    <CookieCard
+                        title={googleAnalytics.title}
+                        titleLink={googleAnalytics.titleLink}
+                        description={googleAnalytics.description}
+                        isChecked={googleAnalyticsChecked}
+                        setIsChecked={setGoogleAnalyticsChecked}
+                        isDisabled={saving}
+                    />
                 </VStack>
                 <Box textAlign="right">
                     <Button

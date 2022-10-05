@@ -19,9 +19,10 @@ import {
 } from '@chakra-ui/react';
 import { RiExternalLinkLine } from 'react-icons/ri';
 
-import useCookieSettings, {
-    useGoogleAnalyticsCookieSettings,
-} from '@/hooks/useCookieSettings';
+import {
+    useMicrosoftClarityCookie,
+    useGoogleAnalyticsCookie,
+} from '@/hooks/useSettingsCookies';
 
 const installClarity = () => {
     if (MICROSOFT_CLARITY_ID) {
@@ -39,60 +40,106 @@ const installClarity = () => {
 };
 
 const installGoogleAnalytics = () => {
-    // TODO:
-    console.log('installing google analytics');
+    if (GOOGLE_ANALYTICS_ID) {
+        const gtagScript = document.createElement('script');
+        gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`;
+        gtagScript.async = true;
+        document.head.appendChild(gtagScript);
+
+        const script = document.createElement('script');
+        document.head.appendChild(script);
+        script.innerText = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${GOOGLE_ANALYTICS_ID}');
+        `;
+    }
 };
 
+type CookieCardProps = {
+    title: string;
+    titleLink: string;
+    description: string;
+    isChecked: boolean;
+    setIsChecked: (checked: boolean) => void;
+};
+const CookieCard = ({
+    title,
+    titleLink,
+    description,
+    isChecked,
+    setIsChecked,
+}: CookieCardProps): JSX.Element => (
+    <Box backgroundColor="gray.50" padding="4">
+        <Flex justifyContent="space-between">
+            <Heading as="h3" size="xs" marginBottom="5">
+                <Link href={titleLink} isExternal>
+                    {title}
+                    <Icon
+                        as={RiExternalLinkLine}
+                        marginLeft="2.5"
+                        fill="primary.600"
+                    />
+                </Link>
+            </Heading>
+            <Switch
+                colorScheme="primary"
+                isChecked={isChecked}
+                onChange={() => setIsChecked(!isChecked)}
+            />
+        </Flex>
+        <Text fontSize="sm">{description}</Text>
+    </Box>
+);
+
 const CookieBanner = (): JSX.Element | null => {
-    const { isClarityAccepted, acceptClarity, rejectClarity } =
-        useCookieSettings();
-    const {
-        isGoogleAnalyticsAccepted,
-        acceptGoogleAnalytics,
-        rejectGoogleAnalytics,
-    } = useGoogleAnalyticsCookieSettings();
+    const microsoftClarity = useMicrosoftClarityCookie();
+    const googleAnalytics = useGoogleAnalyticsCookie();
 
     useEffect(() => {
-        if (isClarityAccepted) {
+        if (microsoftClarity.isAccepted) {
             installClarity();
         }
-    }, [isClarityAccepted]);
+    }, [microsoftClarity.isAccepted]);
 
     useEffect(() => {
-        if (isGoogleAnalyticsAccepted) {
+        if (googleAnalytics.isAccepted) {
             installGoogleAnalytics();
         }
-    }, [isGoogleAnalyticsAccepted]);
+    }, [googleAnalytics.isAccepted]);
 
     const [isOpen, setIsOpen] = useState<boolean>(
-        isClarityAccepted === undefined ||
-            isGoogleAnalyticsAccepted === undefined
+        microsoftClarity.isAccepted === undefined ||
+            googleAnalytics.isAccepted === undefined
     );
-    const [clarityChecked, setClarityChecked] = useState<boolean>(true);
+    const [microsoftClarityChecked, setMicrosoftClarityChecked] =
+        useState<boolean>(true);
     const [googleAnalyticsChecked, setGoogleAnalyticsChecked] =
         useState<boolean>(true);
 
     const acceptAll = () => {
-        acceptClarity();
-        acceptGoogleAnalytics();
+        microsoftClarity.accept();
+        googleAnalytics.accept();
         setIsOpen(false);
     };
     const rejectAll = () => {
-        rejectClarity();
-        rejectGoogleAnalytics();
+        microsoftClarity.reject();
+        googleAnalytics.reject();
         setIsOpen(false);
     };
     const acceptSelection = () => {
-        if (clarityChecked) {
-            acceptClarity();
+        if (microsoftClarityChecked) {
+            microsoftClarity.accept();
         } else {
-            rejectClarity();
+            microsoftClarity.reject();
         }
 
         if (googleAnalyticsChecked) {
-            acceptGoogleAnalytics();
+            googleAnalytics.accept();
         } else {
-            rejectGoogleAnalytics();
+            googleAnalytics.reject();
         }
 
         setIsOpen(false);
@@ -150,94 +197,34 @@ const CookieBanner = (): JSX.Element | null => {
                             <AccordionPanel paddingX="0">
                                 <VStack spacing="1" alignItems="stretch">
                                     {MICROSOFT_CLARITY_ID && (
-                                        <Box
-                                            backgroundColor="gray.50"
-                                            padding="4"
-                                        >
-                                            <Flex justifyContent="space-between">
-                                                <Heading
-                                                    as="h3"
-                                                    size="xs"
-                                                    marginBottom="5"
-                                                >
-                                                    <Link
-                                                        href="https://clarity.microsoft.com/"
-                                                        isExternal
-                                                    >
-                                                        Microsoft clarity
-                                                        <Icon
-                                                            as={
-                                                                RiExternalLinkLine
-                                                            }
-                                                            marginLeft="2.5"
-                                                            fill="primary.600"
-                                                        />
-                                                    </Link>
-                                                </Heading>
-                                                <Switch
-                                                    colorScheme="primary"
-                                                    isChecked={clarityChecked}
-                                                    onChange={() =>
-                                                        setClarityChecked(
-                                                            !clarityChecked
-                                                        )
-                                                    }
-                                                />
-                                            </Flex>
-                                            <Text fontSize="sm">
-                                                Clarity is a free user behavior
-                                                analytics tool that helps us
-                                                understand how users are
-                                                interacting with Substra through
-                                                session replays and heatmaps.
-                                            </Text>
-                                        </Box>
+                                        <CookieCard
+                                            title={microsoftClarity.title}
+                                            titleLink={
+                                                microsoftClarity.titleLink
+                                            }
+                                            isChecked={microsoftClarityChecked}
+                                            setIsChecked={
+                                                setMicrosoftClarityChecked
+                                            }
+                                            description={
+                                                microsoftClarity.description
+                                            }
+                                        />
                                     )}
                                     {GOOGLE_ANALYTICS_ID && (
-                                        <Box
-                                            backgroundColor="gray.50"
-                                            padding="4"
-                                        >
-                                            <Flex justifyContent="space-between">
-                                                <Heading
-                                                    as="h3"
-                                                    size="xs"
-                                                    marginBottom="5"
-                                                >
-                                                    <Link
-                                                        href="https://analytics.google.com"
-                                                        isExternal
-                                                    >
-                                                        Google analytics
-                                                        <Icon
-                                                            as={
-                                                                RiExternalLinkLine
-                                                            }
-                                                            marginLeft="2.5"
-                                                            fill="primary.600"
-                                                        />
-                                                    </Link>
-                                                </Heading>
-                                                <Switch
-                                                    colorScheme="primary"
-                                                    isChecked={
-                                                        googleAnalyticsChecked
-                                                    }
-                                                    onChange={() =>
-                                                        setGoogleAnalyticsChecked(
-                                                            !googleAnalyticsChecked
-                                                        )
-                                                    }
-                                                />
-                                            </Flex>
-                                            <Text fontSize="sm">
-                                                Google Analytics is a web
-                                                analytics service that provides
-                                                us statistics and basic
-                                                analytical tools for SEO and
-                                                marketing purposes.
-                                            </Text>
-                                        </Box>
+                                        <CookieCard
+                                            title={googleAnalytics.title}
+                                            titleLink={
+                                                googleAnalytics.titleLink
+                                            }
+                                            isChecked={googleAnalyticsChecked}
+                                            setIsChecked={
+                                                setGoogleAnalyticsChecked
+                                            }
+                                            description={
+                                                googleAnalytics.description
+                                            }
+                                        />
                                     )}
                                 </VStack>
                             </AccordionPanel>

@@ -2,22 +2,7 @@ import { useState } from 'react';
 
 import Cookies from 'universal-cookie';
 
-export const toBool = (value: string | undefined): boolean | undefined => {
-    if (value === undefined) {
-        return undefined;
-    }
-
-    if (value === 'true') {
-        return true;
-    }
-
-    if (value === 'false') {
-        return false;
-    }
-    throw `Cannot convert value to boolean: ${value}`;
-};
-
-const useCookie = <Type>(
+export const useCookie = <Type>(
     cookieName: string,
     cast: (value: string | undefined) => Type
 ): [Type, (value: Type) => void] => {
@@ -34,4 +19,22 @@ const useCookie = <Type>(
     return [value, setCookie];
 };
 
-export default useCookie;
+const toBool = (value: string | undefined): boolean | undefined => {
+    if (value === undefined) {
+        return undefined;
+    }
+
+    if (value === 'true') {
+        return true;
+    }
+
+    if (value === 'false') {
+        return false;
+    }
+    throw `Cannot convert value to boolean: ${value}`;
+};
+
+export const useBooleanCookie = (
+    cookieName: string
+): [boolean | undefined, (value: boolean) => void] =>
+    useCookie(cookieName, toBool);
