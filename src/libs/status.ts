@@ -14,10 +14,10 @@ import {
     statusDescriptionByComputePlanStatus,
 } from '@/modules/computePlans/ComputePlansTypes';
 import {
-    statusDescriptionByTupleStatus,
-    TupleStatus,
-    TupleStatusDescription,
-} from '@/modules/tasks/TuplesTypes';
+    statusDescriptionByTaskStatus,
+    TaskStatus,
+    TaskStatusDescription,
+} from '@/modules/tasks/TasksTypes';
 
 enum ComputePlanStatusLabel {
     canceled = 'Canceled',
@@ -29,7 +29,7 @@ enum ComputePlanStatusLabel {
     empty = 'Empty',
 }
 
-enum TupleStatusLabel {
+enum TaskStatusLabel {
     canceled = 'Canceled',
     doing = 'Doing',
     done = 'Done',
@@ -38,13 +38,13 @@ enum TupleStatusLabel {
     waiting = 'Waiting',
 }
 
-const statusLabelByTupleStatus: Record<TupleStatus, TupleStatusLabel> = {
-    [TupleStatus.canceled]: TupleStatusLabel.canceled,
-    [TupleStatus.doing]: TupleStatusLabel.doing,
-    [TupleStatus.done]: TupleStatusLabel.done,
-    [TupleStatus.failed]: TupleStatusLabel.failed,
-    [TupleStatus.todo]: TupleStatusLabel.todo,
-    [TupleStatus.waiting]: TupleStatusLabel.waiting,
+const statusLabelByTaskStatus: Record<TaskStatus, TaskStatusLabel> = {
+    [TaskStatus.canceled]: TaskStatusLabel.canceled,
+    [TaskStatus.doing]: TaskStatusLabel.doing,
+    [TaskStatus.done]: TaskStatusLabel.done,
+    [TaskStatus.failed]: TaskStatusLabel.failed,
+    [TaskStatus.todo]: TaskStatusLabel.todo,
+    [TaskStatus.waiting]: TaskStatusLabel.waiting,
 };
 
 const statusLabelByComputePlanStatus: Record<
@@ -61,10 +61,10 @@ const statusLabelByComputePlanStatus: Record<
 };
 
 export const getStatusLabel = (
-    status: TupleStatus | ComputePlanStatus
-): TupleStatusLabel | ComputePlanStatusLabel | string => {
-    if (Object.values(TupleStatus).includes(status as TupleStatus)) {
-        return statusLabelByTupleStatus[status as TupleStatus];
+    status: TaskStatus | ComputePlanStatus
+): TaskStatusLabel | ComputePlanStatusLabel | string => {
+    if (Object.values(TaskStatus).includes(status as TaskStatus)) {
+        return statusLabelByTaskStatus[status as TaskStatus];
     }
     if (
         Object.values(ComputePlanStatus).includes(status as ComputePlanStatus)
@@ -76,10 +76,10 @@ export const getStatusLabel = (
 };
 
 export const getStatusDescription = (
-    status: TupleStatus | ComputePlanStatus
-): TupleStatusDescription | ComputePlanStatusDescription => {
-    if (Object.values(TupleStatus).includes(status as TupleStatus)) {
-        return statusDescriptionByTupleStatus[status as TupleStatus];
+    status: TaskStatus | ComputePlanStatus
+): TaskStatusDescription | ComputePlanStatusDescription => {
+    if (Object.values(TaskStatus).includes(status as TaskStatus)) {
+        return statusDescriptionByTaskStatus[status as TaskStatus];
     }
 
     if (
@@ -103,10 +103,10 @@ type StatusStyleProps = {
 };
 
 export const getStatusStyle = (
-    status: TupleStatus | ComputePlanStatus
+    status: TaskStatus | ComputePlanStatus
 ): StatusStyleProps => {
     switch (status) {
-        case TupleStatus.canceled:
+        case TaskStatus.canceled:
         case ComputePlanStatus.canceled:
             return {
                 icon: RiIndeterminateCircleLine,
@@ -117,9 +117,9 @@ export const getStatusStyle = (
                 progressColor: 'gray.500',
             };
 
-        case TupleStatus.waiting:
+        case TaskStatus.waiting:
         case ComputePlanStatus.waiting:
-        case TupleStatus.todo:
+        case TaskStatus.todo:
         case ComputePlanStatus.todo:
             return {
                 icon: RiTimeLine,
@@ -129,7 +129,7 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'gray.300',
                 progressColor: 'gray.300',
             };
-        case TupleStatus.doing:
+        case TaskStatus.doing:
         case ComputePlanStatus.doing:
             return {
                 icon: RiPlayMiniLine,
@@ -139,7 +139,7 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'blue.500',
                 progressColor: 'blue.500',
             };
-        case TupleStatus.failed:
+        case TaskStatus.failed:
         case ComputePlanStatus.failed:
             return {
                 icon: RiAlertLine,
@@ -149,7 +149,7 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'red.500',
                 progressColor: 'red.500',
             };
-        case TupleStatus.done:
+        case TaskStatus.done:
         case ComputePlanStatus.done:
             return {
                 icon: RiCheckLine,

@@ -41,12 +41,12 @@ import { ComputePlanStubT } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
-import { TupleT } from '@/modules/tasks/TuplesTypes';
+import { TaskT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 const MAX_ASSETS_PER_SECTION = 5;
 
-type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset' | 'tuple';
+type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset' | 'task';
 
 type SeeMoreItemT = {
     asset: OmniSearchAssetT;
@@ -64,7 +64,7 @@ const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
     value === 'algo' ||
     value === 'compute_plan' ||
     value === 'dataset' ||
-    value === 'tuple';
+    value === 'task';
 
 const isSeeMoreItem = (value: unknown): value is SeeMoreItemT => {
     if (value === null || typeof value !== 'object') {
@@ -98,7 +98,7 @@ const ASSET_ITEM_ICONS: Record<OmniSearchAssetT, IconType> = {
     algo: RiCodeSSlashLine,
     compute_plan: RiGitBranchLine,
     dataset: RiDatabase2Line,
-    tuple: RiGitCommitLine,
+    task: RiGitCommitLine,
 };
 
 const AssetItem = ({
@@ -248,9 +248,9 @@ const buildAssetItem = (
     key: asset.key,
 });
 
-const buildTupleItem = (
+const buildTaskItem = (
     assetType: OmniSearchAssetT,
-    asset: TupleT
+    asset: TaskT
 ): AssetItemT => ({
     asset: assetType,
     name: `Task on ${asset.worker}`,
@@ -269,14 +269,14 @@ const ASSET_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGO,
     compute_plan: PATHS.COMPUTE_PLAN,
     dataset: PATHS.DATASET,
-    tuple: PATHS.TASK,
+    task: PATHS.TASK,
 };
 
 const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
     algo: PATHS.ALGOS,
     compute_plan: PATHS.COMPUTE_PLANS,
     dataset: PATHS.DATASETS,
-    tuple: PATHS.TASKS,
+    task: PATHS.TASKS,
 };
 
 const OmniSearch = () => {
@@ -286,8 +286,8 @@ const OmniSearch = () => {
     const [algosCount, setAlgosCount] = useState(0);
     const [datasets, setDatasets] = useState<DatasetStubT[]>([]);
     const [datasetsCount, setDatasetsCount] = useState(0);
-    const [tuples, setTuples] = useState<TupleT[]>([]);
-    const [tuplesCount, setTuplesCount] = useState(0);
+    const [tasks, setTasks] = useState<TaskT[]>([]);
+    const [tasksCount, setTasksCount] = useState(0);
 
     const [loading, setLoading] = useState(false);
 
@@ -326,9 +326,9 @@ const OmniSearch = () => {
             ...(datasetsCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('dataset', datasetsCount)]
                 : []),
-            ...tuples.map((tuple) => buildTupleItem('tuple', tuple)),
-            ...(tuplesCount > MAX_ASSETS_PER_SECTION
-                ? [buildSeeMoreItem('tuple', tuplesCount)]
+            ...tasks.map((task) => buildTaskItem('task', task)),
+            ...(tasksCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('task', tasksCount)]
                 : []),
         ].map((item, index) => ({ ...item, index }));
     }, [
@@ -338,8 +338,8 @@ const OmniSearch = () => {
         computePlansCount,
         datasets,
         datasetsCount,
-        tuples,
-        tuplesCount,
+        tasks,
+        tasksCount,
     ]);
 
     const algoItems = items.filter((item) => item.asset === 'algo');
@@ -347,7 +347,7 @@ const OmniSearch = () => {
         (item) => item.asset === 'compute_plan'
     );
     const datasetItems = items.filter((item) => item.asset === 'dataset');
-    const tupleItems = items.filter((item) => item.asset === 'tuple');
+    const taskItems = items.filter((item) => item.asset === 'task');
 
     const stateReducer: StateReducerT = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -391,8 +391,8 @@ const OmniSearch = () => {
         setAlgosCount(0);
         setDatasets([]);
         setDatasetsCount(0);
-        setTuples([]);
-        setTuplesCount(0);
+        setTasks([]);
+        setTasksCount(0);
     }, []);
 
     const {
@@ -429,16 +429,16 @@ const OmniSearch = () => {
                 AxiosPromise<PaginatedApiResponseT<ComputePlanStubT>>,
                 AxiosPromise<PaginatedApiResponseT<AlgoT>>,
                 AxiosPromise<PaginatedApiResponseT<DatasetStubT>>,
-                AxiosPromise<PaginatedApiResponseT<TupleT>>
+                AxiosPromise<PaginatedApiResponseT<TaskT>>
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
                 AlgosApi.listAlgos(params, config),
                 DatasetsApi.listDatasets(params, config),
-                TasksApi.listTuples(params, config),
+                TasksApi.listTasks(params, config),
             ];
             try {
                 const responses = await Promise.all(promises);
-                const [computePlansData, algosData, datasetsData, tuplesData] =
+                const [computePlansData, algosData, datasetsData, tasksData] =
                     responses.map((response) => response.data);
 
                 setComputePlans(
@@ -449,8 +449,8 @@ const OmniSearch = () => {
                 setAlgosCount(algosData['count']);
                 setDatasets(datasetsData['results'] as DatasetStubT[]);
                 setDatasetsCount(datasetsData['count']);
-                setTuples(tuplesData['results'] as TupleT[]);
-                setTuplesCount(tuplesData['count']);
+                setTasks(tasksData['results'] as TaskT[]);
+                setTasksCount(tasksData['count']);
                 setLoading(false);
             } catch (error) {
                 if (
@@ -535,7 +535,7 @@ const OmniSearch = () => {
                         />
                         <ItemGroup
                             title="Tasks"
-                            items={tupleItems}
+                            items={taskItems}
                             getItemProps={getItemProps}
                         />
                     </>

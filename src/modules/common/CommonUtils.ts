@@ -7,9 +7,7 @@ import { AssetT, PaginatedApiResponseT } from './CommonTypes';
 const ASSET_LABEL: Record<AssetT, string> = {
     algo: 'algorithm',
     dataset: 'dataset',
-    composite_algo: 'algorithm',
-    aggregate_algo: 'algorithm',
-    tuple: 'task',
+    task: 'task',
     compute_plan: 'compute plan',
     user: 'user',
 };

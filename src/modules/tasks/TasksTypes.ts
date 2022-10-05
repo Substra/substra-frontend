@@ -6,7 +6,7 @@ import {
     PermissionT,
 } from '@/modules/common/CommonTypes';
 
-export enum TupleStatus {
+export enum TaskStatus {
     waiting = 'STATUS_WAITING',
     todo = 'STATUS_TODO',
     doing = 'STATUS_DOING',
@@ -15,7 +15,7 @@ export enum TupleStatus {
     failed = 'STATUS_FAILED',
 }
 
-export enum TupleStatusDescription {
+export enum TaskStatusDescription {
     waiting = 'Task is waiting for parent tasks to end',
     todo = 'Task is ready and waiting for available space to run',
     doing = 'Task is processing',
@@ -30,16 +30,16 @@ export enum ErrorT {
     internal = 'INTERNAL_ERROR',
 }
 
-export const statusDescriptionByTupleStatus: Record<
-    TupleStatus,
-    TupleStatusDescription
+export const statusDescriptionByTaskStatus: Record<
+    TaskStatus,
+    TaskStatusDescription
 > = {
-    [TupleStatus.waiting]: TupleStatusDescription.waiting,
-    [TupleStatus.todo]: TupleStatusDescription.todo,
-    [TupleStatus.doing]: TupleStatusDescription.doing,
-    [TupleStatus.done]: TupleStatusDescription.done,
-    [TupleStatus.canceled]: TupleStatusDescription.canceled,
-    [TupleStatus.failed]: TupleStatusDescription.failed,
+    [TaskStatus.waiting]: TaskStatusDescription.waiting,
+    [TaskStatus.todo]: TaskStatusDescription.todo,
+    [TaskStatus.doing]: TaskStatusDescription.doing,
+    [TaskStatus.done]: TaskStatusDescription.done,
+    [TaskStatus.canceled]: TaskStatusDescription.canceled,
+    [TaskStatus.failed]: TaskStatusDescription.failed,
 };
 
 export type TaskInputT = {
@@ -51,14 +51,14 @@ export type TaskInputT = {
     parent_task_output_identifier?: string;
 };
 
-export type TupleT = {
+export type TaskT = {
     key: string;
     creation_date: string;
     algo: AlgoT;
     compute_plan_key: string;
     owner: string;
     metadata: MetadataT;
-    status: TupleStatus;
+    status: TaskStatus;
     rank: number;
     tag: string;
     parent_task_keys: string[];

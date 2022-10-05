@@ -6,7 +6,7 @@ import {
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 
-import { TupleT } from './TuplesTypes';
+import { TaskT } from './TasksTypes';
 
 export const URLS = {
     LIST: '/task/',
@@ -14,19 +14,19 @@ export const URLS = {
     LOGS_RETRIEVE: '/logs/__KEY__/file/',
 };
 
-export const listTuples = (
+export const listTasks = (
     apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<TupleT>> =>
+): AxiosPromise<PaginatedApiResponseT<TaskT>> =>
     API.authenticatedGet(URLS.LIST, {
         ...getApiOptions(apiListArgs),
         ...config,
     });
 
-export const retrieveTuple = (
+export const retrieveTask = (
     key: string,
     config: AxiosRequestConfig
-): AxiosPromise<TupleT> =>
+): AxiosPromise<TaskT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
 export const retrieveLogs = (

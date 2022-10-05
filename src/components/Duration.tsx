@@ -7,10 +7,10 @@ import {
     ComputePlanT,
     isComputePlan,
 } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleT } from '@/modules/tasks/TuplesTypes';
+import { TaskT } from '@/modules/tasks/TasksTypes';
 
 type DurationProps = {
-    asset: ComputePlanT | TupleT;
+    asset: ComputePlanT | TaskT;
 };
 
 const Duration = ({ asset }: DurationProps): JSX.Element | null => {

@@ -15,10 +15,10 @@ enum CSV_COLUMN_ID {
     computePlanEndDate = 'computePlanEndDate',
     computePlanMetadata = 'computePlanMetadata',
     worker = 'worker',
-    testtupleKey = 'testtupleKey',
+    testTaskKey = 'testTaskKey',
     metricName = 'metricName',
     lineId = 'lineId',
-    testtupleRank = 'testtupleRank',
+    testTaskRank = 'testTaskRank',
     perf = 'perf',
 }
 
@@ -42,10 +42,10 @@ const CSV_COLUMNS = [
         id: CSV_COLUMN_ID.computePlanMetadata,
     },
     { displayName: 'Worker', id: CSV_COLUMN_ID.worker },
-    { displayName: 'Testtuple key', id: CSV_COLUMN_ID.testtupleKey },
+    { displayName: 'Test task key', id: CSV_COLUMN_ID.testTaskKey },
     { displayName: 'Metric name', id: CSV_COLUMN_ID.metricName },
     { displayName: 'Line ID', id: CSV_COLUMN_ID.lineId },
-    { displayName: 'Testtuple rank', id: CSV_COLUMN_ID.testtupleRank },
+    { displayName: 'Test task rank', id: CSV_COLUMN_ID.testTaskRank },
     { displayName: 'Performance', id: CSV_COLUMN_ID.perf },
 ];
 
@@ -72,12 +72,12 @@ const getDatas = (
                     JSON.stringify(computePlan?.metadata || {})
                 ),
                 worker: escape(serie.worker),
-                testtupleKey: escape(point.testTaskKey || 'NA'),
+                testTaskKey: escape(point.testTaskKey || 'NA'),
                 metricName: escape(serie.metricName),
                 lineId: escape(
                     `#${getSerieIndex(serie.computePlanKey, serie.id)}`
                 ),
-                testtupleRank: escape(point.rank.toString()),
+                testTaskRank: escape(point.rank.toString()),
                 perf: escape(
                     point.perf === null ? 'NA' : point.perf.toString()
                 ),
@@ -111,8 +111,8 @@ const compareDatas = (a: DataT, b: DataT) => {
         return 1;
     }
 
-    const rankA = parseInt(a.testtupleRank);
-    const rankB = parseInt(b.testtupleRank);
+    const rankA = parseInt(a.testTaskRank);
+    const rankB = parseInt(b.testTaskRank);
     if (rankA < rankB) {
         return -1;
     } else if (rankA > rankB) {

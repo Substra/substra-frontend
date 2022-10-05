@@ -1,5 +1,5 @@
 import { computeLayout } from '@/modules/cpWorkflow/CPWorkflowLayout';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { LayoutedTaskGraphT, TaskGraphT } from './CPWorkflowTypes';
 
@@ -14,7 +14,7 @@ const twoTasksGraph: TaskGraphT = {
             key: 'a',
             rank: 0,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs: [],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -22,7 +22,7 @@ const twoTasksGraph: TaskGraphT = {
             key: 'b',
             rank: 1,
             worker: 'pharma2',
-            status: TupleStatus.failed,
+            status: TaskStatus.failed,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [],
         },
@@ -57,14 +57,14 @@ const twoTasksLayoutedGraph: LayoutedTaskGraphT = {
     edges: twoTasksGraph.edges,
 };
 
-const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
+const twoTasksPlusPredictAndTestTaskGraph: TaskGraphT = {
     tasks: [
         ...twoTasksGraph.tasks,
         {
             key: 'predict_a',
             rank: 1,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -72,7 +72,7 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             key: 'test_a',
             rank: 2,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs: [{ id: 'in_model', kind: 'model' }],
             outputs: [{ id: 'perf', kind: 'performance' }],
         },
@@ -94,38 +94,38 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
     ],
 };
 
-const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
+const twoTasksPlusPredictAndTestTaskLayoutedGraph: LayoutedTaskGraphT = {
     tasks: [
         {
-            ...twoTasksPlusPredictAndTestTupleGraph.tasks[0],
+            ...twoTasksPlusPredictAndTestTaskGraph.tasks[0],
             position: {
                 x: 0, // 0 ("in first column")
                 y: 0, // 0 ("first task in the row")
             },
         },
         {
-            ...twoTasksPlusPredictAndTestTupleGraph.tasks[1],
+            ...twoTasksPlusPredictAndTestTaskGraph.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
                 y: 548, // 3 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("3 tasks in first row = first row height") + ROW_BOTTOM_MARGIN + 0 ("first task in the row") + 8 ("uneven column top padding")
             },
         },
         {
-            ...twoTasksPlusPredictAndTestTupleGraph.tasks[2],
+            ...twoTasksPlusPredictAndTestTaskGraph.tasks[2],
             position: {
                 x: 30, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
                 y: 170, // 1 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("second task in the row")
             },
         },
         {
-            ...twoTasksPlusPredictAndTestTupleGraph.tasks[3],
+            ...twoTasksPlusPredictAndTestTaskGraph.tasks[3],
             position: {
                 x: 60, // 0 ("in first column") + PREDICT_TASK_LEFT_PADDING
                 y: 340, // 2 * (NODE_HEIGHT+NODE_BOTTOM_MARGIN) ("thirsd task in the row")
             },
         },
     ],
-    edges: twoTasksPlusPredictAndTestTupleGraph.edges,
+    edges: twoTasksPlusPredictAndTestTaskGraph.edges,
 };
 
 const compositeAndAggregateGraph: TaskGraphT = {
@@ -134,7 +134,7 @@ const compositeAndAggregateGraph: TaskGraphT = {
             key: 'composite_a',
             rank: 0,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs: [],
             outputs: [
                 { id: 'out_head_model', kind: 'model' },
@@ -145,7 +145,7 @@ const compositeAndAggregateGraph: TaskGraphT = {
             key: 'aggregate_a',
             rank: 1,
             worker: 'pharma1',
-            status: TupleStatus.failed,
+            status: TaskStatus.failed,
             inputs: [{ id: 'in_models', kind: 'model' }],
             outputs: [{ id: 'out_model', kind: 'model' }],
         },
@@ -153,7 +153,7 @@ const compositeAndAggregateGraph: TaskGraphT = {
             key: 'composite_b',
             rank: 2,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs: [
                 { id: 'in_head_model', kind: 'model' },
                 { id: 'in_trunk_model', kind: 'model' },
@@ -213,8 +213,8 @@ const compositeAndAggregateLAyoutedGraph: LayoutedTaskGraphT = {
 test('computeLayout', () => {
     expect(computeLayout(emptyGraph)).toStrictEqual(emptyGraph);
     expect(computeLayout(twoTasksGraph)).toStrictEqual(twoTasksLayoutedGraph);
-    expect(computeLayout(twoTasksPlusPredictAndTestTupleGraph)).toStrictEqual(
-        twoTasksPlusPredictAndTestTupleLayoutedGraph
+    expect(computeLayout(twoTasksPlusPredictAndTestTaskGraph)).toStrictEqual(
+        twoTasksPlusPredictAndTestTaskLayoutedGraph
     );
     expect(computeLayout(compositeAndAggregateGraph)).toStrictEqual(
         compositeAndAggregateLAyoutedGraph

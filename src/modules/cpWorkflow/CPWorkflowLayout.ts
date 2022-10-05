@@ -1,7 +1,7 @@
 import {
     LayoutedTaskGraphT,
     TaskGraphT,
-    TaskT,
+    WorkflowTaskT,
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
 
 export const NODE_WIDTH = 250;
@@ -12,7 +12,7 @@ const ROW_BOTTOM_MARGIN = 30;
 const CELL_WIDTH = NODE_WIDTH + 150;
 
 type TaskInCellT = {
-    taskRef: TaskT;
+    taskRef: WorkflowTaskT;
     relativeXInCell: number;
     relativeYInCell: number;
 };
@@ -60,7 +60,7 @@ function initEmptyGrid(workerNamesInYOrder: string[], maxRank: number) {
 }
 
 function getColumnIndex(
-    task: TaskT,
+    task: WorkflowTaskT,
     taskRankInSecondaryBranch: { [task_key: string]: number }
 ) {
     const correctedRank: number =
@@ -70,7 +70,7 @@ function getColumnIndex(
 
 function addTasksToGrid(
     grid: GridT,
-    tasks: TaskT[],
+    tasks: WorkflowTaskT[],
     taskRankInSecondaryBranch: { [task_key: string]: number }
 ) {
     // Assign tasks to their cell
@@ -125,12 +125,12 @@ function computeCellsX(rows: RowsT) {
 
 function orderTasksInEachCell(
     rows: RowsT,
-    taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
+    taskKeyToParentTasksMap: { [task_key: string]: WorkflowTaskT[] }
 ) {
     for (const row of Object.values(rows)) {
         for (const cell of row.cells) {
             cell.tasks.sort((firstTask, secondTask) => {
-                function makeSortName(task: TaskT): string {
+                function makeSortName(task: WorkflowTaskT): string {
                     // recursive function chaining the key of all ancestor tasks in the cell
                     // Needed to stack vertically train, then predict, then test task
                     const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
@@ -181,9 +181,9 @@ function computeTasksRelativePositionInCell(
 
 function findSecondaryBranches(
     graph: TaskGraphT,
-    taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
+    taskKeyToParentTasksMap: { [task_key: string]: WorkflowTaskT[] }
 ): { [task_key: string]: number } {
-    function producesOnlyPerformances(task: TaskT) {
+    function producesOnlyPerformances(task: WorkflowTaskT) {
         const outputKinds = new Set(
             Object.values(task.outputs).map((output) => output.kind)
         );
@@ -193,19 +193,19 @@ function findSecondaryBranches(
         );
     }
 
-    function computeNbOfChildren(graph: TaskGraphT, task: TaskT) {
+    function computeNbOfChildren(graph: TaskGraphT, task: WorkflowTaskT) {
         return graph.edges.filter((edge) => edge.source_task_key === task.key)
             .length;
     }
 
     // Recusrsive function to walk through parent tasks as long as it is a linear chain to find the secondary branch
     function recFindSecondaryBranch(
-        task: TaskT,
+        task: WorkflowTaskT,
         graph: TaskGraphT,
-        taskKeyToParentTasksMap: { [task_key: string]: TaskT[] },
+        taskKeyToParentTasksMap: { [task_key: string]: WorkflowTaskT[] },
         tasksInSecondaryBranches: { [task_key: string]: number }
     ) {
-        const parents: TaskT[] = Object.values(
+        const parents: WorkflowTaskT[] = Object.values(
             taskKeyToParentTasksMap[task.key]
         );
         if (parents.length === 0) {
@@ -268,12 +268,12 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
     const workerNames = [...new Set(graph.tasks.map((task) => task.worker))];
     workerNames.sort();
 
-    const taskKeyToTaskMap: { [task_key: string]: TaskT } = {};
+    const taskKeyToTaskMap: { [task_key: string]: WorkflowTaskT } = {};
     for (const task of graph.tasks) {
         taskKeyToTaskMap[task.key] = task;
     }
 
-    const taskKeyToParentTasksMap: { [task_key: string]: TaskT[] } = {};
+    const taskKeyToParentTasksMap: { [task_key: string]: WorkflowTaskT[] } = {};
     for (const edge of graph.edges) {
         const targetTaskKey = edge.target_task_key;
         const parentTask = taskKeyToTaskMap[edge.source_task_key];

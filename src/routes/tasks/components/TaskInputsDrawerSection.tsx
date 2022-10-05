@@ -14,7 +14,7 @@ import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { AssetKindT, InputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
-import { TaskInputT, TupleT } from '@/modules/tasks/TuplesTypes';
+import { TaskInputT, TaskT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -310,7 +310,7 @@ const TaskInputsDrawerSection = ({
     task,
 }: {
     loading: boolean;
-    task: TupleT | null;
+    task: TaskT | null;
 }): JSX.Element => {
     // Fusion algoInputs and task inputs in an object to have the 'multiple' and 'optional' property
     const inputsPerIdentifier: {

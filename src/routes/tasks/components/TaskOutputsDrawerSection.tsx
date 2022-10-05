@@ -13,33 +13,33 @@ import {
 
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
-const getOutputKind = (task: TupleT, output_id: string) => {
+const getOutputKind = (task: TaskT, output_id: string) => {
     return task.algo.outputs[output_id].kind;
 };
 
-const isMultipleOutput = (task: TupleT, output_id: string) => {
+const isMultipleOutput = (task: TaskT, output_id: string) => {
     return task.algo.outputs[output_id].multiple;
 };
 
-const displayPerformance = (value: number, taskStatus: TupleStatus) => {
+const displayPerformance = (value: number, taskStatus: TaskStatus) => {
     if (value === null) {
         let msg: string;
         if (
-            taskStatus === TupleStatus.waiting ||
-            taskStatus === TupleStatus.todo
+            taskStatus === TaskStatus.waiting ||
+            taskStatus === TaskStatus.todo
         ) {
             msg = "computation hasn't started yet";
-        } else if (taskStatus === TupleStatus.doing) {
+        } else if (taskStatus === TaskStatus.doing) {
             msg = 'computation is ongoing';
-        } else if (taskStatus === TupleStatus.failed) {
+        } else if (taskStatus === TaskStatus.failed) {
             msg = 'computation failed';
-        } else if (taskStatus === TupleStatus.canceled) {
+        } else if (taskStatus === TaskStatus.canceled) {
             msg = 'computation canceled';
         } else {
             msg = 'Value not available';
@@ -50,7 +50,7 @@ const displayPerformance = (value: number, taskStatus: TupleStatus) => {
     }
 };
 
-const displayModel = (value: ModelT | null, taskStatus: TupleStatus) => {
+const displayModel = (value: ModelT | null, taskStatus: TaskStatus) => {
     return (
         <DrawerSectionOutModelEntryContent
             taskStatus={taskStatus}
@@ -64,7 +64,7 @@ const TaskOutputsDrawerSection = ({
     task,
 }: {
     loading: boolean;
-    task: TupleT | null;
+    task: TaskT | null;
 }) => {
     return (
         <DrawerSection title="Outputs">

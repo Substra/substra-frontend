@@ -17,7 +17,7 @@ import {
     NODE_WIDTH,
     NODE_HEIGHT,
 } from '@/modules/cpWorkflow/CPWorkflowLayout';
-import { PositionedTaskT } from '@/modules/cpWorkflow/CPWorkflowTypes';
+import { PositionedWorkflowTaskT } from '@/modules/cpWorkflow/CPWorkflowTypes';
 import makeReactFlowGraph, {
     MIN_ZOOM_LEVEL,
     MAX_ZOOM_LEVEL,
@@ -55,7 +55,10 @@ const TasksWorkflow = (): JSX.Element => {
         setEdges(rfGraph.edges);
     }, [layoutedGraph, setNodes, setEdges]);
 
-    const onNodeClick = (e: React.MouseEvent, node: Node<PositionedTaskT>) => {
+    const onNodeClick = (
+        e: React.MouseEvent,
+        node: Node<PositionedWorkflowTaskT>
+    ) => {
         if (node) {
             setSelectedTaskKey(node.data.key);
         }

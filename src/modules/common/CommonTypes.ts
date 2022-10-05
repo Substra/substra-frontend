@@ -8,14 +8,7 @@ export type PermissionsT = {
     download: PermissionT;
 };
 
-export type AssetT =
-    | 'dataset'
-    | 'algo'
-    | 'composite_algo'
-    | 'aggregate_algo'
-    | 'tuple'
-    | 'compute_plan'
-    | 'user';
+export type AssetT = 'dataset' | 'algo' | 'task' | 'compute_plan' | 'user';
 
 export type PaginatedApiResponseT<T> = {
     count: number;
