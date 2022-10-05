@@ -35,7 +35,6 @@ jobs:
               with:
                   images: 'ghcr.io/substra/substra-frontend'
                   tags: |
-                      type=raw,value=latest,enable={{is_default_branch}}
                       type=sha,prefix=${{env.FRONTEND_VERSION}}-dev-{{date 'YYYYMMDD'}}-
                       type=ref,event=branch
 
