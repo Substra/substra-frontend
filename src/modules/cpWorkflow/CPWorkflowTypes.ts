@@ -25,9 +25,9 @@ export type PositionedTaskT = TaskT & {
 
 type EdgeT = {
     source_task_key: string;
-    source_output_name: string;
+    source_output_identifier: string;
     target_task_key: string;
-    target_input_name: string;
+    target_input_identifier: string;
 };
 
 export type TaskGraphT = {

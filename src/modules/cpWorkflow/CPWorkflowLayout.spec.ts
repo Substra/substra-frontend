@@ -38,9 +38,9 @@ const twoTasksGraph: TaskGraphT = {
     edges: [
         {
             source_task_key: 'a',
-            source_output_name: 'out_model',
+            source_output_identifier: 'out_model',
             target_task_key: 'b',
-            target_input_name: 'in_model',
+            target_input_identifier: 'in_model',
         },
     ],
 };
@@ -99,15 +99,15 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
         ...twoTasksGraph.edges,
         {
             source_task_key: 'a',
-            source_output_name: 'out_model',
+            source_output_identifier: 'out_model',
             target_task_key: 'predict_a',
-            target_input_name: 'in_model',
+            target_input_identifier: 'in_model',
         },
         {
             source_task_key: 'predict_a',
-            source_output_name: 'out_model',
+            source_output_identifier: 'out_model',
             target_task_key: 'test_a',
-            target_input_name: 'in_model',
+            target_input_identifier: 'in_model',
         },
     ],
 };
@@ -185,21 +185,21 @@ const compositeAndAggregateGraph: TaskGraphT = {
     edges: [
         {
             source_task_key: 'composite_a',
-            source_output_name: 'out_head_model',
+            source_output_identifier: 'out_head_model',
             target_task_key: 'composite_b',
-            target_input_name: 'in_head_model',
+            target_input_identifier: 'in_head_model',
         },
         {
             source_task_key: 'composite_a',
-            source_output_name: 'out_trunk_model',
+            source_output_identifier: 'out_trunk_model',
             target_task_key: 'aggregate_a',
-            target_input_name: 'in_models',
+            target_input_identifier: 'in_models',
         },
         {
             source_task_key: 'aggregate_a',
-            source_output_name: 'out_model',
+            source_output_identifier: 'out_model',
             target_task_key: 'composite_b',
-            target_input_name: 'in_trunk_model',
+            target_input_identifier: 'in_trunk_model',
         },
     ],
 };

@@ -61,15 +61,15 @@ export default function makeReactFlowGraph(graphItems: LayoutedTaskGraphT): {
             id:
                 edge.source_task_key +
                 '.' +
-                edge.source_output_name +
+                edge.source_output_identifier +
                 '->' +
                 edge.target_task_key +
                 '.' +
-                edge.target_input_name,
+                edge.target_input_identifier,
             source: edge.source_task_key,
-            sourceHandle: edge.source_output_name,
+            sourceHandle: edge.source_output_identifier,
             target: edge.target_task_key,
-            targetHandle: edge.target_input_name,
+            targetHandle: edge.target_input_identifier,
             markerEnd: {
                 type: MarkerType.ArrowClosed,
                 color: '#373737',
