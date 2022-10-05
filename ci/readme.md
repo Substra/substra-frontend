@@ -1,19 +1,3 @@
-## Version
-
-Packages are versioned using a Python script called `ci/version` which reads the version from:
-
--   `package.json` for the app version
--   `charts/substra-frontend/Chart.yaml` for the Helm chart version
-
-The `--insert-dev-info` option will also add info from the current commit if needed.
-
-Example usage:
-
-```sh
-python3 -m pip install -r ci/cilib/requirements.txt
-ci/version app --insert-dev-info
-```
-
 ## Build
 
 On the CI, they are built continuously by GitHub Actions workflow called [build.yaml](/.github/workflows/build.yaml), which gives them "dev" versions based on commit info. This workflow can be triggered by:
