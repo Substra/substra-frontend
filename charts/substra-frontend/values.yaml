@@ -73,3 +73,6 @@ api:
 
 microsoftClarity:
   id: ""
+
+googleAnalytics:
+  id: ""

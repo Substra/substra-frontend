@@ -128,7 +128,7 @@ Then, still in this folder:
 
 ## Microsoft Clarity
 
-In order to use microsoft clarity, you need to have a clarity ID that you can then use as such.
+In order to use Microsoft clarity, you need to have a clarity ID that you can then use as such.
 
 Locally:
 
@@ -139,3 +139,17 @@ MICROSOFT_CLARITY_ID=xxxxxxxxxx npm run dev
 In production:
 
 You'll have to define the `microsoftClarity.id` value.
+
+## Google analytics
+
+In order to use Google analytics, you need to have a Google analytics ID that you can then use as such.
+
+Locally:
+
+```sh
+GOOGLE_ANALYTICS_ID=xxxxxxxxxx npm run dev
+```
+
+In production:
+
+You'll have to define the `googleAnalytics.id` value.

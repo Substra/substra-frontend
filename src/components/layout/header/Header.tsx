@@ -154,7 +154,7 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
-                            {MICROSOFT_CLARITY_ID && (
+                            {(MICROSOFT_CLARITY_ID || GOOGLE_ANALYTICS_ID) && (
                                 <MenuItem
                                     onClick={() => setLocation(PATHS.SETTINGS)}
                                 >

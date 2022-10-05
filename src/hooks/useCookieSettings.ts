@@ -16,4 +16,21 @@ const useCookieSettings = (): {
         rejectClarity: () => setIsClarityAccepted(false),
     };
 };
+
+export const useGoogleAnalyticsCookieSettings = (): {
+    isGoogleAnalyticsAccepted: boolean | undefined;
+    acceptGoogleAnalytics: () => void;
+    rejectGoogleAnalytics: () => void;
+} => {
+    const [isGoogleAnalyticsAccepted, setIsGoogleAnalyticsAccepted] = useCookie(
+        'isGoogleAnalyticsAccepted',
+        toBool
+    );
+
+    return {
+        isGoogleAnalyticsAccepted,
+        acceptGoogleAnalytics: () => setIsGoogleAnalyticsAccepted(true),
+        rejectGoogleAnalytics: () => setIsGoogleAnalyticsAccepted(false),
+    };
+};
 export default useCookieSettings;

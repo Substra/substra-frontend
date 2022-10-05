@@ -15,7 +15,9 @@ import {
 import { RiExternalLinkLine } from 'react-icons/ri';
 
 import useCookie, { toBool } from '@/hooks/useCookie';
-import useCookieSettings from '@/hooks/useCookieSettings';
+import useCookieSettings, {
+    useGoogleAnalyticsCookieSettings,
+} from '@/hooks/useCookieSettings';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import { useToast } from '@/hooks/useToast';
 import NotFound from '@/routes/notfound/NotFound';
@@ -28,10 +30,17 @@ const Settings = (): JSX.Element => {
     );
     const { isClarityAccepted, acceptClarity, rejectClarity } =
         useCookieSettings();
+    const {
+        isGoogleAnalyticsAccepted,
+        acceptGoogleAnalytics,
+        rejectGoogleAnalytics,
+    } = useGoogleAnalyticsCookieSettings();
 
     const [clarityChecked, setClarityChecked] = useState<boolean>(
         !!isClarityAccepted
     );
+    const [googleAnalyticsChecked, setGoogleAnalyticsChecked] =
+        useState<boolean>(!!isGoogleAnalyticsAccepted);
 
     const [saving, setSaving] = useState<boolean>(false);
 
@@ -42,16 +51,23 @@ const Settings = (): JSX.Element => {
         } else {
             rejectClarity();
         }
+        if (googleAnalyticsChecked) {
+            acceptGoogleAnalytics();
+        } else {
+            rejectGoogleAnalytics();
+        }
         setDisplayNotification(true);
         window.location.reload();
     };
 
     const selectAll = () => {
         setClarityChecked(true);
+        setGoogleAnalyticsChecked(true);
     };
 
     const unselectAll = () => {
         setClarityChecked(false);
+        setGoogleAnalyticsChecked(false);
     };
 
     useEffectOnce(() => {
@@ -66,7 +82,7 @@ const Settings = (): JSX.Element => {
         }
     });
 
-    if (!MICROSOFT_CLARITY_ID) {
+    if (!MICROSOFT_CLARITY_ID && !GOOGLE_ANALYTICS_ID) {
         return <NotFound />;
     }
 
@@ -146,6 +162,47 @@ const Settings = (): JSX.Element => {
                             isChecked={clarityChecked}
                             isDisabled={saving}
                             onChange={() => setClarityChecked(!clarityChecked)}
+                        />
+                    </HStack>
+                    <HStack
+                        background="gray.50"
+                        padding="4"
+                        spacing="5"
+                        alignItems="flex-start"
+                    >
+                        <Heading
+                            as="h4"
+                            size="xs"
+                            fontSize="sm"
+                            whiteSpace="nowrap"
+                        >
+                            <Link
+                                href="https://analytics.google.com"
+                                isExternal
+                            >
+                                Google analytics
+                                <Icon
+                                    as={RiExternalLinkLine}
+                                    marginLeft="2.5"
+                                    fill="primary.600"
+                                />
+                            </Link>
+                        </Heading>
+                        <Text fontSize="xs">
+                            Google Analytics is a web analytics service that
+                            provides us statistics and basic analytical tools
+                            for SEO and marketing purposes.
+                        </Text>
+                        <Switch
+                            size="sm"
+                            colorScheme="primary"
+                            isChecked={googleAnalyticsChecked}
+                            isDisabled={saving}
+                            onChange={() =>
+                                setGoogleAnalyticsChecked(
+                                    !googleAnalyticsChecked
+                                )
+                            }
                         />
                     </HStack>
                 </VStack>
