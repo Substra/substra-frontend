@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Removed task categories from the frontend (#119)
+-   Open task drawer directly in cp details page (#122)
 
 ## [0.36.0] - 2022-10-03
 

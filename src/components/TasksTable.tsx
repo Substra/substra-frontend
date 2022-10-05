@@ -334,11 +334,25 @@ const TasksTable = ({
                                         <ClickableTr
                                             key={task.key}
                                             onClick={() =>
-                                                setLocationPreserveParams(
-                                                    compilePath(PATHS.TASK, {
-                                                        key: task.key,
-                                                    })
-                                                )
+                                                computePlan
+                                                    ? setLocationPreserveParams(
+                                                          compilePath(
+                                                              PATHS.COMPUTE_PLAN_TASK,
+                                                              {
+                                                                  key: task.compute_plan_key,
+                                                                  taskKey:
+                                                                      task.key,
+                                                              }
+                                                          )
+                                                      )
+                                                    : setLocationPreserveParams(
+                                                          compilePath(
+                                                              PATHS.TASK,
+                                                              {
+                                                                  key: task.key,
+                                                              }
+                                                          )
+                                                      )
                                             }
                                         >
                                             <Td>
