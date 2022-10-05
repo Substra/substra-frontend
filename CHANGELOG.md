@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Removed task categories from the frontend (#119)
 -   Open task drawer directly in cp details page (#122)
+-   Algo creation events aren't included in newsfeed anymore (#127)
 
 ### Fixed
 

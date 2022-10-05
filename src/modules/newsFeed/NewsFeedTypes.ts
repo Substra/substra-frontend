@@ -19,13 +19,11 @@ export const getNewsItemStatusLabel = (status: NewsItemStatus): string =>
 
 export enum NewsItemAssetKind {
     computePlan = 'ASSET_COMPUTE_PLAN',
-    algo = 'ASSET_ALGO',
     dataset = 'ASSET_DATA_MANAGER',
 }
 
 const NewsItemAssetLabel: Record<NewsItemAssetKind, string> = {
     ASSET_COMPUTE_PLAN: 'Compute plan',
-    ASSET_ALGO: 'Algorithm',
     ASSET_DATA_MANAGER: 'Dataset',
 };
 
