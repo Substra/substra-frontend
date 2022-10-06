@@ -24,17 +24,14 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useToast } from '@/hooks/useToast';
-import { getAllPages } from '@/modules/common/CommonUtils';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
     deleteUser,
     retrieveUser,
     updateUser,
 } from '@/modules/users/UsersSlice';
-import { UserRolesT, UserT } from '@/modules/users/UsersTypes';
+import { UserRolesT } from '@/modules/users/UsersTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -44,13 +41,13 @@ import RoleInput from './RoleInput';
 
 const UpdateUserForm = ({
     closeHandler,
+    username,
 }: {
     closeHandler: () => void;
+    username: string;
 }): JSX.Element => {
     const dispatch = useAppDispatch();
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const toast = useToast();
-    const key = useKeyFromPath(PATHS.USER);
 
     const {
         isOpen: isConfirmOpen,
@@ -63,11 +60,14 @@ const UpdateUserForm = ({
     const cancelRef = useRef<HTMLButtonElement>(null);
 
     const user = useAppSelector((state) => state.users.user);
-    const userLoading = useAppSelector((state) => state.users.userLoading);
     const deleting = useAppSelector((state) => state.users.deleting);
 
     const [role, setRole] = useState(UserRolesT.user);
     const [isLastAdmin, setIsLastAdmin] = useState<boolean>(false);
+
+    // Custom loading state that handles both loading the user and checking
+    // whether they are the last admin.
+    const [loading, setLoading] = useState(true);
 
     const onUpdate = () => {
         if (user && role !== user.role) {
@@ -87,31 +87,26 @@ const UpdateUserForm = ({
     };
 
     const onDelete = () => {
-        if (!key) return;
+        dispatch(deleteUser(username));
 
-        if (user) {
-            dispatch(deleteUser(key));
+        toast({
+            title: `User deleted`,
+            descriptionComponent: () => (
+                <Text>{username} was successfully deleted</Text>
+            ),
+            status: 'success',
+            isClosable: true,
+        });
 
-            toast({
-                title: `User deleted`,
-                descriptionComponent: () => (
-                    <Text>{user.username} was successfully deleted</Text>
-                ),
-                status: 'success',
-                isClosable: true,
-            });
-
-            closeHandler();
-        }
+        closeHandler();
     };
 
     const onReset = async () => {
-        if (!key) return;
-        const response = await UsersApi.requestResetToken(key);
+        const response = await UsersApi.requestResetToken(username);
         const resetToken = response.data.reset_password_token;
         setResetUrl(
             compilePath(window.location.origin + PATHS.RESET_PASSWORD, {
-                key: key as string,
+                key: username,
                 token: resetToken,
             }).concat(`?token=${resetToken}`)
         );
@@ -126,28 +121,6 @@ const UpdateUserForm = ({
         });
     }, [onCopy, toast]);
 
-    const getAllUsers = async () => {
-        const pageSize = DEFAULT_PAGE_SIZE;
-
-        const allUsers = await getAllPages<UserT>(
-            (page) => UsersApi.listUsers({ page }, {}),
-            pageSize
-        );
-
-        return allUsers;
-    };
-
-    useEffect(() => {
-        if (user?.role === UserRolesT.admin) {
-            getAllUsers().then((response) => {
-                const userAdminList = response.filter(
-                    (user) => user.role === UserRolesT.admin
-                );
-                setIsLastAdmin(userAdminList.length === 1);
-            });
-        }
-    }, [user]);
-
     useEffect(() => {
         if (resetUrl !== '') {
             copyTokenAndToast();
@@ -156,16 +129,44 @@ const UpdateUserForm = ({
     }, [resetUrl]);
 
     useEffect(() => {
-        if (key) {
-            dispatchWithAutoAbort(retrieveUser(key));
-        }
-    }, [dispatchWithAutoAbort, key]);
+        setLoading(true);
+        const promise = dispatch(retrieveUser(username));
 
-    useEffect(() => {
-        if (user?.role) {
-            setRole(user.role);
-        }
-    }, [user]);
+        promise
+            .unwrap()
+            .then(async (user) => {
+                // check if current user is the last admin
+                if (user.role === UserRolesT.admin) {
+                    const response = await UsersApi.listUsers(
+                        { pageSize: 1, role: UserRolesT.admin },
+                        {}
+                    );
+                    const adminsCount = response.data['count'];
+                    if (adminsCount === 1) {
+                        setIsLastAdmin(true);
+                    } else {
+                        setIsLastAdmin(false);
+                    }
+                } else {
+                    setIsLastAdmin(false);
+                }
+                // finish setting up
+                setRole(user.role);
+                setLoading(false);
+            })
+            .catch((error) => {
+                // We want to catch all abort errors as they are expected
+                // since we want to cancel all unnecessary calls.
+                // Other errors should be re-thrown.
+                if (error.name !== 'AbortError') {
+                    throw error;
+                }
+            });
+
+        return () => {
+            promise.abort();
+        };
+    }, [dispatch, username]);
 
     const isDisabled = isLastAdmin && user?.role === UserRolesT.admin;
 
@@ -173,7 +174,7 @@ const UpdateUserForm = ({
         <DrawerContent data-cy="drawer">
             <DrawerHeader
                 title="Edit user"
-                loading={userLoading}
+                loading={loading}
                 onClose={closeHandler}
                 extraButtons={
                     <Tooltip
@@ -243,13 +244,13 @@ const UpdateUserForm = ({
             >
                 <VStack spacing={1} alignItems="flex-start">
                     <DrawerSectionEntry title="Username">
-                        {userLoading || !user ? (
+                        {loading || !user ? (
                             <Skeleton height="4" width="250px" />
                         ) : (
                             user.username
                         )}
                     </DrawerSectionEntry>
-                    {userLoading || !user ? (
+                    {loading || !user ? (
                         <DrawerSectionEntry title="Role">
                             <Skeleton height="4" width="250px" />
                         </DrawerSectionEntry>
@@ -257,7 +258,7 @@ const UpdateUserForm = ({
                         <RoleInput value={role} onChange={setRole} />
                     )}
                     <DrawerSectionEntry title="Password" alignItems="baseline">
-                        {userLoading || !user ? (
+                        {loading || !user ? (
                             <Skeleton height="4" width="250px" />
                         ) : (
                             <Button
@@ -279,9 +280,7 @@ const UpdateUserForm = ({
                     <Tooltip
                         label="You cannot update the last admin"
                         fontSize="xs"
-                        isDisabled={
-                            user?.role !== UserRolesT.admin && !isLastAdmin
-                        }
+                        isDisabled={!isLastAdmin}
                         hasArrow
                         placement="bottom"
                         shouldWrapChildren

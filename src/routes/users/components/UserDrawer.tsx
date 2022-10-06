@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { Drawer, useDisclosure, DrawerOverlay } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
@@ -11,18 +10,15 @@ import CreateUserForm from './CreateUserForm';
 import UpdateUserForm from './UpdateUserForm';
 
 const UserDrawer = (): JSX.Element => {
-    const dispatch = useAppDispatch();
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const key = useKeyFromPath(PATHS.USER);
-
-    const editMode = key !== 'create';
+    const username = useKeyFromPath(PATHS.USER);
 
     useEffect(() => {
-        if (key && !isOpen) {
+        if (!!username && !isOpen) {
             onOpen();
         }
-    }, [dispatch, isOpen, onOpen, editMode, key]);
+    }, [isOpen, onOpen, username]);
 
     const closeHandler = () => {
         setLocationPreserveParams(PATHS.USERS);
@@ -38,11 +34,14 @@ const UserDrawer = (): JSX.Element => {
             autoFocus={false}
         >
             <DrawerOverlay />
-            {!editMode && isOpen && (
+            {username === 'create' && (
                 <CreateUserForm closeHandler={closeHandler} />
             )}
-            {editMode && isOpen && (
-                <UpdateUserForm closeHandler={closeHandler} />
+            {!!username && username !== 'create' && (
+                <UpdateUserForm
+                    closeHandler={closeHandler}
+                    username={username || ''}
+                />
             )}
         </Drawer>
     );
