@@ -14,6 +14,7 @@ import {
     MenuDivider,
     IconButton,
     Icon,
+    Link as ChakraLink,
 } from '@chakra-ui/react';
 import { RiUser3Fill } from 'react-icons/ri';
 
@@ -154,20 +155,32 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
-                            {MICROSOFT_CLARITY_ID && (
-                                <MenuItem
-                                    onClick={() => setLocation(PATHS.SETTINGS)}
-                                >
-                                    Settings
-                                </MenuItem>
-                            )}
-                            <Help />
-                            <About />
                             {userRole === 'ADMIN' && (
                                 <MenuItem
                                     onClick={() => setLocation(PATHS.USERS)}
                                 >
                                     Users
+                                </MenuItem>
+                            )}
+                            <MenuItem
+                                as={ChakraLink}
+                                href="https://docs.substra.org/"
+                                isExternal
+                                _hover={{ textDecoration: 'none' }}
+                                _focus={{
+                                    boxShadow: 'none',
+                                    background: 'var(--chakra-colors-gray-100)',
+                                }}
+                            >
+                                Documentation
+                            </MenuItem>
+                            <Help />
+                            <About />
+                            {MICROSOFT_CLARITY_ID && (
+                                <MenuItem
+                                    onClick={() => setLocation(PATHS.SETTINGS)}
+                                >
+                                    Settings
                                 </MenuItem>
                             )}
                             <MenuDivider color="gray.200" />

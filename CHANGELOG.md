@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Documentation link in user menu (#132)
+
 ### Changed
 
 -   Removed task categories from the frontend (#119)
@@ -36,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.35.0] - 2022-09-26
 
-## Added
+### Added
 
 -   Prevent the last admin from being deleted
 -   Rename Users Management by Users
@@ -52,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.34.0] - 2022-09-13
 
-## Added
+### Added
 
 -   Cypress tests for compute plan pages Workflow and Performances
 
@@ -62,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.33.0] - 2022-09-12
 
-## Added
+### Added
 
 -   Users management v1
 -   Added license file
