@@ -75,19 +75,12 @@ const COMPUTE_PLAN_STATUS_PATH: Record<NewsItemStatus, string> = {
     STATUS_FAILED: PATHS.COMPUTE_PLAN_TASK,
     STATUS_CANCELED: PATHS.COMPUTE_PLAN_TASKS,
 };
-const NON_CP_PATH: Record<
-    Exclude<NewsItemAssetKind, NewsItemAssetKind.computePlan>,
-    string
-> = {
-    ASSET_ALGO: PATHS.ALGO,
-    ASSET_DATA_MANAGER: PATHS.DATASET,
-};
 const getItemPath = (newsItem: NewsItemT): string => {
     if (newsItem.asset_kind === NewsItemAssetKind.computePlan) {
         return COMPUTE_PLAN_STATUS_PATH[newsItem.status];
     }
 
-    return NON_CP_PATH[newsItem.asset_kind];
+    return PATHS.DATASET;
 };
 
 const getItemHref = (newsItem: NewsItemT): string => {
