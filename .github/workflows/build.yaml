@@ -1,10 +1,6 @@
 name: Build
 # this workflow builds and pushes the "dev" versions of image and helm chart
-# The versions are predictable:
-#  helm: ci/version helm --insert-dev-info [--ref COMMIT_ID]
-#  app: ci/version app --insert-dev-info [--ref COMMIT_ID]
-#  docker: ci/version app tag --insert-dev-info [--ref COMMIT_ID]
-#          (or just replacing + with _ in the app version, basically)
+# The frontend version used is the version in package.json
 env:
     REGISTRY: ghcr.io
 on:
@@ -24,9 +20,9 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Set frontend version
+            - name: Set env variables
               run: |
-                  echo "FRONTEND_VERSION=$(jq '.version' package.json | sed 's/"//g')" >> $GITHUB_ENV
+                  echo "FRONTEND_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
                   echo "COMMIT_DATE=`git show -s --format=%cs HEAD | tr -d -`" >> $GITHUB_ENV
 
             - uses: docker/metadata-action@v4
