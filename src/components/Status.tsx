@@ -2,10 +2,10 @@ import { Tag, TagLabel, TagLeftIcon, TagProps, Text } from '@chakra-ui/react';
 
 import { getStatusLabel, getStatusStyle } from '@/libs/status';
 import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 type StatusProps = {
-    status: ComputePlanStatus | TupleStatus;
+    status: ComputePlanStatus | TaskStatus;
     size: TagProps['size'];
     variant?: TagProps['variant'];
     withIcon?: boolean;

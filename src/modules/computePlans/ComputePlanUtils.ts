@@ -1,22 +1,22 @@
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { ComputePlanT } from './ComputePlansTypes';
 
 export const getStatusCount = (
     computePlan: ComputePlanT,
-    status: TupleStatus
+    status: TaskStatus
 ): number => {
-    if (status === TupleStatus.doing) {
+    if (status === TaskStatus.doing) {
         return computePlan.doing_count;
-    } else if (status === TupleStatus.done) {
+    } else if (status === TaskStatus.done) {
         return computePlan.done_count;
-    } else if (status === TupleStatus.canceled) {
+    } else if (status === TaskStatus.canceled) {
         return computePlan.canceled_count;
-    } else if (status === TupleStatus.failed) {
+    } else if (status === TaskStatus.failed) {
         return computePlan.failed_count;
-    } else if (status === TupleStatus.todo) {
+    } else if (status === TaskStatus.todo) {
         return computePlan.todo_count;
-    } else if (status === TupleStatus.waiting) {
+    } else if (status === TaskStatus.waiting) {
         return computePlan.waiting_count;
     }
 

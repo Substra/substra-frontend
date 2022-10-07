@@ -38,7 +38,7 @@ import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import { RetrieveComputePlanTasksArgsProps } from '@/modules/computePlans/ComputePlansSlice';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { ListTasksProps } from '@/modules/tasks/TasksSlice';
-import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import { AssetsTable } from '@/components/AssetsTable';
@@ -70,11 +70,11 @@ import Timing from '@/components/Timing';
 type TasksTableProps = {
     loading: boolean;
     list: () => AsyncThunkAction<
-        PaginatedApiResponseT<TupleT>,
+        PaginatedApiResponseT<TaskT>,
         RetrieveComputePlanTasksArgsProps | ListTasksProps,
         { rejectValue: string }
     >;
-    tasks: TupleT[];
+    tasks: TaskT[];
     count: number;
     computePlan?: ComputePlanT | null;
     tableProps?: TableProps;
@@ -125,7 +125,7 @@ const TasksTable = ({
         durationMax,
     ]);
 
-    const context = useTableFiltersContext('tuple');
+    const context = useTableFiltersContext('task');
     const { onPopoverOpen } = context;
 
     return (
@@ -281,7 +281,7 @@ const TasksTable = ({
                                             <Skeleton>
                                                 <Status
                                                     size="sm"
-                                                    status={TupleStatus.done}
+                                                    status={TaskStatus.done}
                                                     withIcon={false}
                                                 />
                                             </Skeleton>
@@ -326,7 +326,7 @@ const TasksTable = ({
                                 {!loading && tasks.length === 0 && (
                                     <EmptyTr
                                         nbColumns={computePlan ? 3 : 4}
-                                        asset="tuple"
+                                        asset="task"
                                     />
                                 )}
                                 {!loading &&

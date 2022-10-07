@@ -2,7 +2,7 @@ import useSelection from '@/hooks/useSelection';
 import { useStatus } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import { getStatusLabel, getStatusDescription } from '@/libs/status';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import TableFilterCheckboxes from './TableFilterCheckboxes';
 
@@ -31,7 +31,7 @@ const TaskStatusTableFilter = (): JSX.Element => {
         setTmpStatus(activeStatus);
     };
 
-    const options = Object.values(TupleStatus).map((status) => ({
+    const options = Object.values(TaskStatus).map((status) => ({
         value: status,
         label: getStatusLabel(status),
         description: getStatusDescription(status),

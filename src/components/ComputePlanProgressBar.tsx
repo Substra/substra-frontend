@@ -3,10 +3,10 @@ import { Box, HStack } from '@chakra-ui/react';
 import { getStatusStyle } from '@/libs/status';
 import { getStatusCount } from '@/modules/computePlans/ComputePlanUtils';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 type ItemProps = {
-    status: TupleStatus;
+    status: TaskStatus;
     count: number;
     total: number;
 };
@@ -26,13 +26,13 @@ const Item = ({ status, count, total }: ItemProps): JSX.Element | null => {
     );
 };
 
-export const tupleStatusOrder: TupleStatus[] = [
-    TupleStatus.done,
-    TupleStatus.doing,
-    TupleStatus.canceled,
-    TupleStatus.failed,
-    TupleStatus.todo,
-    TupleStatus.waiting,
+export const taskStatusOrder: TaskStatus[] = [
+    TaskStatus.done,
+    TaskStatus.doing,
+    TaskStatus.canceled,
+    TaskStatus.failed,
+    TaskStatus.todo,
+    TaskStatus.waiting,
 ];
 
 type ComputePlanProgressBarProps = {
@@ -51,9 +51,9 @@ const ComputePlanProgressBar = ({
             alignItems="stretch"
         >
             {!computePlan.task_count && (
-                <Item status={TupleStatus.waiting} count={1} total={1} />
+                <Item status={TaskStatus.waiting} count={1} total={1} />
             )}
-            {tupleStatusOrder.map((status) => (
+            {taskStatusOrder.map((status) => (
                 <Item
                     key={status}
                     status={status}

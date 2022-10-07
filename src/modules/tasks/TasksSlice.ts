@@ -4,15 +4,15 @@ import { AxiosError } from 'axios';
 import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
 import * as TasksApi from './TasksApi';
-import { TupleT } from './TuplesTypes';
+import { TaskT } from './TasksTypes';
 
 type TasksStateT = {
-    tasks: TupleT[];
+    tasks: TaskT[];
     tasksCount: number;
     tasksLoading: boolean;
     tasksError: string;
 
-    task: TupleT | null;
+    task: TaskT | null;
     taskLoading: boolean;
     taskError: string;
 
@@ -45,12 +45,12 @@ export type ListTasksProps = {
 };
 
 export const listTasks = createAsyncThunk<
-    PaginatedApiResponseT<TupleT>,
+    PaginatedApiResponseT<TaskT>,
     ListTasksProps,
     { rejectValue: string }
 >('tasks/listTasks', async (params: ListTasksProps, thunkAPI) => {
     try {
-        const response = await TasksApi.listTuples(params, {
+        const response = await TasksApi.listTasks(params, {
             signal: thunkAPI.signal,
         });
         return response.data;
@@ -64,12 +64,12 @@ export const listTasks = createAsyncThunk<
 });
 
 export const retrieveTask = createAsyncThunk<
-    TupleT,
+    TaskT,
     string,
     { rejectValue: string }
 >('tasks/get', async (key: string, thunkAPI) => {
     try {
-        const response = await TasksApi.retrieveTuple(key, {
+        const response = await TasksApi.retrieveTask(key, {
             signal: thunkAPI.signal,
         });
         return response.data;

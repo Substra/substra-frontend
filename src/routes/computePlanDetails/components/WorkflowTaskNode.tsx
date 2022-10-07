@@ -4,14 +4,14 @@ import { Handle, Position } from 'react-flow-renderer';
 
 import { Box, Text, Flex } from '@chakra-ui/react';
 
-import { PositionedTaskT } from '@/modules/cpWorkflow/CPWorkflowTypes';
+import { PositionedWorkflowTaskT } from '@/modules/cpWorkflow/CPWorkflowTypes';
 import {
     NODE_BORDER_COLOR,
     NODE_LABEL_COLOR,
 } from '@/modules/cpWorkflow/CPWorkflowUtils';
 
 type TaskNodeProps = {
-    data: PositionedTaskT;
+    data: PositionedWorkflowTaskT;
 };
 
 const TaskNode = ({ data }: TaskNodeProps) => {

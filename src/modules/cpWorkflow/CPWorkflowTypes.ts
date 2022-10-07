@@ -1,4 +1,4 @@
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 type PositionT = {
     x: number;
@@ -10,16 +10,16 @@ type PlugT = {
     kind: string;
 };
 
-export type TaskT = {
+export type WorkflowTaskT = {
     key: string;
     rank: number;
     worker: string;
-    status: TupleStatus;
+    status: TaskStatus;
     inputs: PlugT[];
     outputs: PlugT[];
 };
 
-export type PositionedTaskT = TaskT & {
+export type PositionedWorkflowTaskT = WorkflowTaskT & {
     position: PositionT;
 };
 
@@ -31,11 +31,11 @@ type EdgeT = {
 };
 
 export type TaskGraphT = {
-    tasks: TaskT[];
+    tasks: WorkflowTaskT[];
     edges: EdgeT[];
 };
 
 export type LayoutedTaskGraphT = {
-    tasks: PositionedTaskT[];
+    tasks: PositionedWorkflowTaskT[];
     edges: EdgeT[];
 };

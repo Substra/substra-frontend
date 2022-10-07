@@ -3,7 +3,7 @@ import { RiLockLine } from 'react-icons/ri';
 
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 
@@ -12,27 +12,27 @@ const DrawerSectionOutModelEntryContent = ({
     taskStatus,
 }: {
     model: ModelT | null;
-    taskStatus: TupleStatus;
+    taskStatus: TaskStatus;
 }): JSX.Element | null => {
     const canDownloadModel = useCanDownloadModel();
 
     let content = null;
 
-    if (taskStatus === TupleStatus.waiting) {
+    if (taskStatus === TaskStatus.waiting) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
-    } else if (taskStatus === TupleStatus.todo) {
+    } else if (taskStatus === TaskStatus.todo) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
-    } else if (taskStatus === TupleStatus.doing) {
+    } else if (taskStatus === TaskStatus.doing) {
         content = <Text color="gray.500">Model still training</Text>;
-    } else if (taskStatus === TupleStatus.failed) {
+    } else if (taskStatus === TaskStatus.failed) {
         content = <Text color="gray.500">Model training failed</Text>;
-    } else if (taskStatus === TupleStatus.canceled) {
+    } else if (taskStatus === TaskStatus.canceled) {
         content = <Text color="gray.500">Model training canceled</Text>;
-    } else if (taskStatus === TupleStatus.done) {
+    } else if (taskStatus === TaskStatus.done) {
         if (model === null) {
             content = <Text color="gray.500">Model is not available</Text>;
         } else {

@@ -8,7 +8,7 @@ import {
     ComputePlanStubT,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleT } from '@/modules/tasks/TuplesTypes';
+import { TaskT } from '@/modules/tasks/TasksTypes';
 
 type ComputePlansStateT = {
     computePlans: ComputePlanStubT[];
@@ -21,7 +21,7 @@ type ComputePlansStateT = {
     computePlanError: string;
     computePlanUpdating: boolean;
     computePlanUpdateError: string;
-    computePlanTasks: TupleT[];
+    computePlanTasks: TaskT[];
     computePlanTasksCount: number;
     computePlanTasksLoading: boolean;
     computePlanTasksError: string;
@@ -100,12 +100,12 @@ export type RetrieveComputePlanTasksArgsProps = {
 };
 
 export const retrieveComputePlanTasks = createAsyncThunk<
-    PaginatedApiResponseT<TupleT>,
+    PaginatedApiResponseT<TaskT>,
     RetrieveComputePlanTasksArgsProps,
     { rejectValue: string }
 >('computePlans/getTasks', async ({ computePlanKey, ...params }, thunkAPI) => {
     try {
-        const response = await ComputePlansApi.listComputePlanTuples(
+        const response = await ComputePlansApi.listComputePlanTasks(
             {
                 key: computePlanKey,
                 ...params,

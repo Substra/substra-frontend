@@ -9,7 +9,7 @@ import {
     ComputePlanStatisticsT,
     PerformanceT,
 } from '@/modules/perf/PerformancesTypes';
-import { TupleT } from '@/modules/tasks/TuplesTypes';
+import { TaskT } from '@/modules/tasks/TasksTypes';
 
 import { ComputePlanStubT, ComputePlanT } from './ComputePlansTypes';
 
@@ -17,7 +17,7 @@ const URLS = {
     LIST: '/compute_plan/',
     RETRIEVE: '/compute_plan/__KEY__/',
     CANCEL: '/compute_plan/__KEY__/cancel/',
-    LIST_TUPLES: '/compute_plan/__KEY__/task/',
+    LIST_TASKS: '/compute_plan/__KEY__/task/',
     LIST_PERFORMANCES: '/compute_plan/__KEY__/perf/',
     EXPORT_PERFORMANCES: '/performance/export/',
 };
@@ -46,15 +46,15 @@ export const cancelComputePlan = (
 ): AxiosPromise<ComputePlanT> =>
     API.post(URLS.CANCEL.replace('__KEY__', key), config);
 
-type APIListCPTuplesArgsProps = APIListArgsT & {
+type APIListCPTasksArgsProps = APIListArgsT & {
     key: string;
 };
 
-export const listComputePlanTuples = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
+export const listComputePlanTasks = (
+    { key, ...apiListArgs }: APIListCPTasksArgsProps,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<TupleT>> => {
-    return API.authenticatedGet(URLS.LIST_TUPLES.replace('__KEY__', key), {
+): AxiosPromise<PaginatedApiResponseT<TaskT>> => {
+    return API.authenticatedGet(URLS.LIST_TASKS.replace('__KEY__', key), {
         ...getApiOptions(apiListArgs),
         ...config,
     });
@@ -64,7 +64,7 @@ type PaginatedPerformanceResponseT = PaginatedApiResponseT<PerformanceT> & {
     compute_plan_statistics: ComputePlanStatisticsT;
 };
 export const listComputePlanPerformances = (
-    { key, ...apiListArgs }: APIListCPTuplesArgsProps,
+    { key, ...apiListArgs }: APIListCPTasksArgsProps,
     config: AxiosRequestConfig
 ): AxiosPromise<PaginatedPerformanceResponseT> => {
     return API.authenticatedGet(

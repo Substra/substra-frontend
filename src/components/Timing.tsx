@@ -5,10 +5,10 @@ import {
     ComputePlanStatus,
     ComputePlanT,
 } from '@/modules/computePlans/ComputePlansTypes';
-import { TupleT, TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 
 type TimingProps = {
-    asset: ComputePlanT | TupleT;
+    asset: ComputePlanT | TaskT;
 };
 
 const Timing = ({ asset }: TimingProps): JSX.Element => {
@@ -18,8 +18,8 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
                 {[
                     ComputePlanStatus.todo,
                     ComputePlanStatus.waiting,
-                    TupleStatus.todo,
-                    TupleStatus.waiting,
+                    TaskStatus.todo,
+                    TaskStatus.waiting,
                 ].includes(asset.status)
                     ? 'Not started yet'
                     : 'Information not available'}
@@ -39,9 +39,9 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
                         ComputePlanStatus.done,
                         ComputePlanStatus.canceled,
                         ComputePlanStatus.failed,
-                        TupleStatus.done,
-                        TupleStatus.canceled,
-                        TupleStatus.failed,
+                        TaskStatus.done,
+                        TaskStatus.canceled,
+                        TaskStatus.failed,
                     ].includes(asset.status)
                         ? 'Information not available'
                         : 'Not ended yet'}
