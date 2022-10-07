@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   UI and markup glitches on login page (#123)
+-   Check for "last admin" when editing a user (#131)
 
 ### Fixed
 
