@@ -8,9 +8,14 @@ import { DrawerSectionEntry } from '@/components/DrawerSection';
 type RoleInputProps = {
     value: UserRolesT;
     onChange: (value: UserRolesT) => void;
+    isDisabled?: boolean;
 };
 
-const RoleInput = ({ value, onChange }: RoleInputProps): JSX.Element => {
+const RoleInput = ({
+    value,
+    onChange,
+    isDisabled,
+}: RoleInputProps): JSX.Element => {
     return (
         <DrawerSectionEntry title="Role">
             <Select
@@ -18,6 +23,7 @@ const RoleInput = ({ value, onChange }: RoleInputProps): JSX.Element => {
                 id="role"
                 value={value}
                 onChange={(e) => onChange(e.target.value as UserRolesT)}
+                isDisabled={isDisabled}
             >
                 {Object.entries(UserRolesT).map(([key, type]) => (
                     <option key={key} value={type}>

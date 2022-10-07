@@ -22,8 +22,8 @@ import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import * as UsersApi from '@/modules/users/UsersApi';
 import {
-    checkPasswordErrors,
-    hasCorrectLenght,
+    isPasswordValid,
+    hasCorrectLength,
     hasLowerAndUpperChar,
     hasNumber,
     hasSpecialChar,
@@ -123,7 +123,7 @@ const ResetForm = (): JSX.Element => {
                             setIsDirty(true);
                             setPassword(newValue);
                             setPasswordHasErrors(
-                                checkPasswordErrors(newValue, username)
+                                !isPasswordValid(newValue, username)
                             );
                         }}
                     />
@@ -136,7 +136,7 @@ const ResetForm = (): JSX.Element => {
                     />
                     <PasswordValidationMessage
                         isEmpty={isEmpty}
-                        isValid={hasCorrectLenght(password)}
+                        isValid={hasCorrectLength(password)}
                         message="Length must be between 20 and 64 characters"
                     />
                     <PasswordValidationMessage

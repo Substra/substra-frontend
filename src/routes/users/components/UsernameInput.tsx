@@ -9,6 +9,7 @@ type UsernameInputProps = {
     onChange: (value: string) => void;
     hasErrors: boolean;
     setHasErrors: (hasErrors: boolean) => void;
+    isDisabled?: boolean;
 };
 
 const UsernameInput = ({
@@ -16,12 +17,16 @@ const UsernameInput = ({
     onChange,
     hasErrors,
     setHasErrors,
+    isDisabled,
 }: UsernameInputProps): JSX.Element => {
     const [isDirty, setIsDirty] = useState(false);
 
     return (
-        <DrawerSectionEntry title="Username">
-            <FormControl isInvalid={hasErrors && isDirty}>
+        <DrawerSectionEntry title="Username" alignItems="baseline">
+            <FormControl
+                isInvalid={hasErrors && isDirty}
+                isDisabled={isDisabled}
+            >
                 <Input
                     size="sm"
                     id="username"
