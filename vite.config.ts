@@ -1,8 +1,7 @@
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { svgrComponent } from 'vite-plugin-svgr-component';
-import reactJsx from 'vite-react-jsx';
 
 import { version } from './package.json';
 
@@ -24,15 +23,14 @@ export default defineConfig({
         DEFAULT_PAGE_SIZE: '30',
         'process.env': {},
     },
-    plugins: [
-        reactJsx(),
-        // Do not include reactRefresh in test mode
-        ...(process.env.NODE_ENV === 'test' ? [] : [reactRefresh()]),
-        svgrComponent(),
-    ],
+    plugins: [react(), svgrComponent()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
         },
+    },
+    server: {
+        port: 3000,
+        host: '127.0.0.1',
     },
 });
