@@ -1,4 +1,4 @@
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 type PositionT = {
     x: number;
@@ -14,12 +14,12 @@ export type TaskT = {
     key: string;
     rank: number;
     worker: string;
-    status: TupleStatus;
+    status: TaskStatus;
     inputs_specs: PlugT[];
     outputs_specs: PlugT[];
 };
 
-export type PositionedTaskT = TaskT & {
+type PositionedTaskT = TaskT & {
     position: PositionT;
 };
 

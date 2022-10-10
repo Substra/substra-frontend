@@ -1,5 +1,5 @@
 import { computeLayout } from '@/modules/cpWorkflow/CPWorkflowLayout';
-import { TupleStatus } from '@/modules/tasks/TuplesTypes';
+import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { LayoutedTaskGraphT, TaskGraphT } from './CPWorkflowTypes';
 
@@ -22,7 +22,7 @@ const twoTasksGraph: TaskGraphT = {
             key: 'a',
             rank: 0,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs_specs: [],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
@@ -30,7 +30,7 @@ const twoTasksGraph: TaskGraphT = {
             key: 'b',
             rank: 1,
             worker: 'pharma2',
-            status: TupleStatus.failed,
+            status: TaskStatus.failed,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [],
         },
@@ -82,7 +82,7 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             key: 'predict_a',
             rank: 1,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
@@ -90,7 +90,7 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
             key: 'test_a',
             rank: 2,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [{ identifier: 'perf', kind: 'ASSET_PERFORMANCE' }],
         },
@@ -157,7 +157,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_a',
             rank: 0,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs_specs: [],
             outputs_specs: [
                 { identifier: 'out_model_a', kind: 'ASSET_MODEL' },
@@ -168,7 +168,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_b',
             rank: 1,
             worker: 'pharma1',
-            status: TupleStatus.failed,
+            status: TaskStatus.failed,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
@@ -176,7 +176,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_c',
             rank: 2,
             worker: 'pharma1',
-            status: TupleStatus.done,
+            status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_models', kind: 'ASSET_MODEL' }],
             outputs_specs: [],
         },
