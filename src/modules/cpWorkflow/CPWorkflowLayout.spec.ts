@@ -146,89 +146,88 @@ const twoTasksPlusPredictAndTestTupleLayoutedGraph: LayoutedTaskGraphT = {
     edges: twoTasksPlusPredictAndTestTupleGraph.edges,
 };
 
-const compositeAndAggregateGraph: TaskGraphT = {
+const singleChainGraphWithBypassingEdge: TaskGraphT = {
     //............................
     // pharma1
-    //         composite_a -> aggregate_a -> composite_b
+    //         task_a -> task_b ----> task_c
+    //             |              |
+    //             +--------------+
     tasks: [
         {
-            key: 'composite_a',
+            key: 'task_a',
             rank: 0,
             worker: 'pharma1',
             status: TupleStatus.done,
             inputs_specs: [],
             outputs_specs: [
-                { identifier: 'out_head_model', kind: 'ASSET_MODEL' },
-                { identifier: 'out_trunk_model', kind: 'ASSET_MODEL' },
+                { identifier: 'out_model_a', kind: 'ASSET_MODEL' },
+                { identifier: 'out_model_b', kind: 'ASSET_MODEL' },
             ],
         },
         {
-            key: 'aggregate_a',
+            key: 'task_b',
             rank: 1,
             worker: 'pharma1',
             status: TupleStatus.failed,
-            inputs_specs: [{ identifier: 'in_models', kind: 'ASSET_MODEL' }],
+            inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
         },
         {
-            key: 'composite_b',
+            key: 'task_c',
             rank: 2,
             worker: 'pharma1',
             status: TupleStatus.done,
-            inputs_specs: [
-                { identifier: 'in_head_model', kind: 'ASSET_MODEL' },
-                { identifier: 'in_trunk_model', kind: 'ASSET_MODEL' },
-            ],
+            inputs_specs: [{ identifier: 'in_models', kind: 'ASSET_MODEL' }],
             outputs_specs: [],
         },
     ],
     edges: [
         {
-            source_task_key: 'composite_a',
-            source_output_identifier: 'out_head_model',
-            target_task_key: 'composite_b',
-            target_input_identifier: 'in_head_model',
+            source_task_key: 'task_a',
+            source_output_identifier: 'out_model_a',
+            target_task_key: 'task_b',
+            target_input_identifier: 'in_model',
         },
         {
-            source_task_key: 'composite_a',
-            source_output_identifier: 'out_trunk_model',
-            target_task_key: 'aggregate_a',
+            source_task_key: 'task_a',
+            source_output_identifier: 'out_model_b',
+            target_task_key: 'task_c',
             target_input_identifier: 'in_models',
         },
         {
-            source_task_key: 'aggregate_a',
+            source_task_key: 'task_b',
             source_output_identifier: 'out_model',
-            target_task_key: 'composite_b',
-            target_input_identifier: 'in_trunk_model',
+            target_task_key: 'task_c',
+            target_input_identifier: 'in_model',
         },
     ],
 };
 
-const compositeAndAggregateLAyoutedGraph: LayoutedTaskGraphT = {
+const singleChainLayoutedGraphWithBypassingEdge: LayoutedTaskGraphT = {
     tasks: [
         {
-            ...compositeAndAggregateGraph.tasks[0],
+            ...singleChainGraphWithBypassingEdge.tasks[0],
             position: {
                 x: 0, // 0 ("in first column")
                 y: 0, // 0 ("first task in the row")
             },
         },
         {
-            ...compositeAndAggregateGraph.tasks[1],
+            ...singleChainGraphWithBypassingEdge.tasks[1],
             position: {
                 x: 400, // 1 * CELL_WIDTH ("task in second column")
                 y: 8, // // 0 ("first task in the row") + 8 ("uneven column top padding")
             },
         },
         {
-            ...compositeAndAggregateGraph.tasks[2],
+            ...singleChainGraphWithBypassingEdge.tasks[2],
             position: {
                 x: 800, // 2 * CELL_WIDTH ("task in third column")
                 y: 0, // 0 ("first task in the row")
             },
         },
     ],
-    edges: compositeAndAggregateGraph.edges,
+    edges: singleChainGraphWithBypassingEdge.edges,
 };
 
 test('computeLayout', () => {
@@ -237,7 +236,7 @@ test('computeLayout', () => {
     expect(computeLayout(twoTasksPlusPredictAndTestTupleGraph)).toStrictEqual(
         twoTasksPlusPredictAndTestTupleLayoutedGraph
     );
-    expect(computeLayout(compositeAndAggregateGraph)).toStrictEqual(
-        compositeAndAggregateLAyoutedGraph
+    expect(computeLayout(singleChainGraphWithBypassingEdge)).toStrictEqual(
+        singleChainLayoutedGraphWithBypassingEdge
     );
 });
