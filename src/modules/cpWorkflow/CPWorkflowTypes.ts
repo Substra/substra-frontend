@@ -19,7 +19,7 @@ export type TaskT = {
     outputs_specs: PlugT[];
 };
 
-type PositionedTaskT = TaskT & {
+export type PositionedTaskT = TaskT & {
     position: PositionT;
 };
 
