@@ -6,36 +6,36 @@ type PositionT = {
 };
 
 type PlugT = {
-    id: string;
+    identifier: string;
     kind: string;
 };
 
-export type WorkflowTaskT = {
+export type TaskT = {
     key: string;
     rank: number;
     worker: string;
     status: TaskStatus;
-    inputs: PlugT[];
-    outputs: PlugT[];
+    inputs_specs: PlugT[];
+    outputs_specs: PlugT[];
 };
 
-export type PositionedWorkflowTaskT = WorkflowTaskT & {
+export type PositionedTaskT = TaskT & {
     position: PositionT;
 };
 
 type EdgeT = {
     source_task_key: string;
-    source_output_name: string;
+    source_output_identifier: string;
     target_task_key: string;
-    target_input_name: string;
+    target_input_identifier: string;
 };
 
 export type TaskGraphT = {
-    tasks: WorkflowTaskT[];
+    tasks: TaskT[];
     edges: EdgeT[];
 };
 
 export type LayoutedTaskGraphT = {
-    tasks: PositionedWorkflowTaskT[];
+    tasks: PositionedTaskT[];
     edges: EdgeT[];
 };

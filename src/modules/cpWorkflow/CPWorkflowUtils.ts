@@ -2,7 +2,7 @@ import { Edge, Node, MarkerType } from 'react-flow-renderer';
 
 import {
     LayoutedTaskGraphT,
-    PositionedWorkflowTaskT,
+    PositionedTaskT,
 } from '@/modules/cpWorkflow/CPWorkflowTypes';
 import { TaskStatus } from '@/modules/tasks/TasksTypes';
 
@@ -30,46 +30,44 @@ export const NODE_LABEL_COLOR: Record<TaskStatus, string> = {
 };
 
 export default function makeReactFlowGraph(graphItems: LayoutedTaskGraphT): {
-    nodes: Node<PositionedWorkflowTaskT>[];
+    nodes: Node<PositionedTaskT>[];
     edges: Edge[];
 } {
-    const nodes = graphItems.tasks.map(
-        (task): Node<PositionedWorkflowTaskT> => {
-            return {
-                id: task.key,
-                type: 'taskNode',
-                position: {
-                    x: task.position.x,
-                    y: task.position.y,
-                },
-                data: task,
-                style: {
-                    borderRadius: '4px',
-                    zIndex: '3',
-                    width: NODE_WIDTH,
-                    border: `2px solid ${NODE_BORDER_COLOR[task.status]}`,
-                    color: NODE_LABEL_COLOR[task.status],
-                    background: 'white',
-                    cursor: 'pointer',
-                },
-            };
-        }
-    );
+    const nodes = graphItems.tasks.map((task): Node<PositionedTaskT> => {
+        return {
+            id: task.key,
+            type: 'taskNode',
+            position: {
+                x: task.position.x,
+                y: task.position.y,
+            },
+            data: task,
+            style: {
+                borderRadius: '4px',
+                zIndex: '3',
+                width: NODE_WIDTH,
+                border: `2px solid ${NODE_BORDER_COLOR[task.status]}`,
+                color: NODE_LABEL_COLOR[task.status],
+                background: 'white',
+                cursor: 'pointer',
+            },
+        };
+    });
 
     const edges: Edge[] = graphItems.edges.map((edge) => {
         return {
             id:
                 edge.source_task_key +
                 '.' +
-                edge.source_output_name +
+                edge.source_output_identifier +
                 '->' +
                 edge.target_task_key +
                 '.' +
-                edge.target_input_name,
+                edge.target_input_identifier,
             source: edge.source_task_key,
-            sourceHandle: edge.source_output_name,
+            sourceHandle: edge.source_output_identifier,
             target: edge.target_task_key,
-            targetHandle: edge.target_input_name,
+            targetHandle: edge.target_input_identifier,
             markerEnd: {
                 type: MarkerType.ArrowClosed,
                 color: '#373737',
