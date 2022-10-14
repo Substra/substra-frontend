@@ -26,6 +26,7 @@ jobs:
                   echo "COMMIT_DATE=`git show -s --format=%cs HEAD | tr -d -`" >> $GITHUB_ENV
 
             - uses: docker/metadata-action@v4
+              id: docker-metadata
               with:
                   images: 'ghcr.io/substra/substra-frontend'
                   tags: |
@@ -45,11 +46,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-python@v2
-              with:
-                  python-version: '>=3.9.0 <4.0.0'
-            - run: python3 -m pip install -r ci/cilib/requirements.txt
-
             - run: helm lint charts/substra-frontend
             - run: helm package charts/substra-frontend
             - uses: actions/upload-artifact@v2
