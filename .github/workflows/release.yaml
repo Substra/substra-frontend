@@ -19,6 +19,7 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
 
             - uses: docker/metadata-action@v4
+              id: docker-metadata
               with:
                   images: 'ghcr.io/substra/substra-frontend'
                   tags: |
