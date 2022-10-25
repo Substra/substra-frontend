@@ -63,11 +63,6 @@ const Login = (): JSX.Element => {
             >
                 <Box>
                     <SubstraLogo />
-                    {/* <img
-                        src={SubstraLogo}
-                        style={{ width: 184, height: 50 }}
-                        alt="substra logo"
-                    /> */}
                 </Box>
                 <Box alignItems="center" width="100%">
                     <LoginForm />
