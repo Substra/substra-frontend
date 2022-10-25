@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import LoginBackground from '@/assets/login-background.png';
-import SubstraLogoBlack from '@/assets/svg/substra-full-name-logo.svg';
+import SubstraLogo from '@/assets/svg/substra-full-name-logo.svg';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -62,7 +62,7 @@ const Login = (): JSX.Element => {
                 spacing="8"
             >
                 <Box>
-                    <SubstraLogoBlack />
+                    <SubstraLogo />
                 </Box>
                 <Box alignItems="center" width="100%">
                     <LoginForm />

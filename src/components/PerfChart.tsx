@@ -186,7 +186,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                             align: 'end',
                             color: '#718096',
                             font: {
-                                family: 'Inter',
+                                family: 'Gattica',
                                 size: 10,
                             },
                         },
@@ -197,7 +197,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         ticks: {
                             color: '#A0AEC0',
                             font: {
-                                family: 'Inter',
+                                family: 'Gattica',
                                 size: 10,
                             },
                         },
@@ -210,7 +210,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                             align: 'end',
                             color: '#718096',
                             font: {
-                                family: 'Inter',
+                                family: 'Gattica',
                                 size: 10,
                             },
                         },
@@ -221,7 +221,7 @@ const PerfChart = forwardRef<HTMLDivElement, PerfChartProps>(
                         ticks: {
                             color: '#A0AEC0',
                             font: {
-                                family: 'Inter',
+                                family: 'Gattica',
                                 size: 10,
                             },
                         },
