@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
+import {
+    APIListArgsT,
+    PaginatedApiResponseT,
+} from '@/modules/common/CommonTypes';
 
 import * as TasksApi from './TasksApi';
-import { TaskT } from './TasksTypes';
+import { TaskT, TaskIOT } from './TasksTypes';
 
 type TasksStateT = {
     tasks: TaskT[];
@@ -15,6 +18,14 @@ type TasksStateT = {
     task: TaskT | null;
     taskLoading: boolean;
     taskError: string;
+
+    taskInputAssets: TaskIOT[];
+    taskInputAssetsLoading: boolean;
+    taskInputAssetsError: string;
+
+    taskOutputAssets: TaskIOT[];
+    taskOutputAssetsLoading: boolean;
+    taskOutputAssetsError: string;
 
     logs: string;
     logsLoading: boolean;
@@ -30,6 +41,14 @@ const initialState: TasksStateT = {
     task: null,
     taskLoading: true,
     taskError: '',
+
+    taskInputAssets: [],
+    taskInputAssetsLoading: true,
+    taskInputAssetsError: '',
+
+    taskOutputAssets: [],
+    taskOutputAssetsLoading: true,
+    taskOutputAssetsError: '',
 
     logs: '',
     logsLoading: true,
@@ -70,6 +89,44 @@ export const retrieveTask = createAsyncThunk<
 >('tasks/get', async (key: string, thunkAPI) => {
     try {
         const response = await TasksApi.retrieveTask(key, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
+export const listTaskInputAssets = createAsyncThunk<
+    PaginatedApiResponseT<TaskIOT>,
+    { key: string; params: APIListArgsT },
+    { rejectValue: string }
+>('tasks/listInputAssets', async ({ key, params }, thunkAPI) => {
+    try {
+        const response = await TasksApi.listTaskInputAssets(key, params, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
+export const listTaskOutputAssets = createAsyncThunk<
+    PaginatedApiResponseT<TaskIOT>,
+    { key: string; params: APIListArgsT },
+    { rejectValue: string }
+>('tasks/listOutputAssets', async ({ key, params }, thunkAPI) => {
+    try {
+        const response = await TasksApi.listTaskOutputAssets(key, params, {
             signal: thunkAPI.signal,
         });
         return response.data;
@@ -140,6 +197,36 @@ const tasksSlice = createSlice({
                 state.taskLoading = false;
                 state.taskError = payload || 'Unknown error';
                 state.task = null;
+            })
+            .addCase(listTaskInputAssets.pending, (state) => {
+                state.taskInputAssets = [];
+                state.taskInputAssetsLoading = true;
+                state.taskInputAssetsError = '';
+            })
+            .addCase(listTaskInputAssets.fulfilled, (state, { payload }) => {
+                state.taskInputAssets = payload.results;
+                state.taskInputAssetsLoading = false;
+                state.taskInputAssetsError = '';
+            })
+            .addCase(listTaskInputAssets.rejected, (state, { payload }) => {
+                state.taskInputAssets = [];
+                state.taskInputAssetsLoading = false;
+                state.taskInputAssetsError = payload || 'Unknown error';
+            })
+            .addCase(listTaskOutputAssets.pending, (state) => {
+                state.taskOutputAssets = [];
+                state.taskOutputAssetsLoading = true;
+                state.taskOutputAssetsError = '';
+            })
+            .addCase(listTaskOutputAssets.fulfilled, (state, { payload }) => {
+                state.taskOutputAssets = payload.results;
+                state.taskOutputAssetsLoading = false;
+                state.taskOutputAssetsError = '';
+            })
+            .addCase(listTaskOutputAssets.rejected, (state, { payload }) => {
+                state.taskOutputAssets = [];
+                state.taskOutputAssetsLoading = false;
+                state.taskOutputAssetsError = payload || 'Unknown error';
             })
             .addCase(retrieveLogs.pending, (state) => {
                 state.logsLoading = true;

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
     TableContainer,
     Table,
@@ -11,17 +13,16 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
+import useAppSelector from '@/hooks/useAppSelector';
+import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
+import { listTaskOutputAssets } from '@/modules/tasks/TasksSlice';
 import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
-
-const getOutputKind = (task: TaskT, output_id: string) => {
-    return task.algo.outputs[output_id].kind;
-};
 
 const isMultipleOutput = (task: TaskT, output_id: string) => {
     return task.algo.outputs[output_id].multiple;
@@ -60,12 +61,36 @@ const displayModel = (value: ModelT | null, taskStatus: TaskStatus) => {
 };
 
 const TaskOutputsDrawerSection = ({
-    loading,
+    taskLoading,
     task,
 }: {
-    loading: boolean;
+    taskLoading: boolean;
     task: TaskT | null;
 }) => {
+    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
+
+    useEffect(() => {
+        if (task?.key) {
+            dispatchWithAutoAbort(
+                listTaskOutputAssets({
+                    key: task.key,
+                    params: {
+                        page: 1,
+                        pageSize: 100,
+                    },
+                })
+            );
+        }
+    }, [task, dispatchWithAutoAbort]);
+
+    const taskOutputAssets = useAppSelector(
+        (state) => state.tasks.taskOutputAssets
+    );
+    const taskOutputAssetsLoading = useAppSelector(
+        (state) => state.tasks.taskOutputAssetsLoading
+    );
+    const loading = taskLoading || taskOutputAssetsLoading;
+
     return (
         <DrawerSection title="Outputs">
             <TableContainer alignSelf="stretch">
@@ -101,41 +126,44 @@ const TaskOutputsDrawerSection = ({
                             ))}
                         {!loading &&
                             task &&
-                            Object.entries(task.outputs).map(
-                                ([key, output]) => {
-                                    const kind = getOutputKind(task, key);
-                                    const multiple = isMultipleOutput(
-                                        task,
-                                        key
-                                    );
-                                    return (
-                                        <Tr key={key}>
-                                            <Td paddingLeft="0 !important">
-                                                <Code fontSize="xs">{key}</Code>
-                                            </Td>
-                                            <Td>{getAssetKindLabel(kind)}</Td>
-                                            <Td
-                                                paddingRight="0 !important"
-                                                textAlign="center"
-                                            >
-                                                {multiple ? 'yes' : 'no'}
-                                            </Td>
-                                            <Td textAlign="center">
-                                                {kind === 'ASSET_PERFORMANCE' &&
-                                                    displayPerformance(
-                                                        output.value as number,
-                                                        task.status
-                                                    )}
-                                                {kind === 'ASSET_MODEL' &&
-                                                    displayModel(
-                                                        output.value as ModelT | null,
-                                                        task.status
-                                                    )}
-                                            </Td>
-                                        </Tr>
-                                    );
-                                }
-                            )}
+                            Object.values(taskOutputAssets).map((output) => {
+                                const multiple = isMultipleOutput(
+                                    task,
+                                    output.identifier
+                                );
+                                return (
+                                    <Tr key={output.identifier}>
+                                        <Td paddingLeft="0 !important">
+                                            <Code fontSize="xs">
+                                                {output.identifier}
+                                            </Code>
+                                        </Td>
+                                        <Td>
+                                            {getAssetKindLabel(output.kind)}
+                                        </Td>
+                                        <Td
+                                            paddingRight="0 !important"
+                                            textAlign="center"
+                                        >
+                                            {multiple ? 'yes' : 'no'}
+                                        </Td>
+                                        <Td textAlign="center">
+                                            {output.kind ===
+                                                'ASSET_PERFORMANCE' &&
+                                                displayPerformance(
+                                                    output.asset
+                                                        .performance_value as number,
+                                                    task.status
+                                                )}
+                                            {output.kind === 'ASSET_MODEL' &&
+                                                displayModel(
+                                                    output.asset as ModelT | null,
+                                                    task.status
+                                                )}
+                                        </Td>
+                                    </Tr>
+                                );
+                            })}
                     </Tbody>
                 </Table>
             </TableContainer>

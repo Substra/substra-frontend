@@ -1,10 +1,9 @@
-import { AlgoT, OutputT } from '@/modules/algos/AlgosTypes';
-import {
-    FileT,
-    MetadataT,
-    PermissionsT,
-    PermissionT,
-} from '@/modules/common/CommonTypes';
+import { AlgoT, AssetKindT, OutputT } from '@/modules/algos/AlgosTypes';
+import { MetadataT, PermissionT } from '@/modules/common/CommonTypes';
+
+import { DatasampleT, DatasetStubT } from '../datasets/DatasetsTypes';
+import { PerformanceAssetT } from '../perf/PerformancesTypes';
+import { ModelT } from './ModelsTypes';
 
 export enum TaskStatus {
     waiting = 'STATUS_WAITING',
@@ -45,11 +44,42 @@ export const statusDescriptionByTaskStatus: Record<
 export type TaskInputT = {
     identifier: string;
     asset_key?: string;
-    addressable?: FileT;
-    permissions?: PermissionsT;
     parent_task_key?: string;
     parent_task_output_identifier?: string;
 };
+
+type BaseIOT = {
+    identifier: string;
+    kind: AssetKindT;
+};
+
+type DatasetIOT = BaseIOT & {
+    kind: AssetKindT.dataManager;
+    asset: DatasetStubT;
+};
+
+type DatasampleIOT = BaseIOT & {
+    kind: AssetKindT.dataSample;
+    asset: DatasampleT;
+};
+
+type ModelIOT = BaseIOT & {
+    kind: AssetKindT.model;
+    asset: ModelT;
+};
+
+type PerformanceIOT = BaseIOT & {
+    kind: AssetKindT.performance;
+    asset: PerformanceAssetT;
+};
+
+export type TaskIOT = DatasetIOT | DatasampleIOT | ModelIOT | PerformanceIOT;
+
+export type TaskIOAssetT =
+    | DatasetStubT
+    | DatasampleT
+    | ModelT
+    | PerformanceAssetT;
 
 export type TaskT = {
     key: string;

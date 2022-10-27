@@ -24,3 +24,11 @@ export type DatasetT = DatasetStubT & {
     train_data_sample_keys: string[];
     test_data_sample_keys: string[];
 };
+
+export type DatasampleT = {
+    creation_date: string;
+    data_manager_keys: string[];
+    key: string;
+    owner: string;
+    test_only: boolean;
+};
