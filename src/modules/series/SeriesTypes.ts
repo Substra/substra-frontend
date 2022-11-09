@@ -7,6 +7,7 @@ export type SerieFeaturesT = {
     worker: string;
     metricKey: string;
     metricName: string;
+    metricOutputIdentifier: string;
     computePlanKey: string;
 };
 
