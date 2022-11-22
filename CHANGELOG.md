@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+-   Update compute plan failed task key (#134)
+
 ## [0.37.0] - 2022-11-22
 
 ### Added
@@ -17,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Open task drawer directly in cp details page (#122)
 -   Algo creation events aren't included in newsfeed anymore (#127)
 -   Renamed any tuple thing into a task thing (#129)
--   Update compute plan failed task key (#134)
 
 ### Fixed
 
