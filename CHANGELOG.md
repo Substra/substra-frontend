@@ -22,9 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   UI and markup glitches on login page (#123)
 -   Check for "last admin" when editing a user (#131)
-
-### Fixed
-
 -   Warnings during npm install (#126)
 
 ## [0.36.0] - 2022-10-03
