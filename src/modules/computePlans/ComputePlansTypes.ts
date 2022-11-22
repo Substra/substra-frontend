@@ -53,7 +53,7 @@ export type ComputePlanStubT = {
 };
 
 export type ComputePlanT = ComputePlanStubT & {
-    failed_task?: { key: string };
+    failed_task_key?: string;
 };
 
 export const isComputePlan = (
