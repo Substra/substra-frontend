@@ -21,13 +21,12 @@ Substra is an open source federated learning (FL) software. It provides a flexib
 
 If you need support, please either raise an issue on Github or ask on [Slack](https://join.slack.com/t/substra-workspace/shared_invite/zt-1fqnk0nw6-xoPwuLJ8dAPXThfyldX8yA).
 
-
 ## Contributing
 
 Substra warmly welcomes any contribution. Feel free to fork the repo and create a pull request.
 
-
 # Setup
+
 ## Running the frontend in a local kubernetes cluster in prod mode
 
 1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
