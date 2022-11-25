@@ -1,5 +1,33 @@
 # Substra frontend
 
+<div align="left">
+<a href="https://join.slack.com/t/substra-workspace/shared_invite/zt-1fqnk0nw6-xoPwuLJ8dAPXThfyldX8yA"><img src="https://img.shields.io/badge/chat-on%20slack-blue?logo=slack" /></a> <a href="https://docs.substra.org/"><img src="https://img.shields.io/badge/read-docs-purple?logo=mdbook" /></a>
+<br /><br /></div>
+
+<div align="center">
+<picture>
+  <object-position: center>
+  <source media="(prefers-color-scheme: dark)" srcset="Substra-logo-white.svg">
+  <source media="(prefers-color-scheme: light)" srcset="Substra-logo-colour.svg">
+  <img alt="Substra" src="Substra-logo-colour.svg" width="500">
+</picture>
+</div>
+<br>
+<br>
+
+Substra is an open source federated learning (FL) software. It provides a flexible Python interface and a web application to run federated learning training at scale. This specific repository is about the web application - also called frontend.
+
+## Support
+
+If you need support, please either raise an issue on Github or ask on [Slack](https://join.slack.com/t/substra-workspace/shared_invite/zt-1fqnk0nw6-xoPwuLJ8dAPXThfyldX8yA).
+
+
+## Contributing
+
+Substra warmly welcomes any contribution. Feel free to fork the repo and create a pull request.
+
+
+# Setup
 ## Running the frontend in a local kubernetes cluster in prod mode
 
 1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to the cluster's ip in your `/etc/hosts`:
