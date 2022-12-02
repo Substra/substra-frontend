@@ -14,7 +14,7 @@ jobs:
                     - docker/substra-frontend/Dockerfile
                     - docker/substra-frontend-tests/Dockerfile
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: hadolint/hadolint-action@v1.6.0
               with:
                   dockerfile: ${{ matrix.dockerfile }}
