@@ -6,7 +6,7 @@ jobs:
     validate:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
               with:
                   node-version: '16.13.0'
@@ -32,6 +32,6 @@ jobs:
     build: #separate for parallelization
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - name: Docker
               run: DOCKER_BUILDKIT=1 docker build . -f docker/substra-frontend/Dockerfile
