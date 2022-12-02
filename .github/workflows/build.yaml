@@ -48,7 +48,7 @@ jobs:
             - uses: actions/checkout@v2
             - run: helm lint charts/substra-frontend
             - run: helm package charts/substra-frontend
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   path: substra-frontend-*.tgz
                   if-no-files-found: error
