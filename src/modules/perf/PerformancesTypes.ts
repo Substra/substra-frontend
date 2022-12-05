@@ -11,6 +11,7 @@ export type PerformanceT = {
     metric: {
         key: string;
         name: string;
+        output_identifier: string;
     };
     perf: number | null;
 };
