@@ -15,10 +15,12 @@ import {
 
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
 import { listTaskOutputAssets } from '@/modules/tasks/TasksSlice';
 import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import { PATHS } from '@/paths';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
@@ -68,12 +70,13 @@ const TaskOutputsDrawerSection = ({
     task: TaskT | null;
 }) => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
+    const key = useKeyFromPath(PATHS.TASK);
 
     useEffect(() => {
-        if (task?.key) {
-            dispatchWithAutoAbort(
+        if (key) {
+            return dispatchWithAutoAbort(
                 listTaskOutputAssets({
-                    key: task.key,
+                    key,
                     params: {
                         page: 1,
                         pageSize: 100,
@@ -81,7 +84,7 @@ const TaskOutputsDrawerSection = ({
                 })
             );
         }
-    }, [task, dispatchWithAutoAbort]);
+    }, [key, dispatchWithAutoAbort]);
 
     const taskOutputAssets = useAppSelector(
         (state) => state.tasks.taskOutputAssets

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -13,13 +13,14 @@ import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useAppSelector from '@/hooks/useAppSelector';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
-import { AssetKindT, InputT } from '@/modules/algos/AlgosTypes';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
+import { AssetKindT, AlgoInputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
 import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
 import { isModelT } from '@/modules/tasks/ModelsUtils';
 import { listTaskInputAssets } from '@/modules/tasks/TasksSlice';
-import { TaskInputT, TaskT, TaskIOAssetT } from '@/modules/tasks/TasksTypes';
+import { TaskInputT, TaskT, TaskIOT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -71,6 +72,36 @@ const inputIcon = (inputKind: AssetKindT): JSX.Element => {
         default:
             return <></>;
     }
+};
+
+const getInputAsset = ({
+    input,
+    inputsAssets,
+}: {
+    input: TaskInputT;
+    inputsAssets: TaskIOT[];
+}): TaskIOT | null => {
+    if (inputsAssets.length === 0) {
+        return null;
+    }
+
+    const inputAssets = inputsAssets.filter(
+        (inputsAsset) => inputsAsset.identifier === input.identifier
+    );
+
+    const inputKey = input.asset_key ?? input.parent_task_key;
+    for (const inputAsset of inputAssets) {
+        if (
+            (isDatasetStubT(inputAsset.asset) &&
+                inputAsset.asset.key === inputKey) ||
+            (isModelT(inputAsset.asset) &&
+                inputAsset.asset.compute_task_key === inputKey)
+        ) {
+            return inputAsset;
+        }
+    }
+
+    return null;
 };
 
 const DatasampleRepresentation = ({
@@ -181,32 +212,39 @@ const ModelRepresentation = ({
 const TaskInputValueRepresentation = ({
     assetKind,
     input,
+    inputAsset,
 }: {
     assetKind: AssetKindT;
-    input: {
-        specs: TaskInputT;
-        asset?: TaskIOAssetT;
-    };
+    input: TaskInputT;
+    inputAsset: TaskIOT | null;
 }): JSX.Element => {
-    if (assetKind === AssetKindT.dataSample && !input.asset) {
-        return <DatasampleRepresentation assetKey={input.specs.asset_key} />;
+    if (assetKind === AssetKindT.dataSample && !inputAsset) {
+        return <DatasampleRepresentation assetKey={input.asset_key} />;
     }
 
-    if (assetKind === AssetKindT.dataManager && isDatasetStubT(input.asset)) {
+    if (
+        assetKind === AssetKindT.dataManager &&
+        inputAsset &&
+        isDatasetStubT(inputAsset.asset)
+    ) {
         return (
             <OpenerRepresentation
-                assetKey={input.specs.asset_key}
-                addressable={input.asset.opener}
+                assetKey={input.asset_key}
+                addressable={inputAsset.asset.opener}
             />
         );
     }
 
-    if (assetKind === AssetKindT.model && isModelT(input.asset)) {
+    if (
+        assetKind === AssetKindT.model &&
+        inputAsset &&
+        isModelT(inputAsset.asset)
+    ) {
         return (
             <ModelRepresentation
-                assetKey={input.specs.asset_key}
-                addressable={input.asset.address}
-                permissions={input.asset.permissions}
+                assetKey={input.asset_key}
+                addressable={inputAsset.asset.address}
+                permissions={inputAsset.asset.permissions}
             />
         );
     }
@@ -221,42 +259,43 @@ const TaskInputValueRepresentation = ({
 const TaskInputRepresentation = ({
     assetKind,
     input,
+    inputAsset,
 }: {
     assetKind: AssetKindT;
-    input: {
-        specs: TaskInputT;
-        asset?: TaskIOAssetT;
-    };
+    input: TaskInputT;
+    inputAsset: TaskIOT | null;
 }): JSX.Element => {
     let content;
 
-    if (input.specs.asset_key) {
+    if (input.asset_key) {
         content = (
-            <TaskInputValueRepresentation assetKind={assetKind} input={input} />
+            <TaskInputValueRepresentation
+                assetKind={assetKind}
+                input={input}
+                inputAsset={inputAsset}
+            />
         );
-    } else if (
-        input.specs.parent_task_key &&
-        input.specs.parent_task_output_identifier
-    ) {
+    } else if (input.parent_task_key && input.parent_task_output_identifier) {
         content = (
             <HStack spacing="1.5">
                 <Text noOfLines={1}>
                     From{' '}
                     <Link
                         href={compilePath(PATHS.TASK, {
-                            key: input.specs.parent_task_key,
+                            key: input.parent_task_key,
                         })}
                         color="primary.500"
                         fontWeight="semibold"
                         isExternal
                     >
-                        {makeCompactAssetKey(input.specs.parent_task_key)}
+                        {makeCompactAssetKey(input.parent_task_key)}
                     </Link>
-                    {''}.{input.specs.parent_task_output_identifier}
+                    {''}.{input.parent_task_output_identifier}
                 </Text>
                 <TaskInputValueRepresentation
                     assetKind={assetKind}
                     input={input}
+                    inputAsset={inputAsset}
                 />
             </HStack>
         );
@@ -270,20 +309,17 @@ const TaskInputSectionEntry = ({
     identifier,
     algoInput,
     inputs,
+    inputsAssets,
 }: {
     identifier: string;
-    algoInput: InputT;
-    inputs: {
-        [key: string]: {
-            specs: TaskInputT;
-            asset?: TaskIOAssetT;
-        };
-    };
+    algoInput: AlgoInputT;
+    inputs: TaskInputT[];
+    inputsAssets: TaskIOT[];
 }): JSX.Element => {
     const icon = inputIcon(algoInput.kind);
     const title = identifier;
 
-    if (algoInput.multiple || Object.keys(inputs).length > 1) {
+    if (algoInput.multiple || inputs.length > 1) {
         //  '|| Object.entries(inputs).length > 1' is for resilience to inconsistent data
 
         return (
@@ -301,12 +337,16 @@ const TaskInputSectionEntry = ({
                 }
             >
                 <List spacing={2.5}>
-                    {Object.entries(inputs).map(([index, input]) => (
+                    {inputs.map((input, index) => (
                         <HStack spacing="2.5" key={index}>
                             <AngleIcon />
                             <TaskInputRepresentation
                                 assetKind={algoInput.kind}
                                 input={input}
+                                inputAsset={getInputAsset({
+                                    input,
+                                    inputsAssets,
+                                })}
                             />
                         </HStack>
                     ))}
@@ -323,7 +363,11 @@ const TaskInputSectionEntry = ({
             >
                 <TaskInputRepresentation
                     assetKind={algoInput.kind}
-                    input={Object.values(inputs)[0]}
+                    input={inputs[0]}
+                    inputAsset={getInputAsset({
+                        input: inputs[0],
+                        inputsAssets,
+                    })}
                 />
             </DrawerSectionEntry>
         );
@@ -338,19 +382,20 @@ const TaskInputsDrawerSection = ({
     task: TaskT | null;
 }): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
+    const key = useKeyFromPath(PATHS.TASK);
 
     // Filtering assets to not call Datasamples as it can impact performance when there's a lot of them and doesn't contain additionnal info compared to task.inputs
-    const kindFilter = useCallback(() => {
+    const kindFilter = useMemo(() => {
         Object.values(AssetKindT).filter(
             (kind) => kind !== AssetKindT.dataSample
         );
     }, []);
 
     useEffect(() => {
-        if (task?.key) {
-            dispatchWithAutoAbort(
+        if (key) {
+            return dispatchWithAutoAbort(
                 listTaskInputAssets({
-                    key: task.key,
+                    key,
                     params: {
                         page: 1,
                         pageSize: 100,
@@ -359,7 +404,7 @@ const TaskInputsDrawerSection = ({
                 })
             );
         }
-    }, [task, dispatchWithAutoAbort, kindFilter]);
+    }, [key, dispatchWithAutoAbort, kindFilter]);
 
     const taskInputAssets = useAppSelector(
         (state) => state.tasks.taskInputAssets
@@ -369,80 +414,38 @@ const TaskInputsDrawerSection = ({
     );
     const loading = taskLoading || taskInputAssetsLoading;
 
-    // Fusion algoInputs, task inputs specs & assets in an object to have the 'multiple' and 'optional' property
     const inputsPerIdentifier: {
-        [identifier: string]: {
-            algoInput: InputT;
-            inputs: {
-                [key: string]: {
-                    specs: TaskInputT;
-                    asset?: TaskIOAssetT;
-                };
-            };
-        };
+        [identifier: string]: TaskInputT[];
     } = {};
 
-    if (!loading && task) {
-        for (const [identifier, input] of Object.entries(task?.algo.inputs)) {
-            inputsPerIdentifier[identifier] = {
-                algoInput: input,
-                inputs: {},
-            };
-        }
-
+    if (!taskLoading && task) {
         for (const input of task.inputs) {
-            if (input.asset_key) {
-                inputsPerIdentifier[input.identifier].inputs[input.asset_key] =
-                    { specs: input };
-            } else if (input.parent_task_key) {
-                inputsPerIdentifier[input.identifier].inputs[
-                    input.parent_task_key
-                ] = { specs: input };
-            }
-        }
-
-        for (const inputAsset of taskInputAssets) {
-            if (
-                inputAsset.kind === AssetKindT.dataManager &&
-                isDatasetStubT(inputAsset.asset) &&
-                inputsPerIdentifier[inputAsset.identifier].inputs[
-                    inputAsset.asset.key
-                ]
-            ) {
-                inputsPerIdentifier[inputAsset.identifier].inputs[
-                    inputAsset.asset.key
-                ].asset = inputAsset.asset;
-            } else if (
-                inputAsset.kind === AssetKindT.model &&
-                isModelT(inputAsset.asset) &&
-                inputsPerIdentifier[inputAsset.identifier].inputs[
-                    inputAsset.asset.compute_task_key
-                ]
-            ) {
-                inputsPerIdentifier[inputAsset.identifier].inputs[
-                    inputAsset.asset.compute_task_key
-                ].asset = inputAsset.asset;
+            if (!inputsPerIdentifier[input.identifier]) {
+                inputsPerIdentifier[input.identifier] = [input];
+            } else {
+                inputsPerIdentifier[input.identifier].push(input);
             }
         }
     }
+
     return (
         <DrawerSection title="Inputs">
             {task &&
+                !loading &&
                 Object.entries(inputsPerIdentifier).map(
-                    ([
-                        identifier,
-                        { algoInput: algoInput, inputs: inputs },
-                    ]) => {
-                        if (Object.keys(inputs).length > 0) {
-                            return (
-                                <TaskInputSectionEntry
-                                    key={identifier}
-                                    identifier={identifier}
-                                    algoInput={algoInput}
-                                    inputs={inputs}
-                                />
-                            );
-                        }
+                    ([identifier, inputs]) => {
+                        return (
+                            <TaskInputSectionEntry
+                                key={identifier}
+                                identifier={identifier}
+                                algoInput={task.algo.inputs[identifier]}
+                                inputs={inputs}
+                                inputsAssets={taskInputAssets.filter(
+                                    (taskInputAsset) =>
+                                        taskInputAsset.identifier === identifier
+                                )}
+                            />
+                        );
                     }
                 )}
         </DrawerSection>
