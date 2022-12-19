@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update compute plan failed task key (#134)
 
+### Fixed
+
+-   User creation/edition validation (#133)
+
 ## [0.37.0] - 2022-11-22
 
 ### Added
@@ -30,7 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   UI and markup glitches on login page (#123)
 -   Check for "last admin" when editing a user (#131)
 -   Warnings during npm install (#126)
--   User creation/edition validation (#133)
 
 ## [0.36.0] - 2022-10-03
 
