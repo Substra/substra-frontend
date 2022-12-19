@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update compute plan failed task key (#134)
 
+### Fixed
+
+-   User creation/edition validation (#133)
+
 ## [0.37.0] - 2022-11-22
 
 ### Added

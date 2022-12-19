@@ -12,7 +12,7 @@ export const isDifferentFromUsername = (
     return password !== username;
 };
 
-export const hasCorrectLenght = (password: string): boolean => {
+export const hasCorrectLength = (password: string): boolean => {
     return password.length >= 20 && password.length <= 64;
 };
 
@@ -33,15 +33,15 @@ export const hasLowerAndUpperChar = (password: string): boolean => {
     return !!password.match(regexLowerChar) && !!password.match(regexUpperChar);
 };
 
-export const checkPasswordErrors = (
+export const isPasswordValid = (
     password: string,
     username: string
 ): boolean => {
     return (
-        !isDifferentFromUsername(password, username) &&
-        !hasCorrectLenght(password) &&
-        !hasSpecialChar(password) &&
-        !hasNumber(password) &&
-        !hasLowerAndUpperChar(password)
+        isDifferentFromUsername(password, username) &&
+        hasCorrectLength(password) &&
+        hasSpecialChar(password) &&
+        hasNumber(password) &&
+        hasLowerAndUpperChar(password)
     );
 };

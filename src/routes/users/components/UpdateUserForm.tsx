@@ -71,34 +71,40 @@ const UpdateUserForm = ({
 
     const onUpdate = () => {
         if (user && role !== user.role) {
-            dispatch(updateUser({ key: user.username, payload: { role } }));
+            dispatch(updateUser({ key: user.username, payload: { role } }))
+                .unwrap()
+                .then(() => {
+                    toast({
+                        title: `User updated`,
+                        descriptionComponent: () => (
+                            <Text>
+                                {user.username} was successfully updated!
+                            </Text>
+                        ),
+                        status: 'success',
+                        isClosable: true,
+                    });
 
-            toast({
-                title: `User updated`,
-                descriptionComponent: () => (
-                    <Text>{user.username} was successfully updated!</Text>
-                ),
-                status: 'success',
-                isClosable: true,
-            });
-
-            closeHandler();
+                    closeHandler();
+                });
         }
     };
 
     const onDelete = () => {
-        dispatch(deleteUser(username));
+        dispatch(deleteUser(username))
+            .unwrap()
+            .then(() => {
+                toast({
+                    title: `User deleted`,
+                    descriptionComponent: () => (
+                        <Text>{username} was successfully deleted</Text>
+                    ),
+                    status: 'success',
+                    isClosable: true,
+                });
 
-        toast({
-            title: `User deleted`,
-            descriptionComponent: () => (
-                <Text>{username} was successfully deleted</Text>
-            ),
-            status: 'success',
-            isClosable: true,
-        });
-
-        closeHandler();
+                closeHandler();
+            });
     };
 
     const onReset = async () => {

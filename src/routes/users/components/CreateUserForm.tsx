@@ -36,23 +36,41 @@ const CreateUserForm = ({
     const [password, setPassword] = useState('');
     const [passwordHasErrors, setPasswordHasErrors] = useState(false);
 
+    const [creating, setCreating] = useState(false);
+
     const onSave = async () => {
         if (!usernameHasError && !passwordHasErrors) {
-            await dispatch(
+            setCreating(true);
+            dispatch(
                 createUser({
                     username: username,
                     password: password,
                     role: role,
                 })
-            );
-
-            toast({
-                title: 'User created',
-                descriptionComponent: `${username} was successfully created!`,
-                status: 'success',
-                isClosable: true,
-            });
-            closeHandler();
+            )
+                .unwrap()
+                .then(
+                    () => {
+                        toast({
+                            title: 'User created',
+                            descriptionComponent: `${username} was successfully created!`,
+                            status: 'success',
+                            isClosable: true,
+                        });
+                        setCreating(false);
+                        closeHandler();
+                    },
+                    (error) => {
+                        toast({
+                            title: 'User creation failed',
+                            descriptionComponent:
+                                error?.message ?? 'Could not create user',
+                            status: 'error',
+                            isClosable: true,
+                        });
+                        setCreating(false);
+                    }
+                );
         }
     };
 
@@ -76,23 +94,42 @@ const CreateUserForm = ({
                         onChange={setUsername}
                         hasErrors={usernameHasError}
                         setHasErrors={setUsernameHasError}
+                        isDisabled={creating}
                     />
-                    <RoleInput value={role} onChange={setRole} />
+                    <RoleInput
+                        value={role}
+                        onChange={setRole}
+                        isDisabled={creating}
+                    />
                     <PasswordInput
                         value={password}
                         username={username}
                         onChange={setPassword}
                         hasErrors={passwordHasErrors}
                         setHasErrors={setPasswordHasErrors}
+                        isDisabled={creating}
                     />
                 </VStack>
             </DrawerBody>
             <DrawerFooter>
                 <HStack spacing="2">
-                    <Button size="sm" variant="outline" onClick={closeHandler}>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={closeHandler}
+                        isDisabled={creating}
+                    >
                         Cancel
                     </Button>
-                    <Button size="sm" colorScheme="primary" onClick={onSave}>
+                    <Button
+                        size="sm"
+                        colorScheme="primary"
+                        onClick={onSave}
+                        isDisabled={
+                            creating || usernameHasError || passwordHasErrors
+                        }
+                        isLoading={creating}
+                    >
                         Save
                     </Button>
                 </HStack>

@@ -11,8 +11,8 @@ import {
 import { RiEyeLine } from 'react-icons/ri';
 
 import {
-    checkPasswordErrors,
-    hasCorrectLenght,
+    isPasswordValid,
+    hasCorrectLength,
     hasLowerAndUpperChar,
     hasNumber,
     hasSpecialChar,
@@ -28,6 +28,7 @@ type PasswordInputProps = {
     onChange: (value: string) => void;
     hasErrors: boolean;
     setHasErrors: (setHasErrors: boolean) => void;
+    isDisabled: boolean;
 };
 
 const PasswordInput = ({
@@ -36,6 +37,7 @@ const PasswordInput = ({
     onChange,
     hasErrors,
     setHasErrors,
+    isDisabled,
 }: PasswordInputProps): JSX.Element => {
     const [isDirty, setIsDirty] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -43,12 +45,15 @@ const PasswordInput = ({
     const isEmpty = !value.length;
 
     useEffect(() => {
-        setHasErrors(checkPasswordErrors(value, username));
+        setHasErrors(!isPasswordValid(value, username));
     }, [value, username, setHasErrors]);
 
     return (
         <DrawerSectionEntry title="Password" alignItems="baseline">
-            <FormControl isInvalid={hasErrors && isDirty}>
+            <FormControl
+                isInvalid={hasErrors && isDirty}
+                isDisabled={isDisabled}
+            >
                 <InputGroup size="sm">
                     <Input
                         id="password"
@@ -60,9 +65,6 @@ const PasswordInput = ({
                             const newValue = e.target.value;
                             setIsDirty(true);
                             onChange(newValue);
-                            setHasErrors(
-                                checkPasswordErrors(newValue, username)
-                            );
                         }}
                     />
                     <InputRightElement>
@@ -86,7 +88,7 @@ const PasswordInput = ({
                 />
                 <PasswordValidationMessage
                     isEmpty={isEmpty}
-                    isValid={hasCorrectLenght(value)}
+                    isValid={hasCorrectLength(value)}
                     message="Length must be between 20 and 64 characters"
                 />
                 <PasswordValidationMessage
