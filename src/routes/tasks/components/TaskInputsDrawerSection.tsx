@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -10,16 +10,15 @@ import {
 } from 'react-icons/ri';
 
 import AngleIcon from '@/assets/svg/angle-icon.svg';
-import useAppSelector from '@/hooks/useAppSelector';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { AssetKindT, AlgoInputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
 import { isModelT } from '@/modules/tasks/ModelsUtils';
-import { listTaskInputAssets } from '@/modules/tasks/TasksSlice';
+import * as TasksApi from '@/modules/tasks/TasksApi';
 import { TaskInputT, TaskT, TaskIOT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
@@ -374,6 +373,31 @@ const TaskInputSectionEntry = ({
     }
 };
 
+const getTaskInputAssets = async (key: string): Promise<TaskIOT[]> => {
+    const pageSize = 30;
+
+    // Filtering assets to not call Datasamples as it can impact performance when there's a lot of them and doesn't contain additionnal info compared to task.inputs
+    const kindFilter = Object.values(AssetKindT).filter(
+        (kind) => kind !== AssetKindT.dataSample
+    );
+
+    const taskInputsAssets = await getAllPages<TaskIOT>(
+        (page) =>
+            TasksApi.listTaskInputAssets(
+                key,
+                {
+                    page,
+                    pageSize,
+                    kind: kindFilter,
+                },
+                {}
+            ),
+        pageSize
+    );
+
+    return taskInputsAssets;
+};
+
 const TaskInputsDrawerSection = ({
     taskLoading,
     task,
@@ -381,71 +405,48 @@ const TaskInputsDrawerSection = ({
     taskLoading: boolean;
     task: TaskT | null;
 }): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const key = useKeyFromPath(PATHS.TASK);
-
-    // Filtering assets to not call Datasamples as it can impact performance when there's a lot of them and doesn't contain additionnal info compared to task.inputs
-    const kindFilter = useMemo(() => {
-        Object.values(AssetKindT).filter(
-            (kind) => kind !== AssetKindT.dataSample
-        );
-    }, []);
+    const taskInputsAssetsRef = useRef<TaskIOT[]>();
 
     useEffect(() => {
         if (key) {
-            return dispatchWithAutoAbort(
-                listTaskInputAssets({
-                    key,
-                    params: {
-                        page: 1,
-                        pageSize: 100,
-                        kind: kindFilter,
-                    },
-                })
+            getTaskInputAssets(key).then(
+                (result) => (taskInputsAssetsRef.current = result)
             );
         }
-    }, [key, dispatchWithAutoAbort, kindFilter]);
+    }, [key]);
 
-    const taskInputAssets = useAppSelector(
-        (state) => state.tasks.taskInputAssets
-    );
-    const taskInputAssetsLoading = useAppSelector(
-        (state) => state.tasks.taskInputAssetsLoading
-    );
-    const loading = taskLoading || taskInputAssetsLoading;
-
-    const inputsPerIdentifier: {
-        [identifier: string]: TaskInputT[];
-    } = {};
-
-    if (!taskLoading && task) {
-        for (const input of task.inputs) {
-            if (!inputsPerIdentifier[input.identifier]) {
-                inputsPerIdentifier[input.identifier] = [input];
-            } else {
-                inputsPerIdentifier[input.identifier].push(input);
-            }
+    const getInputsAssets = (identifier: string): TaskIOT[] => {
+        let inputAssets: TaskIOT[] = [];
+        if (taskInputsAssetsRef?.current) {
+            inputAssets = taskInputsAssetsRef.current.filter(
+                (taskInputAsset) => taskInputAsset.identifier === identifier
+            );
         }
-    }
+
+        return inputAssets;
+    };
 
     return (
         <DrawerSection title="Inputs">
             {task &&
-                !loading &&
-                Object.entries(inputsPerIdentifier).map(
-                    ([identifier, inputs]) => {
-                        return (
-                            <TaskInputSectionEntry
-                                key={identifier}
-                                identifier={identifier}
-                                algoInput={task.algo.inputs[identifier]}
-                                inputs={inputs}
-                                inputsAssets={taskInputAssets.filter(
-                                    (taskInputAsset) =>
-                                        taskInputAsset.identifier === identifier
-                                )}
-                            />
+                !taskLoading &&
+                Object.entries(task.algo.inputs).map(
+                    ([identifier, algoInput]) => {
+                        const inputs = task.inputs.filter(
+                            (input) => input.identifier === identifier
                         );
+                        if (inputs.length > 0) {
+                            return (
+                                <TaskInputSectionEntry
+                                    key={identifier}
+                                    identifier={identifier}
+                                    algoInput={algoInput}
+                                    inputs={inputs}
+                                    inputsAssets={getInputsAssets(identifier)}
+                                />
+                            );
+                        }
                     }
                 )}
         </DrawerSection>
