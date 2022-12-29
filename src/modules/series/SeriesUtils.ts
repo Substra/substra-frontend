@@ -122,13 +122,16 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     const groups = [];
 
     const seriesGroupings = new Set(
-        series.map((serie) => [
-            serie.algoKey,
-            serie.metricOutputIdentifier.toLowerCase(),
-        ])
+        series.map((serie) =>
+            JSON.stringify({
+                algoKey: serie.algoKey,
+                metricOutputIdentifier:
+                    serie.metricOutputIdentifier.toLowerCase(),
+            })
+        )
     );
     for (const seriesGrouping of seriesGroupings) {
-        const [algoKey, metricOutputIdentifier] = seriesGrouping;
+        const { algoKey, metricOutputIdentifier } = JSON.parse(seriesGrouping);
         const metricGroup = series.filter(
             (serie) =>
                 serie.algoKey === algoKey &&
