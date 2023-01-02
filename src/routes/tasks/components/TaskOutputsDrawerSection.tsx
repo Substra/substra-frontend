@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     TableContainer,
@@ -13,13 +13,12 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { listTaskOutputAssets } from '@/modules/tasks/TasksSlice';
-import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import * as TasksApi from '@/modules/tasks/TasksApi';
+import { TaskT, TaskStatus, TaskIOT } from '@/modules/tasks/TasksTypes';
 import { PATHS } from '@/paths';
 
 import { DrawerSection } from '@/components/DrawerSection';
@@ -62,6 +61,25 @@ const displayModel = (value: ModelT | null, taskStatus: TaskStatus) => {
     );
 };
 
+const getTaskOutputsAssets = async (key: string): Promise<TaskIOT[]> => {
+    const pageSize = 30;
+
+    const taskOutputsAssets = await getAllPages(
+        (page) =>
+            TasksApi.listTaskOutputAssets(
+                key,
+                {
+                    page,
+                    pageSize,
+                },
+                {}
+            ),
+        pageSize
+    );
+
+    return taskOutputsAssets;
+};
+
 const TaskOutputsDrawerSection = ({
     taskLoading,
     task,
@@ -69,30 +87,16 @@ const TaskOutputsDrawerSection = ({
     taskLoading: boolean;
     task: TaskT | null;
 }) => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const key = useKeyFromPath(PATHS.TASK);
+    const [taskOutputsAssets, setTaskOutputsAssets] = useState<TaskIOT[]>([]);
 
     useEffect(() => {
         if (key) {
-            return dispatchWithAutoAbort(
-                listTaskOutputAssets({
-                    key,
-                    params: {
-                        page: 1,
-                        pageSize: 100,
-                    },
-                })
+            getTaskOutputsAssets(key).then((result) =>
+                setTaskOutputsAssets(result)
             );
         }
-    }, [key, dispatchWithAutoAbort]);
-
-    const taskOutputAssets = useAppSelector(
-        (state) => state.tasks.taskOutputAssets
-    );
-    const taskOutputAssetsLoading = useAppSelector(
-        (state) => state.tasks.taskOutputAssetsLoading
-    );
-    const loading = taskLoading || taskOutputAssetsLoading;
+    }, [key]);
 
     return (
         <DrawerSection title="Outputs">
@@ -107,7 +111,7 @@ const TaskOutputsDrawerSection = ({
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {(loading || !task) &&
+                        {(taskLoading || !task) &&
                             [0, 1, 2].map((key) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
@@ -127,9 +131,9 @@ const TaskOutputsDrawerSection = ({
                                     </Td>
                                 </Tr>
                             ))}
-                        {!loading &&
+                        {!taskLoading &&
                             task &&
-                            Object.values(taskOutputAssets).map((output) => {
+                            Object.values(taskOutputsAssets).map((output) => {
                                 const multiple = isMultipleOutput(
                                     task,
                                     output.identifier
