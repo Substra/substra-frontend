@@ -124,17 +124,18 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     const seriesGroupings = new Set(
         series.map((serie) =>
             JSON.stringify({
-                algoKey: serie.algoKey,
+                metricKey: serie.metricKey,
                 metricOutputIdentifier:
                     serie.metricOutputIdentifier.toLowerCase(),
             })
         )
     );
     for (const seriesGrouping of seriesGroupings) {
-        const { algoKey, metricOutputIdentifier } = JSON.parse(seriesGrouping);
+        const { metricKey, metricOutputIdentifier } =
+            JSON.parse(seriesGrouping);
         const metricGroup = series.filter(
             (serie) =>
-                serie.algoKey === algoKey &&
+                serie.metricKey === metricKey &&
                 serie.metricOutputIdentifier.toLowerCase() ===
                     metricOutputIdentifier
         );
