@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Series grouping calcul & metric details page (#xxx)
+-   Series grouping calcul & metric details page (#152)
 
 ## [0.38.0] - 2022-12-19
 
