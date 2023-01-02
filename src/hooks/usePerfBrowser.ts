@@ -66,6 +66,10 @@ type PerfBrowserContextT = {
     // Currently selected metric with its series
     selectedMetricName: string;
     setSelectedMetricName: (name: string) => void;
+    selectedMetricKey: string;
+    setSelectedMetricKey: (name: string) => void;
+    selectedMetricOutputIdentifier: string;
+    setSelectedMetricOutputIdentifier: (name: string) => void;
     selectedSeriesGroup: SerieT[];
     // Serie, compute plan and organization to highlight on charts
     highlightedSerie: HighlightedSerieT | undefined;
@@ -119,6 +123,10 @@ export const PerfBrowserContext = createContext<PerfBrowserContextT>({
         (event: React.ChangeEvent<HTMLInputElement>) => {},
     selectedMetricName: '',
     setSelectedMetricName: (name: string) => {},
+    selectedMetricKey: '',
+    setSelectedMetricKey: (name: string) => {},
+    selectedMetricOutputIdentifier: '',
+    setSelectedMetricOutputIdentifier: (name: string) => {},
     selectedSeriesGroup: [],
     highlightedSerie: undefined,
     setHighlightedSerie: (highlightedSerie) => {},
@@ -159,6 +167,12 @@ const usePerfBrowser = (
         'selectedMetricName',
         ''
     );
+    const [selectedMetricKey, setSelectedMetricKey] = useSyncedStringState(
+        'selectedMetricKey',
+        ''
+    );
+    const [selectedMetricOutputIdentifier, setSelectedMetricOutputIdentifier] =
+        useSyncedStringState('selectedMetricOutputIdentifier', '');
     const [highlightedSerie, setHighlightedSerie] =
         useState<HighlightedSerieT>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
@@ -224,8 +238,10 @@ const usePerfBrowser = (
 
         const groupsMatchingMetric = seriesGroups.filter(
             (series) =>
-                series[0].metricName.toLowerCase() ===
-                selectedMetricName.toLowerCase()
+                series[0].metricKey.toLowerCase() ===
+                    selectedMetricKey.toLowerCase() &&
+                series[0].metricOutputIdentifier.toLowerCase() ===
+                    selectedMetricOutputIdentifier.toLowerCase()
         );
 
         if (groupsMatchingMetric.length > 0) {
@@ -233,7 +249,12 @@ const usePerfBrowser = (
         } else {
             return [];
         }
-    }, [seriesGroups, selectedMetricName]);
+    }, [
+        seriesGroups,
+        selectedMetricName,
+        selectedMetricKey,
+        selectedMetricOutputIdentifier,
+    ]);
 
     useEffect(() => {
         setSelectedComputePlanKeys(
@@ -427,6 +448,10 @@ const usePerfBrowser = (
             // selected metric
             selectedMetricName,
             setSelectedMetricName,
+            selectedMetricKey,
+            setSelectedMetricKey,
+            selectedMetricOutputIdentifier,
+            setSelectedMetricOutputIdentifier,
             selectedSeriesGroup,
             // event: highlighted serie, compute plan or organization
             highlightedSerie,

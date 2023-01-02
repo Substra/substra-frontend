@@ -15,10 +15,20 @@ type PerfDetailsProps = {
 };
 
 const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
-    const { perfChartRef, setSelectedMetricName } =
-        useContext(PerfBrowserContext);
+    const {
+        perfChartRef,
+        setSelectedMetricName,
+        setSelectedMetricKey,
+        setSelectedMetricOutputIdentifier,
+    } = useContext(PerfBrowserContext);
 
-    useKeyPress('Escape', () => setSelectedMetricName(''));
+    const resetSelectedMetric = () => {
+        setSelectedMetricName('');
+        setSelectedMetricKey('');
+        setSelectedMetricOutputIdentifier('');
+    };
+
+    useKeyPress('Escape', () => resetSelectedMetric());
 
     return (
         <Flex
@@ -48,7 +58,7 @@ const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
                         backgroundColor="white"
                         leftIcon={<RiArrowLeftLine />}
                         rightIcon={<Kbd backgroundColor="white">Esc</Kbd>}
-                        onClick={() => setSelectedMetricName('')}
+                        onClick={() => resetSelectedMetric()}
                     >
                         Go back
                     </Button>
