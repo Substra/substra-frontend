@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -406,26 +406,20 @@ const TaskInputsDrawerSection = ({
     task: TaskT | null;
 }): JSX.Element => {
     const key = useKeyFromPath(PATHS.TASK);
-    const taskInputsAssetsRef = useRef<TaskIOT[]>();
+    const [taskInputsAssets, setTaskInputsAssets] = useState<TaskIOT[]>([]);
 
     useEffect(() => {
         if (key) {
-            getTaskInputAssets(key).then(
-                (result) => (taskInputsAssetsRef.current = result)
+            getTaskInputAssets(key).then((result) =>
+                setTaskInputsAssets(result)
             );
         }
     }, [key]);
 
-    const getInputsAssets = (identifier: string): TaskIOT[] => {
-        let inputAssets: TaskIOT[] = [];
-        if (taskInputsAssetsRef?.current) {
-            inputAssets = taskInputsAssetsRef.current.filter(
-                (taskInputAsset) => taskInputAsset.identifier === identifier
-            );
-        }
-
-        return inputAssets;
-    };
+    const getInputsAssets = (identifier: string): TaskIOT[] =>
+        taskInputsAssets.filter(
+            (taskInputAsset) => taskInputAsset.identifier === identifier
+        );
 
     return (
         <DrawerSection title="Inputs">
