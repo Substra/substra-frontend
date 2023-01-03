@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Update compute plan failed task key (#134)
+-   Remove deprecated parent_task_keys from TaskT (#153)
 
 ### Fixed
 
