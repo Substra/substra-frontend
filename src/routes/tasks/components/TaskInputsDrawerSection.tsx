@@ -319,7 +319,7 @@ const TaskInputSectionEntry = ({
     const title = identifier;
 
     if (algoInput.multiple || inputs.length > 1) {
-        //  '|| Object.entries(inputs).length > 1' is for resilience to inconsistent data
+        //  '|| inputs.length > 1' is for resilience to inconsistent data
 
         return (
             <DrawerSectionCollapsibleEntry
