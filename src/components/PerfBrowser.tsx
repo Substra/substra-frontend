@@ -19,6 +19,8 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
         loading,
         selectedMetricName,
         setSelectedMetricName,
+        setSelectedMetricKey,
+        setSelectedMetricOutputIdentifier,
         xAxisMode,
         seriesGroups,
         seriesGroupsWithRounds,
@@ -75,9 +77,17 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
                                             ? seriesGroupsWithRounds
                                             : seriesGroups
                                     }
-                                    onCardClick={(metricName) =>
-                                        setSelectedMetricName(metricName)
-                                    }
+                                    onCardClick={(
+                                        metricName,
+                                        metricKey,
+                                        metricOutputIdentifier
+                                    ) => {
+                                        setSelectedMetricName(metricName);
+                                        setSelectedMetricKey(metricKey);
+                                        setSelectedMetricOutputIdentifier(
+                                            metricOutputIdentifier
+                                        );
+                                    }}
                                 />
                             )}
                         </>

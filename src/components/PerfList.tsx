@@ -8,7 +8,11 @@ import PerfEmptyState from '@/components/PerfEmptyState';
 
 type PerfListProps = {
     seriesGroups: SerieT[][];
-    onCardClick: (metricName: string) => void;
+    onCardClick: (
+        metricName: string,
+        metricKey: string,
+        metricOutputIdentifier: string
+    ) => void;
 };
 const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
     return (
@@ -27,7 +31,13 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                     <WrapItem key={`${series[0].metricKey}-${series[0].id}`}>
                         <PerfCard
                             title={series[0].metricName}
-                            onClick={() => onCardClick(series[0].metricName)}
+                            onClick={() =>
+                                onCardClick(
+                                    series[0].metricName,
+                                    series[0].metricKey,
+                                    series[0].metricOutputIdentifier
+                                )
+                            }
                         >
                             <PerfChart
                                 series={series}
