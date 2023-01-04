@@ -71,7 +71,6 @@ const CreatorTableFilter = (): JSX.Element => {
     };
 
     const externalOption = {
-        // TODO: make sure the Orc turns null values to external
         value: 'external',
         label: 'External',
         description: 'Compute plan created by other organizations',
