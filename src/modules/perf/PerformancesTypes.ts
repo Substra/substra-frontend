@@ -16,6 +16,14 @@ export type PerformanceT = {
     perf: number | null;
 };
 
+export type PerformanceAssetT = {
+    channel: string;
+    compute_task_key: string;
+    creation_date: string;
+    metric_key: string;
+    performance_value: number;
+};
+
 export type ComputePlanStatisticsT = {
     compute_tasks_distinct_ranks: number[];
     compute_tasks_distinct_rounds: number[];

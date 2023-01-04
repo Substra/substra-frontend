@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 import { capitalize } from '@/libs/utils';
-import { AlgoT, InputT } from '@/modules/algos/AlgosTypes';
+import { AlgoT, AlgoInputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 
 import { DrawerSection } from '@/components/DrawerSection';
@@ -70,7 +70,7 @@ const InputsOutputsDrawerSection = ({
                                     <Td>{getAssetKindLabel(input.kind)}</Td>
                                     {type === 'inputs' && (
                                         <Td textAlign="center">
-                                            {(input as InputT).optional
+                                            {(input as AlgoInputT).optional
                                                 ? 'yes'
                                                 : 'no'}
                                         </Td>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -11,10 +11,15 @@ import {
 
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import { AssetKindT, InputT } from '@/modules/algos/AlgosTypes';
+import useKeyFromPath from '@/hooks/useKeyFromPath';
+import { AssetKindT, AlgoInputT } from '@/modules/algos/AlgosTypes';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
-import { TaskInputT, TaskT } from '@/modules/tasks/TasksTypes';
+import { getAllPages } from '@/modules/common/CommonUtils';
+import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
+import { isModelT } from '@/modules/tasks/ModelsUtils';
+import * as TasksApi from '@/modules/tasks/TasksApi';
+import { TaskInputT, TaskT, TaskIOT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -66,6 +71,36 @@ const inputIcon = (inputKind: AssetKindT): JSX.Element => {
         default:
             return <></>;
     }
+};
+
+const getInputAsset = ({
+    input,
+    inputsAssets,
+}: {
+    input: TaskInputT;
+    inputsAssets: TaskIOT[];
+}): TaskIOT | null => {
+    if (inputsAssets.length === 0) {
+        return null;
+    }
+
+    const inputAssets = inputsAssets.filter(
+        (inputsAsset) => inputsAsset.identifier === input.identifier
+    );
+
+    const inputKey = input.asset_key ?? input.parent_task_key;
+    for (const inputAsset of inputAssets) {
+        if (
+            (isDatasetStubT(inputAsset.asset) &&
+                inputAsset.asset.key === inputKey) ||
+            (isModelT(inputAsset.asset) &&
+                inputAsset.asset.compute_task_key === inputKey)
+        ) {
+            return inputAsset;
+        }
+    }
+
+    return null;
 };
 
 const DatasampleRepresentation = ({
@@ -176,47 +211,68 @@ const ModelRepresentation = ({
 const TaskInputValueRepresentation = ({
     assetKind,
     input,
+    inputAsset,
 }: {
-    assetKind: string;
+    assetKind: AssetKindT;
     input: TaskInputT;
+    inputAsset: TaskIOT | null;
 }): JSX.Element => {
-    switch (assetKind) {
-        case AssetKindT.dataManager:
-            return (
-                <OpenerRepresentation
-                    assetKey={input.asset_key}
-                    addressable={input.addressable}
-                />
-            );
-        case AssetKindT.dataSample:
-            return <DatasampleRepresentation assetKey={input.asset_key} />;
-        case AssetKindT.model:
-            return (
-                <ModelRepresentation
-                    assetKey={input.asset_key}
-                    addressable={input.addressable}
-                    permissions={input.permissions}
-                />
-            );
-        case AssetKindT.performance:
-            return <p>{input.asset_key}</p>;
-        default:
-            return <p>No representation for kind {assetKind}</p>;
+    if (assetKind === AssetKindT.dataSample && !inputAsset) {
+        return <DatasampleRepresentation assetKey={input.asset_key} />;
     }
+
+    if (
+        assetKind === AssetKindT.dataManager &&
+        inputAsset &&
+        isDatasetStubT(inputAsset.asset)
+    ) {
+        return (
+            <OpenerRepresentation
+                assetKey={input.asset_key}
+                addressable={inputAsset.asset.opener}
+            />
+        );
+    }
+
+    if (
+        assetKind === AssetKindT.model &&
+        inputAsset &&
+        isModelT(inputAsset.asset)
+    ) {
+        return (
+            <ModelRepresentation
+                assetKey={input.asset_key}
+                addressable={inputAsset.asset.address}
+                permissions={inputAsset.asset.permissions}
+            />
+        );
+    }
+
+    return (
+        <Text noOfLines={1}>
+            No representation for kind {getAssetKindLabel(assetKind)}
+        </Text>
+    );
 };
 
 const TaskInputRepresentation = ({
     assetKind,
     input,
+    inputAsset,
 }: {
-    assetKind: string;
+    assetKind: AssetKindT;
     input: TaskInputT;
+    inputAsset: TaskIOT | null;
 }): JSX.Element => {
     let content;
 
     if (input.asset_key) {
         content = (
-            <TaskInputValueRepresentation assetKind={assetKind} input={input} />
+            <TaskInputValueRepresentation
+                assetKind={assetKind}
+                input={input}
+                inputAsset={inputAsset}
+            />
         );
     } else if (input.parent_task_key && input.parent_task_output_identifier) {
         content = (
@@ -238,6 +294,7 @@ const TaskInputRepresentation = ({
                 <TaskInputValueRepresentation
                     assetKind={assetKind}
                     input={input}
+                    inputAsset={inputAsset}
                 />
             </HStack>
         );
@@ -251,16 +308,19 @@ const TaskInputSectionEntry = ({
     identifier,
     algoInput,
     inputs,
+    inputsAssets,
 }: {
     identifier: string;
-    algoInput: InputT;
+    algoInput: AlgoInputT;
     inputs: TaskInputT[];
+    inputsAssets: TaskIOT[];
 }): JSX.Element => {
     const icon = inputIcon(algoInput.kind);
     const title = identifier;
 
     if (algoInput.multiple || inputs.length > 1) {
         //  '|| inputs.length > 1' is for resilience to inconsistent data
+
         return (
             <DrawerSectionCollapsibleEntry
                 icon={icon}
@@ -268,9 +328,9 @@ const TaskInputSectionEntry = ({
                 titleStyle="code"
                 aboveFold={
                     <Text color="gray.500">
-                        {inputs.length}{' '}
+                        {Object.keys(inputs).length}{' '}
                         {`${getAssetKindLabel(algoInput.kind)}${
-                            inputs.length > 1 ? 's' : ''
+                            Object.keys(inputs).length > 1 ? 's' : ''
                         }`}
                     </Text>
                 }
@@ -282,6 +342,10 @@ const TaskInputSectionEntry = ({
                             <TaskInputRepresentation
                                 assetKind={algoInput.kind}
                                 input={input}
+                                inputAsset={getInputAsset({
+                                    input,
+                                    inputsAssets,
+                                })}
                             />
                         </HStack>
                     ))}
@@ -299,43 +363,73 @@ const TaskInputSectionEntry = ({
                 <TaskInputRepresentation
                     assetKind={algoInput.kind}
                     input={inputs[0]}
+                    inputAsset={getInputAsset({
+                        input: inputs[0],
+                        inputsAssets,
+                    })}
                 />
             </DrawerSectionEntry>
         );
     }
 };
 
+const getTaskInputAssets = async (key: string): Promise<TaskIOT[]> => {
+    const pageSize = 30;
+
+    // Filtering assets to not call Datasamples as it can impact performance when there's a lot of them and doesn't contain additionnal info compared to task.inputs
+    const kindFilter = Object.values(AssetKindT).filter(
+        (kind) => kind !== AssetKindT.dataSample
+    );
+
+    const taskInputsAssets = await getAllPages<TaskIOT>(
+        (page) =>
+            TasksApi.listTaskInputAssets(
+                key,
+                {
+                    page,
+                    pageSize,
+                    kind: kindFilter,
+                },
+                {}
+            ),
+        pageSize
+    );
+
+    return taskInputsAssets;
+};
+
 const TaskInputsDrawerSection = ({
-    loading,
+    taskLoading,
     task,
 }: {
-    loading: boolean;
+    taskLoading: boolean;
     task: TaskT | null;
 }): JSX.Element => {
-    // Fusion algoInputs and task inputs in an object to have the 'multiple' and 'optional' property
-    const inputsPerIdentifier: {
-        [identifier: string]: { algoInput: InputT; inputs: TaskInputT[] };
-    } = {};
-    if (!loading && task) {
-        for (const [identifier, input] of Object.entries(task?.algo.inputs)) {
-            inputsPerIdentifier[identifier] = {
-                algoInput: input,
-                inputs: [],
-            };
+    const key = useKeyFromPath(PATHS.TASK);
+    const [taskInputsAssets, setTaskInputsAssets] = useState<TaskIOT[]>([]);
+
+    useEffect(() => {
+        if (key) {
+            getTaskInputAssets(key).then((result) =>
+                setTaskInputsAssets(result)
+            );
         }
-        for (const input of task.inputs) {
-            inputsPerIdentifier[input.identifier].inputs.push(input);
-        }
-    }
+    }, [key]);
+
+    const getInputsAssets = (identifier: string): TaskIOT[] =>
+        taskInputsAssets.filter(
+            (taskInputAsset) => taskInputAsset.identifier === identifier
+        );
 
     return (
         <DrawerSection title="Inputs">
             {task &&
-                Object.entries(inputsPerIdentifier).map(
-                    ([
-                        identifier,
-                        { algoInput: algoInput, inputs: inputs },
-                    ]) => {
+                !taskLoading &&
+                Object.entries(task.algo.inputs).map(
+                    ([identifier, algoInput]) => {
+                        const inputs = task.inputs.filter(
+                            (input) => input.identifier === identifier
+                        );
                         if (inputs.length > 0) {
                             return (
                                 <TaskInputSectionEntry
@@ -343,6 +437,7 @@ const TaskInputsDrawerSection = ({
                                     identifier={identifier}
                                     algoInput={algoInput}
                                     inputs={inputs}
+                                    inputsAssets={getInputsAssets(identifier)}
                                 />
                             );
                         }

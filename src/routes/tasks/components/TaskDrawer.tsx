@@ -190,11 +190,11 @@ const TaskDrawer = ({
                         </DrawerSectionEntry>
                     </DrawerSection>
                     <TaskInputsDrawerSection
-                        loading={taskLoading}
+                        taskLoading={taskLoading}
                         task={task || null}
                     />
                     <TaskOutputsDrawerSection
-                        loading={taskLoading}
+                        taskLoading={taskLoading}
                         task={task || null}
                     />
                     <MetadataDrawerSection

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import {
     TableContainer,
     Table,
@@ -11,17 +13,17 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
+import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
+import { getAllPages } from '@/modules/common/CommonUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import * as TasksApi from '@/modules/tasks/TasksApi';
+import { TaskT, TaskStatus, TaskIOT } from '@/modules/tasks/TasksTypes';
+import { PATHS } from '@/paths';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
-
-const getOutputKind = (task: TaskT, output_id: string) => {
-    return task.algo.outputs[output_id].kind;
-};
 
 const isMultipleOutput = (task: TaskT, output_id: string) => {
     return task.algo.outputs[output_id].multiple;
@@ -59,13 +61,43 @@ const displayModel = (value: ModelT | null, taskStatus: TaskStatus) => {
     );
 };
 
+const getTaskOutputsAssets = async (key: string): Promise<TaskIOT[]> => {
+    const pageSize = 30;
+
+    const taskOutputsAssets = await getAllPages(
+        (page) =>
+            TasksApi.listTaskOutputAssets(
+                key,
+                {
+                    page,
+                    pageSize,
+                },
+                {}
+            ),
+        pageSize
+    );
+
+    return taskOutputsAssets;
+};
+
 const TaskOutputsDrawerSection = ({
-    loading,
+    taskLoading,
     task,
 }: {
-    loading: boolean;
+    taskLoading: boolean;
     task: TaskT | null;
 }) => {
+    const key = useKeyFromPath(PATHS.TASK);
+    const [taskOutputsAssets, setTaskOutputsAssets] = useState<TaskIOT[]>([]);
+
+    useEffect(() => {
+        if (key) {
+            getTaskOutputsAssets(key).then((result) =>
+                setTaskOutputsAssets(result)
+            );
+        }
+    }, [key]);
+
     return (
         <DrawerSection title="Outputs">
             <TableContainer alignSelf="stretch">
@@ -79,7 +111,7 @@ const TaskOutputsDrawerSection = ({
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {(loading || !task) &&
+                        {(taskLoading || !task) &&
                             [0, 1, 2].map((key) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
@@ -99,43 +131,46 @@ const TaskOutputsDrawerSection = ({
                                     </Td>
                                 </Tr>
                             ))}
-                        {!loading &&
+                        {!taskLoading &&
                             task &&
-                            Object.entries(task.outputs).map(
-                                ([key, output]) => {
-                                    const kind = getOutputKind(task, key);
-                                    const multiple = isMultipleOutput(
-                                        task,
-                                        key
-                                    );
-                                    return (
-                                        <Tr key={key}>
-                                            <Td paddingLeft="0 !important">
-                                                <Code fontSize="xs">{key}</Code>
-                                            </Td>
-                                            <Td>{getAssetKindLabel(kind)}</Td>
-                                            <Td
-                                                paddingRight="0 !important"
-                                                textAlign="center"
-                                            >
-                                                {multiple ? 'yes' : 'no'}
-                                            </Td>
-                                            <Td textAlign="center">
-                                                {kind === 'ASSET_PERFORMANCE' &&
-                                                    displayPerformance(
-                                                        output.value as number,
-                                                        task.status
-                                                    )}
-                                                {kind === 'ASSET_MODEL' &&
-                                                    displayModel(
-                                                        output.value as ModelT | null,
-                                                        task.status
-                                                    )}
-                                            </Td>
-                                        </Tr>
-                                    );
-                                }
-                            )}
+                            Object.values(taskOutputsAssets).map((output) => {
+                                const multiple = isMultipleOutput(
+                                    task,
+                                    output.identifier
+                                );
+                                return (
+                                    <Tr key={output.identifier}>
+                                        <Td paddingLeft="0 !important">
+                                            <Code fontSize="xs">
+                                                {output.identifier}
+                                            </Code>
+                                        </Td>
+                                        <Td>
+                                            {getAssetKindLabel(output.kind)}
+                                        </Td>
+                                        <Td
+                                            paddingRight="0 !important"
+                                            textAlign="center"
+                                        >
+                                            {multiple ? 'yes' : 'no'}
+                                        </Td>
+                                        <Td textAlign="center">
+                                            {output.kind ===
+                                                'ASSET_PERFORMANCE' &&
+                                                displayPerformance(
+                                                    output.asset
+                                                        .performance_value as number,
+                                                    task.status
+                                                )}
+                                            {output.kind === 'ASSET_MODEL' &&
+                                                displayModel(
+                                                    output.asset as ModelT | null,
+                                                    task.status
+                                                )}
+                                        </Td>
+                                    </Tr>
+                                );
+                            })}
                     </Tbody>
                 </Table>
             </TableContainer>
