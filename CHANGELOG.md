@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   CP creators are available data (#124)
+
 ### Changed
 
 -   Get tasks inputs & outputs assets from new endpoints (#144)
