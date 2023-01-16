@@ -2,13 +2,13 @@ import { Box, Checkbox, VStack, Text } from '@chakra-ui/react';
 
 type OptionT = { value: string; label: string; description?: string } | string;
 
-const getOptionValue = (option: OptionT) =>
+export const getOptionValue = (option: OptionT) =>
     typeof option === 'string' ? option : option.value;
 
-const getOptionLabel = (option: OptionT) =>
+export const getOptionLabel = (option: OptionT) =>
     typeof option === 'string' ? option : option.label;
 
-const getOptionDescription = (option: OptionT) =>
+export const getOptionDescription = (option: OptionT) =>
     typeof option === 'string' ? null : option.description;
 
 type TableFilterCheckboxesProps = {

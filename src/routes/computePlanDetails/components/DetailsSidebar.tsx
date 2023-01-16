@@ -124,6 +124,9 @@ const DetailsSidebar = (): JSX.Element => {
                             title="Created"
                             date={computePlan.creation_date}
                         />
+                        <DrawerSectionEntry title="Creator">
+                            <Text>{computePlan.creator}</Text>
+                        </DrawerSectionEntry>
                         <DrawerSectionEntry title="Duration">
                             <Timing asset={computePlan} />
                             <Duration asset={computePlan} />

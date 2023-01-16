@@ -132,6 +132,31 @@ const ColumnTh = ({ column, onPopoverOpen }: ColumnThProps): JSX.Element => {
                 ]}
             />
         );
+    } else if (
+        column.type === 'general' &&
+        column.name === GeneralColumnName.creator
+    ) {
+        return (
+            <OrderingTh
+                minWidth="125px"
+                //TODO: use the right number value
+                openFilters={() => onPopoverOpen(1)}
+                options={[
+                    {
+                        label: 'Creator',
+                        asc: {
+                            label: `Sort creator Z -> A`,
+                            value: `-creator`,
+                        },
+                        desc: {
+                            label: `Sort creator A -> Z`,
+                            value: `creator`,
+                        },
+                    },
+                ]}
+                {...bottomBorderProps}
+            />
+        );
     } else {
         return <Th>{`Unknown column ${column.name}`}</Th>;
     }

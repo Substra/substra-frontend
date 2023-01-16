@@ -209,6 +209,7 @@ export const useCanAccessLogs = () =>
 export const useCanProcess = () => useSyncedStringArrayState('can_process', []);
 export const useOwner = () => useSyncedStringArrayState('owner', []);
 export const useStatus = () => useSyncedStringArrayState('status', []);
+export const useCreator = () => useSyncedStringArrayState('creator', []);
 export const useWorker = () => useSyncedStringArrayState('worker', []);
 
 // Common dates states

@@ -45,6 +45,7 @@ export type ComputePlanStubT = {
     delete_intermediary_models: boolean;
     name: string;
     creation_date: string;
+    creator: string;
     metadata: { [key: string]: string };
     start_date?: string;
     end_date?: string;

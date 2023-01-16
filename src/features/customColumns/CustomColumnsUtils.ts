@@ -4,6 +4,7 @@ export enum GeneralColumnName {
     status = 'Status',
     creation = 'Creation',
     dates = 'Start date / End date / Duration',
+    creator = 'Creator',
 }
 
 export const GENERAL_COLUMNS: ColumnT[] = Object.values(GeneralColumnName).map(

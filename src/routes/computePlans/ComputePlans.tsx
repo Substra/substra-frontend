@@ -12,6 +12,7 @@ import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
 import {
     useCreationDate,
+    useCreator,
     useDuration,
     useEndDate,
     useFavoritesOnly,
@@ -37,6 +38,7 @@ import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import { EmptyTr, Tbody } from '@/components/Table';
 import {
+    CreatorTableFilterTag,
     DateFilterTag,
     DurationFilterTag,
     FavoritesTableFilterTag,
@@ -54,6 +56,7 @@ import {
     EndDateTableFilter,
     MetadataTableFilter,
 } from '@/components/TableFilters';
+import CreatorTableFilter from '@/components/TableFilters/CreatorTableFilter';
 import TablePagination from '@/components/TablePagination';
 
 import ComputePlanTHead from './components/ComputePlanTHead';
@@ -72,6 +75,8 @@ const ComputePlans = (): JSX.Element => {
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
     const [metadata] = useMetadataString();
+    const [creator] = useCreator();
+
     const {
         state: selectedComputePlans,
         addItem: selectComputePlan,
@@ -109,6 +114,7 @@ const ComputePlans = (): JSX.Element => {
             metadata,
             duration_min: durationMin,
             duration_max: durationMax,
+            creator: creator,
         }),
         [
             match,
@@ -123,6 +129,7 @@ const ComputePlans = (): JSX.Element => {
             metadata,
             durationMin,
             durationMax,
+            creator,
         ]
     );
 
@@ -201,6 +208,7 @@ const ComputePlans = (): JSX.Element => {
                             <ComputePlanFavoritesTableFilter
                                 favorites={favorites}
                             />
+                            <CreatorTableFilter />
                             <CreationDateTableFilter />
                             <StartDateTableFilter />
                             <EndDateTableFilter />
@@ -243,6 +251,7 @@ const ComputePlans = (): JSX.Element => {
                     <TableFilterTags>
                         <StatusTableFilterTag />
                         <FavoritesTableFilterTag />
+                        <CreatorTableFilterTag />
                         <DateFilterTag
                             urlParam="creation_date"
                             label="Creation date"
