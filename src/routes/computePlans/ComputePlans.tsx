@@ -74,7 +74,7 @@ const ComputePlans = (): JSX.Element => {
     const { startDateBefore, startDateAfter } = useStartDate();
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
-    const [metadata] = useMetadataString();
+    const [metadataFilter] = useMetadataString();
     const [creator] = useCreator();
 
     const {
@@ -111,7 +111,7 @@ const ComputePlans = (): JSX.Element => {
             start_date_before: endOfDay(startDateBefore),
             end_date_after: endDateAfter,
             end_date_before: endOfDay(endDateBefore),
-            metadata,
+            metadataFilter,
             duration_min: durationMin,
             duration_max: durationMax,
             creator: creator,
@@ -126,7 +126,7 @@ const ComputePlans = (): JSX.Element => {
             startDateBefore,
             endDateAfter,
             endDateBefore,
-            metadata,
+            metadataFilter,
             durationMin,
             durationMax,
             creator,
@@ -152,6 +152,8 @@ const ComputePlans = (): JSX.Element => {
     const computePlansCount = useAppSelector(
         (state) => state.computePlans.computePlansCount
     );
+
+    const metadata = useAppSelector((state) => state.metadata.metadata);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
@@ -183,7 +185,10 @@ const ComputePlans = (): JSX.Element => {
 
     const download = async () => {
         setDownloading(true);
-        const response = await exportPerformances(filters);
+        const response = await exportPerformances({
+            metadata: metadata.join(),
+            ...filters,
+        });
         downloadBlob(response.data, 'performances.csv');
         setDownloading(false);
     };
