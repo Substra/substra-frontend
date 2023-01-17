@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Get tasks inputs & outputs assets from new endpoints (#144)
 
+### Removed
+
+-   test_only property from datasample type (#158)
+
 ## [0.38.1] - 2022-01-04
 
 ### Fixed
