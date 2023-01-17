@@ -30,5 +30,4 @@ export type DatasampleT = {
     data_manager_keys: string[];
     key: string;
     owner: string;
-    test_only: boolean;
 };
