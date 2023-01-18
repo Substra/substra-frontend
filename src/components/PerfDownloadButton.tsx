@@ -29,7 +29,11 @@ const PerfDownloadButton = (): JSX.Element => {
             key: computePlans.map((cp) => cp.key),
             metadata: metadata.join(),
         });
-        downloadBlob(response.data, 'performances.csv');
+        const downloadName =
+            computePlans.length > 1
+                ? 'selected_performances.csv'
+                : `${computePlans[0].key}.csv`;
+        downloadBlob(response.data, downloadName);
         setDownloading(false);
     };
 

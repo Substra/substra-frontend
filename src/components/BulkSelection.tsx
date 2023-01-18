@@ -82,7 +82,7 @@ const BulkSelection = ({
             key: selectedKeys,
             metadata: metadata.join(),
         });
-        downloadBlob(response.data, 'performances.csv');
+        downloadBlob(response.data, 'selected_performances.csv');
         setDownloading(false);
     };
 
