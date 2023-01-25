@@ -1,9 +1,9 @@
 import { Box, HStack } from '@chakra-ui/react';
 
 import { getStatusStyle } from '@/libs/status';
-import { getStatusCount } from '@/modules/computePlans/ComputePlanUtils';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { getStatusCount } from '@/routes/computePlanDetails/ComputePlanUtils';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
+import { TaskStatus } from '@/types/TasksTypes';
 
 type ItemProps = {
     status: TaskStatus;

@@ -1,6 +1,6 @@
 import { VStack, Wrap, WrapItem } from '@chakra-ui/react';
 
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { SerieT } from '@/types/SeriesTypes';
 
 import PerfCard from '@/components/PerfCard';
 import PerfChart from '@/components/PerfChart';

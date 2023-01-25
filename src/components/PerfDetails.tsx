@@ -5,7 +5,7 @@ import { RiArrowLeftLine } from 'react-icons/ri';
 
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { SerieT } from '@/types/SeriesTypes';
 
 import PerfChart from '@/components/PerfChart';
 import PerfEmptyState from '@/components/PerfEmptyState';

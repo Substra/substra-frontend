@@ -5,7 +5,7 @@ import {
     GeneralColumnName,
     getColumnId,
 } from '@/features/customColumns/CustomColumnsUtils';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import Status from '@/components/Status';
 import { TableSkeleton } from '@/components/Table';

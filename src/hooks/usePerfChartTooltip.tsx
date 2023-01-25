@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { DataPointT } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/types/SeriesTypes';
 
 import PerfChartTooltip from '@/components/PerfChartTooltip';
 

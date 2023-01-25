@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -9,17 +9,17 @@ import {
     RiLockLine,
 } from 'react-icons/ri';
 
+import * as TasksApi from '@/api/TasksApi';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
-import { getAllPages } from '@/modules/common/CommonUtils';
-import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
-import { AssetKindT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
-import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
-import { isModelT } from '@/modules/tasks/ModelsUtils';
-import * as TasksApi from '@/modules/tasks/TasksApi';
-import { TaskInputT, TaskT, TaskIOT } from '@/modules/tasks/TasksTypes';
+import { getAllPages } from '@/libs/CommonUtils';
 import { compilePath, PATHS } from '@/paths';
+import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
+import { FileT, PermissionsT } from '@/types/CommonTypes';
+import { isDatasetStubT } from '@/types/DatasetTypes';
+import { AssetKindT, FunctionInputT } from '@/types/FunctionsTypes';
+import { isModelT } from '@/types/ModelsTypes';
+import { TaskInputT, TaskT, TaskIOT } from '@/types/TasksTypes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 import {

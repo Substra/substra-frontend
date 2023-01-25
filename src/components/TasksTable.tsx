@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { Link } from 'wouter';
 
 import {
@@ -17,7 +16,6 @@ import {
     TableProps,
 } from '@chakra-ui/react';
 
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
@@ -34,12 +32,9 @@ import {
     TableFiltersContext,
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
-import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
-import { RetrieveComputePlanTasksArgsProps } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { ListTasksProps } from '@/modules/tasks/TasksSlice';
-import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
+import { TaskT, TaskStatus } from '@/types/TasksTypes';
 
 import { AssetsTable } from '@/components/AssetsTable';
 import Duration from '@/components/Duration';
@@ -69,11 +64,7 @@ import Timing from '@/components/Timing';
 
 type TasksTableProps = {
     loading: boolean;
-    list: () => AsyncThunkAction<
-        PaginatedApiResponseT<TaskT>,
-        RetrieveComputePlanTasksArgsProps | ListTasksProps,
-        { rejectValue: string }
-    >;
+    list: () => void;
     tasks: TaskT[];
     count: number;
     computePlan?: ComputePlanT | null;
@@ -99,15 +90,10 @@ const TasksTable = ({
     const { durationMin, durationMax } = useDuration();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     useEffect(() => {
-        const action = list();
-        if (action) {
-            return dispatchWithAutoAbort(action);
-        }
+        list();
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [
-        dispatchWithAutoAbort,
         list,
         page,
         computePlan,
@@ -142,11 +128,7 @@ const TasksTable = ({
                     </TableFilters>
                     <SearchBar placeholder="Search key..." />
                 </HStack>
-                <RefreshButton
-                    loading={loading}
-                    dispatchWithAutoAbort={dispatchWithAutoAbort}
-                    actionBuilder={list}
-                />
+                <RefreshButton loading={loading} list={list} />
             </Flex>
             <TableFilterTags>
                 <StatusTableFilterTag />

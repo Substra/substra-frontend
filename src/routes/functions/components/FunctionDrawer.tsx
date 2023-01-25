@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import { unwrapResult } from '@reduxjs/toolkit';
-
 import {
     Drawer,
     DrawerContent,
@@ -13,19 +11,11 @@ import {
 } from '@chakra-ui/react';
 import { RiDownload2Line } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import { downloadFromApi } from '@/api/request';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
-import useUpdateName from '@/hooks/useUpdateName';
-import { downloadFromApi } from '@/libs/request';
-import {
-    retrieveFunction,
-    retrieveDescription,
-    updateFunction,
-} from '@/modules/functions/FunctionsSlice';
-import { FunctionT } from '@/modules/functions/FunctionsTypes';
+import useUpdateAssetName from '@/hooks/useUpdateAssetName';
 import { PATHS } from '@/paths';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
@@ -39,6 +29,7 @@ import {
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
+import useFunctionStore from '../useFunctionStore';
 import InputsOutputsDrawerSection from './InputsOutputsDrawerSection';
 
 const FunctionDrawer = (): JSX.Element => {
@@ -46,33 +37,34 @@ const FunctionDrawer = (): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const key = useKeyFromPath(PATHS.FUNCTION);
 
-    const dispatch = useAppDispatch();
+    const {
+        function: func,
+        description,
+        fetchingFunction,
+        fetchingDescription,
+        updatingFunction,
+        fetchFunction,
+        fetchDescription,
+        updateFunction,
+    } = useFunctionStore();
+
     useEffect(() => {
         if (key) {
             if (!isOpen) {
                 onOpen();
 
-                dispatch(retrieveFunction(key))
-                    .then(unwrapResult)
-                    .then((func: FunctionT) => {
-                        dispatch(
-                            retrieveDescription(
-                                func.description.storage_address
-                            )
-                        );
-                    });
+                const fetchAll = async () => {
+                    const func = await fetchFunction(key);
+
+                    if (func) {
+                        fetchDescription(func.description.storage_address);
+                    }
+                };
+
+                fetchAll();
             }
         }
-    }, [dispatch, isOpen, key, onOpen]);
-
-    const func = useAppSelector((state) => state.functions.function);
-    const functionLoading = useAppSelector(
-        (state) => state.functions.functionLoading
-    );
-    const description = useAppSelector((state) => state.functions.description);
-    const descriptionLoading = useAppSelector(
-        (state) => state.functions.descriptionLoading
-    );
+    }, [fetchFunction, fetchDescription, isOpen, key, onOpen]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
@@ -92,14 +84,11 @@ const FunctionDrawer = (): JSX.Element => {
         }
     };
 
-    const { updateNameDialog, updateNameButton } = useUpdateName({
+    const { updateNameDialog, updateNameButton } = useUpdateAssetName({
         dialogTitle: 'Rename function',
-        assetKey: func?.key ?? '',
-        assetName: func?.name ?? '',
-        assetUpdating: useAppSelector(
-            (state) => state.functions.functionUpdating
-        ),
-        updateSlice: updateFunction,
+        asset: func ?? null,
+        updatingAsset: updatingFunction,
+        updateAsset: updateFunction,
     });
 
     return (
@@ -117,7 +106,7 @@ const FunctionDrawer = (): JSX.Element => {
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={func?.name}
-                    loading={functionLoading}
+                    loading={fetchingFunction}
                     onClose={() => {
                         setLocationPreserveParams(PATHS.FUNCTIONS);
                         onClose();
@@ -129,7 +118,7 @@ const FunctionDrawer = (): JSX.Element => {
                             fontSize="20px"
                             color="gray.500"
                             icon={<RiDownload2Line />}
-                            isDisabled={functionLoading || !func}
+                            isDisabled={fetchingFunction || !func}
                             onClick={downloadFunction}
                         />
                     }
@@ -147,39 +136,39 @@ const FunctionDrawer = (): JSX.Element => {
                     <DrawerSection title="General">
                         <DrawerSectionKeyEntry
                             value={func?.key}
-                            loading={functionLoading}
+                            loading={fetchingFunction}
                         />
                         <DrawerSectionDateEntry
                             title="Created"
                             date={func?.creation_date}
-                            loading={functionLoading}
+                            loading={fetchingFunction}
                         />
                         <OrganizationDrawerSectionEntry
                             title="Owner"
-                            loading={functionLoading}
+                            loading={fetchingFunction}
                             organization={func?.owner}
                         />
                         <PermissionsDrawerSectionEntry
-                            loading={functionLoading}
+                            loading={fetchingFunction}
                             permission={func?.permissions.process}
                         />
                     </DrawerSection>
                     <InputsOutputsDrawerSection
-                        loading={functionLoading}
+                        loading={fetchingFunction}
                         func={func}
                         type="inputs"
                     />
                     <InputsOutputsDrawerSection
-                        loading={functionLoading}
+                        loading={fetchingFunction}
                         func={func}
                         type="outputs"
                     />
                     <MetadataDrawerSection
                         metadata={func?.metadata}
-                        loading={functionLoading}
+                        loading={fetchingFunction}
                     />
                     <DescriptionDrawerSection
-                        loading={descriptionLoading}
+                        loading={fetchingDescription}
                         description={description}
                     />
                 </DrawerBody>

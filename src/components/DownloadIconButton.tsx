@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
-import { downloadBlob, downloadFromApi } from '@/libs/request';
+import { downloadBlob, downloadFromApi } from '@/api/request';
 
 type DownloadIconButtonProps = IconButtonProps & {
     storageAddress?: string;

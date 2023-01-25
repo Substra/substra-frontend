@@ -14,13 +14,13 @@ import {
 } from '@chakra-ui/react';
 import { RiDeleteBin7Line, RiAddLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useMetadataStore from '@/features/metadata/useMetadataStore';
 import { useMetadataWithUUID, metadataToString } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import {
     MetadataFilterWithUuidT,
     MetadataFilterT,
-} from '@/modules/metadata/MetadataTypes';
+} from '@/types/MetadataTypes';
 
 const MetadataFilterForm = ({
     value,
@@ -31,7 +31,7 @@ const MetadataFilterForm = ({
     onChange: (filter: MetadataFilterWithUuidT) => void;
     onRemove: () => void;
 }) => {
-    const availableKeys = useAppSelector((state) => state.metadata.metadata);
+    const { metadata: availableKeys } = useMetadataStore();
     const [filterKey, setFilterKey] = useState<string>(value.key);
     const [filterType, setFilterType] = useState<MetadataFilterT>(value.type);
     const [filterValue, setFilterValue] = useState<string>(value.value ?? '');
@@ -138,7 +138,7 @@ const MetadataTableFilter = (): JSX.Element => {
     const [tmpFilters, setTmpFilters] = useState<MetadataFilterWithUuidT[]>([]);
     const [activeFilters] = useMetadataWithUUID();
 
-    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const { metadata } = useMetadataStore();
 
     clearRef.current = (urlSearchParams) => {
         setTmpFilters([]);

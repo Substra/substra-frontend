@@ -20,6 +20,38 @@ export const PATHS = {
     RESET_PASSWORD: '/reset_password/:key',
 };
 
+export const API_PATHS = {
+    COMPUTE_PLANS: '/compute_plan/',
+    COMPUTE_PLAN: '/compute_plan/:key/',
+    COMPUTE_PLAN_CANCEL: '/compute_plan/:key/cancel/',
+    COMPUTE_PLAN_TASKS: '/compute_plan/:key/task/',
+    COMPUTE_PLAN_PERFORMANCES: '/compute_plan/:key/perf/',
+    DATASETS: '/data_manager/',
+    DATASET: '/data_manager/:key/',
+    FUNCTIONS: '/function/',
+    FUNCTION: '/function/:key/',
+    INFO: '/info/',
+    LOGIN: '/me/login/?format=json',
+    LOGOUT: '/me/logout/',
+    LOGS: '/logs/:key/file/',
+    METADATA: '/compute_plan_metadata/',
+    NEWS_FEED: '/news_feed/',
+    ORGANIZATIONS: '/organization/',
+    PERFORMANCES_EXPORT: '/performance/export/',
+    REFRESH: '/me/refresh/',
+    TASKS: '/task/',
+    TASK: '/task/:key/',
+    TASK_INPUTS: '/task/:key/input_assets/',
+    TASK_OUTPUTS: '/task/:key/output_assets/',
+    TASK_PROFILING: '/task_profiling/:key/',
+    USERS: '/users/',
+    USER: '/users/:key/',
+    USER_SET_PWD: '/users/:key/set_password/',
+    USER_RESET_TOKEN: '/users/:key/reset_password/',
+    USER_CHECK_TOKEN: '/users/:key/verify_token/?token=:token',
+    WORKFLOW: '/compute_plan/:key/workflow_graph/',
+};
+
 export function compilePath(
     path: string,
     params: { [key: string]: string }

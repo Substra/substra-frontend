@@ -1,14 +1,16 @@
-import useAppSelector from '@/hooks/useAppSelector';
+import useAuthStore from '@/features/auth/useAuthStore';
 import useHasPermission from '@/hooks/useHasPermission';
-import { PermissionsT } from '@/modules/common/CommonTypes';
+import { PermissionsT } from '@/types/CommonTypes';
 
 const useCanDownloadModel = (): ((permissions: PermissionsT) => boolean) => {
-    const modelExportEnabled = useAppSelector(
-        (state) => !!state.me.info.config.model_export_enabled
-    );
+    const {
+        info: {
+            config: { model_export_enabled: modelExportEnabled },
+        },
+    } = useAuthStore();
     const hasPermission = useHasPermission();
 
     return (permissions: PermissionsT): boolean =>
-        modelExportEnabled && hasPermission(permissions.download);
+        !!modelExportEnabled && hasPermission(permissions.download);
 };
 export default useCanDownloadModel;

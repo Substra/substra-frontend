@@ -7,21 +7,7 @@ import React, {
     useState,
 } from 'react';
 
-import { OnOptionChangeT } from '@/hooks/useSelection';
-import {
-    useSyncedState,
-    useSyncedStringArrayState,
-    useSyncedStringState,
-} from '@/hooks/useSyncedState';
-import { compareComputePlans } from '@/modules/computePlans/ComputePlanUtils';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
-import { OrganizationT } from '@/modules/organizations/OrganizationsTypes';
-import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
-import {
-    HighlightedSerieT,
-    SerieRankDataT,
-    SerieT,
-} from '@/modules/series/SeriesTypes';
+import { compareOrganizations } from '@/features/organizations/OrganizationsUtils';
 import {
     buildSeriesGroups,
     compareSerieRankData,
@@ -29,7 +15,17 @@ import {
     getMaxRankWithPerf,
     getMaxRoundWithPerf,
     getSeriesOrganizations,
-} from '@/modules/series/SeriesUtils';
+} from '@/features/series/SeriesUtils';
+import { OnOptionChangeT } from '@/hooks/useSelection';
+import {
+    useSyncedState,
+    useSyncedStringArrayState,
+    useSyncedStringState,
+} from '@/hooks/useSyncedState';
+import { compareComputePlans } from '@/routes/computePlanDetails/ComputePlanUtils';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
+import { OrganizationT } from '@/types/OrganizationsTypes';
+import { HighlightedSerieT, SerieRankDataT, SerieT } from '@/types/SeriesTypes';
 
 export type XAxisModeT = 'round' | 'rank';
 export type YAxisModeT = 'linear' | 'logarithmic';

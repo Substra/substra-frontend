@@ -2,9 +2,10 @@ import { Link, useRoute } from 'wouter';
 
 import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/paths';
+import { ComputePlanStatus } from '@/types/ComputePlansTypes';
+
+import useComputePlanStore from '../useComputePlanStore';
 
 type TabsNavItemProps = {
     href: string;
@@ -69,9 +70,8 @@ const TabsNav = (): JSX.Element | null => {
     const [isWorkflow, workflowParams] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
     const computePlanKey =
         chartParams?.key || tasksParams?.key || workflowParams?.key || '';
-    const computePlan = useAppSelector(
-        (state) => state.computePlans.computePlan
-    );
+    const { computePlan } = useComputePlanStore();
+
     const isChartTabDisabled =
         computePlan !== null &&
         [ComputePlanStatus.waiting, ComputePlanStatus.todo].includes(

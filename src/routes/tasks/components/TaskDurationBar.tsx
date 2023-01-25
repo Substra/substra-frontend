@@ -18,14 +18,13 @@ import {
     RiInformationLine,
 } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
 import { formatCompactDuration } from '@/libs/utils';
-import { retrieveTaskProfiling } from '@/modules/tasks/TasksSlice';
-import { StepT, TaskProfilingT, TaskStep } from '@/modules/tasks/TasksTypes';
-import { getStepInfo } from '@/modules/tasks/TasksUtils';
+import { getStepInfo } from '@/routes/tasks/TasksUtils';
+import { StepT, TaskProfilingT, TaskStep } from '@/types/TasksTypes';
 
 import { DrawerSectionHeading } from '@/components/DrawerSection';
+
+import useTaskStore from '../useTaskStore';
 
 type DetailsItemProps = {
     step: TaskStep;
@@ -148,26 +147,22 @@ const TaskDurationBar = ({
 }: {
     taskKey: string | null | undefined;
 }): JSX.Element => {
-    const dispatch = useAppDispatch();
-
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: false,
     });
 
-    const taskProfiling = useAppSelector((state) => state.tasks.taskProfiling);
-    const taskProfilingLoading = useAppSelector(
-        (state) => state.tasks.taskProfilingLoading
-    );
+    const { taskProfiling, fetchingTaskProfiling, fetchTaskProfiling } =
+        useTaskStore();
 
     const taskDuration = getTaskDuration(taskProfiling);
 
     useEffect(() => {
         if (taskKey) {
-            dispatch(retrieveTaskProfiling(taskKey));
+            fetchTaskProfiling(taskKey);
         }
-    }, [dispatch, taskKey]);
+    }, [fetchTaskProfiling, taskKey]);
 
-    if (taskProfilingLoading) {
+    if (fetchingTaskProfiling) {
         return (
             <VStack spacing="1" width="100%" alignItems="flex-start">
                 <DrawerSectionHeading title="Duration" />

@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useAuthStore from '@/features/auth/useAuthStore';
 
 import Actualizer from '@/components/Actualizer';
 import RefreshBanner from '@/components/RefreshBanner';
@@ -11,7 +11,8 @@ type AppLayoutProps = {
 };
 
 const AppLayout = ({ children }: AppLayoutProps): JSX.Element => {
-    const isAuthenticated = useAppSelector((state) => state.me.authenticated);
+    const { authenticated: isAuthenticated } = useAuthStore();
+
     return (
         <Flex
             direction="column"

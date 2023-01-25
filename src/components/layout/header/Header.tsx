@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { Link, useLocation, useRoute } from 'wouter';
 
 import {
@@ -20,9 +19,7 @@ import {
 import { RiUser3Fill } from 'react-icons/ri';
 
 import SubstraLogo from '@/assets/svg/substra-logo.svg';
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
-import { logOut } from '@/modules/me/MeSlice';
+import useAuthStore from '@/features/auth/useAuthStore';
 import { PATHS } from '@/paths';
 
 import OmniSearch from '@/components/OmniSearch';
@@ -78,20 +75,26 @@ const NAV_ITEMS = [
 ];
 
 const Header = (): JSX.Element => {
-    const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
 
-    const organizationId = useAppSelector(
-        (state) => state.me.info.organization_id
-    );
-    const channel = useAppSelector((state) => state.me.info.channel);
-    const userRole = useAppSelector((state) => state.me.info.user_role);
-    const username = useAppSelector((state) => state.me.info.user);
+    const {
+        info: {
+            organization_id: organizationId,
+            channel,
+            user_role: userRole,
+            user: username,
+        },
+        fetchLogout,
+    } = useAuthStore();
 
     const handleLogOut = () => {
-        dispatch(logOut())
-            .then(unwrapResult)
-            .then(() => setLocation(PATHS.LOGIN));
+        const logOut = async () => {
+            const logOut = await fetchLogout();
+            if (logOut !== null) {
+                setLocation(PATHS.LOGIN);
+            }
+        };
+        logOut();
     };
 
     const isMainRouteActive = !isActive([

@@ -8,8 +8,8 @@ import {
     getColumnId,
 } from '@/features/customColumns/CustomColumnsUtils';
 import { shortFormatDate } from '@/libs/utils';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { compilePath, PATHS } from '@/paths';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 import Duration from '@/components/Duration';
 import { ClickableTr, rightBorderProps } from '@/components/Table';

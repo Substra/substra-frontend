@@ -8,7 +8,7 @@ import {
     DataPointT,
     HighlightedParamsProps,
     SerieT,
-} from '@/modules/series/SeriesTypes';
+} from '@/types/SeriesTypes';
 
 type PerfChartDatasetProps = ChartDataset<'line', DataPointT[]>;
 

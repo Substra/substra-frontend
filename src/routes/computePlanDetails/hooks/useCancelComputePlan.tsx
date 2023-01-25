@@ -2,15 +2,12 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { Text, useDisclosure } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import * as ComputePlansApi from '@/api/ComputePlansApi';
+import useAuthStore from '@/features/auth/useAuthStore';
 import { useToast } from '@/hooks/useToast';
-import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import {
-    ComputePlanStatus,
-    ComputePlanT,
-} from '@/modules/computePlans/ComputePlansTypes';
 import CancelComputePlanDialog from '@/routes/computePlanDetails/components/CancelComputePlanDialog';
 import CancelComputePlanMenuItem from '@/routes/computePlanDetails/components/CancelComputePlanMenuItem';
+import { ComputePlanStatus, ComputePlanT } from '@/types/ComputePlansTypes';
 
 const useCancelComputePlan = (
     computePlan: ComputePlanT | null
@@ -20,9 +17,9 @@ const useCancelComputePlan = (
 } => {
     const { onOpen, isOpen, onClose } = useDisclosure();
     const [canceling, setCanceling] = useState(false);
-    const currentOrganizationId = useAppSelector(
-        (state) => state.me.info.organization_id
-    );
+    const {
+        info: { organization_id: currentOrganizationId },
+    } = useAuthStore();
     const toast = useToast();
 
     const isCancellable = useMemo(

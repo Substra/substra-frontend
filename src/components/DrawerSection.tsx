@@ -19,7 +19,7 @@ import {
 import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
 import { capitalize, formatDate } from '@/libs/utils';
-import { PermissionT } from '@/modules/common/CommonTypes';
+import { PermissionT } from '@/types/CommonTypes';
 
 import CopyIconButton from '@/components/CopyIconButton';
 import PermissionTag from '@/components/PermissionTag';

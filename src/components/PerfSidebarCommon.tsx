@@ -15,7 +15,7 @@ import { RiArrowRightSLine, RiLockLine } from 'react-icons/ri';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
-import { SerieRankDataT } from '@/modules/series/SeriesTypes';
+import { SerieRankDataT } from '@/types/SeriesTypes';
 
 import PerfIconTag from '@/components/PerfIconTag';
 

@@ -13,17 +13,15 @@ import {
 } from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import useAuthStore from '@/features/auth/useAuthStore';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { useMatch, useOrdering, usePage } from '@/hooks/useSyncedState';
-import { listUsers } from '@/modules/users/UsersSlice';
-import { UserRolesT } from '@/modules/users/UsersTypes';
-import { UserRolesToLabel } from '@/modules/users/UsersUtils';
 import { compilePath, PATHS } from '@/paths';
 import NotFound from '@/routes/notfound/NotFound';
+import { UserRolesToLabel } from '@/routes/users/UsersUtils';
+import { UserRolesT } from '@/types/UsersTypes';
 
 import { AssetsTable } from '@/components/AssetsTable';
 import OrderingTh from '@/components/OrderingTh';
@@ -33,25 +31,25 @@ import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
 import UserDrawer from './components/UserDrawer';
+import useUsersStore from './useUsersStore';
 
 const Users = (): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('username');
 
-    const userRole = useAppSelector((state) => state.me.info.user_role);
-    const users = useAppSelector((state) => state.users.users);
-    const usersCount = useAppSelector((state) => state.users.usersCount);
-    const usersLoading = useAppSelector((state) => state.users.usersLoading);
+    const { users, usersCount, fetchingUsers, fetchUsers } = useUsersStore();
+    const {
+        info: { user_role: userRole },
+    } = useAuthStore();
 
     const key = useKeyFromPath(PATHS.USER);
     useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {
-        return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
-    }, [page, key, ordering, match, dispatchWithAutoAbort]);
+        fetchUsers({ page, ordering, match });
+    }, [page, key, ordering, match, fetchUsers]);
 
     if (userRole !== UserRolesT.admin) {
         return <NotFound />;
@@ -123,11 +121,11 @@ const Users = (): JSX.Element => {
                             />
                         </Tr>
                     </Thead>
-                    <Tbody data-cy={usersLoading ? 'loading' : 'loaded'}>
-                        {!usersLoading && usersCount === 0 && (
+                    <Tbody data-cy={fetchingUsers ? 'loading' : 'loaded'}>
+                        {!fetchingUsers && usersCount === 0 && (
                             <EmptyTr nbColumns={2} asset="user" />
                         )}
-                        {usersLoading ? (
+                        {fetchingUsers ? (
                             <TableSkeleton
                                 itemCount={usersCount}
                                 currentPage={page}

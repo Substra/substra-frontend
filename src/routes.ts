@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 import Compare from '@/routes/compare/Compare';
-import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
-import ComputePlanTasks from '@/routes/computePlanDetails/ComputePlanTasks';
-import ComputePlanWorkflow from '@/routes/computePlanDetails/ComputePlanWorkflow';
+import ComputePlanChart from '@/routes/computePlanDetails/chart/ComputePlanChart';
+import ComputePlanTasks from '@/routes/computePlanDetails/tasks/ComputePlanTasks';
+import ComputePlanWorkflow from '@/routes/computePlanDetails/workflow/ComputePlanWorkflow';
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';

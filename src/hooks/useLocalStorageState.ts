@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import { HasKeyT } from '@/modules/common/CommonTypes';
+import useAuthStore from '@/features/auth/useAuthStore';
+import { HasKeyT } from '@/types/CommonTypes';
 
 function useLoadSave<T>(
     localStorageKey: string,
@@ -49,7 +49,9 @@ export const useLocalStorageState = <Type>(
     originalValue: Type,
     migrate?: (data: unknown) => Type
 ): [Type, (value: Type) => void] => {
-    const channel = useAppSelector((state) => state.me.info.channel);
+    const {
+        info: { channel },
+    } = useAuthStore();
     const { load, save } = useLoadSave<Type>(localStorageKey, channel, migrate);
     const [state, setLocalState] = useState(() => load() ?? originalValue);
 

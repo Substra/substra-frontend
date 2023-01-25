@@ -15,43 +15,34 @@ import {
 } from '@chakra-ui/react';
 import { RiNotification3Fill } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import { ACTUALIZE_NEWS_INTERVAL } from '@/features/newsFeed/NewsFeedUtils';
+import useNewsFeedStore from '@/features/newsFeed/useNewsFeedStore';
 import useLastNewsSeen from '@/hooks/useLastNewsSeen';
-import { retrieveActualizedCount } from '@/modules/newsFeed/NewsFeedSlice';
-import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
 
 import NewsFeedList from '@/components/layout/header/NewsFeedList';
 
 const NewsFeed = (): JSX.Element => {
-    const dispatch = useAppDispatch();
     const { onOpen, onClose, isOpen } = useDisclosure();
     const initialFocusRef = useRef(null);
     const { lastNewsSeen, setLastNewsSeen } = useLastNewsSeen();
 
-    const actualizedCount = useAppSelector(
-        (state) => state.newsFeed.actualizedCount
-    );
+    const { unseenNewsCount, fetchUnseenNewsCount } = useNewsFeedStore();
 
-    const displayPill = actualizedCount > 0;
+    const displayPill = unseenNewsCount > 0;
 
     useEffect(() => {
         if (lastNewsSeen) {
-            dispatch(
-                retrieveActualizedCount({ timestamp_after: lastNewsSeen })
-            );
+            fetchUnseenNewsCount(lastNewsSeen);
 
             const interval = setInterval(() => {
-                dispatch(
-                    retrieveActualizedCount({ timestamp_after: lastNewsSeen })
-                );
+                fetchUnseenNewsCount(lastNewsSeen);
             }, ACTUALIZE_NEWS_INTERVAL);
 
             return () => {
                 clearInterval(interval);
             };
         }
-    }, [dispatch, lastNewsSeen]);
+    }, [fetchUnseenNewsCount, lastNewsSeen]);
 
     return (
         <Box>
@@ -83,7 +74,7 @@ const NewsFeed = (): JSX.Element => {
                                 height="18px"
                                 color="red"
                                 borderRadius={
-                                    actualizedCount > 99 ? '20%' : '50%'
+                                    unseenNewsCount > 99 ? '20%' : '50%'
                                 }
                                 alignItems="center"
                                 justifyContent="center"
@@ -92,16 +83,16 @@ const NewsFeed = (): JSX.Element => {
                                 border="1px solid white"
                                 padding="0.5"
                                 top="-5px"
-                                right={actualizedCount > 99 ? '-12px' : '-5px'}
+                                right={unseenNewsCount > 99 ? '-12px' : '-5px'}
                             >
                                 <Text
                                     color="white"
                                     fontSize="8px"
                                     fontWeight="bold"
                                 >
-                                    {actualizedCount > 99
+                                    {unseenNewsCount > 99
                                         ? '99+'
-                                        : actualizedCount}
+                                        : unseenNewsCount}
                                 </Text>
                             </Flex>
                         )}

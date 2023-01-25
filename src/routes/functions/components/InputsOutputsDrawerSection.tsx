@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 
 import { capitalize } from '@/libs/utils';
-import { FunctionT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
-import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
+import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
+import { FunctionT, FunctionInputT } from '@/types/FunctionsTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 

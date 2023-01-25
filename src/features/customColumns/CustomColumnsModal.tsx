@@ -30,7 +30,7 @@ import {
     RiMenuLine,
 } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useMetadataStore from '@/features/metadata/useMetadataStore';
 
 import EmptyState from '@/components/EmptyState';
 
@@ -150,7 +150,7 @@ const CustomColumnsModal = ({
 }: CustomColumnsModalProps): JSX.Element | null => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const { metadata } = useMetadataStore();
     const allColumns: ColumnT[] = useMemo(
         () => [
             ...GENERAL_COLUMNS,

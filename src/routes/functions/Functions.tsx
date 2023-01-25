@@ -12,8 +12,6 @@ import {
     Flex,
 } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
@@ -30,7 +28,6 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
-import { listFunctions } from '@/modules/functions/FunctionsSlice';
 import { compilePath, PATHS } from '@/paths';
 
 import {
@@ -58,9 +55,9 @@ import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
 import FunctionDrawer from './components/FunctionDrawer';
+import useFunctionsStore from './useFunctionsStore';
 
 const Functions = (): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [canProcess] = useCanProcess();
@@ -69,28 +66,21 @@ const Functions = (): JSX.Element => {
     const { creationDateAfter, creationDateBefore } = useCreationDate();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    const functions = useAppSelector((state) => state.functions.functions);
-    const functionsLoading = useAppSelector(
-        (state) => state.functions.functionsLoading
-    );
-    const functionsCount = useAppSelector(
-        (state) => state.functions.functionsCount
-    );
+    const { functions, functionsCount, fetchingFunctions, fetchFunctions } =
+        useFunctionsStore();
 
     useEffect(() => {
-        return dispatchWithAutoAbort(
-            listFunctions({
-                page,
-                ordering,
-                match,
-                owner,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                can_process: canProcess,
-            })
-        );
+        fetchFunctions({
+            page,
+            ordering,
+            match,
+            owner,
+            creation_date_after: creationDateAfter,
+            creation_date_before: endOfDay(creationDateBefore),
+            can_process: canProcess,
+        });
     }, [
-        dispatchWithAutoAbort,
+        fetchFunctions,
         page,
         ordering,
         match,
@@ -128,10 +118,9 @@ const Functions = (): JSX.Element => {
                         <SearchBar />
                     </HStack>
                     <RefreshButton
-                        loading={functionsLoading}
-                        dispatchWithAutoAbort={dispatchWithAutoAbort}
-                        actionBuilder={() =>
-                            listFunctions({
+                        loading={fetchingFunctions}
+                        list={() =>
+                            fetchFunctions({
                                 page,
                                 ordering,
                                 match,
@@ -203,12 +192,12 @@ const Functions = (): JSX.Element => {
                             </Tr>
                         </Thead>
                         <Tbody
-                            data-cy={functionsLoading ? 'loading' : 'loaded'}
+                            data-cy={fetchingFunctions ? 'loading' : 'loaded'}
                         >
-                            {!functionsLoading && functionsCount === 0 && (
+                            {!fetchingFunctions && functionsCount === 0 && (
                                 <EmptyTr nbColumns={2} asset="function" />
                             )}
-                            {functionsLoading ? (
+                            {fetchingFunctions ? (
                                 <TableSkeleton
                                     itemCount={functionsCount}
                                     currentPage={page}

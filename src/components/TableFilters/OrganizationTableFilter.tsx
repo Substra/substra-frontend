@@ -1,4 +1,4 @@
-import useAppSelector from '@/hooks/useAppSelector';
+import useOrganizationsStore from '@/features/organizations/useOrganizationsStore';
 import useSelection from '@/hooks/useSelection';
 import { useSyncedStringArrayState } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
@@ -38,9 +38,7 @@ const buildOrganizationTableFilter = (
             setTmpOrganizations(activeOrganizations);
         };
 
-        const organizations = useAppSelector(
-            (state) => state.organizations.organizations
-        );
+        const { organizations } = useOrganizationsStore();
 
         return (
             <TableFilterCheckboxes

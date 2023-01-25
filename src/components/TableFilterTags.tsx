@@ -16,7 +16,7 @@ import {
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
 import { formatExactDuration } from '@/libs/utils';
-import { MetadataFilterWithUuidT } from '@/modules/metadata/MetadataTypes';
+import { MetadataFilterWithUuidT } from '@/types/MetadataTypes';
 
 type TableFilterTagsProps = {
     children: React.ReactNode | React.ReactNode[];

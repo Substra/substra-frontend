@@ -5,9 +5,9 @@ import { useLocation } from 'wouter';
 import { HStack, Icon, Button, Text } from '@chakra-ui/react';
 import { RiInformationLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import * as NewsFeedApi from '@/api/NewsFeedApi';
+import { ACTUALIZE_NEWS_INTERVAL } from '@/features/newsFeed/NewsFeedUtils';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import useHandleRefresh from '@/hooks/useHandleRefresh';
 import {
     usePage,
     useMatch,
@@ -20,10 +20,8 @@ import {
     useMetadataString,
     useOrdering,
 } from '@/hooks/useSyncedState';
-import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
-import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
 import { PATHS } from '@/paths';
+import useComputePlansStore from '@/routes/computePlans/useComputePlansStore';
 
 const RefreshBanner = (): JSX.Element | null => {
     const [location] = useLocation();
@@ -39,9 +37,8 @@ const RefreshBanner = (): JSX.Element | null => {
     const [ordering] = useOrdering('');
 
     const [refreshAvailable, setRefreshAvailable] = useState(false);
-    const computePlansCallTimestamp = useAppSelector(
-        (state) => state.computePlans.computePlansCallTimestamp
-    );
+    const { computePlansCallTimestamp, fetchComputePlans } =
+        useComputePlansStore();
 
     const { favorites } = useFavoriteComputePlans();
 
@@ -63,9 +60,6 @@ const RefreshBanner = (): JSX.Element | null => {
         start_date_before: startDateBefore,
         status: status,
     };
-    const handleRefresh = useHandleRefresh(() =>
-        listComputePlans({ page: page, ordering: ordering, ...filters })
-    );
 
     useEffect(() => {
         const updateBanner = async () => {
@@ -111,7 +105,13 @@ const RefreshBanner = (): JSX.Element | null => {
                 colorScheme="primary"
                 size="sm"
                 lineHeight="1"
-                onClick={handleRefresh}
+                onClick={() =>
+                    fetchComputePlans({
+                        page: page,
+                        ordering: ordering,
+                        ...filters,
+                    })
+                }
             >
                 Refresh
             </Button>

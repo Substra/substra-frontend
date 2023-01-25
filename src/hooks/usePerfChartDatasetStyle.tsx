@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
 import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
-import { HighlightedParamsProps, SerieT } from '@/modules/series/SeriesTypes';
+import { HighlightedParamsProps, SerieT } from '@/types/SeriesTypes';
 
 const usePerfChartDatasetStyle = () => {
     const { getColor } = usePerfBrowserColors();

@@ -3,13 +3,13 @@ import { RiPencilLine } from 'react-icons/ri';
 
 type UpdateNameButtonProps = {
     title: string;
-    assetUpdating: boolean;
+    updating: boolean;
     openUpdateNameDialog: () => void;
 };
 
 const UpdateNameButton = ({
     title,
-    assetUpdating,
+    updating,
     openUpdateNameDialog,
 }: UpdateNameButtonProps) => {
     return (
@@ -19,7 +19,7 @@ const UpdateNameButton = ({
             fontSize="20px"
             color="gray.500"
             icon={<RiPencilLine />}
-            isDisabled={assetUpdating}
+            isDisabled={updating}
             onClick={openUpdateNameDialog}
         />
     );

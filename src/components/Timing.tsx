@@ -1,11 +1,8 @@
 import { Text } from '@chakra-ui/react';
 
 import { shortFormatDate } from '@/libs/utils';
-import {
-    ComputePlanStatus,
-    ComputePlanT,
-} from '@/modules/computePlans/ComputePlansTypes';
-import { TaskT, TaskStatus } from '@/modules/tasks/TasksTypes';
+import { ComputePlanStatus, ComputePlanT } from '@/types/ComputePlansTypes';
+import { TaskT, TaskStatus } from '@/types/TasksTypes';
 
 type TimingProps = {
     asset: ComputePlanT | TaskT;

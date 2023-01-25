@@ -13,7 +13,7 @@ import {
 import chakraTheme from '@/assets/chakraTheme';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { PERF_BROWSER_COLORSCHEMES } from '@/hooks/usePerfBrowserColors';
-import { SerieT } from '@/modules/series/SeriesTypes';
+import { SerieT } from '@/types/SeriesTypes';
 
 const POINT_STYLE_ICONS = [
     'play',

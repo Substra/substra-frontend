@@ -1,19 +1,15 @@
 import { BreadcrumbItem, HStack, Text } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
 import { PATHS } from '@/paths';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Status from '@/components/Status';
 
+import useComputePlanStore from '../useComputePlanStore';
+
 const ComputePlanTasksBreadcrumbs = (): JSX.Element => {
-    const computePlan = useAppSelector(
-        (state) => state.computePlans.computePlan
-    );
-    const computePlanLoading = useAppSelector(
-        (state) => state.computePlans.computePlanLoading
-    );
+    const { computePlan, fetchingComputePlan } = useComputePlanStore();
 
     return (
         <Breadcrumbs
@@ -29,10 +25,12 @@ const ComputePlanTasksBreadcrumbs = (): JSX.Element => {
                         fontWeight="medium"
                         lineHeight="5"
                     >
-                        {computePlanLoading && 'Loading'}
-                        {!computePlanLoading && computePlan && computePlan.name}
+                        {fetchingComputePlan && 'Loading'}
+                        {!fetchingComputePlan &&
+                            computePlan &&
+                            computePlan.name}
                     </Text>
-                    {!computePlanLoading && computePlan && (
+                    {!fetchingComputePlan && computePlan && (
                         <Status
                             size="sm"
                             status={computePlan.status}

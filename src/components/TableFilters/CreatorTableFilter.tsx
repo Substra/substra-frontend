@@ -2,12 +2,11 @@ import { useEffect } from 'react';
 
 import { Box, Checkbox, Text, VStack } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import useAuthStore from '@/features/auth/useAuthStore';
 import useSelection from '@/hooks/useSelection';
 import { useCreator, useMatch, usePage } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
-import { listUsers } from '@/modules/users/UsersSlice';
+import useUsersStore from '@/routes/users/useUsersStore';
 
 import {
     getOptionDescription,
@@ -23,17 +22,14 @@ const CreatorTableFilter = (): JSX.Element => {
         - All the users of my organization
     */
     }
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
 
-    useEffect(() => {
-        return dispatchWithAutoAbort(
-            listUsers({ page, ordering: 'username', match })
-        );
-    }, [page, match, dispatchWithAutoAbort]);
+    const { users, fetchUsers } = useUsersStore();
 
-    const users = useAppSelector((state) => state.users.users);
+    useEffect(() => {
+        fetchUsers({ page, ordering: 'username', match });
+    }, [page, match, fetchUsers]);
 
     const [tmpCreator, onTmpCreatorChange, resetTmpCreator, setTmpCreator] =
         useSelection();
@@ -59,7 +55,9 @@ const CreatorTableFilter = (): JSX.Element => {
         setTmpCreator(activeCreator);
     };
 
-    const me = useAppSelector((state) => state.me.info.user);
+    const {
+        info: { user: me },
+    } = useAuthStore();
     const meOption = {
         value: me,
         label: `Me (${me})`,

@@ -19,14 +19,14 @@ import {
     RiIndeterminateCircleLine,
 } from 'react-icons/ri';
 
+import { getAssetKindLabel } from '@/features/newsFeed/NewsFeedUtils';
 import { shortFormatDate } from '@/libs/utils';
+import { compilePath, PATHS } from '@/paths';
 import {
     NewsItemAssetKind,
     NewsItemStatus,
     NewsItemT,
-} from '@/modules/newsFeed/NewsFeedTypes';
-import { getAssetKindLabel } from '@/modules/newsFeed/NewsFeedUtils';
-import { compilePath, PATHS } from '@/paths';
+} from '@/types/NewsFeedTypes';
 
 type NewsFeedCardProps = {
     newsItem: NewsItemT;

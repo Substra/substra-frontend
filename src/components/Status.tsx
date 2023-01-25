@@ -1,8 +1,8 @@
 import { Tag, TagLabel, TagLeftIcon, TagProps, Text } from '@chakra-ui/react';
 
 import { getStatusLabel, getStatusStyle } from '@/libs/status';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { ComputePlanStatus } from '@/types/ComputePlansTypes';
+import { TaskStatus } from '@/types/TasksTypes';
 
 type StatusProps = {
     status: ComputePlanStatus | TaskStatus;

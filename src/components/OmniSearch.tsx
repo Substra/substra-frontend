@@ -32,17 +32,17 @@ import {
     RiSearchLine,
 } from 'react-icons/ri';
 
+import * as ComputePlansApi from '@/api/ComputePlansApi';
+import * as DatasetsApi from '@/api/DatasetsApi';
+import * as FunctionsApi from '@/api/FunctionsApi';
+import * as TasksApi from '@/api/TasksApi';
 import useWithAbortController from '@/hooks/useWithAbortController';
-import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
-import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
-import { ComputePlanStubT } from '@/modules/computePlans/ComputePlansTypes';
-import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
-import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
-import * as FunctionsApi from '@/modules/functions/FunctionsApi';
-import { FunctionT } from '@/modules/functions/FunctionsTypes';
-import * as TasksApi from '@/modules/tasks/TasksApi';
-import { TaskT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
+import { PaginatedApiResponseT } from '@/types/CommonTypes';
+import { ComputePlanStubT } from '@/types/ComputePlansTypes';
+import { DatasetStubT } from '@/types/DatasetTypes';
+import { FunctionT } from '@/types/FunctionsTypes';
+import { TaskT } from '@/types/TasksTypes';
 
 const MAX_ASSETS_PER_SECTION = 5;
 

@@ -42,13 +42,13 @@ import {
 } from '@chakra-ui/react';
 import { RiAddLine, RiQuestionMark, RiSubtractLine } from 'react-icons/ri';
 
+import { getMaxRank, getMaxRound } from '@/features/series/SeriesUtils';
 import useBuildPerfChartDataset from '@/hooks/useBuildPerfChartDataset';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import usePerfChartTooltip from '@/hooks/usePerfChartTooltip';
 import { capitalize } from '@/libs/utils';
-import { DataPointT, SerieT } from '@/modules/series/SeriesTypes';
-import { getMaxRank, getMaxRound } from '@/modules/series/SeriesUtils';
+import { DataPointT, SerieT } from '@/types/SeriesTypes';
 
 import { highlightRankPlugin } from '@/components/HighlightRankPlugin';
 

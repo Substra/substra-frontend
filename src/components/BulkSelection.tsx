@@ -22,9 +22,9 @@ import {
     RiStarLine,
 } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import { downloadBlob } from '@/libs/request';
-import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
+import { exportPerformances } from '@/api/ComputePlansApi';
+import { downloadBlob } from '@/api/request';
+import useMetadataStore from '@/features/metadata/useMetadataStore';
 import { compilePath, PATHS } from '@/paths';
 
 type BulkSelectionProps = {
@@ -74,7 +74,7 @@ const BulkSelection = ({
         }
     };
 
-    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const { metadata } = useMetadataStore();
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
         setDownloading(true);

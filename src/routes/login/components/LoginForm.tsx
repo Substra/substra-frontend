@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { unwrapResult } from '@reduxjs/toolkit';
 import { useLocation } from 'wouter';
 
 import {
@@ -21,26 +20,26 @@ import {
 } from '@chakra-ui/react';
 import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
-import { LoginPayloadT } from '@/modules/me/MeApi';
-import { logIn, retrieveInfo } from '@/modules/me/MeSlice';
-import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
+import { LoginPayloadT } from '@/api/MeApi';
+import useAuthStore from '@/features/auth/useAuthStore';
+import useOrganizationsStore from '@/features/organizations/useOrganizationsStore';
 import { PATHS } from '@/paths';
 
 const LoginForm = (): JSX.Element => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
-    const authInfo = useAppSelector((state) => state.me.info.auth);
 
-    const organizationId = useAppSelector(
-        (state) => state.me.info.organization_id
-    );
-    const userLoading = useAppSelector((state) => state.me.loading);
-    const userError = useAppSelector((state) => state.me.error);
+    const {
+        info: { organization_id: organizationId, auth: authInfo },
+        postingLogin,
+        loginError,
+        postLogin,
+        fetchInfo,
+    } = useAuthStore();
+
+    const { fetchOrganizations } = useOrganizationsStore();
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
@@ -50,20 +49,17 @@ const LoginForm = (): JSX.Element => {
             username,
             password,
         };
-        dispatch(logIn(payload))
-            .then(unwrapResult)
-            .then(
-                () => {
-                    // Fetch current organization name to update the page's header
-                    dispatch(listOrganizations());
-                    dispatch(retrieveInfo(true));
-                    setLocation(nextLocation);
-                },
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                () => {
-                    // do nothing if login failed
-                }
-            );
+
+        const fetchAll = async () => {
+            const logIn = await postLogin(payload);
+            if (logIn !== null) {
+                // Fetch current organization name to update the page's header
+                fetchOrganizations();
+                fetchInfo(true);
+                setLocation(nextLocation);
+            }
+        };
+        fetchAll();
     };
 
     return (
@@ -96,7 +92,7 @@ const LoginForm = (): JSX.Element => {
                     </Box>
                 )}
 
-                {userError && (
+                {loginError && (
                     <Alert
                         marginY="4"
                         status="error"
@@ -109,7 +105,7 @@ const LoginForm = (): JSX.Element => {
                                 Wrong username / password
                             </AlertTitle>
                             <AlertDescription color="red.900">
-                                {userError}
+                                {loginError}
                             </AlertDescription>
                         </Box>
                     </Alert>
@@ -120,7 +116,7 @@ const LoginForm = (): JSX.Element => {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        disabled={userLoading}
+                        disabled={postingLogin}
                         isRequired
                     />
                 </FormControl>
@@ -147,14 +143,14 @@ const LoginForm = (): JSX.Element => {
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        disabled={userLoading}
+                        disabled={postingLogin}
                         isRequired
                     />
                 </FormControl>
 
                 <Button
-                    disabled={userLoading}
-                    isLoading={userLoading}
+                    disabled={postingLogin}
+                    isLoading={postingLogin}
                     type="submit"
                     colorScheme="primary"
                     width="100%"

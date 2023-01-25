@@ -13,7 +13,7 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { AssetT } from '@/modules/common/CommonTypes';
+import { AssetT } from '@/types/CommonTypes';
 
 type ClearCallbackT = (urlSearchParams: URLSearchParams) => void;
 type ApplyCallbackT = (urlSearchParams: URLSearchParams) => void;

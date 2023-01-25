@@ -12,18 +12,18 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiDownloadLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import { exportPerformances } from '@/api/ComputePlansApi';
+import { downloadBlob } from '@/api/request';
+import useMetadataStore from '@/features/metadata/useMetadataStore';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { useSyncedStringState } from '@/hooks/useSyncedState';
-import { downloadBlob } from '@/libs/request';
-import { APIListArgsT } from '@/modules/common/CommonTypes';
-import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
+import { APIListArgsT } from '@/types/CommonTypes';
 
 const PerfDownloadButton = (): JSX.Element => {
     const { computePlans, loading, selectedMetricName, perfChartRef } =
         useContext(PerfBrowserContext);
 
-    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const { metadata } = useMetadataStore();
     const [selectedMetricKey] = useSyncedStringState('selectedMetricKey', '');
     const [selectedMetricOutputIdentifier] = useSyncedStringState(
         'selectedMetricOutputIdentifier',

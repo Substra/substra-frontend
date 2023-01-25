@@ -13,10 +13,7 @@ import {
     HStack,
 } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import { retrieveTask } from '@/modules/tasks/TasksSlice';
 import { compilePath, PATHS } from '@/paths';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
@@ -33,6 +30,7 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
+import useTaskStore from '../useTaskStore';
 import ErrorAlert from './ErrorAlert';
 import TaskDurationBar from './TaskDurationBar';
 import TaskInputsDrawerSection from './TaskInputsDrawerSection';
@@ -50,18 +48,16 @@ const TaskDrawer = ({
 }: TaskDrawerProps): JSX.Element => {
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
-    const dispatch = useAppDispatch();
+    const { task, fetchingTask, fetchTask } = useTaskStore();
+
     useEffect(() => {
         if (taskKey) {
             if (!isOpen) {
                 onOpen();
-                dispatch(retrieveTask(taskKey));
+                fetchTask(taskKey);
             }
         }
-    }, [dispatch, isOpen, onOpen, taskKey]);
-
-    const task = useAppSelector((state) => state.tasks.task);
-    const taskLoading = useAppSelector((state) => state.tasks.taskLoading);
+    }, [fetchTask, isOpen, onOpen, taskKey]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
@@ -89,7 +85,7 @@ const TaskDrawer = ({
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
                     title={task ? `Task on ${task.worker}` : ''}
-                    loading={taskLoading}
+                    loading={fetchingTask}
                     onClose={handleOnClose}
                 />
                 <DrawerBody
@@ -103,7 +99,7 @@ const TaskDrawer = ({
                     <TaskDurationBar taskKey={taskKey} />
                     <DrawerSection title="General">
                         <DrawerSectionEntry title="Status">
-                            {taskLoading || !task ? (
+                            {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Status
@@ -116,15 +112,15 @@ const TaskDrawer = ({
                         </DrawerSectionEntry>
                         <DrawerSectionKeyEntry
                             value={task?.key}
-                            loading={taskLoading}
+                            loading={fetchingTask}
                         />
                         <DrawerSectionDateEntry
                             title="Created"
                             date={task?.creation_date}
-                            loading={taskLoading}
+                            loading={fetchingTask}
                         />
                         <DrawerSectionEntry title="Duration">
-                            {taskLoading || !task ? (
+                            {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Timing asset={task} />
@@ -132,11 +128,11 @@ const TaskDrawer = ({
                         </DrawerSectionEntry>
                         <OrganizationDrawerSectionEntry
                             title="Owner"
-                            loading={taskLoading}
+                            loading={fetchingTask}
                             organization={task?.owner}
                         />
                         <DrawerSectionEntry title="Compute plan">
-                            {taskLoading || !task ? (
+                            {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Link
@@ -155,7 +151,7 @@ const TaskDrawer = ({
                             )}
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Function">
-                            {taskLoading || !task ? (
+                            {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <HStack spacing="2.5">
@@ -185,7 +181,7 @@ const TaskDrawer = ({
                             )}
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Rank">
-                            {taskLoading || !task ? (
+                            {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 task.rank
@@ -193,16 +189,16 @@ const TaskDrawer = ({
                         </DrawerSectionEntry>
                     </DrawerSection>
                     <TaskInputsDrawerSection
-                        taskLoading={taskLoading}
+                        taskLoading={fetchingTask}
                         task={task || null}
                     />
                     <TaskOutputsDrawerSection
-                        taskLoading={taskLoading}
+                        taskLoading={fetchingTask}
                         task={task || null}
                     />
                     <MetadataDrawerSection
                         metadata={task?.metadata}
-                        loading={taskLoading}
+                        loading={fetchingTask}
                     />
                 </DrawerBody>
             </DrawerContent>

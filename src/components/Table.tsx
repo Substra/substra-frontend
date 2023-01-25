@@ -9,8 +9,8 @@ import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { AssetT } from '@/modules/common/CommonTypes';
-import { getAssetLabel } from '@/modules/common/CommonUtils';
+import { getAssetLabel } from '@/libs/CommonUtils';
+import { AssetT } from '@/types/CommonTypes';
 
 import EmptyState from '@/components/EmptyState';
 

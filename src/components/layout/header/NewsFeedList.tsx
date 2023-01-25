@@ -10,13 +10,10 @@ import {
 } from '@chakra-ui/react';
 import { RiListCheck2 } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
-import useEffectOnce from '@/hooks/useEffectOnce';
-import {
-    listNewsFeed,
+import useNewsFeedStore, {
     NEWS_FEED_PAGE_SIZE,
-} from '@/modules/newsFeed/NewsFeedSlice';
+} from '@/features/newsFeed/useNewsFeedStore';
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import EmptyState from '@/components/EmptyState';
 import {
@@ -25,14 +22,13 @@ import {
 } from '@/components/layout/header/NewsFeedCard';
 
 const NewsFeedListSkeleton = (): JSX.Element => {
-    const count = useAppSelector((state) => state.newsFeed.count);
-    const currentPage = useAppSelector((state) => state.newsFeed.currentPage);
+    const { newsCount, newsFeedCurrentPage } = useNewsFeedStore();
 
     let nbItems = NEWS_FEED_PAGE_SIZE;
-    const lastPage = Math.ceil(count / NEWS_FEED_PAGE_SIZE);
+    const lastPage = Math.ceil(newsCount / NEWS_FEED_PAGE_SIZE);
     // if we're loading the last page, display one card per item on this last page
-    if (currentPage === lastPage - 1) {
-        nbItems = count % NEWS_FEED_PAGE_SIZE;
+    if (newsFeedCurrentPage === lastPage - 1) {
+        nbItems = newsCount % NEWS_FEED_PAGE_SIZE;
     }
     // handle the case where we don't know how many items there are (itemCount == 0)
     nbItems = nbItems || NEWS_FEED_PAGE_SIZE;
@@ -55,47 +51,28 @@ const NewsFeedList = ({
     lastNewsSeen,
     setLastNewsSeen,
 }: NewsFeedListProps): JSX.Element => {
-    const dispatch = useAppDispatch();
-    const items = useAppSelector((state) => state.newsFeed.items);
-    const loading = useAppSelector((state) => state.newsFeed.loading);
-    const actualizedCountLoading = useAppSelector(
-        (state) => state.newsFeed.actualizedCountLoading
-    );
-    const actualizedCount = useAppSelector(
-        (state) => state.newsFeed.actualizedCount
-    );
-    const promiseRef = useRef<{ abort: () => void } | null>(null);
+    const {
+        news,
+        unseenNewsCount,
+        fetchingNews,
+        fetchingUnseenNewsCount,
+        fetchNews,
+    } = useNewsFeedStore();
 
     const fetchFirstPage = () => {
-        if (promiseRef.current) {
-            promiseRef.current.abort();
-        }
-
-        promiseRef.current = dispatch(listNewsFeed({ firstPage: true }));
+        fetchNews({ firstPage: true });
     };
 
     const fetchNextPage = () => {
-        if (promiseRef.current) {
-            promiseRef.current.abort();
-        }
-
-        promiseRef.current = dispatch(
-            listNewsFeed({
-                timestamp_before: lastNewsSeen,
-                firstPage: false,
-            })
-        );
+        fetchNews({
+            timestamp_before: lastNewsSeen,
+            firstPage: false,
+        });
     };
 
     useEffectOnce(() => {
         setLastNewsSeen(new Date().toISOString());
         fetchFirstPage();
-
-        return () => {
-            if (promiseRef.current) {
-                promiseRef.current.abort();
-            }
-        };
     });
 
     // infinite scroll
@@ -103,7 +80,7 @@ const NewsFeedList = ({
     const probeRef = useRef<HTMLDivElement>(null);
     const callbackRef = useRef<() => void>();
     callbackRef.current = () => {
-        if (!loading) {
+        if (!fetchingNews) {
             fetchNextPage();
         }
     };
@@ -129,7 +106,7 @@ const NewsFeedList = ({
         }
     }, []);
 
-    if (!loading && !items.length) {
+    if (!fetchingNews && !news.length) {
         return (
             <Box backgroundColor="white" paddingY="4">
                 <EmptyState
@@ -159,13 +136,13 @@ const NewsFeedList = ({
                 ref={rootRef}
                 position="relative"
             >
-                {items.map((item) => (
+                {news.map((item) => (
                     <NewsFeedCard
                         key={`${item.asset_key}${item.status}`}
                         newsItem={item}
                     />
                 ))}
-                {loading && <NewsFeedListSkeleton />}
+                {fetchingNews && <NewsFeedListSkeleton />}
 
                 <Box ref={probeRef} height="1px" />
             </PopoverBody>
@@ -179,13 +156,13 @@ const NewsFeedList = ({
                 paddingLeft="30px"
                 paddingRight="30px"
             >
-                <SlideFade in={actualizedCount > 0} offsetY="130%">
+                <SlideFade in={unseenNewsCount > 0} offsetY="130%">
                     <Button
                         size="sm"
                         colorScheme="primary"
                         width="100%"
                         height="100%"
-                        isDisabled={loading || actualizedCountLoading}
+                        isDisabled={fetchingNews || fetchingUnseenNewsCount}
                         onClick={onRefresh}
                         borderRadius="10"
                     >

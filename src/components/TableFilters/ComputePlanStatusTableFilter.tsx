@@ -2,7 +2,7 @@ import useSelection from '@/hooks/useSelection';
 import { useStatus } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import { getStatusLabel, getStatusDescription } from '@/libs/status';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import TableFilterCheckboxes from './TableFilterCheckboxes';
 

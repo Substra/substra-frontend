@@ -2,7 +2,7 @@ import useSelection from '@/hooks/useSelection';
 import { useStatus } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import { getStatusLabel, getStatusDescription } from '@/libs/status';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { TaskStatus } from '@/types/TasksTypes';
 
 import TableFilterCheckboxes from './TableFilterCheckboxes';
 

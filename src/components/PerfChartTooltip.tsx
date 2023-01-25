@@ -1,6 +1,6 @@
 import { List } from '@chakra-ui/react';
 
-import { DataPointT } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/types/SeriesTypes';
 
 import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 

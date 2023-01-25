@@ -5,19 +5,19 @@ import { useLocation } from 'wouter';
 import { Button } from '@chakra-ui/react';
 import { RiArrowRightLine } from 'react-icons/ri';
 
+import * as NewsFeedApi from '@/api/NewsFeedApi';
+import { ACTUALIZE_NEWS_INTERVAL } from '@/features/newsFeed/NewsFeedUtils';
+import { NEWS_FEED_PAGE_SIZE } from '@/features/newsFeed/useNewsFeedStore';
 import { useToast } from '@/hooks/useToast';
+import { getAllPages } from '@/libs/CommonUtils';
 import { timestampNow } from '@/libs/utils';
-import { getAllPages } from '@/modules/common/CommonUtils';
-import * as NewsFeedApi from '@/modules/newsFeed/NewsFeedApi';
-import { NEWS_FEED_PAGE_SIZE } from '@/modules/newsFeed/NewsFeedSlice';
+import { compilePath, PATHS } from '@/paths';
 import {
     getNewsItemAssetLabel,
     getNewsItemStatusLabel,
     NewsItemStatus,
     NewsItemT,
-} from '@/modules/newsFeed/NewsFeedTypes';
-import { ACTUALIZE_NEWS_INTERVAL } from '@/modules/newsFeed/NewsFeedUtils';
-import { compilePath, PATHS } from '@/paths';
+} from '@/types/NewsFeedTypes';
 
 const buildToastDescription =
     (setLocation: (location: string) => void, news: NewsItemT) =>

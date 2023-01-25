@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { HStack, ListItem, Text } from '@chakra-ui/react';
 
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { DataPointT } from '@/modules/series/SeriesTypes';
+import { DataPointT } from '@/types/SeriesTypes';
 
 import PerfIconTag from '@/components/PerfIconTag';
 

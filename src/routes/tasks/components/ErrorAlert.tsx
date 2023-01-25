@@ -12,7 +12,7 @@ import {
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 import useHasPermission from '@/hooks/useHasPermission';
-import { ErrorT, TaskT } from '@/modules/tasks/TasksTypes';
+import { ErrorT, TaskT } from '@/types/TasksTypes';
 
 import LogsModal from './LogsModal';
 

@@ -7,7 +7,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 import App from '@/App';
 import Fonts from '@/assets/Fonts';
 import theme from '@/assets/chakraTheme';
-import { StoreProvider } from '@/store';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -16,12 +15,10 @@ if (!rootElement) {
 const root = createRoot(rootElement);
 
 root.render(
-    <StoreProvider>
-        <StrictMode>
-            <ChakraProvider theme={theme}>
-                <Fonts />
-                <App />
-            </ChakraProvider>
-        </StrictMode>
-    </StoreProvider>
+    <StrictMode>
+        <ChakraProvider theme={theme}>
+            <Fonts />
+            <App />
+        </ChakraProvider>
+    </StrictMode>
 );
