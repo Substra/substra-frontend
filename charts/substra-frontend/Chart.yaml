@@ -9,6 +9,10 @@ sources:
 
 type: application
 
-version: 1.0.11
+maintainers:
+  - name: Substra Team
+    email: support@substra.org
+
+version: 1.0.12
 appVersion: 0.38.1 # should be same as in package.json
 kubeVersion: ">= 1.19.0-0"
