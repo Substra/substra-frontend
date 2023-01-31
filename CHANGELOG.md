@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.39.0] - 2022-01-31
+
 ### Added
 
 -   CP creators are available data (#124)
@@ -15,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Get tasks inputs & outputs assets from new endpoints (#144)
+-   Change url displayed by vite in local (#163)
 
 ### Removed
 
