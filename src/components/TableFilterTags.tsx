@@ -15,7 +15,7 @@ import {
     useSyncedStringArrayState,
 } from '@/hooks/useSyncedState';
 import { getStatusLabel } from '@/libs/status';
-import { formatShortDuration } from '@/libs/utils';
+import { formatExactDuration } from '@/libs/utils';
 import { MetadataFilterWithUuidT } from '@/modules/metadata/MetadataTypes';
 
 type TableFilterTagsProps = {
@@ -252,13 +252,13 @@ export const DurationFilterTag = () => {
 
     let content = null;
     if (durationMin !== undefined && durationMax !== undefined) {
-        content = `between ${formatShortDuration(
+        content = `between ${formatExactDuration(
             durationMin
-        )} and ${formatShortDuration(durationMax)}`;
+        )} and ${formatExactDuration(durationMax)}`;
     } else if (durationMax) {
-        content = `below ${formatShortDuration(durationMax)}`;
+        content = `below ${formatExactDuration(durationMax)}`;
     } else if (durationMin) {
-        content = `above ${formatShortDuration(durationMin)}`;
+        content = `above ${formatExactDuration(durationMin)}`;
     }
 
     if (content === null) {

@@ -34,6 +34,7 @@ import Status from '@/components/Status';
 import Timing from '@/components/Timing';
 
 import ErrorAlert from './ErrorAlert';
+import TaskDurationBar from './TaskDurationBar';
 import TaskInputsDrawerSection from './TaskInputsDrawerSection';
 
 type TaskDrawerProps = {
@@ -99,6 +100,7 @@ const TaskDrawer = ({
                     paddingY="8"
                 >
                     {task && <ErrorAlert task={task} />}
+                    <TaskDurationBar taskKey={taskKey} />
                     <DrawerSection title="General">
                         <DrawerSectionEntry title="Status">
                             {taskLoading || !task ? (

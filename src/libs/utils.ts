@@ -56,10 +56,12 @@ const pad = (n: number): string => {
     return n.toString().padStart(2, '0');
 };
 
-export const formatDuration = (duration: number): string => {
-    // format duration in the format "3 days, 01h 30min 10s"
-    const { hours, minutes, seconds, days } = getDurationParts(duration);
-
+const getDefaultDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
     let daysPrefix = '';
     if (days === 1) {
         daysPrefix = '1 day, ';
@@ -70,22 +72,88 @@ export const formatDuration = (duration: number): string => {
     return `${daysPrefix}${pad(hours)}h ${pad(minutes)}min ${pad(seconds)}s`;
 };
 
-export const formatShortDuration = (duration: number): string => {
-    // format a duration that is expected to be an exact number of days, hours, minutes or seconds
-    // if the duration is a mix of days, hours, minutes or seconds, then use the default duration format
-    const { hours, minutes, seconds, days } = getDurationParts(duration);
+export const formatDuration = (duration: number): string => {
+    // format duration in the format "3 days, 01h 30min 10s"
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
 
-    if (days && !hours && !minutes && !seconds) {
-        return `${days}d`;
-    } else if (!days && hours && !minutes && !seconds) {
-        return `${hours}h`;
-    } else if (!days && !hours && minutes && !seconds) {
-        return `${minutes}min`;
-    } else if (!days && !hours && !minutes && seconds) {
+    return getDefaultDurationFormat(seconds, minutes, hours, days);
+};
+
+const getShortDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
+    if (!days && !hours && minutes) {
+        return `${minutes}min ${pad(seconds)}s`;
+    } else if (!days && !hours && !minutes) {
         return `${seconds}s`;
     } else {
-        return formatDuration(duration);
+        return getDefaultDurationFormat(seconds, minutes, hours, days);
     }
+};
+
+export const formatExactDuration = (duration: number): string => {
+    // format a duration that is expected to be an exact number of days, hours, minutes or seconds
+    // if the duration is a mix of days, hours, minutes or seconds, then use the default duration format
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    return getShortDurationFormat(seconds, minutes, hours, days);
+};
+
+export const formatShortDuration = (duration: number): string => {
+    // format duration with only minutes & seconds when the duration is less than an hour long
+    // if the duration is longer than 1 hour, uses the default duration format
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    if (!days && !hours && minutes) {
+        return `${minutes}min ${pad(seconds)}s`;
+    } else if (!days && !hours && !minutes) {
+        return `${seconds}s`;
+    } else {
+        return getDefaultDurationFormat(seconds, minutes, hours, days);
+    }
+};
+
+export const formatDjangoFormatDuration = (duration: string): string => {
+    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
+    const { seconds, minutes, hours, days } =
+        getDjangoFormatDurationParts(duration);
+
+    return getShortDurationFormat(seconds, minutes, hours, days);
+};
+
+export const parseNumberDjangoFormatDuration = (duration: string): number => {
+    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
+    const { seconds, minutes, hours, days } =
+        getDjangoFormatDurationParts(duration);
+
+    // return duration in seconds
+    return seconds + minutes * 60 + hours * 3600 + days * 86400;
+};
+
+const getDjangoFormatDurationParts = (duration: string) => {
+    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
+    let days = 0;
+    const daysSplit = duration.split(' ');
+
+    if (daysSplit.length > 1) {
+        days = parseInt(daysSplit[0]);
+        duration = daysSplit[1];
+    }
+
+    const splitDurations = duration.split(':');
+    const hours = parseInt(splitDurations[0]);
+    const minutes = parseInt(splitDurations[1]);
+    const seconds = parseInt(splitDurations[2]);
+
+    return {
+        seconds,
+        minutes,
+        hours,
+        days,
+    };
 };
 
 export const endOfDay = (dateStringISO: string): string => {

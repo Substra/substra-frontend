@@ -6,7 +6,7 @@ import {
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 
-import { TaskT, TaskIOT } from './TasksTypes';
+import { TaskT, TaskIOT, TaskProfilingT } from './TasksTypes';
 
 export const URLS = {
     LIST: '/task/',
@@ -14,6 +14,7 @@ export const URLS = {
     LIST_INPUTS: 'task/__KEY__/input_assets/',
     LIST_OUTPUTS: 'task/__KEY__/output_assets/',
     LOGS_RETRIEVE: '/logs/__KEY__/file/',
+    TASK_PROFILING_RETRIEVE: '/task_profiling/__KEY__/',
 };
 
 export const listTasks = (
@@ -56,3 +57,12 @@ export const retrieveLogs = (
     config: AxiosRequestConfig
 ): AxiosPromise<string> =>
     API.authenticatedGet(URLS.LOGS_RETRIEVE.replace('__KEY__', key), config);
+
+export const retrieveTaskProfiling = (
+    key: string,
+    config: AxiosRequestConfig
+): AxiosPromise<TaskProfilingT> =>
+    API.authenticatedGet(
+        URLS.TASK_PROFILING_RETRIEVE.replace('__KEY__', key),
+        config
+    );
