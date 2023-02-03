@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import Algos from '@/routes/algos/Algos';
+import Functions from '@/routes/functions/Functions';
 import Compare from '@/routes/compare/Compare';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
@@ -65,9 +65,9 @@ export const ROUTES: Record<string, IRouteT> = {
         path: PATHS.DATASETS,
         component: Datasets,
     },
-    ALGOS: {
-        path: '/algorithms/:key?',
-        component: Algos,
+    FUNCTIONS: {
+        path: '/functions/:key?',
+        component: Functions,
     },
     SETTINGS: {
         path: PATHS.SETTINGS,

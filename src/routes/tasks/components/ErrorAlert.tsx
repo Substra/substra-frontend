@@ -58,7 +58,7 @@ const ErrorAlert = ({ task }: { task: TaskT }): JSX.Element | null => {
                     description={
                         <>
                             An error occurred when building the container for
-                            the task execution. Please check your algorithm
+                            the task execution. Please check your function
                             archive or contact{' '}
                             <Link
                                 href="https://lfaifoundation.slack.com/#substra-help"

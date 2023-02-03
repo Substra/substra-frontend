@@ -69,9 +69,9 @@ const NAV_ITEMS = [
         paths: [PATHS.DATASET, PATHS.DATASETS],
     },
     {
-        label: 'Algorithms',
-        href: PATHS.ALGOS,
-        paths: [PATHS.ALGO, PATHS.ALGOS],
+        label: 'Functionrithms',
+        href: PATHS.FUNCTIONS,
+        paths: [PATHS.FUNCTION, PATHS.FUNCTIONS],
     },
 ];
 

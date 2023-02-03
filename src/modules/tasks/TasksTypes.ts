@@ -1,4 +1,4 @@
-import { AlgoT, AssetKindT, AlgoOutputT } from '@/modules/algos/AlgosTypes';
+import { FunctionT, AssetKindT, FunctionOutputT } from '@/modules/functions/FunctionsTypes';
 import { MetadataT, PermissionT } from '@/modules/common/CommonTypes';
 
 import { DatasampleT, DatasetStubT } from '../datasets/DatasetsTypes';
@@ -78,7 +78,7 @@ export type TaskIOT = DatasetIOT | DatasampleIOT | ModelIOT | PerformanceIOT;
 export type TaskT = {
     key: string;
     creation_date: string;
-    algo: AlgoT;
+    function: FunctionT;
     compute_plan_key: string;
     owner: string;
     metadata: MetadataT;
@@ -92,5 +92,5 @@ export type TaskT = {
     logs_permission?: PermissionT;
     duration: number; // in seconds
     inputs: TaskInputT[];
-    outputs: { [name: string]: AlgoOutputT };
+    outputs: { [name: string]: FunctionOutputT };
 };

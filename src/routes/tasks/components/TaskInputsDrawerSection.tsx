@@ -12,8 +12,8 @@ import {
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import { AssetKindT, AlgoInputT } from '@/modules/algos/AlgosTypes';
-import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
+import { AssetKindT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
+import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
@@ -306,19 +306,19 @@ const TaskInputRepresentation = ({
 
 const TaskInputSectionEntry = ({
     identifier,
-    algoInput,
+    functionInput,
     inputs,
     inputsAssets,
 }: {
     identifier: string;
-    algoInput: AlgoInputT;
+    functionInput: FunctionInputT;
     inputs: TaskInputT[];
     inputsAssets: TaskIOT[];
 }): JSX.Element => {
-    const icon = inputIcon(algoInput.kind);
+    const icon = inputIcon(functionInput.kind);
     const title = identifier;
 
-    if (algoInput.multiple || inputs.length > 1) {
+    if (functionInput.multiple || inputs.length > 1) {
         //  '|| inputs.length > 1' is for resilience to inconsistent data
 
         return (
@@ -329,7 +329,7 @@ const TaskInputSectionEntry = ({
                 aboveFold={
                     <Text color="gray.500">
                         {Object.keys(inputs).length}{' '}
-                        {`${getAssetKindLabel(algoInput.kind)}${
+                        {`${getAssetKindLabel(functionInput.kind)}${
                             Object.keys(inputs).length > 1 ? 's' : ''
                         }`}
                     </Text>
@@ -340,7 +340,7 @@ const TaskInputSectionEntry = ({
                         <HStack spacing="2.5" key={index}>
                             <AngleIcon />
                             <TaskInputRepresentation
-                                assetKind={algoInput.kind}
+                                assetKind={functionInput.kind}
                                 input={input}
                                 inputAsset={getInputAsset({
                                     input,
@@ -361,7 +361,7 @@ const TaskInputSectionEntry = ({
                 alignItems="center"
             >
                 <TaskInputRepresentation
-                    assetKind={algoInput.kind}
+                    assetKind={functionInput.kind}
                     input={inputs[0]}
                     inputAsset={getInputAsset({
                         input: inputs[0],
@@ -425,8 +425,8 @@ const TaskInputsDrawerSection = ({
         <DrawerSection title="Inputs">
             {task &&
                 !taskLoading &&
-                Object.entries(task.algo.inputs).map(
-                    ([identifier, algoInput]) => {
+                Object.entries(task.function.inputs).map(
+                    ([identifier, functionInput]) => {
                         const inputs = task.inputs.filter(
                             (input) => input.identifier === identifier
                         );
@@ -435,7 +435,7 @@ const TaskInputsDrawerSection = ({
                                 <TaskInputSectionEntry
                                     key={identifier}
                                     identifier={identifier}
-                                    algoInput={algoInput}
+                                    functionInput={functionInput}
                                     inputs={inputs}
                                     inputsAssets={getInputsAssets(identifier)}
                                 />

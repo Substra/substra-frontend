@@ -21,7 +21,7 @@ function buildSerieFeatures(
     computePlanKey: string
 ): SerieFeaturesT {
     return {
-        algoKey: performance.compute_task.algo_key,
+        functionKey: performance.compute_task.function_key,
         datasetKey: performance.compute_task.data_manager_key,
         dataSampleKeys: performance.compute_task.data_samples,
         worker: performance.compute_task.worker,
@@ -34,7 +34,7 @@ function buildSerieFeatures(
 
 function areSeriesEqual(sf1: SerieFeaturesT, sf2: SerieFeaturesT): boolean {
     return (
-        sf1.algoKey === sf2.algoKey &&
+        sf1.functionKey === sf2.functionKey &&
         sf1.datasetKey === sf2.datasetKey &&
         sf1.worker === sf2.worker &&
         sf1.metricKey === sf2.metricKey &&

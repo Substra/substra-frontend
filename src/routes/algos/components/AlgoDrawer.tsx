@@ -21,11 +21,11 @@ import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import useUpdateName from '@/hooks/useUpdateName';
 import { downloadFromApi } from '@/libs/request';
 import {
-    retrieveAlgo,
+    retrieveFunction,
     retrieveDescription,
-    updateAlgo,
-} from '@/modules/algos/AlgosSlice';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
+    updateFunction,
+} from '@/modules/functions/FunctionsSlice';
+import { FunctionT } from '@/modules/functions/FunctionsTypes';
 import { PATHS } from '@/paths';
 
 import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
@@ -41,10 +41,10 @@ import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
 import InputsOutputsDrawerSection from './InputsOutputsDrawerSection';
 
-const AlgoDrawer = (): JSX.Element => {
+const FunctionDrawer = (): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const key = useKeyFromPath(PATHS.ALGO);
+    const key = useKeyFromPath(PATHS.FUNCTION);
 
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -52,12 +52,12 @@ const AlgoDrawer = (): JSX.Element => {
             if (!isOpen) {
                 onOpen();
 
-                dispatch(retrieveAlgo(key))
+                dispatch(retrieveFunction(key))
                     .then(unwrapResult)
-                    .then((algo: AlgoT) => {
+                    .then((function: FunctionT) => {
                         dispatch(
                             retrieveDescription(
-                                algo.description.storage_address
+                                function.description.storage_address
                             )
                         );
                     });
@@ -65,34 +65,34 @@ const AlgoDrawer = (): JSX.Element => {
         }
     }, [dispatch, isOpen, key, onOpen]);
 
-    const algo = useAppSelector((state) => state.algos.algo);
-    const algoLoading = useAppSelector((state) => state.algos.algoLoading);
-    const description = useAppSelector((state) => state.algos.description);
+    const function = useAppSelector((state) => state.functions.function);
+    const functionLoading = useAppSelector((state) => state.functions.functionLoading);
+    const description = useAppSelector((state) => state.functions.description);
     const descriptionLoading = useAppSelector(
-        (state) => state.algos.descriptionLoading
+        (state) => state.functions.descriptionLoading
     );
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
-            if (algo?.name) {
-                setDocumentTitle(algo.name);
+            if (function?.name) {
+                setDocumentTitle(function.name);
             }
         },
-        [algo?.name]
+        [function?.name]
     );
 
-    const downloadAlgo = () => {
-        if (algo) {
-            downloadFromApi(algo.algorithm.storage_address, `algo-${key}.zip`);
+    const downloadFunction = () => {
+        if (function) {
+            downloadFromApi(function.function.storage_address, `function-${key}.zip`);
         }
     };
 
     const { updateNameDialog, updateNameButton } = useUpdateName({
-        dialogTitle: 'Rename algorithm',
-        assetKey: algo?.key ?? '',
-        assetName: algo?.name ?? '',
-        assetUpdating: useAppSelector((state) => state.algos.algoUpdating),
-        updateSlice: updateAlgo,
+        dialogTitle: 'Rename function',
+        assetKey: function?.key ?? '',
+        assetName: function?.name ?? '',
+        assetUpdating: useAppSelector((state) => state.functions.functionUpdating),
+        updateSlice: updateFunction,
     });
 
     return (
@@ -100,7 +100,7 @@ const AlgoDrawer = (): JSX.Element => {
             isOpen={isOpen}
             placement="right"
             onClose={() => {
-                setLocationPreserveParams(PATHS.ALGOS);
+                setLocationPreserveParams(PATHS.FUNCTIONS);
                 onClose();
             }}
             size="md"
@@ -109,10 +109,10 @@ const AlgoDrawer = (): JSX.Element => {
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
-                    title={algo?.name}
-                    loading={algoLoading}
+                    title={function?.name}
+                    loading={functionLoading}
                     onClose={() => {
-                        setLocationPreserveParams(PATHS.ALGOS);
+                        setLocationPreserveParams(PATHS.FUNCTIONS);
                         onClose();
                     }}
                     extraButtons={
@@ -122,8 +122,8 @@ const AlgoDrawer = (): JSX.Element => {
                             fontSize="20px"
                             color="gray.500"
                             icon={<RiDownload2Line />}
-                            isDisabled={algoLoading || !algo}
-                            onClick={downloadAlgo}
+                            isDisabled={functionLoading || !function}
+                            onClick={downloadFunction}
                         />
                     }
                     updateNameButton={updateNameButton}
@@ -139,37 +139,37 @@ const AlgoDrawer = (): JSX.Element => {
                 >
                     <DrawerSection title="General">
                         <DrawerSectionKeyEntry
-                            value={algo?.key}
-                            loading={algoLoading}
+                            value={function?.key}
+                            loading={functionLoading}
                         />
                         <DrawerSectionDateEntry
                             title="Created"
-                            date={algo?.creation_date}
-                            loading={algoLoading}
+                            date={function?.creation_date}
+                            loading={functionLoading}
                         />
                         <OrganizationDrawerSectionEntry
                             title="Owner"
-                            loading={algoLoading}
-                            organization={algo?.owner}
+                            loading={functionLoading}
+                            organization={function?.owner}
                         />
                         <PermissionsDrawerSectionEntry
-                            loading={algoLoading}
-                            permission={algo?.permissions.process}
+                            loading={functionLoading}
+                            permission={function?.permissions.process}
                         />
                     </DrawerSection>
                     <InputsOutputsDrawerSection
-                        loading={algoLoading}
-                        algo={algo}
+                        loading={functionLoading}
+                        function={function}
                         type="inputs"
                     />
                     <InputsOutputsDrawerSection
-                        loading={algoLoading}
-                        algo={algo}
+                        loading={functionLoading}
+                        function={function}
                         type="outputs"
                     />
                     <MetadataDrawerSection
-                        metadata={algo?.metadata}
-                        loading={algoLoading}
+                        metadata={function?.metadata}
+                        loading={functionLoading}
                     />
                     <DescriptionDrawerSection
                         loading={descriptionLoading}
@@ -181,4 +181,4 @@ const AlgoDrawer = (): JSX.Element => {
     );
 };
 
-export default AlgoDrawer;
+export default FunctionDrawer;

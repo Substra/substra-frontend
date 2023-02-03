@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
+import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
@@ -26,7 +26,7 @@ import { DrawerSection } from '@/components/DrawerSection';
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
 const isMultipleOutput = (task: TaskT, output_id: string) => {
-    return task.algo.outputs[output_id].multiple;
+    return task.function.outputs[output_id].multiple;
 };
 
 const displayPerformance = (value: number, taskStatus: TaskStatus) => {

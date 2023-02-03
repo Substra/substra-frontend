@@ -30,7 +30,7 @@ import {
     useTableFiltersContext,
 } from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
-import { listAlgos } from '@/modules/algos/AlgosSlice';
+import { listFunctions } from '@/modules/functions/FunctionsSlice';
 import { compilePath, PATHS } from '@/paths';
 
 import {
@@ -57,9 +57,9 @@ import {
 import TablePagination from '@/components/TablePagination';
 import TableTitle from '@/components/TableTitle';
 
-import AlgoDrawer from './components/AlgoDrawer';
+import FunctionDrawer from './components/FunctionDrawer';
 
-const Algos = (): JSX.Element => {
+const Functions = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
@@ -69,13 +69,13 @@ const Algos = (): JSX.Element => {
     const { creationDateAfter, creationDateBefore } = useCreationDate();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    const algos = useAppSelector((state) => state.algos.algos);
-    const algosLoading = useAppSelector((state) => state.algos.algosLoading);
-    const algosCount = useAppSelector((state) => state.algos.algosCount);
+    const functions = useAppSelector((state) => state.functions.functions);
+    const functionsLoading = useAppSelector((state) => state.functions.functionsLoading);
+    const functionsCount = useAppSelector((state) => state.functions.functionsCount);
 
     useEffect(() => {
         return dispatchWithAutoAbort(
-            listAlgos({
+            listFunctions({
                 page,
                 ordering,
                 match,
@@ -96,12 +96,12 @@ const Algos = (): JSX.Element => {
         canProcess,
     ]);
 
-    const key = useKeyFromPath(PATHS.ALGO);
+    const key = useKeyFromPath(PATHS.FUNCTION);
 
-    const context = useTableFiltersContext('algo');
+    const context = useTableFiltersContext('function');
     const { onPopoverOpen } = context;
 
-    useAssetListDocumentTitleEffect('Algorithms list', key);
+    useAssetListDocumentTitleEffect('Functionrithms list', key);
 
     return (
         <VStack
@@ -111,9 +111,9 @@ const Algos = (): JSX.Element => {
             spacing="2.5"
             alignItems="stretch"
         >
-            <AlgoDrawer />
+            <FunctionDrawer />
             <TableFiltersContext.Provider value={context}>
-                <TableTitle title="Algorithms" />
+                <TableTitle title="Functionrithms" />
                 <Flex justifyContent="space-between">
                     <HStack spacing="2.5">
                         <TableFilters>
@@ -124,10 +124,10 @@ const Algos = (): JSX.Element => {
                         <SearchBar />
                     </HStack>
                     <RefreshButton
-                        loading={algosLoading}
+                        loading={functionsLoading}
                         dispatchWithAutoAbort={dispatchWithAutoAbort}
                         actionBuilder={() =>
-                            listAlgos({
+                            listFunctions({
                                 page,
                                 ordering,
                                 match,
@@ -198,13 +198,13 @@ const Algos = (): JSX.Element => {
                                 <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
-                        <Tbody data-cy={algosLoading ? 'loading' : 'loaded'}>
-                            {!algosLoading && algosCount === 0 && (
-                                <EmptyTr nbColumns={2} asset="algo" />
+                        <Tbody data-cy={functionsLoading ? 'loading' : 'loaded'}>
+                            {!functionsLoading && functionsCount === 0 && (
+                                <EmptyTr nbColumns={2} asset="function" />
                             )}
-                            {algosLoading ? (
+                            {functionsLoading ? (
                                 <TableSkeleton
-                                    itemCount={algosCount}
+                                    itemCount={functionsCount}
                                     currentPage={page}
                                     rowHeight="73px"
                                 >
@@ -224,29 +224,29 @@ const Algos = (): JSX.Element => {
                                     </Td>
                                 </TableSkeleton>
                             ) : (
-                                algos.map((algo) => (
+                                functions.map((function) => (
                                     <ClickableTr
-                                        key={algo.key}
+                                        key={function.key}
                                         onClick={() =>
                                             setLocationPreserveParams(
-                                                compilePath(PATHS.ALGO, {
-                                                    key: algo.key,
+                                                compilePath(PATHS.FUNCTION, {
+                                                    key: function.key,
                                                 })
                                             )
                                         }
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {algo.name}
+                                                {function.name}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
-                                                algo.creation_date
-                                            )} by ${algo.owner}`}</Text>
+                                                function.creation_date
+                                            )} by ${function.owner}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag
                                                 permission={
-                                                    algo.permissions.process
+                                                    function.permissions.process
                                                 }
                                             />
                                         </Td>
@@ -256,10 +256,10 @@ const Algos = (): JSX.Element => {
                         </Tbody>
                     </AssetsTable>
                 </Box>
-                <TablePagination currentPage={page} itemCount={algosCount} />
+                <TablePagination currentPage={page} itemCount={functionsCount} />
             </TableFiltersContext.Provider>
         </VStack>
     );
 };
 
-export default Algos;
+export default Functions;

@@ -5,7 +5,7 @@ import { capitalize as capitalizeString } from '@/libs/utils';
 import { AssetT, PaginatedApiResponseT } from './CommonTypes';
 
 const ASSET_LABEL: Record<AssetT, string> = {
-    algo: 'algorithm',
+    function: 'function',
     dataset: 'dataset',
     task: 'task',
     compute_plan: 'compute plan',

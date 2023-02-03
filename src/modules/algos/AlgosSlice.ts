@@ -4,46 +4,46 @@ import { AxiosError } from 'axios';
 import * as CommonApi from '@/modules/common/CommonApi';
 import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
-import * as AlgosApi from './AlgosApi';
-import { AlgoT } from './AlgosTypes';
+import * as FunctionsApi from './FunctionsApi';
+import { FunctionT } from './FunctionsTypes';
 
-type AlgoStateT = {
-    algos: AlgoT[];
-    algosCount: number;
-    algosLoading: boolean;
-    algosError: string;
+type FunctionStateT = {
+    functions: FunctionT[];
+    functionsCount: number;
+    functionsLoading: boolean;
+    functionsError: string;
 
-    algo: AlgoT | null;
-    algoLoading: boolean;
-    algoError: string;
+    function: FunctionT | null;
+    functionLoading: boolean;
+    functionError: string;
 
-    algoUpdating: boolean;
-    algoUpdateError: string;
+    functionUpdating: boolean;
+    functionUpdateError: string;
 
     description: string;
     descriptionLoading: boolean;
     descriptionError: string;
 };
 
-const initialState: AlgoStateT = {
-    algos: [],
-    algosCount: 0,
-    algosLoading: true,
-    algosError: '',
+const initialState: FunctionStateT = {
+    functions: [],
+    functionsCount: 0,
+    functionsLoading: true,
+    functionsError: '',
 
-    algo: null,
-    algoLoading: true,
-    algoError: '',
+    function: null,
+    functionLoading: true,
+    functionError: '',
 
-    algoUpdating: false,
-    algoUpdateError: '',
+    functionUpdating: false,
+    functionUpdateError: '',
 
     description: '',
     descriptionLoading: true,
     descriptionError: '',
 };
 
-type ListAlgosProps = {
+type ListFunctionsProps = {
     page?: number;
     ordering?: string;
     match?: string;
@@ -51,13 +51,13 @@ type ListAlgosProps = {
     [param: string]: unknown;
 };
 
-export const listAlgos = createAsyncThunk<
-    PaginatedApiResponseT<AlgoT>,
-    ListAlgosProps,
+export const listFunctions = createAsyncThunk<
+    PaginatedApiResponseT<FunctionT>,
+    ListFunctionsProps,
     { rejectValue: string }
->('algos/listAlgos', async (params: ListAlgosProps, thunkAPI) => {
+>('functions/listFunctions', async (params: ListFunctionsProps, thunkAPI) => {
     try {
-        const response = await AlgosApi.listAlgos(params, {
+        const response = await FunctionsApi.listFunctions(params, {
             signal: thunkAPI.signal,
         });
 
@@ -71,13 +71,13 @@ export const listAlgos = createAsyncThunk<
     }
 });
 
-export const retrieveAlgo = createAsyncThunk<
-    AlgoT,
+export const retrieveFunction = createAsyncThunk<
+    FunctionT,
     string,
     { rejectValue: string }
->('algos/get', async (key: string, thunkAPI) => {
+>('functions/get', async (key: string, thunkAPI) => {
     try {
-        const response = await AlgosApi.retrieveAlgo(key, {
+        const response = await FunctionsApi.retrieveFunction(key, {
             signal: thunkAPI.signal,
         });
         return response.data;
@@ -94,7 +94,7 @@ export const retrieveDescription = createAsyncThunk<
     string,
     string,
     { rejectValue: string }
->('algos/description', async (descriptionURL: string, thunkAPI) => {
+>('functions/description', async (descriptionURL: string, thunkAPI) => {
     try {
         const response = await CommonApi.retrieveDescription(descriptionURL, {
             signal: thunkAPI.signal,
@@ -109,20 +109,20 @@ export const retrieveDescription = createAsyncThunk<
     }
 });
 
-export const updateAlgo = createAsyncThunk<
-    AlgoT,
+export const updateFunction = createAsyncThunk<
+    FunctionT,
     { key: string; name: string },
     { rejectValue: string }
->('algos/update', async ({ key, name }, thunkAPI) => {
+>('functions/update', async ({ key, name }, thunkAPI) => {
     try {
-        await AlgosApi.updateAlgo(
+        await FunctionsApi.updateFunction(
             key,
             { name },
             {
                 signal: thunkAPI.signal,
             }
         );
-        const response = await AlgosApi.retrieveAlgo(key, {});
+        const response = await FunctionsApi.retrieveFunction(key, {});
         response.data.name = name;
         return response.data;
     } catch (error) {
@@ -141,43 +141,43 @@ export const updateAlgo = createAsyncThunk<
     }
 });
 
-const algosSlice = createSlice({
-    name: 'algo',
+const functionsSlice = createSlice({
+    name: 'function',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(listAlgos.pending, (state) => {
-                state.algosLoading = true;
-                state.algosError = '';
+            .addCase(listFunctions.pending, (state) => {
+                state.functionsLoading = true;
+                state.functionsError = '';
             })
-            .addCase(listAlgos.fulfilled, (state, { payload }) => {
-                state.algos = payload.results;
-                state.algosCount = payload.count;
-                state.algosLoading = false;
-                state.algosError = '';
+            .addCase(listFunctions.fulfilled, (state, { payload }) => {
+                state.functions = payload.results;
+                state.functionsCount = payload.count;
+                state.functionsLoading = false;
+                state.functionsError = '';
             })
-            .addCase(listAlgos.rejected, (state, { payload, error }) => {
+            .addCase(listFunctions.rejected, (state, { payload, error }) => {
                 if (error.name !== 'AbortError') {
-                    state.algos = [];
-                    state.algosCount = 0;
-                    state.algosLoading = false;
-                    state.algosError = payload || 'Unknown error';
+                    state.functions = [];
+                    state.functionsCount = 0;
+                    state.functionsLoading = false;
+                    state.functionsError = payload || 'Unknown error';
                 }
             })
-            .addCase(retrieveAlgo.pending, (state) => {
-                state.algoLoading = true;
-                state.algo = null;
-                state.algoError = '';
+            .addCase(retrieveFunction.pending, (state) => {
+                state.functionLoading = true;
+                state.function = null;
+                state.functionError = '';
             })
-            .addCase(retrieveAlgo.fulfilled, (state, { payload }) => {
-                state.algoLoading = false;
-                state.algoError = '';
-                state.algo = payload;
+            .addCase(retrieveFunction.fulfilled, (state, { payload }) => {
+                state.functionLoading = false;
+                state.functionError = '';
+                state.function = payload;
             })
-            .addCase(retrieveAlgo.rejected, (state, { payload }) => {
-                state.algoLoading = false;
-                state.algoError = payload || 'Unknown error';
+            .addCase(retrieveFunction.rejected, (state, { payload }) => {
+                state.functionLoading = false;
+                state.functionError = payload || 'Unknown error';
             })
             .addCase(retrieveDescription.pending, (state) => {
                 state.descriptionLoading = true;
@@ -192,24 +192,24 @@ const algosSlice = createSlice({
                 state.descriptionLoading = false;
                 state.descriptionError = payload || 'Unknown error';
             })
-            .addCase(updateAlgo.pending, (state) => {
-                state.algoUpdating = true;
-                state.algoUpdateError = '';
+            .addCase(updateFunction.pending, (state) => {
+                state.functionUpdating = true;
+                state.functionUpdateError = '';
             })
-            .addCase(updateAlgo.fulfilled, (state, { payload }) => {
-                state.algo = payload;
-                state.algoUpdating = false;
-                state.algoUpdateError = '';
+            .addCase(updateFunction.fulfilled, (state, { payload }) => {
+                state.function = payload;
+                state.functionUpdating = false;
+                state.functionUpdateError = '';
                 // update name in list
-                state.algos = state.algos.map((algo) =>
-                    algo.key === payload.key ? payload : algo
+                state.functions = state.functions.map((function) =>
+                    function.key === payload.key ? payload : function
                 );
             })
-            .addCase(updateAlgo.rejected, (state, { payload }) => {
-                state.algoUpdating = false;
-                state.algoUpdateError = payload || 'unknown error';
+            .addCase(updateFunction.rejected, (state, { payload }) => {
+                state.functionUpdating = false;
+                state.functionUpdateError = payload || 'unknown error';
             });
     },
 });
 
-export default algosSlice.reducer;
+export default functionsSlice.reducer;
