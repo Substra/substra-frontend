@@ -24,7 +24,7 @@ import { PermissionT } from '@/modules/common/CommonTypes';
 import CopyIconButton from '@/components/CopyIconButton';
 import PermissionTag from '@/components/PermissionTag';
 
-export const DrawerSectionHeading = ({
+const DrawerSectionHeading = ({
     title,
     children,
 }: {
@@ -55,7 +55,7 @@ export const DrawerSection = ({
     </VStack>
 );
 
-const DrawerSectionEntryWrapper = (props: StackProps) => (
+export const DrawerSectionEntryWrapper = (props: StackProps) => (
     <HStack
         spacing="2"
         fontSize="xs"

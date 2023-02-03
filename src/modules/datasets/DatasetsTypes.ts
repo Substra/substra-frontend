@@ -21,8 +21,7 @@ export type DatasetStubT = {
 
 // DatasetT is returned when fetching a single dataset
 export type DatasetT = DatasetStubT & {
-    train_data_sample_keys: string[];
-    test_data_sample_keys: string[];
+    data_sample_keys: string[];
 };
 
 export type DatasampleT = {

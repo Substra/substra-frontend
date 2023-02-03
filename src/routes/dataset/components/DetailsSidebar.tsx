@@ -1,18 +1,17 @@
-import { VStack, Badge, List } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 
 import useAppSelector from '@/hooks/useAppSelector';
 
 import {
     DrawerSection,
     DrawerSectionDateEntry,
-    DrawerSectionHeading,
     DrawerSectionKeyEntry,
     OrganizationDrawerSectionEntry,
     PermissionsDrawerSectionEntry,
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
-import DataSamplesListItem from './DataSamplesListItem';
+import DataSamplesDrawerSection from './DataSamplesDrawerSection';
 
 const DetailsSidebar = (): JSX.Element => {
     const dataset = useAppSelector((state) => state.datasets.dataset);
@@ -42,28 +41,7 @@ const DetailsSidebar = (): JSX.Element => {
             </DrawerSection>
             {dataset && <MetadataDrawerSection metadata={dataset.metadata} />}
             {dataset && (
-                <VStack spacing={5} alignItems="flex-start">
-                    <DrawerSectionHeading title="Data samples">
-                        <Badge
-                            variant="subtle"
-                            colorScheme="gray"
-                            marginLeft="1.5"
-                        >
-                            {dataset.train_data_sample_keys.length +
-                                dataset.test_data_sample_keys.length}
-                        </Badge>
-                    </DrawerSectionHeading>
-                    <List alignSelf="stretch">
-                        <DataSamplesListItem
-                            type="train"
-                            keys={dataset.train_data_sample_keys}
-                        />
-                        <DataSamplesListItem
-                            type="test"
-                            keys={dataset.test_data_sample_keys}
-                        />
-                    </List>
-                </VStack>
+                <DataSamplesDrawerSection keys={dataset.data_sample_keys} />
             )}
         </VStack>
     );
