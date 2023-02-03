@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import Functions from '@/routes/functions/Functions';
 import Compare from '@/routes/compare/Compare';
 import ComputePlanChart from '@/routes/computePlanDetails/ComputePlanChart';
 import ComputePlanRoot from '@/routes/computePlanDetails/ComputePlanRoot';
@@ -9,6 +8,7 @@ import ComputePlanWorkflow from '@/routes/computePlanDetails/ComputePlanWorkflow
 import ComputePlans from '@/routes/computePlans/ComputePlans';
 import Dataset from '@/routes/dataset/Dataset';
 import Datasets from '@/routes/datasets/Datasets';
+import Functions from '@/routes/functions/Functions';
 import Home from '@/routes/home/Home';
 import Login from '@/routes/login/Login';
 import ResetPassword from '@/routes/resetPassword/ResetPassword';

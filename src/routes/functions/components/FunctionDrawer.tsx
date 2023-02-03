@@ -54,10 +54,10 @@ const FunctionDrawer = (): JSX.Element => {
 
                 dispatch(retrieveFunction(key))
                     .then(unwrapResult)
-                    .then((function: FunctionT) => {
+                    .then((func: FunctionT) => {
                         dispatch(
                             retrieveDescription(
-                                function.description.storage_address
+                                func.description.storage_address
                             )
                         );
                     });
@@ -65,8 +65,10 @@ const FunctionDrawer = (): JSX.Element => {
         }
     }, [dispatch, isOpen, key, onOpen]);
 
-    const function = useAppSelector((state) => state.functions.function);
-    const functionLoading = useAppSelector((state) => state.functions.functionLoading);
+    const func = useAppSelector((state) => state.functions.function);
+    const functionLoading = useAppSelector(
+        (state) => state.functions.functionLoading
+    );
     const description = useAppSelector((state) => state.functions.description);
     const descriptionLoading = useAppSelector(
         (state) => state.functions.descriptionLoading
@@ -74,24 +76,29 @@ const FunctionDrawer = (): JSX.Element => {
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
-            if (function?.name) {
-                setDocumentTitle(function.name);
+            if (func?.name) {
+                setDocumentTitle(func.name);
             }
         },
-        [function?.name]
+        [func?.name]
     );
 
     const downloadFunction = () => {
-        if (function) {
-            downloadFromApi(function.function.storage_address, `function-${key}.zip`);
+        if (func) {
+            downloadFromApi(
+                func.function.storage_address,
+                `function-${key}.zip`
+            );
         }
     };
 
     const { updateNameDialog, updateNameButton } = useUpdateName({
         dialogTitle: 'Rename function',
-        assetKey: function?.key ?? '',
-        assetName: function?.name ?? '',
-        assetUpdating: useAppSelector((state) => state.functions.functionUpdating),
+        assetKey: func?.key ?? '',
+        assetName: func?.name ?? '',
+        assetUpdating: useAppSelector(
+            (state) => state.functions.functionUpdating
+        ),
         updateSlice: updateFunction,
     });
 
@@ -109,7 +116,7 @@ const FunctionDrawer = (): JSX.Element => {
             <DrawerOverlay />
             <DrawerContent data-cy="drawer">
                 <DrawerHeader
-                    title={function?.name}
+                    title={func?.name}
                     loading={functionLoading}
                     onClose={() => {
                         setLocationPreserveParams(PATHS.FUNCTIONS);
@@ -122,7 +129,7 @@ const FunctionDrawer = (): JSX.Element => {
                             fontSize="20px"
                             color="gray.500"
                             icon={<RiDownload2Line />}
-                            isDisabled={functionLoading || !function}
+                            isDisabled={functionLoading || !func}
                             onClick={downloadFunction}
                         />
                     }
@@ -139,36 +146,36 @@ const FunctionDrawer = (): JSX.Element => {
                 >
                     <DrawerSection title="General">
                         <DrawerSectionKeyEntry
-                            value={function?.key}
+                            value={func?.key}
                             loading={functionLoading}
                         />
                         <DrawerSectionDateEntry
                             title="Created"
-                            date={function?.creation_date}
+                            date={func?.creation_date}
                             loading={functionLoading}
                         />
                         <OrganizationDrawerSectionEntry
                             title="Owner"
                             loading={functionLoading}
-                            organization={function?.owner}
+                            organization={func?.owner}
                         />
                         <PermissionsDrawerSectionEntry
                             loading={functionLoading}
-                            permission={function?.permissions.process}
+                            permission={func?.permissions.process}
                         />
                     </DrawerSection>
                     <InputsOutputsDrawerSection
                         loading={functionLoading}
-                        function={function}
+                        func={func}
                         type="inputs"
                     />
                     <InputsOutputsDrawerSection
                         loading={functionLoading}
-                        function={function}
+                        func={func}
                         type="outputs"
                     />
                     <MetadataDrawerSection
-                        metadata={function?.metadata}
+                        metadata={func?.metadata}
                         loading={functionLoading}
                     />
                     <DescriptionDrawerSection

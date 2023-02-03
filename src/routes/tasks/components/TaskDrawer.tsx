@@ -171,7 +171,8 @@ const TaskDrawer = ({
                                     </Text>
                                     <DownloadIconButton
                                         storageAddress={
-                                            task.function.function.storage_address
+                                            task.function.function
+                                                .storage_address
                                         }
                                         filename={`function-${task.function.key}.zip`}
                                         aria-label="Download function"

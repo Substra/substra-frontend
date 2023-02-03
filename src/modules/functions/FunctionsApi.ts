@@ -30,7 +30,7 @@ export const retrieveFunction = (
 
 export const updateFunction = (
     key: string,
-    function: { name: string },
+    func: { name: string },
     config: AxiosRequestConfig
 ): AxiosPromise<FunctionT> =>
-    API.put(URLS.RETRIEVE.replace('__KEY__', key), function, config);
+    API.put(URLS.RETRIEVE.replace('__KEY__', key), func, config);

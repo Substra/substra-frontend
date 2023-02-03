@@ -1,5 +1,9 @@
-import { FunctionT, AssetKindT, FunctionOutputT } from '@/modules/functions/FunctionsTypes';
 import { MetadataT, PermissionT } from '@/modules/common/CommonTypes';
+import {
+    FunctionT,
+    AssetKindT,
+    FunctionOutputT,
+} from '@/modules/functions/FunctionsTypes';
 
 import { DatasampleT, DatasetStubT } from '../datasets/DatasetsTypes';
 import { PerformanceAssetT } from '../perf/PerformancesTypes';

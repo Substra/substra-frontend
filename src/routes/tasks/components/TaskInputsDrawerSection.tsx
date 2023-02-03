@@ -12,11 +12,11 @@ import {
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import { AssetKindT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
-import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
+import { AssetKindT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
+import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 import { isModelT } from '@/modules/tasks/ModelsUtils';
 import * as TasksApi from '@/modules/tasks/TasksApi';
 import { TaskInputT, TaskT, TaskIOT } from '@/modules/tasks/TasksTypes';

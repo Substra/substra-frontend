@@ -201,8 +201,8 @@ const functionsSlice = createSlice({
                 state.functionUpdating = false;
                 state.functionUpdateError = '';
                 // update name in list
-                state.functions = state.functions.map((function) =>
-                    function.key === payload.key ? payload : function
+                state.functions = state.functions.map((func) =>
+                    func.key === payload.key ? payload : func
                 );
             })
             .addCase(updateFunction.rejected, (state, { payload }) => {

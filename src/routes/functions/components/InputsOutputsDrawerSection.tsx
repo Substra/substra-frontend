@@ -18,11 +18,11 @@ import { DrawerSection } from '@/components/DrawerSection';
 
 const InputsOutputsDrawerSection = ({
     loading,
-    function,
+    func,
     type,
 }: {
     loading: boolean;
-    function: FunctionT | null;
+    func: FunctionT | null;
     type: 'inputs' | 'outputs';
 }) => {
     return (
@@ -38,7 +38,7 @@ const InputsOutputsDrawerSection = ({
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {(loading || !function) &&
+                        {(loading || !func) &&
                             [0, 1, 2].map((key) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
@@ -61,8 +61,8 @@ const InputsOutputsDrawerSection = ({
                                 </Tr>
                             ))}
                         {!loading &&
-                            function &&
-                            Object.entries(function[type]).map(([key, input]) => (
+                            func &&
+                            Object.entries(func[type]).map(([key, input]) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
                                         <Code fontSize="xs">{key}</Code>

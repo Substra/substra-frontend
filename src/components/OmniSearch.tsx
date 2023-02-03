@@ -33,13 +33,13 @@ import {
 } from 'react-icons/ri';
 
 import useWithAbortController from '@/hooks/useWithAbortController';
-import * as FunctionsApi from '@/modules/functions/FunctionsApi';
-import { FunctionT } from '@/modules/functions/FunctionsTypes';
 import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import { ComputePlanStubT } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
+import * as FunctionsApi from '@/modules/functions/FunctionsApi';
+import { FunctionT } from '@/modules/functions/FunctionsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
 import { TaskT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
@@ -318,7 +318,7 @@ const OmniSearch = () => {
             ...(computePlansCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('compute_plan', computePlansCount)]
                 : []),
-            ...functions.map((function) => buildAssetItem('function', function)),
+            ...functions.map((func) => buildAssetItem('function', func)),
             ...(functionsCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('function', functionsCount)]
                 : []),
@@ -438,8 +438,12 @@ const OmniSearch = () => {
             ];
             try {
                 const responses = await Promise.all(promises);
-                const [computePlansData, functionsData, datasetsData, tasksData] =
-                    responses.map((response) => response.data);
+                const [
+                    computePlansData,
+                    functionsData,
+                    datasetsData,
+                    tasksData,
+                ] = responses.map((response) => response.data);
 
                 setComputePlans(
                     computePlansData['results'] as ComputePlanStubT[]
@@ -524,7 +528,7 @@ const OmniSearch = () => {
                             getItemProps={getItemProps}
                         />
                         <ItemGroup
-                            title="Functionrithms"
+                            title="Function"
                             items={functionItems}
                             getItemProps={getItemProps}
                         />

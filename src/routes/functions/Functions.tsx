@@ -70,8 +70,12 @@ const Functions = (): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     const functions = useAppSelector((state) => state.functions.functions);
-    const functionsLoading = useAppSelector((state) => state.functions.functionsLoading);
-    const functionsCount = useAppSelector((state) => state.functions.functionsCount);
+    const functionsLoading = useAppSelector(
+        (state) => state.functions.functionsLoading
+    );
+    const functionsCount = useAppSelector(
+        (state) => state.functions.functionsCount
+    );
 
     useEffect(() => {
         return dispatchWithAutoAbort(
@@ -101,7 +105,7 @@ const Functions = (): JSX.Element => {
     const context = useTableFiltersContext('function');
     const { onPopoverOpen } = context;
 
-    useAssetListDocumentTitleEffect('Functionrithms list', key);
+    useAssetListDocumentTitleEffect('Function list', key);
 
     return (
         <VStack
@@ -113,7 +117,7 @@ const Functions = (): JSX.Element => {
         >
             <FunctionDrawer />
             <TableFiltersContext.Provider value={context}>
-                <TableTitle title="Functionrithms" />
+                <TableTitle title="Function" />
                 <Flex justifyContent="space-between">
                     <HStack spacing="2.5">
                         <TableFilters>
@@ -198,7 +202,9 @@ const Functions = (): JSX.Element => {
                                 <AssetsTablePermissionsTh />
                             </Tr>
                         </Thead>
-                        <Tbody data-cy={functionsLoading ? 'loading' : 'loaded'}>
+                        <Tbody
+                            data-cy={functionsLoading ? 'loading' : 'loaded'}
+                        >
                             {!functionsLoading && functionsCount === 0 && (
                                 <EmptyTr nbColumns={2} asset="function" />
                             )}
@@ -224,29 +230,29 @@ const Functions = (): JSX.Element => {
                                     </Td>
                                 </TableSkeleton>
                             ) : (
-                                functions.map((function) => (
+                                functions.map((func) => (
                                     <ClickableTr
-                                        key={function.key}
+                                        key={func.key}
                                         onClick={() =>
                                             setLocationPreserveParams(
                                                 compilePath(PATHS.FUNCTION, {
-                                                    key: function.key,
+                                                    key: func.key,
                                                 })
                                             )
                                         }
                                     >
                                         <Td>
                                             <Text fontSize="sm">
-                                                {function.name}
+                                                {func.name}
                                             </Text>
                                             <Text fontSize="xs">{`Created on ${formatDate(
-                                                function.creation_date
-                                            )} by ${function.owner}`}</Text>
+                                                func.creation_date
+                                            )} by ${func.owner}`}</Text>
                                         </Td>
                                         <Td textAlign="right">
                                             <PermissionTag
                                                 permission={
-                                                    function.permissions.process
+                                                    func.permissions.process
                                                 }
                                             />
                                         </Td>
@@ -256,7 +262,10 @@ const Functions = (): JSX.Element => {
                         </Tbody>
                     </AssetsTable>
                 </Box>
-                <TablePagination currentPage={page} itemCount={functionsCount} />
+                <TablePagination
+                    currentPage={page}
+                    itemCount={functionsCount}
+                />
             </TableFiltersContext.Provider>
         </VStack>
     );

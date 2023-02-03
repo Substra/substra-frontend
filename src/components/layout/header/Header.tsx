@@ -69,7 +69,7 @@ const NAV_ITEMS = [
         paths: [PATHS.DATASET, PATHS.DATASETS],
     },
     {
-        label: 'Functionrithms',
+        label: 'Function',
         href: PATHS.FUNCTIONS,
         paths: [PATHS.FUNCTION, PATHS.FUNCTIONS],
     },
