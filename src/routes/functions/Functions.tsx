@@ -105,7 +105,7 @@ const Functions = (): JSX.Element => {
     const context = useTableFiltersContext('function');
     const { onPopoverOpen } = context;
 
-    useAssetListDocumentTitleEffect('Function list', key);
+    useAssetListDocumentTitleEffect('Functions list', key);
 
     return (
         <VStack
@@ -117,7 +117,7 @@ const Functions = (): JSX.Element => {
         >
             <FunctionDrawer />
             <TableFiltersContext.Provider value={context}>
-                <TableTitle title="Function" />
+                <TableTitle title="Functions" />
                 <Flex justifyContent="space-between">
                     <HStack spacing="2.5">
                         <TableFilters>

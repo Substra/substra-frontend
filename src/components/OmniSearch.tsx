@@ -528,7 +528,7 @@ const OmniSearch = () => {
                             getItemProps={getItemProps}
                         />
                         <ItemGroup
-                            title="Function"
+                            title="Functions"
                             items={functionItems}
                             getItemProps={getItemProps}
                         />

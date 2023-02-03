@@ -152,7 +152,7 @@ const TaskDrawer = ({
                                 </Link>
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Functionrithm">
+                        <DrawerSectionEntry title="Function">
                             {taskLoading || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
