@@ -44,14 +44,8 @@ const ErrorAlert = ({ task }: { task: TaskT }): JSX.Element | null => {
                 title="Internal error"
                 description={
                     <>
-                        An internal error occurred. Please contact{' '}
-                        <Link
-                            href="https://lfaifoundation.slack.com/#substra-help"
-                            isExternal
-                        >
-                            substra-help Slack channel
-                        </Link>{' '}
-                        to get access to logs.
+                        An internal error occurred. Please contact your Substra
+                        admnistrator to get access to logs.
                     </>
                 }
             />
