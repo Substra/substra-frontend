@@ -9,3 +9,4 @@ dist-ssr
 package-lock.json
 charts/
 .vscode
+.github/
