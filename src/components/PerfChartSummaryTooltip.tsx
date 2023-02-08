@@ -10,16 +10,10 @@ import { compareDataPoint } from '@/modules/series/SeriesUtils';
 import PerfChartTooltipItem from '@/components/PerfChartTooltipItem';
 
 type PerfChartTooltipProps = {
-    showTooltip: () => void;
-    hideTooltip: () => void;
-    canvasBoundingRect: DOMRect | undefined;
     points: DataPointT[];
 };
 
 const PerfChartSummaryTooltip = ({
-    showTooltip,
-    hideTooltip,
-    canvasBoundingRect,
     points,
 }: PerfChartTooltipProps): JSX.Element => {
     const { xAxisMode } = useContext(PerfBrowserContext);
@@ -31,23 +25,8 @@ const PerfChartSummaryTooltip = ({
 
     const remainingCount = Math.max(points.length - 5, 0);
 
-    // Position
-    // defaults to tooltip below the canvas
-    let top = 'calc(100% - 60px)';
-
-    // check if there is enough space below the canvas to display the full tooltip
-    // if there isn't, then place tooltip below the header, as we can't display it over
-    if (canvasBoundingRect) {
-        const tooltipHeight =
-            18 + // header
-            higherFivePoints.length * 36 + // items
-            (remainingCount > 0 ? 30 : 0) + // footer
-            24; // padding
-
-        if (tooltipHeight + canvasBoundingRect.bottom > window.innerHeight) {
-            top = `calc(-${canvasBoundingRect.top}px + 134px)`;
-        }
-    }
+    // Position tooltip at the bottom of the canvas
+    const top = `calc(100% - ${higherFivePoints.length * 36 + 24}px)`;
 
     return (
         <List
@@ -56,12 +35,14 @@ const PerfChartSummaryTooltip = ({
             top={top}
             left="0"
             right="0"
-            onMouseEnter={showTooltip}
-            onMouseLeave={hideTooltip}
+            // onMouseEnter={showTooltip}
+            // onMouseLeave={hideTooltip}
+            pointerEvents="none"
             padding="3"
             spacing="3"
             boxShadow="md"
             zIndex="dropdown"
+            bg="rgba(255,255,255,0.8)"
         >
             <ListItem
                 fontSize="xs"

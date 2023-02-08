@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+-   Tooltip position on perf cards (#173)
+
 ## [0.39.2] - 2022-02-09
 
 ### Changed

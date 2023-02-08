@@ -14,7 +14,6 @@ const usePerfChartTooltip = (
     const [points, setPoints] = useState<DataPointT[]>([]);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [displayed, setDisplayed] = useState(false);
-    const [canvasBoundingRect, setCanvasBoundingRect] = useState<DOMRect>();
     const timeout = useRef<NodeJS.Timeout | null>(null);
 
     const showTooltip = () => {
@@ -35,12 +34,7 @@ const usePerfChartTooltip = (
     const tooltip =
         displayed &&
         (summary ? (
-            <PerfChartSummaryTooltip
-                hideTooltip={hideTooltip}
-                showTooltip={showTooltip}
-                canvasBoundingRect={canvasBoundingRect}
-                points={points}
-            />
+            <PerfChartSummaryTooltip points={points} />
         ) : (
             <PerfChartTooltip
                 hideTooltip={hideTooltip}
@@ -66,11 +60,7 @@ const usePerfChartTooltip = (
                             (dataPoint: { raw: DataPointT }) => dataPoint.raw
                         )
                     );
-                    if (summary) {
-                        setCanvasBoundingRect(
-                            context.chart.canvas.getBoundingClientRect()
-                        );
-                    } else {
+                    if (!summary) {
                         setPosition({
                             x: parseInt(tooltipModel.caretX),
                             y: parseInt(tooltipModel.caretY),
