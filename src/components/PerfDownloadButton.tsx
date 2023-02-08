@@ -14,6 +14,7 @@ import { RiArrowDownSLine, RiDownloadLine } from 'react-icons/ri';
 
 import useAppSelector from '@/hooks/useAppSelector';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
 import { downloadBlob } from '@/libs/request';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 
@@ -22,13 +23,30 @@ const PerfDownloadButton = (): JSX.Element => {
         useContext(PerfBrowserContext);
 
     const metadata = useAppSelector((state) => state.metadata.metadata);
+    const [selectedMetricKey] = useSyncedStringState('selectedMetricKey', '');
+    const [selectedMetricOutputIdentifier] = useSyncedStringState(
+        'selectedMetricOutputIdentifier',
+        ''
+    );
+
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
         setDownloading(true);
-        const response = await exportPerformances({
-            key: computePlans.map((cp) => cp.key),
-            metadata: metadata.join(),
-        });
+        let response;
+
+        if (selectedMetricKey && selectedMetricOutputIdentifier) {
+            response = await exportPerformances({
+                key: computePlans.map((cp) => cp.key),
+                metadata: metadata.join(),
+                metric_key: selectedMetricKey,
+                metric_output_identifier: selectedMetricOutputIdentifier,
+            });
+        } else {
+            response = await exportPerformances({
+                key: computePlans.map((cp) => cp.key),
+                metadata: metadata.join(),
+            });
+        }
         const downloadName =
             computePlans.length > 1
                 ? 'selected_performances.csv'
