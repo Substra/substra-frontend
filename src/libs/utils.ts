@@ -88,6 +88,9 @@ const getShortDurationFormat = (
     if (!days && !hours && minutes) {
         return `${minutes}min ${pad(seconds)}s`;
     } else if (!days && !hours && !minutes) {
+        if (seconds < 0.01) {
+            return '<0.01s';
+        }
         return `${seconds}s`;
     } else {
         return getDefaultDurationFormat(seconds, minutes, hours, days);
@@ -102,26 +105,19 @@ export const formatExactDuration = (duration: number): string => {
     return getShortDurationFormat(seconds, minutes, hours, days);
 };
 
-export const formatShortDuration = (duration: number): string => {
-    // format duration with only minutes & seconds when the duration is less than an hour long
-    // if the duration is longer than 1 hour, uses the default duration format
-    const { seconds, minutes, hours, days } = getDurationParts(duration);
-
-    if (!days && !hours && minutes) {
-        return `${minutes}min ${pad(seconds)}s`;
-    } else if (!days && !hours && !minutes) {
-        return `${seconds}s`;
-    } else {
-        return getDefaultDurationFormat(seconds, minutes, hours, days);
-    }
-};
-
 export const formatDjangoFormatDuration = (duration: string): string => {
     // duration is expected in the format "DD HH:MM:SS.uuuuuu"
     const { seconds, minutes, hours, days } =
         getDjangoFormatDurationParts(duration);
 
-    return getShortDurationFormat(seconds, minutes, hours, days);
+    let formattedSeconds: number;
+    if (!days && !minutes && !hours && seconds < 10) {
+        formattedSeconds = parseFloat(seconds.toFixed(2));
+    } else {
+        formattedSeconds = parseInt(seconds.toFixed(0));
+    }
+
+    return getShortDurationFormat(formattedSeconds, minutes, hours, days);
 };
 
 export const parseNumberDjangoFormatDuration = (duration: string): number => {
@@ -146,7 +142,7 @@ const getDjangoFormatDurationParts = (duration: string) => {
     const splitDurations = duration.split(':');
     const hours = parseInt(splitDurations[0]);
     const minutes = parseInt(splitDurations[1]);
-    const seconds = parseInt(splitDurations[2]);
+    const seconds = parseFloat(splitDurations[2]);
 
     return {
         seconds,

@@ -12,13 +12,16 @@ import {
     Tooltip,
     Skeleton,
 } from '@chakra-ui/react';
-import { RiArrowRightSLine, RiInformationLine } from 'react-icons/ri';
+import {
+    RiArrowRightSLine,
+    RiErrorWarningLine,
+    RiInformationLine,
+} from 'react-icons/ri';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
 import {
     formatDjangoFormatDuration,
-    formatShortDuration,
     parseNumberDjangoFormatDuration,
 } from '@/libs/utils';
 import { retrieveTaskProfiling } from '@/modules/tasks/TasksSlice';
@@ -93,7 +96,7 @@ const TaskDurationDetails = ({
 type DurationItemProps = {
     color: string;
     title: string;
-    duration: number;
+    duration: string;
     taskDuration: number | null;
 };
 
@@ -107,11 +110,12 @@ const DurationItem = ({
         return null;
     }
 
-    const percentage = Math.round((duration / taskDuration) * 100);
+    const stepDuration = parseNumberDjangoFormatDuration(duration);
+    const percentage = Math.round((stepDuration / taskDuration) * 100);
 
     return (
         <Tooltip
-            label={`${title}: ${formatShortDuration(duration)}`}
+            label={`${title}: ${formatDjangoFormatDuration(duration)}`}
             fontSize="xs"
             hasArrow={true}
             placement="top"
@@ -189,7 +193,20 @@ const TaskDurationBar = ({
                     cursor="pointer"
                     onClick={onToggle}
                 >
-                    <DrawerSectionHeading title="Duration" />
+                    <HStack spacing="1">
+                        <DrawerSectionHeading title="Duration" />
+                        <Tooltip
+                            label="This is an experimental feature. The sum of task's steps durations might not be equal to the task duration."
+                            fontSize="xs"
+                            hasArrow={true}
+                            placement="top"
+                        >
+                            {/* Have to use a span here to fix buggy behavior between tooltip & icon in Chakra */}
+                            <Box as="span" display="flex" alignItems="center">
+                                <Icon as={RiErrorWarningLine} boxSize="14px" />
+                            </Box>
+                        </Tooltip>
+                    </HStack>
                     <HStack spacing="2" alignItems="center">
                         <Heading size="xxs">
                             {taskProfiling?.task_duration
@@ -225,9 +242,7 @@ const TaskDurationBar = ({
                                     key={exec.step}
                                     color={color || 'gray.100'}
                                     title={title}
-                                    duration={parseNumberDjangoFormatDuration(
-                                        exec.duration
-                                    )}
+                                    duration={exec.duration}
                                     taskDuration={taskDuration}
                                 />
                             );
