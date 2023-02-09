@@ -8,7 +8,7 @@ describe('Functions page', () => {
             .should('have.length.greaterThan', 2);
     });
 
-    it('displays an function drawer', () => {
+    it('displays a function drawer', () => {
         cy.visit('/functions');
         cy.get('[data-cy=drawer]').should('not.exist');
         cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
