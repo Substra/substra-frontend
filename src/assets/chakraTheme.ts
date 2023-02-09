@@ -270,7 +270,7 @@ export default extendTheme({
     },
     fonts: {
         heading: 'Gattica',
-        body: 'Gattica',
+        body: 'Inter',
     },
     styles: {
         global: {
