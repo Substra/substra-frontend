@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   BREAKING: rename Algo to Function (#170)
 -   Internal error message (#172)
 
 ### Fixed
