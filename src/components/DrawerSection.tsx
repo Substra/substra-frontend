@@ -87,7 +87,12 @@ export const DrawerSectionEntry = ({
             {icon}
             {titleStyle === 'code' && <Code fontSize="xs">{title}</Code>}
             {!titleStyle && (
-                <Text whiteSpace="nowrap" width="120px" flexShrink="0">
+                <Text
+                    whiteSpace="nowrap"
+                    width="120px"
+                    flexShrink="0"
+                    fontWeight="500"
+                >
                     {capitalize(title)}
                 </Text>
             )}
@@ -248,6 +253,7 @@ export const PermissionsDrawerSectionEntry = ({
                 width="120px"
                 flexShrink="0"
                 paddingTop="2px" // compensates for the extra height of tag components
+                fontWeight="500"
             >
                 {title || 'Permissions'}
             </Text>

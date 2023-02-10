@@ -35,6 +35,13 @@ const Fonts = () => (
             @font-face {
                 font-family: 'Inter';
                 font-style:  normal;
+                font-weight: 400;
+                font-display: swap;
+                src: url("/fonts/Inter-Regular.ttf") format("truetype");
+            }
+            @font-face {
+                font-family: 'Inter';
+                font-style:  normal;
                 font-weight: 500;
                 font-display: swap;
                 src: url("/fonts/Inter-Medium.ttf") format("truetype");
