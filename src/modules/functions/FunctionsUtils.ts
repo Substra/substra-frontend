@@ -1,4 +1,4 @@
-import { AssetKindT } from './AlgosTypes';
+import { AssetKindT } from './FunctionsTypes';
 
 const ASSET_KIND_LABELS: Record<AssetKindT, string> = {
     ASSET_DATA_SAMPLE: 'data sample',

@@ -33,20 +33,20 @@ import {
 } from 'react-icons/ri';
 
 import useWithAbortController from '@/hooks/useWithAbortController';
-import * as AlgosApi from '@/modules/algos/AlgosApi';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import { ComputePlanStubT } from '@/modules/computePlans/ComputePlansTypes';
 import * as DatasetsApi from '@/modules/datasets/DatasetsApi';
 import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
+import * as FunctionsApi from '@/modules/functions/FunctionsApi';
+import { FunctionT } from '@/modules/functions/FunctionsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
 import { TaskT } from '@/modules/tasks/TasksTypes';
 import { compilePath, PATHS } from '@/paths';
 
 const MAX_ASSETS_PER_SECTION = 5;
 
-type OmniSearchAssetT = 'algo' | 'compute_plan' | 'dataset' | 'task';
+type OmniSearchAssetT = 'function' | 'compute_plan' | 'dataset' | 'task';
 
 type SeeMoreItemT = {
     asset: OmniSearchAssetT;
@@ -61,7 +61,7 @@ type ItemT = AssetItemT | SeeMoreItemT;
 type WithIndexT<T extends ItemT> = T & { index: number };
 
 const isOmniSearchAsset = (value: unknown): value is OmniSearchAssetT =>
-    value === 'algo' ||
+    value === 'function' ||
     value === 'compute_plan' ||
     value === 'dataset' ||
     value === 'task';
@@ -95,7 +95,7 @@ type OnSelectedItemChangeT = UseComboboxProps<
 type GetItemProps = UseComboboxPropGetters<WithIndexT<ItemT>>['getItemProps'];
 
 const ASSET_ITEM_ICONS: Record<OmniSearchAssetT, IconType> = {
-    algo: RiCodeSSlashLine,
+    function: RiCodeSSlashLine,
     compute_plan: RiGitBranchLine,
     dataset: RiDatabase2Line,
     task: RiGitCommitLine,
@@ -241,7 +241,7 @@ const NoInputValue = () => (
 
 const buildAssetItem = (
     assetType: OmniSearchAssetT,
-    asset: ComputePlanStubT | AlgoT | DatasetStubT
+    asset: ComputePlanStubT | FunctionT | DatasetStubT
 ): AssetItemT => ({
     asset: assetType,
     name: asset.name,
@@ -266,14 +266,14 @@ const buildSeeMoreItem = (
 });
 
 const ASSET_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
-    algo: PATHS.ALGO,
+    function: PATHS.FUNCTION,
     compute_plan: PATHS.COMPUTE_PLAN,
     dataset: PATHS.DATASET,
     task: PATHS.TASK,
 };
 
 const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
-    algo: PATHS.ALGOS,
+    function: PATHS.FUNCTIONS,
     compute_plan: PATHS.COMPUTE_PLANS,
     dataset: PATHS.DATASETS,
     task: PATHS.TASKS,
@@ -282,8 +282,8 @@ const SEE_MORE_ITEM_PATHS: Record<OmniSearchAssetT, string> = {
 const OmniSearch = () => {
     const [computePlans, setComputePlans] = useState<ComputePlanStubT[]>([]);
     const [computePlansCount, setComputePlansCount] = useState(0);
-    const [algos, setAlgos] = useState<AlgoT[]>([]);
-    const [algosCount, setAlgosCount] = useState(0);
+    const [functions, setFunctions] = useState<FunctionT[]>([]);
+    const [functionsCount, setFunctionsCount] = useState(0);
     const [datasets, setDatasets] = useState<DatasetStubT[]>([]);
     const [datasetsCount, setDatasetsCount] = useState(0);
     const [tasks, setTasks] = useState<TaskT[]>([]);
@@ -318,9 +318,9 @@ const OmniSearch = () => {
             ...(computePlansCount > MAX_ASSETS_PER_SECTION
                 ? [buildSeeMoreItem('compute_plan', computePlansCount)]
                 : []),
-            ...algos.map((algo) => buildAssetItem('algo', algo)),
-            ...(algosCount > MAX_ASSETS_PER_SECTION
-                ? [buildSeeMoreItem('algo', algosCount)]
+            ...functions.map((func) => buildAssetItem('function', func)),
+            ...(functionsCount > MAX_ASSETS_PER_SECTION
+                ? [buildSeeMoreItem('function', functionsCount)]
                 : []),
             ...datasets.map((dataset) => buildAssetItem('dataset', dataset)),
             ...(datasetsCount > MAX_ASSETS_PER_SECTION
@@ -332,8 +332,8 @@ const OmniSearch = () => {
                 : []),
         ].map((item, index) => ({ ...item, index }));
     }, [
-        algos,
-        algosCount,
+        functions,
+        functionsCount,
         computePlans,
         computePlansCount,
         datasets,
@@ -342,7 +342,7 @@ const OmniSearch = () => {
         tasksCount,
     ]);
 
-    const algoItems = items.filter((item) => item.asset === 'algo');
+    const functionItems = items.filter((item) => item.asset === 'function');
     const computePlanItems = items.filter(
         (item) => item.asset === 'compute_plan'
     );
@@ -387,8 +387,8 @@ const OmniSearch = () => {
     const resetAssetLists = useCallback(() => {
         setComputePlans([]);
         setComputePlansCount(0);
-        setAlgos([]);
-        setAlgosCount(0);
+        setFunctions([]);
+        setFunctionsCount(0);
         setDatasets([]);
         setDatasetsCount(0);
         setTasks([]);
@@ -427,26 +427,30 @@ const OmniSearch = () => {
             };
             const promises: [
                 AxiosPromise<PaginatedApiResponseT<ComputePlanStubT>>,
-                AxiosPromise<PaginatedApiResponseT<AlgoT>>,
+                AxiosPromise<PaginatedApiResponseT<FunctionT>>,
                 AxiosPromise<PaginatedApiResponseT<DatasetStubT>>,
                 AxiosPromise<PaginatedApiResponseT<TaskT>>
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
-                AlgosApi.listAlgos(params, config),
+                FunctionsApi.listFunctions(params, config),
                 DatasetsApi.listDatasets(params, config),
                 TasksApi.listTasks(params, config),
             ];
             try {
                 const responses = await Promise.all(promises);
-                const [computePlansData, algosData, datasetsData, tasksData] =
-                    responses.map((response) => response.data);
+                const [
+                    computePlansData,
+                    functionsData,
+                    datasetsData,
+                    tasksData,
+                ] = responses.map((response) => response.data);
 
                 setComputePlans(
                     computePlansData['results'] as ComputePlanStubT[]
                 );
                 setComputePlansCount(computePlansData['count']);
-                setAlgos(algosData['results'] as AlgoT[]);
-                setAlgosCount(algosData['count']);
+                setFunctions(functionsData['results'] as FunctionT[]);
+                setFunctionsCount(functionsData['count']);
                 setDatasets(datasetsData['results'] as DatasetStubT[]);
                 setDatasetsCount(datasetsData['count']);
                 setTasks(tasksData['results'] as TaskT[]);
@@ -524,8 +528,8 @@ const OmniSearch = () => {
                             getItemProps={getItemProps}
                         />
                         <ItemGroup
-                            title="Algorithms"
-                            items={algoItems}
+                            title="Functions"
+                            items={functionItems}
                             getItemProps={getItemProps}
                         />
                         <ItemGroup

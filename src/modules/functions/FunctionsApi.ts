@@ -6,31 +6,31 @@ import {
     PaginatedApiResponseT,
 } from '@/modules/common/CommonTypes';
 
-import { AlgoT } from './AlgosTypes';
+import { FunctionT } from './FunctionsTypes';
 
 const URLS = {
-    LIST: '/algo/',
-    RETRIEVE: '/algo/__KEY__/',
+    LIST: '/function/',
+    RETRIEVE: '/function/__KEY__/',
 };
 
-export const listAlgos = (
+export const listFunctions = (
     apiListArgs: APIListArgsT,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedApiResponseT<AlgoT>> =>
+): AxiosPromise<PaginatedApiResponseT<FunctionT>> =>
     API.authenticatedGet(URLS.LIST, {
         ...getApiOptions(apiListArgs),
         ...config,
     });
 
-export const retrieveAlgo = (
+export const retrieveFunction = (
     key: string,
     config: AxiosRequestConfig
-): AxiosPromise<AlgoT> =>
+): AxiosPromise<FunctionT> =>
     API.authenticatedGet(URLS.RETRIEVE.replace('__KEY__', key), config);
 
-export const updateAlgo = (
+export const updateFunction = (
     key: string,
-    algo: { name: string },
+    func: { name: string },
     config: AxiosRequestConfig
-): AxiosPromise<AlgoT> =>
-    API.put(URLS.RETRIEVE.replace('__KEY__', key), algo, config);
+): AxiosPromise<FunctionT> =>
+    API.put(URLS.RETRIEVE.replace('__KEY__', key), func, config);

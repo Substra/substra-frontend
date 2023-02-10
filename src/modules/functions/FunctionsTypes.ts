@@ -8,27 +8,27 @@ export enum AssetKindT {
     performance = 'ASSET_PERFORMANCE',
 }
 
-export type AlgoInputT = {
+export type FunctionInputT = {
     kind: AssetKindT;
     multiple: boolean;
     optional: boolean;
 };
 
-export type AlgoOutputT = {
+export type FunctionOutputT = {
     kind: AssetKindT;
     multiple: boolean;
     value: number | ModelT;
 };
 
-export type AlgoT = {
+export type FunctionT = {
     key: string;
     name: string;
     owner: string;
     permissions: PermissionsT;
     description: FileT;
-    algorithm: FileT;
+    function: FileT;
     metadata: MetadataT;
     creation_date: string;
-    inputs: { [name: string]: AlgoInputT };
-    outputs: { [name: string]: AlgoOutputT };
+    inputs: { [name: string]: FunctionInputT };
+    outputs: { [name: string]: FunctionOutputT };
 };

@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
-import algosSlice from '@/modules/algos/AlgosSlice';
 import compareSlice from '@/modules/computePlans/CompareSlice';
 import computePlansSlice from '@/modules/computePlans/ComputePlansSlice';
 import cpWorkflowSlice from '@/modules/cpWorkflow/CPWorkflowSlice';
 import datasetsSlice from '@/modules/datasets/DatasetsSlice';
+import functionsSlice from '@/modules/functions/FunctionsSlice';
 import meSlice from '@/modules/me/MeSlice';
 import metadataSlice from '@/modules/metadata/MetadataSlice';
 import newsFeedSlice from '@/modules/newsFeed/NewsFeedSlice';
@@ -22,7 +22,7 @@ const store = configureStore({
         compare: compareSlice,
         organizations: organizationsSlice,
         newsFeed: newsFeedSlice,
-        algos: algosSlice,
+        functions: functionsSlice,
         tasks: tasksSlice,
         series: seriesSlice,
         metadata: metadataSlice,

@@ -11,18 +11,18 @@ import {
 } from '@chakra-ui/react';
 
 import { capitalize } from '@/libs/utils';
-import { AlgoT, AlgoInputT } from '@/modules/algos/AlgosTypes';
-import { getAssetKindLabel } from '@/modules/algos/AlgosUtils';
+import { FunctionT, FunctionInputT } from '@/modules/functions/FunctionsTypes';
+import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
 const InputsOutputsDrawerSection = ({
     loading,
-    algo,
+    func,
     type,
 }: {
     loading: boolean;
-    algo: AlgoT | null;
+    func: FunctionT | null;
     type: 'inputs' | 'outputs';
 }) => {
     return (
@@ -38,7 +38,7 @@ const InputsOutputsDrawerSection = ({
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {(loading || !algo) &&
+                        {(loading || !func) &&
                             [0, 1, 2].map((key) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
@@ -61,8 +61,8 @@ const InputsOutputsDrawerSection = ({
                                 </Tr>
                             ))}
                         {!loading &&
-                            algo &&
-                            Object.entries(algo[type]).map(([key, input]) => (
+                            func &&
+                            Object.entries(func[type]).map(([key, input]) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
                                         <Code fontSize="xs">{key}</Code>
@@ -70,7 +70,7 @@ const InputsOutputsDrawerSection = ({
                                     <Td>{getAssetKindLabel(input.kind)}</Td>
                                     {type === 'inputs' && (
                                         <Td textAlign="center">
-                                            {(input as AlgoInputT).optional
+                                            {(input as FunctionInputT).optional
                                                 ? 'yes'
                                                 : 'no'}
                                         </Td>

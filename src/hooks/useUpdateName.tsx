@@ -6,9 +6,9 @@ import { useDisclosure } from '@chakra-ui/react';
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { useToast } from '@/hooks/useToast';
-import { AlgoT } from '@/modules/algos/AlgosTypes';
 import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import { DatasetT } from '@/modules/datasets/DatasetsTypes';
+import { FunctionT } from '@/modules/functions/FunctionsTypes';
 
 import UpdateNameButton from '@/components/UpdateNameButton';
 import UpdateNameDialog from '@/components/UpdateNameDialog';
@@ -29,7 +29,7 @@ type UseUpdateNameProps = {
     assetName: string;
     assetUpdating: boolean;
     updateSlice:
-        | UpdateNameAssetAsyncThunkT<AlgoT>
+        | UpdateNameAssetAsyncThunkT<FunctionT>
         | UpdateNameAssetAsyncThunkT<DatasetT>
         | UpdateNameAssetAsyncThunkT<ComputePlanT>;
 };

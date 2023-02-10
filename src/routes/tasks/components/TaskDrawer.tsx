@@ -152,29 +152,30 @@ const TaskDrawer = ({
                                 </Link>
                             )}
                         </DrawerSectionEntry>
-                        <DrawerSectionEntry title="Algorithm">
+                        <DrawerSectionEntry title="Function">
                             {taskLoading || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <HStack spacing="2.5">
                                     <Text noOfLines={1}>
                                         <Link
-                                            href={compilePath(PATHS.ALGO, {
-                                                key: task.algo.key,
+                                            href={compilePath(PATHS.FUNCTION, {
+                                                key: task.function.key,
                                             })}
                                             color="primary.500"
                                             fontWeight="semibold"
                                             isExternal
                                         >
-                                            {task.algo.name}
+                                            {task.function.name}
                                         </Link>
                                     </Text>
                                     <DownloadIconButton
                                         storageAddress={
-                                            task.algo.algorithm.storage_address
+                                            task.function.function
+                                                .storage_address
                                         }
-                                        filename={`algo-${task.algo.key}.zip`}
-                                        aria-label="Download algo"
+                                        filename={`function-${task.function.key}.zip`}
+                                        aria-label="Download function"
                                         size="xs"
                                         placement="top"
                                     />
