@@ -138,9 +138,6 @@ const getTaskDuration = (
     if (!taskProfiling || taskProfiling.execution_rundown.length === 0) {
         return null;
     }
-    if (taskProfiling.task_duration) {
-        return parseNumberDjangoFormatDuration(taskProfiling.task_duration);
-    }
 
     return taskProfiling.execution_rundown.reduce(
         (taskDuration, step) =>
