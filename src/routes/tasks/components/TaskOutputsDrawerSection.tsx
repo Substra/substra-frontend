@@ -13,13 +13,11 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
 import { ModelT } from '@/modules/tasks/ModelsTypes';
 import * as TasksApi from '@/modules/tasks/TasksApi';
 import { TaskT, TaskStatus, TaskIOT } from '@/modules/tasks/TasksTypes';
-import { PATHS } from '@/paths';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
@@ -87,16 +85,15 @@ const TaskOutputsDrawerSection = ({
     taskLoading: boolean;
     task: TaskT | null;
 }) => {
-    const key = useKeyFromPath(PATHS.TASK);
     const [taskOutputsAssets, setTaskOutputsAssets] = useState<TaskIOT[]>([]);
 
     useEffect(() => {
-        if (key) {
-            getTaskOutputsAssets(key).then((result) =>
+        if (task) {
+            getTaskOutputsAssets(task.key).then((result) =>
                 setTaskOutputsAssets(result)
             );
         }
-    }, [key]);
+    }, [task]);
 
     return (
         <DrawerSection title="Outputs">

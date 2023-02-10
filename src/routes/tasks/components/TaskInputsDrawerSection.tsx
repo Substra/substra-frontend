@@ -11,7 +11,6 @@ import {
 
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { FileT, PermissionsT } from '@/modules/common/CommonTypes';
 import { getAllPages } from '@/modules/common/CommonUtils';
 import { isDatasetStubT } from '@/modules/datasets/DatasetsUtils';
@@ -405,16 +404,15 @@ const TaskInputsDrawerSection = ({
     taskLoading: boolean;
     task: TaskT | null;
 }): JSX.Element => {
-    const key = useKeyFromPath(PATHS.TASK);
     const [taskInputsAssets, setTaskInputsAssets] = useState<TaskIOT[]>([]);
 
     useEffect(() => {
-        if (key) {
-            getTaskInputAssets(key).then((result) =>
+        if (task) {
+            getTaskInputAssets(task.key).then((result) =>
                 setTaskInputsAssets(result)
             );
         }
-    }, [key]);
+    }, [task]);
 
     const getInputsAssets = (identifier: string): TaskIOT[] =>
         taskInputsAssets.filter(

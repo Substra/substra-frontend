@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   BREAKING: rename Algo to Function (#170)
 
+### Fixed
+
+-   Inputs & outputs display when opening task drawer from cp tasks list (#175)
+
 ## [0.39.2] - 2022-02-09
 
 ### Changed
