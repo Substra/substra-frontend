@@ -181,7 +181,12 @@ export default extendTheme({
                 subtle: noBorderRadius,
             },
         },
-        Button: noDefaultBorderRadius,
+        Button: {
+            baseStyle: {
+                ...noBorderRadius,
+                fontFamily: 'Gattica',
+            },
+        },
         CloseButton: noDefaultBorderRadius,
         Heading: {
             sizes: {
