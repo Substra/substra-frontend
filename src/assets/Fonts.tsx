@@ -39,6 +39,20 @@ const Fonts = () => (
                 font-display: swap;
                 src: url("/fonts/Inter-Medium.ttf") format("truetype");
             }
+            @font-face {
+                font-family: 'Inter';
+                font-style:  normal;
+                font-weight: 600;
+                font-display: swap;
+                src: url("/fonts/Inter-SemiBold.ttf") format("truetype");
+            }
+            @font-face {
+                font-family: 'Inter';
+                font-style:  normal;
+                font-weight: 700;
+                font-display: swap;
+                src: url("/fonts/Inter-Bold.ttf") format("truetype");
+            }
                  `}
     />
 );
