@@ -75,7 +75,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                         color="white"
                         borderRadius={3}
                         fontSize={10}
-                        fontWeight={500}
+                        fontWeight="medium"
                         textTransform="capitalize"
                     >
                         {data.status.replace('STATUS_', '').toLowerCase()}
