@@ -50,13 +50,13 @@ body:
       validations:
           required: true
     - type: textarea
-      id: os-version
+      id: node-version
       attributes:
-          label: Python version
+          label: Node version
           description: >
-              Which Python version are you using?
+              Which Node version are you using?
           placeholder: >
-              python --version
+              npm --version
       validations:
           required: true
     - type: textarea
