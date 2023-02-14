@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Inputs & outputs display when opening task drawer from cp tasks list (#175)
 
+### Removed
+
+-   Tooltip on perf cards (#178)
+
 ## [0.39.2] - 2022-02-09
 
 ### Changed

@@ -8,13 +8,7 @@ import {
     PerformanceT,
 } from '@/modules/perf/PerformancesTypes';
 
-import {
-    DataPointT,
-    PointT,
-    SerieFeaturesT,
-    SerieRankDataT,
-    SerieT,
-} from './SeriesTypes';
+import { PointT, SerieFeaturesT, SerieRankDataT, SerieT } from './SeriesTypes';
 
 function buildSerieFeatures(
     performance: PerformanceT,
@@ -197,14 +191,4 @@ export const compareSerieRankData = (
         return organizationsRes;
     }
     return compareSeries(a, b);
-};
-
-export const compareDataPoint = (a: DataPointT, b: DataPointT) => {
-    if (a.y < b.y) {
-        return -1;
-    }
-    if (a.y > b.y) {
-        return 1;
-    }
-    return 0;
 };
