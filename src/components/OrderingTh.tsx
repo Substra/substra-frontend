@@ -156,7 +156,7 @@ const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
                         variant="ghost"
                         size="xs"
                     />
-                    <MenuList zIndex="popover">
+                    <MenuList zIndex="popover" fontFamily="Inter">
                         {openFilters && (
                             <>
                                 <MenuItem
