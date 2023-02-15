@@ -219,7 +219,9 @@ const CustomColumnsModal = ({
                         lineHeight="6"
                     >
                         <Flex justifyContent="space-between">
-                            Customize Columns
+                            <Heading as="h2" size="md">
+                                Customize Columns
+                            </Heading>
                             <HStack spacing="2" marginRight={6}>
                                 <CustomColumnImportPopover
                                     allColumns={allColumns}

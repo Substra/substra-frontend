@@ -15,6 +15,7 @@ const Ol = styled.ol`
 const Li = styled.li`
     display: flex;
     align-items: stretch;
+    font-family: Gattica;
 
     &:not(:last-child) {
         margin-right: var(--chakra-space-5);

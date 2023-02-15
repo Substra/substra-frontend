@@ -181,7 +181,12 @@ export default extendTheme({
                 subtle: noBorderRadius,
             },
         },
-        Button: noDefaultBorderRadius,
+        Button: {
+            baseStyle: {
+                ...noBorderRadius,
+                fontFamily: 'Gattica',
+            },
+        },
         CloseButton: noDefaultBorderRadius,
         Heading: {
             sizes: {
@@ -270,7 +275,7 @@ export default extendTheme({
     },
     fonts: {
         heading: 'Gattica',
-        body: 'Gattica',
+        body: 'Inter',
     },
     styles: {
         global: {

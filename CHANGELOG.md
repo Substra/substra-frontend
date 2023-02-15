@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Inter font for content body (#176)
+
 ### Changed
 
 -   BREAKING: rename Algo to Function (#170)
