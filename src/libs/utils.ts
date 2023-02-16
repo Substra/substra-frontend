@@ -62,6 +62,7 @@ const getDefaultDurationFormat = (
     hours: number,
     days: number
 ): string => {
+    // return duration in the format "3 days, 01h 30min 10s"
     let daysPrefix = '';
     if (days === 1) {
         daysPrefix = '1 day, ';
@@ -73,13 +74,12 @@ const getDefaultDurationFormat = (
 };
 
 export const formatDuration = (duration: number): string => {
-    // format duration in the format "3 days, 01h 30min 10s"
     const { seconds, minutes, hours, days } = getDurationParts(duration);
 
     return getDefaultDurationFormat(seconds, minutes, hours, days);
 };
 
-const getShortDurationFormat = (
+const getCompactDurationFormat = (
     seconds: number,
     minutes: number,
     hours: number,
@@ -97,12 +97,31 @@ const getShortDurationFormat = (
     }
 };
 
-export const formatExactDuration = (duration: number): string => {
+const getExactDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
     // format a duration that is expected to be an exact number of days, hours, minutes or seconds
     // if the duration is a mix of days, hours, minutes or seconds, then use the default duration format
+    if (days && !hours && !minutes && !seconds) {
+        return `${days}d`;
+    } else if (!days && hours && !minutes && !seconds) {
+        return `${hours}h`;
+    } else if (!days && !hours && minutes && !seconds) {
+        return `${minutes}min`;
+    } else if (!days && !hours && !minutes && seconds) {
+        return `${seconds}s`;
+    } else {
+        return getDefaultDurationFormat(seconds, minutes, hours, days);
+    }
+};
+
+export const formatExactDuration = (duration: number): string => {
     const { seconds, minutes, hours, days } = getDurationParts(duration);
 
-    return getShortDurationFormat(seconds, minutes, hours, days);
+    return getExactDurationFormat(seconds, minutes, hours, days);
 };
 
 export const formatDjangoFormatDuration = (duration: string): string => {
@@ -117,7 +136,7 @@ export const formatDjangoFormatDuration = (duration: string): string => {
         formattedSeconds = parseInt(seconds.toFixed(0));
     }
 
-    return getShortDurationFormat(formattedSeconds, minutes, hours, days);
+    return getCompactDurationFormat(formattedSeconds, minutes, hours, days);
 };
 
 export const parseNumberDjangoFormatDuration = (duration: string): number => {
