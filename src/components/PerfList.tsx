@@ -39,11 +39,7 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                                 )
                             }
                         >
-                            <PerfChart
-                                series={series}
-                                size="thumbnail"
-                                zoomEnabled={false}
-                            />
+                            <PerfChart series={series} optionsEnabled={false} />
                         </PerfCard>
                     </WrapItem>
                 ))}

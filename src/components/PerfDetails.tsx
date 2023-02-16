@@ -46,8 +46,7 @@ const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
                     <PerfChart
                         ref={perfChartRef}
                         series={series}
-                        size="full"
-                        zoomEnabled={true}
+                        optionsEnabled={true}
                     />
                     <Button
                         position="absolute"

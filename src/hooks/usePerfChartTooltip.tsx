@@ -2,54 +2,37 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { DataPointT } from '@/modules/series/SeriesTypes';
 
-import PerfChartSummaryTooltip from '@/components/PerfChartSummaryTooltip';
 import PerfChartTooltip from '@/components/PerfChartTooltip';
 
-const usePerfChartTooltip = (
-    summary: boolean
-): {
+const usePerfChartTooltip = (): {
     tooltip: React.ReactNode;
     tooltipPluginOptions: Record<string, unknown>;
 } => {
     const [points, setPoints] = useState<DataPointT[]>([]);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [displayed, setDisplayed] = useState(false);
-    const [canvasBoundingRect, setCanvasBoundingRect] = useState<DOMRect>();
     const timeout = useRef<NodeJS.Timeout | null>(null);
 
-    const showTooltip = () => {
+    const showTooltip = useCallback(() => {
         setDisplayed(true);
         if (timeout.current) {
             clearTimeout(timeout.current);
         }
-    };
+    }, []);
 
     const hideTooltip = useCallback(() => {
-        if (summary) {
-            setDisplayed(false);
-        } else {
-            timeout.current = setTimeout(() => setDisplayed(false), 1000);
-        }
-    }, [summary]);
+        timeout.current = setTimeout(() => setDisplayed(false), 1000);
+    }, []);
 
-    const tooltip =
-        displayed &&
-        (summary ? (
-            <PerfChartSummaryTooltip
-                hideTooltip={hideTooltip}
-                showTooltip={showTooltip}
-                canvasBoundingRect={canvasBoundingRect}
-                points={points}
-            />
-        ) : (
-            <PerfChartTooltip
-                hideTooltip={hideTooltip}
-                showTooltip={showTooltip}
-                x={position.x}
-                y={position.y}
-                points={points}
-            />
-        ));
+    const tooltip = displayed && (
+        <PerfChartTooltip
+            hideTooltip={hideTooltip}
+            showTooltip={showTooltip}
+            x={position.x}
+            y={position.y}
+            points={points}
+        />
+    );
 
     const tooltipPluginOptions = useMemo(
         () => ({
@@ -66,23 +49,17 @@ const usePerfChartTooltip = (
                             (dataPoint: { raw: DataPointT }) => dataPoint.raw
                         )
                     );
-                    if (summary) {
-                        setCanvasBoundingRect(
-                            context.chart.canvas.getBoundingClientRect()
-                        );
-                    } else {
-                        setPosition({
-                            x: parseInt(tooltipModel.caretX),
-                            y: parseInt(tooltipModel.caretY),
-                        });
-                    }
+                    setPosition({
+                        x: parseInt(tooltipModel.caretX),
+                        y: parseInt(tooltipModel.caretY),
+                    });
                     showTooltip();
                 } else {
                     hideTooltip();
                 }
             },
         }),
-        [hideTooltip, summary]
+        [hideTooltip, showTooltip]
     );
 
     return {
