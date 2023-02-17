@@ -111,7 +111,7 @@ const ComputePlans = (): JSX.Element => {
             start_date_before: endOfDay(startDateBefore),
             end_date_after: endDateAfter,
             end_date_before: endOfDay(endDateBefore),
-            metadataFilter,
+            metadata: metadataFilter,
             duration_min: durationMin,
             duration_max: durationMax,
             creator: creator,
