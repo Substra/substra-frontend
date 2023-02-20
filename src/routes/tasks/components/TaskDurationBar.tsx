@@ -20,10 +20,7 @@ import {
 
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useAppSelector from '@/hooks/useAppSelector';
-import {
-    formatDjangoFormatDuration,
-    parseNumberDjangoFormatDuration,
-} from '@/libs/utils';
+import { formatCompactDuration } from '@/libs/utils';
 import { retrieveTaskProfiling } from '@/modules/tasks/TasksSlice';
 import { StepT, TaskProfilingT, TaskStep } from '@/modules/tasks/TasksTypes';
 import { getStepInfo } from '@/modules/tasks/TasksUtils';
@@ -32,7 +29,7 @@ import { DrawerSectionHeading } from '@/components/DrawerSection';
 
 type DetailsItemProps = {
     step: TaskStep;
-    duration: string | null;
+    duration: number | null;
 };
 
 const DetailsItem = ({ step, duration }: DetailsItemProps): JSX.Element => {
@@ -60,7 +57,7 @@ const DetailsItem = ({ step, duration }: DetailsItemProps): JSX.Element => {
                 </Tooltip>
             </HStack>
             <Text fontSize="xs">
-                {duration ? formatDjangoFormatDuration(duration) : '-'}
+                {duration ? formatCompactDuration(duration / 1000000) : '-'}
             </Text>
         </HStack>
     );
@@ -96,7 +93,7 @@ const TaskDurationDetails = ({
 type DurationItemProps = {
     color: string;
     title: string;
-    duration: string;
+    duration: number;
     taskDuration: number | null;
 };
 
@@ -110,12 +107,13 @@ const DurationItem = ({
         return null;
     }
 
-    const stepDuration = parseNumberDjangoFormatDuration(duration);
+    // format duration in seconds
+    const stepDuration = duration / 1000000;
     const percentage = Math.round((stepDuration / taskDuration) * 100);
 
     return (
         <Tooltip
-            label={`${title}: ${formatDjangoFormatDuration(duration)}`}
+            label={`${title}: ${formatCompactDuration(stepDuration)}`}
             fontSize="xs"
             hasArrow={true}
             placement="top"
@@ -130,7 +128,7 @@ const DurationItem = ({
     );
 };
 
-// Returns task duration if task is over, otherwise sum duration of all step currently done
+// Returns sum duration of all step currently done in seconds
 // Returns null if no step is done
 const getTaskDuration = (
     taskProfiling: TaskProfilingT | null
@@ -140,8 +138,7 @@ const getTaskDuration = (
     }
 
     return taskProfiling.execution_rundown.reduce(
-        (taskDuration, step) =>
-            taskDuration + parseNumberDjangoFormatDuration(step.duration),
+        (taskDuration, step) => taskDuration + step.duration / 1000000,
         0
     );
 };
@@ -207,8 +204,8 @@ const TaskDurationBar = ({
                     <HStack spacing="2" alignItems="center">
                         <Heading size="xxs">
                             {taskProfiling?.task_duration
-                                ? formatDjangoFormatDuration(
-                                      taskProfiling.task_duration
+                                ? formatCompactDuration(
+                                      taskProfiling.task_duration / 1000000
                                   )
                                 : '--'}
                         </Heading>

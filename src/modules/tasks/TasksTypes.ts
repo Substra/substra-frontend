@@ -114,10 +114,10 @@ export type StepInfoT = {
 
 export type StepT = {
     step: TaskStep;
-    duration: string;
+    duration: number; // in microseconds
 };
 export type TaskProfilingT = {
     compute_task_key: string;
-    task_duration: string;
+    task_duration: number; // in microseconds
     execution_rundown: StepT[];
 };

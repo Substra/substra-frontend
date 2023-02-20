@@ -37,7 +37,8 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
 
 const getDurationParts = (duration: number) => {
     // duration is expected to be in seconds
-    const seconds = Math.floor(duration % 60);
+
+    const seconds = duration % 60;
     const minutes = Math.floor((duration / 60) % 60);
     const hours = Math.floor((duration / (60 * 60)) % 24);
     const days = Math.floor(duration / (24 * 60 * 60));
@@ -74,6 +75,7 @@ const getDefaultDurationFormat = (
 };
 
 export const formatDuration = (duration: number): string => {
+    // duration expected in seconds
     const { seconds, minutes, hours, days } = getDurationParts(duration);
 
     return getDefaultDurationFormat(seconds, minutes, hours, days);
@@ -95,6 +97,20 @@ const getCompactDurationFormat = (
     } else {
         return getDefaultDurationFormat(seconds, minutes, hours, days);
     }
+};
+
+export const formatCompactDuration = (duration: number): string => {
+    // duration expected in seconds
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    let formattedSeconds: number;
+    if (!days && !minutes && !hours && seconds < 10) {
+        formattedSeconds = parseFloat(seconds.toFixed(2));
+    } else {
+        formattedSeconds = parseInt(seconds.toFixed(0));
+    }
+
+    return getCompactDurationFormat(formattedSeconds, minutes, hours, days);
 };
 
 const getExactDurationFormat = (
@@ -122,53 +138,6 @@ export const formatExactDuration = (duration: number): string => {
     const { seconds, minutes, hours, days } = getDurationParts(duration);
 
     return getExactDurationFormat(seconds, minutes, hours, days);
-};
-
-export const formatDjangoFormatDuration = (duration: string): string => {
-    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
-    const { seconds, minutes, hours, days } =
-        getDjangoFormatDurationParts(duration);
-
-    let formattedSeconds: number;
-    if (!days && !minutes && !hours && seconds < 10) {
-        formattedSeconds = parseFloat(seconds.toFixed(2));
-    } else {
-        formattedSeconds = parseInt(seconds.toFixed(0));
-    }
-
-    return getCompactDurationFormat(formattedSeconds, minutes, hours, days);
-};
-
-export const parseNumberDjangoFormatDuration = (duration: string): number => {
-    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
-    const { seconds, minutes, hours, days } =
-        getDjangoFormatDurationParts(duration);
-
-    // return duration in seconds
-    return seconds + minutes * 60 + hours * 3600 + days * 86400;
-};
-
-const getDjangoFormatDurationParts = (duration: string) => {
-    // duration is expected in the format "DD HH:MM:SS.uuuuuu"
-    let days = 0;
-    const daysSplit = duration.split(' ');
-
-    if (daysSplit.length > 1) {
-        days = parseInt(daysSplit[0]);
-        duration = daysSplit[1];
-    }
-
-    const splitDurations = duration.split(':');
-    const hours = parseInt(splitDurations[0]);
-    const minutes = parseInt(splitDurations[1]);
-    const seconds = parseFloat(splitDurations[2]);
-
-    return {
-        seconds,
-        minutes,
-        hours,
-        days,
-    };
 };
 
 export const endOfDay = (dateStringISO: string): string => {
