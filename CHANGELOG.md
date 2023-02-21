@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Inputs & outputs display when opening task drawer from cp tasks list (#175)
+-   CP ordering by creation date (#179)
 
 ### Removed
 
