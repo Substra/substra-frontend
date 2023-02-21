@@ -189,7 +189,14 @@ const ComputePlans = (): JSX.Element => {
             metadata: metadata.join(),
             ...filters,
         });
-        downloadBlob(response.data, 'all_performances.csv');
+        downloadBlob(
+            response.data,
+            Object.values(filters).filter((f) =>
+                Array.isArray(f) ? f.length > 0 : !!f
+            ).length
+                ? 'filtered_performances.csv'
+                : 'all_performances.csv'
+        );
         setDownloading(false);
     };
 
