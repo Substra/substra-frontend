@@ -5,12 +5,7 @@ import { Box, Checkbox, Text, VStack } from '@chakra-ui/react';
 import useAppSelector from '@/hooks/useAppSelector';
 import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
 import useSelection from '@/hooks/useSelection';
-import {
-    useCreator,
-    useMatch,
-    useOrdering,
-    usePage,
-} from '@/hooks/useSyncedState';
+import { useCreator, useMatch, usePage } from '@/hooks/useSyncedState';
 import { useTableFilterCallbackRefs } from '@/hooks/useTableFilters';
 import { listUsers } from '@/modules/users/UsersSlice';
 
@@ -31,11 +26,12 @@ const CreatorTableFilter = (): JSX.Element => {
     const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
-    const [ordering] = useOrdering('username');
 
     useEffect(() => {
-        return dispatchWithAutoAbort(listUsers({ page, ordering, match }));
-    }, [page, ordering, match, dispatchWithAutoAbort]);
+        return dispatchWithAutoAbort(
+            listUsers({ page, ordering: 'username', match })
+        );
+    }, [page, match, dispatchWithAutoAbort]);
 
     const users = useAppSelector((state) => state.users.users);
 
