@@ -22,6 +22,7 @@ import {
     RiStarLine,
 } from 'react-icons/ri';
 
+import useAppSelector from '@/hooks/useAppSelector';
 import { downloadBlob } from '@/libs/request';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 import { compilePath, PATHS } from '@/paths';
@@ -73,13 +74,15 @@ const BulkSelection = ({
         }
     };
 
+    const metadata = useAppSelector((state) => state.metadata.metadata);
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
         setDownloading(true);
         const response = await exportPerformances({
             key: selectedKeys,
+            metadata_columns: metadata.join(),
         });
-        downloadBlob(response.data, 'performances.csv');
+        downloadBlob(response.data, 'selected_performances.csv');
         setDownloading(false);
     };
 

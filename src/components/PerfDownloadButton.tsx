@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { toJpeg } from 'html-to-image';
 
@@ -12,21 +12,48 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowDownSLine, RiDownloadLine } from 'react-icons/ri';
 
-import useDownloadPerfCsv from '@/hooks/useDownloadPerfCsv';
+import useAppSelector from '@/hooks/useAppSelector';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { useSyncedStringState } from '@/hooks/useSyncedState';
+import { downloadBlob } from '@/libs/request';
+import { APIListArgsT } from '@/modules/common/CommonTypes';
+import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 
 const PerfDownloadButton = (): JSX.Element => {
-    const {
-        computePlans,
-        loading,
-        selectedMetricName,
-        selectedSeriesGroup,
-        seriesGroups,
-        perfChartRef,
-    } = useContext(PerfBrowserContext);
-    const downloadPerfCsv = useDownloadPerfCsv(
-        selectedMetricName ? [selectedSeriesGroup] : seriesGroups
+    const { computePlans, loading, selectedMetricName, perfChartRef } =
+        useContext(PerfBrowserContext);
+
+    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const [selectedMetricKey] = useSyncedStringState('selectedMetricKey', '');
+    const [selectedMetricOutputIdentifier] = useSyncedStringState(
+        'selectedMetricOutputIdentifier',
+        ''
     );
+
+    const [downloading, setDownloading] = useState(false);
+    const download = async () => {
+        setDownloading(true);
+        let payload: APIListArgsT = {
+            key: computePlans.map((cp) => cp.key),
+            metadata_columns: metadata.join(),
+        };
+
+        if (selectedMetricKey && selectedMetricOutputIdentifier) {
+            payload = {
+                ...payload,
+                metric_key: selectedMetricKey,
+                metric_output_identifier: selectedMetricOutputIdentifier,
+            };
+        }
+        const response = await exportPerformances(payload);
+
+        const downloadName =
+            computePlans.length > 1
+                ? 'selected_performances.csv'
+                : `${computePlans[0].key}.csv`;
+        downloadBlob(response.data, downloadName);
+        setDownloading(false);
+    };
 
     const onDownloadImage = () => {
         if (perfChartRef?.current) {
@@ -53,7 +80,8 @@ const PerfDownloadButton = (): JSX.Element => {
                 colorScheme="primary"
                 size="xs"
                 isDisabled={loading}
-                onClick={downloadPerfCsv}
+                isLoading={downloading}
+                onClick={download}
             >
                 Download as CSV
             </Button>
@@ -71,6 +99,7 @@ const PerfDownloadButton = (): JSX.Element => {
                 colorScheme="primary"
                 size="xs"
                 isDisabled={loading}
+                isLoading={downloading}
             >
                 Download
             </MenuButton>
@@ -78,7 +107,7 @@ const PerfDownloadButton = (): JSX.Element => {
                 <MenuItem onClick={onDownloadImage} fontSize="xs">
                     Download as JPEG
                 </MenuItem>
-                <MenuItem onClick={downloadPerfCsv} fontSize="xs">
+                <MenuItem onClick={download} fontSize="xs">
                     Download as CSV
                 </MenuItem>
             </MenuList>

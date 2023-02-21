@@ -33,7 +33,6 @@
         "html-to-image": "1.9.0",
         "react": "18.1.0",
         "react-chartjs-2": "4.1.0",
-        "react-csv-downloader": "2.8.0",
         "react-dom": "18.1.0",
         "react-flow-renderer": "10.3.7",
         "react-icons": "4.3.1",
