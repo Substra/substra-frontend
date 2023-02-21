@@ -80,7 +80,7 @@ const BulkSelection = ({
         setDownloading(true);
         const response = await exportPerformances({
             key: selectedKeys,
-            metadata: metadata.join(),
+            metadata_columns: metadata.join(),
         });
         downloadBlob(response.data, 'selected_performances.csv');
         setDownloading(false);

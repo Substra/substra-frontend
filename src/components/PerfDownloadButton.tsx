@@ -37,14 +37,14 @@ const PerfDownloadButton = (): JSX.Element => {
         if (selectedMetricKey && selectedMetricOutputIdentifier) {
             response = await exportPerformances({
                 key: computePlans.map((cp) => cp.key),
-                metadata: metadata.join(),
+                metadata_columns: metadata.join(),
                 metric_key: selectedMetricKey,
                 metric_output_identifier: selectedMetricOutputIdentifier,
             });
         } else {
             response = await exportPerformances({
                 key: computePlans.map((cp) => cp.key),
-                metadata: metadata.join(),
+                metadata_columns: metadata.join(),
             });
         }
         const downloadName =

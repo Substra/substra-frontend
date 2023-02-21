@@ -186,7 +186,7 @@ const ComputePlans = (): JSX.Element => {
     const download = async () => {
         setDownloading(true);
         const response = await exportPerformances({
-            metadata: metadata.join(),
+            metadata_columns: metadata.join(),
             ...filters,
         });
         downloadBlob(
