@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { PaginatedApiResponseT } from '@/modules/common/CommonTypes';
 
 import * as TasksApi from './TasksApi';
-import { TaskT } from './TasksTypes';
+import { TaskProfilingT, TaskT } from './TasksTypes';
 
 type TasksStateT = {
     tasks: TaskT[];
@@ -15,6 +15,10 @@ type TasksStateT = {
     task: TaskT | null;
     taskLoading: boolean;
     taskError: string;
+
+    taskProfiling: TaskProfilingT | null;
+    taskProfilingLoading: boolean;
+    taskProfilingError: string;
 
     logs: string;
     logsLoading: boolean;
@@ -30,6 +34,10 @@ const initialState: TasksStateT = {
     task: null,
     taskLoading: true,
     taskError: '',
+
+    taskProfiling: null,
+    taskProfilingLoading: true,
+    taskProfilingError: '',
 
     logs: '',
     logsLoading: true,
@@ -101,6 +109,25 @@ export const retrieveLogs = createAsyncThunk<
     }
 });
 
+export const retrieveTaskProfiling = createAsyncThunk<
+    TaskProfilingT,
+    string,
+    { rejectValue: string }
+>('tasks/taskProfiling', async (key: string, thunkAPI) => {
+    try {
+        const response = await TasksApi.retrieveTaskProfiling(key, {
+            signal: thunkAPI.signal,
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            return thunkAPI.rejectWithValue(error.response?.data);
+        } else {
+            throw error;
+        }
+    }
+});
+
 const tasksSlice = createSlice({
     name: 'task',
     initialState,
@@ -155,6 +182,21 @@ const tasksSlice = createSlice({
                 state.logsLoading = false;
                 state.logsError = payload || 'Unknown error';
                 state.logs = '';
+            })
+            .addCase(retrieveTaskProfiling.pending, (state) => {
+                state.taskProfiling = null;
+                state.taskProfilingLoading = true;
+                state.taskProfilingError = '';
+            })
+            .addCase(retrieveTaskProfiling.fulfilled, (state, { payload }) => {
+                state.taskProfiling = payload;
+                state.taskProfilingLoading = false;
+                state.taskProfilingError = '';
+            })
+            .addCase(retrieveTaskProfiling.rejected, (state, { payload }) => {
+                state.taskProfiling = null;
+                state.taskProfilingLoading = false;
+                state.taskProfilingError = payload || 'Unknown error';
             });
     },
 });

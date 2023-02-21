@@ -98,3 +98,26 @@ export type TaskT = {
     inputs: TaskInputT[];
     outputs: { [name: string]: FunctionOutputT };
 };
+
+export enum TaskStep {
+    imageBuilding = 'build_image',
+    inputsPreparation = 'prepare_inputs',
+    taskExecution = 'save_outputs',
+    outputsSaving = 'task_execution',
+}
+
+export type StepInfoT = {
+    title: string;
+    color: string;
+    description: string;
+};
+
+export type StepT = {
+    step: TaskStep;
+    duration: number; // in microseconds
+};
+export type TaskProfilingT = {
+    compute_task_key: string;
+    task_duration: number; // in microseconds
+    execution_rundown: StepT[];
+};

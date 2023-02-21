@@ -24,7 +24,7 @@ import { PermissionT } from '@/modules/common/CommonTypes';
 import CopyIconButton from '@/components/CopyIconButton';
 import PermissionTag from '@/components/PermissionTag';
 
-const DrawerSectionHeading = ({
+export const DrawerSectionHeading = ({
     title,
     children,
 }: {

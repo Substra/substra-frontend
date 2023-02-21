@@ -37,7 +37,8 @@ export const getDiffDates = (start: string | 'now', end: string | 'now') => {
 
 const getDurationParts = (duration: number) => {
     // duration is expected to be in seconds
-    const seconds = Math.floor(duration % 60);
+
+    const seconds = duration % 60;
     const minutes = Math.floor((duration / 60) % 60);
     const hours = Math.floor((duration / (60 * 60)) % 24);
     const days = Math.floor(duration / (24 * 60 * 60));
@@ -56,10 +57,13 @@ const pad = (n: number): string => {
     return n.toString().padStart(2, '0');
 };
 
-export const formatDuration = (duration: number): string => {
-    // format duration in the format "3 days, 01h 30min 10s"
-    const { hours, minutes, seconds, days } = getDurationParts(duration);
-
+const getDefaultDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
+    // return duration in the format "3 days, 01h 30min 10s"
     let daysPrefix = '';
     if (days === 1) {
         daysPrefix = '1 day, ';
@@ -70,11 +74,53 @@ export const formatDuration = (duration: number): string => {
     return `${daysPrefix}${pad(hours)}h ${pad(minutes)}min ${pad(seconds)}s`;
 };
 
-export const formatShortDuration = (duration: number): string => {
+export const formatDuration = (duration: number): string => {
+    // duration expected in seconds
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    return getDefaultDurationFormat(seconds, minutes, hours, days);
+};
+
+const getCompactDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
+    if (!days && !hours && minutes) {
+        return `${minutes}min ${pad(seconds)}s`;
+    } else if (!days && !hours && !minutes) {
+        if (seconds < 0.01) {
+            return '<0.01s';
+        }
+        return `${seconds}s`;
+    } else {
+        return getDefaultDurationFormat(seconds, minutes, hours, days);
+    }
+};
+
+export const formatCompactDuration = (duration: number): string => {
+    // duration expected in seconds
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    let formattedSeconds: number;
+    if (!days && !minutes && !hours && seconds < 10) {
+        formattedSeconds = parseFloat(seconds.toFixed(2));
+    } else {
+        formattedSeconds = parseInt(seconds.toFixed(0));
+    }
+
+    return getCompactDurationFormat(formattedSeconds, minutes, hours, days);
+};
+
+const getExactDurationFormat = (
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
+): string => {
     // format a duration that is expected to be an exact number of days, hours, minutes or seconds
     // if the duration is a mix of days, hours, minutes or seconds, then use the default duration format
-    const { hours, minutes, seconds, days } = getDurationParts(duration);
-
     if (days && !hours && !minutes && !seconds) {
         return `${days}d`;
     } else if (!days && hours && !minutes && !seconds) {
@@ -84,8 +130,14 @@ export const formatShortDuration = (duration: number): string => {
     } else if (!days && !hours && !minutes && seconds) {
         return `${seconds}s`;
     } else {
-        return formatDuration(duration);
+        return getDefaultDurationFormat(seconds, minutes, hours, days);
     }
+};
+
+export const formatExactDuration = (duration: number): string => {
+    const { seconds, minutes, hours, days } = getDurationParts(duration);
+
+    return getExactDurationFormat(seconds, minutes, hours, days);
 };
 
 export const endOfDay = (dateStringISO: string): string => {
