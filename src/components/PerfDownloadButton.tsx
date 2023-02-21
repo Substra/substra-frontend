@@ -16,6 +16,7 @@ import useAppSelector from '@/hooks/useAppSelector';
 import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { useSyncedStringState } from '@/hooks/useSyncedState';
 import { downloadBlob } from '@/libs/request';
+import { APIListArgsT } from '@/modules/common/CommonTypes';
 import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
 
 const PerfDownloadButton = (): JSX.Element => {
@@ -32,21 +33,20 @@ const PerfDownloadButton = (): JSX.Element => {
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
         setDownloading(true);
-        let response;
+        let payload: APIListArgsT = {
+            key: computePlans.map((cp) => cp.key),
+            metadata_columns: metadata.join(),
+        };
 
         if (selectedMetricKey && selectedMetricOutputIdentifier) {
-            response = await exportPerformances({
-                key: computePlans.map((cp) => cp.key),
-                metadata_columns: metadata.join(),
+            payload = {
+                ...payload,
                 metric_key: selectedMetricKey,
                 metric_output_identifier: selectedMetricOutputIdentifier,
-            });
-        } else {
-            response = await exportPerformances({
-                key: computePlans.map((cp) => cp.key),
-                metadata_columns: metadata.join(),
-            });
+            };
         }
+        const response = await exportPerformances(payload);
+
         const downloadName =
             computePlans.length > 1
                 ? 'selected_performances.csv'
