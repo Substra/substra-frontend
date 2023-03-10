@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { getAllPages } from '@/modules/common/CommonUtils';
 import * as ComputePlansApi from '@/modules/computePlans/ComputePlansApi';
 import {
     ComputePlanStatisticsT,
@@ -42,24 +41,7 @@ const getComputePlanSeries = async (
             { signal }
         );
         cpStats = response.data.compute_plan_statistics;
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            return rejectWithValue(error.response?.data);
-        } else {
-            throw error;
-        }
-    }
-
-    try {
-        const pageSize = 100;
-        cpPerformances = await getAllPages(
-            (page) =>
-                ComputePlansApi.listComputePlanPerformances(
-                    { key: computePlanKey, pageSize, page },
-                    { signal }
-                ),
-            pageSize
-        );
+        cpPerformances = response.data.results;
     } catch (error) {
         if (error instanceof AxiosError) {
             return rejectWithValue(error.response?.data);
