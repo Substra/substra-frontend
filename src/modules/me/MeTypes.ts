@@ -12,4 +12,12 @@ export type MeInfoT = {
     };
     user: string;
     user_role: UserRolesT;
+    auth: MeInfoAuthT;
 };
+
+type MeInfoAuthT = {
+    oidc?: {
+        name: string;
+        login_url: string;
+    }
+}

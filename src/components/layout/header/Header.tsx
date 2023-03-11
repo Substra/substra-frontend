@@ -84,6 +84,7 @@ const Header = (): JSX.Element => {
     );
     const channel = useAppSelector((state) => state.me.info.channel);
     const userRole = useAppSelector((state) => state.me.info.user_role);
+    const username = useAppSelector((state) => state.me.info.user);
 
     const handleLogOut = () => {
         dispatch(logOut())
@@ -133,7 +134,7 @@ const Header = (): JSX.Element => {
                         transitionDuration="200ms"
                         transitionTimingFunction="ease-in-out"
                     >
-                        Connected to
+                        Connected as <strong>{username}</strong> to
                     </Text>
                     <Text
                         color="gray.800"

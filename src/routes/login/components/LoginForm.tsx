@@ -32,22 +32,24 @@ const LoginForm = (): JSX.Element => {
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
+    const authInfo = useAppSelector(
+        (state) => state.me.info.auth
+    );
 
     const organizationId = useAppSelector(
         (state) => state.me.info.organization_id
     );
     const userLoading = useAppSelector((state) => state.me.loading);
     const userError = useAppSelector((state) => state.me.error);
+    
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
 
     const submitLogin = async (username: string, password: string) => {
         const payload: LoginPayloadT = {
             username,
             password,
         };
-        const urlSearchParams = new URLSearchParams(window.location.search);
-
-        const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
-
         dispatch(logIn(payload))
             .then(unwrapResult)
             .then(
@@ -75,6 +77,22 @@ const LoginForm = (): JSX.Element => {
                 <Text fontWeight="semibold" fontSize="3xl" marginBottom="4">
                     Login to {organizationId}
                 </Text>
+                
+                {authInfo?.oidc && (
+                    <div>
+                        <a href={`${API_URL}${authInfo.oidc.login_url}?next=`+encodeURIComponent(window.location.origin+nextLocation)}>
+                            <Button width="100%" marginBottom="4">
+                                Sign in with {authInfo.oidc.name}
+                            </Button>
+                        </a>
+                        <hr
+                            style={{
+                                height: 5
+                            }}
+                        />
+                    </div>
+                )}
+
                 {userError && (
                     <Alert
                         marginY="4"
