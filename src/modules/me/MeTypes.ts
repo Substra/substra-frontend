@@ -19,5 +19,5 @@ type MeInfoAuthT = {
     oidc?: {
         name: string;
         login_url: string;
-    }
-}
+    };
+};
