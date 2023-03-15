@@ -16,7 +16,6 @@ function buildSerieFeatures(
 ): SerieFeaturesT {
     return {
         functionKey: performance.compute_task.function_key,
-        datasetKey: performance.compute_task.data_manager_key,
         dataSampleKeys: performance.compute_task.data_samples,
         worker: performance.compute_task.worker,
         metricKey: performance.metric.key,
@@ -29,7 +28,6 @@ function buildSerieFeatures(
 function areSeriesEqual(sf1: SerieFeaturesT, sf2: SerieFeaturesT): boolean {
     return (
         sf1.functionKey === sf2.functionKey &&
-        sf1.datasetKey === sf2.datasetKey &&
         sf1.worker === sf2.worker &&
         sf1.metricKey === sf2.metricKey &&
         sf1.metricOutputIdentifier === sf2.metricOutputIdentifier &&
