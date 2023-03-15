@@ -4,7 +4,6 @@ export type PerformanceT = {
         function_key: string;
         rank: number;
         round_idx: string | null;
-        data_samples: string[];
         worker: string;
     };
     metric: {

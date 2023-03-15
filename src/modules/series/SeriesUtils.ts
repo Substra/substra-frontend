@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { areSetEqual } from '@/libs/utils';
 import { OrganizationT } from '@/modules/organizations/OrganizationsTypes';
 import { compareOrganizations } from '@/modules/organizations/OrganizationsUtils';
 import {
@@ -16,7 +15,6 @@ function buildSerieFeatures(
 ): SerieFeaturesT {
     return {
         functionKey: performance.compute_task.function_key,
-        dataSampleKeys: performance.compute_task.data_samples,
         worker: performance.compute_task.worker,
         metricKey: performance.metric.key,
         metricName: performance.metric.name,
@@ -30,8 +28,7 @@ function areSeriesEqual(sf1: SerieFeaturesT, sf2: SerieFeaturesT): boolean {
         sf1.functionKey === sf2.functionKey &&
         sf1.worker === sf2.worker &&
         sf1.metricKey === sf2.metricKey &&
-        sf1.metricOutputIdentifier === sf2.metricOutputIdentifier &&
-        areSetEqual(new Set(sf1.dataSampleKeys), new Set(sf2.dataSampleKeys))
+        sf1.metricOutputIdentifier === sf2.metricOutputIdentifier
     );
 }
 

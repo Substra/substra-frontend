@@ -158,17 +158,3 @@ export const capitalize = (word: string) => {
     const lower = word.toLowerCase();
     return word.charAt(0).toUpperCase() + lower.slice(1);
 };
-
-export function areSetEqual(s1: Set<string>, s2: Set<string>): boolean {
-    if (s1.size !== s2.size) {
-        return false;
-    }
-
-    for (const v of s1) {
-        if (!s2.has(v)) {
-            return false;
-        }
-    }
-
-    return true;
-}
