@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 -   Tooltip on perf cards (#178)
+-   `data_manager_key` and `data_samples` in `PerformanceT` (#182)
+-   `datasetKey` and `dataSampleKeys` in `SerieFeaturesT` (#182)
 
 ## [0.39.2] - 2022-02-09
 
