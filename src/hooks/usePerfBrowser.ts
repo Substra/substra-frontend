@@ -306,7 +306,7 @@ const usePerfBrowser = (
                 const point = serie.points.find((p) => p[xAxisMode] === rank);
 
                 let perf = '-';
-                if (point?.perf) {
+                if (typeof point?.perf === 'number') {
                     perf = point.perf.toFixed(3);
                 }
 
