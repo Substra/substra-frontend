@@ -20,6 +20,7 @@ import {
     Tr,
     Td,
     TableContainer,
+    Link,
 } from '@chakra-ui/react';
 
 import { retrieveToken } from '@/modules/bearerTokens/BearerTokenApi';
@@ -27,7 +28,7 @@ import { fromRawToken } from '@/modules/bearerTokens/BearerTokenTypes';
 
 import CopyButton from '@/components/CopyButton';
 
-const ApiKey = () => {
+const ApiTokens = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [token, setToken] = useState({
@@ -46,24 +47,23 @@ const ApiKey = () => {
     }, []);
     return (
         <>
-            <MenuItem onClick={onOpen}>API key</MenuItem>
+            <MenuItem onClick={onOpen}>API token</MenuItem>
 
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>API key</ModalHeader>
+                    <ModalHeader>API token</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="5">
                             <Text>
-                                This API key can be used in the Python substra
-                                SDK.
+                                This API token can be used in the Substra Python Client: see <Link href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client" isExternal>documentation</Link>.
                             </Text>
                             <TableContainer>
                                 <Table>
                                     <Thead>
                                         <Tr>
-                                            <Td>Key</Td>
+                                            <Td>Token</Td>
                                             <Td>Expiration</Td>
                                         </Tr>
                                     </Thead>
@@ -95,4 +95,4 @@ const ApiKey = () => {
         </>
     );
 };
-export default ApiKey;
+export default ApiTokens;
