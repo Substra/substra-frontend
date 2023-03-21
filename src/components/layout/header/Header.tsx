@@ -26,6 +26,7 @@ import { PATHS } from '@/paths';
 
 import OmniSearch from '@/components/OmniSearch';
 import About from '@/components/layout/header/About';
+import ApiKey from '@/components/layout/header/ApiKey';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
 
@@ -175,6 +176,7 @@ const Header = (): JSX.Element => {
                             >
                                 Documentation
                             </MenuItem>
+                            <ApiKey />
                             <Help />
                             <About />
                             {MICROSOFT_CLARITY_ID && (
