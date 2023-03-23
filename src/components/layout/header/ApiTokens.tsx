@@ -57,7 +57,14 @@ const ApiTokens = () => {
                     <ModalBody>
                         <VStack alignItems="stretch" spacing="5">
                             <Text>
-                                This API token can be used in the Substra Python Client: see <Link href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client" isExternal>documentation</Link>.
+                                {'This API token can be used in the '}
+                                <Link
+                                    href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client"
+                                    isExternal
+                                >
+                                    Substra Python Client
+                                </Link>
+                                .
                             </Text>
                             <TableContainer>
                                 <Table>

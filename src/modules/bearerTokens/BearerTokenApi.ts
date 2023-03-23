@@ -2,7 +2,7 @@ import { AxiosPromise } from 'axios';
 
 import API from '@/libs/request';
 
-import { RawBearerTokenT, BearerTokenT } from './BearerTokenTypes';
+import { RawBearerTokenT } from './BearerTokenTypes';
 
 const API_TOKEN_URL = `/api-token-tap`;
 

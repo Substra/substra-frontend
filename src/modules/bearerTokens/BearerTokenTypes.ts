@@ -1,4 +1,4 @@
-export type BearerTokenT = {
+type BearerTokenT = {
     payload: string;
     expiration: Date;
 };
