@@ -13,6 +13,7 @@ import {
     ModalOverlay,
     useDisclosure,
     VStack,
+    HStack,
     Code,
     Table,
     Thead,
@@ -23,28 +24,54 @@ import {
     Link,
 } from '@chakra-ui/react';
 
-import { retrieveToken } from '@/modules/bearerTokens/BearerTokenApi';
-import { fromRawToken } from '@/modules/bearerTokens/BearerTokenTypes';
+import {
+    listActiveTokens,
+    requestToken,
+} from '@/modules/bearerTokens/BearerTokenApi';
+import {
+    BearerTokenT,
+    NewBearerTokenT,
+} from '@/modules/bearerTokens/BearerTokenTypes';
 
 import CopyButton from '@/components/CopyButton';
 
 const ApiTokens = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [token, setToken] = useState({
-        payload: 'Loading',
-        expiration: new Date(),
+    const [activeTokens, setActiveTokens] = useState<BearerTokenT[]>([]);
+    const [newTokenRequested, setNewTokenRequested] = useState(false);
+    const [newToken, setNewToken] = useState<NewBearerTokenT>({
+        token: '',
+        created: new Date(),
+        expires_at: new Date(),
     });
-    useEffect(() => {
-        retrieveToken()
+
+    function getNewToken() {
+        requestToken()
             .then((response) => {
-                setToken(fromRawToken(response.data));
+                setNewToken(response.data);
+                setNewTokenRequested(true);
+                getActiveTokens();
             })
             .catch((error) => {
                 console.error(error);
-                setToken({ payload: 'Error', expiration: new Date() });
             });
-    }, []);
+    }
+
+    function getActiveTokens() {
+        listActiveTokens()
+            .then((response) => {
+                setActiveTokens(response.data.tokens);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    useEffect(() => {
+        setNewTokenRequested(false);
+        getActiveTokens();
+    }, [isOpen]);
     return (
         <>
             <MenuItem onClick={onOpen}>API token</MenuItem>
@@ -70,25 +97,47 @@ const ApiTokens = () => {
                                 <Table>
                                     <Thead>
                                         <Tr>
-                                            <Td>Token</Td>
-                                            <Td>Expiration</Td>
+                                            <Td>Created</Td>
+                                            <Td>Expires</Td>
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        <Tr>
-                                            <Td>
-                                                <Code>{token.payload}</Code>
-                                                <CopyButton
-                                                    value={token.payload}
-                                                />
-                                            </Td>
-                                            <Td>
-                                                {token.expiration.toString()}
-                                            </Td>
-                                        </Tr>
+                                        {activeTokens.length ? (
+                                            <Tr>
+                                                <Td>
+                                                    {activeTokens[0].created.toString()}
+                                                </Td>
+                                                <Td>
+                                                    {activeTokens[0].expires_at.toString()}
+                                                </Td>
+                                            </Tr>
+                                        ) : (
+                                            <Tr>No active tokens</Tr>
+                                        )}
                                     </Tbody>
                                 </Table>
                             </TableContainer>
+                            <Text>
+                                Warning: requesting a new token will invalidate
+                                the old one!
+                            </Text>
+                            <Button
+                                onClick={getNewToken}
+                                disabled={newTokenRequested}
+                            >
+                                Request a new token
+                            </Button>
+                            {newTokenRequested && (
+                                <>
+                                    <Text>
+                                        This token will only be shown once:
+                                    </Text>
+                                    <HStack>
+                                        <Code>{newToken.token}</Code>
+                                        <CopyButton value={newToken.token} />
+                                    </HStack>
+                                </>
+                            )}
                         </VStack>
                     </ModalBody>
 
