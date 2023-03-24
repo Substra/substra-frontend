@@ -15,6 +15,7 @@ import {
     IconButton,
     Icon,
     Link as ChakraLink,
+    MenuGroup,
 } from '@chakra-ui/react';
 import { RiUser3Fill } from 'react-icons/ri';
 
@@ -135,7 +136,7 @@ const Header = (): JSX.Element => {
                         transitionDuration="200ms"
                         transitionTimingFunction="ease-in-out"
                     >
-                        Connected as <strong>{username}</strong> to
+                        Connected to
                     </Text>
                     <Text
                         color="gray.800"
@@ -157,6 +158,10 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
+                            <MenuGroup title={username}>
+                                {/* hack to display username */}
+                            </MenuGroup>
+                            <MenuDivider color="gray.200" />
                             {userRole === 'ADMIN' && (
                                 <MenuItem
                                     onClick={() => setLocation(PATHS.USERS)}
