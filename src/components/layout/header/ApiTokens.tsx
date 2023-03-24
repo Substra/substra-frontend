@@ -85,7 +85,7 @@ const ApiTokens = () => {
                                             size="sm"
                                             onClick={getFirstToken}
                                         >
-                                            Request a token
+                                            Generate a token
                                         </Button>
                                     </HStack>
                                 </Center>

@@ -47,15 +47,22 @@ const ApiToken = (props: { token: BearerTokenT | NewBearerTokenT }) => {
             <HStack>
                 <VStack align="left">
                     <Text fontSize="sm">
-                        {'Created ' + token.created.toLocaleString()}
+                        {'Created ' + token.created_at.toLocaleString()}
                     </Text>
-                    <Text fontSize="sm">
+                    <Text
+                        fontSize="sm"
+                        color={
+                            token.expires_at < new Date()
+                                ? 'red.500'
+                                : undefined
+                        }
+                    >
                         {'Expires ' + token.expires_at.toLocaleString()}
                     </Text>
-                    <HStack>
+                    <HStack height="3em">
                         {'token' in token ? (
                             <>
-                                <Code fontSize="sm">{token.token}</Code>
+                                <Code width="30ch">{token.token}</Code>
                                 <CopyButton value={token.token} />
                             </>
                         ) : (
