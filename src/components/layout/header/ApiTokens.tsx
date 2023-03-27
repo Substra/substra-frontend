@@ -18,11 +18,11 @@ import {
 } from '@chakra-ui/react';
 
 import { useToast } from '@/hooks/useToast';
+import { BearerTokenT } from '@/modules/bearerTokens/BearerTokenTypes';
 import {
     listActiveTokens,
     requestToken,
-} from '@/modules/bearerTokens/BearerTokenApi';
-import { BearerTokenT } from '@/modules/bearerTokens/BearerTokenTypes';
+} from '@/modules/bearerTokens/BearerTokenUtils';
 
 import ApiToken from '@/components/ApiToken';
 

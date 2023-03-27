@@ -1,38 +1,14 @@
 import API from '@/libs/request';
 
-import {
-    BearerTokenT,
-    NewBearerTokenT,
-    RawBearerTokenT,
-    RawNewBearerTokenT,
-} from './BearerTokenTypes';
-
-const API_TOKEN_URL = `/api-token`;
-const API_ACTIVE_TOKENS_URL = `/active-api-tokens`;
-
-const parseToken = (object: RawBearerTokenT): BearerTokenT => {
-    return {
-        created_at: new Date(object.created_at),
-        expires_at: new Date(object.expires_at),
-    };
-};
-
-const parseNewToken = (object: RawNewBearerTokenT): NewBearerTokenT => {
-    return {
-        token: object.token,
-        created_at: new Date(object.created_at),
-        expires_at: new Date(object.expires_at),
-    };
+const URLS = {
+    API_TOKEN: `/api-token`,
+    ACTIVE_API_TOKENS: `/active-api-tokens`,
 };
 
 export const requestToken = () => {
-    return API.authenticatedGet(API_TOKEN_URL).then((response) => {
-        return parseNewToken(response.data);
-    });
+    return API.authenticatedGet(URLS.API_TOKEN);
 };
 
 export const listActiveTokens = () => {
-    return API.authenticatedGet(API_ACTIVE_TOKENS_URL).then((response) => {
-        return (response.data.tokens as RawBearerTokenT[]).map(parseToken);
-    });
+    return API.authenticatedGet(URLS.ACTIVE_API_TOKENS);
 };

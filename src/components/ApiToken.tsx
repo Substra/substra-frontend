@@ -13,11 +13,11 @@ import {
 } from '@chakra-ui/react';
 
 import { useToast } from '@/hooks/useToast';
-import { requestToken } from '@/modules/bearerTokens/BearerTokenApi';
 import {
     BearerTokenT,
     NewBearerTokenT,
 } from '@/modules/bearerTokens/BearerTokenTypes';
+import { requestToken } from '@/modules/bearerTokens/BearerTokenUtils';
 
 import CopyButton from './CopyButton';
 
