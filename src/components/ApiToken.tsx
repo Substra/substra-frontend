@@ -83,7 +83,7 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
                         hasArrow
                         label="This will disable your existing token"
                         bg="red.500"
-                        isDisabled={tokenIsExpired}
+                        isDisabled={tokenIsExpired || 'token' in apiToken}
                     >
                         <Button
                             onClick={getNewToken}
