@@ -204,11 +204,6 @@ export default extendTheme({
             },
         },
         Kbd: noDefaultBorderRadius,
-        Link: {
-            baseStyle: {
-                color: `primary.500`,
-            },
-        },
         Menu: {
             baseStyle: {
                 list: {

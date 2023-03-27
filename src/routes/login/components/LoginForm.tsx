@@ -16,6 +16,8 @@ import {
     AlertIcon,
     AlertTitle,
     AlertDescription,
+    Link,
+    Divider,
 } from '@chakra-ui/react';
 import { RiErrorWarningLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
@@ -77,8 +79,8 @@ const LoginForm = (): JSX.Element => {
                 </Text>
 
                 {authInfo?.oidc && (
-                    <div>
-                        <a
+                    <Box>
+                        <Link
                             href={
                                 `${API_URL}${authInfo.oidc.login_url}?next=` +
                                 encodeURIComponent(
@@ -89,13 +91,9 @@ const LoginForm = (): JSX.Element => {
                             <Button width="100%" marginBottom="4">
                                 Sign in with {authInfo.oidc.name}
                             </Button>
-                        </a>
-                        <hr
-                            style={{
-                                height: 5,
-                            }}
-                        />
-                    </div>
+                        </Link>
+                        <Divider marginBottom="4" />
+                    </Box>
                 )}
 
                 {userError && (

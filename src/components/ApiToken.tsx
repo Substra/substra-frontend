@@ -8,10 +8,11 @@ import {
     HStack,
     Center,
     Box,
-    useToast,
     Spacer,
+    Tooltip,
 } from '@chakra-ui/react';
 
+import { useToast } from '@/hooks/useToast';
 import { requestToken } from '@/modules/bearerTokens/BearerTokenApi';
 import {
     BearerTokenT,
@@ -20,16 +21,16 @@ import {
 
 import CopyButton from './CopyButton';
 
-const ApiToken = (props: { token: BearerTokenT | NewBearerTokenT }) => {
-    const [token, setToken] = useState<BearerTokenT | NewBearerTokenT>(
-        props.token
+const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
+    const [apiToken, setApiToken] = useState<BearerTokenT | NewBearerTokenT>(
+        token
     );
     const toast = useToast();
 
-    function getNewToken() {
+    const getNewToken = () => {
         requestToken()
             .then((response) => {
-                setToken(response);
+                setApiToken(response);
                 toast({
                     title: 'Token regenerated',
                     description: 'The old token is no longer valid.',
@@ -39,31 +40,35 @@ const ApiToken = (props: { token: BearerTokenT | NewBearerTokenT }) => {
             })
             .catch((error) => {
                 console.error(error);
+                toast({
+                    title: "Couldn't get a new token",
+                    description: 'Something went wrong',
+                    status: 'error',
+                    isClosable: true,
+                });
             });
-    }
+    };
+
+    const tokenIsExpired = apiToken.expires_at < new Date();
 
     return (
         <Box border="1px" borderColor="gray.200" padding="10px">
             <HStack>
                 <VStack align="left">
                     <Text fontSize="sm">
-                        {'Created ' + token.created_at.toLocaleString()}
+                        {'Created ' + apiToken.created_at.toLocaleString()}
                     </Text>
                     <Text
                         fontSize="sm"
-                        color={
-                            token.expires_at < new Date()
-                                ? 'red.500'
-                                : undefined
-                        }
+                        color={tokenIsExpired ? 'red.500' : undefined}
                     >
-                        {'Expires ' + token.expires_at.toLocaleString()}
+                        {'Expires ' + apiToken.expires_at.toLocaleString()}
                     </Text>
-                    <HStack height="3em">
-                        {'token' in token ? (
+                    <HStack height="35px">
+                        {'token' in apiToken ? (
                             <>
-                                <Code width="30ch">{token.token}</Code>
-                                <CopyButton value={token.token} />
+                                <Code width="300px">{apiToken.token}</Code>
+                                <CopyButton value={apiToken.token} />
                             </>
                         ) : (
                             <Text fontSize="sm" as="i">
@@ -73,10 +78,20 @@ const ApiToken = (props: { token: BearerTokenT | NewBearerTokenT }) => {
                     </HStack>
                 </VStack>
                 <Spacer />
-                <Center>
-                    <Button onClick={getNewToken} disabled={'token' in token}>
-                        Regenerate
-                    </Button>
+                <Center width="120px">
+                    <Tooltip
+                        hasArrow
+                        label="This will disable your existing token"
+                        bg="red.500"
+                        isDisabled={tokenIsExpired}
+                    >
+                        <Button
+                            onClick={getNewToken}
+                            disabled={'token' in apiToken}
+                        >
+                            Regenerate
+                        </Button>
+                    </Tooltip>
                 </Center>
             </HStack>
         </Box>

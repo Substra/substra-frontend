@@ -158,9 +158,7 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
-                            <MenuGroup title={username}>
-                                {/* hack to display username */}
-                            </MenuGroup>
+                            <MenuGroup title={username} />
                             <MenuDivider color="gray.200" />
                             {userRole === 'ADMIN' && (
                                 <MenuItem

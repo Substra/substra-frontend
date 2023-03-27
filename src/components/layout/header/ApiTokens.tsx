@@ -17,6 +17,7 @@ import {
     Center,
 } from '@chakra-ui/react';
 
+import { useToast } from '@/hooks/useToast';
 import {
     listActiveTokens,
     requestToken,
@@ -28,18 +29,25 @@ import ApiToken from '@/components/ApiToken';
 const ApiTokens = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [activeTokens, setActiveTokens] = useState<BearerTokenT[]>([]);
+    const toast = useToast();
 
-    function getFirstToken() {
+    const getFirstToken = () => {
         requestToken()
             .then((response) => {
                 setActiveTokens([response]);
             })
             .catch((error) => {
                 console.error(error);
+                toast({
+                    title: "Couldn't get a new token",
+                    description: 'Something went wrong',
+                    status: 'error',
+                    isClosable: true,
+                });
             });
-    }
+    };
 
-    function getActiveTokens() {
+    const getActiveTokens = () => {
         listActiveTokens()
             .then((response) => {
                 setActiveTokens(response);
@@ -47,7 +55,7 @@ const ApiTokens = () => {
             .catch((error) => {
                 console.error(error);
             });
-    }
+    };
 
     useEffect(() => {
         getActiveTokens();
@@ -66,6 +74,7 @@ const ApiTokens = () => {
                             <Text>
                                 {'This API token can be used in the '}
                                 <Link
+                                    color="primary.500"
                                     href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client"
                                     isExternal
                                 >
