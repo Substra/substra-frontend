@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Inputs & outputs display when opening task drawer from cp tasks list (#175)
 -   CP ordering by creation date (#179)
 -   Performance 0 displaying as `-`instead of `0.000`(#183)
+-   `Authorization` header is not set when cookie is empty (#184)
 
 ### Removed
 
