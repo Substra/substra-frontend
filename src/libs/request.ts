@@ -1,4 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {
+    AxiosInstance,
+    AxiosRequestConfig,
+    AxiosRequestHeaders,
+} from 'axios';
 import Cookies from 'universal-cookie';
 
 const CONFIG = {
@@ -15,12 +19,16 @@ const instance = axios.create({ ...CONFIG });
 instance.interceptors.request.use((config) => {
     const cookies = new Cookies();
     const jwt = cookies.get('header.payload');
+    const headers: AxiosRequestHeaders = {};
+
+    if (jwt) {
+        headers['Authorization'] = `JWT ${jwt}`;
+    }
+
     return {
         ...config,
         withCredentials: true,
-        headers: {
-            Authorization: `JWT ${jwt}`,
-        },
+        headers,
     };
 });
 
