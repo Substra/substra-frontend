@@ -80,18 +80,18 @@ const LoginForm = (): JSX.Element => {
 
                 {authInfo?.oidc && (
                     <Box>
-                        <Link
-                            href={
-                                `${API_URL}${authInfo.oidc.login_url}?next=` +
-                                encodeURIComponent(
-                                    window.location.origin + nextLocation
-                                )
-                            }
+                        <Button
+                            width="100%"
+                            marginBottom="4"
+                            as={Link}
+                            href={`${API_URL}${
+                                authInfo.oidc.login_url
+                            }?next=${encodeURIComponent(
+                                window.location.origin + nextLocation
+                            )}`}
                         >
-                            <Button width="100%" marginBottom="4">
-                                Sign in with {authInfo.oidc.name}
-                            </Button>
-                        </Link>
+                            Sign in with {authInfo.oidc.name}
+                        </Button>
                         <Divider marginBottom="4" />
                     </Box>
                 )}

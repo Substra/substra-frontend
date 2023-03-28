@@ -18,10 +18,14 @@ import {
 } from '@chakra-ui/react';
 
 import { useToast } from '@/hooks/useToast';
-import { BearerTokenT } from '@/modules/bearerTokens/BearerTokenTypes';
 import {
     listActiveTokens,
     requestToken,
+} from '@/modules/bearerTokens/BearerTokenApi';
+import { BearerTokenT } from '@/modules/bearerTokens/BearerTokenTypes';
+import {
+    parseToken,
+    parseNewToken,
 } from '@/modules/bearerTokens/BearerTokenUtils';
 
 import ApiToken from '@/components/ApiToken';
@@ -31,30 +35,27 @@ const ApiTokens = () => {
     const [activeTokens, setActiveTokens] = useState<BearerTokenT[]>([]);
     const toast = useToast();
 
-    const getFirstToken = () => {
-        requestToken()
-            .then((response) => {
-                setActiveTokens([response]);
-            })
-            .catch((error) => {
-                console.error(error);
-                toast({
-                    title: "Couldn't get a new token",
-                    description: 'Something went wrong',
-                    status: 'error',
-                    isClosable: true,
-                });
+    const getFirstToken = async () => {
+        try {
+            const response = await requestToken();
+            setActiveTokens([parseNewToken(response.data)]);
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: "Couldn't get a new token",
+                status: 'error',
+                isClosable: true,
             });
+        }
     };
 
-    const getActiveTokens = () => {
-        listActiveTokens()
-            .then((response) => {
-                setActiveTokens(response);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    const getActiveTokens = async () => {
+        try {
+            const response = await listActiveTokens();
+            setActiveTokens(response.data.tokens.map(parseToken));
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
