@@ -59,6 +59,7 @@ const initialState: MeStateT = {
         config: {},
         user: '',
         user_role: UserRolesT.user,
+        auth: {},
     },
     infoLoading: false,
     infoError: '',

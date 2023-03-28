@@ -15,6 +15,7 @@ import {
     IconButton,
     Icon,
     Link as ChakraLink,
+    MenuGroup,
 } from '@chakra-ui/react';
 import { RiUser3Fill } from 'react-icons/ri';
 
@@ -26,6 +27,7 @@ import { PATHS } from '@/paths';
 
 import OmniSearch from '@/components/OmniSearch';
 import About from '@/components/layout/header/About';
+import ApiTokens from '@/components/layout/header/ApiTokens';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
 
@@ -84,6 +86,7 @@ const Header = (): JSX.Element => {
     );
     const channel = useAppSelector((state) => state.me.info.channel);
     const userRole = useAppSelector((state) => state.me.info.user_role);
+    const username = useAppSelector((state) => state.me.info.user);
 
     const handleLogOut = () => {
         dispatch(logOut())
@@ -155,6 +158,8 @@ const Header = (): JSX.Element => {
                             size="sm"
                         />
                         <MenuList zIndex="popover">
+                            <MenuGroup title={username} />
+                            <MenuDivider color="gray.200" />
                             {userRole === 'ADMIN' && (
                                 <MenuItem
                                     onClick={() => setLocation(PATHS.USERS)}
@@ -174,6 +179,7 @@ const Header = (): JSX.Element => {
                             >
                                 Documentation
                             </MenuItem>
+                            <ApiTokens />
                             <Help />
                             <About />
                             {MICROSOFT_CLARITY_ID && (

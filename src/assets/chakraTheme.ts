@@ -185,6 +185,7 @@ export default extendTheme({
             baseStyle: {
                 ...noBorderRadius,
                 fontFamily: 'Gattica',
+                _hover: { textDecoration: 'none' },
             },
         },
         CloseButton: noDefaultBorderRadius,
