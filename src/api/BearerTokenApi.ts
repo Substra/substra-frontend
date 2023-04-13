@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
-import API from '@/libs/request';
+import { RawBearerTokenT, RawNewBearerTokenT } from '@/types/BearerTokenTypes';
 
-import { RawBearerTokenT, RawNewBearerTokenT } from './BearerTokenTypes';
+import API from './request';
 
 const URLS = {
     API_TOKEN: `/api-token`,

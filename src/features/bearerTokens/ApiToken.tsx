@@ -12,15 +12,12 @@ import {
     Tooltip,
 } from '@chakra-ui/react';
 
+import { requestToken } from '@/api/BearerTokenApi';
+import { parseNewToken } from '@/features/bearerTokens/BearerTokenUtils';
 import { useToast } from '@/hooks/useToast';
-import { requestToken } from '@/modules/bearerTokens/BearerTokenApi';
-import {
-    BearerTokenT,
-    NewBearerTokenT,
-} from '@/modules/bearerTokens/BearerTokenTypes';
-import { parseNewToken } from '@/modules/bearerTokens/BearerTokenUtils';
+import { BearerTokenT, NewBearerTokenT } from '@/types/BearerTokenTypes';
 
-import CopyButton from './CopyButton';
+import CopyButton from '@/components/CopyButton';
 
 const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
     const [apiToken, setApiToken] = useState<BearerTokenT | NewBearerTokenT>(

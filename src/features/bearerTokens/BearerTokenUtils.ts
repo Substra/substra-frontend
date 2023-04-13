@@ -3,7 +3,7 @@ import {
     NewBearerTokenT,
     RawBearerTokenT,
     RawNewBearerTokenT,
-} from './BearerTokenTypes';
+} from '@/types/BearerTokenTypes';
 
 export const parseToken = (object: RawBearerTokenT): BearerTokenT => {
     return {

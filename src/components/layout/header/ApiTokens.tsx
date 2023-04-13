@@ -17,18 +17,14 @@ import {
     Center,
 } from '@chakra-ui/react';
 
-import { useToast } from '@/hooks/useToast';
-import {
-    listActiveTokens,
-    requestToken,
-} from '@/modules/bearerTokens/BearerTokenApi';
-import { BearerTokenT } from '@/modules/bearerTokens/BearerTokenTypes';
+import { listActiveTokens, requestToken } from '@/api/BearerTokenApi';
+import ApiToken from '@/features/bearerTokens/ApiToken';
 import {
     parseToken,
     parseNewToken,
-} from '@/modules/bearerTokens/BearerTokenUtils';
-
-import ApiToken from '@/components/ApiToken';
+} from '@/features/bearerTokens/BearerTokenUtils';
+import { useToast } from '@/hooks/useToast';
+import { BearerTokenT } from '@/types/BearerTokenTypes';
 
 const ApiTokens = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
