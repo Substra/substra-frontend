@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { BreadcrumbItem, HStack, Text, Link } from '@chakra-ui/react';
 import { RiStackshareLine } from 'react-icons/ri';
 
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext } from '@/features/perfBrowser/usePerfBrowser';
 import { PATHS } from '@/paths';
 
 import Breadcrumbs from '@/components/Breadcrumbs';

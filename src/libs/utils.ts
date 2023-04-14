@@ -1,3 +1,11 @@
+import { AxiosPromise } from 'axios';
+
+import {
+    ASSET_LABEL,
+    AssetT,
+    PaginatedApiResponseT,
+} from '@/types/CommonTypes';
+
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'numeric',
@@ -157,4 +165,34 @@ export const endOfDay = (dateStringISO: string): string => {
 export const capitalize = (word: string) => {
     const lower = word.toLowerCase();
     return word.charAt(0).toUpperCase() + lower.slice(1);
+};
+
+export const getAssetLabel = (
+    asset: AssetT,
+    { capitalized, plural }: { capitalized?: boolean; plural?: boolean }
+): string => {
+    let label = ASSET_LABEL[asset];
+    if (capitalized) {
+        label = capitalize(label);
+    }
+    if (plural) {
+        label = label + 's';
+    }
+    return label;
+};
+
+export const getAllPages = async <T>(
+    getPage: (page: number) => AxiosPromise<PaginatedApiResponseT<T>>,
+    pageSize: number
+): Promise<T[]> => {
+    let res: T[] = [];
+    let page = 1;
+    let lastPage = 1;
+    while (page <= lastPage) {
+        const response = await getPage(page);
+        res = [...res, ...response.data.results];
+        lastPage = Math.ceil(response.data.count / pageSize);
+        page += 1;
+    }
+    return res;
 };

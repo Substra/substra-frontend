@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 
 import useAuthStore from '@/features/auth/useAuthStore';
+import CopyButton from '@/features/copy/CopyButton';
 
-import CopyButton from '@/components/CopyButton';
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
 const About = () => {

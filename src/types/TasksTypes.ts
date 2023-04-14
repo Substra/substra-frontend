@@ -15,6 +15,15 @@ export enum TaskStatus {
     failed = 'STATUS_FAILED',
 }
 
+export const taskStatusOrder: TaskStatus[] = [
+    TaskStatus.done,
+    TaskStatus.doing,
+    TaskStatus.canceled,
+    TaskStatus.failed,
+    TaskStatus.todo,
+    TaskStatus.waiting,
+];
+
 export enum TaskStatusDescription {
     waiting = 'Task is waiting for parent tasks to end',
     todo = 'Task is ready and waiting for available space to run',

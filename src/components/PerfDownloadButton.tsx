@@ -15,7 +15,7 @@ import { RiArrowDownSLine, RiDownloadLine } from 'react-icons/ri';
 import { exportPerformances } from '@/api/ComputePlansApi';
 import { downloadBlob } from '@/api/request';
 import useMetadataStore from '@/features/metadata/useMetadataStore';
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext } from '@/features/perfBrowser/usePerfBrowser';
 import { useSyncedStringState } from '@/hooks/useSyncedState';
 import { APIListArgsT } from '@/types/CommonTypes';
 

@@ -4,13 +4,13 @@ import { useRoute } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
+import CopyIconButton from '@/features/copy/CopyIconButton';
+import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useUpdateAssetName from '@/hooks/useUpdateAssetName';
 import { PATHS } from '@/paths';
+import MoreMenu from '@/routes/dataset/components/MoreMenu';
 
-import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
-import MoreMenu from '@/components/MoreMenu';
 
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';

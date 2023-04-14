@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 import { ChartDataset } from 'chart.js';
 
-import { XAxisModeT } from '@/hooks/usePerfBrowser';
-import usePerfChartDatasetStyle from '@/hooks/usePerfChartDatasetStyle';
+import { XAxisModeT } from '@/features/perfBrowser/usePerfBrowser';
+import usePerfChartDatasetStyle from '@/features/perfBrowser/usePerfChartDatasetStyle';
 import {
     DataPointT,
     HighlightedParamsProps,

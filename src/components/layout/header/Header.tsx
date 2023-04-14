@@ -22,13 +22,13 @@ import SubstraLogo from '@/assets/svg/substra-logo.svg';
 import useAuthStore from '@/features/auth/useAuthStore';
 import { PATHS } from '@/paths';
 
-import OmniSearch from '@/components/OmniSearch';
 import About from '@/components/layout/header/About';
 import ApiTokens from '@/components/layout/header/ApiTokens';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
+import OmniSearch from '@/components/layout/header/OmniSearch';
 
-import NewsFeed from './NewsFeed';
+import NewsFeed from '../../../features/newsFeed/NewsFeed';
 
 const IconLink = styled(Link)`
     cursor: pointer;

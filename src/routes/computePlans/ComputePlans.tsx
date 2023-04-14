@@ -8,6 +8,30 @@ import { downloadBlob } from '@/api/request';
 import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
 import useCustomColumns from '@/features/customColumns/useCustomColumns';
 import useMetadataStore from '@/features/metadata/useMetadataStore';
+import {
+    TableFilters,
+    ComputePlanStatusTableFilter,
+    ComputePlanFavoritesTableFilter,
+    CreationDateTableFilter,
+    DurationTableFilter,
+    StartDateTableFilter,
+    EndDateTableFilter,
+    MetadataTableFilter,
+} from '@/features/tableFilters';
+import CreatorTableFilter from '@/features/tableFilters/CreatorTableFilter';
+import {
+    CreatorTableFilterTag,
+    DateFilterTag,
+    DurationFilterTag,
+    FavoritesTableFilterTag,
+    MetadataFilterTag,
+    StatusTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
@@ -24,38 +48,14 @@ import {
     useStartDate,
     useStatus,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
 import { endOfDay } from '@/libs/utils';
+import BulkSelection from '@/routes/computePlans/components/BulkSelection';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 
-import BulkSelection from '@/components/BulkSelection';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import { EmptyTr, Tbody } from '@/components/Table';
-import {
-    CreatorTableFilterTag,
-    DateFilterTag,
-    DurationFilterTag,
-    FavoritesTableFilterTag,
-    MetadataFilterTag,
-    StatusTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
-import {
-    TableFilters,
-    ComputePlanStatusTableFilter,
-    ComputePlanFavoritesTableFilter,
-    CreationDateTableFilter,
-    DurationTableFilter,
-    StartDateTableFilter,
-    EndDateTableFilter,
-    MetadataTableFilter,
-} from '@/components/TableFilters';
-import CreatorTableFilter from '@/components/TableFilters/CreatorTableFilter';
-import TablePagination from '@/components/TablePagination';
+import { EmptyTr, Tbody } from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
 
 import ComputePlanTHead from './components/ComputePlanTHead';
 import ComputePlanTr from './components/ComputePlanTr';

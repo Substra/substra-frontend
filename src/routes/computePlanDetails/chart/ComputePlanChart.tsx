@@ -4,16 +4,18 @@ import { useLocation } from 'wouter';
 
 import { Box, Flex, HStack } from '@chakra-ui/react';
 
+import PerfBrowser from '@/features/perfBrowser/PerfBrowser';
+import PerfSidebarLines from '@/features/perfBrowser/PerfSidebarLines';
+import usePerfBrowser, {
+    PerfBrowserContext,
+} from '@/features/perfBrowser/usePerfBrowser';
 import useSeriesStore from '@/features/series/useSeriesStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
-import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { compilePath, PATHS } from '@/paths';
 import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import MetadataModal from '@/components/MetadataModal';
-import PerfBrowser from '@/components/PerfBrowser';
-import PerfSidebarLines from '@/components/PerfSidebarLines';
 
 import Actions from '../components/Actions';
 import TabsNav from '../components/TabsNav';

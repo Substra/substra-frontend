@@ -23,12 +23,17 @@ import NotFound from '@/routes/notfound/NotFound';
 import { UserRolesToLabel } from '@/routes/users/UsersUtils';
 import { UserRolesT } from '@/types/UsersTypes';
 
-import { AssetsTable } from '@/components/AssetsTable';
-import OrderingTh from '@/components/OrderingTh';
 import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
-import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
+import { AssetsTable } from '@/components/table/AssetsTable';
+import OrderingTh from '@/components/table/OrderingTh';
+import {
+    ClickableTr,
+    EmptyTr,
+    TableSkeleton,
+    Tbody,
+} from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
+import TableTitle from '@/components/table/TableTitle';
 
 import UserDrawer from './components/UserDrawer';
 import useUsersStore from './useUsersStore';

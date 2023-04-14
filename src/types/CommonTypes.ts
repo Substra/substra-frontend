@@ -8,6 +8,14 @@ export type PermissionsT = {
     download: PermissionT;
 };
 
+export const ASSET_LABEL: Record<AssetT, string> = {
+    function: 'function',
+    dataset: 'dataset',
+    task: 'task',
+    compute_plan: 'compute plan',
+    user: 'user',
+};
+
 export type AssetT = 'dataset' | 'function' | 'task' | 'compute_plan' | 'user';
 
 export type PaginatedApiResponseT<T> = {

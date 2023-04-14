@@ -19,8 +19,8 @@ import {
 import { endOfDay } from '@/libs/utils';
 import { PATHS } from '@/paths';
 
-import TableTitle from '@/components/TableTitle';
-import TasksTable from '@/components/TasksTable';
+import TableTitle from '@/components/table/TableTitle';
+import TasksTable from '@/components/table/TasksTable';
 
 import TaskDrawer from './components/TaskDrawer';
 import useTasksStore from './useTasksStore';

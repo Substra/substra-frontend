@@ -30,9 +30,8 @@ import {
     hasSpecialChar,
     isDifferentFromUsername,
 } from '@/routes/users/UsersUtils';
+import PasswordValidationMessage from '@/routes/users/components/PasswordValidationMessage';
 import useUsersStore from '@/routes/users/useUsersStore';
-
-import PasswordValidationMessage from '@/components/PasswordValidationMessage';
 
 const ResetForm = (): JSX.Element => {
     const [, setLocation] = useLocation();

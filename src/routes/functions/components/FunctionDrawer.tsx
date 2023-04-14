@@ -12,13 +12,13 @@ import {
 import { RiDownload2Line } from 'react-icons/ri';
 
 import { downloadFromApi } from '@/api/request';
+import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
-import useUpdateAssetName from '@/hooks/useUpdateAssetName';
 import { PATHS } from '@/paths';
+import DescriptionDrawerSection from '@/routes/functions/components/DescriptionDrawerSection';
 
-import DescriptionDrawerSection from '@/components/DescriptionDrawerSection';
 import DrawerHeader from '@/components/DrawerHeader';
 import {
     DrawerSection,

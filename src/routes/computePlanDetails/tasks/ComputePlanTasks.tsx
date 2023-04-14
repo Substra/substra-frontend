@@ -21,7 +21,7 @@ import { compilePath, PATHS } from '@/paths';
 import { ROUTES } from '@/routes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
-import TasksTable from '@/components/TasksTable';
+import TasksTable from '@/components/table/TasksTable';
 
 import NotFound from '../../notfound/NotFound';
 import Actions from '../components/Actions';

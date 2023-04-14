@@ -12,8 +12,8 @@ import { compilePath, PATHS } from '@/paths';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 import Duration from '@/components/Duration';
-import { ClickableTr, rightBorderProps } from '@/components/Table';
 import Timing from '@/components/Timing';
+import { ClickableTr, rightBorderProps } from '@/components/table/Table';
 
 import CheckboxTd from './CheckboxTd';
 import FavoriteBox from './FavoriteBox';

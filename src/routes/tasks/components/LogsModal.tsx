@@ -12,10 +12,10 @@ import {
     Box,
 } from '@chakra-ui/react';
 
+import CopyIconButton from '@/features/copy/CopyIconButton';
 import { API_PATHS, compilePath } from '@/paths';
 import { TaskT } from '@/types/TasksTypes';
 
-import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
 
 import useTaskStore from '../useTaskStore';

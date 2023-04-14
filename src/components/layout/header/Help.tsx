@@ -23,9 +23,8 @@ import {
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 import useAuthStore from '@/features/auth/useAuthStore';
+import CopyButton from '@/features/copy/CopyButton';
 import { shortDateFormatter } from '@/libs/utils';
-
-import CopyButton from '@/components/CopyButton';
 
 const Help = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();

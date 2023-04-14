@@ -12,7 +12,7 @@ import {
 import * as TasksApi from '@/api/TasksApi';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import { getAllPages } from '@/libs/CommonUtils';
+import { getAllPages } from '@/libs/utils';
 import { compilePath, PATHS } from '@/paths';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
 import { FileT, PermissionsT } from '@/types/CommonTypes';

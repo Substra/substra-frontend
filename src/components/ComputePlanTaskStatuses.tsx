@@ -2,8 +2,8 @@ import { HStack } from '@chakra-ui/react';
 
 import { getStatusCount } from '@/routes/computePlanDetails/ComputePlanUtils';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
+import { taskStatusOrder } from '@/types/TasksTypes';
 
-import { taskStatusOrder } from '@/components/ComputePlanProgressBar';
 import Status from '@/components/Status';
 
 const ComputePlanTaskStatuses = ({

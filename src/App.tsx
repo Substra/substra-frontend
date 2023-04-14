@@ -4,12 +4,12 @@ import { Route, Switch, useLocation, useRoute } from 'wouter';
 
 import { Flex, Spinner } from '@chakra-ui/react';
 
+import CookieBanner from '@/features/cookies/CookieBanner';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import { PATHS } from '@/paths';
 import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
-import CookieBanner from '@/components/CookieBanner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
 
 import useAuthStore from './features/auth/useAuthStore';

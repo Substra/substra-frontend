@@ -14,10 +14,9 @@ import {
 
 import { requestToken } from '@/api/BearerTokenApi';
 import { parseNewToken } from '@/features/bearerTokens/BearerTokenUtils';
+import CopyButton from '@/features/copy/CopyButton';
 import { useToast } from '@/hooks/useToast';
 import { BearerTokenT, NewBearerTokenT } from '@/types/BearerTokenTypes';
-
-import CopyButton from '@/components/CopyButton';
 
 const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
     const [apiToken, setApiToken] = useState<BearerTokenT | NewBearerTokenT>(

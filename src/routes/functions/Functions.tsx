@@ -12,6 +12,22 @@ import {
     Flex,
 } from '@chakra-ui/react';
 
+import {
+    TableFilters,
+    OwnerTableFilter,
+    CreationDateTableFilter,
+    PermissionsTableFilter,
+} from '@/features/tableFilters';
+import {
+    DateFilterTag,
+    OwnerTableFilterTag,
+    PermissionsTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
@@ -23,36 +39,25 @@ import {
     useOwner,
     usePage,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
 import { compilePath, PATHS } from '@/paths';
 
-import {
-    AssetsTable,
-    AssetsTablePermissionsTh,
-} from '@/components/AssetsTable';
-import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
-    DateFilterTag,
-    OwnerTableFilterTag,
-    PermissionsTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
+    AssetsTable,
+    AssetsTablePermissionsTh,
+} from '@/components/table/AssetsTable';
+import OrderingTh from '@/components/table/OrderingTh';
 import {
-    TableFilters,
-    OwnerTableFilter,
-    CreationDateTableFilter,
-    PermissionsTableFilter,
-} from '@/components/TableFilters';
-import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
+    ClickableTr,
+    EmptyTr,
+    TableSkeleton,
+    Tbody,
+} from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
+import TableTitle from '@/components/table/TableTitle';
 
 import FunctionDrawer from './components/FunctionDrawer';
 import useFunctionsStore from './useFunctionsStore';

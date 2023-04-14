@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-    addUUID,
-    isMetadataFilter,
-    removeUUID,
-} from '@/features/metadata/MetadataUtils';
+import { addUUID, removeUUID } from '@/features/metadata/MetadataUtils';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import {
     getUrlSearchParams,
     useSetLocationParams,
 } from '@/hooks/useLocationWithParams';
-import { MetadataFilterWithUuidT } from '@/types/MetadataTypes';
+import {
+    MetadataFilterWithUuidT,
+    isMetadataFilter,
+} from '@/types/MetadataTypes';
 
 const eventPopstate = 'popstate';
 const eventPushState = 'pushState';

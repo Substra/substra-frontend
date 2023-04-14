@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 
 import useAuthStore from '@/features/auth/useAuthStore';
+import Actualizer from '@/features/newsFeed/Actualizer';
 
-import Actualizer from '@/components/Actualizer';
 import RefreshBanner from '@/components/RefreshBanner';
 import Header from '@/components/layout/header/Header';
 

@@ -13,6 +13,24 @@ import {
     Button,
 } from '@chakra-ui/react';
 
+import {
+    CreationDateTableFilter,
+    LogsAccessTableFilter,
+    OwnerTableFilter,
+    PermissionsTableFilter,
+    TableFilters,
+} from '@/features/tableFilters';
+import {
+    DateFilterTag,
+    LogsAccessTableFilterTag,
+    OwnerTableFilterTag,
+    PermissionsTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
@@ -24,38 +42,25 @@ import {
     useOwner,
     usePage,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
 import { compilePath, PATHS } from '@/paths';
 import useDatasetsStore from '@/routes/datasets/useDatasetsStores';
 
+import PermissionTag from '@/components/PermissionTag';
+import SearchBar from '@/components/SearchBar';
 import {
     AssetsTable,
     AssetsTablePermissionsTh,
-} from '@/components/AssetsTable';
-import OrderingTh from '@/components/OrderingTh';
-import PermissionTag from '@/components/PermissionTag';
-import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
+} from '@/components/table/AssetsTable';
+import OrderingTh from '@/components/table/OrderingTh';
 import {
-    DateFilterTag,
-    LogsAccessTableFilterTag,
-    OwnerTableFilterTag,
-    PermissionsTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
-import {
-    CreationDateTableFilter,
-    LogsAccessTableFilter,
-    OwnerTableFilter,
-    PermissionsTableFilter,
-    TableFilters,
-} from '@/components/TableFilters';
-import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
+    ClickableTr,
+    EmptyTr,
+    TableSkeleton,
+    Tbody,
+} from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
+import TableTitle from '@/components/table/TableTitle';
 
 const Datasets = (): JSX.Element => {
     const [page] = usePage();

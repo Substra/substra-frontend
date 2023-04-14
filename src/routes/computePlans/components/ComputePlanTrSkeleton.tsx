@@ -8,7 +8,7 @@ import {
 import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import Status from '@/components/Status';
-import { TableSkeleton } from '@/components/Table';
+import { TableSkeleton } from '@/components/table/Table';
 
 const ComputePlanProgressSkeleton = (): JSX.Element => (
     <Skeleton>

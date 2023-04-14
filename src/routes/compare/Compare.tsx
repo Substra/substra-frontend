@@ -2,16 +2,18 @@ import { useRoute } from 'wouter';
 
 import { HStack, Flex, Box } from '@chakra-ui/react';
 
+import PerfBrowser from '@/features/perfBrowser/PerfBrowser';
+import PerfSidebarComputePlans from '@/features/perfBrowser/PerfSidebarComputePlans';
+import usePerfBrowser, {
+    PerfBrowserContext,
+} from '@/features/perfBrowser/usePerfBrowser';
 import useSeriesStore from '@/features/series/useSeriesStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
 import { PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
-import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
-import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
 
 import CompareBreadcrumbs from './components/CompareBreadcrumbs';
 import useCompareStore from './useCompareStore';
