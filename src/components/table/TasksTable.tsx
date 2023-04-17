@@ -174,18 +174,18 @@ const TasksTable = ({
                                     <OrderingTh
                                         options={[
                                             {
-                                                label: 'Worker',
+                                                label: 'Function',
                                                 asc: {
-                                                    label: 'Sort worker Z -> A',
-                                                    value: '-worker',
+                                                    label: 'Sort function Z -> A',
+                                                    value: '-function__name',
                                                 },
                                                 desc: {
-                                                    label: 'Sort worker A -> Z',
-                                                    value: 'worker',
+                                                    label: 'Sort function A -> Z',
+                                                    value: 'function__name',
                                                 },
                                             },
                                             {
-                                                label: 'Rank',
+                                                label: 'Rank-Worker',
                                                 asc: {
                                                     label: 'Sort rank lowest first',
                                                     value: 'rank',
@@ -351,9 +351,11 @@ const TasksTable = ({
                                                 />
                                             </Td>
                                             <Td>
-                                                <Text fontSize="sm">{`Task on ${task.worker}`}</Text>
+                                                <Text fontSize="sm">
+                                                    {task.function.name}
+                                                </Text>
                                                 <Text fontSize="xs">
-                                                    {`Rank ${task.rank}`}
+                                                    {`Rank ${task.rank} - ${task.worker}`}
                                                 </Text>
                                             </Td>
                                             <Td fontSize="xs">

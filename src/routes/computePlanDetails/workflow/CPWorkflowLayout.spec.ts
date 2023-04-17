@@ -22,6 +22,7 @@ const twoTasksGraph: TaskGraphT = {
             key: 'a',
             rank: 0,
             worker: 'pharma1',
+            function_name: 'Training on MyAlgo',
             status: TaskStatus.done,
             inputs_specs: [],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
@@ -29,6 +30,7 @@ const twoTasksGraph: TaskGraphT = {
         {
             key: 'b',
             rank: 1,
+            function_name: 'Training on MyAlgo',
             worker: 'pharma2',
             status: TaskStatus.failed,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
@@ -81,6 +83,7 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
         {
             key: 'predict_a',
             rank: 1,
+            function_name: 'Predict on MyAlgo',
             worker: 'pharma1',
             status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
@@ -89,6 +92,7 @@ const twoTasksPlusPredictAndTestTupleGraph: TaskGraphT = {
         {
             key: 'test_a',
             rank: 2,
+            function_name: 'Testing on MyAlgo',
             worker: 'pharma1',
             status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
@@ -157,6 +161,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_a',
             rank: 0,
             worker: 'pharma1',
+            function_name: 'Training on MyAlgo',
             status: TaskStatus.done,
             inputs_specs: [],
             outputs_specs: [
@@ -168,6 +173,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_b',
             rank: 1,
             worker: 'pharma1',
+            function_name: 'Training on MyAlgo',
             status: TaskStatus.failed,
             inputs_specs: [{ identifier: 'in_model', kind: 'ASSET_MODEL' }],
             outputs_specs: [{ identifier: 'out_model', kind: 'ASSET_MODEL' }],
@@ -176,6 +182,7 @@ const singleChainGraphWithBypassingEdge: TaskGraphT = {
             key: 'task_c',
             rank: 2,
             worker: 'pharma1',
+            function_name: 'Training on MyAlgo',
             status: TaskStatus.done,
             inputs_specs: [{ identifier: 'in_models', kind: 'ASSET_MODEL' }],
             outputs_specs: [],
