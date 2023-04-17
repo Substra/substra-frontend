@@ -239,11 +239,11 @@ const TasksTable = ({
                                             {
                                                 label: 'Duration',
                                                 asc: {
-                                                    label: 'Sort duration shortest first',
+                                                    label: 'Sort duration longest first',
                                                     value: '-duration',
                                                 },
                                                 desc: {
-                                                    label: 'Sort duration longest first',
+                                                    label: 'Sort duration shortest first',
                                                     value: 'duration',
                                                 },
                                             },
