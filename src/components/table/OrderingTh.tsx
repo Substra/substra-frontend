@@ -15,11 +15,11 @@ import {
     TableColumnHeaderProps,
 } from '@chakra-ui/react';
 import {
-    RiArrowDownLine,
     RiArrowDownSLine,
-    RiArrowUpLine,
     RiCheckLine,
     RiFilter3Fill,
+    RiSortAsc,
+    RiSortDesc,
 } from 'react-icons/ri';
 
 import {
@@ -54,9 +54,9 @@ const OrderingMenuItem = ({
                 value === ordering ? (
                     <RiCheckLine />
                 ) : direction === 'asc' ? (
-                    <RiArrowUpLine />
+                    <RiSortAsc />
                 ) : (
-                    <RiArrowDownLine />
+                    <RiSortDesc />
                 )
             }
             onClick={() => {
@@ -89,7 +89,7 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOptionProps) => {
                     setLocationParams(urlSearchParams);
                 }}
             >
-                <Icon as={RiArrowUpLine} marginTop="1px" />
+                <Icon as={RiSortAsc} marginTop="1px" />
                 <Text>{label}</Text>
             </Flex>
         );
@@ -105,7 +105,7 @@ const OrderingToggle = ({ label, asc, desc }: OrderingOptionProps) => {
                     setLocationParams(urlSearchParams);
                 }}
             >
-                <Icon as={RiArrowDownLine} marginTop="1px" />
+                <Icon as={RiSortDesc} marginTop="1px" />
                 <Text>{label}</Text>
             </Flex>
         );
