@@ -1,4 +1,4 @@
-FROM node:16.13.0-alpine AS common
+FROM node:18.16.0-alpine AS common
 
 ARG APP_VERSION
 
