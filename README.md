@@ -38,7 +38,7 @@ Substra warmly welcomes any contribution. Feel free to fork the repo and create 
 ## Running the frontend locally in dev mode
 
 1. Make sure `substra-frontend.org-1.com` and `substra-frontend.org-2.com` are pointing to `127.0.0.1` in your `/etc/hosts`
-2. Make sure you're using node 16.13.0 (`nvm install 16.13.0` and `nvm use 16.13.0`)
+2. Make sure you're using node 18.16.0 (`nvm install 18.16.0` and `nvm use 18.16.0`)
 3. Install dependencies: `npm install --dev`
 4. Run `npm run dev`
 5. Access the frontend at `http://substra-frontend.org-1.com:3000`

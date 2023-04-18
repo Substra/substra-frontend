@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Upgrade node version from 16.13.0 to 18.16.0 (#187)
+
 ### Fixed
 
 -   Inverted duration filter in tasks table (#190)
