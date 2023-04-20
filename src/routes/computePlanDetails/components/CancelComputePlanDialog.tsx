@@ -8,6 +8,7 @@ import {
     AlertDialogBody,
     AlertDialogFooter,
     Button,
+    Text,
 } from '@chakra-ui/react';
 
 type CancelComputePlanDialogProps = {
@@ -29,7 +30,7 @@ const CancelComputePlanDialog = ({
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
             onClose={onClose}
-            size="sm"
+            size="md"
             closeOnEsc={!canceling}
             closeOnOverlayClick={!canceling}
         >
@@ -40,8 +41,14 @@ const CancelComputePlanDialog = ({
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        This will stop all ongoing tasks and cancel the
-                        execution of all remaining tasks.
+                        <Text>Tasks that have not started will not start.</Text>
+                        <Text>
+                            Tasks in DOING will continue until they are DONE.
+                        </Text>
+                        <Text>
+                            The compute plan status will be updated to
+                            CANCELLED.
+                        </Text>
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+-   Display the cause of CP not being cancellable in tooltip (#192)
+
 ### Changed
 
 -   Upgrade node version from 16.13.0 to 18.16.0 (#187)
 -   New icon for list ordering in tables (#191)
+-   CP cancel alert message (#192)
 
 ### Fixed
 
