@@ -2,15 +2,28 @@ import { MenuItemProps, MenuItem, Tooltip } from '@chakra-ui/react';
 
 type CancelComputePlanMenuItemProps = {
     onClick: MenuItemProps['onClick'];
-    isDisabled: boolean;
+    hasPermissions: boolean;
+    hasCancellableStatus: boolean;
 };
 const CancelComputePlanMenuItem = ({
     onClick,
-    isDisabled,
-}: CancelComputePlanMenuItemProps) =>
-    isDisabled ? (
+    hasPermissions,
+    hasCancellableStatus,
+}: CancelComputePlanMenuItemProps) => {
+    const isDisabled = !hasPermissions || !hasCancellableStatus;
+    let label;
+
+    if (!isDisabled) {
+        return <MenuItem onClick={onClick}>Cancel execution</MenuItem>;
+    } else if (hasPermissions) {
+        label = 'This compute plan cannot be canceled because of its state';
+    } else {
+        label =
+            "This compute plan cannot be canceled because you don't have permission to";
+    }
+    return (
         <Tooltip
-            label="This compute plan cannot be canceled: either because of its state or because you don't have permission to"
+            label={label}
             fontSize="xs"
             hasArrow
             placement="bottom-end"
@@ -20,8 +33,7 @@ const CancelComputePlanMenuItem = ({
                 Cancel execution
             </MenuItem>
         </Tooltip>
-    ) : (
-        <MenuItem onClick={onClick}>Cancel execution</MenuItem>
     );
+};
 
 export default CancelComputePlanMenuItem;
