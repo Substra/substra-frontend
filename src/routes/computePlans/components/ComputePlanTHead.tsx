@@ -1,10 +1,10 @@
 import { Thead, Tr, Th } from '@chakra-ui/react';
 
-import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
 import {
+    ColumnT,
     GeneralColumnName,
-    getColumnId,
-} from '@/features/customColumns/CustomColumnsUtils';
+} from '@/features/customColumns/CustomColumnsTypes';
+import { getColumnId } from '@/features/customColumns/CustomColumnsUtils';
 
 import OrderingTh from '@/components/table/OrderingTh';
 import {

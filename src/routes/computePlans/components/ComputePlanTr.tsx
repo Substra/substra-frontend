@@ -2,11 +2,11 @@ import { useLocation } from 'wouter';
 
 import { Box, Td, Checkbox, Text, Tooltip } from '@chakra-ui/react';
 
-import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
 import {
+    ColumnT,
     GeneralColumnName,
-    getColumnId,
-} from '@/features/customColumns/CustomColumnsUtils';
+} from '@/features/customColumns/CustomColumnsTypes';
+import { getColumnId } from '@/features/customColumns/CustomColumnsUtils';
 import { shortFormatDate } from '@/libs/utils';
 import { compilePath, PATHS } from '@/paths';
 import { ComputePlanT } from '@/types/ComputePlansTypes';

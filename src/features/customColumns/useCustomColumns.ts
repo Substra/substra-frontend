@@ -1,11 +1,7 @@
 import { useLocalStorageArrayState } from '@/hooks/useLocalStorageState';
 
-import { ColumnT } from './CustomColumnsTypes';
-import {
-    isColumn,
-    GENERAL_COLUMNS,
-    areColumnsEqual,
-} from './CustomColumnsUtils';
+import { ColumnT, GENERAL_COLUMNS, isColumn } from './CustomColumnsTypes';
+import { areColumnsEqual } from './CustomColumnsUtils';
 
 const migrate = (data: unknown): ColumnT[] => {
     // custom columns used to be stored as a json array of strings matching metadata names

@@ -36,10 +36,9 @@ import EmptyState from '@/components/EmptyState';
 
 import CustomColumnImportPopover from './CustomColumnImportPopover';
 import CustomColumnSharePopover from './CustomColumnSharePopover';
-import { ColumnT } from './CustomColumnsTypes';
+import { ColumnT, GENERAL_COLUMNS } from './CustomColumnsTypes';
 import {
     areColumnsEqual,
-    GENERAL_COLUMNS,
     getColumnId,
     includesColumn,
 } from './CustomColumnsUtils';

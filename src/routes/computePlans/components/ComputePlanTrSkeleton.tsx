@@ -1,10 +1,10 @@
 import { Skeleton, Text, Progress, Td, VStack, Flex } from '@chakra-ui/react';
 
-import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
 import {
+    ColumnT,
     GeneralColumnName,
-    getColumnId,
-} from '@/features/customColumns/CustomColumnsUtils';
+} from '@/features/customColumns/CustomColumnsTypes';
+import { getColumnId } from '@/features/customColumns/CustomColumnsUtils';
 import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import Status from '@/components/Status';
