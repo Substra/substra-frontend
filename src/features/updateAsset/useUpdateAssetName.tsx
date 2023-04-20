@@ -14,7 +14,7 @@ type UpdateAssetArgsT = {
     dialogTitle: string;
     asset: DatasetT | ComputePlanT | FunctionT | null;
     updatingAsset: boolean;
-    updateAsset: (key: string, name: string) => Promise<unknown>;
+    updateAsset: (key: string, name: string) => Promise<string | null>;
 };
 
 const useUpdateAssetName = ({
@@ -41,7 +41,7 @@ const useUpdateAssetName = ({
                     title: "Couldn't update name",
                     status: 'error',
                     isClosable: true,
-                    descriptionComponent: error as string,
+                    descriptionComponent: error,
                 });
             } else {
                 toast({

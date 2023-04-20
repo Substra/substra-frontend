@@ -9,8 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { RiStarLine, RiStarFill, RiMoreLine } from 'react-icons/ri';
 
+import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import useUpdateAssetName from '@/hooks/useUpdateAssetName';
 import useCancelComputePlan from '@/routes/computePlanDetails/hooks/useCancelComputePlan';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 

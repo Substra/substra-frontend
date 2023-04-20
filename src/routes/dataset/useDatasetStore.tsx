@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { create } from 'zustand';
 
 import { retrieveDescription } from '@/api/CommonApi';
@@ -7,6 +7,7 @@ import {
     retrieveOpener,
     updateDataset,
 } from '@/api/DatasetsApi';
+import { handleUnknownError } from '@/libs/utils';
 import { DatasetT } from '@/types/DatasetTypes';
 
 type DatasetsStateT = {
@@ -22,7 +23,7 @@ type DatasetsStateT = {
     fetchDataset: (key: string) => Promise<DatasetT | null>;
     fetchDescription: (url: string) => void;
     fetchOpener: (url: string) => void;
-    updateDataset: (key: string, name: string) => Promise<unknown>;
+    updateDataset: (key: string, name: string) => Promise<string | null>;
 };
 
 let fetchDatasetController: AbortController | undefined;
@@ -114,7 +115,10 @@ const useDatasetStore = create<DatasetsStateT>((set) => ({
             }
         }
     },
-    updateDataset: async (key: string, name: string) => {
+    updateDataset: async (
+        key: string,
+        name: string
+    ): Promise<string | null> => {
         set({ updatingDataset: true });
         try {
             const response = await updateDataset(key, { name }, {});
@@ -122,18 +126,7 @@ const useDatasetStore = create<DatasetsStateT>((set) => ({
             return null;
         } catch (error) {
             set({ updatingDataset: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
 }));

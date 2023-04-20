@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { create } from 'zustand';
 
 import {
@@ -6,6 +6,7 @@ import {
     retrieveComputePlan,
     updateComputePlan,
 } from '@/api/ComputePlansApi';
+import { handleUnknownError } from '@/libs/utils';
 import { APIRetrieveListArgsT } from '@/types/CommonTypes';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 import { TaskT } from '@/types/TasksTypes';
@@ -21,7 +22,7 @@ type ComputePlanStateT = {
 
     fetchComputePlan: (key: string) => Promise<ComputePlanT | null>;
     fetchComputePlanTasks: (params: APIRetrieveListArgsT) => void;
-    updateComputePlan: (key: string, name: string) => Promise<unknown>;
+    updateComputePlan: (key: string, name: string) => Promise<string | null>;
 };
 
 let fetchComputePlanController: AbortController | undefined;
@@ -98,18 +99,7 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
             return null;
         } catch (error) {
             set({ updatingComputePlan: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
 }));

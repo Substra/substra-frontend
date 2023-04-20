@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { create } from 'zustand';
 
 import {
@@ -8,6 +8,7 @@ import {
     retrieveUser,
     updateUser,
 } from '@/api/UsersApi';
+import { handleUnknownError } from '@/libs/utils';
 import { APIListArgsT } from '@/types/CommonTypes';
 import { UserT, UpdateUserPayloadT, UserPayloadT } from '@/types/UsersTypes';
 
@@ -24,9 +25,12 @@ type UsersStateT = {
 
     fetchUsers: (params: APIListArgsT) => void;
     fetchUser: (key: string) => Promise<UserT | null>;
-    createUser: (payload: UserPayloadT) => Promise<unknown>;
-    updateUser: (key: string, payload: UpdateUserPayloadT) => Promise<unknown>;
-    deleteUser: (key: string) => Promise<unknown>;
+    createUser: (payload: UserPayloadT) => Promise<string | null>;
+    updateUser: (
+        key: string,
+        payload: UpdateUserPayloadT
+    ) => Promise<string | null>;
+    deleteUser: (key: string) => Promise<string | null>;
 };
 
 let fetchUsersController: AbortController | null;
@@ -106,18 +110,7 @@ const useUsersStore = create<UsersStateT>((set) => ({
             return null;
         } catch (error) {
             set({ creatingUser: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
     updateUser: async (key: string, payload: UpdateUserPayloadT) => {
@@ -131,18 +124,7 @@ const useUsersStore = create<UsersStateT>((set) => ({
             return null;
         } catch (error) {
             set({ updatingUser: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
     deleteUser: async (key: string) => {
@@ -159,18 +141,7 @@ const useUsersStore = create<UsersStateT>((set) => ({
             return null;
         } catch (error) {
             set({ updatingUser: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
 }));

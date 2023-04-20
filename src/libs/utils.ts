@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios';
+import { AxiosError, AxiosPromise } from 'axios';
 
 import {
     ASSET_LABEL,
@@ -195,4 +195,22 @@ export const getAllPages = async <T>(
         page += 1;
     }
     return res;
+};
+
+export const handleUnknownError = (error: unknown): string => {
+    console.warn(error);
+    if (error instanceof AxiosError) {
+        const status = error.response?.status;
+        if (status && status >= 400 && status < 500) {
+            const data = error.response?.data;
+            let msg;
+            if (typeof data === 'object' && data.detail) {
+                msg = data.detail;
+            } else {
+                msg = JSON.stringify(data);
+            }
+            return msg;
+        }
+    }
+    return 'Unknown error';
 };

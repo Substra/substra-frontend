@@ -1,8 +1,9 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { create } from 'zustand';
 
 import { retrieveDescription } from '@/api/CommonApi';
 import { retrieveFunction, updateFunction } from '@/api/FunctionsApi';
+import { handleUnknownError } from '@/libs/utils';
 import { FunctionT } from '@/types/FunctionsTypes';
 
 type FunctionStateT = {
@@ -15,7 +16,7 @@ type FunctionStateT = {
 
     fetchFunction: (key: string) => Promise<FunctionT | null>;
     fetchDescription: (url: string) => void;
-    updateFunction: (key: string, name: string) => Promise<unknown>;
+    updateFunction: (key: string, name: string) => Promise<string | null>;
 };
 
 let fetchFunctionController: AbortController | undefined;
@@ -91,18 +92,7 @@ const useFunctionStore = create<FunctionStateT>((set) => ({
             return null;
         } catch (error) {
             set({ updatingFunction: false });
-            console.warn(error);
-            if (error instanceof AxiosError) {
-                const data = error.response?.data;
-                let msg;
-                if (typeof data === 'object' && data.detail) {
-                    msg = data.detail;
-                } else {
-                    msg = JSON.stringify(data);
-                }
-                return msg;
-            }
-            return error;
+            return handleUnknownError(error);
         }
     },
 }));
