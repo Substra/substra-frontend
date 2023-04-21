@@ -86,7 +86,7 @@ const FunctionDrawer = (): JSX.Element => {
 
     const { updateNameDialog, updateNameButton } = useUpdateAssetName({
         dialogTitle: 'Rename function',
-        asset: func ?? null,
+        asset: func,
         updatingAsset: updatingFunction,
         updateAsset: updateFunction,
     });

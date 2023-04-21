@@ -2,11 +2,13 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { retrieveCPWorkflowGraph } from '@/api/CPWorkflowApi';
+import { handleUnknownError } from '@/api/request';
 import { TaskGraphT } from '@/types/CPWorkflowTypes';
 
 type WorkflowStateT = {
     graph: TaskGraphT;
     fetchingGraph: boolean;
+    graphError: string | null;
     fetchGraph: (computePlanKey: string) => void;
 };
 
@@ -19,7 +21,8 @@ let fetchController: AbortController | undefined;
 
 const useWorkflowStore = create<WorkflowStateT>((set) => ({
     graph: emptyGraph,
-    fetchingGraph: false,
+    fetchingGraph: true,
+    graphError: null,
     fetchGraph: async (computePlanKey: string) => {
         // abort previous call
         if (fetchController) {
@@ -41,7 +44,8 @@ const useWorkflowStore = create<WorkflowStateT>((set) => ({
                 // do nothing, the call has been canceled voluntarily
             } else {
                 console.warn(error);
-                set({ fetchingGraph: false });
+                const graphError = handleUnknownError(error);
+                set({ fetchingGraph: false, graphError });
             }
         }
     },

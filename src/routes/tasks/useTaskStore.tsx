@@ -30,9 +30,9 @@ const useTaskStore = create<TaskStateT>((set) => ({
     task: null,
     taskProfiling: null,
     logs: '',
-    fetchingTask: false,
-    fetchingTaskProfiling: false,
-    fetchingLogs: false,
+    fetchingTask: true,
+    fetchingTaskProfiling: true,
+    fetchingLogs: true,
     fetchTask: async (key: string) => {
         // abort previous call
         if (fetchTaskController) {

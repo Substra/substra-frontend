@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import * as TasksApi from '@/api/TasksApi';
-import { getAllPages } from '@/libs/utils';
+import { getAllPages } from '@/api/request';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
 import { ModelT } from '@/types/ModelsTypes';
 import { TaskT, TaskStatus, TaskIOT } from '@/types/TasksTypes';

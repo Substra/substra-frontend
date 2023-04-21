@@ -107,8 +107,8 @@ const RefreshBanner = (): JSX.Element | null => {
                 lineHeight="1"
                 onClick={() =>
                     fetchComputePlans({
-                        page: page,
-                        ordering: ordering,
+                        page,
+                        ordering,
                         ...filters,
                     })
                 }

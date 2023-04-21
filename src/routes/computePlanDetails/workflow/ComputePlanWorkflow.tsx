@@ -23,9 +23,14 @@ const ComputePlanWorkflow = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
     const key = params?.key;
 
-    const { graph, fetchingGraph, fetchGraph } = useWorkflowStore();
-    const graphTasks = graph.tasks;
-    const { fetchComputePlan } = useComputePlanStore();
+    const {
+        graph: { tasks: graphTasks },
+        fetchingGraph,
+        graphError,
+        fetchGraph,
+    } = useWorkflowStore();
+    const { computePlan, fetchingComputePlan, fetchComputePlan } =
+        useComputePlanStore();
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle(`Compute plan ${key}`),
@@ -33,8 +38,6 @@ const ComputePlanWorkflow = (): JSX.Element => {
     );
 
     useAssetListDocumentTitleEffect(`Compute plan ${key}`, params?.key || null);
-
-    const { computePlan, fetchingComputePlan } = useComputePlanStore();
 
     useEffect(() => {
         if (key && key !== computePlan?.key) {
@@ -78,14 +81,16 @@ const ComputePlanWorkflow = (): JSX.Element => {
                 <TabsNav />
             </Box>
             {!isReady && <Text padding="6">Loading</Text>}
-            {isReady && graphTasks.length === 0 && (
+            {isReady && (graphTasks.length === 0 || graphError) && (
                 <Flex justifyContent="center" alignItems="center" flexGrow={1}>
                     <UnavailableWorkflow
-                        subtitle={'The compute plan is empty'}
+                        subtitle={graphError || 'The compute plan is empty'}
                     />
                 </Flex>
             )}
-            {isReady && graphTasks.length > 0 && <TasksWorkflow />}
+            {isReady && !graphError && graphTasks.length > 0 && (
+                <TasksWorkflow />
+            )}
         </Flex>
     );
 };

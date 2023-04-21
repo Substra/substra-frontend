@@ -20,6 +20,7 @@ import { RiUser3Fill } from 'react-icons/ri';
 
 import SubstraLogo from '@/assets/svg/substra-logo.svg';
 import useAuthStore from '@/features/auth/useAuthStore';
+import NewsFeed from '@/features/newsFeed/NewsFeed';
 import { PATHS } from '@/paths';
 
 import About from '@/components/layout/header/About';
@@ -27,8 +28,6 @@ import ApiTokens from '@/components/layout/header/ApiTokens';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
 import OmniSearch from '@/components/layout/header/OmniSearch';
-
-import NewsFeed from '../../../features/newsFeed/NewsFeed';
 
 const IconLink = styled(Link)`
     cursor: pointer;
@@ -87,14 +86,9 @@ const Header = (): JSX.Element => {
         fetchLogout,
     } = useAuthStore();
 
-    const handleLogOut = () => {
-        const logOut = async () => {
-            const logOut = await fetchLogout();
-            if (logOut !== null) {
-                setLocation(PATHS.LOGIN);
-            }
-        };
-        logOut();
+    const handleLogOut = async () => {
+        await fetchLogout();
+        setLocation(PATHS.LOGIN);
     };
 
     const isMainRouteActive = !isActive([

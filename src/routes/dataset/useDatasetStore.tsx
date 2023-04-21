@@ -7,7 +7,7 @@ import {
     retrieveOpener,
     updateDataset,
 } from '@/api/DatasetsApi';
-import { handleUnknownError } from '@/libs/utils';
+import { handleUnknownError } from '@/api/request';
 import { DatasetT } from '@/types/DatasetTypes';
 
 type DatasetsStateT = {

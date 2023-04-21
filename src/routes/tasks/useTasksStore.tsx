@@ -17,7 +17,7 @@ let fetchController: AbortController | undefined;
 const useTasksStore = create<TasksStateT>((set) => ({
     tasks: [],
     tasksCount: 0,
-    fetchingTasks: false,
+    fetchingTasks: true,
     fetchTasks: async (params: APIListArgsT) => {
         // abort previous call
         if (fetchController) {

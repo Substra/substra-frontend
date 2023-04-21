@@ -14,7 +14,7 @@ let fetchController: AbortController | undefined;
 
 const useOrganizationsStore = create<OrganizationsStateT>((set) => ({
     organizations: [],
-    fetchingOrganizations: false,
+    fetchingOrganizations: true,
     fetchOrganizations: async () => {
         // abort previous call
         if (fetchController) {

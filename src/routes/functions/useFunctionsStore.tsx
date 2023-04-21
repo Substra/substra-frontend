@@ -17,7 +17,7 @@ let fetchController: AbortController | undefined;
 const useFunctionsStore = create<FunctionsStateT>((set) => ({
     functions: [],
     functionsCount: 0,
-    fetchingFunctions: false,
+    fetchingFunctions: true,
     fetchFunctions: async (params: APIListArgsT) => {
         // abort previous call
         if (fetchController) {

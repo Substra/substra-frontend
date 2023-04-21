@@ -123,8 +123,8 @@ const Functions = (): JSX.Element => {
                         <SearchBar />
                     </HStack>
                     <RefreshButton
-                        loading={fetchingFunctions}
-                        list={() =>
+                        isLoading={fetchingFunctions}
+                        onClick={() =>
                             fetchFunctions({
                                 page,
                                 ordering,

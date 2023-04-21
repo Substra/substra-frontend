@@ -13,7 +13,7 @@ let fetchController: AbortController | undefined;
 
 const useMetadataStore = create<MetadataStateT>((set) => ({
     metadata: [],
-    fetchingMetadata: false,
+    fetchingMetadata: true,
     fetchMetadata: async () => {
         // abort previous call
         if (fetchController) {

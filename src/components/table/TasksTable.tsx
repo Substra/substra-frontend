@@ -133,7 +133,7 @@ const TasksTable = ({
                     </TableFilters>
                     <SearchBar placeholder="Search key..." />
                 </HStack>
-                <RefreshButton loading={loading} list={list} />
+                <RefreshButton isLoading={loading} onClick={list} />
             </Flex>
             <TableFilterTags>
                 <StatusTableFilterTag />

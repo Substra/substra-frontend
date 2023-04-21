@@ -10,7 +10,6 @@ import {
     Text,
     Skeleton,
     Flex,
-    Button,
 } from '@chakra-ui/react';
 
 import {
@@ -47,6 +46,7 @@ import { compilePath, PATHS } from '@/paths';
 import useDatasetsStore from '@/routes/datasets/useDatasetsStores';
 
 import PermissionTag from '@/components/PermissionTag';
+import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
 import {
     AssetsTable,
@@ -128,15 +128,10 @@ const Datasets = (): JSX.Element => {
                         </TableFilters>
                         <SearchBar />
                     </HStack>
-                    <Button
-                        size="sm"
-                        variant="outline"
+                    <RefreshButton
                         onClick={() => fetchDatasets(fetchParams)}
                         isLoading={fetchingDatasets}
-                        loadingText="Loading"
-                    >
-                        Refresh
-                    </Button>
+                    />
                 </Flex>
                 <TableFilterTags>
                     <OwnerTableFilterTag />

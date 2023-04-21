@@ -38,13 +38,13 @@ const CreateUserForm = ({
 
     const onSave = async () => {
         if (!usernameHasError && !passwordHasErrors) {
-            const response = await createUser({
-                username: username,
-                password: password,
-                role: role,
+            const error = await createUser({
+                username,
+                password,
+                role,
             });
 
-            if (response === null) {
+            if (error === null) {
                 toast({
                     title: 'User created',
                     descriptionComponent: `${username} was successfully created!`,
@@ -56,8 +56,8 @@ const CreateUserForm = ({
                 toast({
                     title: 'User creation failed',
                     descriptionComponent:
-                        typeof response === 'string'
-                            ? response
+                        typeof error === 'string'
+                            ? error
                             : "Couldn't create user",
                     status: 'error',
                     isClosable: true,

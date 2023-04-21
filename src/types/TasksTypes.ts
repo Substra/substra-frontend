@@ -1,10 +1,9 @@
-import { FunctionT, AssetKindT, FunctionOutputT } from '@/types/FunctionsTypes';
-import { ModelT } from '@/types/ModelsTypes';
-import { PerformanceAssetT } from '@/types/PerformancesTypes';
-
 import { MetadataT, PermissionT } from './CommonTypes';
 import { DataSampleT } from './DataSampleTypes';
 import { DatasetStubT } from './DatasetTypes';
+import { FunctionT, AssetKindT, FunctionOutputT } from './FunctionsTypes';
+import { ModelT } from './ModelsTypes';
+import { PerformanceAssetT } from './PerformancesTypes';
 
 export enum TaskStatus {
     waiting = 'STATUS_WAITING',

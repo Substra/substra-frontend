@@ -7,16 +7,14 @@ import { ComputePlanT } from '@/types/ComputePlansTypes';
 type CompareStateT = {
     computePlans: ComputePlanT[];
     fetchingComputePlans: boolean;
-    fetchComputePlans: (
-        computePlanKeys: string[]
-    ) => Promise<ComputePlanT[] | null>;
+    fetchComputePlans: (computePlanKeys: string[]) => void;
 };
 
 let fetchController: AbortController | undefined;
 
 const useCompareStore = create<CompareStateT>((set) => ({
     computePlans: [],
-    fetchingComputePlans: false,
+    fetchingComputePlans: true,
     fetchComputePlans: async (computePlanKeys: string[]) => {
         //abort previous call
         if (fetchController) {
@@ -43,8 +41,6 @@ const useCompareStore = create<CompareStateT>((set) => ({
                 computePlans: results,
                 fetchingComputePlans: false,
             });
-
-            return results;
         } catch (error) {
             if (axios.isCancel(error)) {
                 // do nothing, the call has been canceled voluntarily
@@ -53,7 +49,6 @@ const useCompareStore = create<CompareStateT>((set) => ({
                 set({ fetchingComputePlans: false });
             }
         }
-        return null;
     },
 }));
 

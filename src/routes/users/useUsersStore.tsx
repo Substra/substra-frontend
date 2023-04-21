@@ -8,7 +8,7 @@ import {
     retrieveUser,
     updateUser,
 } from '@/api/UsersApi';
-import { handleUnknownError } from '@/libs/utils';
+import { handleUnknownError } from '@/api/request';
 import { APIListArgsT } from '@/types/CommonTypes';
 import { UserT, UpdateUserPayloadT, UserPayloadT } from '@/types/UsersTypes';
 
@@ -36,12 +36,12 @@ type UsersStateT = {
 let fetchUsersController: AbortController | null;
 let fetchUserController: AbortController | null;
 
-const useUsersStore = create<UsersStateT>((set) => ({
+const useUsersStore = create<UsersStateT>((set, get) => ({
     users: [],
     usersCount: 0,
     user: null,
-    fetchingUsers: false,
-    fetchingUser: false,
+    fetchingUsers: true,
+    fetchingUser: true,
     creatingUser: false,
     updatingUser: false,
     deletingUser: false,
@@ -102,11 +102,11 @@ const useUsersStore = create<UsersStateT>((set) => ({
         set({ creatingUser: true });
         try {
             const response = await createUser(payload);
-            set((state) => ({
+            set({
                 creatingUser: false,
                 user: response.data,
-                users: state.users.concat(response.data),
-            }));
+                users: get().users.concat(response.data),
+            });
             return null;
         } catch (error) {
             set({ creatingUser: false });
@@ -131,13 +131,13 @@ const useUsersStore = create<UsersStateT>((set) => ({
         set({ deletingUser: true });
         try {
             await deleteUser(key);
-            set((state) => ({
+            set({
                 deletingUser: false,
-                usersCount: state.usersCount - 1,
-                users: state.users.filter(
-                    (user) => user.username !== state.user?.username
+                usersCount: get().usersCount - 1,
+                users: get().users.filter(
+                    (user) => user.username !== get().user?.username
                 ),
-            }));
+            });
             return null;
         } catch (error) {
             set({ updatingUser: false });

@@ -64,9 +64,9 @@ const UpdateUserForm = ({
 
     const onUpdate = async () => {
         if (user && role !== user.role) {
-            const response = await updateUser(user.username, { role });
+            const error = await updateUser(user.username, { role });
 
-            if (response === null) {
+            if (error === null) {
                 toast({
                     title: `User updated`,
                     descriptionComponent: () => (
@@ -77,14 +77,24 @@ const UpdateUserForm = ({
                 });
 
                 closeHandler();
+            } else {
+                toast({
+                    title: 'User update failed',
+                    descriptionComponent:
+                        typeof error === 'string'
+                            ? error
+                            : "Couldn't update user",
+                    status: 'error',
+                    isClosable: true,
+                });
             }
         }
     };
 
     const onDelete = async () => {
-        const response = await deleteUser(username);
+        const error = await deleteUser(username);
 
-        if (response === null) {
+        if (error === null) {
             toast({
                 title: `User deleted`,
                 descriptionComponent: () => (
@@ -95,6 +105,14 @@ const UpdateUserForm = ({
             });
 
             closeHandler();
+        } else {
+            toast({
+                title: 'User deletion failed',
+                descriptionComponent:
+                    typeof error === 'string' ? error : "Couldn't delete user",
+                status: 'error',
+                isClosable: true,
+            });
         }
     };
 

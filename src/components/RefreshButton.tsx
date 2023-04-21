@@ -1,20 +1,8 @@
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 
-const RefreshButton = ({
-    loading,
-    list,
-}: {
-    loading: boolean;
-    list: () => void;
-}): JSX.Element => {
+const RefreshButton = (props: ButtonProps): JSX.Element => {
     return (
-        <Button
-            size="sm"
-            variant="outline"
-            onClick={list}
-            isLoading={loading}
-            loadingText="Loading"
-        >
+        <Button size="sm" variant="outline" loadingText="Loading" {...props}>
             Refresh
         </Button>
     );

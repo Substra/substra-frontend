@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 import { retrieveDescription } from '@/api/CommonApi';
 import { retrieveFunction, updateFunction } from '@/api/FunctionsApi';
-import { handleUnknownError } from '@/libs/utils';
+import { handleUnknownError } from '@/api/request';
 import { FunctionT } from '@/types/FunctionsTypes';
 
 type FunctionStateT = {
@@ -25,8 +25,8 @@ let fetchDescriptionController: AbortController | undefined;
 const useFunctionStore = create<FunctionStateT>((set) => ({
     function: null,
     description: '',
-    fetchingFunction: false,
-    fetchingDescription: false,
+    fetchingFunction: true,
+    fetchingDescription: true,
     updatingFunction: false,
     fetchFunction: async (key: string) => {
         // abort previous call
@@ -78,7 +78,6 @@ const useFunctionStore = create<FunctionStateT>((set) => ({
                 console.warn(error);
                 set({ fetchingDescription: false });
             }
-            return null;
         }
     },
     updateFunction: async (key: string, name: string) => {

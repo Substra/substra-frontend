@@ -28,7 +28,7 @@ type AuthStateT = {
     postLogin: (credentials: LoginPayloadT) => Promise<LoginDataT | null>;
     postRefresh: () => Promise<LoginDataT | null>;
     fetchInfo: (withCredentials: boolean) => void;
-    fetchLogout: () => Promise<unknown>;
+    fetchLogout: () => void;
 };
 
 const emptyLoginData = {
@@ -47,7 +47,7 @@ const defaultInfo = {
     auth: {},
 };
 
-const useAuthStore = create<AuthStateT>((set) => ({
+const useAuthStore = create<AuthStateT>((set, get) => ({
     loginData: emptyLoginData,
     authenticated: false,
     /**
@@ -60,7 +60,7 @@ const useAuthStore = create<AuthStateT>((set) => ({
     info: defaultInfo,
     postingLogin: false,
     postingRefresh: false,
-    fetchingInfo: false,
+    fetchingInfo: true,
     loginError: '',
     postLogin: async (credentials: LoginPayloadT) => {
         try {
@@ -128,22 +128,20 @@ const useAuthStore = create<AuthStateT>((set) => ({
 
         set({ authenticated: false });
         try {
-            const response = await getLogOut();
-            set((state) => ({
+            await getLogOut();
+            set({
                 info: {
-                    ...state.info,
+                    ...get().info,
                     version: undefined,
                     channel: undefined,
                     config: {
-                        ...state.info.config,
+                        ...get().info.config,
                         model_export_enabled: undefined,
                     },
                 },
-            }));
-            return response.data;
+            });
         } catch (error) {
             console.warn(error);
-            return null;
         }
     },
 }));

@@ -27,13 +27,13 @@ type NewsFeedStateT = {
 let fetchNewsController: AbortController | undefined;
 let fetchUnseenNewsCountController: AbortController | undefined;
 
-const useNewsFeedStore = create<NewsFeedStateT>((set) => ({
+const useNewsFeedStore = create<NewsFeedStateT>((set, get) => ({
     news: [],
     newsFeedCurrentPage: 1,
     newsCount: 0,
     unseenNewsCount: 0,
-    fetchingNews: false,
-    fetchingUnseenNewsCount: false,
+    fetchingNews: true,
+    fetchingUnseenNewsCount: true,
     fetchNews: async ({ firstPage, timestamp_before }: ListNewsFeedArgsT) => {
         // abort previous call
         if (fetchNewsController) {
@@ -41,14 +41,12 @@ const useNewsFeedStore = create<NewsFeedStateT>((set) => ({
         }
 
         fetchNewsController = new AbortController();
-        set((state) => ({
+        set({
             fetchingNews: true,
-            news: firstPage ? [] : state.news,
-        }));
+            news: firstPage ? [] : get().news,
+        });
         try {
-            const page = firstPage
-                ? 1
-                : useNewsFeedStore.getState().newsFeedCurrentPage;
+            const page = firstPage ? 1 : get().newsFeedCurrentPage;
             const response = await listNewsFeed(
                 {
                     page,
@@ -59,17 +57,17 @@ const useNewsFeedStore = create<NewsFeedStateT>((set) => ({
                     signal: fetchNewsController.signal,
                 }
             );
-            set((state) => ({
+            set({
                 fetchingNews: false,
                 // !response.data.previous = fetched the first page, else fetched a subsequent page
                 news: !response.data.previous
                     ? response.data.results
-                    : [...state.news, ...response.data.results],
+                    : [...get().news, ...response.data.results],
                 newsCount: response.data.count,
                 newsFeedCurrentPage: firstPage
                     ? 1
-                    : state.newsFeedCurrentPage + 1,
-            }));
+                    : get().newsFeedCurrentPage + 1,
+            });
         } catch (error) {
             if (axios.isCancel(error)) {
                 // do nothing, the call has been canceled voluntarily

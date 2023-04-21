@@ -34,12 +34,8 @@ const Login = (): JSX.Element => {
     useEffect(() => {
         if (forceLogout && authenticated) {
             const logOut = async () => {
-                const logOut = await fetchLogout();
-                if (logOut !== null) {
-                    setLocation(
-                        encodeURI(`${PATHS.LOGIN}?next=${nextLocation}`)
-                    );
-                }
+                await fetchLogout();
+                setLocation(encodeURI(`${PATHS.LOGIN}?next=${nextLocation}`));
             };
             logOut();
         }

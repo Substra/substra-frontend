@@ -6,10 +6,11 @@ import { Button } from '@chakra-ui/react';
 import { RiArrowRightLine } from 'react-icons/ri';
 
 import * as NewsFeedApi from '@/api/NewsFeedApi';
+import { getAllPages } from '@/api/request';
 import { ACTUALIZE_NEWS_INTERVAL } from '@/features/newsFeed/NewsFeedUtils';
 import { NEWS_FEED_PAGE_SIZE } from '@/features/newsFeed/useNewsFeedStore';
 import { useToast } from '@/hooks/useToast';
-import { timestampNow, getAllPages } from '@/libs/utils';
+import { timestampNow } from '@/libs/utils';
 import { compilePath, PATHS } from '@/paths';
 import {
     getNewsItemAssetLabel,

@@ -20,7 +20,7 @@ const useComputePlansStore = create<ComputePlansStateT>((set) => ({
     computePlans: [],
     computePlansCount: 0,
     computePlansCallTimestamp: '',
-    fetchingComputePlans: false,
+    fetchingComputePlans: true,
     fetchComputePlans: async (params: APIListArgsT) => {
         // abort previous call
         if (fetchController) {

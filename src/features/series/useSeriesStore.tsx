@@ -16,8 +16,6 @@ type SeriesStateT = {
     fetchSeries: (computePlanKeyOrKeys: string | string[]) => void;
 };
 
-let fetchController: AbortController | undefined;
-
 const getComputePlanSeries = async (
     computePlanKey: string,
     signal: AbortSignal
@@ -51,9 +49,11 @@ const getComputePlanSeries = async (
     return series;
 };
 
-const useSeriesStore = create<SeriesStateT>((set) => ({
+let fetchController: AbortController | undefined;
+
+const useSeriesStore = create<SeriesStateT>((set, get) => ({
     series: [],
-    fetchingSeries: false,
+    fetchingSeries: true,
     fetchSeries: async (computePlanKeyorKeys: string | string[]) => {
         // abort previous call
         if (fetchController) {
@@ -77,9 +77,9 @@ const useSeriesStore = create<SeriesStateT>((set) => ({
             );
 
             if (computePlanSeries) {
-                set((state) => ({
-                    series: [...state.series, ...computePlanSeries],
-                }));
+                set({
+                    series: [...get().series, ...computePlanSeries],
+                });
             }
         }
 

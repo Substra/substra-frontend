@@ -1,10 +1,4 @@
-import { AxiosError, AxiosPromise } from 'axios';
-
-import {
-    ASSET_LABEL,
-    AssetT,
-    PaginatedApiResponseT,
-} from '@/types/CommonTypes';
+import { ASSET_LABEL, AssetT } from '@/types/CommonTypes';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
@@ -179,38 +173,4 @@ export const getAssetLabel = (
         label = label + 's';
     }
     return label;
-};
-
-export const getAllPages = async <T>(
-    getPage: (page: number) => AxiosPromise<PaginatedApiResponseT<T>>,
-    pageSize: number
-): Promise<T[]> => {
-    let res: T[] = [];
-    let page = 1;
-    let lastPage = 1;
-    while (page <= lastPage) {
-        const response = await getPage(page);
-        res = [...res, ...response.data.results];
-        lastPage = Math.ceil(response.data.count / pageSize);
-        page += 1;
-    }
-    return res;
-};
-
-export const handleUnknownError = (error: unknown): string => {
-    console.warn(error);
-    if (error instanceof AxiosError) {
-        const status = error.response?.status;
-        if (status && status >= 400 && status < 500) {
-            const data = error.response?.data;
-            let msg;
-            if (typeof data === 'object' && data.detail) {
-                msg = data.detail;
-            } else {
-                msg = JSON.stringify(data);
-            }
-            return msg;
-        }
-    }
-    return 'Unknown error';
 };

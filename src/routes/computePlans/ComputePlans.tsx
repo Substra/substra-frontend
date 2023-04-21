@@ -220,8 +220,8 @@ const ComputePlans = (): JSX.Element => {
                     </HStack>
                     <HStack spacing="2.5">
                         <RefreshButton
-                            loading={fetchingComputePlans}
-                            list={() =>
+                            isLoading={fetchingComputePlans}
+                            onClick={() =>
                                 fetchComputePlans({
                                     page: page,
                                     ordering: ordering,

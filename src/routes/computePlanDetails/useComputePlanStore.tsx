@@ -6,7 +6,7 @@ import {
     retrieveComputePlan,
     updateComputePlan,
 } from '@/api/ComputePlansApi';
-import { handleUnknownError } from '@/libs/utils';
+import { handleUnknownError } from '@/api/request';
 import { APIRetrieveListArgsT } from '@/types/CommonTypes';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 import { TaskT } from '@/types/TasksTypes';
@@ -20,7 +20,7 @@ type ComputePlanStateT = {
     fetchingComputePlanTasks: boolean;
     updatingComputePlan: boolean;
 
-    fetchComputePlan: (key: string) => Promise<ComputePlanT | null>;
+    fetchComputePlan: (key: string) => void;
     fetchComputePlanTasks: (params: APIRetrieveListArgsT) => void;
     updateComputePlan: (key: string, name: string) => Promise<string | null>;
 };
@@ -32,8 +32,8 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
     computePlan: null,
     computePlanTasks: [],
     computePlanTasksCount: 0,
-    fetchingComputePlan: false,
-    fetchingComputePlanTasks: false,
+    fetchingComputePlan: true,
+    fetchingComputePlanTasks: true,
     updatingComputePlan: false,
     fetchComputePlan: async (key: string) => {
         // abort previous call
@@ -51,7 +51,6 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
                 fetchingComputePlan: false,
                 computePlan: response.data,
             });
-            return response.data;
         } catch (error) {
             if (axios.isCancel(error)) {
                 // do nothing, the call has been canceled voluntarily
@@ -59,7 +58,6 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
                 console.warn(error);
                 set({ fetchingComputePlan: false });
             }
-            return null;
         }
     },
     fetchComputePlanTasks: async (params: APIRetrieveListArgsT) => {
