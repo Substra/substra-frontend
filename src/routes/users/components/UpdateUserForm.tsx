@@ -22,21 +22,15 @@ import {
 } from '@chakra-ui/react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import * as UsersApi from '@/api/UsersApi';
 import { useToast } from '@/hooks/useToast';
-import * as UsersApi from '@/modules/users/UsersApi';
-import {
-    deleteUser,
-    retrieveUser,
-    updateUser,
-} from '@/modules/users/UsersSlice';
-import { UserRolesT } from '@/modules/users/UsersTypes';
 import { compilePath, PATHS } from '@/paths';
+import { UserRolesT } from '@/types/UsersTypes';
 
 import DrawerHeader from '@/components/DrawerHeader';
 import { DrawerSectionEntry } from '@/components/DrawerSection';
 
+import useUsersStore from '../useUsersStore';
 import RoleInput from './RoleInput';
 
 const UpdateUserForm = ({
@@ -46,7 +40,6 @@ const UpdateUserForm = ({
     closeHandler: () => void;
     username: string;
 }): JSX.Element => {
-    const dispatch = useAppDispatch();
     const toast = useToast();
 
     const {
@@ -59,8 +52,8 @@ const UpdateUserForm = ({
     const { onCopy } = useClipboard(resetUrl);
     const cancelRef = useRef<HTMLButtonElement>(null);
 
-    const user = useAppSelector((state) => state.users.user);
-    const deleting = useAppSelector((state) => state.users.deleting);
+    const { user, deletingUser, fetchUser, updateUser, deleteUser } =
+        useUsersStore();
 
     const [role, setRole] = useState(UserRolesT.user);
     const [isLastAdmin, setIsLastAdmin] = useState<boolean>(false);
@@ -69,42 +62,58 @@ const UpdateUserForm = ({
     // whether they are the last admin.
     const [loading, setLoading] = useState(true);
 
-    const onUpdate = () => {
+    const onUpdate = async () => {
         if (user && role !== user.role) {
-            dispatch(updateUser({ key: user.username, payload: { role } }))
-                .unwrap()
-                .then(() => {
-                    toast({
-                        title: `User updated`,
-                        descriptionComponent: () => (
-                            <Text>
-                                {user.username} was successfully updated!
-                            </Text>
-                        ),
-                        status: 'success',
-                        isClosable: true,
-                    });
+            const error = await updateUser(user.username, { role });
 
-                    closeHandler();
-                });
-        }
-    };
-
-    const onDelete = () => {
-        dispatch(deleteUser(username))
-            .unwrap()
-            .then(() => {
+            if (error === null) {
                 toast({
-                    title: `User deleted`,
+                    title: `User updated`,
                     descriptionComponent: () => (
-                        <Text>{username} was successfully deleted</Text>
+                        <Text>{user.username} was successfully updated!</Text>
                     ),
                     status: 'success',
                     isClosable: true,
                 });
 
                 closeHandler();
+            } else {
+                toast({
+                    title: 'User update failed',
+                    descriptionComponent:
+                        typeof error === 'string'
+                            ? error
+                            : "Couldn't update user",
+                    status: 'error',
+                    isClosable: true,
+                });
+            }
+        }
+    };
+
+    const onDelete = async () => {
+        const error = await deleteUser(username);
+
+        if (error === null) {
+            toast({
+                title: `User deleted`,
+                descriptionComponent: () => (
+                    <Text>{username} was successfully deleted</Text>
+                ),
+                status: 'success',
+                isClosable: true,
             });
+
+            closeHandler();
+        } else {
+            toast({
+                title: 'User deletion failed',
+                descriptionComponent:
+                    typeof error === 'string' ? error : "Couldn't delete user",
+                status: 'error',
+                isClosable: true,
+            });
+        }
     };
 
     const onReset = async () => {
@@ -136,18 +145,18 @@ const UpdateUserForm = ({
 
     useEffect(() => {
         setLoading(true);
-        const promise = dispatch(retrieveUser(username));
+        const fetchAll = async () => {
+            const user = await fetchUser(username);
 
-        promise
-            .unwrap()
-            .then(async (user) => {
+            if (user) {
                 // check if current user is the last admin
                 if (user.role === UserRolesT.admin) {
                     const response = await UsersApi.listUsers(
                         { pageSize: 1, role: UserRolesT.admin },
                         {}
                     );
-                    const adminsCount = response.data['count'];
+                    const adminsCount = response.data.count;
+
                     if (adminsCount === 1) {
                         setIsLastAdmin(true);
                     } else {
@@ -159,20 +168,10 @@ const UpdateUserForm = ({
                 // finish setting up
                 setRole(user.role);
                 setLoading(false);
-            })
-            .catch((error) => {
-                // We want to catch all abort errors as they are expected
-                // since we want to cancel all unnecessary calls.
-                // Other errors should be re-thrown.
-                if (error.name !== 'AbortError') {
-                    throw error;
-                }
-            });
-
-        return () => {
-            promise.abort();
+            }
         };
-    }, [dispatch, username]);
+        fetchAll();
+    }, [fetchUser, username]);
 
     const isDisabled = isLastAdmin && user?.role === UserRolesT.admin;
 
@@ -208,8 +207,8 @@ const UpdateUserForm = ({
                 leastDestructiveRef={cancelRef}
                 onClose={onConfirmClose}
                 size="sm"
-                closeOnEsc={!deleting}
-                closeOnOverlayClick={!deleting}
+                closeOnEsc={!deletingUser}
+                closeOnOverlayClick={!deletingUser}
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent fontSize="sm">
@@ -224,7 +223,7 @@ const UpdateUserForm = ({
                                 ref={cancelRef}
                                 onClick={onConfirmClose}
                                 size="sm"
-                                isDisabled={deleting}
+                                isDisabled={deletingUser}
                             >
                                 Cancel
                             </Button>
@@ -233,7 +232,7 @@ const UpdateUserForm = ({
                                 onClick={onDelete}
                                 ml="3"
                                 size="sm"
-                                isLoading={deleting}
+                                isLoading={deletingUser}
                             >
                                 Yes I'm sure
                             </Button>

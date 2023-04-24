@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
     VStack,
@@ -12,8 +12,24 @@ import {
     Flex,
 } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import {
+    CreationDateTableFilter,
+    LogsAccessTableFilter,
+    OwnerTableFilter,
+    PermissionsTableFilter,
+    TableFilters,
+} from '@/features/tableFilters';
+import {
+    DateFilterTag,
+    LogsAccessTableFilterTag,
+    OwnerTableFilterTag,
+    PermissionsTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
@@ -25,43 +41,28 @@ import {
     useOwner,
     usePage,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
-import { listDatasets } from '@/modules/datasets/DatasetsSlice';
-import { DatasetStubT } from '@/modules/datasets/DatasetsTypes';
 import { compilePath, PATHS } from '@/paths';
+import useDatasetsStore from '@/routes/datasets/useDatasetsStores';
 
-import {
-    AssetsTable,
-    AssetsTablePermissionsTh,
-} from '@/components/AssetsTable';
-import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
-    DateFilterTag,
-    LogsAccessTableFilterTag,
-    OwnerTableFilterTag,
-    PermissionsTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
+    AssetsTable,
+    AssetsTablePermissionsTh,
+} from '@/components/table/AssetsTable';
+import OrderingTh from '@/components/table/OrderingTh';
 import {
-    CreationDateTableFilter,
-    LogsAccessTableFilter,
-    OwnerTableFilter,
-    PermissionsTableFilter,
-    TableFilters,
-} from '@/components/TableFilters';
-import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
+    ClickableTr,
+    EmptyTr,
+    TableSkeleton,
+    Tbody,
+} from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
+import TableTitle from '@/components/table/TableTitle';
 
 const Datasets = (): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [canProcess] = useCanProcess();
@@ -71,40 +72,33 @@ const Datasets = (): JSX.Element => {
     const { creationDateAfter, creationDateBefore } = useCreationDate();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    useEffect(() => {
-        return dispatchWithAutoAbort(
-            listDatasets({
-                page,
-                ordering,
-                match,
-                owner,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                can_process: canProcess,
-                can_access_logs: canAccessLogs,
-            })
-        );
+    const { datasets, datasetsCount, fetchingDatasets, fetchDatasets } =
+        useDatasetsStore();
+
+    const fetchParams = useMemo(() => {
+        return {
+            page,
+            ordering,
+            match,
+            owner,
+            creation_date_after: creationDateAfter,
+            creation_date_before: endOfDay(creationDateBefore),
+            can_process: canProcess,
+            can_access_logs: canAccessLogs,
+        };
     }, [
-        dispatchWithAutoAbort,
-        page,
-        ordering,
-        match,
-        owner,
+        canAccessLogs,
+        canProcess,
         creationDateAfter,
         creationDateBefore,
-        canProcess,
-        canAccessLogs,
+        match,
+        ordering,
+        owner,
+        page,
     ]);
-
-    const datasets: DatasetStubT[] = useAppSelector(
-        (state) => state.datasets.datasets
-    );
-    const datasetsLoading = useAppSelector(
-        (state) => state.datasets.datasetsLoading
-    );
-    const datasetsCount = useAppSelector(
-        (state) => state.datasets.datasetsCount
-    );
+    useEffect(() => {
+        fetchDatasets(fetchParams);
+    }, [fetchDatasets, fetchParams]);
 
     const context = useTableFiltersContext('dataset');
     const { onPopoverOpen } = context;
@@ -135,21 +129,8 @@ const Datasets = (): JSX.Element => {
                         <SearchBar />
                     </HStack>
                     <RefreshButton
-                        loading={datasetsLoading}
-                        dispatchWithAutoAbort={dispatchWithAutoAbort}
-                        actionBuilder={() =>
-                            listDatasets({
-                                page,
-                                ordering,
-                                match,
-                                owner,
-                                creation_date_after: creationDateAfter,
-                                creation_date_before:
-                                    endOfDay(creationDateBefore),
-                                can_process: canProcess,
-                                can_access_logs: canAccessLogs,
-                            })
-                        }
+                        onClick={() => fetchDatasets(fetchParams)}
+                        isLoading={fetchingDatasets}
                     />
                 </Flex>
                 <TableFilterTags>
@@ -214,11 +195,13 @@ const Datasets = (): JSX.Element => {
                                 </AssetsTablePermissionsTh>
                             </Tr>
                         </Thead>
-                        <Tbody data-cy={datasetsLoading ? 'loading' : 'loaded'}>
-                            {!datasetsLoading && datasets.length === 0 && (
+                        <Tbody
+                            data-cy={fetchingDatasets ? 'loading' : 'loaded'}
+                        >
+                            {!fetchingDatasets && datasets.length === 0 && (
                                 <EmptyTr nbColumns={3} asset="dataset" />
                             )}
-                            {datasetsLoading ? (
+                            {fetchingDatasets ? (
                                 <TableSkeleton
                                     itemCount={datasetsCount}
                                     currentPage={page}

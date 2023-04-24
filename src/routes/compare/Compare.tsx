@@ -2,21 +2,21 @@ import { useRoute } from 'wouter';
 
 import { HStack, Flex, Box } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import PerfBrowser from '@/features/perfBrowser/PerfBrowser';
+import PerfSidebarComputePlans from '@/features/perfBrowser/PerfSidebarComputePlans';
+import usePerfBrowser, {
+    PerfBrowserContext,
+} from '@/features/perfBrowser/usePerfBrowser';
+import useSeriesStore from '@/features/series/useSeriesStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import usePerfBrowser, { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { retrieveComputePlans } from '@/modules/computePlans/CompareSlice';
-import { loadSeries } from '@/modules/series/SeriesSlice';
 import { PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
-import PerfBrowser from '@/components/PerfBrowser';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
-import PerfSidebarComputePlans from '@/components/PerfSidebarComputePlans';
 
 import CompareBreadcrumbs from './components/CompareBreadcrumbs';
+import useCompareStore from './useCompareStore';
 
 const Compare = (): JSX.Element => {
     const [, params] = useRoute(PATHS.COMPARE);
@@ -27,33 +27,19 @@ const Compare = (): JSX.Element => {
         []
     );
 
-    const dispatchWithAutoAbortSeries = useDispatchWithAutoAbort();
-    const dispatchWithAutoAbortComputePlans = useDispatchWithAutoAbort();
+    const { fetchComputePlans, computePlans } = useCompareStore();
+    const { series, fetchingSeries, fetchSeries } = useSeriesStore();
 
     useEffectOnce(() => {
-        const destructors: (() => void)[] = [];
-        destructors.push(
-            dispatchWithAutoAbortComputePlans(
-                retrieveComputePlans({ computePlanKeys: keys })
-            )
-        );
-        destructors.push(dispatchWithAutoAbortSeries(loadSeries(keys)));
-        return () => {
-            for (const destructor of destructors) {
-                destructor();
-            }
-        };
+        fetchComputePlans(keys);
+        fetchSeries(keys);
     });
-
-    const loading = useAppSelector((state) => state.series.loading);
-    const series = useAppSelector((state) => state.series.series);
-    const computePlans = useAppSelector((state) => state.compare.computePlans);
 
     const { context } = usePerfBrowser(
         series,
         computePlans,
         'computePlan',
-        loading
+        fetchingSeries
     );
 
     return (

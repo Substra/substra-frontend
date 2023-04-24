@@ -6,7 +6,7 @@ import {
     RiUserLine,
 } from 'react-icons/ri';
 
-import { PermissionT } from '@/modules/common/CommonTypes';
+import { PermissionT } from '@/types/CommonTypes';
 
 type PermissionTagProps = {
     permission: PermissionT;

@@ -1,7 +1,8 @@
 import { HStack, Text } from '@chakra-ui/react';
 import { RiDatabase2Fill } from 'react-icons/ri';
 
-import CopyIconButton from '@/components/CopyIconButton';
+import CopyIconButton from '@/features/copy/CopyIconButton';
+
 import DownloadIconButton from '@/components/DownloadIconButton';
 import {
     DrawerSection,

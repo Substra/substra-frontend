@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 import { VStack } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
@@ -18,13 +17,13 @@ import {
     useWorker,
 } from '@/hooks/useSyncedState';
 import { endOfDay } from '@/libs/utils';
-import { listTasks } from '@/modules/tasks/TasksSlice';
 import { PATHS } from '@/paths';
 
-import TableTitle from '@/components/TableTitle';
-import TasksTable from '@/components/TasksTable';
+import TableTitle from '@/components/table/TableTitle';
+import TasksTable from '@/components/table/TasksTable';
 
 import TaskDrawer from './components/TaskDrawer';
+import useTasksStore from './useTasksStore';
 
 const Tasks = (): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
@@ -42,13 +41,11 @@ const Tasks = (): JSX.Element => {
     const taskKey = useKeyFromPath(PATHS.TASK);
     useAssetListDocumentTitleEffect('Tasks list', taskKey);
 
-    const tasks = useAppSelector((state) => state.tasks.tasks);
-    const count = useAppSelector((state) => state.tasks.tasksCount);
-    const loading = useAppSelector((state) => state.tasks.tasksLoading);
+    const { tasks, tasksCount, fetchingTasks, fetchTasks } = useTasksStore();
 
     const list = useCallback(
         () =>
-            listTasks({
+            fetchTasks({
                 page,
                 ordering,
                 match,
@@ -77,6 +74,7 @@ const Tasks = (): JSX.Element => {
             worker,
             durationMin,
             durationMax,
+            fetchTasks,
         ]
     );
 
@@ -95,10 +93,10 @@ const Tasks = (): JSX.Element => {
             />
             <TableTitle title="Tasks" />
             <TasksTable
-                loading={loading}
+                loading={fetchingTasks}
                 list={list}
                 tasks={tasks}
-                count={count}
+                count={tasksCount}
             />
         </VStack>
     );

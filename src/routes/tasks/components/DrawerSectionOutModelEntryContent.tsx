@@ -2,8 +2,8 @@ import { Icon, HStack, Text, Tooltip } from '@chakra-ui/react';
 import { RiLockLine } from 'react-icons/ri';
 
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
-import { ModelT } from '@/modules/tasks/ModelsTypes';
-import { TaskStatus } from '@/modules/tasks/TasksTypes';
+import { ModelT } from '@/types/ModelsTypes';
+import { TaskStatus } from '@/types/TasksTypes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 

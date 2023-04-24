@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Inverted duration filter in tasks table (#190)
+-   Big refactor to use zustand instead of redux to handle store (#159)
+-   Change files architecture (#159)
 
 ## [0.40.0] - 2023-03-29
 

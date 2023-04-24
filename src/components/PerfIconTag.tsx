@@ -1,8 +1,8 @@
 import { Icon, Tag } from '@chakra-ui/react';
 import { RiGitCommitLine } from 'react-icons/ri';
 
-import usePerfBrowserColors from '@/hooks/usePerfBrowserColors';
-import usePerfBrowserPointStyles from '@/hooks/usePerfBrowserPointStyles';
+import usePerfBrowserColors from '@/features/perfBrowser/usePerfBrowserColors';
+import usePerfBrowserPointStyles from '@/features/perfBrowser/usePerfBrowserPointStyles';
 
 type PerfIconTagProps = {
     worker: string;

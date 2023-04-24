@@ -1,7 +1,5 @@
 import { VStack } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-
 import {
     DrawerSection,
     DrawerSectionDateEntry,
@@ -11,10 +9,11 @@ import {
 } from '@/components/DrawerSection';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
+import useDatasetStore from '../useDatasetStore';
 import DataSamplesDrawerSection from './DataSamplesDrawerSection';
 
 const DetailsSidebar = (): JSX.Element => {
-    const dataset = useAppSelector((state) => state.datasets.dataset);
+    const { dataset } = useDatasetStore();
     return (
         <VStack spacing="8" width="md" alignItems="stretch" flexShrink="0">
             <DrawerSection title="General">

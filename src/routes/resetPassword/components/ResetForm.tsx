@@ -17,10 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import * as UsersApi from '@/api/UsersApi';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
-import * as UsersApi from '@/modules/users/UsersApi';
+import { PATHS } from '@/paths';
+import NotFound from '@/routes/notfound/NotFound';
 import {
     isPasswordValid,
     hasCorrectLength,
@@ -28,11 +29,9 @@ import {
     hasNumber,
     hasSpecialChar,
     isDifferentFromUsername,
-} from '@/modules/users/UsersUtils';
-import { PATHS } from '@/paths';
-import NotFound from '@/routes/notfound/NotFound';
-
-import PasswordValidationMessage from '@/components/PasswordValidationMessage';
+} from '@/routes/users/UsersUtils';
+import PasswordValidationMessage from '@/routes/users/components/PasswordValidationMessage';
+import useUsersStore from '@/routes/users/useUsersStore';
 
 const ResetForm = (): JSX.Element => {
     const [, setLocation] = useLocation();
@@ -49,7 +48,7 @@ const ResetForm = (): JSX.Element => {
     const urlSearchParams = getUrlSearchParams();
     const resetToken = urlSearchParams.get('token');
 
-    const userLoading = useAppSelector((state) => state.users.userLoading);
+    const { fetchingUser } = useUsersStore();
 
     const isEmpty = !password.length;
 
@@ -171,7 +170,7 @@ const ResetForm = (): JSX.Element => {
                                 password === e.target.value
                             );
                         }}
-                        disabled={userLoading}
+                        disabled={fetchingUser}
                         isRequired
                     />
                     <FormErrorMessage>
@@ -180,8 +179,8 @@ const ResetForm = (): JSX.Element => {
                 </FormControl>
 
                 <Button
-                    disabled={userLoading}
-                    isLoading={userLoading}
+                    disabled={fetchingUser}
+                    isLoading={fetchingUser}
                     type="submit"
                     colorScheme="primary"
                     width="100%"

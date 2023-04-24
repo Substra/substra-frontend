@@ -6,8 +6,8 @@ import {
     ComputePlanStatus,
     ComputePlanT,
     isComputePlan,
-} from '@/modules/computePlans/ComputePlansTypes';
-import { TaskT } from '@/modules/tasks/TasksTypes';
+} from '@/types/ComputePlansTypes';
+import { TaskT } from '@/types/TasksTypes';
 
 type DurationProps = {
     asset: ComputePlanT | TaskT;

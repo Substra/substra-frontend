@@ -12,12 +12,12 @@ import {
     ComputePlanStatus,
     ComputePlanStatusDescription,
     statusDescriptionByComputePlanStatus,
-} from '@/modules/computePlans/ComputePlansTypes';
+} from '@/types/ComputePlansTypes';
 import {
     statusDescriptionByTaskStatus,
     TaskStatus,
     TaskStatusDescription,
-} from '@/modules/tasks/TasksTypes';
+} from '@/types/TasksTypes';
 
 enum ComputePlanStatusLabel {
     canceled = 'Canceled',

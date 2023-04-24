@@ -13,11 +13,11 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-import { getAllPages } from '@/modules/common/CommonUtils';
-import { getAssetKindLabel } from '@/modules/functions/FunctionsUtils';
-import { ModelT } from '@/modules/tasks/ModelsTypes';
-import * as TasksApi from '@/modules/tasks/TasksApi';
-import { TaskT, TaskStatus, TaskIOT } from '@/modules/tasks/TasksTypes';
+import * as TasksApi from '@/api/TasksApi';
+import { getAllPages } from '@/api/request';
+import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
+import { ModelT } from '@/types/ModelsTypes';
+import { TaskT, TaskStatus, TaskIOT } from '@/types/TasksTypes';
 
 import { DrawerSection } from '@/components/DrawerSection';
 
@@ -130,7 +130,7 @@ const TaskOutputsDrawerSection = ({
                             ))}
                         {!taskLoading &&
                             task &&
-                            Object.values(taskOutputsAssets).map((output) => {
+                            taskOutputsAssets.map((output) => {
                                 const multiple = isMultipleOutput(
                                     task,
                                     output.identifier

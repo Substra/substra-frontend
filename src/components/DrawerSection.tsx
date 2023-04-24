@@ -18,10 +18,10 @@ import {
 } from '@chakra-ui/react';
 import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
+import CopyIconButton from '@/features/copy/CopyIconButton';
 import { capitalize, formatDate } from '@/libs/utils';
-import { PermissionT } from '@/modules/common/CommonTypes';
+import { PermissionT } from '@/types/CommonTypes';
 
-import CopyIconButton from '@/components/CopyIconButton';
 import PermissionTag from '@/components/PermissionTag';
 
 export const DrawerSectionHeading = ({

@@ -1,3 +1,5 @@
+import { ASSET_LABEL, AssetT } from '@/types/CommonTypes';
+
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'numeric',
@@ -157,4 +159,18 @@ export const endOfDay = (dateStringISO: string): string => {
 export const capitalize = (word: string) => {
     const lower = word.toLowerCase();
     return word.charAt(0).toUpperCase() + lower.slice(1);
+};
+
+export const getAssetLabel = (
+    asset: AssetT,
+    { capitalized, plural }: { capitalized?: boolean; plural?: boolean }
+): string => {
+    let label = ASSET_LABEL[asset];
+    if (capitalized) {
+        label = capitalize(label);
+    }
+    if (plural) {
+        label = label + 's';
+    }
+    return label;
 };

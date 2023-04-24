@@ -12,13 +12,13 @@ import {
     Flex,
 } from '@chakra-ui/react';
 
+import * as UsersApi from '@/api/UsersApi';
 import LoginBackground from '@/assets/login-background.png';
 import SubstraLogoBlack from '@/assets/svg/substra-full-name-logo.svg';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
-import * as UsersApi from '@/modules/users/UsersApi';
 import { PATHS } from '@/paths';
 
 import NotFound from '../notfound/NotFound';

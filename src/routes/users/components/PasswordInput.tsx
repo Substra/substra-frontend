@@ -17,10 +17,10 @@ import {
     hasNumber,
     hasSpecialChar,
     isDifferentFromUsername,
-} from '@/modules/users/UsersUtils';
+} from '@/routes/users/UsersUtils';
+import PasswordValidationMessage from '@/routes/users/components/PasswordValidationMessage';
 
 import { DrawerSectionEntry } from '@/components/DrawerSection';
-import PasswordValidationMessage from '@/components/PasswordValidationMessage';
 
 type PasswordInputProps = {
     value: string;

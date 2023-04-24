@@ -14,19 +14,16 @@ import {
 
 import LoginBackground from '@/assets/login-background.png';
 import SubstraLogo from '@/assets/svg/substra-full-name-logo.svg';
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import useAuthStore from '@/features/auth/useAuthStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import { logOut } from '@/modules/me/MeSlice';
 import { PATHS } from '@/paths';
 
 import LoginForm from './components/LoginForm';
 
 const Login = (): JSX.Element => {
-    const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
 
-    const authenticated = useAppSelector((state) => state.me.authenticated);
+    const { authenticated, fetchLogout } = useAuthStore();
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const nextLocation = urlSearchParams.get('next') || PATHS.COMPUTE_PLANS;
@@ -36,14 +33,16 @@ const Login = (): JSX.Element => {
 
     useEffect(() => {
         if (forceLogout && authenticated) {
-            dispatch(logOut()).then(() =>
-                setLocation(encodeURI(`${PATHS.LOGIN}?next=${nextLocation}`))
-            );
+            const logOut = async () => {
+                await fetchLogout();
+                setLocation(encodeURI(`${PATHS.LOGIN}?next=${nextLocation}`));
+            };
+            logOut();
         }
         if (!forceLogout && authenticated) {
             setLocation(nextLocation);
         }
-    }, [forceLogout, authenticated, dispatch, setLocation, nextLocation]);
+    }, [forceLogout, authenticated, fetchLogout, setLocation, nextLocation]);
 
     return (
         <HStack

@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { RiExternalLinkLine } from 'react-icons/ri';
 
-import useCookie, { toBool } from '@/hooks/useCookie';
-import useCookieSettings from '@/hooks/useCookieSettings';
+import useCookie, { toBool } from '@/features/cookies/useCookie';
+import useCookieSettings from '@/features/cookies/useCookieSettings';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import { useToast } from '@/hooks/useToast';
 import NotFound from '@/routes/notfound/NotFound';

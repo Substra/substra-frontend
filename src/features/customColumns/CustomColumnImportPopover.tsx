@@ -19,8 +19,8 @@ import { RiDraftLine } from 'react-icons/ri';
 
 import { useToast } from '@/hooks/useToast';
 
-import { ColumnT } from './CustomColumnsTypes';
-import { isColumn, includesColumn } from './CustomColumnsUtils';
+import { ColumnT, isColumn } from './CustomColumnsTypes';
+import { includesColumn } from './CustomColumnsUtils';
 
 type CustomColumnImportPopoverProps = {
     allColumns: ColumnT[];

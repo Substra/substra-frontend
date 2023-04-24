@@ -1,29 +1,8 @@
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 
-import { DispatchWithAutoAbortProps } from '@/hooks/useDispatchWithAutoAbort';
-import useHandleRefresh, { ActionBuilderT } from '@/hooks/useHandleRefresh';
-
-const RefreshButton = ({
-    loading,
-    actionBuilder,
-    dispatchWithAutoAbort,
-}: {
-    loading: boolean;
-    actionBuilder: ActionBuilderT;
-    dispatchWithAutoAbort: DispatchWithAutoAbortProps;
-}): JSX.Element => {
-    const handleRefresh = useHandleRefresh(
-        actionBuilder,
-        dispatchWithAutoAbort
-    );
+const RefreshButton = (props: ButtonProps): JSX.Element => {
     return (
-        <Button
-            size="sm"
-            variant="outline"
-            onClick={handleRefresh}
-            isLoading={loading}
-            loadingText="Loading"
-        >
+        <Button size="sm" variant="outline" loadingText="Loading" {...props}>
             Refresh
         </Button>
     );

@@ -37,7 +37,12 @@ export const useToast = () => {
             position: 'bottom-left',
             duration,
             render: ({ onClose }) => (
-                <Alert variant="subtle" status={options.status} width="sm">
+                <Alert
+                    variant="subtle"
+                    status={options.status}
+                    width="sm"
+                    maxHeight="100vh"
+                >
                     {options.status === 'success' && (
                         <AlertIcon as={RiCheckboxCircleLine} />
                     )}

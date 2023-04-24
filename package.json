@@ -23,7 +23,6 @@
         "@chakra-ui/react": "2.3.5",
         "@emotion/react": "11.9.0",
         "@emotion/styled": "11.8.1",
-        "@reduxjs/toolkit": "1.8.1",
         "axios": "0.27.2",
         "chart.js": "3.7.1",
         "chartjs-plugin-zoom": "1.1.1",
@@ -37,12 +36,12 @@
         "react-flow-renderer": "10.3.7",
         "react-icons": "4.3.1",
         "react-markdown": "8.0.3",
-        "react-redux": "8.0.1",
         "react-syntax-highlighter": "15.5.0",
         "remark-gfm": "3.0.1",
         "universal-cookie": "4.0.4",
         "uuid": "8.3.2",
-        "wouter": "2.7.5"
+        "wouter": "2.7.5",
+        "zustand": "4.3.2"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "5.16.4",

@@ -13,21 +13,21 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useAuthStore from '@/features/auth/useAuthStore';
+import CopyButton from '@/features/copy/CopyButton';
 
-import CopyButton from '@/components/CopyButton';
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
 const About = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const backendVersion = useAppSelector((state) => state.me.info.version);
-    const orchestratorVersion = useAppSelector(
-        (state) => state.me.info.orchestrator_version
-    );
-    const chaincodeVersion = useAppSelector(
-        (state) => state.me.info.chaincode_version
-    );
+    const {
+        info: {
+            version: backendVersion,
+            orchestrator_version: orchestratorVersion,
+            chaincode_version: chaincodeVersion,
+        },
+    } = useAuthStore();
 
     return (
         <>

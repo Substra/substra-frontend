@@ -3,10 +3,35 @@ import { useEffect, useMemo, useState } from 'react';
 import { VStack, Table, Box, HStack, Flex, Button } from '@chakra-ui/react';
 import { RiDownloadLine } from 'react-icons/ri';
 
+import { exportPerformances } from '@/api/ComputePlansApi';
+import { downloadBlob } from '@/api/request';
 import CustomColumnsModal from '@/features/customColumns/CustomColumnsModal';
 import useCustomColumns from '@/features/customColumns/useCustomColumns';
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import useMetadataStore from '@/features/metadata/useMetadataStore';
+import {
+    TableFilters,
+    ComputePlanStatusTableFilter,
+    ComputePlanFavoritesTableFilter,
+    CreationDateTableFilter,
+    DurationTableFilter,
+    StartDateTableFilter,
+    EndDateTableFilter,
+    MetadataTableFilter,
+} from '@/features/tableFilters';
+import CreatorTableFilter from '@/features/tableFilters/CreatorTableFilter';
+import {
+    CreatorTableFilterTag,
+    DateFilterTag,
+    DurationFilterTag,
+    FavoritesTableFilterTag,
+    MetadataFilterTag,
+    StatusTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
 import { useLocalStorageKeyArrayState } from '@/hooks/useLocalStorageState';
@@ -23,48 +48,21 @@ import {
     useStartDate,
     useStatus,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
-import { downloadBlob } from '@/libs/request';
 import { endOfDay } from '@/libs/utils';
-import { exportPerformances } from '@/modules/computePlans/ComputePlansApi';
-import { listComputePlans } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import BulkSelection from '@/routes/computePlans/components/BulkSelection';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
-import BulkSelection from '@/components/BulkSelection';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import { EmptyTr, Tbody } from '@/components/Table';
-import {
-    CreatorTableFilterTag,
-    DateFilterTag,
-    DurationFilterTag,
-    FavoritesTableFilterTag,
-    MetadataFilterTag,
-    StatusTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
-import {
-    TableFilters,
-    ComputePlanStatusTableFilter,
-    ComputePlanFavoritesTableFilter,
-    CreationDateTableFilter,
-    DurationTableFilter,
-    StartDateTableFilter,
-    EndDateTableFilter,
-    MetadataTableFilter,
-} from '@/components/TableFilters';
-import CreatorTableFilter from '@/components/TableFilters/CreatorTableFilter';
-import TablePagination from '@/components/TablePagination';
+import { EmptyTr, Tbody } from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
 
 import ComputePlanTHead from './components/ComputePlanTHead';
 import ComputePlanTr from './components/ComputePlanTr';
 import ComputePlanTrSkeleton from './components/ComputePlanTrSkeleton';
+import useComputePlansStore from './useComputePlansStore';
 
 const ComputePlans = (): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('-creation_date');
@@ -76,6 +74,13 @@ const ComputePlans = (): JSX.Element => {
     const { durationMin, durationMax } = useDuration();
     const [metadataFilter] = useMetadataString();
     const [creator] = useCreator();
+
+    const {
+        computePlans,
+        fetchingComputePlans,
+        computePlansCount,
+        fetchComputePlans,
+    } = useComputePlansStore();
 
     const {
         state: selectedComputePlans,
@@ -133,27 +138,11 @@ const ComputePlans = (): JSX.Element => {
         ]
     );
 
-    useEffect(
-        () =>
-            dispatchWithAutoAbort(
-                listComputePlans({ page, ordering, ...filters })
-            ),
-        [dispatchWithAutoAbort, page, ordering, filters]
-    );
+    useEffect(() => {
+        fetchComputePlans({ page, ordering, ...filters });
+    }, [fetchComputePlans, page, ordering, filters]);
 
-    const computePlans: ComputePlanT[] = useAppSelector(
-        (state) => state.computePlans.computePlans
-    );
-
-    const computePlansLoading = useAppSelector(
-        (state) => state.computePlans.computePlansLoading
-    );
-
-    const computePlansCount = useAppSelector(
-        (state) => state.computePlans.computePlansCount
-    );
-
-    const metadata = useAppSelector((state) => state.metadata.metadata);
+    const { metadata } = useMetadataStore();
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Compute plans list'),
@@ -231,15 +220,14 @@ const ComputePlans = (): JSX.Element => {
                     </HStack>
                     <HStack spacing="2.5">
                         <RefreshButton
-                            loading={computePlansLoading}
-                            actionBuilder={() =>
-                                listComputePlans({
+                            isLoading={fetchingComputePlans}
+                            onClick={() =>
+                                fetchComputePlans({
                                     page: page,
                                     ordering: ordering,
                                     ...filters,
                                 })
                             }
-                            dispatchWithAutoAbort={dispatchWithAutoAbort}
                         />
                         <CustomColumnsModal
                             columns={columns}
@@ -284,9 +272,11 @@ const ComputePlans = (): JSX.Element => {
                             columns={columns}
                         />
                         <Tbody
-                            data-cy={computePlansLoading ? 'loading' : 'loaded'}
+                            data-cy={
+                                fetchingComputePlans ? 'loading' : 'loaded'
+                            }
                         >
-                            {!computePlansLoading &&
+                            {!fetchingComputePlans &&
                                 (computePlans.length === 0 ||
                                     isFavoritesOnlyAndHasNoResults) && (
                                     <EmptyTr
@@ -294,14 +284,14 @@ const ComputePlans = (): JSX.Element => {
                                         asset="compute_plan"
                                     />
                                 )}
-                            {computePlansLoading && (
+                            {fetchingComputePlans && (
                                 <ComputePlanTrSkeleton
                                     computePlansCount={computePlansCount}
                                     page={page}
                                     columns={columns}
                                 />
                             )}
-                            {!computePlansLoading &&
+                            {!fetchingComputePlans &&
                                 !isFavoritesOnlyAndHasNoResults &&
                                 computePlans.map((computePlan) => (
                                     <ComputePlanTr

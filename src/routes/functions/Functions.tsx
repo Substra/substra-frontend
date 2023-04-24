@@ -12,8 +12,22 @@ import {
     Flex,
 } from '@chakra-ui/react';
 
-import useAppSelector from '@/hooks/useAppSelector';
-import useDispatchWithAutoAbort from '@/hooks/useDispatchWithAutoAbort';
+import {
+    TableFilters,
+    OwnerTableFilter,
+    CreationDateTableFilter,
+    PermissionsTableFilter,
+} from '@/features/tableFilters';
+import {
+    DateFilterTag,
+    OwnerTableFilterTag,
+    PermissionsTableFilterTag,
+    TableFilterTags,
+} from '@/features/tableFilters/TableFilterTags';
+import {
+    TableFiltersContext,
+    useTableFiltersContext,
+} from '@/features/tableFilters/useTableFilters';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
@@ -25,42 +39,30 @@ import {
     useOwner,
     usePage,
 } from '@/hooks/useSyncedState';
-import {
-    TableFiltersContext,
-    useTableFiltersContext,
-} from '@/hooks/useTableFilters';
 import { endOfDay, formatDate } from '@/libs/utils';
-import { listFunctions } from '@/modules/functions/FunctionsSlice';
 import { compilePath, PATHS } from '@/paths';
 
-import {
-    AssetsTable,
-    AssetsTablePermissionsTh,
-} from '@/components/AssetsTable';
-import OrderingTh from '@/components/OrderingTh';
 import PermissionTag from '@/components/PermissionTag';
 import RefreshButton from '@/components/RefreshButton';
 import SearchBar from '@/components/SearchBar';
-import { ClickableTr, EmptyTr, TableSkeleton, Tbody } from '@/components/Table';
 import {
-    DateFilterTag,
-    OwnerTableFilterTag,
-    PermissionsTableFilterTag,
-    TableFilterTags,
-} from '@/components/TableFilterTags';
+    AssetsTable,
+    AssetsTablePermissionsTh,
+} from '@/components/table/AssetsTable';
+import OrderingTh from '@/components/table/OrderingTh';
 import {
-    TableFilters,
-    OwnerTableFilter,
-    CreationDateTableFilter,
-    PermissionsTableFilter,
-} from '@/components/TableFilters';
-import TablePagination from '@/components/TablePagination';
-import TableTitle from '@/components/TableTitle';
+    ClickableTr,
+    EmptyTr,
+    TableSkeleton,
+    Tbody,
+} from '@/components/table/Table';
+import TablePagination from '@/components/table/TablePagination';
+import TableTitle from '@/components/table/TableTitle';
 
 import FunctionDrawer from './components/FunctionDrawer';
+import useFunctionsStore from './useFunctionsStore';
 
 const Functions = (): JSX.Element => {
-    const dispatchWithAutoAbort = useDispatchWithAutoAbort();
     const [page] = usePage();
     const [match] = useMatch();
     const [canProcess] = useCanProcess();
@@ -69,28 +71,21 @@ const Functions = (): JSX.Element => {
     const { creationDateAfter, creationDateBefore } = useCreationDate();
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
-    const functions = useAppSelector((state) => state.functions.functions);
-    const functionsLoading = useAppSelector(
-        (state) => state.functions.functionsLoading
-    );
-    const functionsCount = useAppSelector(
-        (state) => state.functions.functionsCount
-    );
+    const { functions, functionsCount, fetchingFunctions, fetchFunctions } =
+        useFunctionsStore();
 
     useEffect(() => {
-        return dispatchWithAutoAbort(
-            listFunctions({
-                page,
-                ordering,
-                match,
-                owner,
-                creation_date_after: creationDateAfter,
-                creation_date_before: endOfDay(creationDateBefore),
-                can_process: canProcess,
-            })
-        );
+        fetchFunctions({
+            page,
+            ordering,
+            match,
+            owner,
+            creation_date_after: creationDateAfter,
+            creation_date_before: endOfDay(creationDateBefore),
+            can_process: canProcess,
+        });
     }, [
-        dispatchWithAutoAbort,
+        fetchFunctions,
         page,
         ordering,
         match,
@@ -128,10 +123,9 @@ const Functions = (): JSX.Element => {
                         <SearchBar />
                     </HStack>
                     <RefreshButton
-                        loading={functionsLoading}
-                        dispatchWithAutoAbort={dispatchWithAutoAbort}
-                        actionBuilder={() =>
-                            listFunctions({
+                        isLoading={fetchingFunctions}
+                        onClick={() =>
+                            fetchFunctions({
                                 page,
                                 ordering,
                                 match,
@@ -203,12 +197,12 @@ const Functions = (): JSX.Element => {
                             </Tr>
                         </Thead>
                         <Tbody
-                            data-cy={functionsLoading ? 'loading' : 'loaded'}
+                            data-cy={fetchingFunctions ? 'loading' : 'loaded'}
                         >
-                            {!functionsLoading && functionsCount === 0 && (
+                            {!fetchingFunctions && functionsCount === 0 && (
                                 <EmptyTr nbColumns={2} asset="function" />
                             )}
-                            {functionsLoading ? (
+                            {fetchingFunctions ? (
                                 <TableSkeleton
                                     itemCount={functionsCount}
                                     currentPage={page}

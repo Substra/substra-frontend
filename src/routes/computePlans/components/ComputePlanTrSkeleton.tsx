@@ -1,14 +1,14 @@
 import { Skeleton, Text, Progress, Td, VStack, Flex } from '@chakra-ui/react';
 
-import { ColumnT } from '@/features/customColumns/CustomColumnsTypes';
 import {
+    ColumnT,
     GeneralColumnName,
-    getColumnId,
-} from '@/features/customColumns/CustomColumnsUtils';
-import { ComputePlanStatus } from '@/modules/computePlans/ComputePlansTypes';
+} from '@/features/customColumns/CustomColumnsTypes';
+import { getColumnId } from '@/features/customColumns/CustomColumnsUtils';
+import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
 import Status from '@/components/Status';
-import { TableSkeleton } from '@/components/Table';
+import { TableSkeleton } from '@/components/table/Table';
 
 const ComputePlanProgressSkeleton = (): JSX.Element => (
     <Skeleton>

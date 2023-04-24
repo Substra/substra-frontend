@@ -22,19 +22,20 @@ import {
 } from '@chakra-ui/react';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useAuthStore from '@/features/auth/useAuthStore';
+import CopyButton from '@/features/copy/CopyButton';
 import { shortDateFormatter } from '@/libs/utils';
-
-import CopyButton from '@/components/CopyButton';
 
 const Help = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const backendVersion = useAppSelector((state) => state.me.info.version);
-    const orchestratorVersion = useAppSelector(
-        (state) => state.me.info.orchestrator_version
-    );
-    const userId = useAppSelector((state) => state.me.payload.user_id);
+    const {
+        info: {
+            version: backendVersion,
+            orchestrator_version: orchestratorVersion,
+        },
+        loginData: { user_id: userId },
+    } = useAuthStore();
 
     const date = new Date();
 

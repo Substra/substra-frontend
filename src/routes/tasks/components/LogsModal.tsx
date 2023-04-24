@@ -12,14 +12,13 @@ import {
     Box,
 } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
-import { URLS } from '@/modules/tasks/TasksApi';
-import { retrieveLogs } from '@/modules/tasks/TasksSlice';
-import { TaskT } from '@/modules/tasks/TasksTypes';
+import CopyIconButton from '@/features/copy/CopyIconButton';
+import { API_PATHS, compilePath } from '@/paths';
+import { TaskT } from '@/types/TasksTypes';
 
-import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
+
+import useTaskStore from '../useTaskStore';
 
 const CodeHighlighter = React.lazy(
     () => import('@/components/CodeHighlighter')
@@ -33,13 +32,11 @@ type LogsModalProps = {
 const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
     const initialFocusRef = useRef(null);
 
-    const logs = useAppSelector((state) => state.tasks.logs);
-    const logsLoading = useAppSelector((state) => state.tasks.logsLoading);
+    const { logs, fetchingLogs, fetchLogs } = useTaskStore();
 
-    const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(retrieveLogs(task.key));
-    }, [dispatch, task.key]);
+        fetchLogs(task.key);
+    }, [fetchLogs, task.key]);
 
     return (
         <Modal
@@ -75,10 +72,9 @@ const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
                             variant="ghost"
                         />
                         <DownloadIconButton
-                            storageAddress={URLS.LOGS_RETRIEVE.replace(
-                                '__KEY__',
-                                task.key
-                            )}
+                            storageAddress={compilePath(API_PATHS.LOGS, {
+                                key: task.key,
+                            })}
                             filename={`logs_${task.key}`}
                             aria-label="Download logs"
                             variant="ghost"
@@ -103,9 +99,9 @@ const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
                     fontSize="xs"
                     overflow="auto"
                 >
-                    {logsLoading && <Text padding="6">Loading</Text>}
-                    {!logsLoading && !logs && <Text padding="6">N/A</Text>}
-                    {!logsLoading && logs && (
+                    {fetchingLogs && <Text padding="6">Loading</Text>}
+                    {!fetchingLogs && !logs && <Text padding="6">N/A</Text>}
+                    {!fetchingLogs && logs && (
                         <Suspense fallback={<Text padding="6">Loading</Text>}>
                             <CodeHighlighter
                                 language="python-repl"

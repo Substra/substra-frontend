@@ -1,57 +1,52 @@
 import { useState } from 'react';
 
-import { unwrapResult } from '@reduxjs/toolkit';
 import { Route, Switch, useLocation, useRoute } from 'wouter';
 
 import { Flex, Spinner } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
+import CookieBanner from '@/features/cookies/CookieBanner';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import { refreshToken, retrieveInfo } from '@/modules/me/MeSlice';
-import { listMetadata } from '@/modules/metadata/MetadataSlice';
-import { listOrganizations } from '@/modules/organizations/OrganizationsSlice';
 import { PATHS } from '@/paths';
 import { ROUTES } from '@/routes';
 import NotFound from '@/routes/notfound/NotFound';
 
-import CookieBanner from '@/components/CookieBanner';
 import AppLayout from '@/components/layout/applayout/AppLayout';
 
+import useAuthStore from './features/auth/useAuthStore';
+import useMetadataStore from './features/metadata/useMetadataStore';
+import useOrganizationsStore from './features/organizations/useOrganizationsStore';
+
 const App = (): JSX.Element => {
-    const dispatch = useAppDispatch();
     const [, setLocation] = useLocation();
     const [onLoginPage] = useRoute(PATHS.LOGIN);
     const [onResetPage] = useRoute(PATHS.RESET_PASSWORD);
     const [checkingCredentials, setCheckingCredentials] = useState(true);
+
+    const { postRefresh, fetchInfo } = useAuthStore();
+    const { fetchOrganizations } = useOrganizationsStore();
+    const { fetchMetadata } = useMetadataStore();
 
     useEffectOnce(() => {
         /**
          * Perform authentication check at init.
          * If the refreshToken is expired, then redirect to the login page.
          */
-        dispatch(retrieveInfo(false));
-        dispatch(refreshToken())
-            .then(unwrapResult)
-            .then(
-                () => {
-                    return Promise.all([
-                        dispatch(listOrganizations()),
-                        dispatch(retrieveInfo(true)),
-                        dispatch(listMetadata()),
-                    ]);
-                },
-                () => {
-                    if (!onLoginPage && !onResetPage) {
-                        const url = encodeURI(
-                            `${PATHS.LOGIN}?next=${window.location.pathname}${window.location.search}`
-                        );
-                        setLocation(url);
-                    }
-                }
-            )
-            .finally(() => {
-                setCheckingCredentials(false);
-            });
+        fetchInfo(false);
+        const fetchAll = async () => {
+            const refreshToken = await postRefresh();
+            if (refreshToken !== null) {
+                fetchOrganizations();
+                fetchInfo(true);
+                fetchMetadata();
+            } else if (!onLoginPage && !onResetPage) {
+                const url = encodeURI(
+                    `${PATHS.LOGIN}?next=${window.location.pathname}${window.location.search}`
+                );
+                setLocation(url);
+            }
+            setCheckingCredentials(false);
+        };
+        fetchAll();
     });
 
     if (checkingCredentials) {

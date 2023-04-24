@@ -8,7 +8,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 import ComputePlanProgressBar from '@/components/ComputePlanProgressBar';
 import ComputePlanTaskStatuses from '@/components/ComputePlanTaskStatuses';

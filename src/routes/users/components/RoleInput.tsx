@@ -1,7 +1,7 @@
 import { Select } from '@chakra-ui/react';
 
 import { capitalize } from '@/libs/utils';
-import { UserRolesT } from '@/modules/users/UsersTypes';
+import { UserRolesT } from '@/types/UsersTypes';
 
 import { DrawerSectionEntry } from '@/components/DrawerSection';
 

@@ -31,9 +31,9 @@ import {
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
 
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
+import { PerfBrowserContext } from '@/features/perfBrowser/usePerfBrowser';
 import { capitalize } from '@/libs/utils';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 import MetadataModalTr from '@/components/MetadataModalTr';
 

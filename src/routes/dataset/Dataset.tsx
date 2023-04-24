@@ -1,29 +1,20 @@
 import React, { Suspense, useEffect } from 'react';
 
-import { unwrapResult } from '@reduxjs/toolkit';
 import { useRoute } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
-import useAppSelector from '@/hooks/useAppSelector';
+import CopyIconButton from '@/features/copy/CopyIconButton';
+import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useUpdateName from '@/hooks/useUpdateName';
-import {
-    retrieveDataset,
-    retrieveDescription,
-    retrieveOpener,
-    updateDataset,
-} from '@/modules/datasets/DatasetsSlice';
-import { DatasetT } from '@/modules/datasets/DatasetsTypes';
 import { PATHS } from '@/paths';
+import MoreMenu from '@/routes/dataset/components/MoreMenu';
 
-import CopyIconButton from '@/components/CopyIconButton';
 import DownloadIconButton from '@/components/DownloadIconButton';
-import MoreMenu from '@/components/MoreMenu';
 
 import Breadcrumbs from './components/BreadCrumbs';
 import DetailsSidebar from './components/DetailsSidebar';
+import useDatasetStore from './useDatasetStore';
 
 const CodeHighlighter = React.lazy(
     () => import('@/components/CodeHighlighter')
@@ -36,38 +27,37 @@ const Dataset = (): JSX.Element => {
     const [, params] = useRoute(PATHS.DATASET);
     const key = params?.key;
 
-    const dataset = useAppSelector((state) => state.datasets.dataset);
-    const description = useAppSelector((state) => state.datasets.description);
-    const descriptionLoading = useAppSelector(
-        (state) => state.datasets.descriptionLoading
-    );
-    const opener = useAppSelector((state) => state.datasets.opener);
-    const openerLoading = useAppSelector(
-        (state) => state.datasets.openerLoading
-    );
+    const {
+        dataset,
+        description,
+        opener,
+        fetchingDescription,
+        fetchingOpener,
+        updatingDataset,
+        fetchDataset,
+        fetchDescription,
+        fetchOpener,
+        updateDataset,
+    } = useDatasetStore();
 
-    const dispatch = useAppDispatch();
     useEffect(() => {
-        if (key && key !== dataset?.key) {
-            dispatch(retrieveDataset(key))
-                .then(unwrapResult)
-                .then((dataset: DatasetT) => {
-                    dispatch(
-                        retrieveDescription(dataset.description.storage_address)
-                    );
-                    dispatch(retrieveOpener(dataset.opener.storage_address));
-                });
-        }
-    }, [key, dataset?.key, dispatch]);
+        const fetchAll = async () => {
+            if (key && key !== dataset?.key) {
+                const dataset = await fetchDataset(key);
+                if (dataset) {
+                    fetchDescription(dataset.description.storage_address);
+                    fetchOpener(dataset.opener.storage_address);
+                }
+            }
+        };
+        fetchAll();
+    }, [key, dataset?.key, fetchDataset, fetchDescription, fetchOpener]);
 
-    const { updateNameDialog, updateNameMenuItem } = useUpdateName({
+    const { updateNameDialog, updateNameMenuItem } = useUpdateAssetName({
         dialogTitle: 'Rename dataset',
-        assetKey: dataset?.key ?? '',
-        assetName: dataset?.name ?? '',
-        assetUpdating: useAppSelector(
-            (state) => state.datasets.datasetUpdating
-        ),
-        updateSlice: updateDataset,
+        asset: dataset ?? null,
+        updatingAsset: updatingDataset,
+        updateAsset: updateDataset,
     });
 
     useDocumentTitleEffect(
@@ -133,13 +123,13 @@ const Dataset = (): JSX.Element => {
                             paddingTop="5"
                             paddingBottom="5"
                         >
-                            {descriptionLoading && (
+                            {fetchingDescription && (
                                 <Text fontSize="sm">Loading</Text>
                             )}
-                            {!descriptionLoading && !description && (
+                            {!fetchingDescription && !description && (
                                 <Text fontSize="sm">N/A</Text>
                             )}
-                            {!descriptionLoading && description && (
+                            {!fetchingDescription && description && (
                                 <Suspense fallback={<Text>Loading</Text>}>
                                     <MarkdownSection source={description} />
                                 </Suspense>
@@ -184,7 +174,7 @@ const Dataset = (): JSX.Element => {
                             </HStack>
                         </Heading>
                         <Box fontSize="xs">
-                            {openerLoading && (
+                            {fetchingOpener && (
                                 <Text
                                     paddingLeft="12"
                                     paddingRight="12"
@@ -195,7 +185,7 @@ const Dataset = (): JSX.Element => {
                                     Loading
                                 </Text>
                             )}
-                            {!openerLoading && !opener && (
+                            {!fetchingOpener && !opener && (
                                 <Text
                                     paddingLeft="12"
                                     paddingRight="12"
@@ -206,7 +196,7 @@ const Dataset = (): JSX.Element => {
                                     N/A
                                 </Text>
                             )}
-                            {!openerLoading && opener && (
+                            {!fetchingOpener && opener && (
                                 <Suspense
                                     fallback={
                                         <Text

@@ -9,14 +9,14 @@ import {
 } from '@chakra-ui/react';
 import { RiStarLine, RiStarFill, RiMoreLine } from 'react-icons/ri';
 
-import useAppSelector from '@/hooks/useAppSelector';
+import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import useFavoriteComputePlans from '@/hooks/useFavoriteComputePlans';
-import useUpdateName from '@/hooks/useUpdateName';
-import { updateComputePlan } from '@/modules/computePlans/ComputePlansSlice';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
 import useCancelComputePlan from '@/routes/computePlanDetails/hooks/useCancelComputePlan';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 import PerfDownloadButton from '@/components/PerfDownloadButton';
+
+import useComputePlanStore from '../useComputePlanStore';
 
 type ActionsProps = {
     computePlan: ComputePlanT | null;
@@ -35,14 +35,12 @@ const Actions = ({
 
     const { cancelComputePlanDialog, cancelComputePlanMenuItem } =
         useCancelComputePlan(computePlan);
-    const { updateNameDialog, updateNameMenuItem } = useUpdateName({
+    const { updatingComputePlan, updateComputePlan } = useComputePlanStore();
+    const { updateNameDialog, updateNameMenuItem } = useUpdateAssetName({
         dialogTitle: 'Rename compute plan',
-        assetKey: computePlan?.key ?? '',
-        assetName: computePlan?.name ?? '',
-        assetUpdating: useAppSelector(
-            (state) => state.computePlans.computePlanUpdating
-        ),
-        updateSlice: updateComputePlan,
+        asset: computePlan ?? null,
+        updatingAsset: updatingComputePlan,
+        updateAsset: updateComputePlan,
     });
 
     return (

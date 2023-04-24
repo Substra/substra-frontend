@@ -9,13 +9,12 @@ import {
     DrawerContent,
 } from '@chakra-ui/react';
 
-import useAppDispatch from '@/hooks/useAppDispatch';
 import { useToast } from '@/hooks/useToast';
-import { createUser } from '@/modules/users/UsersSlice';
-import { UserRolesT } from '@/modules/users/UsersTypes';
+import { UserRolesT } from '@/types/UsersTypes';
 
 import DrawerHeader from '@/components/DrawerHeader';
 
+import useUsersStore from '../useUsersStore';
 import PasswordInput from './PasswordInput';
 import RoleInput from './RoleInput';
 import UsernameInput from './UsernameInput';
@@ -25,7 +24,6 @@ const CreateUserForm = ({
 }: {
     closeHandler: () => void;
 }): JSX.Element => {
-    const dispatch = useAppDispatch();
     const toast = useToast();
 
     const [username, setUsername] = useState('');
@@ -36,41 +34,35 @@ const CreateUserForm = ({
     const [password, setPassword] = useState('');
     const [passwordHasErrors, setPasswordHasErrors] = useState(false);
 
-    const [creating, setCreating] = useState(false);
+    const { creatingUser, createUser } = useUsersStore();
 
     const onSave = async () => {
         if (!usernameHasError && !passwordHasErrors) {
-            setCreating(true);
-            dispatch(
-                createUser({
-                    username: username,
-                    password: password,
-                    role: role,
-                })
-            )
-                .unwrap()
-                .then(
-                    () => {
-                        toast({
-                            title: 'User created',
-                            descriptionComponent: `${username} was successfully created!`,
-                            status: 'success',
-                            isClosable: true,
-                        });
-                        setCreating(false);
-                        closeHandler();
-                    },
-                    (error) => {
-                        toast({
-                            title: 'User creation failed',
-                            descriptionComponent:
-                                error?.message ?? 'Could not create user',
-                            status: 'error',
-                            isClosable: true,
-                        });
-                        setCreating(false);
-                    }
-                );
+            const error = await createUser({
+                username,
+                password,
+                role,
+            });
+
+            if (error === null) {
+                toast({
+                    title: 'User created',
+                    descriptionComponent: `${username} was successfully created!`,
+                    status: 'success',
+                    isClosable: true,
+                });
+                closeHandler();
+            } else {
+                toast({
+                    title: 'User creation failed',
+                    descriptionComponent:
+                        typeof error === 'string'
+                            ? error
+                            : "Couldn't create user",
+                    status: 'error',
+                    isClosable: true,
+                });
+            }
         }
     };
 
@@ -94,12 +86,12 @@ const CreateUserForm = ({
                         onChange={setUsername}
                         hasErrors={usernameHasError}
                         setHasErrors={setUsernameHasError}
-                        isDisabled={creating}
+                        isDisabled={creatingUser}
                     />
                     <RoleInput
                         value={role}
                         onChange={setRole}
-                        isDisabled={creating}
+                        isDisabled={creatingUser}
                     />
                     <PasswordInput
                         value={password}
@@ -107,7 +99,7 @@ const CreateUserForm = ({
                         onChange={setPassword}
                         hasErrors={passwordHasErrors}
                         setHasErrors={setPasswordHasErrors}
-                        isDisabled={creating}
+                        isDisabled={creatingUser}
                     />
                 </VStack>
             </DrawerBody>
@@ -117,7 +109,7 @@ const CreateUserForm = ({
                         size="sm"
                         variant="outline"
                         onClick={closeHandler}
-                        isDisabled={creating}
+                        isDisabled={creatingUser}
                     >
                         Cancel
                     </Button>
@@ -126,9 +118,11 @@ const CreateUserForm = ({
                         colorScheme="primary"
                         onClick={onSave}
                         isDisabled={
-                            creating || usernameHasError || passwordHasErrors
+                            creatingUser ||
+                            usernameHasError ||
+                            passwordHasErrors
                         }
-                        isLoading={creating}
+                        isLoading={creatingUser}
                     >
                         Save
                     </Button>

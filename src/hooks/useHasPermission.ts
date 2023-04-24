@@ -1,10 +1,10 @@
-import useAppSelector from '@/hooks/useAppSelector';
-import { PermissionT } from '@/modules/common/CommonTypes';
+import useAuthStore from '@/features/auth/useAuthStore';
+import { PermissionT } from '@/types/CommonTypes';
 
 const useHasPermission = (): ((permission: PermissionT) => boolean) => {
-    const currentNodeID = useAppSelector(
-        (state) => state.me.info.organization_id
-    );
+    const {
+        info: { organization_id: currentNodeID },
+    } = useAuthStore();
 
     return (permission: PermissionT): boolean =>
         permission.public || permission.authorized_ids.includes(currentNodeID);

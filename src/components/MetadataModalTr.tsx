@@ -2,8 +2,8 @@ import { useContext } from 'react';
 
 import { HStack, Td, Text, Th, Tr } from '@chakra-ui/react';
 
-import { PerfBrowserContext } from '@/hooks/usePerfBrowser';
-import { ComputePlanT } from '@/modules/computePlans/ComputePlansTypes';
+import { PerfBrowserContext } from '@/features/perfBrowser/usePerfBrowser';
+import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 type MetadataModalTrProps = {
     computePlan: ComputePlanT;
