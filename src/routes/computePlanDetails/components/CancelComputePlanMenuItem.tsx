@@ -10,10 +10,10 @@ const CancelComputePlanMenuItem = ({
     hasPermissions,
     hasCancellableStatus,
 }: CancelComputePlanMenuItemProps) => {
-    const isDisabled = !hasPermissions || !hasCancellableStatus;
+    const isEnabled = hasPermissions && hasCancellableStatus;
     let label;
 
-    if (!isDisabled) {
+    if (isEnabled) {
         return <MenuItem onClick={onClick}>Cancel execution</MenuItem>;
     } else if (hasPermissions) {
         label = 'This compute plan cannot be canceled because of its state';
