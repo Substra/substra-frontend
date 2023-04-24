@@ -35,9 +35,11 @@ const App = (): JSX.Element => {
         const fetchAll = async () => {
             const refreshToken = await postRefresh();
             if (refreshToken !== null) {
-                fetchOrganizations();
-                fetchInfo(true);
-                fetchMetadata();
+                await Promise.all([
+                    fetchOrganizations(),
+                    fetchInfo(true),
+                    fetchMetadata(),
+                ]);
             } else if (!onLoginPage && !onResetPage) {
                 const url = encodeURI(
                     `${PATHS.LOGIN}?next=${window.location.pathname}${window.location.search}`
