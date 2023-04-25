@@ -22,16 +22,20 @@ const useCancelComputePlan = (
     } = useAuthStore();
     const toast = useToast();
 
-    const isCancellable = useMemo(
+    const hasPermissions = useMemo(
+        (): boolean =>
+            computePlan !== null && computePlan.owner === currentOrganizationId,
+        [currentOrganizationId, computePlan]
+    );
+    const hasCancellableStatus = useMemo(
         (): boolean =>
             computePlan !== null &&
-            computePlan.owner === currentOrganizationId &&
             [
                 ComputePlanStatus.doing,
                 ComputePlanStatus.todo,
                 ComputePlanStatus.waiting,
             ].includes(computePlan.status),
-        [currentOrganizationId, computePlan]
+        [computePlan]
     );
 
     const cancelComputePlan = useCallback(async () => {
@@ -83,16 +87,17 @@ const useCancelComputePlan = (
     const cancelComputePlanMenuItem = useMemo(
         () => (
             <CancelComputePlanMenuItem
-                isDisabled={!isCancellable}
+                hasPermissions={hasPermissions}
+                hasCancellableStatus={hasCancellableStatus}
                 onClick={onOpen}
             />
         ),
-        [isCancellable, onOpen]
+        [hasPermissions, hasCancellableStatus, onOpen]
     );
 
     const cancelComputePlanDialog = useMemo(
         () =>
-            isCancellable ? (
+            hasPermissions && hasCancellableStatus ? (
                 <CancelComputePlanDialog
                     isOpen={isOpen}
                     onClose={onClose}
@@ -100,7 +105,14 @@ const useCancelComputePlan = (
                     canceling={canceling}
                 />
             ) : null,
-        [cancelComputePlan, canceling, isCancellable, isOpen, onClose]
+        [
+            cancelComputePlan,
+            canceling,
+            hasPermissions,
+            hasCancellableStatus,
+            isOpen,
+            onClose,
+        ]
     );
 
     return {
