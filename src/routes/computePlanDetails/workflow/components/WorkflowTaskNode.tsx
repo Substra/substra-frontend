@@ -65,7 +65,9 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                     backgroundColor={NODE_BORDER_COLOR[data.status]}
                     color="white"
                 >
-                    <Text fontWeight="bold">_</Text>
+                    <Text fontWeight="bold" noOfLines={1}>
+                        {data.function_name}
+                    </Text>
                     <Text
                         pos="absolute"
                         top="5px"

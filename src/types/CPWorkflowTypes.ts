@@ -13,6 +13,7 @@ type PlugT = {
 export type TaskT = {
     key: string;
     rank: number;
+    function_name: string;
     worker: string;
     status: TaskStatus;
     inputs_specs: PlugT[];
