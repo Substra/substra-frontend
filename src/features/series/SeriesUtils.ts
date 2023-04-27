@@ -22,7 +22,7 @@ function buildSerieFeatures(
         worker: performance.compute_task.worker,
         metricKey: performance.metric.key,
         metricName: performance.metric.name,
-        metricOutputIdentifier: performance.metric.output_identifier,
+        metricOutputIdentifier: performance.identifier,
         computePlanKey,
     };
 }
@@ -117,20 +117,17 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     const seriesGroupings = new Set(
         series.map((serie) =>
             JSON.stringify({
-                metricKey: serie.metricKey,
                 metricOutputIdentifier:
                     serie.metricOutputIdentifier.toLowerCase(),
             })
         )
     );
     for (const seriesGrouping of seriesGroupings) {
-        const { metricKey, metricOutputIdentifier } =
-            JSON.parse(seriesGrouping);
+        const { metricOutputIdentifier } = JSON.parse(seriesGrouping);
         const metricGroup = series.filter(
             (serie) =>
-                serie.metricKey === metricKey &&
                 serie.metricOutputIdentifier.toLowerCase() ===
-                    metricOutputIdentifier
+                metricOutputIdentifier
         );
 
         groups.push(metricGroup);

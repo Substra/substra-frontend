@@ -9,8 +9,8 @@ export type PerformanceT = {
     metric: {
         key: string;
         name: string;
-        output_identifier: string;
     };
+    identifier: string;
     perf: number | null;
 };
 
