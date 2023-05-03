@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+-   Serialize the performance graph regarding the identifier only (#194)
+
 ### Added
 
 -   Display the cause of CP not being cancellable in tooltip (#192)
