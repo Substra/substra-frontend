@@ -10,7 +10,7 @@ type PerfListProps = {
     onCardClick: (
         metricName: string,
         metricKey: string,
-        metricOutputIdentifier: string
+        identifier: string
     ) => void;
 };
 const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
@@ -29,12 +29,12 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
                 {seriesGroups.map((series) => (
                     <WrapItem key={`${series[0].metricKey}-${series[0].id}`}>
                         <PerfCard
-                            title={series[0].metricName}
+                            title={series[0].identifier}
                             onClick={() =>
                                 onCardClick(
                                     series[0].metricName,
                                     series[0].metricKey,
-                                    series[0].metricOutputIdentifier
+                                    series[0].identifier
                                 )
                             }
                         >

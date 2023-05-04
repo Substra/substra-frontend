@@ -25,10 +25,7 @@ const PerfDownloadButton = (): JSX.Element => {
 
     const { metadata } = useMetadataStore();
     const [selectedMetricKey] = useSyncedStringState('selectedMetricKey', '');
-    const [selectedMetricOutputIdentifier] = useSyncedStringState(
-        'selectedMetricOutputIdentifier',
-        ''
-    );
+    const [selectedIdentifier] = useSyncedStringState('selectedIdentifier', '');
 
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
@@ -38,11 +35,11 @@ const PerfDownloadButton = (): JSX.Element => {
             metadata_columns: metadata.join(),
         };
 
-        if (selectedMetricKey && selectedMetricOutputIdentifier) {
+        if (selectedMetricKey && selectedIdentifier) {
             payload = {
                 ...payload,
                 metric_key: selectedMetricKey,
-                metric_output_identifier: selectedMetricOutputIdentifier,
+                metric_output_identifier: selectedIdentifier,
             };
         }
         const response = await exportPerformances(payload);

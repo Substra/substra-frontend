@@ -64,7 +64,7 @@ type PerfBrowserContextT = {
     setSelectedMetricName: (name: string) => void;
     selectedMetricKey: string;
     setSelectedMetricKey: (name: string) => void;
-    selectedMetricOutputIdentifier: string;
+    selectedIdentifier: string;
     setSelectedMetricOutputIdentifier: (name: string) => void;
     selectedSeriesGroup: SerieT[];
     // Serie, compute plan and organization to highlight on charts
@@ -121,7 +121,7 @@ export const PerfBrowserContext = createContext<PerfBrowserContextT>({
     setSelectedMetricName: (name: string) => {},
     selectedMetricKey: '',
     setSelectedMetricKey: (name: string) => {},
-    selectedMetricOutputIdentifier: '',
+    selectedIdentifier: '',
     setSelectedMetricOutputIdentifier: (name: string) => {},
     selectedSeriesGroup: [],
     highlightedSerie: undefined,
@@ -167,8 +167,8 @@ const usePerfBrowser = (
         'selectedMetricKey',
         ''
     );
-    const [selectedMetricOutputIdentifier, setSelectedMetricOutputIdentifier] =
-        useSyncedStringState('selectedMetricOutputIdentifier', '');
+    const [selectedIdentifier, setSelectedMetricOutputIdentifier] =
+        useSyncedStringState('selectedIdentifier', '');
     const [highlightedSerie, setHighlightedSerie] =
         useState<HighlightedSerieT>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
@@ -236,8 +236,8 @@ const usePerfBrowser = (
             (series) =>
                 series[0].metricKey.toLowerCase() ===
                     selectedMetricKey.toLowerCase() &&
-                series[0].metricOutputIdentifier.toLowerCase() ===
-                    selectedMetricOutputIdentifier.toLowerCase()
+                series[0].identifier.toLowerCase() ===
+                    selectedIdentifier.toLowerCase()
         );
 
         if (groupsMatchingMetric.length > 0) {
@@ -249,7 +249,7 @@ const usePerfBrowser = (
         seriesGroups,
         selectedMetricName,
         selectedMetricKey,
-        selectedMetricOutputIdentifier,
+        selectedIdentifier,
     ]);
 
     useEffect(() => {
@@ -446,7 +446,7 @@ const usePerfBrowser = (
             setSelectedMetricName,
             selectedMetricKey,
             setSelectedMetricKey,
-            selectedMetricOutputIdentifier,
+            selectedIdentifier,
             setSelectedMetricOutputIdentifier,
             selectedSeriesGroup,
             // event: highlighted serie, compute plan or organization

@@ -22,7 +22,7 @@ function buildSerieFeatures(
         worker: performance.compute_task.worker,
         metricKey: performance.metric.key,
         metricName: performance.metric.name,
-        metricOutputIdentifier: performance.identifier,
+        identifier: performance.identifier,
         computePlanKey,
     };
 }
@@ -32,7 +32,7 @@ function areSeriesEqual(sf1: SerieFeaturesT, sf2: SerieFeaturesT): boolean {
         sf1.functionKey === sf2.functionKey &&
         sf1.worker === sf2.worker &&
         sf1.metricKey === sf2.metricKey &&
-        sf1.metricOutputIdentifier === sf2.metricOutputIdentifier
+        sf1.identifier === sf2.identifier
     );
 }
 
@@ -117,17 +117,14 @@ export function buildSeriesGroups(series: SerieT[]): SerieT[][] {
     const seriesGroupings = new Set(
         series.map((serie) =>
             JSON.stringify({
-                metricOutputIdentifier:
-                    serie.metricOutputIdentifier.toLowerCase(),
+                identifier: serie.identifier.toLowerCase(),
             })
         )
     );
     for (const seriesGrouping of seriesGroupings) {
-        const { metricOutputIdentifier } = JSON.parse(seriesGrouping);
+        const { identifier } = JSON.parse(seriesGrouping);
         const metricGroup = series.filter(
-            (serie) =>
-                serie.metricOutputIdentifier.toLowerCase() ===
-                metricOutputIdentifier
+            (serie) => serie.identifier.toLowerCase() === identifier
         );
 
         groups.push(metricGroup);

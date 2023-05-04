@@ -79,12 +79,12 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
                                     onCardClick={(
                                         metricName,
                                         metricKey,
-                                        metricOutputIdentifier
+                                        identifier
                                     ) => {
                                         setSelectedMetricName(metricName);
                                         setSelectedMetricKey(metricKey);
                                         setSelectedMetricOutputIdentifier(
-                                            metricOutputIdentifier
+                                            identifier
                                         );
                                     }}
                                 />
