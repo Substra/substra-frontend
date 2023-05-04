@@ -7,11 +7,7 @@ import { SerieT } from '@/types/SeriesTypes';
 
 type PerfListProps = {
     seriesGroups: SerieT[][];
-    onCardClick: (
-        metricName: string,
-        metricKey: string,
-        identifier: string
-    ) => void;
+    onCardClick: (identifier: string) => void;
 };
 const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
     return (
@@ -27,16 +23,10 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
             <PerfEmptyState seriesGroups={seriesGroups} />
             <Wrap spacing="3" justify="center">
                 {seriesGroups.map((series) => (
-                    <WrapItem key={`${series[0].metricKey}-${series[0].id}`}>
+                    <WrapItem key={`${series[0].identifier}-${series[0].id}`}>
                         <PerfCard
                             title={series[0].identifier}
-                            onClick={() =>
-                                onCardClick(
-                                    series[0].metricName,
-                                    series[0].metricKey,
-                                    series[0].identifier
-                                )
-                            }
+                            onClick={() => onCardClick(series[0].identifier)}
                         >
                             <PerfChart series={series} optionsEnabled={false} />
                         </PerfCard>

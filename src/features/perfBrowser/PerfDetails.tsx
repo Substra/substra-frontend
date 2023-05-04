@@ -14,17 +14,11 @@ type PerfDetailsProps = {
 };
 
 const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
-    const {
-        perfChartRef,
-        setSelectedMetricName,
-        setSelectedMetricKey,
-        setSelectedMetricOutputIdentifier,
-    } = useContext(PerfBrowserContext);
+    const { perfChartRef, setSelectedIdentifier } =
+        useContext(PerfBrowserContext);
 
     const resetSelectedMetric = () => {
-        setSelectedMetricName('');
-        setSelectedMetricKey('');
-        setSelectedMetricOutputIdentifier('');
+        setSelectedIdentifier('');
     };
 
     useKeyPress('Escape', () => resetSelectedMetric());

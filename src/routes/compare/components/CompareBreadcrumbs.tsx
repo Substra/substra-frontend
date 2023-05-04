@@ -9,7 +9,7 @@ import { PATHS } from '@/paths';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 const CompareBreadcrumbs = (): JSX.Element => {
-    const { selectedMetricName, setSelectedMetricName } =
+    const { selectedIdentifier, setSelectedIdentifier } =
         useContext(PerfBrowserContext);
 
     return (
@@ -18,15 +18,15 @@ const CompareBreadcrumbs = (): JSX.Element => {
             rootLabel="Compute plans"
             rootIcon={RiStackshareLine}
         >
-            <BreadcrumbItem isCurrentPage={!selectedMetricName}>
+            <BreadcrumbItem isCurrentPage={!selectedIdentifier}>
                 <HStack spacing="2.5">
-                    {selectedMetricName ? (
+                    {selectedIdentifier ? (
                         <Link
                             color="gray.500"
                             fontSize="sm"
                             fontWeight="medium"
                             lineHeight="5"
-                            onClick={() => setSelectedMetricName('')}
+                            onClick={() => setSelectedIdentifier('')}
                         >
                             Comparison
                         </Link>
@@ -42,7 +42,7 @@ const CompareBreadcrumbs = (): JSX.Element => {
                     )}
                 </HStack>
             </BreadcrumbItem>
-            {selectedMetricName && (
+            {selectedIdentifier && (
                 <BreadcrumbItem isCurrentPage>
                     <Text
                         color="black"
@@ -50,7 +50,7 @@ const CompareBreadcrumbs = (): JSX.Element => {
                         fontWeight="medium"
                         lineHeight="5"
                     >
-                        {selectedMetricName}
+                        {selectedIdentifier}
                     </Text>
                 </BreadcrumbItem>
             )}

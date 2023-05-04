@@ -3,8 +3,6 @@ import { ScatterDataPoint } from 'chart.js';
 export type SerieFeaturesT = {
     functionKey: string;
     worker: string;
-    metricKey: string;
-    metricName: string;
     identifier: string;
     computePlanKey: string;
 };

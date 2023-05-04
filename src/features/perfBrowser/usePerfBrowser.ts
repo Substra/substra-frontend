@@ -59,13 +59,9 @@ type PerfBrowserContextT = {
     selectedComputePlanKeys: string[];
     setSelectedComputePlanKeys: (selectedComputePlanKeys: string[]) => void;
     onComputePlanKeySelectionChange: OnOptionChangeT;
-    // Currently selected metric with its series
-    selectedMetricName: string;
-    setSelectedMetricName: (name: string) => void;
-    selectedMetricKey: string;
-    setSelectedMetricKey: (name: string) => void;
+    // Currently selected identifier for metric with its series
     selectedIdentifier: string;
-    setSelectedMetricOutputIdentifier: (name: string) => void;
+    setSelectedIdentifier: (name: string) => void;
     selectedSeriesGroup: SerieT[];
     // Serie, compute plan and organization to highlight on charts
     highlightedSerie: HighlightedSerieT | undefined;
@@ -117,12 +113,8 @@ export const PerfBrowserContext = createContext<PerfBrowserContextT>({
     onComputePlanKeySelectionChange:
         (computePlanKey: string) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {},
-    selectedMetricName: '',
-    setSelectedMetricName: (name: string) => {},
-    selectedMetricKey: '',
-    setSelectedMetricKey: (name: string) => {},
     selectedIdentifier: '',
-    setSelectedMetricOutputIdentifier: (name: string) => {},
+    setSelectedIdentifier: (name: string) => {},
     selectedSeriesGroup: [],
     highlightedSerie: undefined,
     setHighlightedSerie: (highlightedSerie) => {},
@@ -159,16 +151,10 @@ const usePerfBrowser = (
         useSyncedStringArrayState('selectedComputePlanKeys', []);
     const [hoveredRank, setHoveredRank] = useState<number | null>(null);
     const [selectedRank, setSelectedRank] = useState<number | null>(null);
-    const [selectedMetricName, setSelectedMetricName] = useSyncedStringState(
-        'selectedMetricName',
+    const [selectedIdentifier, setSelectedIdentifier] = useSyncedStringState(
+        'selectedIdentifier',
         ''
     );
-    const [selectedMetricKey, setSelectedMetricKey] = useSyncedStringState(
-        'selectedMetricKey',
-        ''
-    );
-    const [selectedIdentifier, setSelectedMetricOutputIdentifier] =
-        useSyncedStringState('selectedIdentifier', '');
     const [highlightedSerie, setHighlightedSerie] =
         useState<HighlightedSerieT>();
     const [highlightedComputePlanKey, setHighlightedComputePlanKey] =
@@ -228,16 +214,14 @@ const usePerfBrowser = (
     }, [series, selectedComputePlanKeys, isOrganizationIdSelected]);
 
     const selectedSeriesGroup = useMemo(() => {
-        if (!selectedMetricName) {
+        if (!selectedIdentifier) {
             return [];
         }
 
         const groupsMatchingMetric = seriesGroups.filter(
             (series) =>
-                series[0].metricKey.toLowerCase() ===
-                    selectedMetricKey.toLowerCase() &&
                 series[0].identifier.toLowerCase() ===
-                    selectedIdentifier.toLowerCase()
+                selectedIdentifier.toLowerCase()
         );
 
         if (groupsMatchingMetric.length > 0) {
@@ -245,12 +229,7 @@ const usePerfBrowser = (
         } else {
             return [];
         }
-    }, [
-        seriesGroups,
-        selectedMetricName,
-        selectedMetricKey,
-        selectedIdentifier,
-    ]);
+    }, [seriesGroups, selectedIdentifier]);
 
     useEffect(() => {
         setSelectedComputePlanKeys(
@@ -441,13 +420,9 @@ const usePerfBrowser = (
             selectedComputePlanKeys,
             onComputePlanKeySelectionChange,
             setSelectedComputePlanKeys,
-            // selected metric
-            selectedMetricName,
-            setSelectedMetricName,
-            selectedMetricKey,
-            setSelectedMetricKey,
+            // selected identifier for metric
             selectedIdentifier,
-            setSelectedMetricOutputIdentifier,
+            setSelectedIdentifier,
             selectedSeriesGroup,
             // event: highlighted serie, compute plan or organization
             highlightedSerie,

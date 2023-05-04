@@ -16,16 +16,13 @@ import { exportPerformances } from '@/api/ComputePlansApi';
 import { downloadBlob } from '@/api/request';
 import useMetadataStore from '@/features/metadata/useMetadataStore';
 import { PerfBrowserContext } from '@/features/perfBrowser/usePerfBrowser';
-import { useSyncedStringState } from '@/hooks/useSyncedState';
 import { APIListArgsT } from '@/types/CommonTypes';
 
 const PerfDownloadButton = (): JSX.Element => {
-    const { computePlans, loading, selectedMetricName, perfChartRef } =
+    const { computePlans, loading, perfChartRef, selectedIdentifier } =
         useContext(PerfBrowserContext);
 
     const { metadata } = useMetadataStore();
-    const [selectedMetricKey] = useSyncedStringState('selectedMetricKey', '');
-    const [selectedIdentifier] = useSyncedStringState('selectedIdentifier', '');
 
     const [downloading, setDownloading] = useState(false);
     const download = async () => {
@@ -35,11 +32,10 @@ const PerfDownloadButton = (): JSX.Element => {
             metadata_columns: metadata.join(),
         };
 
-        if (selectedMetricKey && selectedIdentifier) {
+        if (selectedIdentifier) {
             payload = {
                 ...payload,
-                metric_key: selectedMetricKey,
-                metric_output_identifier: selectedIdentifier,
+                identifier: selectedIdentifier,
             };
         }
         const response = await exportPerformances(payload);
@@ -68,7 +64,7 @@ const PerfDownloadButton = (): JSX.Element => {
         }
     };
 
-    if (!selectedMetricName) {
+    if (!selectedIdentifier) {
         return (
             <Button
                 aria-label="Download chart"
