@@ -124,30 +124,32 @@ function orderTasksInEachCell(
     rows: RowsT,
     taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
 ) {
-    // Compute the sortName for all tasks
-    // The sortName is chaining the key of all ancestor tasks
-    // It is needed to stack vertically train, then predict, then test task
-    const taskSortName: { [task_key: string]: string } = {};
-    const tasksOrderedByRank = tasks.sort((firstTask, secondTask) => {
-        if (firstTask.rank < secondTask.rank) {
-            return -1;
-        }
-        if (firstTask.rank < secondTask.rank) {
-            return 1;
-        }
-        return 0;
-    });
-    // Scan all tasks per rank order so that the sortName of ancestors is always computed before the children ones
-    for (const task of tasksOrderedByRank) {
-        const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
-        taskSortName[task.key] =
-            parentTasks
-                .map((parentTask) => taskSortName[parentTask.key])
-                .join() + task.key;
-    }
-
     for (const row of Object.values(rows)) {
         for (const cell of row.cells) {
+            // Compute the sortName for all tasks
+            // The sortName is chaining the key of all ancestor tasks
+            // It is needed to stack vertically train, then predict, then test task
+            const taskSortName: { [task_key: string]: string } = {};
+            const tasksOrderedByRank = cell.tasks
+                .map((taskInCell) => taskInCell.taskRef)
+                .sort((firstTask, secondTask) => {
+                    if (firstTask.rank < secondTask.rank) {
+                        return -1;
+                    }
+                    if (firstTask.rank < secondTask.rank) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            // Scan all tasks per rank order so that the sortName of ancestors is always computed before the children ones
+            for (const task of tasksOrderedByRank) {
+                const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
+                taskSortName[task.key] =
+                    parentTasks
+                        .map((parentTask) => taskSortName[parentTask.key])
+                        .join() + task.key;
+            }
+
             cell.tasks.sort((firstTask, secondTask) => {
                 if (
                     taskSortName[firstTask.taskRef.key] <
