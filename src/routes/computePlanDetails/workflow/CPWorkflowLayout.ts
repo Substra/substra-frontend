@@ -120,25 +120,45 @@ function computeCellsX(rows: RowsT) {
 }
 
 function orderTasksInEachCell(
+    tasks: TaskT[],
     rows: RowsT,
     taskKeyToParentTasksMap: { [task_key: string]: TaskT[] }
 ) {
+    // Compute the sortName for all tasks
+    // The sortName is chaining the key of all ancestor tasks
+    // It is needed to stack vertically train, then predict, then test task
+    const taskSortName: { [task_key: string]: string } = {};
+    const tasksOrderedByRank = tasks.sort((firstTask, secondTask) => {
+        if (firstTask.rank < secondTask.rank) {
+            return -1;
+        }
+        if (firstTask.rank < secondTask.rank) {
+            return 1;
+        }
+        return 0;
+    });
+    // Scan all tasks per rank order so that the sortName of ancestors is always computed before the children ones
+    for (const task of tasksOrderedByRank) {
+        const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
+        taskSortName[task.key] =
+            parentTasks
+                .map((parentTask) => taskSortName[parentTask.key])
+                .join() + task.key;
+    }
+
     for (const row of Object.values(rows)) {
         for (const cell of row.cells) {
             cell.tasks.sort((firstTask, secondTask) => {
-                function makeSortName(task: TaskT): string {
-                    // recursive function chaining the key of all ancestor tasks in the cell
-                    // Needed to stack vertically train, then predict, then test task
-                    const parentTasks = taskKeyToParentTasksMap[task.key] ?? [];
-                    return parentTasks.map(makeSortName).join() + task.key;
-                }
-
-                const firstNodeSortName = makeSortName(firstTask.taskRef);
-                const secondNodeSortName = makeSortName(secondTask.taskRef);
-                if (firstNodeSortName < secondNodeSortName) {
+                if (
+                    taskSortName[firstTask.taskRef.key] <
+                    taskSortName[secondTask.taskRef.key]
+                ) {
                     return -1;
                 }
-                if (firstNodeSortName > secondNodeSortName) {
+                if (
+                    taskSortName[firstTask.taskRef.key] >
+                    taskSortName[secondTask.taskRef.key]
+                ) {
                     return 1;
                 }
                 return 0;
@@ -251,8 +271,8 @@ function findSecondaryBranches(
 
     const endOfSecondaryBranches = graph.tasks.filter((task) => {
         return (
-            computeNbOfChildren(graph, task) === 0 &&
-            producesOnlyPerformances(task)
+            producesOnlyPerformances(task) &&
+            computeNbOfChildren(graph, task) === 0
         );
     });
 
@@ -313,7 +333,7 @@ export function computeLayout(graph: TaskGraphT): LayoutedTaskGraphT {
     computeRowsY(grid);
     computeCellsX(grid.rows);
 
-    orderTasksInEachCell(grid.rows, taskKeyToParentTasksMap);
+    orderTasksInEachCell(graph.tasks, grid.rows, taskKeyToParentTasksMap);
     computeTasksRelativePositionInCell(grid.rows, taskRankInSecondaryBranch);
 
     const positionedTasks = graph.tasks.map((task) => {
