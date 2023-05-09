@@ -12,7 +12,7 @@ import Status from '@/components/Status';
 import useComputePlanStore from '../../useComputePlanStore';
 
 const ComputePlanChartBreadcrumbs = (): JSX.Element => {
-    const { selectedMetricName, setSelectedMetricName } =
+    const { selectedIdentifier, setSelectedIdentifier } =
         useContext(PerfBrowserContext);
 
     const { computePlan, fetchingComputePlan } = useComputePlanStore();
@@ -24,16 +24,16 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
             rootIcon={RiStackshareLine}
         >
             <BreadcrumbItem
-                isCurrentPage={fetchingComputePlan || !selectedMetricName}
+                isCurrentPage={fetchingComputePlan || !selectedIdentifier}
             >
                 <HStack spacing="2.5">
-                    {selectedMetricName ? (
+                    {selectedIdentifier ? (
                         <Link
                             color="gray.500"
                             fontSize="sm"
                             fontWeight="medium"
                             lineHeight="5"
-                            onClick={() => setSelectedMetricName('')}
+                            onClick={() => setSelectedIdentifier('')}
                         >
                             {fetchingComputePlan && 'Loading'}
                             {!fetchingComputePlan &&
@@ -62,7 +62,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                     )}
                 </HStack>
             </BreadcrumbItem>
-            {!fetchingComputePlan && selectedMetricName && (
+            {!fetchingComputePlan && selectedIdentifier && (
                 <BreadcrumbItem isCurrentPage>
                     <Text
                         color="black"
@@ -70,7 +70,7 @@ const ComputePlanChartBreadcrumbs = (): JSX.Element => {
                         fontWeight="medium"
                         lineHeight="5"
                     >
-                        {selectedMetricName}
+                        {selectedIdentifier}
                     </Text>
                 </BreadcrumbItem>
             )}

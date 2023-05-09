@@ -16,10 +16,8 @@ type PerfBrowserProps = {
 const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
     const {
         loading,
-        selectedMetricName,
-        setSelectedMetricName,
-        setSelectedMetricKey,
-        setSelectedMetricOutputIdentifier,
+        selectedIdentifier,
+        setSelectedIdentifier,
         xAxisMode,
         seriesGroups,
         seriesGroupsWithRounds,
@@ -66,26 +64,18 @@ const PerfBrowser = ({ SidebarComponent }: PerfBrowserProps) => {
                     {loading && <PerfLoadingState />}
                     {!loading && (
                         <>
-                            {selectedMetricName && (
+                            {selectedIdentifier && (
                                 <PerfDetails series={selectedSeriesGroup} />
                             )}
-                            {!selectedMetricName && (
+                            {!selectedIdentifier && (
                                 <PerfList
                                     seriesGroups={
                                         xAxisMode === 'round'
                                             ? seriesGroupsWithRounds
                                             : seriesGroups
                                     }
-                                    onCardClick={(
-                                        metricName,
-                                        metricKey,
-                                        metricOutputIdentifier
-                                    ) => {
-                                        setSelectedMetricName(metricName);
-                                        setSelectedMetricKey(metricKey);
-                                        setSelectedMetricOutputIdentifier(
-                                            metricOutputIdentifier
-                                        );
+                                    onCardClick={(identifier) => {
+                                        setSelectedIdentifier(identifier);
                                     }}
                                 />
                             )}

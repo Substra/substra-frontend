@@ -26,7 +26,7 @@ export const PerfSidebarContainer = ({
     title: string;
     children: React.ReactNode;
 }) => {
-    const { selectedMetricName, selectedRank, hoveredRank, xAxisMode } =
+    const { selectedIdentifier, selectedRank, hoveredRank, xAxisMode } =
         useContext(PerfBrowserContext);
     return (
         <Box padding="6">
@@ -39,7 +39,7 @@ export const PerfSidebarContainer = ({
                 paddingBottom={4}
             >
                 <Text>{title}</Text>
-                {selectedMetricName && (
+                {selectedIdentifier && (
                     <HStack color="gray.400" spacing="1">
                         <Text>
                             {selectedRank !== null &&

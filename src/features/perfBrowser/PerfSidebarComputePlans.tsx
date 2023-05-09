@@ -329,7 +329,7 @@ const ComputePlanSection = ({
     addToFavorites,
     removeFromFavorites,
 }: ComputePlanSectionProps): JSX.Element => {
-    const { selectedMetricName } = useContext(PerfBrowserContext);
+    const { selectedIdentifier } = useContext(PerfBrowserContext);
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: true,
     });
@@ -345,7 +345,7 @@ const ComputePlanSection = ({
                 removeFromFavorites={removeFromFavorites}
             />
             <Collapse in={isOpen} animateOpacity>
-                {selectedMetricName ? (
+                {selectedIdentifier ? (
                     <SerieList computePlanKey={computePlanKey} />
                 ) : (
                     <OrganizationList computePlanKey={computePlanKey} />

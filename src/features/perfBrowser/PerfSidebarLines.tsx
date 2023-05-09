@@ -59,7 +59,7 @@ const SerieList = () => {
 };
 
 const PerfSidebarLines = (): JSX.Element => {
-    const { computePlans, loading, selectedMetricName } =
+    const { computePlans, loading, selectedIdentifier } =
         useContext(PerfBrowserContext);
 
     const computePlanKey = computePlans.length > 0 ? computePlans[0].key : '';
@@ -92,7 +92,7 @@ const PerfSidebarLines = (): JSX.Element => {
         );
     }
 
-    if (!selectedMetricName) {
+    if (!selectedIdentifier) {
         return <OrganizationList computePlanKey={computePlanKey} />;
     }
 
