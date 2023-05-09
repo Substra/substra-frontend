@@ -28,10 +28,3 @@ jobs:
               run: npm run test:unit
             - name: Helm
               run: helm lint charts/substra-frontend
-
-    build: #separate for parallelization
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Docker
-              run: DOCKER_BUILDKIT=1 docker build . -f docker/substra-frontend/Dockerfile
