@@ -24,7 +24,6 @@ import NewsFeed from '@/features/newsFeed/NewsFeed';
 import { PATHS } from '@/paths';
 
 import About from '@/components/layout/header/About';
-import ApiTokens from '@/components/layout/header/ApiTokens';
 import HeaderNavigation from '@/components/layout/header/HeaderNavigation';
 import Help from '@/components/layout/header/Help';
 import OmniSearch from '@/components/layout/header/OmniSearch';
@@ -176,7 +175,11 @@ const Header = (): JSX.Element => {
                             >
                                 Documentation
                             </MenuItem>
-                            <ApiTokens />
+                            <MenuItem
+                                onClick={() => setLocation(PATHS.MANAGE_TOKENS)}
+                            >
+                                API Tokens
+                            </MenuItem>
                             <Help />
                             <About />
                             {MICROSOFT_CLARITY_ID && (
