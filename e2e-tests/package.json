@@ -8,10 +8,11 @@
     "private": "true",
     "version": "0.1.0",
     "scripts": {
-        "test:e2e": "npx cypress run"
+        "test:e2e": "cypress run",
+        "cypress:open": "cypress open"
     },
     "dependencies": {
-        "cypress": "9.1.1"
+        "cypress": "12.12.0"
     },
     "engines": {
         "node": ">= 18.16"
