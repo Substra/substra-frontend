@@ -13,6 +13,6 @@ maintainers:
     - name: Substra Team
       email: support@substra.org
 
-version: 1.0.16
-appVersion: 0.40.0 # should be same as in package.json
+version: 1.0.17
+appVersion: 0.41.0 # should be same as in package.json
 kubeVersion: '>= 1.19.0-0'
