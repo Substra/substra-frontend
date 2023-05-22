@@ -36,27 +36,43 @@ const GenerateTokenModal = ({
 }: GenerateTokenModalProps): JSX.Element => {
     const toast = useToast();
 
-    const [tokenNote, setTokenNote] = useState('');
-    const [expiryCalendar, setExpiryCalendar] = useState('');
+    const [tokenName, setTokenName] = useState('');
     const [durationSelect, setDurationSelect] = useState('');
+    const [expirationDate, setExpirationDate] = useState<string | null>('');
 
     const incorrectExpiration =
-        (expiryCalendar === '' || new Date(expiryCalendar) < new Date()) &&
-        (durationSelect === 'custom' || durationSelect === '');
+        expirationDate === '' ||
+        (expirationDate && new Date(expirationDate) < new Date());
 
     const closeHandler = () => {
-        setExpiryCalendar('');
-        setTokenNote('');
+        setExpirationDate('');
+        setTokenName('');
         setDurationSelect('');
         onClose();
     };
 
+    const expirationHandler = (value: string) => {
+        setDurationSelect(value);
+
+        switch (value) {
+            case '30days':
+                setExpirationDate(increaseDate(new Date(), 30).toISOString());
+                break;
+            case '60days':
+                setExpirationDate(increaseDate(new Date(), 60).toISOString());
+                break;
+            case 'never':
+                setExpirationDate(null);
+                break;
+            case 'custom':
+            default:
+                break;
+        }
+    };
+
     async function generateToken() {
         try {
-            let expirationDate: string | null =
-                durationSelect === 'custom' ? expiryCalendar : durationSelect;
-            if (expirationDate === 'never') expirationDate = null;
-            const response = await requestToken(tokenNote, expirationDate);
+            const response = await requestToken(tokenName, expirationDate);
             setGeneratedToken(parseNewToken(response.data));
             toast({
                 title: 'New Token created',
@@ -74,8 +90,25 @@ const GenerateTokenModal = ({
         }
     }
 
+    const getLabel = () => {
+        let label = '';
+        if (!tokenName && !expirationDate) {
+            label = 'Please choose a name and an expiration date';
+        } else if (!tokenName && expirationDate) {
+            label = 'Please choose a name for your token';
+        } else if (tokenName && !expirationDate && expirationDate !== null) {
+            label = 'Please choose an expiration date';
+        } else if (tokenName && expirationDate && incorrectExpiration) {
+            label = 'This token is already expired!';
+        } else {
+            label = '';
+        }
+
+        return label;
+    };
+
     return (
-        <Modal isOpen={isOpen} onClose={closeHandler} size="lg">
+        <Modal isOpen={isOpen} onClose={closeHandler} size="lg" isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader fontWeight="600">New API Token</ModalHeader>
@@ -85,91 +118,60 @@ const GenerateTokenModal = ({
                     <VStack paddingY="2" spacing="2">
                         <Input
                             type="text"
-                            value={tokenNote}
+                            value={tokenName}
                             borderRadius="md"
                             maxLength={50}
-                            onChange={(e) => setTokenNote(e.target.value)}
+                            onChange={(e) => setTokenName(e.target.value)}
                         />
                     </VStack>
                     <Text fontWeight="500"> Expiration</Text>
                     <VStack paddingY="2" spacing="2">
                         <Select
                             defaultValue={''}
-                            onChange={(e) => setDurationSelect(e.target.value)}
+                            onChange={(e) => expirationHandler(e.target.value)}
                         >
                             <option value="" disabled hidden>
                                 {' '}
                                 Select Option
                             </option>
-                            <option
-                                value={increaseDate(
-                                    new Date(),
-                                    30
-                                ).toISOString()}
-                            >
-                                30 days
-                            </option>
-                            <option
-                                value={increaseDate(
-                                    new Date(),
-                                    60
-                                ).toISOString()}
-                            >
-                                60 days
-                            </option>
-                            <option value={'never'}>Never</option>
+                            <option value="30days">30 days</option>
+                            <option value="60days">60 days</option>
+                            <option value="never">Never</option>
                             <option value="custom">Custom</option>
                         </Select>
                         {durationSelect === 'custom' && (
                             <Input
-                                value={expiryCalendar}
+                                value={expirationDate ?? ''}
                                 onChange={(e) =>
-                                    setExpiryCalendar(e.target.value)
+                                    setExpirationDate(e.target.value)
                                 }
                                 type="date"
                                 min={new Date().toISOString().split('T')[0]}
                             />
                         )}
-                        <Text>
-                            {durationSelect === 'never'
-                                ? ''
-                                : durationSelect && durationSelect !== 'custom'
-                                ? `This token will expire on ${
-                                      shortFormatDate(
-                                          durationSelect.split('T')[0]
-                                      ).split(',')[0]
-                                  }`
-                                : durationSelect === 'custom' && expiryCalendar
-                                ? `This token will expire on ${
-                                      shortFormatDate(
-                                          expiryCalendar.split('T')[0]
-                                      ).split(',')[0]
-                                  }`
-                                : ''}
-                        </Text>
+                        {expirationDate && (
+                            <Text
+                                fontSize="sm"
+                                fontWeight="400"
+                                color="gray.600"
+                            >
+                                {`This token will expire on ${
+                                    shortFormatDate(
+                                        expirationDate.split('T')[0]
+                                    ).split(',')[0]
+                                }`}
+                            </Text>
+                        )}
                     </VStack>
                 </ModalBody>
                 <ModalFooter>
-                    <Tooltip
-                        label={
-                            durationSelect === '' &&
-                            expiryCalendar === '' &&
-                            tokenNote === ''
-                                ? 'Please choose a name and an expiration date'
-                                : tokenNote === ''
-                                ? 'Please choose a name for your token'
-                                : durationSelect === '' || expiryCalendar === ''
-                                ? 'Please choose an expiration date'
-                                : incorrectExpiration
-                                ? 'This token is already expired!'
-                                : ''
-                        }
-                    >
+                    <Tooltip label={getLabel()}>
                         <Button
                             variant="solid"
                             size="md"
                             onClick={generateToken}
-                            disabled={incorrectExpiration || !tokenNote}
+                            disabled={incorrectExpiration || !tokenName}
+                            colorScheme="primary"
                         >
                             Generate Token
                         </Button>

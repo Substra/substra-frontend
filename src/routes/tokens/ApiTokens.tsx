@@ -19,7 +19,7 @@ import { BearerTokenT, NewBearerTokenT } from '@/types/BearerTokenTypes';
 import { parseToken } from './BearerTokenUtils';
 import GenerateTokenModal from './components/GenerateTokenModal';
 
-const ApiTokens = () => {
+const ApiTokens = (): JSX.Element => {
     const [activeTokens, setActiveTokens] = useState<BearerTokenT[]>([]);
     const [generatedToken, setGeneratedToken] = useState<NewBearerTokenT>();
 
@@ -44,7 +44,7 @@ const ApiTokens = () => {
             marginX="auto"
             paddingX="6"
             paddingY="8"
-            spacing="2.5"
+            spacing="5"
             alignItems="stretch"
         >
             <Heading fontWeight="700" size="xxs" textTransform="uppercase">
@@ -52,26 +52,24 @@ const ApiTokens = () => {
             </Heading>
 
             <HStack width="100%" justify="space-between">
-                <VStack>
-                    <Text fontWeight="400" fontSize="sm">
-                        {'You can use tokens with the '}
-                        <Link
-                            color="black"
-                            href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client"
-                            isExternal
-                            textDecoration={'underline'}
-                            textUnderlineOffset={3}
-                        >
-                            Substra Python Client
-                        </Link>
-                        .
-                    </Text>
-                </VStack>
+                <Text fontWeight="400" fontSize="sm">
+                    {'You can use tokens with the '}
+                    <Link
+                        color="black"
+                        href="https://docs.substra.org/en/stable/documentation/references/sdk.html#client"
+                        isExternal
+                        textDecoration={'underline'}
+                        textUnderlineOffset={3}
+                    >
+                        Substra Python Client
+                    </Link>
+                    .
+                </Text>
                 <Button
                     leftIcon={<RiAddLine />}
-                    fontSize="sm"
-                    fontWeight="600"
+                    size="sm"
                     onClick={onOpen}
+                    colorScheme="primary"
                 >
                     Generate new
                 </Button>
@@ -81,20 +79,18 @@ const ApiTokens = () => {
                 onClose={onClose}
                 setGeneratedToken={setGeneratedToken}
             />
-            {generatedToken && (
-                <ApiToken key={generatedToken.id} token={generatedToken} />
-            )}
-            {activeTokens.length !== 0 ? (
-                activeTokens.map((token) => (
-                    <ApiToken key={token.id} token={token} />
-                ))
-            ) : (
-                <Center>
-                    <HStack spacing="2">
+            <VStack width="100%" spacing="2.5" alignItems="stretch">
+                {generatedToken && <ApiToken token={generatedToken} />}
+                {activeTokens.length !== 0 ? (
+                    activeTokens.map((token) => (
+                        <ApiToken key={token.id} token={token} />
+                    ))
+                ) : (
+                    <Center>
                         <Text>You don't have any active tokens.</Text>
-                    </HStack>
-                </Center>
-            )}
+                    </Center>
+                )}
+            </VStack>
         </VStack>
     );
 };

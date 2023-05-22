@@ -28,7 +28,11 @@ import {
 
 import NewTokenAlert from './NewTokenAlert';
 
-const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
+const ApiToken = ({
+    token,
+}: {
+    token: BearerTokenT | NewBearerTokenT;
+}): JSX.Element | null => {
     const [isRevoked, setIsRevoked] = useState<boolean>(false);
     const toast = useToast();
     const {
@@ -71,7 +75,7 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
             padding="20px"
         >
             {isNewBearerTokenT(token) && (
-                <NewTokenAlert tokenKey={token.token} />
+                <NewTokenAlert tokenKey={token.token} marginBottom="2.5" />
             )}
             <HStack>
                 <VStack align="left">
@@ -123,6 +127,7 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
                         leastDestructiveRef={cancelRef}
                         onClose={onConfirmClose}
                         size="md"
+                        isCentered
                     >
                         <AlertDialogOverlay>
                             <AlertDialogContent fontSize="sm">
