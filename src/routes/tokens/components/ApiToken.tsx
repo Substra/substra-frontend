@@ -20,10 +20,15 @@ import {
 import { deleteToken } from '@/api/BearerTokenApi';
 import { useToast } from '@/hooks/useToast';
 import { shortFormatDate } from '@/libs/utils';
-import { BearerTokenT, NewBearerTokenT } from '@/types/BearerTokenTypes';
+import {
+    BearerTokenT,
+    NewBearerTokenT,
+    isNewBearerTokenT,
+} from '@/types/BearerTokenTypes';
+
+import NewTokenAlert from './NewTokenAlert';
 
 const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
-    const apiToken = useState<BearerTokenT | NewBearerTokenT>(token)[0];
     const [isRevoked, setIsRevoked] = useState<boolean>(false);
     const toast = useToast();
     const {
@@ -53,8 +58,8 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
         }
     };
 
-    const tokenIsExpired = apiToken.expires_at
-        ? apiToken.expires_at < new Date()
+    const tokenIsExpired = token.expires_at
+        ? token.expires_at < new Date()
         : false;
 
     return isRevoked ? null : (
@@ -65,12 +70,15 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
             borderColor="gray.100"
             padding="20px"
         >
+            {isNewBearerTokenT(token) && (
+                <NewTokenAlert tokenKey={token.token} />
+            )}
             <HStack>
                 <VStack align="left">
                     <Text fontWeight="400" fontSize="md">
-                        {apiToken.note}
+                        {token.note}
                     </Text>
-                    {apiToken.expires_at === null ? (
+                    {token.expires_at === null ? (
                         <Text
                             fontSize="sm"
                             fontWeight="400"
@@ -87,12 +95,12 @@ const ApiToken = ({ token }: { token: BearerTokenT | NewBearerTokenT }) => {
                                     (tokenIsExpired ? 'd' : 's') +
                                     ` on ${
                                         shortFormatDate(
-                                            apiToken.expires_at.toDateString()
+                                            token.expires_at.toDateString()
                                         ).split(',')[0]
                                     } `}
                             </Text>
                             <Text>
-                                {` at ${apiToken.expires_at
+                                {` at ${token.expires_at
                                     .toLocaleTimeString()
                                     .slice(0, -3)}`}
                             </Text>

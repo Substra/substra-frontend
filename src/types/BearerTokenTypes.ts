@@ -14,3 +14,19 @@ export type RawBearerTokenT = {
     id: string;
 };
 export type RawNewBearerTokenT = RawBearerTokenT & { token: string };
+
+export const isNewBearerTokenT = (
+    newBearerToken: unknown
+): newBearerToken is NewBearerTokenT => {
+    if (typeof newBearerToken !== 'object') {
+        return false;
+    }
+
+    return (
+        (newBearerToken as NewBearerTokenT).created_at !== undefined &&
+        (newBearerToken as NewBearerTokenT).expires_at !== undefined &&
+        (newBearerToken as NewBearerTokenT).id !== undefined &&
+        (newBearerToken as NewBearerTokenT).note !== undefined &&
+        (newBearerToken as NewBearerTokenT).token !== undefined
+    );
+};
