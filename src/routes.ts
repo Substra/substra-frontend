@@ -17,6 +17,7 @@ import Tasks from '@/routes/tasks/Tasks';
 import Users from '@/routes/users/Users';
 
 import { PATHS } from './paths';
+import ApiTokens from './routes/tokens/ApiTokens';
 
 type IRouteT = {
     path: string;
@@ -84,5 +85,9 @@ export const ROUTES: Record<string, IRouteT> = {
     RESET_PASSWORD: {
         path: PATHS.RESET_PASSWORD,
         component: ResetPassword,
+    },
+    MANAGE_TOKENS: {
+        path: PATHS.MANAGE_TOKENS,
+        component: ApiTokens,
     },
 };

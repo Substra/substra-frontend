@@ -27,6 +27,11 @@ export const shortFormatDate = (dateString: string): string => {
     return shortDateFormatter.format(date);
 };
 
+export const increaseDate = (date: Date, days: number) => {
+    // adds days number of days to a given date
+    return new Date(date.getTime() + days * 24 * 3600 * 1000);
+};
+
 export const timestampNow = (): string => new Date().toISOString();
 
 export const getDiffDates = (start: string | 'now', end: string | 'now') => {

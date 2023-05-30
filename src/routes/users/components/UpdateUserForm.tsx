@@ -209,6 +209,7 @@ const UpdateUserForm = ({
                 size="sm"
                 closeOnEsc={!deletingUser}
                 closeOnOverlayClick={!deletingUser}
+                isCentered
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent fontSize="sm">
@@ -234,7 +235,7 @@ const UpdateUserForm = ({
                                 size="sm"
                                 isLoading={deletingUser}
                             >
-                                Yes I'm sure
+                                Delete user
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

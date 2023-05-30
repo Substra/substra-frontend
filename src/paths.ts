@@ -18,6 +18,7 @@ export const PATHS = {
     USERS: '/users',
     USER: '/users/:key',
     RESET_PASSWORD: '/reset_password/:key',
+    MANAGE_TOKENS: '/manage_tokens',
 };
 
 export const API_PATHS = {
