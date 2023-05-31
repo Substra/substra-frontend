@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Moved the API tokens management to a new page supporting multiple token per user (#198)
 
+### Fixed
+
+-   Fixed list calls cancelling when reloading or changing page (#200)
+
 ## [0.41.0] - 2023-05-11
 
 ### Added
@@ -20,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+-   Big refactor to use zustand instead of redux to handle store (#159)
 -   Upgrade node version from 16.13.0 to 18.16.0 (#187)
 -   New icon for list ordering in tables (#191)
 -   CP cancel alert message (#192)
@@ -28,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Inverted duration filter in tasks table (#190)
--   Big refactor to use zustand instead of redux to handle store (#159)
 -   Change files architecture (#159)
 -   Better performances for workflow (#196)
 

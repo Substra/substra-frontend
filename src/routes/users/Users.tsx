@@ -53,7 +53,8 @@ const Users = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {
-        fetchUsers({ page, ordering, match });
+        const abort = fetchUsers({ page, ordering, match });
+        return abort;
     }, [page, key, ordering, match, fetchUsers]);
 
     if (userRole !== UserRolesT.admin) {

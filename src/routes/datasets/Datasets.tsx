@@ -97,7 +97,8 @@ const Datasets = (): JSX.Element => {
         page,
     ]);
     useEffect(() => {
-        fetchDatasets(fetchParams);
+        const abort = fetchDatasets(fetchParams);
+        return abort;
     }, [fetchDatasets, fetchParams]);
 
     const context = useTableFiltersContext('dataset');

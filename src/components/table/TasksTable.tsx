@@ -49,6 +49,7 @@ import {
     useWorker,
 } from '@/hooks/useSyncedState';
 import { compilePath, PATHS } from '@/paths';
+import { AbortFunctionT } from '@/types/CommonTypes';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 import { TaskT, TaskStatus } from '@/types/TasksTypes';
 
@@ -69,7 +70,7 @@ import TablePagination from '@/components/table/TablePagination';
 
 type TasksTableProps = {
     loading: boolean;
-    list: () => void;
+    list: () => AbortFunctionT;
     tasks: TaskT[];
     count: number;
     computePlan?: ComputePlanT | null;
@@ -96,7 +97,8 @@ const TasksTable = ({
     const setLocationPreserveParams = useSetLocationPreserveParams();
 
     useEffect(() => {
-        list();
+        const abort = list();
+        return abort;
         // The computePlan is needed to trigger a list call once it has been fetched
     }, [
         list,

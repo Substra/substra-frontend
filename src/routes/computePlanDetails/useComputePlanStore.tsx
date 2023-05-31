@@ -6,8 +6,8 @@ import {
     retrieveComputePlan,
     updateComputePlan,
 } from '@/api/ComputePlansApi';
-import { handleUnknownError } from '@/api/request';
-import { APIRetrieveListArgsT } from '@/types/CommonTypes';
+import { handleUnknownError, withAbortSignal } from '@/api/request';
+import { APIRetrieveListArgsT, AbortFunctionT } from '@/types/CommonTypes';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 import { TaskT } from '@/types/TasksTypes';
 
@@ -21,12 +21,11 @@ type ComputePlanStateT = {
     updatingComputePlan: boolean;
 
     fetchComputePlan: (key: string) => void;
-    fetchComputePlanTasks: (params: APIRetrieveListArgsT) => void;
+    fetchComputePlanTasks: (params: APIRetrieveListArgsT) => AbortFunctionT;
     updateComputePlan: (key: string, name: string) => Promise<string | null>;
 };
 
 let fetchComputePlanController: AbortController | undefined;
-let fetchComputePlanTasksController: AbortController | undefined;
 
 const useComputePlanStore = create<ComputePlanStateT>((set) => ({
     computePlan: null,
@@ -60,19 +59,13 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
             }
         }
     },
-    fetchComputePlanTasks: async (params: APIRetrieveListArgsT) => {
-        //abort previous call
-        if (fetchComputePlanTasksController) {
-            fetchComputePlanTasksController.abort();
-        }
-
-        fetchComputePlanTasksController = new AbortController();
+    fetchComputePlanTasks: withAbortSignal(async (signal, params) => {
         set({ fetchingComputePlanTasks: true });
         try {
             const response = await listComputePlanTasks(
                 { ...params },
                 {
-                    signal: fetchComputePlanTasksController.signal,
+                    signal,
                 }
             );
             set({
@@ -88,7 +81,7 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
                 set({ fetchingComputePlanTasks: false });
             }
         }
-    },
+    }),
     updateComputePlan: async (key: string, name: string) => {
         set({ updatingComputePlan: true });
         try {

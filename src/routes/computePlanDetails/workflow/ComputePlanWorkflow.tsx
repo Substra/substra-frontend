@@ -46,9 +46,11 @@ const ComputePlanWorkflow = (): JSX.Element => {
     }, [key, computePlan?.key, fetchComputePlan]);
 
     useEffect(() => {
+        let abort;
         if (key) {
-            fetchGraph(key);
+            abort = fetchGraph(key);
         }
+        return abort;
     }, [key, fetchGraph]);
 
     if (!key) {

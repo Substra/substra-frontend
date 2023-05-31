@@ -2,33 +2,26 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { listTasks } from '@/api/TasksApi';
-import { APIListArgsT } from '@/types/CommonTypes';
+import { withAbortSignal } from '@/api/request';
+import { APIListArgsT, AbortFunctionT } from '@/types/CommonTypes';
 import { TaskT } from '@/types/TasksTypes';
 
 type TasksStateT = {
     tasks: TaskT[];
     tasksCount: number;
     fetchingTasks: boolean;
-    fetchTasks: (params: APIListArgsT) => void;
+    fetchTasks: (params: APIListArgsT) => AbortFunctionT;
 };
-
-let fetchController: AbortController | undefined;
 
 const useTasksStore = create<TasksStateT>((set) => ({
     tasks: [],
     tasksCount: 0,
     fetchingTasks: true,
-    fetchTasks: async (params: APIListArgsT) => {
-        // abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
+    fetchTasks: withAbortSignal(async (signal, params) => {
         set({ fetchingTasks: true });
         try {
             const response = await listTasks(params, {
-                signal: fetchController.signal,
+                signal,
             });
             set({
                 fetchingTasks: false,
@@ -43,7 +36,7 @@ const useTasksStore = create<TasksStateT>((set) => ({
                 set({ fetchingTasks: false });
             }
         }
-    },
+    }),
 }));
 
 export default useTasksStore;

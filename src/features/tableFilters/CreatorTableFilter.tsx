@@ -28,7 +28,8 @@ const CreatorTableFilter = (): JSX.Element => {
     const { users, fetchUsers } = useUsersStore();
 
     useEffect(() => {
-        fetchUsers({ page, ordering: 'username', match });
+        const abort = fetchUsers({ page, ordering: 'username', match });
+        return abort;
     }, [page, match, fetchUsers]);
 
     const [tmpCreator, onTmpCreatorChange, resetTmpCreator, setTmpCreator] =

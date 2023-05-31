@@ -2,14 +2,15 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { retrieveCPWorkflowGraph } from '@/api/CPWorkflowApi';
-import { handleUnknownError } from '@/api/request';
+import { handleUnknownError, withAbortSignal } from '@/api/request';
 import { TaskGraphT } from '@/types/CPWorkflowTypes';
+import { AbortFunctionT } from '@/types/CommonTypes';
 
 type WorkflowStateT = {
     graph: TaskGraphT;
     fetchingGraph: boolean;
     graphError: string | null;
-    fetchGraph: (computePlanKey: string) => void;
+    fetchGraph: (computePlanKey: string) => AbortFunctionT;
 };
 
 const emptyGraph = {
@@ -17,23 +18,15 @@ const emptyGraph = {
     edges: [],
 };
 
-let fetchController: AbortController | undefined;
-
 const useWorkflowStore = create<WorkflowStateT>((set) => ({
     graph: emptyGraph,
     fetchingGraph: true,
     graphError: null,
-    fetchGraph: async (computePlanKey: string) => {
-        // abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
+    fetchGraph: withAbortSignal(async (signal, computePlanKey) => {
         set({ fetchingGraph: true });
         try {
             const response = await retrieveCPWorkflowGraph(computePlanKey, {
-                signal: fetchController.signal,
+                signal,
             });
             set({
                 fetchingGraph: false,
@@ -48,7 +41,7 @@ const useWorkflowStore = create<WorkflowStateT>((set) => ({
                 set({ fetchingGraph: false, graphError });
             }
         }
-    },
+    }),
 }));
 
 export default useWorkflowStore;

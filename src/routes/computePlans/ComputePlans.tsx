@@ -139,7 +139,8 @@ const ComputePlans = (): JSX.Element => {
     );
 
     useEffect(() => {
-        fetchComputePlans({ page, ordering, ...filters });
+        const abort = fetchComputePlans({ page, ordering, ...filters });
+        return abort;
     }, [fetchComputePlans, page, ordering, filters]);
 
     const { metadata } = useMetadataStore();

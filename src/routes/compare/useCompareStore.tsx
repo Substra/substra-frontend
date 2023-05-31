@@ -2,33 +2,26 @@ import axios, { AxiosPromise } from 'axios';
 import { create } from 'zustand';
 
 import { retrieveComputePlan } from '@/api/ComputePlansApi';
+import { withAbortSignal } from '@/api/request';
+import { AbortFunctionT } from '@/types/CommonTypes';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
 
 type CompareStateT = {
     computePlans: ComputePlanT[];
     fetchingComputePlans: boolean;
-    fetchComputePlans: (computePlanKeys: string[]) => void;
+    fetchComputePlans: (computePlanKeys: string[]) => AbortFunctionT;
 };
-
-let fetchController: AbortController | undefined;
 
 const useCompareStore = create<CompareStateT>((set) => ({
     computePlans: [],
     fetchingComputePlans: true,
-    fetchComputePlans: async (computePlanKeys: string[]) => {
-        //abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
-
+    fetchComputePlans: withAbortSignal(async (signal, computePlanKeys) => {
         set({ fetchingComputePlans: true });
         let promises: AxiosPromise<ComputePlanT>[] = [];
 
         promises = computePlanKeys.map((computePlanKey) =>
             retrieveComputePlan(computePlanKey, {
-                signal: (fetchController as AbortController).signal,
+                signal,
             })
         );
 
@@ -49,7 +42,7 @@ const useCompareStore = create<CompareStateT>((set) => ({
                 set({ fetchingComputePlans: false });
             }
         }
-    },
+    }),
 }));
 
 export default useCompareStore;

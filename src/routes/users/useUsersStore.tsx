@@ -8,8 +8,8 @@ import {
     retrieveUser,
     updateUser,
 } from '@/api/UsersApi';
-import { handleUnknownError } from '@/api/request';
-import { APIListArgsT } from '@/types/CommonTypes';
+import { handleUnknownError, withAbortSignal } from '@/api/request';
+import { APIListArgsT, AbortFunctionT } from '@/types/CommonTypes';
 import { UserT, UpdateUserPayloadT, UserPayloadT } from '@/types/UsersTypes';
 
 type UsersStateT = {
@@ -23,7 +23,7 @@ type UsersStateT = {
     updatingUser: boolean;
     deletingUser: boolean;
 
-    fetchUsers: (params: APIListArgsT) => void;
+    fetchUsers: (params: APIListArgsT) => AbortFunctionT;
     fetchUser: (key: string) => Promise<UserT | null>;
     createUser: (payload: UserPayloadT) => Promise<string | null>;
     updateUser: (
@@ -33,7 +33,6 @@ type UsersStateT = {
     deleteUser: (key: string) => Promise<string | null>;
 };
 
-let fetchUsersController: AbortController | null;
 let fetchUserController: AbortController | null;
 
 const useUsersStore = create<UsersStateT>((set, get) => ({
@@ -45,17 +44,11 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
     creatingUser: false,
     updatingUser: false,
     deletingUser: false,
-    fetchUsers: async (params: APIListArgsT) => {
-        // abort previous call
-        if (fetchUsersController) {
-            fetchUsersController.abort();
-        }
-
-        fetchUsersController = new AbortController();
+    fetchUsers: withAbortSignal(async (signal, params) => {
         set({ fetchingUsers: true });
         try {
             const response = await listUsers(params, {
-                signal: fetchUsersController.signal,
+                signal,
             });
             set({
                 fetchingUsers: false,
@@ -70,7 +63,7 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
                 set({ fetchingUsers: false });
             }
         }
-    },
+    }),
     fetchUser: async (key: string) => {
         // abort previous call
         if (fetchUserController) {

@@ -75,7 +75,7 @@ const Functions = (): JSX.Element => {
         useFunctionsStore();
 
     useEffect(() => {
-        fetchFunctions({
+        const abort = fetchFunctions({
             page,
             ordering,
             match,
@@ -84,6 +84,7 @@ const Functions = (): JSX.Element => {
             creation_date_before: endOfDay(creationDateBefore),
             can_process: canProcess,
         });
+        return abort;
     }, [
         fetchFunctions,
         page,
