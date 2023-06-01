@@ -5,7 +5,7 @@ import { Box, Checkbox, Text, VStack } from '@chakra-ui/react';
 import useAuthStore from '@/features/auth/useAuthStore';
 import { useTableFilterCallbackRefs } from '@/features/tableFilters/useTableFilters';
 import useSelection from '@/hooks/useSelection';
-import { useCreator, useMatch, usePage } from '@/hooks/useSyncedState';
+import { useCreator } from '@/hooks/useSyncedState';
 import useUsersStore from '@/routes/users/useUsersStore';
 
 import {
@@ -22,15 +22,16 @@ const CreatorTableFilter = (): JSX.Element => {
         - All the users of my organization
     */
     }
-    const [page] = usePage();
-    const [match] = useMatch();
-
     const { users, fetchUsers } = useUsersStore();
 
     useEffect(() => {
-        const abort = fetchUsers({ page, ordering: 'username', match });
+        const abort = fetchUsers({
+            page: 1,
+            pageSize: 0,
+            ordering: 'username',
+        });
         return abort;
-    }, [page, match, fetchUsers]);
+    }, [fetchUsers]);
 
     const [tmpCreator, onTmpCreatorChange, resetTmpCreator, setTmpCreator] =
         useSelection();
