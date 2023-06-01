@@ -23,7 +23,7 @@ const useWorkflowStore = create<WorkflowStateT>((set) => ({
     fetchingGraph: true,
     graphError: null,
     fetchGraph: withAbortSignal(async (signal, computePlanKey) => {
-        set({ fetchingGraph: true });
+        set({ fetchingGraph: true, graph: emptyGraph, graphError: null });
         try {
             const response = await retrieveCPWorkflowGraph(computePlanKey, {
                 signal,

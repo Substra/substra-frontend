@@ -41,7 +41,7 @@ const useComputePlanStore = create<ComputePlanStateT>((set) => ({
         }
 
         fetchComputePlanController = new AbortController();
-        set({ fetchingComputePlan: true });
+        set({ fetchingComputePlan: true, computePlan: null });
         try {
             const response = await retrieveComputePlan(key, {
                 signal: fetchComputePlanController.signal,
