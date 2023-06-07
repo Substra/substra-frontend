@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New icon for list ordering in tables (#191)
 -   CP cancel alert message (#192)
 -   Serialize the performance graph regarding the identifier only (#194)
+-   In perf views, set `round` as default if `seriesGroupWithRounds.length > 0`, otherwise `rank` (#205)
 
 ### Fixed
 
