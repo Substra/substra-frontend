@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Creator filter using wrong pagination to fetch users (#201)
 -   Store variable for single assets not resetting correctly before new call (#202)
 -   Selected CPs not resetting after logout (#203)
+-   Hyper-parameters are not nicely shown when their names is too big (#208)
 
 ## [0.41.0] - 2023-05-11
 

@@ -13,6 +13,7 @@ import {
     Tag,
     TagLabel,
     TagRightIcon,
+    Tooltip,
     VStack,
     Code,
 } from '@chakra-ui/react';
@@ -87,9 +88,17 @@ export const DrawerSectionEntry = ({
             {icon}
             {titleStyle === 'code' && <Code fontSize="xs">{title}</Code>}
             {!titleStyle && (
-                <Text whiteSpace="nowrap" width="120px" flexShrink="0">
-                    {capitalize(title)}
-                </Text>
+                <Tooltip label={capitalize(title)}>
+                    <Text
+                        whiteSpace="nowrap"
+                        width="120px"
+                        flexShrink="0"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                    >
+                        {capitalize(title)}
+                    </Text>
+                </Tooltip>
             )}
             <Box flexGrow="1" overflowX="hidden">
                 {children}
