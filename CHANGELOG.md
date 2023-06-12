@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.41.0] - 2023-06-12
+
 ### Added
 
 -   Moved the API tokens management to a new page supporting multiple token per user (#198)
