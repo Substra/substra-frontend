@@ -45,7 +45,7 @@ const useDatasetStore = create<DatasetsStateT>((set) => ({
         }
 
         fetchDatasetController = new AbortController();
-        set({ fetchingDataset: true });
+        set({ fetchingDataset: true, dataset: null });
         try {
             const response = await retrieveDataset(key, {
                 signal: fetchDatasetController.signal,

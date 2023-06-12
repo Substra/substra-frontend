@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fixed list calls cancelling when reloading or changing page (#200)
+-   Store variable for single assets not resetting correctly before new call (#202)
 -   Selected CPs not resetting after logout (#203)
 
 ## [0.41.0] - 2023-05-11

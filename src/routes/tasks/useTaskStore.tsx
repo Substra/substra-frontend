@@ -65,7 +65,7 @@ const useTaskStore = create<TaskStateT>((set) => ({
         }
 
         fetchTaskProfilingController = new AbortController();
-        set({ fetchingTaskProfiling: true });
+        set({ fetchingTaskProfiling: true, taskProfiling: null });
         try {
             const response = await retrieveTaskProfiling(key, {
                 signal: fetchTaskProfilingController.signal,
@@ -90,7 +90,7 @@ const useTaskStore = create<TaskStateT>((set) => ({
         }
 
         fetchLogsController = new AbortController();
-        set({ fetchingLogs: true });
+        set({ fetchingLogs: true, logs: '' });
         try {
             const response = await retrieveLogs(key, {
                 signal: fetchLogsController.signal,

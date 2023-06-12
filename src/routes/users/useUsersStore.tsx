@@ -45,7 +45,7 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
     updatingUser: false,
     deletingUser: false,
     fetchUsers: withAbortSignal(async (signal, params) => {
-        set({ fetchingUsers: true });
+        set({ fetchingUsers: true, user: null });
         try {
             const response = await listUsers(params, {
                 signal,
