@@ -8,5 +8,5 @@ dist-ssr
 .idea
 .vscode
 
-cypress/videos/
 e2e-tests/cypress/videos/
+e2e-tests/cypress/screenshots/
