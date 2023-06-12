@@ -16,6 +16,7 @@ import {
 import * as TasksApi from '@/api/TasksApi';
 import { getAllPages } from '@/api/request';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
+import { FunctionT } from '@/types/FunctionsTypes';
 import { ModelT } from '@/types/ModelsTypes';
 import { TaskT, TaskStatus, TaskIOT } from '@/types/TasksTypes';
 
@@ -23,8 +24,8 @@ import { DrawerSection } from '@/components/DrawerSection';
 
 import DrawerSectionOutModelEntryContent from './DrawerSectionOutModelEntryContent';
 
-const isMultipleOutput = (task: TaskT, output_id: string) => {
-    return task.function.outputs[output_id].multiple;
+const isMultipleOutput = (func: FunctionT, output_id: string) => {
+    return func.outputs[output_id].multiple;
 };
 
 const displayPerformance = (value: number, taskStatus: TaskStatus) => {
@@ -79,11 +80,13 @@ const getTaskOutputsAssets = async (key: string): Promise<TaskIOT[]> => {
 };
 
 const TaskOutputsDrawerSection = ({
-    taskLoading,
+    loading,
     task,
+    function: func,
 }: {
-    taskLoading: boolean;
+    loading: boolean;
     task: TaskT | null;
+    function: FunctionT | null;
 }) => {
     const [taskOutputsAssets, setTaskOutputsAssets] = useState<TaskIOT[]>([]);
 
@@ -108,7 +111,7 @@ const TaskOutputsDrawerSection = ({
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {(taskLoading || !task) &&
+                        {(loading || !task) &&
                             [0, 1, 2].map((key) => (
                                 <Tr key={key}>
                                     <Td paddingLeft="0 !important">
@@ -128,11 +131,12 @@ const TaskOutputsDrawerSection = ({
                                     </Td>
                                 </Tr>
                             ))}
-                        {!taskLoading &&
+                        {!loading &&
                             task &&
+                            func &&
                             taskOutputsAssets.map((output) => {
                                 const multiple = isMultipleOutput(
-                                    task,
+                                    func,
                                     output.identifier
                                 );
                                 return (

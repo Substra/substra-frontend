@@ -17,7 +17,7 @@ import { compilePath, PATHS } from '@/paths';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
 import { FileT, PermissionsT } from '@/types/CommonTypes';
 import { isDatasetStubT } from '@/types/DatasetTypes';
-import { AssetKindT, FunctionInputT } from '@/types/FunctionsTypes';
+import { AssetKindT, FunctionInputT, FunctionT } from '@/types/FunctionsTypes';
 import { isModelT } from '@/types/ModelsTypes';
 import { TaskInputT, TaskT, TaskIOT } from '@/types/TasksTypes';
 
@@ -398,11 +398,13 @@ const getTaskInputAssets = async (key: string): Promise<TaskIOT[]> => {
 };
 
 const TaskInputsDrawerSection = ({
-    taskLoading,
+    loading,
     task,
+    function: func,
 }: {
-    taskLoading: boolean;
+    loading: boolean;
     task: TaskT | null;
+    function: FunctionT | null;
 }): JSX.Element => {
     const [taskInputsAssets, setTaskInputsAssets] = useState<TaskIOT[]>([]);
 
@@ -422,8 +424,9 @@ const TaskInputsDrawerSection = ({
     return (
         <DrawerSection title="Inputs">
             {task &&
-                !taskLoading &&
-                Object.entries(task.function.inputs).map(
+                func &&
+                !loading &&
+                Object.entries(func.inputs).map(
                     ([identifier, functionInput]) => {
                         const inputs = task.inputs.filter(
                             (input) => input.identifier === identifier

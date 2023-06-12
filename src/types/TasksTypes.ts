@@ -1,7 +1,7 @@
 import { MetadataT, PermissionT } from './CommonTypes';
 import { DataSampleT } from './DataSampleTypes';
 import { DatasetStubT } from './DatasetTypes';
-import { FunctionT, AssetKindT, FunctionOutputT } from './FunctionsTypes';
+import { AssetKindT, FunctionOutputT } from './FunctionsTypes';
 import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
 
@@ -87,7 +87,8 @@ export type TaskIOT = DatasetIOT | DatasampleIOT | ModelIOT | PerformanceIOT;
 export type TaskT = {
     key: string;
     creation_date: string;
-    function: FunctionT;
+    function_key: string;
+    function_name: string;
     compute_plan_key: string;
     owner: string;
     metadata: MetadataT;

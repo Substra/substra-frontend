@@ -15,6 +15,7 @@ import {
 
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { compilePath, PATHS } from '@/paths';
+import useFunctionStore from '@/routes/functions/useFunctionStore';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -49,6 +50,13 @@ const TaskDrawer = ({
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
     const { task, fetchingTask, fetchTask } = useTaskStore();
+    const {
+        function: func,
+        fetchingFunction,
+        fetchFunction,
+    } = useFunctionStore();
+
+    const fetching = fetchingTask || fetchingFunction;
 
     useEffect(() => {
         if (taskKey) {
@@ -58,6 +66,12 @@ const TaskDrawer = ({
             }
         }
     }, [fetchTask, isOpen, onOpen, taskKey]);
+
+    useEffect(() => {
+        if (task) {
+            fetchFunction(task.function_key);
+        }
+    }, [fetchFunction, task]);
 
     useDocumentTitleEffect(
         (setDocumentTitle) => {
@@ -132,7 +146,7 @@ const TaskDrawer = ({
                             organization={task?.owner}
                         />
                         <DrawerSectionEntry title="Compute plan">
-                            {fetchingTask || !task ? (
+                            {fetching || !task || !func ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <Link
@@ -151,28 +165,27 @@ const TaskDrawer = ({
                             )}
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Function">
-                            {fetchingTask || !task ? (
+                            {fetching || !task || !func ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <HStack spacing="2.5">
                                     <Text noOfLines={1}>
                                         <Link
                                             href={compilePath(PATHS.FUNCTION, {
-                                                key: task.function.key,
+                                                key: task.function_key,
                                             })}
                                             color="primary.500"
                                             fontWeight="semibold"
                                             isExternal
                                         >
-                                            {task.function.name}
+                                            {task.function_name}
                                         </Link>
                                     </Text>
                                     <DownloadIconButton
                                         storageAddress={
-                                            task.function.function
-                                                .storage_address
+                                            func?.function.storage_address
                                         }
-                                        filename={`function-${task.function.key}.zip`}
+                                        filename={`function-${task.function_key}.zip`}
                                         aria-label="Download function"
                                         size="xs"
                                         placement="top"
@@ -181,7 +194,7 @@ const TaskDrawer = ({
                             )}
                         </DrawerSectionEntry>
                         <DrawerSectionEntry title="Rank">
-                            {fetchingTask || !task ? (
+                            {fetching || !task || !func ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 task.rank
@@ -189,12 +202,14 @@ const TaskDrawer = ({
                         </DrawerSectionEntry>
                     </DrawerSection>
                     <TaskInputsDrawerSection
-                        taskLoading={fetchingTask}
+                        loading={fetching}
                         task={task || null}
+                        function={func || null}
                     />
                     <TaskOutputsDrawerSection
-                        taskLoading={fetchingTask}
+                        loading={fetching}
                         task={task || null}
+                        function={func || null}
                     />
                     <MetadataDrawerSection
                         metadata={task?.metadata}

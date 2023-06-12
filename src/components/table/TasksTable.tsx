@@ -354,7 +354,7 @@ const TasksTable = ({
                                             </Td>
                                             <Td>
                                                 <Text fontSize="sm">
-                                                    {task.function.name}
+                                                    {task.function_name}
                                                 </Text>
                                                 <Text fontSize="xs">
                                                     {`Rank ${task.rank} - ${task.worker}`}
