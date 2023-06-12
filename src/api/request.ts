@@ -7,7 +7,7 @@ import axios, {
 } from 'axios';
 import Cookies from 'universal-cookie';
 
-import { PaginatedApiResponseT } from '@/types/CommonTypes';
+import { AbortFunctionT, PaginatedApiResponseT } from '@/types/CommonTypes';
 
 const CONFIG = {
     baseURL: API_URL,
@@ -182,3 +182,17 @@ export const handleUnknownError = (error: unknown): string => {
     }
     return 'Unknown error';
 };
+
+// Used to create an abort controller for a given function
+// Returns a function launching abort to cancel the call of the func given as parameters when no longer needed
+// namely when making the same call twice (= reloading) or when unmounting useEffect (= changing page in app)
+// Cancelling unfinished calls that are no longer needed is for performance gains
+export const withAbortSignal =
+    <ParamsT extends unknown[]>(
+        func: (signal: AbortSignal, ...params: ParamsT) => void
+    ) =>
+    (...params: ParamsT): AbortFunctionT => {
+        const controller = new AbortController();
+        func(controller.signal, ...params);
+        return () => controller.abort();
+    };

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { listComputePlanPerformances } from '@/api/ComputePlansApi';
+import { withAbortSignal } from '@/api/request';
+import { AbortFunctionT } from '@/types/CommonTypes';
 import {
     ComputePlanStatisticsT,
     PerformanceT,
@@ -13,7 +15,7 @@ import { buildSeries } from './SeriesUtils';
 type SeriesStateT = {
     series: SerieT[];
     fetchingSeries: boolean;
-    fetchSeries: (computePlanKeyOrKeys: string | string[]) => void;
+    fetchSeries: (computePlanKeyOrKeys: string | string[]) => AbortFunctionT;
 };
 
 const getComputePlanSeries = async (
@@ -49,19 +51,10 @@ const getComputePlanSeries = async (
     return series;
 };
 
-let fetchController: AbortController | undefined;
-
 const useSeriesStore = create<SeriesStateT>((set, get) => ({
     series: [],
     fetchingSeries: true,
-    fetchSeries: async (computePlanKeyorKeys: string | string[]) => {
-        // abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
-
+    fetchSeries: withAbortSignal(async (signal, computePlanKeyorKeys) => {
         // if computePlanKeyOrKeys is a string, make it a list
         const computePlanKeys =
             typeof computePlanKeyorKeys === 'string'
@@ -73,7 +66,7 @@ const useSeriesStore = create<SeriesStateT>((set, get) => ({
         for (const computePlanKey of computePlanKeys) {
             const computePlanSeries = await getComputePlanSeries(
                 computePlanKey,
-                fetchController.signal
+                signal
             );
 
             if (computePlanSeries) {
@@ -84,7 +77,7 @@ const useSeriesStore = create<SeriesStateT>((set, get) => ({
         }
 
         set({ fetchingSeries: false });
-    },
+    }),
 }));
 
 export default useSeriesStore;

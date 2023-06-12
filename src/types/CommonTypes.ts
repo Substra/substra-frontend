@@ -46,3 +46,5 @@ export type APIListArgsT = {
 export type APIRetrieveListArgsT = APIListArgsT & {
     key: string;
 };
+
+export type AbortFunctionT = () => void;

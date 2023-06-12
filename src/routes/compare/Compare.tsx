@@ -31,8 +31,13 @@ const Compare = (): JSX.Element => {
     const { series, fetchingSeries, fetchSeries } = useSeriesStore();
 
     useEffectOnce(() => {
-        fetchComputePlans(keys);
-        fetchSeries(keys);
+        const abortComputePlans = fetchComputePlans(keys);
+        const abortSeries = fetchSeries(keys);
+
+        return () => {
+            abortComputePlans();
+            abortSeries();
+        };
     });
 
     const { context } = usePerfBrowser(

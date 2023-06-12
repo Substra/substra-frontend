@@ -2,33 +2,26 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { listDatasets } from '@/api/DatasetsApi';
-import { APIListArgsT } from '@/types/CommonTypes';
+import { withAbortSignal } from '@/api/request';
+import { APIListArgsT, AbortFunctionT } from '@/types/CommonTypes';
 import { DatasetStubT } from '@/types/DatasetTypes';
 
 type DatasetsStateT = {
     datasets: DatasetStubT[];
     datasetsCount: number;
     fetchingDatasets: boolean;
-    fetchDatasets: (params: APIListArgsT) => void;
+    fetchDatasets: (params: APIListArgsT) => AbortFunctionT;
 };
-
-let fetchController: AbortController | undefined;
 
 const useDatasetsStore = create<DatasetsStateT>((set) => ({
     datasets: [],
     datasetsCount: 0,
     fetchingDatasets: true,
-    fetchDatasets: async (params: APIListArgsT) => {
-        // abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
+    fetchDatasets: withAbortSignal(async (signal, params) => {
         set({ fetchingDatasets: true });
         try {
             const response = await listDatasets(params, {
-                signal: fetchController.signal,
+                signal,
             });
             set({
                 fetchingDatasets: false,
@@ -43,6 +36,7 @@ const useDatasetsStore = create<DatasetsStateT>((set) => ({
                 set({ fetchingDatasets: false });
             }
         }
-    },
+    }),
 }));
+
 export default useDatasetsStore;

@@ -2,8 +2,9 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { listComputePlans } from '@/api/ComputePlansApi';
+import { withAbortSignal } from '@/api/request';
 import { timestampNow } from '@/libs/utils';
-import { APIListArgsT } from '@/types/CommonTypes';
+import { APIListArgsT, AbortFunctionT } from '@/types/CommonTypes';
 import { ComputePlanStubT } from '@/types/ComputePlansTypes';
 
 type ComputePlansStateT = {
@@ -11,29 +12,20 @@ type ComputePlansStateT = {
     computePlansCount: number;
     computePlansCallTimestamp: string;
     fetchingComputePlans: boolean;
-    fetchComputePlans: (params: APIListArgsT) => void;
+    fetchComputePlans: (params: APIListArgsT) => AbortFunctionT;
 };
-
-let fetchController: AbortController | undefined;
 
 const useComputePlansStore = create<ComputePlansStateT>((set) => ({
     computePlans: [],
     computePlansCount: 0,
     computePlansCallTimestamp: '',
     fetchingComputePlans: true,
-    fetchComputePlans: async (params: APIListArgsT) => {
-        // abort previous call
-        if (fetchController) {
-            fetchController.abort();
-        }
-
-        fetchController = new AbortController();
-
+    fetchComputePlans: withAbortSignal(async (signal, params) => {
         set({ fetchingComputePlans: true });
 
         try {
             const response = await listComputePlans(params, {
-                signal: fetchController.signal,
+                signal,
             });
             set({
                 fetchingComputePlans: false,
@@ -49,6 +41,6 @@ const useComputePlansStore = create<ComputePlansStateT>((set) => ({
                 set({ fetchingComputePlans: false });
             }
         }
-    },
+    }),
 }));
 export default useComputePlansStore;
