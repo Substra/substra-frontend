@@ -126,6 +126,11 @@ const useAuthStore = create<AuthStateT>((set, get) => ({
         cookies.remove('signature');
         cookies.remove('refresh');
 
+        localStorage.setItem(
+            `${get().info.channel}-selected_compute_plans_`,
+            JSON.stringify([])
+        );
+
         set({ authenticated: false });
         try {
             await getLogOut();
