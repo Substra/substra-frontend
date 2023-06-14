@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.42.1] - 2023-06-14
+
 ## Fixed
 
 -   Start & end date ordering being reversed (#210)

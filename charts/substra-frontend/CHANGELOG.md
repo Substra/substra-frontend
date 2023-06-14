@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.19
+
+### Changed
+
+- Upgraded AppVersion to 0.42.1
+
 ## 1.0.18
 
 ### Changed
