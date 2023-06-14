@@ -207,22 +207,22 @@ const TasksTable = ({
                                                 label: 'Start date',
                                                 asc: {
                                                     label: 'Sort start date oldest first',
-                                                    value: '-start_date',
+                                                    value: 'start_date',
                                                 },
                                                 desc: {
                                                     label: 'Sort start date newest first',
-                                                    value: 'start_date',
+                                                    value: '-start_date',
                                                 },
                                             },
                                             {
                                                 label: 'End date',
                                                 asc: {
                                                     label: 'Sort end date oldest first',
-                                                    value: '-end_date',
+                                                    value: 'end_date',
                                                 },
                                                 desc: {
                                                     label: 'Sort end date newest first',
-                                                    value: 'end_date',
+                                                    value: '-end_date',
                                                 },
                                             },
                                             {
