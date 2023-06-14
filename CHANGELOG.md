@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Fixed
-
--   Start & end date ordering being reversed (#210)
-
 ## [0.42.0] - 2023-06-12
 
 ### Added
@@ -19,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Start & end date ordering being reversed (#210)
 -   Fixed list calls cancelling when reloading or changing page (#200)
 -   Creator filter using wrong pagination to fetch users (#201)
 -   Store variable for single assets not resetting correctly before new call (#202)
