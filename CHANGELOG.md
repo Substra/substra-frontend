@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Page title now updated properly when opening a user drawer (#218)
 -   Users list skeleton no longer flashing when opening/closing drawer (#213)
 
+### Added
+
+-   New users awaiting approval page and feature
+
 ## [0.43.0] - 2023-06-27
 
 ### Changed

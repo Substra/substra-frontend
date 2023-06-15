@@ -7,6 +7,7 @@ export type UserT = {
     username: string;
     role: UserRolesT;
     channel: string;
+    email: string;
 };
 
 export type UserPayloadT = {
@@ -24,4 +25,8 @@ export type UpdateUserPayloadT = {
 export type ResetPasswordT = {
     token: string;
     password: string;
+};
+
+export type UserApprovalPayloadT = {
+    role: UserRolesT;
 };

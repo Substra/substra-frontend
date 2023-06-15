@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
     Box,
@@ -10,8 +10,15 @@ import {
     Thead,
     Tr,
     VStack,
+    Heading,
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
+    StackDivider,
+    StackItem,
 } from '@chakra-ui/react';
-import { RiAddLine } from 'react-icons/ri';
+import { RiAddLine, RiInformationLine } from 'react-icons/ri';
 
 import useAuthStore from '@/features/auth/useAuthStore';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -35,6 +42,7 @@ import {
 import TablePagination from '@/components/table/TablePagination';
 import TableTitle from '@/components/table/TableTitle';
 
+import UserAwaitingApproval from './components/UserAwaitingApproval';
 import UserDrawer from './components/UserDrawer';
 import useUsersStore from './useUsersStore';
 
@@ -43,8 +51,17 @@ const Users = (): JSX.Element => {
     const [page] = usePage();
     const [match] = useMatch();
     const [ordering] = useOrdering('username');
-
-    const { users, usersCount, fetchingUsers, fetchUsers } = useUsersStore();
+    const [isRequestAccepted, setIsRequestAccepted] = useState<boolean>(false);
+    const {
+        users,
+        usersAwaitingApproval,
+        usersCount,
+        usersAwaitingApprovalCount,
+        fetchingUsers,
+        fetchingUsersAwaitingApproval,
+        fetchUsers,
+        fetchUsersAwaitingApproval,
+    } = useUsersStore();
     const fetchUsersList = useCallback(
         () => fetchUsers({ page, ordering, match }),
         [page, ordering, match, fetchUsers]
@@ -57,9 +74,20 @@ const Users = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {
-        const abort = fetchUsersList();
-        return abort;
-    }, [fetchUsersList]);
+        const abortUsers = fetchUsersList();
+        const abortUsersAwaitingApproval = fetchUsersAwaitingApproval();
+        return () => {
+            abortUsers();
+            abortUsersAwaitingApproval();
+        };
+    }, [
+        page,
+        key,
+        ordering,
+        match,
+        fetchUsersList,
+        fetchUsersAwaitingApproval,
+    ]);
 
     if (userRole !== UserRolesT.admin) {
         return <NotFound />;
@@ -73,6 +101,78 @@ const Users = (): JSX.Element => {
             spacing="2.5"
             alignItems="flex-start"
         >
+            {isRequestAccepted && (
+                <Alert
+                    status="info"
+                    overflow="visible"
+                    background="#C2DFFF"
+                    paddingX="4"
+                    paddingY="3"
+                    marginBottom="10"
+                >
+                    <AlertIcon as={RiInformationLine} color="blue.900" />
+                    <Box alignItems="stretch" width="100%" background="#C2DFFF">
+                        <AlertTitle fontSize="xxs" color="blue.900">
+                            Just accepted? Let them know!
+                        </AlertTitle>
+                        <AlertDescription
+                            maxWidth="sm"
+                            fontSize="xss"
+                            color="blue.900"
+                        >
+                            Some users were successfully accepted. Don't forget
+                            to notify them that they now have access to Substra.
+                        </AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+            {!fetchingUsersAwaitingApproval &&
+                usersAwaitingApproval.length > 0 && (
+                    <StackItem width="100%" alignItems="flex-start">
+                        <HStack>
+                            <Heading
+                                textTransform="uppercase"
+                                fontWeight="700"
+                                size="xxs"
+                            >
+                                Channel Access Requests
+                            </Heading>
+                            {usersAwaitingApprovalCount !== 0 && (
+                                <Text
+                                    bg="red.500"
+                                    color="white"
+                                    paddingRight={1}
+                                    paddingLeft={1}
+                                    borderColor="red.500"
+                                    borderRadius={3}
+                                    fontWeight="semibold"
+                                    fontSize="xs"
+                                >
+                                    {`${usersAwaitingApprovalCount}`}
+                                </Text>
+                            )}
+                        </HStack>
+                        <VStack
+                            width="100%"
+                            borderWidth="1px"
+                            borderStyle="solid"
+                            borderColor="gray.100"
+                            divider={<StackDivider />}
+                            spacing={0}
+                            marginTop="2"
+                            marginBottom="10"
+                        >
+                            {usersAwaitingApproval.map((user) => (
+                                <UserAwaitingApproval
+                                    key={user.username}
+                                    user={user}
+                                    fetchUsersList={fetchUsersList}
+                                    setIsRequestAccepted={setIsRequestAccepted}
+                                />
+                            ))}
+                        </VStack>
+                    </StackItem>
+                )}
             <UserDrawer fetchUsersList={fetchUsersList} />
             <TableTitle title="Users" />
             <HStack width="100%" spacing="2.5" justify="space-between">
