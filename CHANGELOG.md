@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Remove pagination on `get_performances` to remove limitation on 1000 first points (#222)
 -   Page title now updated properly when opening a user drawer (#218)
+-   Users list skeleton no longer flashing when opening/closing drawer (#213)
 
 ## [0.43.0] - 2023-06-27
 

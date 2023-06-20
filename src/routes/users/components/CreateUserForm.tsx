@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useToast } from '@/hooks/useToast';
+import { AbortFunctionT } from '@/types/CommonTypes';
 import { UserRolesT } from '@/types/UsersTypes';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -21,8 +22,10 @@ import UsernameInput from './UsernameInput';
 
 const CreateUserForm = ({
     closeHandler,
+    fetchUsersList,
 }: {
     closeHandler: () => void;
+    fetchUsersList: () => AbortFunctionT;
 }): JSX.Element => {
     const toast = useToast();
 
@@ -51,6 +54,7 @@ const CreateUserForm = ({
                     status: 'success',
                     isClosable: true,
                 });
+                fetchUsersList();
                 closeHandler();
             } else {
                 toast({

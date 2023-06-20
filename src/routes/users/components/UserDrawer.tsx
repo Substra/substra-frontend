@@ -6,11 +6,16 @@ import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
+import { AbortFunctionT } from '@/types/CommonTypes';
 
 import CreateUserForm from './CreateUserForm';
 import UpdateUserForm from './UpdateUserForm';
 
-const UserDrawer = (): JSX.Element => {
+const UserDrawer = ({
+    fetchUsersList,
+}: {
+    fetchUsersList: () => AbortFunctionT;
+}): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const username = useKeyFromPath(PATHS.USER);
@@ -48,11 +53,15 @@ const UserDrawer = (): JSX.Element => {
         >
             <DrawerOverlay />
             {username === 'create' && (
-                <CreateUserForm closeHandler={closeHandler} />
+                <CreateUserForm
+                    closeHandler={closeHandler}
+                    fetchUsersList={fetchUsersList}
+                />
             )}
             {!!username && username !== 'create' && (
                 <UpdateUserForm
                     closeHandler={closeHandler}
+                    fetchUsersList={fetchUsersList}
                     username={username || ''}
                 />
             )}

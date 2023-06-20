@@ -45,7 +45,7 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
     updatingUser: false,
     deletingUser: false,
     fetchUsers: withAbortSignal(async (signal, params) => {
-        set({ fetchingUsers: true, user: null });
+        set({ fetchingUsers: true });
         try {
             const response = await listUsers(params, {
                 signal,
@@ -71,7 +71,7 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
         }
 
         fetchUserController = new AbortController();
-        set({ fetchingUser: true });
+        set({ fetchingUser: true, user: null });
         try {
             const response = await retrieveUser(key, {
                 signal: fetchUserController.signal,
@@ -98,7 +98,6 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
             set({
                 creatingUser: false,
                 user: response.data,
-                users: get().users.concat(response.data),
             });
             return null;
         } catch (error) {
@@ -113,6 +112,12 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
             set({
                 updatingUser: false,
                 user: response.data,
+                users: get().users.map((user) => {
+                    if (user.username === key) {
+                        return response.data;
+                    }
+                    return user;
+                }),
             });
             return null;
         } catch (error) {
@@ -124,16 +129,10 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
         set({ deletingUser: true });
         try {
             await deleteUser(key);
-            set({
-                deletingUser: false,
-                usersCount: get().usersCount - 1,
-                users: get().users.filter(
-                    (user) => user.username !== get().user?.username
-                ),
-            });
+            set({ deletingUser: false });
             return null;
         } catch (error) {
-            set({ updatingUser: false });
+            set({ deletingUser: false });
             return handleUnknownError(error);
         }
     },
