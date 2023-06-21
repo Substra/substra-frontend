@@ -262,6 +262,12 @@ const usePerfBrowser = (
         (v) => v
     );
 
+    useEffect(() => {
+        if (seriesGroupsWithRounds.length > 0) {
+            setXAxisMode('round');
+        }
+    }, [seriesGroupsWithRounds.length, setXAxisMode]);
+
     const [yAxisMode, setYAxisMode] = useSyncedState<YAxisModeT>(
         'yAxisMode',
         'linear',
