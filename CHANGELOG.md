@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   In perf views, set `round` as default if `seriesGroupWithRounds.length > 0`, otherwise `rank` (#205)
 
+## Fixed
+
+-   Task execution and output saving duration being switched (#214)
+
 ## [0.42.1] - 2023-06-14
 
 ## Fixed
