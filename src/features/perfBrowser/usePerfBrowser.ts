@@ -266,7 +266,8 @@ const usePerfBrowser = (
         if (seriesGroupsWithRounds.length > 0) {
             setXAxisMode('round');
         }
-    }, [seriesGroupsWithRounds.length, setXAxisMode]);
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [seriesGroupsWithRounds.length]);
 
     const [yAxisMode, setYAxisMode] = useSyncedState<YAxisModeT>(
         'yAxisMode',
