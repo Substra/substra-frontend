@@ -13,6 +13,7 @@ import {
 import { RiAddLine } from 'react-icons/ri';
 
 import { listActiveTokens } from '@/api/BearerTokenApi';
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import ApiToken from '@/routes/tokens/components/ApiToken';
 import { BearerTokenT, NewBearerTokenT } from '@/types/BearerTokenTypes';
 
@@ -22,7 +23,10 @@ import GenerateTokenModal from './components/GenerateTokenModal';
 const ApiTokens = (): JSX.Element => {
     const [activeTokens, setActiveTokens] = useState<BearerTokenT[]>([]);
     const [generatedToken, setGeneratedToken] = useState<NewBearerTokenT>();
-
+    useDocumentTitleEffect(
+        (setDocumentTitle) => setDocumentTitle('Tokens management'),
+        []
+    );
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const getActiveTokens = async () => {
