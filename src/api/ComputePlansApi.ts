@@ -48,14 +48,14 @@ export const listComputePlanTasks = (
     );
 };
 
-type PaginatedPerformanceResponseT = {
+type PerformanceResponseT = {
     results: PerformanceT[];
     compute_plan_statistics: ComputePlanStatisticsT;
 };
 export const listComputePlanPerformances = (
     { key, ...apiListArgs }: APIRetrieveListArgsT,
     config: AxiosRequestConfig
-): AxiosPromise<PaginatedPerformanceResponseT> => {
+): AxiosPromise<PerformanceResponseT> => {
     return API.authenticatedGet(
         compilePath(API_PATHS.COMPUTE_PLAN_PERFORMANCES, { key }),
         {
