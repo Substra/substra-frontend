@@ -29,8 +29,6 @@ const getComputePlanSeries = async (
         const response = await listComputePlanPerformances(
             {
                 key: computePlanKey,
-                pageSize: 0,
-                page: 1,
             },
             { signal }
         );

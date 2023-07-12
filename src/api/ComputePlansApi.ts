@@ -48,7 +48,8 @@ export const listComputePlanTasks = (
     );
 };
 
-type PaginatedPerformanceResponseT = PaginatedApiResponseT<PerformanceT> & {
+type PaginatedPerformanceResponseT = {
+    results: PerformanceT[];
     compute_plan_statistics: ComputePlanStatisticsT;
 };
 export const listComputePlanPerformances = (
