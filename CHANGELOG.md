@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update cypress and old e2e architecture & tests (#219)
 
+### Fixed
+
+-   Remove pagination on `get_performances` to remove limitation on 1000 first points (#222)
+
 ## [0.43.0] - 2023-06-27
 
 ### Changed
