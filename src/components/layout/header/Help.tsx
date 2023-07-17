@@ -55,11 +55,13 @@ Backend: version ${backendVersion}`;
 
     return (
         <>
-            <MenuItem onClick={onOpen}>Help and feedback</MenuItem>
+            <MenuItem onClick={onOpen} data-cy="help">
+                Help and feedback
+            </MenuItem>
 
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent data-cy="help-modal">
                     <ModalHeader fontSize="md" fontWeight="bold">
                         Help and feedback
                     </ModalHeader>

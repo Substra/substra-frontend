@@ -31,11 +31,13 @@ const About = () => {
 
     return (
         <>
-            <MenuItem onClick={onOpen}>About</MenuItem>
+            <MenuItem onClick={onOpen} data-cy="about">
+                About
+            </MenuItem>
 
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent data-cy="about-modal">
                     <ModalHeader>About</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
