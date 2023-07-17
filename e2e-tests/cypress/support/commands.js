@@ -23,3 +23,23 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', () => {
+    cy.session(
+        'login',
+        () => {
+            cy.visit('/login');
+            cy.get('input[type=text]').type(Cypress.env('USERNAME'));
+            cy.get('input[type=password').type(Cypress.env('PASSWORD'));
+            cy.get('button[type=submit]').click();
+            cy.url().should('include', '/compute_plans');
+        },
+        {
+            validate: () => {
+                cy.getCookie('refresh').should('not.be.null');
+                cy.getCookie('signature').should('not.be.null');
+                cy.getCookie('header.payload').should('not.be.null');
+            },
+        }
+    );
+});

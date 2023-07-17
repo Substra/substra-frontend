@@ -19,18 +19,6 @@ describe('Login page', () => {
     });
 
     it('has cookies when login is successful', () => {
-        // proper login
-        cy.visit('/login');
-        cy.get('input[type=text]').type(Cypress.env('USERNAME'));
-        cy.get('input[type=password').type(Cypress.env('PASSWORD'));
-        cy.get('button[type=submit]').click();
-
-        // should be redirects to compute plans page
-        cy.url().should('include', '/compute_plans');
-
-        // should have cookies
-        cy.getCookie('refresh').should('not.be.null');
-        cy.getCookie('signature').should('not.be.null');
-        cy.getCookie('header.payload').should('not.be.null');
+        cy.login();
     });
 });

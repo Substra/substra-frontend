@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Update cypress and old e2e architecture & tests (#219)
+
 ## [0.43.0] - 2023-06-27
 
 ### Changed
