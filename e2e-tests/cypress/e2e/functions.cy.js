@@ -15,6 +15,10 @@ describe('Functions page', () => {
             .should('have.length.greaterThan', 2);
     });
 
+    it('functions pagination', () => {
+        cy.pagination_test();
+    });
+
     it('displays a function drawer', () => {
         cy.get('[data-cy=drawer]').should('not.exist');
         cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });

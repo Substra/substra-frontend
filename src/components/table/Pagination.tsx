@@ -36,6 +36,13 @@ const PageLink = ({
                 variant="outline"
                 size="sm"
                 disabled={isDisabled || activePage === page}
+                data-cy={
+                    activePage === page
+                        ? 'active-page'
+                        : page === 2
+                        ? 'second-page'
+                        : ''
+                }
             >
                 {page}
             </Button>
@@ -64,6 +71,7 @@ const PreviousPage = ({ page }: { page: number }): JSX.Element => {
                 size="sm"
                 aria-label="Previous Page"
                 icon={<RiArrowLeftLine />}
+                data-cy="previous-page"
             />
         </Link>
     );
@@ -95,6 +103,7 @@ const NextPage = ({
                 size="sm"
                 aria-label="Next Page"
                 icon={<RiArrowRightLine />}
+                data-cy="next-page"
             />
         </Link>
     );

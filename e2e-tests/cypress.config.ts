@@ -5,6 +5,7 @@ export default defineConfig({
         USERNAME: 'org-1',
         PASSWORD: 'p@sswr0d44',
         BACKEND_API_URL: 'http://substra-backend.org-1.com:8000',
+        DEFAULT_PAGE_SIZE: 30,
     },
     video: false,
     defaultCommandTimeout: 20000,
@@ -13,6 +14,6 @@ export default defineConfig({
     },
     retries: {
         runMode: 2,
-        openMode: 1,
+        openMode: 0,
     },
 });
