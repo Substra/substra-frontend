@@ -17,7 +17,12 @@ const TablePagination = ({
 
     return (
         <Flex justifyContent="space-between" alignItems="center" width="100%">
-            <Text color="gray.500" fontSize="xs" lineHeight="4">
+            <Text
+                color="gray.500"
+                fontSize="xs"
+                lineHeight="4"
+                data-cy="items-count"
+            >
                 {itemCount === 0 && `0 results`}
                 {itemCount === 1 &&
                     `1 result • ${firstIndex}-${lastIndex} shown`}
