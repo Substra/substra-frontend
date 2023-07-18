@@ -24,4 +24,8 @@ describe('Functions page', () => {
         cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
         cy.get('[data-cy=drawer]').should('exist');
     });
+
+    it('open filters', () => {
+        cy.open_filters();
+    });
 });

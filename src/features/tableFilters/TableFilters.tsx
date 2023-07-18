@@ -107,11 +107,16 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                         size="sm"
                         backgroundColor="secondary"
                         leftIcon={<RiAddLine />}
+                        data-cy="open-filters"
                     >
                         Add Filter
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent minWidth="690px" boxShadow="xl">
+                <PopoverContent
+                    minWidth="690px"
+                    boxShadow="xl"
+                    data-cy="filters-table"
+                >
                     <PopoverArrow />
                     <PopoverCloseButton onClick={onPopoverClose} />
                     <PopoverBody padding="0" overflow="hidden">
