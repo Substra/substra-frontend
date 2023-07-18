@@ -49,7 +49,6 @@ Cypress.Commands.add('pagination_test', () => {
     cy.get('[data-cy=items-count]').then(($count) => {
         const count = parseInt($count.text());
         if (count > Cypress.env('DEFAULT_PAGE_SIZE')) {
-            cy.log('wtfffdfsghjerzinfgioejfeiozfjiozpqg');
             cy.get('[data-cy=active-page').invoke('text').should('eq', '1');
             cy.get('[data-cy=next-page]').click();
             cy.get('[data-cy=active-page').invoke('text').should('eq', '2');
@@ -59,4 +58,9 @@ Cypress.Commands.add('pagination_test', () => {
             cy.get('[data-cy=active-page').invoke('text').should('eq', '2');
         }
     });
+});
+
+Cypress.Commands.add('open_filters', () => {
+    cy.get('[data-cy=open-filters]').click();
+    cy.get('[data-cy=filters-table]').should('exist');
 });
