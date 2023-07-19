@@ -24,6 +24,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('getDataCy', (input) => {
+    return cy.get(`[data-cy='${input}']`);
+});
+
 Cypress.Commands.add('login', () => {
     cy.session(
         'login',
@@ -45,22 +49,48 @@ Cypress.Commands.add('login', () => {
     );
 });
 
-Cypress.Commands.add('pagination_test', () => {
-    cy.get('[data-cy=items-count]').then(($count) => {
+Cypress.Commands.add('paginationTest', () => {
+    cy.getDataCy('items-count').then(($count) => {
         const count = parseInt($count.text());
         if (count > Cypress.env('DEFAULT_PAGE_SIZE')) {
-            cy.get('[data-cy=active-page').invoke('text').should('eq', '1');
-            cy.get('[data-cy=next-page]').click();
-            cy.get('[data-cy=active-page').invoke('text').should('eq', '2');
-            cy.get('[data-cy=previous-page]').click();
-            cy.get('[data-cy=active-page').invoke('text').should('eq', '1');
-            cy.get('[data-cy=second-page]').click();
-            cy.get('[data-cy=active-page').invoke('text').should('eq', '2');
+            cy.getDataCy('active-page').invoke('text').should('eq', '1');
+            cy.getDataCy('next-page').click();
+            cy.getDataCy('active-page').invoke('text').should('eq', '2');
+            cy.getDataCy('previous-page').click();
+            cy.getDataCy('active-page').invoke('text').should('eq', '1');
+            cy.getDataCy('second-page').click();
+            cy.getDataCy('active-page').invoke('text').should('eq', '2');
         }
     });
 });
 
-Cypress.Commands.add('open_filters', () => {
-    cy.get('[data-cy=open-filters]').click();
-    cy.get('[data-cy=filters-table]').should('exist');
+Cypress.Commands.add('openFilters', () => {
+    cy.getDataCy('open-filters').click();
+});
+
+Cypress.Commands.add('checkOpenFilters', () => {
+    cy.openFilters();
+    cy.getDataCy('filters-table').should('exist');
+});
+
+Cypress.Commands.add('openDrawer', (route) => {
+    cy.intercept('GET', `${Cypress.env('BACKEND_API_URL')}/${route}/*/`).as(
+        'drawer'
+    );
+    cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
+    cy.wait('@drawer');
+});
+
+Cypress.Commands.add('checkOpenDrawer', (route) => {
+    cy.getDataCy('drawer').should('not.exist');
+    cy.openDrawer(route);
+    cy.getDataCy('drawer').should('exist');
+});
+
+Cypress.Commands.add('checkValueCopiedToClipboard', (value) => {
+    cy.window().then((win) => {
+        win.navigator.clipboard.readText().then((text) => {
+            expect(text).to.eq(value);
+        });
+    });
 });
