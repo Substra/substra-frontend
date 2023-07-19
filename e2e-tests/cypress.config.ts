@@ -7,6 +7,8 @@ export default defineConfig({
         BACKEND_API_URL: 'http://substra-backend.org-1.com:8000',
         DEFAULT_PAGE_SIZE: 30,
     },
+    viewportWidth: 1440,
+    viewportHeight: 900,
     video: false,
     defaultCommandTimeout: 20000,
     e2e: {
