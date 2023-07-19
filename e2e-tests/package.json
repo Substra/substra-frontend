@@ -1,5 +1,6 @@
 {
     "name": "substra-frontend-e2e-tests",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "https://github.com/Substra/susbtra-frontend.git"
