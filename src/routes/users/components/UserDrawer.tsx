@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { Drawer, useDisclosure, DrawerOverlay } from '@chakra-ui/react';
 
+import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
@@ -24,6 +25,18 @@ const UserDrawer = (): JSX.Element => {
         setLocationPreserveParams(PATHS.USERS);
         onClose();
     };
+
+    const key = useKeyFromPath(PATHS.USER);
+    useDocumentTitleEffect(
+        (setDocumentTitle) => {
+            if (key === 'create') {
+                setDocumentTitle('User creation');
+            } else if (key) {
+                setDocumentTitle(`Update ${key}`);
+            }
+        },
+        [key]
+    );
 
     return (
         <Drawer
