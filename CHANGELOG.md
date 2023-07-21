@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Menu tests added to e2e tests (#224)
+
 ### Changed
 
 -   Update cypress and old e2e architecture & tests (#219)

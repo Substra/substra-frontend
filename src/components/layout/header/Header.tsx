@@ -152,6 +152,7 @@ const Header = (): JSX.Element => {
                             variant="solid"
                             colorScheme="gray"
                             size="sm"
+                            data-cy="menu-button"
                         />
                         <MenuList zIndex="popover">
                             <MenuGroup title={username} />
@@ -172,11 +173,13 @@ const Header = (): JSX.Element => {
                                     boxShadow: 'none',
                                     background: 'var(--chakra-colors-gray-100)',
                                 }}
+                                data-cy="documentation"
                             >
                                 Documentation
                             </MenuItem>
                             <MenuItem
                                 onClick={() => setLocation(PATHS.MANAGE_TOKENS)}
+                                data-cy="api-tokens"
                             >
                                 API Tokens
                             </MenuItem>
@@ -190,7 +193,9 @@ const Header = (): JSX.Element => {
                                 </MenuItem>
                             )}
                             <MenuDivider color="gray.200" />
-                            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                            <MenuItem onClick={handleLogOut} data-cy="logout">
+                                Logout
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
