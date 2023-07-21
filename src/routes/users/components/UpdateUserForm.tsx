@@ -25,6 +25,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import * as UsersApi from '@/api/UsersApi';
 import { useToast } from '@/hooks/useToast';
 import { compilePath, PATHS } from '@/paths';
+import { AbortFunctionT } from '@/types/CommonTypes';
 import { UserRolesT } from '@/types/UsersTypes';
 
 import DrawerHeader from '@/components/DrawerHeader';
@@ -35,9 +36,11 @@ import RoleInput from './RoleInput';
 
 const UpdateUserForm = ({
     closeHandler,
+    fetchUsersList,
     username,
 }: {
     closeHandler: () => void;
+    fetchUsersList: () => AbortFunctionT;
     username: string;
 }): JSX.Element => {
     const toast = useToast();
@@ -75,7 +78,6 @@ const UpdateUserForm = ({
                     status: 'success',
                     isClosable: true,
                 });
-
                 closeHandler();
             } else {
                 toast({
@@ -103,7 +105,7 @@ const UpdateUserForm = ({
                 status: 'success',
                 isClosable: true,
             });
-
+            fetchUsersList();
             closeHandler();
         } else {
             toast({
@@ -209,6 +211,7 @@ const UpdateUserForm = ({
                 size="sm"
                 closeOnEsc={!deletingUser}
                 closeOnOverlayClick={!deletingUser}
+                blockScrollOnMount={false} // this is because of a weird interaction in Chakra when opening an alert when a drawer is opened
                 isCentered
             >
                 <AlertDialogOverlay>

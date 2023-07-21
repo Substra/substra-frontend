@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import {
     Box,
@@ -45,6 +45,10 @@ const Users = (): JSX.Element => {
     const [ordering] = useOrdering('username');
 
     const { users, usersCount, fetchingUsers, fetchUsers } = useUsersStore();
+    const fetchUsersList = useCallback(
+        () => fetchUsers({ page, ordering, match }),
+        [page, ordering, match, fetchUsers]
+    );
     const {
         info: { user_role: userRole },
     } = useAuthStore();
@@ -53,9 +57,9 @@ const Users = (): JSX.Element => {
     useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {
-        const abort = fetchUsers({ page, ordering, match });
+        const abort = fetchUsersList();
         return abort;
-    }, [page, key, ordering, match, fetchUsers]);
+    }, [fetchUsersList]);
 
     if (userRole !== UserRolesT.admin) {
         return <NotFound />;
@@ -69,7 +73,7 @@ const Users = (): JSX.Element => {
             spacing="2.5"
             alignItems="flex-start"
         >
-            <UserDrawer />
+            <UserDrawer fetchUsersList={fetchUsersList} />
             <TableTitle title="Users" />
             <HStack width="100%" spacing="2.5" justify="space-between">
                 <SearchBar placeholder="Search username..." />
