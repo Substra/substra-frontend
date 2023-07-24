@@ -8,6 +8,7 @@ import {
     ResetPasswordT,
     UserPayloadT,
     UserT,
+    UserApprovalPayloadT,
 } from '@/types/UsersTypes';
 
 export const createUser = (payload: UserPayloadT): AxiosPromise<UserT> => {
@@ -23,6 +24,13 @@ export const listUsers = (
         ...config,
     });
 
+export const listUsersAwaitingApproval = (
+    config: AxiosRequestConfig
+): AxiosPromise<PaginatedApiResponseT<UserT>> =>
+    API.authenticatedGet(API_PATHS.USERS_AWAITING_APPROVAL, {
+        ...config,
+    });
+
 export const retrieveUser = (
     key: string,
     config: AxiosRequestConfig
@@ -35,8 +43,21 @@ export const updateUser = (
 ): AxiosPromise<UserT> =>
     API.put(compilePath(API_PATHS.USER, { key }), payload);
 
+export const approveUserAwaitingApproval = (
+    key: string,
+    payload: UserApprovalPayloadT
+): AxiosPromise<UserT> =>
+    API.put(API_PATHS.USERS_AWAITING_APPROVAL, payload, {
+        params: { username: key },
+    });
+
 export const deleteUser = (key: string): AxiosPromise<void> =>
     API.delete(compilePath(API_PATHS.USER, { key }));
+
+export const deleteUserAwaitingApproval = (key: string): AxiosPromise<void> =>
+    API.delete(API_PATHS.USERS_AWAITING_APPROVAL, {
+        params: { username: key },
+    });
 
 export const requestResetToken = (
     key: string

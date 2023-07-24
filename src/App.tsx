@@ -15,6 +15,7 @@ import AppLayout from '@/components/layout/applayout/AppLayout';
 import useAuthStore from './features/auth/useAuthStore';
 import useMetadataStore from './features/metadata/useMetadataStore';
 import useOrganizationsStore from './features/organizations/useOrganizationsStore';
+import UserAwaitingApprovalPage from './routes/users/components/UserAwaitingApprovalPage';
 
 const App = (): JSX.Element => {
     const [, setLocation] = useLocation();
@@ -22,10 +23,17 @@ const App = (): JSX.Element => {
     const [onResetPage] = useRoute(PATHS.RESET_PASSWORD);
     const [checkingCredentials, setCheckingCredentials] = useState(true);
 
-    const { postRefresh, fetchInfo } = useAuthStore();
-    const { fetchOrganizations } = useOrganizationsStore();
-    const { fetchMetadata } = useMetadataStore();
-
+    const {
+        postRefresh,
+        fetchingInfo,
+        fetchInfo,
+        info: { channel },
+    } = useAuthStore();
+    const { fetchOrganizations, fetchingOrganizations } =
+        useOrganizationsStore();
+    const { fetchMetadata, fetchingMetadata } = useMetadataStore();
+    const fetchingAll =
+        fetchingInfo || fetchingMetadata || fetchingOrganizations;
     useEffectOnce(() => {
         /**
          * Perform authentication check at init.
@@ -67,6 +75,10 @@ const App = (): JSX.Element => {
                 />
             </Flex>
         );
+    }
+
+    if (!fetchingAll && !channel && !(onLoginPage || onResetPage)) {
+        return <UserAwaitingApprovalPage />;
     }
 
     return (

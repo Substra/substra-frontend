@@ -46,6 +46,7 @@ export const API_PATHS = {
     TASK_OUTPUTS: '/task/:key/output_assets/',
     TASK_PROFILING: '/task_profiling/:key/',
     USERS: '/users/',
+    USERS_AWAITING_APPROVAL: '/users-awaiting-approval/',
     USER: '/users/:key/',
     USER_SET_PWD: '/users/:key/set_password/',
     USER_RESET_TOKEN: '/users/:key/reset_password/',
