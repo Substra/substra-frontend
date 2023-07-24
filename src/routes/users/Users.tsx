@@ -104,22 +104,15 @@ const Users = (): JSX.Element => {
             {isRequestAccepted && (
                 <Alert
                     status="info"
+                    variant="subtle"
                     overflow="visible"
-                    background="#C2DFFF"
-                    paddingX="4"
-                    paddingY="3"
+                    padding="var(--chakra-space-3) var(--chakra-space-4)"
                     marginBottom="10"
                 >
-                    <AlertIcon as={RiInformationLine} color="blue.900" />
-                    <Box alignItems="stretch" width="100%" background="#C2DFFF">
-                        <AlertTitle fontSize="xxs" color="blue.900">
-                            Just accepted? Let them know!
-                        </AlertTitle>
-                        <AlertDescription
-                            maxWidth="sm"
-                            fontSize="xss"
-                            color="blue.900"
-                        >
+                    <AlertIcon as={RiInformationLine} fill="blue.900" />
+                    <Box>
+                        <AlertTitle>Just accepted? Let them know!</AlertTitle>
+                        <AlertDescription lineHeight="4">
                             Some users were successfully accepted. Don't forget
                             to notify them that they now have access to Substra.
                         </AlertDescription>
@@ -129,7 +122,7 @@ const Users = (): JSX.Element => {
             {!fetchingUsersAwaitingApproval &&
                 usersAwaitingApproval.length > 0 && (
                     <StackItem width="100%" alignItems="flex-start">
-                        <HStack>
+                        <HStack marginBottom="2">
                             <Heading
                                 textTransform="uppercase"
                                 fontWeight="700"

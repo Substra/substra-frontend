@@ -207,13 +207,6 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
             await deleteUserAwaitingApproval(key);
             set({
                 deletingUserAwaitingApproval: false,
-                usersAwaitingApprovalCount:
-                    get().usersAwaitingApprovalCount - 1,
-                usersAwaitingApproval: get().usersAwaitingApproval.filter(
-                    (userAwaitingApproval) =>
-                        userAwaitingApproval.username !==
-                        get().userAwaitingApproval?.username
-                ),
             });
             return null;
         } catch (error) {

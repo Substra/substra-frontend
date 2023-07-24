@@ -25,12 +25,15 @@ const App = (): JSX.Element => {
 
     const {
         postRefresh,
+        fetchingInfo,
         fetchInfo,
         info: { channel },
     } = useAuthStore();
-    const { fetchOrganizations } = useOrganizationsStore();
-    const { fetchMetadata } = useMetadataStore();
-
+    const { fetchOrganizations, fetchingOrganizations } =
+        useOrganizationsStore();
+    const { fetchMetadata, fetchingMetadata } = useMetadataStore();
+    const fetchingAll =
+        fetchingInfo || fetchingMetadata || fetchingOrganizations;
     useEffectOnce(() => {
         /**
          * Perform authentication check at init.
@@ -74,7 +77,7 @@ const App = (): JSX.Element => {
         );
     }
 
-    if (!channel && !(onLoginPage || onResetPage)) {
+    if (!fetchingAll && !channel && !(onLoginPage || onResetPage)) {
         return <UserAwaitingApprovalPage />;
     }
 

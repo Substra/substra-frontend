@@ -55,9 +55,9 @@ export const deleteUser = (key: string): AxiosPromise<void> =>
     API.delete(compilePath(API_PATHS.USER, { key }));
 
 export const deleteUserAwaitingApproval = (key: string): AxiosPromise<void> =>
-    API.delete(
-        API_PATHS.USERS_AWAITING_APPROVAL.concat(`?username=`).concat(key)
-    );
+    API.delete(API_PATHS.USERS_AWAITING_APPROVAL, {
+        params: { username: key },
+    });
 
 export const requestResetToken = (
     key: string
