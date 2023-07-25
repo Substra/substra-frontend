@@ -1,9 +1,10 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useMemo } from 'react';
 
 import { useRoute } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
+import useAuthStore from '@/features/auth/useAuthStore';
 import CopyIconButton from '@/features/copy/CopyIconButton';
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
@@ -39,6 +40,18 @@ const Dataset = (): JSX.Element => {
         fetchOpener,
         updateDataset,
     } = useDatasetStore();
+    const {
+        info: { organization_id: currentOrganizationId },
+    } = useAuthStore();
+
+    const hasDownloadPermission = useMemo(() => {
+        if (dataset && currentOrganizationId) {
+            return dataset.permissions.download.authorized_ids.includes(
+                currentOrganizationId
+            );
+        }
+        return false;
+    }, [dataset, currentOrganizationId]);
 
     useEffect(() => {
         const fetchAll = async () => {
@@ -169,7 +182,16 @@ const Dataset = (): JSX.Element => {
                                             : ''
                                     }
                                     filename="opener.py"
-                                    aria-label="Download opener.py"
+                                    aria-label={
+                                        hasDownloadPermission
+                                            ? 'Download opener'
+                                            : "you don't have permission to download this dataset"
+                                    }
+                                    isDisabled={
+                                        !hasDownloadPermission ||
+                                        fetchingOpener ||
+                                        !opener
+                                    }
                                 />
                             </HStack>
                         </Heading>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { HStack, Icon, Link, List, Text, Tooltip } from '@chakra-ui/react';
 import {
@@ -12,6 +12,7 @@ import {
 import * as TasksApi from '@/api/TasksApi';
 import { getAllPages } from '@/api/request';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
+import useAuthStore from '@/features/auth/useAuthStore';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { compilePath, PATHS } from '@/paths';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
@@ -117,11 +118,25 @@ const DatasampleRepresentation = ({
 const OpenerRepresentation = ({
     assetKey,
     addressable,
+    permissions,
 }: {
     assetKey?: string;
     addressable?: FileT;
     permissions?: PermissionsT;
 }): JSX.Element => {
+    const {
+        info: { organization_id: currentOrganizationId },
+    } = useAuthStore();
+
+    const hasDownloadPermission = useMemo(() => {
+        if (permissions && currentOrganizationId) {
+            return permissions.download.authorized_ids.includes(
+                currentOrganizationId
+            );
+        }
+        return false;
+    }, [permissions, currentOrganizationId]);
+
     return (
         <HStack spacing="2.5" onClick={(e) => e.stopPropagation()}>
             {assetKey && (
@@ -142,9 +157,14 @@ const OpenerRepresentation = ({
                 <DownloadIconButton
                     storageAddress={addressable.storage_address}
                     filename={`opener-${assetKey}.py`}
-                    aria-label="Download opener"
+                    aria-label={
+                        hasDownloadPermission
+                            ? 'Download opener'
+                            : "You don't have the download permission for this dataset"
+                    }
                     size="xs"
                     placement="top"
+                    isDisabled={!hasDownloadPermission}
                 />
             )}
         </HStack>
@@ -229,6 +249,7 @@ const TaskInputValueRepresentation = ({
             <OpenerRepresentation
                 assetKey={input.asset_key}
                 addressable={inputAsset.asset.opener}
+                permissions={inputAsset.asset.permissions}
             />
         );
     }

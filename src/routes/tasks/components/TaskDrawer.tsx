@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
     Drawer,
@@ -13,6 +13,7 @@ import {
     HStack,
 } from '@chakra-ui/react';
 
+import useAuthStore from '@/features/auth/useAuthStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import { compilePath, PATHS } from '@/paths';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
@@ -49,6 +50,18 @@ const TaskDrawer = ({
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
     const { task, fetchingTask, fetchTask } = useTaskStore();
+    const {
+        info: { organization_id: currentOrganizationId },
+    } = useAuthStore();
+
+    const hasFunctionDownloadPermission = useMemo(() => {
+        if (task?.function && currentOrganizationId) {
+            return task.function.permissions.download.authorized_ids.includes(
+                currentOrganizationId
+            );
+        }
+        return false;
+    }, [task, currentOrganizationId]);
 
     useEffect(() => {
         if (taskKey) {
@@ -173,9 +186,16 @@ const TaskDrawer = ({
                                                 .storage_address
                                         }
                                         filename={`function-${task.function.key}.zip`}
-                                        aria-label="Download function"
+                                        aria-label={
+                                            hasFunctionDownloadPermission
+                                                ? 'Download function'
+                                                : "You don't have the download permission for this function"
+                                        }
                                         size="xs"
                                         placement="top"
+                                        isDisabled={
+                                            !hasFunctionDownloadPermission
+                                        }
                                     />
                                 </HStack>
                             )}

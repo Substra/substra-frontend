@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Reload current asset list on nav tab click (#206)
+-   Clearer UI for asset download permissions (#228)
 
 ### Changed
 
