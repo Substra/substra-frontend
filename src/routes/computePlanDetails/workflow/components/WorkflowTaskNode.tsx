@@ -16,7 +16,7 @@ type TaskNodeProps = {
 
 const TaskNode = ({ data }: TaskNodeProps) => {
     const handleTopMargin = 48;
-    const handleElementMargin = 15;
+    const handleElementMargin = 18;
     const handleRadius = 60;
     return (
         <>
