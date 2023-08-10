@@ -24,17 +24,30 @@ spec:
       serviceAccountName: {{ include "substra-frontend.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: template-html
+          image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: 
+            - 'sh'
+          args:
+            - '-c'
+            - |
+              cp -R /usr/share/nginx/html /
+              envsubst < /html/index-template.html > /html/index.html
+          volumeMounts:
+            - name: html
+              mountPath: /html
+          env:
+            - name: API_URL
+              value: {{ .Values.api.url | quote }}
+            - name: MICROSOFT_CLARITY_ID
+              value: {{ .Values.microsoftClarity.id | quote }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command:
-            - /bin/bash
-          args:
-            - -c
-            - "envsubst < /usr/share/nginx/html/index-template.html > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
           ports:
             - name: http
               containerPort: 80
@@ -47,13 +60,22 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+            - name: nginx-cache
+              mountPath: /var/cache/nginx/
+            - name: nginx-run
+              mountPath: /var/run
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: API_URL
-              value: {{ .Values.api.url | quote }}
-            - name: MICROSOFT_CLARITY_ID
-              value: {{ .Values.microsoftClarity.id | quote }}
+      volumes:
+        - name: html
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {} 
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
