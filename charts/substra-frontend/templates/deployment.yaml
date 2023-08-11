@@ -28,9 +28,9 @@ spec:
         - name: template-html
           image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: 
-            - 'sh'
+            - sh
           args:
-            - '-c'
+            - -c
             - |
               cp -R /usr/share/nginx/html /
               envsubst < /html/index-template.html > /html/index.html
@@ -50,7 +50,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 3000
               protocol: TCP
           livenessProbe:
             httpGet:
