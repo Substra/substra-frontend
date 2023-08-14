@@ -1,6 +1,10 @@
 import { AxiosResponse } from 'axios';
 
-import { RawBearerTokenT, RawNewBearerTokenT } from '@/types/BearerTokenTypes';
+import {
+    RawBearerTokenT,
+    RawImplicitBearerTokenT,
+    RawNewBearerTokenT,
+} from '@/types/BearerTokenTypes';
 
 import API from './request';
 
@@ -17,7 +21,10 @@ export const requestToken = (
 };
 
 export const listActiveTokens = (): Promise<
-    AxiosResponse<{ tokens: RawBearerTokenT[] }>
+    AxiosResponse<{
+        tokens: RawBearerTokenT[];
+        implicit_tokens: RawImplicitBearerTokenT[];
+    }>
 > => {
     return API.authenticatedGet(URLS.ACTIVE_API_TOKENS);
 };

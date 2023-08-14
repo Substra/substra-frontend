@@ -1,18 +1,18 @@
-export type BearerTokenT = {
+export type ImplicitBearerTokenT = {
     created_at: Date;
     expires_at: Date | null;
-    note: string;
     id: string;
 };
+export type BearerTokenT = ImplicitBearerTokenT & { note: string };
 export type NewBearerTokenT = BearerTokenT & { token: string };
 
 // API response
-export type RawBearerTokenT = {
+export type RawImplicitBearerTokenT = {
     created_at: string;
     expires_at: string | null;
-    note: string;
     id: string;
 };
+export type RawBearerTokenT = RawImplicitBearerTokenT & { note: string };
 export type RawNewBearerTokenT = RawBearerTokenT & { token: string };
 
 export const isNewBearerTokenT = (
