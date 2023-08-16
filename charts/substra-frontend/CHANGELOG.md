@@ -1,10 +1,16 @@
 # Changelog
 
+## 1.0.22
+
+### Changed
+
+- Allow the chart to run with reduced capabilities (rootless, readOnlyFileSystem)
+
 ## 1.0.21
 
 ### Changed
 
-- Upgraded AppVersion to 0.44.0
+- Upgrade AppVersion to 0.44.0
 
 ## 1.0.20
 
