@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.45.0] - 2023-08-22
+
 ### Changed
 
 -   Allow production images to run under reduced privileges (#231)
