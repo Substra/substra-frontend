@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Allow production images to run under reduced privileges (#231)
 
+### Fixed
+
+-   Properly align handles with inputs & outputs in workflow (#229)
+
 ## [0.44.0] - 2023-07-25
 
 ### Added
