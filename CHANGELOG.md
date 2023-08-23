@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Reload current asset list on nav tab click (#206)
+
 ### Changed
 
 -   Allow production images to run under reduced privileges (#231)

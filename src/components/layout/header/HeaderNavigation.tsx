@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 
 import { useHrefLocation } from '@/hooks/useLocationWithParams';
+import { useOrdering } from '@/hooks/useSyncedState';
+import { PATHS } from '@/paths';
+import useComputePlansStore from '@/routes/computePlans/useComputePlansStore';
+import useDatasetsStore from '@/routes/datasets/useDatasetsStores';
+import useFunctionsStore from '@/routes/functions/useFunctionsStore';
+import useTasksStore from '@/routes/tasks/useTasksStore';
 
 const Nav = styled.nav`
     display: flex;
@@ -56,6 +62,33 @@ const HeaderNavigation = ({
 }: HeaderNavigationProps): JSX.Element => {
     const [, setHrefLocation] = useHrefLocation();
 
+    const [ordering] = useOrdering('-creation_date');
+
+    const { fetchComputePlans } = useComputePlansStore();
+    const { fetchTasks } = useTasksStore();
+    const { fetchDatasets } = useDatasetsStore();
+    const { fetchFunctions } = useFunctionsStore();
+
+    // used to reload asset list when clicking on tab that is already active
+    const reload = (href: string) => {
+        switch (href) {
+            case PATHS.COMPUTE_PLANS:
+                fetchComputePlans({ ordering });
+                break;
+            case PATHS.TASKS:
+                fetchTasks({ ordering });
+                break;
+            case PATHS.DATASETS:
+                fetchDatasets({ ordering });
+                break;
+            case PATHS.FUNCTIONS:
+                fetchFunctions({ ordering });
+                break;
+            default:
+                console.error('Reload error');
+        }
+    };
+
     /**
      * This component follows the accessibility recommendations of the W3C
      * https://www.w3.org/TR/wai-aria-practices/examples/menubar/menubar-1/menubar-1.html
@@ -68,7 +101,12 @@ const HeaderNavigation = ({
                         <A
                             role="menuitem"
                             active={isActive(paths)}
-                            onClick={() => setHrefLocation(href)}
+                            onClick={() => {
+                                if (href === window.location.pathname) {
+                                    reload(href);
+                                }
+                                setHrefLocation(href);
+                            }}
                         >
                             {label}
                         </A>
