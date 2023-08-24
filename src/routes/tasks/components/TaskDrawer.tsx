@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import {
     Drawer,
@@ -13,8 +13,8 @@ import {
     HStack,
 } from '@chakra-ui/react';
 
-import useAuthStore from '@/features/auth/useAuthStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import { compilePath, PATHS } from '@/paths';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
@@ -50,18 +50,8 @@ const TaskDrawer = ({
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
     const { task, fetchingTask, fetchTask } = useTaskStore();
-    const {
-        info: { organization_id: currentOrganizationId },
-    } = useAuthStore();
 
-    const hasFunctionDownloadPermission = useMemo(() => {
-        if (task?.function && currentOrganizationId) {
-            return task.function.permissions.download.authorized_ids.includes(
-                currentOrganizationId
-            );
-        }
-        return false;
-    }, [task, currentOrganizationId]);
+    const hasFunctionDownloadPermission = useHasPermission();
 
     useEffect(() => {
         if (taskKey) {
@@ -187,14 +177,20 @@ const TaskDrawer = ({
                                         }
                                         filename={`function-${task.function.key}.zip`}
                                         aria-label={
-                                            hasFunctionDownloadPermission
+                                            hasFunctionDownloadPermission(
+                                                task.function.permissions
+                                                    .download
+                                            )
                                                 ? 'Download function'
                                                 : "You don't have the download permission for this function"
                                         }
                                         size="xs"
                                         placement="top"
                                         isDisabled={
-                                            !hasFunctionDownloadPermission
+                                            !hasFunctionDownloadPermission(
+                                                task.function.permissions
+                                                    .download
+                                            )
                                         }
                                     />
                                 </HStack>

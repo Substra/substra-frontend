@@ -1,13 +1,13 @@
-import React, { Suspense, useEffect, useMemo } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import { useRoute } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
-import useAuthStore from '@/features/auth/useAuthStore';
 import CopyIconButton from '@/features/copy/CopyIconButton';
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import { PATHS } from '@/paths';
 import MoreMenu from '@/routes/dataset/components/MoreMenu';
 
@@ -40,18 +40,8 @@ const Dataset = (): JSX.Element => {
         fetchOpener,
         updateDataset,
     } = useDatasetStore();
-    const {
-        info: { organization_id: currentOrganizationId },
-    } = useAuthStore();
 
-    const hasDownloadPermission = useMemo(() => {
-        if (dataset && currentOrganizationId) {
-            return dataset.permissions.download.authorized_ids.includes(
-                currentOrganizationId
-            );
-        }
-        return false;
-    }, [dataset, currentOrganizationId]);
+    const hasDownloadPermission = useHasPermission();
 
     useEffect(() => {
         const fetchAll = async () => {
@@ -183,14 +173,20 @@ const Dataset = (): JSX.Element => {
                                     }
                                     filename="opener.py"
                                     aria-label={
-                                        hasDownloadPermission
+                                        dataset &&
+                                        hasDownloadPermission(
+                                            dataset?.permissions.download
+                                        )
                                             ? 'Download opener'
                                             : "you don't have permission to download this dataset"
                                     }
                                     isDisabled={
-                                        !hasDownloadPermission ||
                                         fetchingOpener ||
-                                        !opener
+                                        !opener ||
+                                        (!!dataset &&
+                                            !hasDownloadPermission(
+                                                dataset?.permissions.download
+                                            ))
                                     }
                                 />
                             </HStack>

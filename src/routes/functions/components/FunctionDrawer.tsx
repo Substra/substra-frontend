@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import {
     Drawer,
@@ -9,9 +9,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import useAuthStore from '@/features/auth/useAuthStore';
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
@@ -46,18 +46,8 @@ const FunctionDrawer = (): JSX.Element => {
         fetchDescription,
         updateFunction,
     } = useFunctionStore();
-    const {
-        info: { organization_id: currentOrganizationId },
-    } = useAuthStore();
 
-    const hasDownloadPermission = useMemo(() => {
-        if (func && currentOrganizationId) {
-            return func.permissions.download.authorized_ids.includes(
-                currentOrganizationId
-            );
-        }
-        return false;
-    }, [func, currentOrganizationId]);
+    const hasDownloadPermission = useHasPermission();
 
     useEffect(() => {
         if (key) {
@@ -120,14 +110,19 @@ const FunctionDrawer = (): JSX.Element => {
                             }
                             filename={`function-${key}.zip`}
                             aria-label={
-                                hasDownloadPermission
+                                func &&
+                                hasDownloadPermission(
+                                    func?.permissions.download
+                                )
                                     ? 'Download function'
                                     : "You don't have the download permission for this function"
                             }
                             isDisabled={
-                                !hasDownloadPermission ||
                                 fetchingFunction ||
-                                !func
+                                (!!func &&
+                                    !hasDownloadPermission(
+                                        func?.permissions.download
+                                    ))
                             }
                         />
                     }
