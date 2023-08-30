@@ -27,6 +27,7 @@ import {
     DrawerSectionKeyEntry,
     OrganizationDrawerSectionEntry,
 } from '@/components/DrawerSection';
+import Duration from '@/components/Duration';
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 import Status from '@/components/Status';
 import Timing from '@/components/Timing';
@@ -126,7 +127,10 @@ const TaskDrawer = ({
                             {fetchingTask || !task ? (
                                 <Skeleton height="4" width="250px" />
                             ) : (
-                                <Timing asset={task} />
+                                <>
+                                    <Timing asset={task} />
+                                    <Duration asset={task} />
+                                </>
                             )}
                         </DrawerSectionEntry>
                         <OrganizationDrawerSectionEntry

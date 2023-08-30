@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Reload current asset list on nav tab click (#206)
 -   Clearer UI for asset download permissions (#228)
+-   Duration displayed in task drawer for all workers (#235)
 
 ### Changed
 
