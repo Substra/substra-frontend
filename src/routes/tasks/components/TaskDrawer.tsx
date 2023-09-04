@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import { compilePath, PATHS } from '@/paths';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
@@ -49,6 +50,8 @@ const TaskDrawer = ({
     const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
 
     const { task, fetchingTask, fetchTask } = useTaskStore();
+
+    const hasFunctionDownloadPermission = useHasPermission();
 
     useEffect(() => {
         if (taskKey) {
@@ -173,9 +176,22 @@ const TaskDrawer = ({
                                                 .storage_address
                                         }
                                         filename={`function-${task.function.key}.zip`}
-                                        aria-label="Download function"
+                                        aria-label={
+                                            hasFunctionDownloadPermission(
+                                                task.function.permissions
+                                                    .download
+                                            )
+                                                ? 'Download function'
+                                                : "You don't have the download permission for this function"
+                                        }
                                         size="xs"
                                         placement="top"
+                                        isDisabled={
+                                            !hasFunctionDownloadPermission(
+                                                task.function.permissions
+                                                    .download
+                                            )
+                                        }
                                     />
                                 </HStack>
                             )}

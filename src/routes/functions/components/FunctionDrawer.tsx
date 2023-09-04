@@ -7,18 +7,17 @@ import {
     useDisclosure,
     DrawerBody,
     VStack,
-    IconButton,
 } from '@chakra-ui/react';
-import { RiDownload2Line } from 'react-icons/ri';
 
-import { downloadFromApi } from '@/api/request';
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
 import DescriptionDrawerSection from '@/routes/functions/components/DescriptionDrawerSection';
 
+import DownloadIconButton from '@/components/DownloadIconButton';
 import DrawerHeader from '@/components/DrawerHeader';
 import {
     DrawerSection,
@@ -48,6 +47,8 @@ const FunctionDrawer = (): JSX.Element => {
         updateFunction,
     } = useFunctionStore();
 
+    const hasDownloadPermission = useHasPermission();
+
     useEffect(() => {
         if (key) {
             if (!isOpen) {
@@ -74,15 +75,6 @@ const FunctionDrawer = (): JSX.Element => {
         },
         [func?.name]
     );
-
-    const downloadFunction = () => {
-        if (func) {
-            downloadFromApi(
-                func.function.storage_address,
-                `function-${key}.zip`
-            );
-        }
-    };
 
     const { updateNameDialog, updateNameButton } = useUpdateAssetName({
         dialogTitle: 'Rename function',
@@ -112,14 +104,26 @@ const FunctionDrawer = (): JSX.Element => {
                         onClose();
                     }}
                     extraButtons={
-                        <IconButton
-                            aria-label="Download"
-                            variant="ghost"
-                            fontSize="20px"
-                            color="gray.500"
-                            icon={<RiDownload2Line />}
-                            isDisabled={fetchingFunction || !func}
-                            onClick={downloadFunction}
+                        <DownloadIconButton
+                            storageAddress={
+                                func ? func.function.storage_address : ''
+                            }
+                            filename={`function-${key}.zip`}
+                            aria-label={
+                                func &&
+                                hasDownloadPermission(
+                                    func?.permissions.download
+                                )
+                                    ? 'Download function'
+                                    : "You don't have the download permission for this function"
+                            }
+                            isDisabled={
+                                fetchingFunction ||
+                                (!!func &&
+                                    !hasDownloadPermission(
+                                        func?.permissions.download
+                                    ))
+                            }
                         />
                     }
                     updateNameButton={updateNameButton}

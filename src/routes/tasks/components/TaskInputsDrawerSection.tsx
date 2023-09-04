@@ -13,6 +13,7 @@ import * as TasksApi from '@/api/TasksApi';
 import { getAllPages } from '@/api/request';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
+import useHasPermission from '@/hooks/useHasPermission';
 import { compilePath, PATHS } from '@/paths';
 import { getAssetKindLabel } from '@/routes/functions/FunctionsUtils';
 import { FileT, PermissionsT } from '@/types/CommonTypes';
@@ -117,11 +118,14 @@ const DatasampleRepresentation = ({
 const OpenerRepresentation = ({
     assetKey,
     addressable,
+    permissions,
 }: {
     assetKey?: string;
     addressable?: FileT;
     permissions?: PermissionsT;
 }): JSX.Element => {
+    const hasDownloadPermission = useHasPermission();
+
     return (
         <HStack spacing="2.5" onClick={(e) => e.stopPropagation()}>
             {assetKey && (
@@ -142,9 +146,18 @@ const OpenerRepresentation = ({
                 <DownloadIconButton
                     storageAddress={addressable.storage_address}
                     filename={`opener-${assetKey}.py`}
-                    aria-label="Download opener"
+                    aria-label={
+                        permissions &&
+                        hasDownloadPermission(permissions.download)
+                            ? 'Download opener'
+                            : "You don't have the download permission for this dataset"
+                    }
                     size="xs"
                     placement="top"
+                    isDisabled={
+                        permissions &&
+                        !hasDownloadPermission(permissions.download)
+                    }
                 />
             )}
         </HStack>
@@ -229,6 +242,7 @@ const TaskInputValueRepresentation = ({
             <OpenerRepresentation
                 assetKey={input.asset_key}
                 addressable={inputAsset.asset.opener}
+                permissions={inputAsset.asset.permissions}
             />
         );
     }
