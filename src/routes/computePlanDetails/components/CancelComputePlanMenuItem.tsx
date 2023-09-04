@@ -22,13 +22,7 @@ const CancelComputePlanMenuItem = ({
             "This compute plan cannot be canceled because you don't have permission to";
     }
     return (
-        <Tooltip
-            label={label}
-            fontSize="xs"
-            hasArrow
-            placement="bottom-end"
-            shouldWrapChildren
-        >
+        <Tooltip label={label} fontSize="xs" hasArrow placement="bottom-end">
             <MenuItem onClick={onClick} isDisabled>
                 Cancel execution
             </MenuItem>

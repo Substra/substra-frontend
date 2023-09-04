@@ -79,7 +79,7 @@ const Actions = ({
                         variant="outline"
                         size="xs"
                     />
-                    <MenuList>
+                    <MenuList zIndex="10">
                         {updateNameMenuItem}
                         {cancelComputePlanMenuItem}
                     </MenuList>

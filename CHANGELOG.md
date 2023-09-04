@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Properly align handles with inputs & outputs in workflow (#229)
+-   Cancel CP button now usable on workflow page (#234)
 
 ## [0.44.0] - 2023-07-25
 
