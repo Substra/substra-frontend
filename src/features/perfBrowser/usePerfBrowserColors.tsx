@@ -11,13 +11,13 @@ type ColorDiscriminantProps = {
 export const PERF_BROWSER_COLORSCHEMES = [
     'primary',
     'orange',
-    'blue',
-    'pink',
     'green',
+    'pink',
     'yellow',
     'cyan',
     'red',
     'purple',
+    'blue',
 ];
 
 const usePerfBrowserColors = () => {
