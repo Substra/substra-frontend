@@ -93,7 +93,11 @@ const ErrorAlert = ({ task }: { task: TaskT }): JSX.Element | null => {
                             </>
                         }
                     />
-                    <LogsModal isOpen={isOpen} onClose={onClose} task={task} />
+                    <LogsModal
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        reportKey={task.function.key}
+                    />
                 </>
             );
         }
@@ -139,7 +143,11 @@ const ErrorAlert = ({ task }: { task: TaskT }): JSX.Element | null => {
                             </>
                         }
                     />
-                    <LogsModal isOpen={isOpen} onClose={onClose} task={task} />
+                    <LogsModal
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        reportKey={task.key}
+                    />
                 </>
             );
         }
