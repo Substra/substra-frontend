@@ -14,7 +14,6 @@ import {
 
 import CopyIconButton from '@/features/copy/CopyIconButton';
 import { API_PATHS, compilePath } from '@/paths';
-import { TaskT } from '@/types/TasksTypes';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
 
@@ -27,16 +26,16 @@ const CodeHighlighter = React.lazy(
 type LogsModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    task: TaskT;
+    reportKey: string;
 };
-const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
+const LogsModal = ({ isOpen, onClose, reportKey }: LogsModalProps) => {
     const initialFocusRef = useRef(null);
 
     const { logs, fetchingLogs, fetchLogs } = useTaskStore();
 
     useEffect(() => {
-        fetchLogs(task.key);
-    }, [fetchLogs, task.key]);
+        fetchLogs(reportKey);
+    }, [fetchLogs, reportKey]);
 
     return (
         <Modal
@@ -73,9 +72,9 @@ const LogsModal = ({ isOpen, onClose, task }: LogsModalProps) => {
                         />
                         <DownloadIconButton
                             storageAddress={compilePath(API_PATHS.LOGS, {
-                                key: task.key,
+                                key: reportKey,
                             })}
-                            filename={`logs_${task.key}`}
+                            filename={`logs_${reportKey}`}
                             aria-label="Download logs"
                             variant="ghost"
                         />
