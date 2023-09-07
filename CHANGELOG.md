@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Substra bundle version info in the "About" modal (#256)
 
+### Changed
+
+-   LogsModal now use a key so we can use logs not linked with a compute task (#270)
+
 ## [0.45.1] - 2023-10-06
 
 ### Changed
