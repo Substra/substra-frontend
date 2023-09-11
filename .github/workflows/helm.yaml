@@ -13,7 +13,7 @@ jobs:
         name: Package Helm chart
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: azure/setup-helm@v3.5
               with:
                   version: 'v3.5.0'
@@ -25,7 +25,7 @@ jobs:
                   helm package charts/substra-frontend
 
             - name: Clone Substra charts
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   repository: Substra/charts
                   ref: 'main'
