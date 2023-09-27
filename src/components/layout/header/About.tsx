@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import {
     Button,
     HStack,
@@ -11,10 +13,13 @@ import {
     ModalOverlay,
     useDisclosure,
     VStack,
+    Text,
 } from '@chakra-ui/react';
 
 import useAuthStore from '@/features/auth/useAuthStore';
 import CopyButton from '@/features/copy/CopyButton';
+import useReleasesInfoStore from '@/features/docs/useReleasesInfoStore';
+import { ReleaseInfoT, ReleasesInfoT } from '@/types/DocsTypes';
 
 import { DrawerSection, DrawerSectionEntry } from '@/components/DrawerSection';
 
@@ -28,6 +33,48 @@ const About = () => {
             chaincode_version: chaincodeVersion,
         },
     } = useAuthStore();
+
+    const releases = useReleasesInfoStore();
+    const [matchingRelease, setMatchingRelease] =
+        useState<ReleaseInfoT | null>();
+    useEffect(() => {
+        if (isOpen) releases.fetchInfo();
+    }, [isOpen, releases]);
+
+    useEffect(() => {
+        if (releases.info && backendVersion && orchestratorVersion) {
+            setMatchingRelease(
+                getMatchingSubstraRelease(
+                    __APP_VERSION__,
+                    backendVersion,
+                    orchestratorVersion,
+                    releases.info
+                )
+            );
+        } else {
+            setMatchingRelease(null);
+        }
+    }, [releases.info, backendVersion, orchestratorVersion]);
+
+    const getMatchingSubstraRelease = (
+        frontendVersion: string,
+        backendVersion: string,
+        orchestratorVersion: string,
+        releases: ReleasesInfoT
+    ) => {
+        const candidateReleases = releases.releases.filter((it) => {
+            return (
+                it.components['substra-frontend'].version === frontendVersion &&
+                it.components['substra-backend'].version === backendVersion &&
+                it.components.orchestrator.version === orchestratorVersion
+            );
+        });
+        if (candidateReleases.length === 0) {
+            return null;
+        } else {
+            return candidateReleases[0];
+        }
+    };
 
     return (
         <>
@@ -66,6 +113,13 @@ const About = () => {
                                     </HStack>
                                 </DrawerSectionEntry>
                             </DrawerSection>
+                            <Text>
+                                {releases.fetchingInfo
+                                    ? 'fetching bundle info..'
+                                    : matchingRelease
+                                    ? matchingRelease.version
+                                    : 'no matching Substra bundle release'}
+                            </Text>
                         </VStack>
                     </ModalBody>
 
