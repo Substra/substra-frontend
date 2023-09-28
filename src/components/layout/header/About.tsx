@@ -50,8 +50,8 @@ const About = () => {
         useState<ReleaseInfoT | null>();
 
     useEffect(() => {
-        if (isOpen) fetchReleasesInfo();
-    }, [isOpen, fetchReleasesInfo]);
+        if (isOpen && releasesInfo === null) fetchReleasesInfo();
+    }, [isOpen, fetchReleasesInfo, releasesInfo]);
 
     useEffect(() => {
         if (releasesInfo && backendVersion && orchestratorVersion) {
