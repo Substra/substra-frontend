@@ -18,6 +18,9 @@ import {
     Link,
     Code,
     Box,
+    Alert,
+    AlertIcon,
+    AlertDescription,
 } from '@chakra-ui/react';
 
 import useAuthStore from '@/features/auth/useAuthStore';
@@ -128,44 +131,70 @@ const About = () => {
                                         <Text>{'Fetching bundle info'}</Text>
                                     </HStack>
                                 ) : (
-                                    <Box>
+                                    <>
                                         {matchingRelease ? (
-                                            <>
-                                                <Text>
-                                                    {`This server is running Substra ${matchingRelease.version}.`}
-                                                </Text>
-                                                <Text>
-                                                    {
-                                                        'In Python, you should use '
-                                                    }
-                                                    <Code fontSize="xs">
-                                                        {`substra==${matchingRelease.components.substra.version}`}
-                                                    </Code>
-                                                    {' and/or '}
-                                                    <Code fontSize="xs">
-                                                        {`substrafl==${matchingRelease.components.substrafl.version}`}
-                                                    </Code>
-                                                    {'.'}
-                                                </Text>
-                                            </>
+                                            <Alert
+                                                status="info"
+                                                alignItems={'center'}
+                                            >
+                                                <AlertIcon />
+                                                <AlertDescription>
+                                                    <Text>
+                                                        {
+                                                            'This server is running Substra '
+                                                        }
+                                                        <Text as="b">
+                                                            {`${matchingRelease.version}`}
+                                                        </Text>
+                                                        {'.'}
+                                                    </Text>
+                                                    <Text>
+                                                        {
+                                                            'In Python, you should use '
+                                                        }
+                                                        <Code fontSize="xs">
+                                                            {`substra==${matchingRelease.components.substra.version}`}
+                                                        </Code>
+                                                        {' and/or '}
+                                                        <Code fontSize="xs">
+                                                            {`substrafl==${matchingRelease.components.substrafl.version}`}
+                                                        </Code>
+                                                        {'.'}
+                                                    </Text>
+                                                </AlertDescription>
+                                            </Alert>
                                         ) : (
-                                            <>
-                                                {
-                                                    'This server is not running a '
-                                                }
-                                                <Link
-                                                    color="black"
-                                                    href="https://docs.substra.org/en/latest/additional/release.html"
-                                                    isExternal
-                                                    textDecoration={'underline'}
-                                                    textUnderlineOffset={3}
-                                                >
-                                                    known Substra release
-                                                </Link>
-                                                {'.'}
-                                            </>
+                                            <Alert
+                                                status="warning"
+                                                alignItems={'center'}
+                                            >
+                                                <AlertIcon />
+                                                <AlertDescription>
+                                                    <Text>
+                                                        {
+                                                            'This server is not running a '
+                                                        }
+
+                                                        <Link
+                                                            color="black"
+                                                            href="https://docs.substra.org/en/latest/additional/release.html"
+                                                            isExternal
+                                                            textDecoration={
+                                                                'underline'
+                                                            }
+                                                            textUnderlineOffset={
+                                                                3
+                                                            }
+                                                        >
+                                                            known Substra
+                                                            release
+                                                        </Link>
+                                                        {'.'}
+                                                    </Text>
+                                                </AlertDescription>
+                                            </Alert>
                                         )}
-                                    </Box>
+                                    </>
                                 )}
                             </Box>
                             <DrawerSection title="Backend">
