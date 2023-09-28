@@ -14,6 +14,10 @@ import {
     useDisclosure,
     VStack,
     Text,
+    Spinner,
+    Link,
+    Code,
+    Box,
 } from '@chakra-ui/react';
 
 import useAuthStore from '@/features/auth/useAuthStore';
@@ -34,27 +38,32 @@ const About = () => {
         },
     } = useAuthStore();
 
-    const releases = useReleasesInfoStore();
+    const {
+        info: releasesInfo,
+        fetchingInfo: fetchingReleasesInfo,
+        fetchInfo: fetchReleasesInfo,
+    } = useReleasesInfoStore();
     const [matchingRelease, setMatchingRelease] =
         useState<ReleaseInfoT | null>();
-    useEffect(() => {
-        if (isOpen) releases.fetchInfo();
-    }, [isOpen, releases]);
 
     useEffect(() => {
-        if (releases.info && backendVersion && orchestratorVersion) {
+        if (isOpen) fetchReleasesInfo();
+    }, [isOpen, fetchReleasesInfo]);
+
+    useEffect(() => {
+        if (releasesInfo && backendVersion && orchestratorVersion) {
             setMatchingRelease(
                 getMatchingSubstraRelease(
                     __APP_VERSION__,
                     backendVersion,
                     orchestratorVersion,
-                    releases.info
+                    releasesInfo
                 )
             );
         } else {
             setMatchingRelease(null);
         }
-    }, [releases.info, backendVersion, orchestratorVersion]);
+    }, [releasesInfo, backendVersion, orchestratorVersion]);
 
     const getMatchingSubstraRelease = (
         frontendVersion: string,
@@ -64,9 +73,12 @@ const About = () => {
     ) => {
         const candidateReleases = releases.releases.filter((it) => {
             return (
-                it.components['substra-frontend'].version === frontendVersion &&
-                it.components['substra-backend'].version === backendVersion &&
-                it.components.orchestrator.version === orchestratorVersion
+                it.components['substra-frontend'].version ===
+                    frontendVersion.split('+')[0] &&
+                it.components['substra-backend'].version ===
+                    backendVersion.split('+')[0] &&
+                it.components.orchestrator.version ===
+                    orchestratorVersion.split('+')[0]
             );
         });
         if (candidateReleases.length === 0) {
@@ -105,6 +117,57 @@ const About = () => {
                                     </DrawerSectionEntry>
                                 )}
                             </DrawerSection>
+                            <Box fontSize="xs">
+                                {fetchingReleasesInfo ? (
+                                    <HStack>
+                                        <Spinner
+                                            color="gray.400"
+                                            size="xs"
+                                            label="Fetching bundle info"
+                                        />
+                                        <Text>{'Fetching bundle info'}</Text>
+                                    </HStack>
+                                ) : (
+                                    <Box>
+                                        {matchingRelease ? (
+                                            <>
+                                                <Text>
+                                                    {`This server is running Substra ${matchingRelease.version}.`}
+                                                </Text>
+                                                <Text>
+                                                    {
+                                                        'In Python, you should use '
+                                                    }
+                                                    <Code fontSize="xs">
+                                                        {`substra==${matchingRelease.components.substra.version}`}
+                                                    </Code>
+                                                    {' and/or '}
+                                                    <Code fontSize="xs">
+                                                        {`substrafl==${matchingRelease.components.substrafl.version}`}
+                                                    </Code>
+                                                    {'.'}
+                                                </Text>
+                                            </>
+                                        ) : (
+                                            <>
+                                                {
+                                                    'This server is not running a '
+                                                }
+                                                <Link
+                                                    color="black"
+                                                    href="https://docs.substra.org/en/latest/additional/release.html"
+                                                    isExternal
+                                                    textDecoration={'underline'}
+                                                    textUnderlineOffset={3}
+                                                >
+                                                    known Substra release
+                                                </Link>
+                                                {'.'}
+                                            </>
+                                        )}
+                                    </Box>
+                                )}
+                            </Box>
                             <DrawerSection title="Backend">
                                 <DrawerSectionEntry title="URL">
                                     <HStack spacing={1.5}>
@@ -113,13 +176,6 @@ const About = () => {
                                     </HStack>
                                 </DrawerSectionEntry>
                             </DrawerSection>
-                            <Text>
-                                {releases.fetchingInfo
-                                    ? 'fetching bundle info..'
-                                    : matchingRelease
-                                    ? matchingRelease.version
-                                    : 'no matching Substra bundle release'}
-                            </Text>
                         </VStack>
                     </ModalBody>
 
