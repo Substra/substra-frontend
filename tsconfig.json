@@ -10,7 +10,7 @@
             "node",
             "vite/client",
             "@emotion/react/types/css-prop",
-            "@types/testing-library__jest-dom",
+            "jest",
             "@types/react"
         ],
         "typeRoots": ["node_modules/@types"],
