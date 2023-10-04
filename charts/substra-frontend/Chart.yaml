@@ -14,5 +14,5 @@ maintainers:
       email: support@substra.org
 
 version: 1.0.24
-appVersion: 0.45.1 # should be same as in package.json
+appVersion: 0.45.1-rc3 # should be same as in package.json
 kubeVersion: '>= 1.19.0-0'
