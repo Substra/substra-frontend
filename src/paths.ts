@@ -54,6 +54,10 @@ export const API_PATHS = {
     WORKFLOW: '/compute_plan/:key/workflow_graph/',
 };
 
+export const DOCS_API_PATHS = {
+    RELEASES: '/en/latest/releases.json',
+};
+
 export function compilePath(
     path: string,
     params: { [key: string]: string }

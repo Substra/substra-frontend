@@ -18,6 +18,17 @@ const CONFIG = {
     },
 };
 
+const CONFIG_DOCS = {
+    baseURL: 'https://docs.substra.org',
+    timeout: 2 * 60 * 1000, // 2 mins
+    headers: {
+        Accept: 'application/json;version=0.0',
+        'Content-Type': 'application/json;',
+    },
+    withCredentials: false,
+};
+const docs_instance = axios.create({ ...CONFIG_DOCS });
+
 const instance = axios.create({ ...CONFIG });
 
 instance.interceptors.request.use((config) => {
@@ -67,6 +78,10 @@ const API = {
     put: instance.put,
     delete: instance.delete,
     anonymousGet: anonymousInstance.get,
+};
+
+export const DOCS_API = {
+    get: docs_instance.get,
 };
 
 export const getApiOptions = ({
