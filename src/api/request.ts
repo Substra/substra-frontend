@@ -2,8 +2,9 @@ import axios, {
     AxiosError,
     AxiosInstance,
     AxiosPromise,
-    AxiosRequestConfig,
-    AxiosRequestHeaders,
+    InternalAxiosRequestConfig,
+    RawAxiosRequestConfig,
+    RawAxiosRequestHeaders,
 } from 'axios';
 import Cookies from 'universal-cookie';
 
@@ -34,7 +35,7 @@ const instance = axios.create({ ...CONFIG });
 instance.interceptors.request.use((config) => {
     const cookies = new Cookies();
     const jwt = cookies.get('header.payload');
-    const headers: AxiosRequestHeaders = {};
+    const headers: RawAxiosRequestHeaders = {};
 
     if (jwt) {
         headers['Authorization'] = `JWT ${jwt}`;
@@ -44,12 +45,12 @@ instance.interceptors.request.use((config) => {
         ...config,
         withCredentials: true,
         headers,
-    };
+    } as InternalAxiosRequestConfig;
 });
 
 const withRetry =
     (instanceMethod: AxiosInstance['get']) =>
-    (url: string, config?: AxiosRequestConfig) => {
+    (url: string, config?: RawAxiosRequestConfig) => {
         return instanceMethod(url, config).catch((error) => {
             if (error.response && error.response.status === 401) {
                 return instance.post('/me/refresh/').then(
@@ -92,7 +93,7 @@ export const getApiOptions = ({
     page?: number;
     pageSize?: number;
     [param: string]: unknown;
-}): AxiosRequestConfig => {
+}): RawAxiosRequestConfig => {
     let params = {};
 
     // pagination
