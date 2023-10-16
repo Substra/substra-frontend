@@ -232,7 +232,7 @@ function findSecondaryBranches(
             .length;
     }
 
-    const SECONDARY_BRANCH_MAX_LENGTH = 2;
+    const SECONDARY_BRANCH_MAX_LENGTH = 1;
 
     // Recursive function to walk through parent tasks as long as it is a linear chain to find the secondary branch
     function recFindSecondaryBranch(
