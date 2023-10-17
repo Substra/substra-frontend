@@ -8,8 +8,8 @@
     "private": "true",
     "version": "0.1.0",
     "scripts": {
-        "test:e2e": "cypress run",
-        "cypress:open": "cypress open"
+        "cy:run": "cypress run",
+        "cy:open": "cypress open"
     },
     "dependencies": {
         "cypress": "13.1.0"
