@@ -24,7 +24,7 @@ const POINT_STYLE_ICONS = [
     'cloudy-2',
 ] as const;
 
-type PointStyleIconT = typeof POINT_STYLE_ICONS[number];
+type PointStyleIconT = (typeof POINT_STYLE_ICONS)[number];
 
 const POINT_STYLE_ICON_COMPONENTS: Record<PointStyleIconT, IconType> = {
     play: RiPlayFill,
