@@ -12,10 +12,21 @@ export default defineConfig({
     video: false,
     defaultCommandTimeout: 20000,
     e2e: {
+        setupNodeEvents(on) {
+            on('task', {
+                // To see log messages in the terminal during cypress run
+                // cy.task("log", "my message")
+                log(message) {
+                    // eslint-disable-next-line no-console
+                    console.log(message + '\n\n');
+                    return null;
+                },
+            });
+        },
         baseUrl: 'http://substra-frontend.org-1.com:3000',
     },
     retries: {
-        runMode: 2,
+        runMode: 0,
         openMode: 0,
     },
 });
