@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.46.0] - 2023-10-18
+
 ### Added
 
 -   Substra bundle version info in the "About" modal (#256)
