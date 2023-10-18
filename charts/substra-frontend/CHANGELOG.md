@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Upgrade AppVersion to 0.45.2
+- Upgrade AppVersion to 0.46.0
 
 ## 1.0.24
 
