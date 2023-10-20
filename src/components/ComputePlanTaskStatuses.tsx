@@ -11,7 +11,7 @@ const ComputePlanTaskStatuses = ({
 }: {
     computePlan: ComputePlanT;
 }): JSX.Element => (
-    <HStack spacing="2.5">
+    <HStack spacing="2.5" data-cy="cp-tasks-status-tooltip">
         {taskStatusOrder.map((status) => (
             <Status
                 key={status}

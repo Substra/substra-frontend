@@ -116,6 +116,7 @@ const AssetItem = ({
             backgroundColor={selected ? 'gray.100' : 'white'}
             cursor="pointer"
             {...itemProps}
+            data-cy="search-item"
         >
             <HStack spacing="4" alignItems="center">
                 <Flex
@@ -495,6 +496,7 @@ const OmniSearch = () => {
                         borderColor: 'primary.500',
                     }}
                     {...getInputProps()}
+                    data-cy="search-bar"
                 />
                 <InputRightElement>
                     {inputValue && <CloseButton size="sm" onClick={reset} />}
