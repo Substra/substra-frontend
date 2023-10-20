@@ -38,6 +38,7 @@ const DownloadIconButton = ({
             fontSize="xs"
         >
             <IconButton
+                data-cy="download-button"
                 size="sm"
                 color="gray.500"
                 icon={<RiDownloadLine />}

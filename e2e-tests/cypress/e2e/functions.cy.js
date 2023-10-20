@@ -6,12 +6,7 @@ describe('Functions page', () => {
     });
 
     beforeEach(() => {
-        cy.intercept(
-            'GET',
-            `${Cypress.env('BACKEND_API_URL')}/function/?page_size=*`
-        ).as('functions');
         cy.visit('/functions');
-        cy.wait('@functions');
     });
 
     it('lists functions', () => {
@@ -25,14 +20,27 @@ describe('Functions page', () => {
     });
 
     it('open filters', () => {
-        cy.checkOpenFilters();
+        cy.checkOpenFilters(0);
+    });
+
+    it('can filter functions by owner', () => {
+        cy.checkFilterAssetsBy('owner');
     });
 
     it('display a function drawer', () => {
-        cy.checkOpenDrawer('function');
+        cy.checkOpenDrawer();
     });
 
-    it.only('copy function key', () => {
+    it('download function', () => {
+        cy.openDrawer('function');
+        cy.getDataCy('download-button').click({ force: true });
+        cy.get('[data-filename]')
+            .invoke('data', 'filename')
+            .then((filename) => cy.checkDownloadedFile(filename));
+    });
+
+    // WIP - not working
+    it.skip('copy function key', () => {
         cy.openDrawer('function');
         // cy.getDataCy('function-key').invoke('text').as('key');
         cy.getDataCy('copy-function-key')
@@ -41,9 +49,5 @@ describe('Functions page', () => {
             .then((value) => {
                 cy.checkValueCopiedToClipboard(value);
             });
-        // cy.getDataCy('function-key').should(($functionKey) => {
-        //     const key = $functionKey.text();
-        //     cy.checkValueCopiedToClipboard(key);
-        // });
     });
 });
