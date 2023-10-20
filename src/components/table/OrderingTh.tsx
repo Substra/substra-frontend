@@ -155,6 +155,7 @@ const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
                         }
                         variant="ghost"
                         size="xs"
+                        data-cy="th-menu-button"
                     />
                     <MenuList zIndex="popover" fontFamily="Inter">
                         {openFilters && (
@@ -164,6 +165,7 @@ const OrderingTh = ({ options, openFilters, ...props }: OrderingThProps) => {
                                         setTimeout(openFilters, 50);
                                     }}
                                     icon={<RiFilter3Fill />}
+                                    data-cy="open-filters"
                                 >
                                     Filter
                                 </MenuItem>

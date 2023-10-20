@@ -43,6 +43,11 @@ const FilterTag = ({ label, clear, ...props }: FilterTagProps): JSX.Element => (
             backgroundColor="white"
             color="gray.800"
             boxShadow="0 0 0px 1px var(--chakra-colors-gray-100)"
+            data-cy={
+                typeof label === 'string'
+                    ? `${label}-filter-tag`
+                    : `${label.props.title.toLowerCase()}-filter-tag`
+            }
             {...props}
         >
             <TagLabel>{label}</TagLabel>

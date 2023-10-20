@@ -40,6 +40,7 @@ const TableFilterCheckboxes = ({
                         colorScheme="primary"
                         key={getOptionValue(option)}
                         alignItems="start"
+                        data-cy="filter-checkbox"
                     >
                         <Text fontSize="sm" lineHeight="1.2">
                             {getOptionLabel(option)}

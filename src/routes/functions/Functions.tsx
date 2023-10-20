@@ -225,7 +225,7 @@ const Functions = (): JSX.Element => {
                                     </Td>
                                 </TableSkeleton>
                             ) : (
-                                functions.map((func) => (
+                                functions?.map((func) => (
                                     <ClickableTr
                                         key={func.key}
                                         onClick={() =>

@@ -107,7 +107,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                         size="sm"
                         backgroundColor="secondary"
                         leftIcon={<RiAddLine />}
-                        data-cy="open-filters"
+                        data-cy="add-filter"
                     >
                         Add Filter
                     </Button>
@@ -118,7 +118,10 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                     data-cy="filters-table"
                 >
                     <PopoverArrow />
-                    <PopoverCloseButton onClick={onPopoverClose} />
+                    <PopoverCloseButton
+                        onClick={onPopoverClose}
+                        data-cy="close-filters-modal"
+                    />
                     <PopoverBody padding="0" overflow="hidden">
                         <Tabs
                             variant="soft-rounded"
@@ -147,6 +150,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                                 ? initialFocusRef
                                                 : null
                                         }
+                                        data-cy={`${tab.title.toLowerCase()}-filters`}
                                     >
                                         {tab.title}
                                         {isActive(tab.field) && (
@@ -194,6 +198,7 @@ const TableFilters = ({ children }: TableFiltersProps): JSX.Element => {
                                 color="white"
                                 colorScheme="primary"
                                 onClick={onApply}
+                                data-cy="filters-apply"
                             >
                                 Apply
                             </Button>
