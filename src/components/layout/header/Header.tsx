@@ -109,6 +109,7 @@ const Header = (): JSX.Element => {
             backgroundColor="white"
             flexShrink={0}
             transition="height 300ms ease-in-out"
+            data-user-role={userRole}
         >
             <HStack spacing="5">
                 <IconLink href={PATHS.HOME}>
@@ -160,6 +161,7 @@ const Header = (): JSX.Element => {
                             {userRole === 'ADMIN' && (
                                 <MenuItem
                                     onClick={() => setLocation(PATHS.USERS)}
+                                    data-cy="users-management"
                                 >
                                     Users
                                 </MenuItem>

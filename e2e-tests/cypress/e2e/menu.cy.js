@@ -5,32 +5,43 @@ describe('Menu tests', () => {
 
     beforeEach(() => {
         cy.visit('/compute_plans');
-        cy.get('[data-cy=menu-button]').click();
+        cy.getDataCy('menu-button').click();
     });
 
     it('help and feedback modal', () => {
-        cy.get('[data-cy=help]').click();
-        cy.get('[data-cy=help-modal]').should('exist');
+        cy.getDataCy('help]').click();
+        cy.getDataCy('help-modal').should('exist');
     });
 
     it('about modal', () => {
-        cy.get('[data-cy=about]').click();
-        cy.get('[data-cy=about-modal]').should('exist');
+        cy.getDataCy('about').click();
+        cy.getDataCy('about-modal').should('exist');
     });
 
     it('documentation link', () => {
-        cy.get('[data-cy=documentation]')
+        cy.getDataCy('documentation')
             .should('have.attr', 'href', 'https://docs.substra.org/')
             .should('have.attr', 'target', '_blank');
     });
 
     it('api tokens page', () => {
-        cy.get('[data-cy=api-tokens]').click();
+        cy.getDataCy('api-tokens').click();
         cy.url().should('include', '/manage_tokens');
     });
 
+    it('users management page', () => {
+        cy.get('[data-user-role]')
+            .invoke('data', 'user-role')
+            .then((userRole) => {
+                if (userRole === 'ADMIN') {
+                    cy.getDataCy('users-management').click();
+                    cy.url().should('include', '/users');
+                }
+            });
+    });
+
     it('logout button', () => {
-        cy.get('[data-cy=logout]').click();
+        cy.getDataCy('logout').click();
         cy.url().should('include', '/login');
     });
 });
