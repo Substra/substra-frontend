@@ -39,7 +39,7 @@ const displayPerformance = (value: number | null, taskStatus: TaskStatus) => {
             </Text>
         );
     } else {
-        return <>{value.toFixed(3)}</>;
+        return <Text fontSize="xs" data-cy="output-performance">{value.toFixed(3)}</Text>;
     }
 };
 
