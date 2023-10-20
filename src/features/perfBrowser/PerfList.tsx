@@ -19,6 +19,7 @@ const PerfList = ({ seriesGroups, onCardClick }: PerfListProps) => {
             spacing="4"
             padding="8"
             overflow="hidden"
+            data-cy="perf-list"
         >
             <PerfEmptyState seriesGroups={seriesGroups} />
             <Wrap spacing="3" justify="center">

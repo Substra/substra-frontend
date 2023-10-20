@@ -32,6 +32,7 @@ const PerfDetails = ({ series }: PerfDetailsProps): JSX.Element => {
             overflow="hidden"
             height="100%"
             position="relative"
+            data-cy="perf-details"
         >
             <PerfEmptyState seriesGroups={series.length > 0 ? [series] : []} />
             {series.length > 0 && (

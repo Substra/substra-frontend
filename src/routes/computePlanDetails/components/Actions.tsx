@@ -44,7 +44,7 @@ const Actions = ({
     });
 
     return (
-        <HStack paddingX="8">
+        <HStack paddingX="8" data-cpkey={computePlan?.key}>
             <Tooltip
                 label={ariaLabel}
                 fontSize="xs"
