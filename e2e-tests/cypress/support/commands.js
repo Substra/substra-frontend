@@ -64,29 +64,38 @@ Cypress.Commands.add('paginationTest', () => {
     });
 });
 
-Cypress.Commands.add('openFilters', () => {
-    cy.getDataCy('open-filters').click();
-});
-
-Cypress.Commands.add('checkOpenFilters', () => {
-    cy.openFilters();
+Cypress.Commands.add('checkOpenFilters', (position) => {
+    cy.getDataCy('filters-table').should('not.exist');
+    cy.getDataCy('add-filter').click();
     cy.getDataCy('filters-table').should('exist');
+    cy.getDataCy('close-filters-modal').click();
+    cy.getDataCy('filters-table').should('not.be.visible');
+    cy.getDataCy('th-menu-button').eq(position).click();
+    cy.getDataCy('open-filters').first().click();
+    cy.getDataCy('filters-table').should('be.visible');
 });
 
-Cypress.Commands.add('openDrawer', (route) => {
-    cy.intercept('GET', `${Cypress.env('BACKEND_API_URL')}/${route}/*/`).as(
-        'drawer'
-    );
-    cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-    cy.wait('@drawer');
+Cypress.Commands.add('checkFilterAssetsBy', (filter) => {
+    cy.getDataCy('add-filter').click();
+    cy.getDataCy(`${filter}-filters`).click();
+    cy.get('[data-cy="filter-checkbox"] > input')
+        .first()
+        .check({ force: true });
+    cy.getDataCy('filters-apply').click();
+    cy.getDataCy(`${filter}-filter-tag`).should('exist');
 });
 
-Cypress.Commands.add('checkOpenDrawer', (route) => {
+Cypress.Commands.add('checkOpenDrawer', () => {
     cy.getDataCy('drawer').should('not.exist');
-    cy.openDrawer(route);
+    cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
     cy.getDataCy('drawer').should('exist');
 });
 
+Cypress.Commands.add('checkDownloadedFile', (filename) => {
+    cy.readFile(`cypress/downloads/${filename}`);
+});
+
+// WIP - not working
 Cypress.Commands.add('checkValueCopiedToClipboard', (value) => {
     cy.window().then((win) => {
         win.navigator.clipboard.readText().then((text) => {
