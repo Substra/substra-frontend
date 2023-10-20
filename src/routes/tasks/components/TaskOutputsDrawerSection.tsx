@@ -153,7 +153,15 @@ const TaskOutputsDrawerSection = ({
                                         >
                                             {multiple ? 'yes' : 'no'}
                                         </Td>
-                                        <Td textAlign="center">
+                                        <Td
+                                            textAlign="center"
+                                            data-cy={
+                                                output.kind ===
+                                                'ASSET_PERFORMANCE'
+                                                    ? 'output-performance'
+                                                    : undefined
+                                            }
+                                        >
                                             {output.kind ===
                                                 'ASSET_PERFORMANCE' &&
                                                 displayPerformance(

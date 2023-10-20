@@ -343,6 +343,15 @@ const TasksTable = ({
                                                           )
                                                       )
                                             }
+                                            data-cy={
+                                                task.status === 'STATUS_DONE' &&
+                                                Object.values(
+                                                    task.function.outputs
+                                                )[0]?.kind ===
+                                                    'ASSET_PERFORMANCE'
+                                                    ? 'task-with-performance'
+                                                    : undefined
+                                            }
                                         >
                                             <Td>
                                                 <Status
