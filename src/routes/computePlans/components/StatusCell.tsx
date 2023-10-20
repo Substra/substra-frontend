@@ -22,7 +22,11 @@ const StatusCell = ({ computePlan }: StatusCellProps): JSX.Element => {
         <Popover trigger="hover" placement="bottom-start">
             <PopoverTrigger>
                 <VStack spacing="1" alignItems="stretch">
-                    <Flex alignItems="center" justifyContent="space-between">
+                    <Flex
+                        alignItems="center"
+                        justifyContent="space-between"
+                        data-cy="cp-tasks-status"
+                    >
                         <Status status={computePlan.status} size="sm" />
                         <Text fontSize="xs" color="gray.600">
                             {computePlan.done_count + computePlan.failed_count}/
