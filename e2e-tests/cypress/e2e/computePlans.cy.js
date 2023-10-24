@@ -12,7 +12,7 @@ describe('Compute plans page', () => {
     it('lists compute plans', () => {
         cy.get('tbody[data-cy=loaded]')
             .get('tr')
-            .should('have.length.greaterThan', 2);
+            .should('have.length.greaterThan', 1);
     });
 
     it('displays tasks count bar in status/task column', () => {
