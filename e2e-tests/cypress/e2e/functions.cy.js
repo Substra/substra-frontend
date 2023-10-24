@@ -32,7 +32,7 @@ describe('Functions page', () => {
     });
 
     it('download function', () => {
-        cy.openDrawer('function');
+        cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
         cy.getDataCy('download-button').click({ force: true });
         cy.get('[data-filename]')
             .invoke('data', 'filename')
@@ -41,7 +41,7 @@ describe('Functions page', () => {
 
     // WIP - not working
     it.skip('copy function key', () => {
-        cy.openDrawer('function');
+        cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
         // cy.getDataCy('function-key').invoke('text').as('key');
         cy.getDataCy('copy-function-key')
             .click()

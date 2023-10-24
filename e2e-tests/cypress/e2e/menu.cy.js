@@ -9,7 +9,7 @@ describe('Menu tests', () => {
     });
 
     it('help and feedback modal', () => {
-        cy.getDataCy('help]').click();
+        cy.getDataCy('help').click();
         cy.getDataCy('help-modal').should('exist');
     });
 
