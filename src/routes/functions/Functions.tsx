@@ -29,6 +29,7 @@ import {
     useTableFiltersContext,
 } from '@/features/tableFilters/useTableFilters';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
+import useHasPermission from '@/hooks/useHasPermission';
 import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
@@ -97,6 +98,7 @@ const Functions = (): JSX.Element => {
     ]);
 
     const key = useKeyFromPath(PATHS.FUNCTION);
+    const hasDownloadPermission = useHasPermission();
 
     const context = useTableFiltersContext('function');
     const { onPopoverOpen } = context;
@@ -234,6 +236,13 @@ const Functions = (): JSX.Element => {
                                                     key: func.key,
                                                 })
                                             )
+                                        }
+                                        data-cy={
+                                            hasDownloadPermission(
+                                                func.permissions.download
+                                            )
+                                                ? 'has-download-permissions'
+                                                : undefined
                                         }
                                     >
                                         <Td>

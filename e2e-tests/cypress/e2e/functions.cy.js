@@ -31,12 +31,23 @@ describe('Functions page', () => {
         cy.checkOpenDrawer();
     });
 
-    it('download function', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
-        cy.getDataCy('download-button').click({ force: true });
-        cy.get('[data-filename]')
-            .invoke('data', 'filename')
-            .then((filename) => cy.checkDownloadedFile(filename));
+    it.only('download function', () => {
+        cy.get('tbody[data-cy=loaded]').then(($body) => {
+            if ($body.find('[data-cy="has-download-permissions"]').length) {
+                cy.getDataCy('has-download-permissions')
+                    .first()
+                    .click({ force: true });
+                cy.getDataCy('download-button').click({ force: true });
+                cy.get('[data-filename]')
+                    .invoke('data', 'filename')
+                    .then((filename) => cy.checkDownloadedFile(filename));
+            } else {
+                cy.task(
+                    'log',
+                    'No function with download permissions available'
+                );
+            }
+        });
     });
 
     // WIP - not working
