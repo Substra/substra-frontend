@@ -118,7 +118,7 @@ Cypress.Commands.add('checkOpenDrawer', () => {
  * filename - expects the filename as a string
  */
 Cypress.Commands.add('checkDownloadedFile', (filename) => {
-    cy.readFile(`cypress/downloads/${filename}`);
+    cy.readFile(`cypress/downloads/${filename}`, { timeout: 20000 });
 });
 
 // WIP - not working

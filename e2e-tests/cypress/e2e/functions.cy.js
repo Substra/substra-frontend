@@ -38,9 +38,18 @@ describe('Functions page', () => {
                     .first()
                     .click({ force: true });
                 cy.getDataCy('download-button').click({ force: true });
-                cy.get('[data-filename]')
-                    .invoke('data', 'filename')
-                    .then((filename) => cy.checkDownloadedFile(filename));
+                cy.get('[data-fnkey]')
+                    .invoke('data', 'fnkey')
+                    .then((fnkey) => {
+                        cy.intercept('GET', `/function/${fnkey}/file`).as(
+                            'download'
+                        );
+                        cy.wait('@download');
+                        cy.checkDownloadedFile(`function-${fnkey}.zip`);
+                    });
+                // cy.get('[data-filename]')
+                //     .invoke('data', 'filename')
+                //     .then((filename) => cy.checkDownloadedFile(filename));
             } else {
                 cy.task(
                     'log',
