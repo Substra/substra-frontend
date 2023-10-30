@@ -120,12 +120,3 @@ Cypress.Commands.add('checkOpenDrawer', () => {
 Cypress.Commands.add('checkDownloadedFile', (filename) => {
     cy.readFile(`cypress/downloads/${filename}`, { timeout: 20000 });
 });
-
-// WIP - not working
-Cypress.Commands.add('checkValueCopiedToClipboard', (value) => {
-    cy.window().then((win) => {
-        win.navigator.clipboard.readText().then((text) => {
-            expect(text).to.eq(value);
-        });
-    });
-});
