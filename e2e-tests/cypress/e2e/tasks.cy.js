@@ -31,9 +31,7 @@ describe('Tasks page', () => {
         cy.checkOpenDrawer();
     });
 
-    // WIP
     it('task drawer shows performance', () => {
-        // cy.visit('/tasks?page=123'); // SHOULD NOT HAVE TO DEPEND ON THIS
         cy.getDataCy('task-with-performance').first().click();
         cy.getDataCy('output-performance').should('exist');
     });

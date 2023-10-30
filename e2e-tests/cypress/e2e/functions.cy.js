@@ -31,7 +31,7 @@ describe('Functions page', () => {
         cy.checkOpenDrawer();
     });
 
-    it.only('download function', () => {
+    it('download function', () => {
         cy.get('tbody[data-cy=loaded]').then(($body) => {
             if ($body.find('[data-cy="has-download-permissions"]').length) {
                 cy.getDataCy('has-download-permissions')
@@ -47,9 +47,6 @@ describe('Functions page', () => {
                         cy.wait('@download');
                         cy.checkDownloadedFile(`function-${fnkey}.zip`);
                     });
-                // cy.get('[data-filename]')
-                //     .invoke('data', 'filename')
-                //     .then((filename) => cy.checkDownloadedFile(filename));
             } else {
                 cy.task(
                     'log',
@@ -57,17 +54,5 @@ describe('Functions page', () => {
                 );
             }
         });
-    });
-
-    // WIP - not working
-    it.skip('copy function key', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
-        // cy.getDataCy('function-key').invoke('text').as('key');
-        cy.getDataCy('copy-function-key')
-            .click()
-            .invoke('attr', 'value')
-            .then((value) => {
-                cy.checkValueCopiedToClipboard(value);
-            });
     });
 });
