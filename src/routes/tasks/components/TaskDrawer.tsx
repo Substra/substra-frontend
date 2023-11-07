@@ -162,7 +162,7 @@ const TaskDrawer = ({
                                 <Skeleton height="4" width="250px" />
                             ) : (
                                 <HStack spacing="2.5">
-                                    <Text noOfLines={1}>
+                                    <Text noOfLines={1} flexGrow="1">
                                         <Link
                                             href={compilePath(PATHS.FUNCTION, {
                                                 key: task.function.key,

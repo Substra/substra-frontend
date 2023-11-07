@@ -1,5 +1,4 @@
-import { Icon, HStack, Text, Tooltip } from '@chakra-ui/react';
-import { RiLockLine } from 'react-icons/ri';
+import { HStack, Text } from '@chakra-ui/react';
 
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { ModelT } from '@/types/ModelsTypes';
@@ -43,16 +42,17 @@ const DrawerSectionOutModelEntryContent = ({
             const permissions = model.permissions;
             if (permissions && !canDownloadModel(permissions)) {
                 content = (
-                    <Tooltip
-                        label="Not enough permissions to see the model or missing required
-                configuration on the server."
-                        fontSize="xs"
-                        hasArrow
-                        placement="top"
-                        shouldWrapChildren
-                    >
-                        <Icon color="gray.500" as={RiLockLine} />
-                    </Tooltip>
+                    <HStack flexGrow="1" justifyContent="flex-end">
+                        <HStack flexGrow="1" justifyContent="flex-end">
+                            <DownloadIconButton
+                                filename={`model_${model.key}`}
+                                aria-label="Restricted download"
+                                size="xs"
+                                placement="top"
+                                disabled
+                            />
+                        </HStack>
+                    </HStack>
                 );
             } else if (!model.address?.storage_address) {
                 content = (
@@ -62,8 +62,7 @@ const DrawerSectionOutModelEntryContent = ({
                 );
             } else {
                 content = (
-                    <HStack spacing="1.5">
-                        <Text>Model</Text>
+                    <HStack flexGrow="1" justifyContent="flex-end">
                         <DownloadIconButton
                             storageAddress={model.address.storage_address}
                             filename={`model_${model.key}`}

@@ -178,7 +178,7 @@ export const DrawerSectionKeyEntry = ({
             <Skeleton height="4" width="250px" />
         ) : (
             <HStack spacing={1.5}>
-                <Text>{value}</Text>
+                <Text flexGrow="1">{value}</Text>
                 <CopyIconButton
                     value={value}
                     aria-label={`Copy key`}

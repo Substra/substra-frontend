@@ -14,7 +14,7 @@ export type FunctionInputT = {
     optional: boolean;
 };
 
-export type FunctionOutputT = {
+type FunctionOutputT = {
     kind: AssetKindT;
     multiple: boolean;
     value: number | ModelT;
