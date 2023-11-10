@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Permissions details in Task I/Os (#280)
+
 ### Changed
 
 -   Secondary branches in workflows are now of max size 1 (#268)
+-   Refactor task outputs section in task drawer (#280)
 
 ## [0.47.0] - 2024-02-26
 
