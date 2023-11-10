@@ -5,6 +5,7 @@ import { HStack, Link, List, Text } from '@chakra-ui/react';
 import * as TasksApi from '@/api/TasksApi';
 import { getAllPages } from '@/api/request';
 import AngleIcon from '@/assets/svg/angle-icon.svg';
+import useAuthStore from '@/features/auth/useAuthStore';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import useHasPermission from '@/hooks/useHasPermission';
 import { compilePath, PATHS } from '@/paths';
@@ -23,6 +24,7 @@ import {
 } from '@/components/DrawerSection';
 
 import { getTaskIOIcon } from '../TasksUtils';
+import TaskIOPermissions from './TaskIOPermissions';
 
 const makeCompactAssetKey = (key: string): string => {
     return `${key.slice(0, 5)}...${key.slice(-5)}`;
@@ -128,6 +130,11 @@ const ModelRepresentation = ({
     addressable?: FileT;
     permissions?: PermissionsT;
 }): JSX.Element => {
+    const {
+        info: {
+            config: { model_export_enabled: modelExportEnabled },
+        },
+    } = useAuthStore();
     const canDownloadModel = useCanDownloadModel();
     let content;
 
@@ -141,7 +148,11 @@ const ModelRepresentation = ({
                 )}
                 <DownloadIconButton
                     filename="model"
-                    aria-label="Restricted download"
+                    aria-label={
+                        modelExportEnabled
+                            ? 'Restricted download'
+                            : 'Model export is not enabled'
+                    }
                     size="xs"
                     placement="top"
                     disabled
@@ -241,7 +252,7 @@ const TaskInputRepresentation = ({
         );
     } else if (input.parent_task_key && input.parent_task_output_identifier) {
         content = (
-            <HStack spacing="1.5">
+            <HStack spacing="1.5" flexGrow="1">
                 <Text noOfLines={1} flexGrow="1">
                     From{' '}
                     <Link
@@ -299,39 +310,66 @@ const TaskInputSectionEntry = ({
                         }`}
                     </Text>
                 }
+                permissions={
+                    functionInput.kind !== AssetKindT.dataManager &&
+                    functionInput.kind !== AssetKindT.model
+                        ? null
+                        : undefined
+                }
             >
                 <List spacing={2.5}>
-                    {inputs.map((input, index) => (
-                        <HStack spacing="2.5" key={index}>
-                            <AngleIcon />
-                            <TaskInputRepresentation
-                                assetKind={functionInput.kind}
-                                input={input}
-                                inputAsset={getInputAsset({
-                                    input,
-                                    inputsAssets,
-                                })}
-                            />
-                        </HStack>
-                    ))}
+                    {inputs.map((input, index) => {
+                        const inputAsset = getInputAsset({
+                            input,
+                            inputsAssets,
+                        });
+                        return (
+                            <HStack key={index} spacing="2.5" flexGrow="1">
+                                <AngleIcon />
+                                {inputAsset &&
+                                (isModelT(inputAsset.asset) ||
+                                    isDatasetStubT(inputAsset.asset)) ? (
+                                    <TaskIOPermissions
+                                        permissions={
+                                            inputAsset.asset.permissions
+                                        }
+                                    />
+                                ) : undefined}
+                                <TaskInputRepresentation
+                                    assetKind={functionInput.kind}
+                                    input={input}
+                                    inputAsset={inputAsset}
+                                />
+                            </HStack>
+                        );
+                    })}
                 </List>
             </DrawerSectionCollapsibleEntry>
         );
     } else {
+        const inputAsset = getInputAsset({
+            input: inputs[0],
+            inputsAssets,
+        });
+
         return (
             <DrawerSectionEntry
                 icon={icon}
                 title={title}
                 titleStyle="code"
                 alignItems="center"
+                permissions={
+                    inputAsset &&
+                    (isModelT(inputAsset.asset) ||
+                        isDatasetStubT(inputAsset.asset))
+                        ? inputAsset.asset.permissions
+                        : null
+                }
             >
                 <TaskInputRepresentation
                     assetKind={functionInput.kind}
                     input={inputs[0]}
-                    inputAsset={getInputAsset({
-                        input: inputs[0],
-                        inputsAssets,
-                    })}
+                    inputAsset={inputAsset}
                 />
             </DrawerSectionEntry>
         );

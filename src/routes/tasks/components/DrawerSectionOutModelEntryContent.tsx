@@ -1,5 +1,6 @@
 import { HStack, Text } from '@chakra-ui/react';
 
+import useAuthStore from '@/features/auth/useAuthStore';
 import useCanDownloadModel from '@/hooks/useCanDownloadModel';
 import { ModelT } from '@/types/ModelsTypes';
 import { TaskStatus } from '@/types/TasksTypes';
@@ -13,6 +14,11 @@ const DrawerSectionOutModelEntryContent = ({
     model: ModelT | null;
     taskStatus: TaskStatus;
 }): JSX.Element | null => {
+    const {
+        info: {
+            config: { model_export_enabled: modelExportEnabled },
+        },
+    } = useAuthStore();
     const canDownloadModel = useCanDownloadModel();
 
     let content = null;
@@ -46,7 +52,11 @@ const DrawerSectionOutModelEntryContent = ({
                         <HStack flexGrow="1" justifyContent="flex-end">
                             <DownloadIconButton
                                 filename={`model_${model.key}`}
-                                aria-label="Restricted download"
+                                aria-label={
+                                    modelExportEnabled
+                                        ? 'Restricted download'
+                                        : 'Model export is not enabled'
+                                }
                                 size="xs"
                                 placement="top"
                                 disabled
