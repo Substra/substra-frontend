@@ -41,10 +41,6 @@ describe('Functions page', () => {
                 cy.get('[data-fnkey]')
                     .invoke('data', 'fnkey')
                     .then((fnkey) => {
-                        cy.intercept('GET', `/function/${fnkey}/file`).as(
-                            'download'
-                        );
-                        cy.wait('@download');
                         cy.checkDownloadedFile(`function-${fnkey}.zip`);
                     });
             } else {

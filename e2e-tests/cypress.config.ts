@@ -26,7 +26,7 @@ export default defineConfig({
         baseUrl: 'http://substra-frontend.org-1.com:3000',
     },
     retries: {
-        runMode: 1,
+        runMode: 2,
         openMode: 1,
     },
 });
