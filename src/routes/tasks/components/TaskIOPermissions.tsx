@@ -1,5 +1,4 @@
-import Icon from '@chakra-ui/icon';
-import { Box } from '@chakra-ui/react';
+import { Box, Icon } from '@chakra-ui/react';
 import { RiGroupLine } from 'react-icons/ri';
 
 import { PermissionsT } from '@/types/CommonTypes';

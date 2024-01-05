@@ -1,4 +1,4 @@
-import { Tooltip, TooltipProps } from '@chakra-ui/tooltip';
+import { Tooltip, TooltipProps } from '@chakra-ui/react';
 import {
     RiCodeLine,
     RiDatabase2Line,
