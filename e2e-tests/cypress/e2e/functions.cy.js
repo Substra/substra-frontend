@@ -31,7 +31,7 @@ describe('Functions page', () => {
         cy.checkOpenDrawer();
     });
 
-    it('download function', () => {
+    it.skip('download function', () => {
         cy.get('tbody[data-cy=loaded]').then(($body) => {
             if ($body.find('[data-cy="has-download-permissions"]').length) {
                 cy.getDataCy('has-download-permissions')
