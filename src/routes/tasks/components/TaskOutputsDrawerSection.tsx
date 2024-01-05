@@ -128,11 +128,7 @@ const TaskOutputSectionEntry = ({
             title={identifier}
             titleStyle="code"
             alignItems="center"
-            permissions={
-                outputAsset?.kind === AssetKindT.model
-                    ? outputAsset.asset.permissions
-                    : null
-            }
+            permissions={output?.permissions ?? null}
         >
             <TaskOutputRepresentation
                 kind={kind}

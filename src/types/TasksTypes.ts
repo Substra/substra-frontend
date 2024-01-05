@@ -1,4 +1,4 @@
-import { MetadataT, PermissionT } from './CommonTypes';
+import { MetadataT, PermissionsT, PermissionT } from './CommonTypes';
 import { DataSampleT } from './DataSampleTypes';
 import { DatasetStubT } from './DatasetTypes';
 import { FunctionT, AssetKindT } from './FunctionsTypes';
@@ -66,7 +66,7 @@ export type TaskInputT = {
 };
 
 export type TaskOutputT = {
-    permissions: PermissionT;
+    permissions: PermissionsT;
     transient: boolean;
 };
 
