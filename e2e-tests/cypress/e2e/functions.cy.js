@@ -30,25 +30,4 @@ describe('Functions page', () => {
     it('display a function drawer', () => {
         cy.checkOpenDrawer();
     });
-
-    it.skip('download function', () => {
-        cy.get('tbody[data-cy=loaded]').then(($body) => {
-            if ($body.find('[data-cy="has-download-permissions"]').length) {
-                cy.getDataCy('has-download-permissions')
-                    .first()
-                    .click({ force: true });
-                cy.getDataCy('download-button').click({ force: true });
-                cy.get('[data-fnkey]')
-                    .invoke('data', 'fnkey')
-                    .then((fnkey) => {
-                        cy.checkDownloadedFile(`function-${fnkey}.zip`);
-                    });
-            } else {
-                cy.task(
-                    'log',
-                    'No function with download permissions available'
-                );
-            }
-        });
-    });
 });
