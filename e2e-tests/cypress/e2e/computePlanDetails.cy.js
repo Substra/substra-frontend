@@ -14,6 +14,12 @@ describe('Compute plans page', () => {
         cy.url().should('match', /compute_plans\/.{36}\/tasks/);
     });
 
+    it('can add cp to favorites', () => {
+        cy.getDataCy('favorite-cp').should('not.exist');
+        cy.getDataCy('favorite-box').first().click();
+        cy.getDataCy('favorite-cp').should('exist');
+    });
+
     it('navigates to the Workflow page', () => {
         cy.getDataCy('Workflow-tab').click({ force: true });
         cy.url().should('match', /compute_plans\/.{36}\/workflow/);
@@ -32,7 +38,6 @@ describe('Compute plans page', () => {
     });
 
     it('clicks on perf card to display perf details', () => {
-        // cy.visit('/compute_plans/bb41f602-d644-4191-bec4-3c3f5ccb3d96/tasks/'); // SHOULD NOT HAVE TO DEPEND ON THIS
         cy.getDataCy('Performances-tab').click({ force: true });
         cy.getDataCy('perf-list').should('exist');
         cy.getDataCy('perf-card').first().click();
@@ -40,7 +45,6 @@ describe('Compute plans page', () => {
     });
 
     it('can download perf details as jpeg or csv', () => {
-        // cy.visit('/compute_plans/bb41f602-d644-4191-bec4-3c3f5ccb3d96/tasks/'); // SHOULD NOT HAVE TO DEPEND ON THIS
         cy.getDataCy('Performances-tab').click({ force: true });
         cy.getDataCy('perf-card').first().click();
         cy.get('[data-cpkey]')
