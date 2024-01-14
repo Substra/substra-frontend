@@ -28,23 +28,7 @@ describe('Compute plans page', () => {
     });
 
     it('searches CP with a key', () => {
-        cy.get('tbody[data-cy=loaded]').should('exist');
-        cy.getDataCy('items-count').then(($count) => {
-            const count = parseInt($count.text());
-            if (count > Cypress.env('DEFAULT_PAGE_SIZE')) {
-                cy.get('[data-key]')
-                    .first()
-                    .invoke('data', 'key')
-                    .then((key) => {
-                        cy.getDataCy('search-bar').type(key);
-                        cy.getDataCy('search-item').click();
-                        cy.url().should(
-                            'include',
-                            `/compute_plans/${key}/tasks`
-                        );
-                    });
-            }
-        });
+        cy.checkSearchByKey('compute_plans');
     });
 
     it('adds a cp to favorites', () => {

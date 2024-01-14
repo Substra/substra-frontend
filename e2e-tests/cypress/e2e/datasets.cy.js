@@ -27,4 +27,8 @@ describe('Datasets page', () => {
         cy.get('tbody[data-cy=loaded]').get('tr').eq(1).click({ force: true });
         cy.url().should('match', /datasets\/.{36}/);
     });
+
+    it('searches dataset with a key', () => {
+        cy.checkSearchByKey('datasets');
+    });
 });
