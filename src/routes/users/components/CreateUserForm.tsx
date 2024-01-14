@@ -127,6 +127,7 @@ const CreateUserForm = ({
                             passwordHasErrors
                         }
                         isLoading={creatingUser}
+                        data-cy="submit-form"
                     >
                         Save
                     </Button>

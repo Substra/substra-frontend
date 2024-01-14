@@ -179,6 +179,7 @@ const Users = (): JSX.Element => {
                             compilePath(PATHS.USER, { key: 'create' })
                         )
                     }
+                    data-cy="create-user"
                 >
                     Create user
                 </Button>
@@ -249,6 +250,8 @@ const Users = (): JSX.Element => {
                             users.map((user) => (
                                 <ClickableTr
                                     key={user.username}
+                                    data-name={user.username}
+                                    data-role={user.role}
                                     onClick={() =>
                                         setLocationPreserveParams(
                                             compilePath(PATHS.USER, {
