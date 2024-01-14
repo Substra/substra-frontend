@@ -30,4 +30,8 @@ describe('Functions page', () => {
     it('display a function drawer', () => {
         cy.checkOpenDrawer();
     });
+
+    it('searches function with a key', () => {
+        cy.checkSearchByKey('functions');
+    });
 });

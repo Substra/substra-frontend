@@ -230,6 +230,7 @@ const Functions = (): JSX.Element => {
                                 functions?.map((func) => (
                                     <ClickableTr
                                         key={func.key}
+                                        data-key={func.key}
                                         onClick={() =>
                                             setLocationPreserveParams(
                                                 compilePath(PATHS.FUNCTION, {

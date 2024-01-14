@@ -230,6 +230,7 @@ const Datasets = (): JSX.Element => {
                                 datasets.map((dataset) => (
                                     <ClickableTr
                                         key={dataset.key}
+                                        data-key={dataset.key}
                                         onClick={() =>
                                             setLocationPreserveParams(
                                                 compilePath(PATHS.DATASET, {

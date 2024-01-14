@@ -20,7 +20,7 @@ describe('Compute plans page', () => {
         cy.getDataCy('favorite-cp').should('exist');
     });
 
-    it.only('task drawer shows performance', () => {
+    it('task drawer shows performance', () => {
         cy.getDataCy('task-with-performance')
             .should('have.length.gte', 0)
             .then(($hits) => {
