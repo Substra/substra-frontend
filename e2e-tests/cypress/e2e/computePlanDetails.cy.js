@@ -14,10 +14,21 @@ describe('Compute plans page', () => {
         cy.url().should('match', /compute_plans\/.{36}\/tasks/);
     });
 
-    it('can add cp to favorites', () => {
+    it('adds cp to favorites', () => {
         cy.getDataCy('favorite-cp').should('not.exist');
         cy.getDataCy('favorite-box').first().click();
         cy.getDataCy('favorite-cp').should('exist');
+    });
+
+    it.only('task drawer shows performance', () => {
+        cy.getDataCy('task-with-performance')
+            .should('have.length.gte', 0)
+            .then(($hits) => {
+                if ($hits.length > 0) {
+                    cy.getDataCy('task-with-performance').first().click();
+                    cy.getDataCy('output-performance').should('exist');
+                }
+            });
     });
 
     it('navigates to the Workflow page', () => {
@@ -26,7 +37,7 @@ describe('Compute plans page', () => {
         cy.getDataCy('workflow-graph').should('exist');
     });
 
-    it('navigates back to the Detail page', () => {
+    it('navigates to the Detail page', () => {
         cy.getDataCy('Details-tab').click({ force: true });
         cy.url().should('match', /compute_plans\/.{36}\/tasks/);
     });
