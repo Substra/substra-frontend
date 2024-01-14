@@ -39,6 +39,7 @@ const UsernameInput = ({
                         setIsDirty(true);
                         setHasErrors(e.target.value === '');
                     }}
+                    data-cy="username-input"
                 />
                 {hasErrors && isDirty && (
                     <FormErrorMessage>
