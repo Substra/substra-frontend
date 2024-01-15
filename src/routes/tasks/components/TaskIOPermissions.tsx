@@ -10,21 +10,23 @@ const TaskIOPermissions = ({
 }: {
     permissions?: PermissionsT | null;
 }): JSX.Element => {
-    let permittedGroup = '';
+    let label = '';
 
-    if (!permissions || permissions.download.public) {
-        permittedGroup = 'everyone';
+    if (!permissions && permissions !== null) {
+        label = 'No permissions available yet';
+    } else if (permissions === null || permissions?.download.public) {
+        label = 'Accessible by everyone';
     } else if (
         !permissions.download?.public &&
         permissions.download?.authorized_ids.length
     ) {
-        permittedGroup = permissions?.download.authorized_ids.join();
+        label = `Accessible by ${permissions?.download.authorized_ids.join()}`;
     } else {
-        permittedGroup = 'owner only';
+        label = 'Accessible by owner only';
     }
 
     return (
-        <TaskIOTooltip label={`Accessible by ${permittedGroup}`}>
+        <TaskIOTooltip label={label}>
             <Box display="flex" alignItems="center">
                 <Icon as={RiGroupLine} color="gray.400" boxSize="14px" />
             </Box>
