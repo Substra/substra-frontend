@@ -185,7 +185,7 @@ const TaskOutputsDrawerSection = ({
     return (
         <DrawerSection title="Outputs">
             {taskLoading || !task ? (
-                <Skeleton height="50px" width="457px"></Skeleton>
+                <Skeleton height="50px" width="457px" />
             ) : (
                 Object.keys(task.function.outputs).map((identifier) => {
                     return (
