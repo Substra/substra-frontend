@@ -37,8 +37,10 @@ export type ComputePlanStubT = {
     task_count: number;
     status: ComputePlanStatus;
     done_count: number;
-    waiting_count: number;
-    todo_count: number;
+    waiting_parent_tasks_count: number;
+    waiting_executor_slot_count: number;
+    waiting_builder_slot_count: number;
+    building_count: number;
     doing_count: number;
     canceled_count: number;
     failed_count: number;

@@ -6,8 +6,10 @@ import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
 
 export enum TaskStatus {
-    waiting = 'STATUS_WAITING',
-    todo = 'STATUS_TODO',
+    waitingExecutorSlot = "STATUS_WAITING_FOR_EXECUTOR_SLOT",
+    waitingParentTasks = "STATUS_WAITING_FOR_PARENT_TASKS",
+    waitingBuilderSlot = "STATUS_WAITING_FOR_BUILDER_SLOT",
+    building = "STATUS_BUILDING",
     doing = 'STATUS_DOING',
     done = 'STATUS_DONE',
     canceled = 'STATUS_CANCELED',
@@ -17,16 +19,20 @@ export enum TaskStatus {
 export const taskStatusOrder: TaskStatus[] = [
     TaskStatus.done,
     TaskStatus.doing,
+    TaskStatus.building,
     TaskStatus.canceled,
     TaskStatus.failed,
-    TaskStatus.todo,
-    TaskStatus.waiting,
+    TaskStatus.waitingExecutorSlot,
+    TaskStatus.waitingBuilderSlot,
+    TaskStatus.waitingParentTasks,
 ];
 
 export enum TaskStatusDescription {
-    waiting = 'Task is waiting for parent tasks to end',
-    todo = 'Task is ready and waiting for available space to run',
-    doing = 'Task is processing',
+    waitingParentTasks = 'Task is waiting for parent tasks to end',
+    waitingExecutorSlot = 'Task is waiting for an available executor to run',
+    waitingBuilderSlot = 'Task function is waiting for an available builder to build',
+    doing = 'Task is executing',
+    building = 'Task function is being built',
     done = 'Task finished without error',
     canceled = 'Task was prematurely ended',
     failed = 'Task has error',
@@ -42,8 +48,10 @@ export const statusDescriptionByTaskStatus: Record<
     TaskStatus,
     TaskStatusDescription
 > = {
-    [TaskStatus.waiting]: TaskStatusDescription.waiting,
-    [TaskStatus.todo]: TaskStatusDescription.todo,
+    [TaskStatus.waitingBuilderSlot]: TaskStatusDescription.waitingBuilderSlot,
+    [TaskStatus.building]: TaskStatusDescription.building,
+    [TaskStatus.waitingParentTasks]: TaskStatusDescription.waitingParentTasks,
+    [TaskStatus.waitingExecutorSlot]: TaskStatusDescription.waitingExecutorSlot,
     [TaskStatus.doing]: TaskStatusDescription.doing,
     [TaskStatus.done]: TaskStatusDescription.done,
     [TaskStatus.canceled]: TaskStatusDescription.canceled,

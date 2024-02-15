@@ -13,14 +13,19 @@ export const getStatusCount = (
         return computePlan.canceled_count;
     } else if (status === TaskStatus.failed) {
         return computePlan.failed_count;
-    } else if (status === TaskStatus.todo) {
-        return computePlan.todo_count;
-    } else if (status === TaskStatus.waiting) {
-        return computePlan.waiting_count;
+    } else if (status === TaskStatus.waitingParentTasks) {
+        return computePlan.waiting_parent_tasks_count;
+    } else if (status === TaskStatus.waitingExecutorSlot) {
+        return computePlan.waiting_executor_slot_count;
+    }else if (status === TaskStatus.waitingBuilderSlot) {
+        return computePlan.waiting_builder_slot_count;
+    }else if (status === TaskStatus.building) {
+        return computePlan.building_count;
     }
 
     throw `Invalid status ${status}`;
 };
+
 
 export const compareComputePlans = (
     a: ComputePlanT,

@@ -10,18 +10,22 @@ export const MIN_ZOOM_LEVEL = 0.05;
 
 export const NODE_BORDER_COLOR: Record<TaskStatus, string> = {
     [TaskStatus.failed]: '#F31B61',
-    [TaskStatus.waiting]: '#ADADAD',
+    [TaskStatus.waitingBuilderSlot]: '#ADADAD',
+    [TaskStatus.waitingParentTasks]: '#ADADAD',
+    [TaskStatus.waitingExecutorSlot]: '#ADADAD',
     [TaskStatus.done]: '#2F9797',
-    [TaskStatus.todo]: '#ADADAD',
+    [TaskStatus.building]: '#0084DC',
     [TaskStatus.doing]: '#0084DC',
     [TaskStatus.canceled]: '#545454',
 };
 
 export const NODE_LABEL_COLOR: Record<TaskStatus, string> = {
     [TaskStatus.failed]: '#CB1C51',
-    [TaskStatus.waiting]: '#7F7F7F',
+    [TaskStatus.waitingBuilderSlot]: '#7F7F7F',
+    [TaskStatus.waitingParentTasks]: '#7F7F7F',
+    [TaskStatus.waitingExecutorSlot]: '#7F7F7F',
     [TaskStatus.done]: '#2D7A7A',
-    [TaskStatus.todo]: '#7F7F7F',
+    [TaskStatus.building]: '#006EBD',
     [TaskStatus.doing]: '#006EBD',
     [TaskStatus.canceled]: '#373737',
 };
