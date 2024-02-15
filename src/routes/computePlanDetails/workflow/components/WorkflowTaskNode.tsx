@@ -9,6 +9,7 @@ import {
     NODE_LABEL_COLOR,
 } from '@/routes/computePlanDetails/workflow/CPWorkflowUtils';
 import { PositionedTaskT } from '@/types/CPWorkflowTypes';
+import { getStatusLabel } from '@/libs/status';
 
 type TaskNodeProps = {
     data: PositionedTaskT;
@@ -80,7 +81,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                         fontWeight="medium"
                         textTransform="capitalize"
                     >
-                        {data.status.replace('STATUS_', '').toLowerCase()}
+                        {getStatusLabel(data.status)}
                     </Text>
                 </Box>
 
