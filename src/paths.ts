@@ -34,7 +34,7 @@ export const API_PATHS = {
     INFO: '/info/',
     LOGIN: '/me/login/?format=json',
     LOGOUT: '/me/logout/',
-    LOGS: '/logs/:key/file/',
+    LOGS: '/task/:key/logs/',
     METADATA: '/compute_plan_metadata/',
     NEWS_FEED: '/news_feed/',
     ORGANIZATIONS: '/organization/',
