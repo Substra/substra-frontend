@@ -26,7 +26,7 @@ export type FunctionT = {
     owner: string;
     permissions: PermissionsT;
     description: FileT;
-    function: FileT;
+    archive: FileT;
     metadata: MetadataT;
     creation_date: string;
     inputs: { [name: string]: FunctionInputT };

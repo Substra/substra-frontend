@@ -176,7 +176,7 @@ const TaskDrawer = ({
                                     </Text>
                                     <DownloadIconButton
                                         storageAddress={
-                                            task.function.function
+                                            task.function.archive
                                                 .storage_address
                                         }
                                         filename={`function-${task.function.key}.zip`}

@@ -106,7 +106,7 @@ const FunctionDrawer = (): JSX.Element => {
                     extraButtons={
                         <DownloadIconButton
                             storageAddress={
-                                func ? func.function.storage_address : ''
+                                func ? func.archive.storage_address : ''
                             }
                             filename={`function-${key}.zip`}
                             aria-label={
