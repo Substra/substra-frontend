@@ -42,7 +42,11 @@ const ComputePlanProgressBar = ({
             alignItems="stretch"
         >
             {!computePlan.task_count && (
-                <Item status={TaskStatus.waitingBuilderSlot} count={1} total={1} />
+                <Item
+                    status={TaskStatus.waitingBuilderSlot}
+                    count={1}
+                    total={1}
+                />
             )}
             {taskStatusOrder.map((status) => (
                 <Item

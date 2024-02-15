@@ -17,15 +17,14 @@ export const getStatusCount = (
         return computePlan.waiting_parent_tasks_count;
     } else if (status === TaskStatus.waitingExecutorSlot) {
         return computePlan.waiting_executor_slot_count;
-    }else if (status === TaskStatus.waitingBuilderSlot) {
+    } else if (status === TaskStatus.waitingBuilderSlot) {
         return computePlan.waiting_builder_slot_count;
-    }else if (status === TaskStatus.building) {
+    } else if (status === TaskStatus.building) {
         return computePlan.building_count;
     }
 
     throw `Invalid status ${status}`;
 };
-
 
 export const compareComputePlans = (
     a: ComputePlanT,

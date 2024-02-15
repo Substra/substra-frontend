@@ -4,12 +4,12 @@ import { Handle, Position } from 'react-flow-renderer';
 
 import { Box, Text, Flex } from '@chakra-ui/react';
 
+import { getStatusLabel } from '@/libs/status';
 import {
     NODE_BORDER_COLOR,
     NODE_LABEL_COLOR,
 } from '@/routes/computePlanDetails/workflow/CPWorkflowUtils';
 import { PositionedTaskT } from '@/types/CPWorkflowTypes';
-import { getStatusLabel } from '@/libs/status';
 
 type TaskNodeProps = {
     data: PositionedTaskT;

@@ -37,7 +37,7 @@ enum TaskStatusLabel {
     waitingParentTasks = 'Waiting parents',
     waitingExecutorSlot = 'Waiting executor slot',
     waitingBuilderSlot = 'Waiting builder slot',
-    building = 'Building'
+    building = 'Building',
 }
 
 const statusLabelByTaskStatus: Record<TaskStatus, TaskStatusLabel> = {
@@ -135,7 +135,7 @@ export const getStatusStyle = (
                 progressColor: 'gray.300',
             };
         case TaskStatus.doing:
-            case TaskStatus.building:
+        case TaskStatus.building:
         case ComputePlanStatus.doing:
             return {
                 icon: RiPlayMiniLine,

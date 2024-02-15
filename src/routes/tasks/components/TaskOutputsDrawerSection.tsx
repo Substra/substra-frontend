@@ -30,11 +30,14 @@ const isMultipleOutput = (task: TaskT, output_id: string) => {
 const displayPerformance = (value: number, taskStatus: TaskStatus) => {
     if (value === null) {
         let msg: string;
-        if (
-            taskStatus === TaskStatus.waitingBuilderSlot 
-        ) {
+        if (taskStatus === TaskStatus.waitingBuilderSlot) {
             msg = "computation hasn't started yet";
-        } else if (taskStatus === TaskStatus.building || taskStatus ===  TaskStatus.waitingParentTasks || taskStatus === TaskStatus.waitingExecutorSlot || taskStatus === TaskStatus.doing) {
+        } else if (
+            taskStatus === TaskStatus.building ||
+            taskStatus === TaskStatus.waitingParentTasks ||
+            taskStatus === TaskStatus.waitingExecutorSlot ||
+            taskStatus === TaskStatus.doing
+        ) {
             msg = 'computation is ongoing';
         } else if (taskStatus === TaskStatus.failed) {
             msg = 'computation failed';

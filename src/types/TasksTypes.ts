@@ -6,10 +6,10 @@ import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
 
 export enum TaskStatus {
-    waitingExecutorSlot = "STATUS_WAITING_FOR_EXECUTOR_SLOT",
-    waitingParentTasks = "STATUS_WAITING_FOR_PARENT_TASKS",
-    waitingBuilderSlot = "STATUS_WAITING_FOR_BUILDER_SLOT",
-    building = "STATUS_BUILDING",
+    waitingExecutorSlot = 'STATUS_WAITING_FOR_EXECUTOR_SLOT',
+    waitingParentTasks = 'STATUS_WAITING_FOR_PARENT_TASKS',
+    waitingBuilderSlot = 'STATUS_WAITING_FOR_BUILDER_SLOT',
+    building = 'STATUS_BUILDING',
     doing = 'STATUS_DOING',
     done = 'STATUS_DONE',
     canceled = 'STATUS_CANCELED',
