@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   LogsModal now use a key so we can use logs not linked with a compute task (#270)
 -   Replace `function.function` by `function.archive` (#296)
+-   Update task statuses to reflect the updates in the backend (#297)
 
 ## [0.46.0] - 2023-10-18
 
