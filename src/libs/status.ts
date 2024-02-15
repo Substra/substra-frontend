@@ -34,8 +34,10 @@ enum TaskStatusLabel {
     doing = 'Doing',
     done = 'Done',
     failed = 'Failed',
-    todo = 'Todo',
-    waiting = 'Waiting',
+    waitingParentTasks = 'Waiting parents',
+    waitingExecutorSlot = 'Waiting executor slot',
+    waitingBuilderSlot = 'Waiting builder slot',
+    building = 'Building',
 }
 
 const statusLabelByTaskStatus: Record<TaskStatus, TaskStatusLabel> = {
@@ -43,8 +45,10 @@ const statusLabelByTaskStatus: Record<TaskStatus, TaskStatusLabel> = {
     [TaskStatus.doing]: TaskStatusLabel.doing,
     [TaskStatus.done]: TaskStatusLabel.done,
     [TaskStatus.failed]: TaskStatusLabel.failed,
-    [TaskStatus.todo]: TaskStatusLabel.todo,
-    [TaskStatus.waiting]: TaskStatusLabel.waiting,
+    [TaskStatus.waitingParentTasks]: TaskStatusLabel.waitingParentTasks,
+    [TaskStatus.waitingExecutorSlot]: TaskStatusLabel.waitingExecutorSlot,
+    [TaskStatus.waitingBuilderSlot]: TaskStatusLabel.waitingBuilderSlot,
+    [TaskStatus.building]: TaskStatusLabel.building,
 };
 
 const statusLabelByComputePlanStatus: Record<
@@ -117,9 +121,10 @@ export const getStatusStyle = (
                 progressColor: 'gray.500',
             };
 
-        case TaskStatus.waiting:
+        case TaskStatus.waitingBuilderSlot:
+        case TaskStatus.waitingParentTasks:
+        case TaskStatus.waitingExecutorSlot:
         case ComputePlanStatus.waiting:
-        case TaskStatus.todo:
         case ComputePlanStatus.todo:
             return {
                 icon: RiTimeLine,
@@ -130,6 +135,7 @@ export const getStatusStyle = (
                 progressColor: 'gray.300',
             };
         case TaskStatus.doing:
+        case TaskStatus.building:
         case ComputePlanStatus.doing:
             return {
                 icon: RiPlayMiniLine,

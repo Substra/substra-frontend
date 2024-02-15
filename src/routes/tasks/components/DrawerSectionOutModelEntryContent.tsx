@@ -18,14 +18,18 @@ const DrawerSectionOutModelEntryContent = ({
 
     let content = null;
 
-    if (taskStatus === TaskStatus.waiting) {
+    if (taskStatus === TaskStatus.waitingBuilderSlot) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
-    } else if (taskStatus === TaskStatus.todo) {
+    } else if (taskStatus === TaskStatus.building) {
         content = (
             <Text color="gray.500">Model training hasn't started yet</Text>
         );
+    } else if (taskStatus === TaskStatus.waitingParentTasks) {
+        content = <Text color="gray.500">Model waiting</Text>;
+    } else if (taskStatus === TaskStatus.waitingExecutorSlot) {
+        content = <Text color="gray.500">Model still training</Text>;
     } else if (taskStatus === TaskStatus.doing) {
         content = <Text color="gray.500">Model still training</Text>;
     } else if (taskStatus === TaskStatus.failed) {

@@ -15,8 +15,7 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
                 {[
                     ComputePlanStatus.todo,
                     ComputePlanStatus.waiting,
-                    TaskStatus.todo,
-                    TaskStatus.waiting,
+                    TaskStatus.waitingBuilderSlot,
                 ].includes(asset.status)
                     ? 'Not started yet'
                     : 'Information not available'}

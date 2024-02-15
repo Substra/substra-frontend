@@ -4,6 +4,7 @@ import { Handle, Position } from 'react-flow-renderer';
 
 import { Box, Text, Flex } from '@chakra-ui/react';
 
+import { getStatusLabel } from '@/libs/status';
 import {
     NODE_BORDER_COLOR,
     NODE_LABEL_COLOR,
@@ -80,7 +81,7 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                         fontWeight="medium"
                         textTransform="capitalize"
                     >
-                        {data.status.replace('STATUS_', '').toLowerCase()}
+                        {getStatusLabel(data.status)}
                     </Text>
                 </Box>
 
