@@ -5,8 +5,8 @@ export const getStatusCount = (
     computePlan: ComputePlanT,
     status: TaskStatus
 ): number => {
-    if (status === TaskStatus.doing) {
-        return computePlan.doing_count;
+    if (status === TaskStatus.executing) {
+        return computePlan.executing_count;
     } else if (status === TaskStatus.done) {
         return computePlan.done_count;
     } else if (status === TaskStatus.canceled) {

@@ -31,7 +31,7 @@ enum ComputePlanStatusLabel {
 
 enum TaskStatusLabel {
     canceled = 'Canceled',
-    doing = 'Doing',
+    executing = 'Executing',
     done = 'Done',
     failed = 'Failed',
     waitingParentTasks = 'Waiting parents',
@@ -42,7 +42,7 @@ enum TaskStatusLabel {
 
 const statusLabelByTaskStatus: Record<TaskStatus, TaskStatusLabel> = {
     [TaskStatus.canceled]: TaskStatusLabel.canceled,
-    [TaskStatus.doing]: TaskStatusLabel.doing,
+    [TaskStatus.executing]: TaskStatusLabel.executing,
     [TaskStatus.done]: TaskStatusLabel.done,
     [TaskStatus.failed]: TaskStatusLabel.failed,
     [TaskStatus.waitingParentTasks]: TaskStatusLabel.waitingParentTasks,
@@ -134,7 +134,7 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'gray.300',
                 progressColor: 'gray.300',
             };
-        case TaskStatus.doing:
+        case TaskStatus.executing:
         case TaskStatus.building:
         case ComputePlanStatus.doing:
             return {

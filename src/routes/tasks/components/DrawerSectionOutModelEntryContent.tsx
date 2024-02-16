@@ -35,7 +35,7 @@ const DrawerSectionOutModelEntryContent = ({
         content = <Text color="gray.500">Model waiting</Text>;
     } else if (taskStatus === TaskStatus.waitingExecutorSlot) {
         content = <Text color="gray.500">Model still training</Text>;
-    } else if (taskStatus === TaskStatus.doing) {
+    } else if (taskStatus === TaskStatus.executing) {
         content = <Text color="gray.500">Model still training</Text>;
     } else if (taskStatus === TaskStatus.failed) {
         content = <Text color="gray.500">Model training failed</Text>;

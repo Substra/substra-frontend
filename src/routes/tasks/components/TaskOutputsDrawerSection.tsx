@@ -23,7 +23,7 @@ const displayPerformance = (value: number | null, taskStatus: TaskStatus) => {
             taskStatus === TaskStatus.building ||
             taskStatus === TaskStatus.waitingParentTasks ||
             taskStatus === TaskStatus.waitingExecutorSlot ||
-            taskStatus === TaskStatus.doing
+            taskStatus === TaskStatus.executing
         ) {
             msg = 'Computation is ongoing';
         } else if (taskStatus === TaskStatus.failed) {

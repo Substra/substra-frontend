@@ -15,7 +15,7 @@ export const NODE_BORDER_COLOR: Record<TaskStatus, string> = {
     [TaskStatus.waitingExecutorSlot]: '#ADADAD',
     [TaskStatus.done]: '#2F9797',
     [TaskStatus.building]: '#0084DC',
-    [TaskStatus.doing]: '#0084DC',
+    [TaskStatus.executing]: '#0084DC',
     [TaskStatus.canceled]: '#545454',
 };
 
@@ -26,7 +26,7 @@ export const NODE_LABEL_COLOR: Record<TaskStatus, string> = {
     [TaskStatus.waitingExecutorSlot]: '#7F7F7F',
     [TaskStatus.done]: '#2D7A7A',
     [TaskStatus.building]: '#006EBD',
-    [TaskStatus.doing]: '#006EBD',
+    [TaskStatus.executing]: '#006EBD',
     [TaskStatus.canceled]: '#373737',
 };
 

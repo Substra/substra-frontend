@@ -41,7 +41,7 @@ export type ComputePlanStubT = {
     waiting_executor_slot_count: number;
     waiting_builder_slot_count: number;
     building_count: number;
-    doing_count: number;
+    executing_count: number;
     canceled_count: number;
     failed_count: number;
     delete_intermediary_models: boolean;

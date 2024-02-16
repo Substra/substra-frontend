@@ -96,7 +96,7 @@ const TasksWorkflow = (): JSX.Element => {
             let bBox;
             const failedOrDoingNodes = nodes.filter(
                 (node) =>
-                    node.data.status === 'STATUS_DOING' ||
+                    node.data.status === 'STATUS_EXECUTING' ||
                     node.data.status === 'STATUS_FAILED'
             );
             if (failedOrDoingNodes.length) {
