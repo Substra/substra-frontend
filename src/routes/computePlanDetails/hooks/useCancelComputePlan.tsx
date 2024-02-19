@@ -32,8 +32,7 @@ const useCancelComputePlan = (
             computePlan !== null &&
             [
                 ComputePlanStatus.doing,
-                ComputePlanStatus.todo,
-                ComputePlanStatus.waiting,
+                ComputePlanStatus.created,
             ].includes(computePlan.status),
         [computePlan]
     );

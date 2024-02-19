@@ -1,34 +1,28 @@
 export enum ComputePlanStatus {
-    waiting = 'PLAN_STATUS_WAITING',
-    todo = 'PLAN_STATUS_TODO',
+    created = 'PLAN_STATUS_CREATED',
     doing = 'PLAN_STATUS_DOING',
     done = 'PLAN_STATUS_DONE',
     canceled = 'PLAN_STATUS_CANCELED',
     failed = 'PLAN_STATUS_FAILED',
-    empty = 'PLAN_STATUS_EMPTY',
 }
 
 export enum ComputePlanStatusDescription {
-    waiting = 'Compute plan is waiting for parent tasks to end',
-    todo = 'Compute plan is ready and waiting for available space to run',
+    created = 'Compute plan is created',
     doing = 'Compute plan is processing',
     done = 'Compute plan finished without error',
     canceled = 'Compute plan was prematurely ended',
     failed = 'Compute plan has error',
-    empty = 'Compute plan contains no tasks',
 }
 
 export const statusDescriptionByComputePlanStatus: Record<
     ComputePlanStatus,
     ComputePlanStatusDescription
 > = {
-    [ComputePlanStatus.waiting]: ComputePlanStatusDescription.waiting,
-    [ComputePlanStatus.todo]: ComputePlanStatusDescription.todo,
+    [ComputePlanStatus.created]: ComputePlanStatusDescription.created,
     [ComputePlanStatus.doing]: ComputePlanStatusDescription.doing,
     [ComputePlanStatus.done]: ComputePlanStatusDescription.done,
     [ComputePlanStatus.canceled]: ComputePlanStatusDescription.canceled,
     [ComputePlanStatus.failed]: ComputePlanStatusDescription.failed,
-    [ComputePlanStatus.empty]: ComputePlanStatusDescription.empty,
 };
 
 export type ComputePlanStubT = {

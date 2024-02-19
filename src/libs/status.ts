@@ -4,7 +4,6 @@ import {
     RiCheckLine,
     RiIndeterminateCircleLine,
     RiPlayMiniLine,
-    RiQuestionLine,
     RiTimeLine,
 } from 'react-icons/ri';
 
@@ -24,9 +23,7 @@ enum ComputePlanStatusLabel {
     doing = 'Doing',
     done = 'Done',
     failed = 'Failed',
-    todo = 'Todo',
-    waiting = 'Waiting',
-    empty = 'Empty',
+    created = 'Created',
 }
 
 enum TaskStatusLabel {
@@ -59,9 +56,7 @@ const statusLabelByComputePlanStatus: Record<
     [ComputePlanStatus.doing]: ComputePlanStatusLabel.doing,
     [ComputePlanStatus.done]: ComputePlanStatusLabel.done,
     [ComputePlanStatus.failed]: ComputePlanStatusLabel.failed,
-    [ComputePlanStatus.todo]: ComputePlanStatusLabel.todo,
-    [ComputePlanStatus.waiting]: ComputePlanStatusLabel.waiting,
-    [ComputePlanStatus.empty]: ComputePlanStatusLabel.empty,
+    [ComputePlanStatus.created]: ComputePlanStatusLabel.created,
 };
 
 export const getStatusLabel = (
@@ -124,8 +119,7 @@ export const getStatusStyle = (
         case TaskStatus.waitingBuilderSlot:
         case TaskStatus.waitingParentTasks:
         case TaskStatus.waitingExecutorSlot:
-        case ComputePlanStatus.waiting:
-        case ComputePlanStatus.todo:
+        case ComputePlanStatus.created:
             return {
                 icon: RiTimeLine,
                 tagColor: 'gray.500',
@@ -165,16 +159,6 @@ export const getStatusStyle = (
                 tagSolidBackgroundColor: 'teal.500',
                 progressColor: 'teal.500',
             };
-        case ComputePlanStatus.empty:
-            return {
-                icon: RiQuestionLine,
-                tagColor: 'gray.500',
-                tagBackgroundColor: 'gray.50',
-                tagSolidColor: 'white',
-                tagSolidBackgroundColor: 'gray.300',
-                progressColor: 'gray.300',
-            };
-
         default:
             throw 'Unknown status';
     }

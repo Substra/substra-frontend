@@ -13,8 +13,7 @@ const Timing = ({ asset }: TimingProps): JSX.Element => {
         return (
             <Text color="gray.500">
                 {[
-                    ComputePlanStatus.todo,
-                    ComputePlanStatus.waiting,
+                    ComputePlanStatus.created,
                     TaskStatus.waitingBuilderSlot,
                 ].includes(asset.status)
                     ? 'Not started yet'
