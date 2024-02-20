@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.26
+
+### Changed
+
+- Upgrade AppVersion to 0.47.0
+  
 ## 1.0.25
 
 ### Changed
