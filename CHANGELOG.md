@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.47.0] - 2024-02-26
+
 ### Changed
 
 -   LogsModal now use a key so we can use logs not linked with a compute task (#270)
