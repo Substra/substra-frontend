@@ -30,10 +30,9 @@ const useCancelComputePlan = (
     const hasCancellableStatus = useMemo(
         (): boolean =>
             computePlan !== null &&
-            [
-                ComputePlanStatus.doing,
-                ComputePlanStatus.created,
-            ].includes(computePlan.status),
+            [ComputePlanStatus.doing, ComputePlanStatus.created].includes(
+                computePlan.status
+            ),
         [computePlan]
     );
 
