@@ -13,9 +13,7 @@ on:
     branches:
       - "main"
     paths:
-      - "charts/substra-frontend/Chart.yaml"
-      - "charts/substra-frontend/values.yaml"
-      - "charts/substra-frontend/templates/**"
+      - "charts/substra-frontend/**"
   workflow_dispatch: {} # For running by hand from the web UI
 
 concurrency:
