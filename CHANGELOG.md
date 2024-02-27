@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Secondary branches in workflows are now of max size 1 (#268)
+
 ## [0.47.0] - 2024-02-26
 
 ### Changed

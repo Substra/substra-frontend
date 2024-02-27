@@ -232,13 +232,9 @@ function findSecondaryBranches(
             .length;
     }
 
-    const SECONDARY_BRANCH_MAX_LENGTH = 2;
-
     // Recursive function to walk through parent tasks as long as it is a linear chain to find the secondary branch
-    function recFindSecondaryBranch(
+    function findSecondaryBranch(
         task: TaskT,
-        taskRankInSecondaryBranchFromLeaf: number, // position in a branch starting from the end (= task without child has position 0)
-        graph: TaskGraphT,
         taskKeyToParentTasksMap: { [task_key: string]: TaskT[] },
         tasksInSecondaryBranches: { [task_key: string]: number }
     ) {
@@ -250,34 +246,9 @@ function findSecondaryBranches(
             // Let us not tune the layout for this specific case. Could be a single train task chain
             return null;
         } else if (parents.length === 1) {
-            const parent = parents[0];
-
-            if (
-                taskRankInSecondaryBranchFromLeaf + 1 <
-                SECONDARY_BRANCH_MAX_LENGTH
-            ) {
-                // The parent has no other child than this task, it is part of the secondary branch
-                // We recursively continue to walk through its parents
-                const parentRankInSecondaryBranch = recFindSecondaryBranch(
-                    parent,
-                    taskRankInSecondaryBranchFromLeaf + 1,
-                    graph,
-                    taskKeyToParentTasksMap,
-                    tasksInSecondaryBranches
-                );
-                if (parentRankInSecondaryBranch !== null) {
-                    tasksInSecondaryBranches[task.key] =
-                        parentRankInSecondaryBranch + 1;
-                    return tasksInSecondaryBranches[task.key];
-                } else {
-                    return null;
-                }
-            } else {
-                // The parent has other children so it is the point where the secondary branch starts
-                // The task is first in the secondary branch
-                tasksInSecondaryBranches[task.key] = 1;
-                return tasksInSecondaryBranches[task.key];
-            }
+            // The task as only one parent, so we can create a secondary branch.
+            tasksInSecondaryBranches[task.key] = 1;
+            return tasksInSecondaryBranches[task.key];
         } else {
             // The task has several parents so it is not in the secondary branch
             return 0;
@@ -294,10 +265,8 @@ function findSecondaryBranches(
     });
 
     for (const task of endOfSecondaryBranches) {
-        recFindSecondaryBranch(
+        findSecondaryBranch(
             task,
-            0,
-            graph,
             taskKeyToParentTasksMap,
             taskRanksInSecondaryBranch
         );
