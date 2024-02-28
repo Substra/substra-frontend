@@ -23,8 +23,8 @@ export const taskStatusOrder: TaskStatus[] = [
     TaskStatus.canceled,
     TaskStatus.failed,
     TaskStatus.waitingExecutorSlot,
-    TaskStatus.waitingBuilderSlot,
     TaskStatus.waitingParentTasks,
+    TaskStatus.waitingBuilderSlot,
 ];
 
 export enum TaskStatusDescription {
