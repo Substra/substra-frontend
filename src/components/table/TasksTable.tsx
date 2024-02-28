@@ -157,7 +157,7 @@ const TasksTable = ({
                             <Thead>
                                 <Tr>
                                     <OrderingTh
-                                        width="140px"
+                                        width="200px"
                                         openFilters={() => onPopoverOpen(0)}
                                         options={[
                                             {
