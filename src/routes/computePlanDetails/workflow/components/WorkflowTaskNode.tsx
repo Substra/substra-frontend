@@ -69,20 +69,6 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                     <Text fontWeight="bold" noOfLines={1}>
                         {data.function_name}
                     </Text>
-                    <Text
-                        pos="absolute"
-                        top="5px"
-                        right="6px"
-                        padding="2px 4px 2px 4px"
-                        backgroundColor={NODE_LABEL_COLOR[data.status]}
-                        color="white"
-                        borderRadius={3}
-                        fontSize={10}
-                        fontWeight="medium"
-                        textTransform="capitalize"
-                    >
-                        {getStatusLabel(data.status)}
-                    </Text>
                 </Box>
 
                 {/*Input/output labels*/}
@@ -125,10 +111,23 @@ const TaskNode = ({ data }: TaskNodeProps) => {
                         <Box textAlign="left">
                             <Text margin="0 auto 0 auto">worker</Text>
                             <Text margin="0 auto 0 auto">rank</Text>
+                            <Text margin="0 auto 0 auto">status</Text>
                         </Box>
                         <Box textAlign="left">
                             <Text margin="0 auto 0 auto">{data.worker}</Text>
                             <Text margin="0 auto 0 auto">{data.rank}</Text>
+                            <Text
+                                display="inline-block"
+                                margin="0 auto 0 auto"
+                                padding="2px 4px 2px 4px"
+                                backgroundColor={NODE_LABEL_COLOR[data.status]}
+                                color="white"
+                                borderRadius={3}
+                                fontSize={10}
+                                fontWeight="medium"
+                            >
+                                {getStatusLabel(data.status)}
+                            </Text>
                         </Box>
                     </Flex>
                 </Box>

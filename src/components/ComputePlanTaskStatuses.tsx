@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 import { getStatusCount } from '@/routes/computePlanDetails/ComputePlanUtils';
 import { ComputePlanT } from '@/types/ComputePlansTypes';
@@ -11,7 +11,7 @@ const ComputePlanTaskStatuses = ({
 }: {
     computePlan: ComputePlanT;
 }): JSX.Element => (
-    <HStack spacing="2.5">
+    <Flex gap="2.5" width="513px" wrap="wrap">
         {taskStatusOrder.map((status) => (
             <Status
                 key={status}
@@ -21,6 +21,6 @@ const ComputePlanTaskStatuses = ({
                 count={getStatusCount(computePlan, status)}
             />
         ))}
-    </HStack>
+    </Flex>
 );
 export default ComputePlanTaskStatuses;
