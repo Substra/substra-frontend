@@ -21,7 +21,8 @@ import { RiArrowRightSLine, RiUserLine } from 'react-icons/ri';
 
 import CopyIconButton from '@/features/copy/CopyIconButton';
 import { capitalize, formatDate } from '@/libs/utils';
-import { PermissionT } from '@/types/CommonTypes';
+import TaskIOPermissions from '@/routes/tasks/components/TaskIOPermissions';
+import { PermissionsT, PermissionT } from '@/types/CommonTypes';
 
 import PermissionTag from '@/components/PermissionTag';
 
@@ -76,12 +77,14 @@ export const DrawerSectionEntry = ({
     children,
     alignItems,
     icon,
+    permissions,
 }: {
     title: string;
     titleStyle?: 'capitalize' | 'code';
     children?: React.ReactNode;
     alignItems?: 'flex-start' | 'center' | 'baseline';
     icon?: JSX.Element;
+    permissions?: PermissionsT | null;
 }): JSX.Element => {
     return (
         <DrawerSectionEntryWrapper alignItems={alignItems || 'center'}>
@@ -100,6 +103,9 @@ export const DrawerSectionEntry = ({
                     </Text>
                 </Tooltip>
             )}
+            {(permissions || permissions === null) && (
+                <TaskIOPermissions permissions={permissions} />
+            )}
             <Box flexGrow="1" overflowX="hidden">
                 {children}
             </Box>
@@ -113,12 +119,14 @@ export const DrawerSectionCollapsibleEntry = ({
     aboveFold,
     children,
     icon,
+    permissions,
 }: {
     title: string;
     titleStyle?: 'capitalize' | 'code';
     aboveFold?: React.ReactNode;
     children?: React.ReactNode;
     icon?: JSX.Element;
+    permissions?: PermissionsT | null;
 }): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: false,
@@ -144,6 +152,9 @@ export const DrawerSectionCollapsibleEntry = ({
                     <Text whiteSpace="nowrap" width="120px" flexShrink="0">
                         {capitalize(title)}
                     </Text>
+                )}
+                {permissions === null && (
+                    <TaskIOPermissions permissions={permissions} />
                 )}
                 <Box flexGrow="1" overflow="hidden">
                     {aboveFold}
@@ -178,7 +189,7 @@ export const DrawerSectionKeyEntry = ({
             <Skeleton height="4" width="250px" />
         ) : (
             <HStack spacing={1.5}>
-                <Text>{value}</Text>
+                <Text flexGrow="1">{value}</Text>
                 <CopyIconButton
                     value={value}
                     aria-label={`Copy key`}

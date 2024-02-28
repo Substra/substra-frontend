@@ -1,7 +1,7 @@
-import { MetadataT, PermissionT } from './CommonTypes';
+import { MetadataT, PermissionsT, PermissionT } from './CommonTypes';
 import { DataSampleT } from './DataSampleTypes';
 import { DatasetStubT } from './DatasetTypes';
-import { FunctionT, AssetKindT, FunctionOutputT } from './FunctionsTypes';
+import { FunctionT, AssetKindT } from './FunctionsTypes';
 import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
 
@@ -65,6 +65,12 @@ export type TaskInputT = {
     parent_task_output_identifier?: string;
 };
 
+export type TaskOutputT = {
+    permissions: PermissionsT;
+    transient: boolean;
+};
+
+// IO types are used for task inputs/outputs assets
 type BaseIOT = {
     identifier: string;
     kind: AssetKindT;
@@ -109,7 +115,7 @@ export type TaskT = {
     logs_permission?: PermissionT;
     duration: number; // in seconds
     inputs: TaskInputT[];
-    outputs: { [name: string]: FunctionOutputT };
+    outputs: { [identifier: string]: TaskOutputT };
 };
 
 export enum TaskStep {
