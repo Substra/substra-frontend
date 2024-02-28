@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Secondary branches in workflows are now of max size 1 (#268)
 -   Refactor task outputs section in task drawer (#280)
+-   Move compute task status at the bottom of nodes in graph view to allow more space for task name on top (#303)
+-   Split task statuses list in 2 lines on compute plan statuses popover (#303)
+-   Increase spacing to see full status in compute task list (#303)
 
 ## [0.47.0] - 2024-02-26
 
