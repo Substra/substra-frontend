@@ -109,7 +109,7 @@ const AssetItem = ({
     getItemProps: GetItemProps;
 }) => {
     const itemProps = getItemProps({ item, index: item.index });
-    const selected = itemProps['aria-selected'] === 'true';
+    const selected = itemProps['aria-selected'];
     return (
         <ListItem
             padding="4"
