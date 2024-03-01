@@ -109,7 +109,7 @@ const AssetItem = ({
     getItemProps: GetItemProps;
 }) => {
     const itemProps = getItemProps({ item, index: item.index });
-    const selected = itemProps['aria-selected'] === 'true';
+    const selected = itemProps['aria-selected'];
     return (
         <ListItem
             padding="4"
@@ -149,7 +149,7 @@ const SeeMoreItem = ({
     getItemProps: GetItemProps;
 }) => {
     const itemProps = getItemProps({ item, index: item.index });
-    const selected = itemProps['aria-selected'] === 'true';
+    const selected = itemProps['aria-selected'];
     return (
         <ListItem
             textAlign="center"
@@ -399,7 +399,6 @@ const OmniSearch = () => {
         isOpen,
         getMenuProps,
         getInputProps,
-        getComboboxProps,
         getItemProps,
         // advanced props
         inputValue,
@@ -476,7 +475,7 @@ const OmniSearch = () => {
 
     return (
         <Box position="relative" width="360px">
-            <InputGroup size="sm" {...getComboboxProps()}>
+            <InputGroup size="sm">
                 <InputLeftElement
                     pointerEvents="none"
                     children={
