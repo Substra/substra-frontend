@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Chart as ChartJS, Plugin, ChartEvent } from 'chart.js';
-import { DistributiveArray } from 'chart.js/types/utils';
+import {
+    Chart as ChartJS,
+    Plugin,
+    ChartEvent,
+    ChartTypeRegistry,
+} from 'chart.js';
+import { DistributiveArray } from 'chart.js/dist/types/utils';
 
 import chakraTheme from '@/assets/chakraTheme';
 import { DataPointT } from '@/types/SeriesTypes';
