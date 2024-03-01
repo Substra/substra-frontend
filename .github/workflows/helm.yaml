@@ -4,41 +4,28 @@ name: Publish Helm
 # chart repo (that is to say it is released without further ado)
 env: {}
 on:
-    push:
-        branches: [main]
-        paths: ['charts/substra-frontend/**']
-    workflow_dispatch: {} # For running by hand from the web UI
+  push:
+    branches:
+      - "main"
+    paths:
+      - "charts/substra-frontend/**"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "charts/substra-frontend/Chart.yaml"
+      - "charts/substra-frontend/values.yaml"
+      - "charts/substra-frontend/templates/**"
+  workflow_dispatch: {} # For running by hand from the web UI
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
 jobs:
-    build-helm:
-        name: Package Helm chart
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: azure/setup-helm@v3.5
-              with:
-                  version: 'v3.5.0'
-              id: install
-            - run: helm lint charts/substra-frontend
-
-            - name: Package chart
-              run: |
-                  helm package charts/substra-frontend
-
-            - name: Clone Substra charts
-              uses: actions/checkout@v4
-              with:
-                  repository: Substra/charts
-                  ref: 'main'
-                  token: ${{ secrets.CHARTS_GITHUB_TOKEN }}
-                  path: substra-charts
-
-            - name: Publish chart
-              run: |
-                  mv substra-frontend-$(grep -e "^version" charts/substra-frontend/Chart.yaml | cut -c10-).tgz substra-charts/
-                  cd substra-charts
-                  helm repo index .
-                  git add .
-                  git config --global user.email "gh-actions@github.com"
-                  git config --global user.name "GitHub Action"
-                  git commit -s --message "GitHub Action: ${{ github.repository }}@${{ github.sha }}"
-                  git push --quiet --set-upstream origin main
+  helm:
+    name: Helm
+    uses: substra/substra-gha-workflows/.github/workflows/helm.yml@main
+    with:
+      helm-repositories: ''
+    secrets: inherit
