@@ -399,7 +399,6 @@ const OmniSearch = () => {
         isOpen,
         getMenuProps,
         getInputProps,
-        getComboboxProps,
         getItemProps,
         // advanced props
         inputValue,
@@ -476,7 +475,7 @@ const OmniSearch = () => {
 
     return (
         <Box position="relative" width="360px">
-            <InputGroup size="sm" {...getComboboxProps()}>
+            <InputGroup size="sm">
                 <InputLeftElement
                     pointerEvents="none"
                     children={
