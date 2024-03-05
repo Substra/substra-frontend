@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Move compute task status at the bottom of nodes in graph view to allow more space for task name on top (#303)
 -   Split task statuses list in 2 lines on compute plan statuses popover (#303)
 -   Increase spacing to see full status in compute task list (#303)
+-   Compute task status `DOING` is renamed `EXECUTING` (#299)
+-   Compute plan statuses `EMPTY`, `WAITING` ansd `TODO` are merged into new status `CREATED` (#299)
 
 ## [0.47.0] - 2024-02-26
 

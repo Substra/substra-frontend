@@ -30,10 +30,7 @@ const ComputePlanChart = (): JSX.Element => {
     const [, setLocation] = useLocation();
 
     useEffect(() => {
-        if (
-            computePlan?.status === ComputePlanStatus.todo ||
-            computePlan?.status === ComputePlanStatus.waiting
-        ) {
+        if (computePlan?.status === ComputePlanStatus.created) {
             const url = compilePath(PATHS.COMPUTE_PLAN_TASKS, {
                 key: computePlan?.key,
             });
