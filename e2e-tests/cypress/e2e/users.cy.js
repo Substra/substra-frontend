@@ -35,11 +35,10 @@ describe('Users page', () => {
         cy.get('select').eq(0).select('ADMIN');
         cy.getDataCy('submit-form').click();
 
-        cy.wait(500);
         cy.get('[data-name="Test"]')
             .first()
-            .then(($el) => {
-                cy.wrap($el).should('have.data', 'role', 'ADMIN');
+            .should(($el) => {
+                expect($el).to.have.data('role', 'ADMIN');
             });
     });
 
