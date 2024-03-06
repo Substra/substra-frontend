@@ -200,6 +200,7 @@ const UpdateUserForm = ({
                             icon={<RiDeleteBinLine />}
                             onClick={onConfirmOpen}
                             disabled={isDisabled}
+                            data-cy="delete-user"
                         />
                     </Tooltip>
                 }
@@ -237,6 +238,7 @@ const UpdateUserForm = ({
                                 ml="3"
                                 size="sm"
                                 isLoading={deletingUser}
+                                data-cy="confirm-delete"
                             >
                                 Delete user
                             </Button>
@@ -299,6 +301,7 @@ const UpdateUserForm = ({
                             colorScheme="primary"
                             onClick={onUpdate}
                             disabled={role === user?.role || isLastAdmin}
+                            data-cy="submit-form"
                         >
                             Update
                         </Button>

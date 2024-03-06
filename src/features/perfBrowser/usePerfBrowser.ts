@@ -394,8 +394,12 @@ const usePerfBrowser = (
                 getOrganizationIndex: (
                     computePlanKey: string,
                     organizationId: string
-                ): string =>
-                    organizationIndexes[computePlanKey][organizationId],
+                ): string => {
+                    if (!Object.values(organizationIndexes).length) {
+                        return 'Loading';
+                    }
+                    return organizationIndexes[computePlanKey][organizationId];
+                },
                 getSerieIndex: (
                     computePlanKey: string,
                     serieId: string

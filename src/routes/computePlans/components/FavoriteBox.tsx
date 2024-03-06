@@ -32,10 +32,14 @@ const FavoriteBox = ({
             boxShadow={focus ? 'outline' : undefined}
             transitionProperty="box-shadow"
             transitionDuration="normal"
+            data-cy="favorite-box"
         >
             {!isChecked && <RiStarLine fill="var(--chakra-colors-gray-300)" />}
             {isChecked && (
-                <RiStarFill fill="var(--chakra-colors-primary-500)" />
+                <RiStarFill
+                    fill="var(--chakra-colors-primary-500)"
+                    data-cy="favorite-cp"
+                />
             )}
             <StyledInput
                 type="checkbox"

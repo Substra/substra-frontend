@@ -93,14 +93,23 @@ const PerfDownloadButton = (): JSX.Element => {
                 size="xs"
                 isDisabled={loading}
                 isLoading={downloading}
+                data-cy="download-button"
             >
                 Download
             </MenuButton>
             <MenuList zIndex="popover">
-                <MenuItem onClick={onDownloadImage} fontSize="xs">
+                <MenuItem
+                    onClick={onDownloadImage}
+                    fontSize="xs"
+                    data-cy="download-as-jpeg"
+                >
                     Download as JPEG
                 </MenuItem>
-                <MenuItem onClick={download} fontSize="xs">
+                <MenuItem
+                    onClick={download}
+                    fontSize="xs"
+                    data-cy="download-as-csv"
+                >
                     Download as CSV
                 </MenuItem>
             </MenuList>

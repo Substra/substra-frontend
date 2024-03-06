@@ -92,6 +92,7 @@ const BulkSelection = ({
             alignItems="center"
             width="100%"
             color="white"
+            data-cy="selection-popover"
         >
             <HStack alignItems="baseline" spacing="5px" shouldWrapChildren>
                 <Popover placement="top-start">

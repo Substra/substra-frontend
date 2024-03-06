@@ -44,7 +44,7 @@ const Actions = ({
     });
 
     return (
-        <HStack paddingX="8">
+        <HStack paddingX="8" data-cpkey={computePlan?.key}>
             <Tooltip
                 label={ariaLabel}
                 fontSize="xs"
@@ -55,7 +55,14 @@ const Actions = ({
                 <IconButton
                     size="xs"
                     aria-label={ariaLabel}
-                    icon={favorite ? <RiStarFill /> : <RiStarLine />}
+                    icon={
+                        favorite ? (
+                            <RiStarFill data-cy="favorite-cp" />
+                        ) : (
+                            <RiStarLine />
+                        )
+                    }
+                    data-cy="favorite-box"
                     color={favorite ? 'primary' : 'gray'}
                     isDisabled={loading || !computePlan}
                     variant="outline"

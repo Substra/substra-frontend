@@ -15,9 +15,24 @@ describe('Tasks page', () => {
             .should('have.length.greaterThan', 2);
     });
 
+    it('functions pagination', () => {
+        cy.paginationTest();
+    });
+
+    it('opens filters', () => {
+        cy.checkOpenFilters(0);
+    });
+
+    it('can filter tasks by status', () => {
+        cy.checkFilterAssetsBy('status');
+    });
+
     it('displays a task drawer', () => {
-        cy.get('[data-cy=drawer]').should('not.exist');
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.get('[data-cy=drawer]').should('exist');
+        cy.checkOpenDrawer();
+    });
+
+    it('task drawer shows performance', () => {
+        cy.getDataCy('task-with-performance').first().click();
+        cy.getDataCy('output-performance').should('exist');
     });
 });

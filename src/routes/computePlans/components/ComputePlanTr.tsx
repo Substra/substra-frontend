@@ -108,6 +108,7 @@ const ComputePlanTr = ({
                     })
                 )
             }
+            data-key={computePlan.key}
         >
             <CheckboxTd
                 firstCol={true}
@@ -120,6 +121,7 @@ const ComputePlanTr = ({
                     isChecked={isSelected}
                     onChange={onSelectionChange}
                     colorScheme="primary"
+                    data-cy="selection-box"
                 />
             </CheckboxTd>
             <CheckboxTd

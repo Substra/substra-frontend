@@ -109,6 +109,7 @@ const FunctionDrawer = (): JSX.Element => {
                                 func ? func.archive.storage_address : ''
                             }
                             filename={`function-${key}.zip`}
+                            data-fnkey={key}
                             aria-label={
                                 func &&
                                 hasDownloadPermission(

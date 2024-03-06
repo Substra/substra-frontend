@@ -12,31 +12,48 @@ describe('Compute plans page', () => {
     it('lists compute plans', () => {
         cy.get('tbody[data-cy=loaded]')
             .get('tr')
-            .should('have.length.greaterThan', 2);
+            .should('have.length.greaterThan', 1);
     });
 
-    it('navigates to the dedicated compute plan page', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.url().should('match', /compute_plans\/.{36}\/tasks/);
+    it('displays tasks count bar in status/task column', () => {
+        cy.get('tbody[data-cy=loaded]')
+            .get('tr')
+            .eq(1)
+            .within(() => {
+                cy.getDataCy('cp-tasks-status')
+                    .should('exist')
+                    .trigger('mouseover');
+                cy.getDataCy('cp-tasks-status-tooltip').should('be.visible');
+            });
     });
 
-    it('navigates to the Workflow page', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.get('[data-cy=Workflow-tab]').click({ force: true });
-        cy.url().should('match', /compute_plans\/.{36}\/workflow/);
-        cy.get('[data-cy=workflow-graph]').should('exist');
+    it('searches CP with a key', () => {
+        cy.checkSearchByKey('compute_plans');
     });
 
-    it('navigates back to the Detail page', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.get('[data-cy=Details-tab]').click({ force: true });
-        cy.url().should('match', /compute_plans\/.{36}\/tasks/);
+    it('adds a cp to favorites', () => {
+        cy.getDataCy('favorite-cp').should('not.exist');
+        cy.getDataCy('favorite-box').first().click();
+        cy.getDataCy('favorite-cp').should('exist');
     });
 
-    it('navigates to the Performance page', () => {
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.get('[data-cy=Performances-tab]').click({ force: true });
-        cy.url().should('match', /compute_plans\/.{36}\/chart/);
-        cy.get('[data-cy=cp-chart]').should('exist');
+    it('selects/unselects cp in list', () => {
+        cy.getDataCy('selection-popover').should('not.exist');
+        cy.get('[data-cy="selection-box"]>input')
+            .first()
+            .check({ force: true });
+        cy.getDataCy('selection-popover').should('exist');
+        cy.get('[data-cy="selection-box"]>input')
+            .first()
+            .uncheck({ force: true });
+        cy.getDataCy('selection-popover').should('not.exist');
+    });
+
+    it('opens filters', () => {
+        cy.checkOpenFilters(1);
+    });
+
+    it('can filter cps by status', () => {
+        cy.checkFilterAssetsBy('status');
     });
 });

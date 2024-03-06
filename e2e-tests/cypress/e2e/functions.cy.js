@@ -15,9 +15,23 @@ describe('Functions page', () => {
             .should('have.length.greaterThan', 2);
     });
 
-    it('displays a function drawer', () => {
-        cy.get('[data-cy=drawer]').should('not.exist');
-        cy.get('tbody[data-cy=loaded]').get('tr').eq(2).click({ force: true });
-        cy.get('[data-cy=drawer]').should('exist');
+    it('functions pagination', () => {
+        cy.paginationTest();
+    });
+
+    it('open filters', () => {
+        cy.checkOpenFilters(0);
+    });
+
+    it('can filter functions by owner', () => {
+        cy.checkFilterAssetsBy('owner');
+    });
+
+    it('display a function drawer', () => {
+        cy.checkOpenDrawer();
+    });
+
+    it('searches function with a key', () => {
+        cy.checkSearchByKey('functions');
     });
 });

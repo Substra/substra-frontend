@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Permissions details in Task I/Os (#280)
+-   Add e2e tests (#273)
 
 ### Changed
 

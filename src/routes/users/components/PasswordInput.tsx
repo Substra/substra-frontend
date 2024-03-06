@@ -66,6 +66,7 @@ const PasswordInput = ({
                             setIsDirty(true);
                             onChange(newValue);
                         }}
+                        data-cy="password-input"
                     />
                     <InputRightElement>
                         <IconButton
