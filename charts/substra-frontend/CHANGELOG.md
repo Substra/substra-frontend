@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.27] - 2024-03-07
+
+### Changed
+
+- Upgrade AppVersion to 0.48.0
+
 ## [1.0.26] - 2024-02-26
 
 ### Changed
