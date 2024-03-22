@@ -124,6 +124,28 @@ Typically, `git tag 1.2.3 && git push origin 1.2.3` should be enough.
 
 [More info](ci/readme.md)
 
+## How to generate the changelog
+
+The changelog is managed with [towncrier](https://towncrier.readthedocs.io/en/stable/index.html), a Python tool.
+To add a new entry in the changelog, add a file in the `changes` folder. The file name should have the following structure:
+`<unique_id>.<change_type>`.
+The `unique_id` is a unique identifier, we currently use the PR number.
+The `change_type` can be of the following types: `added`, `changed`, `removed`, `fixed`.
+
+To generate the changelog (for example during a release), you need to have `towncrier` installed. You can either install it in a virtual env, or use `pipx` (please refer to [pipx documentation](https://github.com/pypa/pipx) for installation instructions).
+
+```bash
+$ pipx install towncrier
+```
+
+Then use the following command :
+
+```
+towncrier build --version=<x.y.z>
+```
+
+You can use the `--draft` option to see what would be generated without actually writing to the changelog (and without removing the fragments).
+
 ## Tests
 
 ### Unit tests
