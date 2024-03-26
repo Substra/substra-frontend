@@ -1,1 +1,1 @@
-- [chore] `towncrier` is now used for changelog management ([#319](https://github.com/Substra/substra-frontend/pull/319))
+[chore] `towncrier` is now used for changelog management
