@@ -10,3 +10,4 @@ package-lock.json
 charts/
 .vscode
 .github/
+CHANGELOG.md
