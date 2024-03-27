@@ -1,4 +1,4 @@
-FROM node:18.16.0-alpine AS common
+FROM node:18.19.1-alpine3.19 AS common
 
 ARG APP_VERSION
 
@@ -21,7 +21,7 @@ ENV NODE_ENV=production
 RUN npm run build
 
 
-FROM nginx:1.25.2
+FROM nginx:1.25.4
 
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/dist /usr/share/nginx/html
