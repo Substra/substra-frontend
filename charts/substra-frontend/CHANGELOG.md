@@ -2,6 +2,13 @@
 
 <!-- towncrier release notes start -->
 
+## [1.1.0] - 2024-04-05
+
+### Added
+
+- Resources limits and requests (CPU and memory) for all containers.
+
+
 ## [1.0.28] - 2024-03-27
 
 
@@ -21,7 +28,7 @@
 ### Changed
 
 - Upgrade AppVersion to 0.47.0
-  
+
 ## 1.0.25
 
 ### Changed
