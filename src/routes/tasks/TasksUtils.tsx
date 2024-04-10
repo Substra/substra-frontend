@@ -32,9 +32,9 @@ export const getStepInfo = (step: TaskStep): StepInfoT => {
         case TaskStep.functionDownloading:
             return {
                 title: 'Downloading function',
-                color: 'teal.500',
+                color: 'primary.500',
                 description:
-                    'If the image has been built on another node, the organization executing the task has to download the function from the other organization.',
+                    'If the function image has been built on another organisation, the organisation executing the task has to download the image from this other organisation.',
             };
         case TaskStep.taskExecution:
             return {
