@@ -121,6 +121,7 @@ export type TaskT = {
 export enum TaskStep {
     imageBuilding = 'build_image',
     inputsPreparation = 'prepare_inputs',
+    functionDownloading = 'download_function',
     taskExecution = 'task_execution',
     outputsSaving = 'save_outputs',
 }
