@@ -29,6 +29,13 @@ export const getStepInfo = (step: TaskStep): StepInfoT => {
                 description:
                     'Get the assets (dataset, models) to the directory that will be shared with the task container.',
             };
+        case TaskStep.functionDownloading:
+            return {
+                title: 'Downloading function',
+                color: 'primary.500',
+                description:
+                    'If the function image has been built on another organisation, the organisation executing the task has to download the image from this other organisation.',
+            };
         case TaskStep.taskExecution:
             return {
                 title: 'Task execution',
