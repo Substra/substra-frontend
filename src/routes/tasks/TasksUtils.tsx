@@ -15,13 +15,6 @@ import { getAssetKindLabel } from '../functions/FunctionsUtils';
 
 export const getStepInfo = (step: TaskStep): StepInfoT => {
     switch (step) {
-        case TaskStep.imageBuilding:
-            return {
-                title: 'Image building',
-                color: 'primary.500',
-                description:
-                    'If the image is present in the local Docker image registry: do nothing. If not, download the algorithm from another node if needed, and build the image.',
-            };
         case TaskStep.inputsPreparation:
             return {
                 title: 'Inputs preparation',
