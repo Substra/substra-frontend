@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.50.0](https://github.com/Substra/substra-frontend/releases/tag/0.50.0) - 2024-06-03
+
+
+### Added
+
+- Profiling step `download_function` ([#1520](https://github.com/Substra/substra-frontend/pull/1520))
+
+### Removed
+
+- Task profiling step `build_image` ([#1517](https://github.com/Substra/substra-frontend/pull/1517))
+
+
 ## [0.49.0](https://github.com/Substra/substra-frontend/releases/tag/0.49.0) - 2024-03-27
 
 
