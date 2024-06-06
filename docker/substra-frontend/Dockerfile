@@ -27,7 +27,8 @@ COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/dist /usr/share/nginx/html
 
 RUN apt-get update -y \
-    && apt-get --allow-remove-essential --auto-remove remove libexpat1 libaom3 libgssapi-krb5-2 libk5crypto3 libkrb5-3 libkrb5support0 util-linux-extra util-linux mount libmount1 -y\
+    && apt-get install -y --no-install-recommends glibc-source=2.36-9+deb12u7 \
+    && apt-get --allow-remove-essential --auto-remove remove perl-base libexpat1 libaom3 libgssapi-krb5-2 libk5crypto3 libkrb5-3 libkrb5support0 util-linux-extra util-linux mount libmount1 -y\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mv /usr/share/nginx/html/index.html /usr/share/nginx/html/index-template.html
