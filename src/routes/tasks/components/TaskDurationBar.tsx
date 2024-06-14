@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     Box,
@@ -19,7 +19,7 @@ import {
 } from 'react-icons/ri';
 
 import { formatCompactDuration } from '@/libs/utils';
-import { getStepInfo } from '@/routes/tasks/TasksUtils';
+import { getStepInfo, taskOrder } from '@/routes/tasks/TasksUtils';
 import { StepT, TaskProfilingT, TaskStep } from '@/types/TasksTypes';
 
 import { DrawerSectionHeading } from '@/components/DrawerSection';
@@ -63,28 +63,23 @@ const DetailsItem = ({ step, duration }: DetailsItemProps): JSX.Element => {
 };
 
 type TaskDurationDetailsProps = {
-    execution_rundown: StepT[] | undefined;
+    execution_rundown: StepT[];
 };
 const TaskDurationDetails = ({
     execution_rundown,
 }: TaskDurationDetailsProps): JSX.Element => {
+    const items = [];
+    for (const taskStep of taskOrder.keys()) {
+        const duration = execution_rundown.filter(
+            (execStep) => execStep.step === taskStep
+        )[0]?.duration;
+        items.push(
+            <DetailsItem key={taskStep} step={taskStep} duration={duration} />
+        );
+    }
     return (
         <VStack spacing="1" alignItems="start">
-            {Object.values(TaskStep).map((taskStep) => {
-                let duration = null;
-                if (execution_rundown) {
-                    duration = execution_rundown.filter(
-                        (execStep) => execStep.step === taskStep
-                    )[0]?.duration;
-                }
-                return (
-                    <DetailsItem
-                        key={taskStep}
-                        step={taskStep}
-                        duration={duration}
-                    />
-                );
-            })}
+            {items}
         </VStack>
     );
 };
@@ -162,6 +157,20 @@ const TaskDurationBar = ({
         }
     }, [fetchTaskProfiling, taskKey]);
 
+    const [executionRundown, setExecutionRundown] = useState<StepT[]>([]);
+
+    useEffect(() => {
+        if (taskProfiling?.execution_rundown) {
+            setExecutionRundown(
+                taskProfiling.execution_rundown.sort(
+                    (a, b) =>
+                        // In case the step is not ordered, a will be before b
+                        (taskOrder.get(a.step) ?? 4) -
+                        (taskOrder.get(b.step) ?? 5)
+                )
+            );
+        }
+    }, [taskProfiling]);
     if (fetchingTaskProfiling) {
         return (
             <VStack spacing="1" width="100%" alignItems="flex-start">
@@ -214,7 +223,7 @@ const TaskDurationBar = ({
                         />
                     </HStack>
                 </HStack>
-                {taskProfiling && taskProfiling.execution_rundown.length > 0 ? (
+                {executionRundown.length > 0 ? (
                     <HStack
                         spacing="2px"
                         width="100%"
@@ -224,7 +233,7 @@ const TaskDurationBar = ({
                         backgroundColor="gray.100"
                         borderRadius="20px"
                     >
-                        {taskProfiling.execution_rundown.map((exec) => {
+                        {executionRundown.map((exec) => {
                             const { color, title } = getStepInfo(exec.step);
                             return (
                                 <DurationItem
@@ -250,9 +259,7 @@ const TaskDurationBar = ({
             </VStack>
             <Collapse in={isOpen} animateOpacity>
                 <Box paddingRight="4" marginTop="2.5">
-                    <TaskDurationDetails
-                        execution_rundown={taskProfiling?.execution_rundown}
-                    />
+                    <TaskDurationDetails execution_rundown={executionRundown} />
                 </Box>
             </Collapse>
         </Box>

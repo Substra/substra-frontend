@@ -13,6 +13,13 @@ import IconTag from '@/components/IconTag';
 
 import { getAssetKindLabel } from '../functions/FunctionsUtils';
 
+export const taskOrder = new Map<TaskStep, number>([
+    [TaskStep.functionDownloading, 0],
+    [TaskStep.inputsPreparation, 1],
+    [TaskStep.taskExecution, 2],
+    [TaskStep.outputsSaving, 3],
+]);
+
 export const getStepInfo = (step: TaskStep): StepInfoT => {
     switch (step) {
         case TaskStep.inputsPreparation:
