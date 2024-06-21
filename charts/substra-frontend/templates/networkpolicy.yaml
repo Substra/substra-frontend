@@ -1,0 +1,32 @@
+# Deny ALL networking in launched substra ml task
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "substra-frontend.fullname". }}
+  labels:
+    {{ include "substra-frontend.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "substra-frontend.selectorLabels" . | nindent 6 }}
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - port: 3000
+      protocol: TCP
+    {{- if eq .Values.service.type "NodePort" }}
+    {{- if not (empty .Values.service.nodePort) }}
+    - port: {{.Values.service.nodePort}}
+      protocol: TCP
+    {{- else }}
+    # If not nodePort specified, open the range
+    - port: 30000
+      endPort: 32767
+      protocol: TCP
+    {{- end }}
+    {{- end }}
+  policyTypes:
+  - Ingress
+  - Egress
