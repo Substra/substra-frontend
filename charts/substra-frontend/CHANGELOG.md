@@ -1,6 +1,13 @@
 # Changelog
 
 <!-- towncrier release notes start -->
+## [1.2.0] - 2024-06-21
+
+
+### Added
+
+- Network policy that block egress and allow ingress on specific ports
+
 
 ## [1.1.2] - 2024-06-13
 
