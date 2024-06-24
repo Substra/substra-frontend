@@ -27,7 +27,15 @@ spec:
       initContainers:
         - name: template-html
           image: "{{ trimSuffix "/" .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: 
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          command:
             - sh
           args:
             - -c
@@ -75,7 +83,7 @@ spec:
         - name: nginx-cache
           emptyDir: {}
         - name: nginx-run
-          emptyDir: {} 
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,8 +1,13 @@
 # Changelog
 
 <!-- towncrier release notes start -->
-## [1.2.0] - 2024-06-21
+## [1.2.1] - 2024-06-24
 
+### Added
+
+- Security Context at the pod and container level to ensure that the chart can run according to the restricted level of the Pod Security Standard
+
+## [1.2.0] - 2024-06-21
 
 ### Added
 
