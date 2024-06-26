@@ -40,8 +40,8 @@ const PageLink = ({
                     activePage === page
                         ? 'active-page'
                         : page === 2
-                        ? 'second-page'
-                        : ''
+                          ? 'second-page'
+                          : ''
                 }
             >
                 {page}

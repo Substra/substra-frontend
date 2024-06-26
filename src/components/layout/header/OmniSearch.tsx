@@ -429,7 +429,7 @@ const OmniSearch = () => {
                 AxiosPromise<PaginatedApiResponseT<ComputePlanStubT>>,
                 AxiosPromise<PaginatedApiResponseT<FunctionT>>,
                 AxiosPromise<PaginatedApiResponseT<DatasetStubT>>,
-                AxiosPromise<PaginatedApiResponseT<TaskT>>
+                AxiosPromise<PaginatedApiResponseT<TaskT>>,
             ] = [
                 ComputePlansApi.listComputePlans(params, config),
                 FunctionsApi.listFunctions(params, config),

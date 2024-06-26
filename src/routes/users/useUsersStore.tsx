@@ -180,8 +180,8 @@ const useUsersStore = create<UsersStateT>((set, get) => ({
                 usersAwaitingApprovalCount:
                     get().usersAwaitingApprovalCount - 1,
                 approvingUserAwaitingApproval: false,
-                usersAwaitingApproval: get().usersAwaitingApproval.map((user) =>
-                    user.username === key ? response.data : user
+                usersAwaitingApproval: get().usersAwaitingApproval.map(
+                    (user) => (user.username === key ? response.data : user)
                 ),
             });
             return null;

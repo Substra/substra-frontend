@@ -209,7 +209,7 @@ declare module 'chart.js' {
     interface Chart<
         TType extends keyof ChartTypeRegistry = keyof ChartTypeRegistry,
         TData = DistributiveArray<ChartTypeRegistry[TType]['defaultDataPoint']>,
-        TLabel = unknown
+        TLabel = unknown,
     > {
         resetHighlightedRank(): void;
     }

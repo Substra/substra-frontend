@@ -21,25 +21,24 @@ import {
 
 const buildToastDescription =
     (setLocation: (location: string) => void, news: NewsItemT) =>
-    ({ onClose }: { onClose: () => void }): JSX.Element =>
-        (
-            <Button
-                rightIcon={<RiArrowRightLine />}
-                variant="ghost"
-                size="sm"
-                marginLeft="-3"
-                onClick={() => {
-                    setLocation(
-                        compilePath(PATHS.COMPUTE_PLAN_TASKS, {
-                            key: news.asset_key,
-                        })
-                    );
-                    onClose();
-                }}
-            >
-                Go to asset location
-            </Button>
-        );
+    ({ onClose }: { onClose: () => void }): JSX.Element => (
+        <Button
+            rightIcon={<RiArrowRightLine />}
+            variant="ghost"
+            size="sm"
+            marginLeft="-3"
+            onClick={() => {
+                setLocation(
+                    compilePath(PATHS.COMPUTE_PLAN_TASKS, {
+                        key: news.asset_key,
+                    })
+                );
+                onClose();
+            }}
+        >
+            Go to asset location
+        </Button>
+    );
 
 const Actualizer = (): null => {
     const [, setLocation] = useLocation();
