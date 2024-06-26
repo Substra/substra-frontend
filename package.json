@@ -16,8 +16,7 @@
         "prettier:fix": "prettier --write .",
         "prepare": "husky",
         "test:unit": "jest --passWithNoTests",
-        "find-deadcode": "ts-prune -e",
-        "find-unused-deps": "depcheck"
+        "knip": "knip"
     },
     "dependencies": {
         "@chakra-ui/react": "2.8.2",
@@ -45,10 +44,9 @@
     },
     "devDependencies": {
         "@testing-library/jest-dom": "6.4.6",
-        "@testing-library/react": "16.0.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/jest": "29.5.12",
-        "@types/node": "20.14.9",
+        "@types/node": "^20.14.9",
         "@types/react": "18.3.3",
         "@types/react-dom": "18.3.0",
         "@types/react-syntax-highlighter": "15.5.13",
@@ -56,9 +54,6 @@
         "@typescript-eslint/eslint-plugin": "7.14.1",
         "@typescript-eslint/parser": "7.14.1",
         "@vitejs/plugin-react": "4.3.1",
-        "assert": "2.1.0",
-        "buffer": "6.0.3",
-        "depcheck": "1.4.3",
         "eslint": "8.57.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-plugin-cypress": "3.3.0",
@@ -66,11 +61,10 @@
         "husky": "9.0.11",
         "jest": "29.7.0",
         "jest-environment-jsdom": "29.7.0",
+        "knip": "^5.23.0",
         "prettier": "3.3.2",
         "ts-jest": "29.1.5",
-        "ts-node": "10.9.1",
-        "ts-prune": "0.10.3",
-        "typescript": "5.5.2",
+        "typescript": "^5.5.2",
         "vite": "5.3.1",
         "vite-plugin-svgr-component": "1.0.1"
     },
