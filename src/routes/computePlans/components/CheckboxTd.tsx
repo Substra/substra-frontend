@@ -29,7 +29,6 @@ const CheckboxTd = ({
             paddingLeft={firstCol ? '6' : '2.5'}
             paddingRight="2.5"
             paddingTop="3px" // Visually center the checkbox
-            // @ts-expect-error Box as label expects a weird type for onClick
             onClick={(e) => e.stopPropagation()}
         >
             {children}

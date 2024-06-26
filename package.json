@@ -20,9 +20,9 @@
         "find-unused-deps": "depcheck"
     },
     "dependencies": {
-        "@chakra-ui/react": "2.3.5",
-        "@emotion/react": "11.9.0",
-        "@emotion/styled": "11.11.0",
+        "@chakra-ui/react": "2.8.2",
+        "@emotion/react": "11.11.4",
+        "@emotion/styled": "11.11.5",
         "axios": "^1.6.5",
         "chart.js": "4.4.2",
         "chartjs-plugin-zoom": "2.0.1",
