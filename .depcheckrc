@@ -4,7 +4,6 @@ ignores: [
     "assert",
     "buffer",
     "@testing-library/react",
-    "@testing-library/react-hooks",
     "@types/jest",
     "jest-environment-jsdom",
     "ts-jest",
