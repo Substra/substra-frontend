@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { useLocation } from 'wouter';
+import { useLocation, useParams } from 'wouter';
 
 import { Box, Flex, HStack } from '@chakra-ui/react';
 
@@ -11,7 +11,6 @@ import usePerfBrowser, {
 } from '@/features/perfBrowser/usePerfBrowser';
 import useSeriesStore from '@/features/series/useSeriesStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { compilePath, PATHS } from '@/paths';
 import { ComputePlanStatus } from '@/types/ComputePlansTypes';
 
@@ -23,7 +22,7 @@ import useComputePlanStore from '../useComputePlanStore';
 import ChartBreadcrumbs from './components/ChartBreadCrumbs';
 
 const ComputePlanChart = (): JSX.Element => {
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN_CHART);
+    const { key } = useParams();
 
     const { series, fetchingSeries, fetchSeries } = useSeriesStore();
     const { computePlan, fetchComputePlan } = useComputePlanStore();

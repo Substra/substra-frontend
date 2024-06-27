@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { useRoute } from 'wouter';
+import { useParams } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack } from '@chakra-ui/react';
 
@@ -18,7 +18,6 @@ import {
     useWorker,
 } from '@/hooks/useSyncedState';
 import { compilePath, PATHS } from '@/paths';
-import { ROUTES } from '@/routes';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 
 import TasksTable from '@/components/table/TasksTable';
@@ -43,8 +42,7 @@ const Tasks = ({ computePlanKey }: { computePlanKey: string }): JSX.Element => {
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
 
-    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
-    const taskKey = params?.taskKey;
+    const { taskKey } = useParams();
 
     const {
         computePlan,
@@ -95,7 +93,7 @@ const Tasks = ({ computePlanKey }: { computePlanKey: string }): JSX.Element => {
 
     useAssetListDocumentTitleEffect(
         `Compute plan ${computePlanKey}`,
-        params?.taskKey || null
+        taskKey || null
     );
 
     useEffect(() => {
@@ -159,8 +157,7 @@ const Tasks = ({ computePlanKey }: { computePlanKey: string }): JSX.Element => {
 };
 
 const ComputePlanTasks = (): JSX.Element => {
-    const [, params] = useRoute(ROUTES.COMPUTE_PLAN_TASKS.path);
-    const computePlanKey = params?.key;
+    const { key: computePlanKey } = useParams();
 
     if (!computePlanKey) {
         return <NotFound />;

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useParams } from 'wouter';
+
 import {
     Box,
     Button,
@@ -22,7 +24,6 @@ import { RiAddLine, RiInformationLine } from 'react-icons/ri';
 
 import useAuthStore from '@/features/auth/useAuthStore';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { useMatch, useOrdering, usePage } from '@/hooks/useSyncedState';
 import { compilePath, PATHS } from '@/paths';
@@ -70,7 +71,7 @@ const Users = (): JSX.Element => {
         info: { user_role: userRole },
     } = useAuthStore();
 
-    const key = useKeyFromPath(PATHS.USER);
+    const { key } = useParams();
     useAssetListDocumentTitleEffect('Users', key);
 
     useEffect(() => {

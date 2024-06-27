@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useLocation } from 'wouter';
+import { useLocation, useParams } from 'wouter';
 
 import {
     Box,
@@ -17,7 +17,6 @@ import LoginBackground from '@/assets/login-background.png';
 import SubstraLogoBlack from '@/assets/svg/substra-full-name-logo.svg';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
 
@@ -26,7 +25,7 @@ import ResetForm from './components/ResetForm';
 
 const ResetPassword = (): JSX.Element => {
     const [, setLocation] = useLocation();
-    const key = useKeyFromPath(PATHS.RESET_PASSWORD);
+    const { key } = useParams();
 
     useDocumentTitleEffect(
         (setDocumentTitle) => setDocumentTitle('Reset Password'),

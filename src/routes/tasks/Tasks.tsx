@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 
+import { useParams } from 'wouter';
+
 import { VStack } from '@chakra-ui/react';
 
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCreationDate,
@@ -38,8 +39,8 @@ const Tasks = (): JSX.Element => {
     const { endDateBefore, endDateAfter } = useEndDate();
     const { durationMin, durationMax } = useDuration();
 
-    const taskKey = useKeyFromPath(PATHS.TASK);
-    useAssetListDocumentTitleEffect('Tasks list', taskKey);
+    const { key: taskKey } = useParams();
+    useAssetListDocumentTitleEffect('Tasks list', taskKey || null);
 
     const { tasks, tasksCount, fetchingTasks, fetchTasks } = useTasksStore();
 

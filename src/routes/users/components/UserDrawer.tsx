@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
+import { useParams } from 'wouter';
+
 import { Drawer, useDisclosure, DrawerOverlay } from '@chakra-ui/react';
 
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
 import { AbortFunctionT } from '@/types/CommonTypes';
@@ -18,7 +19,7 @@ const UserDrawer = ({
 }): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const username = useKeyFromPath(PATHS.USER);
+    const { key: username } = useParams();
 
     useEffect(() => {
         if (!!username && !isOpen) {
@@ -31,7 +32,7 @@ const UserDrawer = ({
         onClose();
     };
 
-    const key = useKeyFromPath(PATHS.USER);
+    const { key } = useParams();
     useDocumentTitleEffect(
         (setDocumentTitle) => {
             if (key === 'create') {

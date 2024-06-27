@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 
-import { useLocation } from 'wouter';
+import { useLocation, useParams } from 'wouter';
 
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { compilePath, PATHS } from '@/paths';
 import NotFound from '@/routes/notfound/NotFound';
 
 export default () => {
     const [, setLocation] = useLocation();
-    const key = useKeyFromPath(PATHS.COMPUTE_PLAN);
+    const { key } = useParams();
 
     useEffect(() => {
         if (key) {
