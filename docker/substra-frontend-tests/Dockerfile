@@ -1,6 +1,6 @@
-FROM cypress/included:12.12.0
+FROM cypress/included:13.12.0
 
-RUN yarn add typescript@4.4.4
+RUN yarn add typescript@5.5.2
 
 WORKDIR /e2e
 
