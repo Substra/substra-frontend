@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { Handle, Position } from 'react-flow-renderer';
+import { Handle, Position } from 'reactflow';
 
 import { Box, Text, Flex } from '@chakra-ui/react';
 

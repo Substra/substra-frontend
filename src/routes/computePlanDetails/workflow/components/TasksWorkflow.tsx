@@ -6,9 +6,11 @@ import ReactFlow, {
     useEdgesState,
     ReactFlowProvider,
     Node,
+    Viewport,
     useReactFlow,
     useStoreApi,
-} from 'react-flow-renderer';
+} from 'reactflow';
+import 'reactflow/dist/style.css';
 
 import { useKeyPress } from '@/hooks/useKeyPress';
 import {
@@ -46,7 +48,7 @@ const TasksWorkflow = (): JSX.Element => {
 
     const store = useStoreApi();
     const fitViewOnInitDone = store.getState().fitViewOnInitDone;
-
+    const defaultViewport: Viewport = { x: 0, y: 1000, zoom: MIN_ZOOM_LEVEL };
     const { zoomTo, getZoom, fitBounds } = useReactFlow();
 
     useEffect(() => {
@@ -139,14 +141,13 @@ const TasksWorkflow = (): JSX.Element => {
             />
             <ReactFlow
                 data-cy="workflow-graph"
-                defaultPosition={[0, 1000]} // default is set so that no node is visible before the initial fitView - which will occur when all nodes are loaded
                 fitView={true}
+                defaultViewport={defaultViewport}
                 nodeTypes={nodeTypes}
                 nodes={nodes}
                 edges={edges}
                 minZoom={MIN_ZOOM_LEVEL}
                 maxZoom={MAX_ZOOM_LEVEL}
-                defaultZoom={MIN_ZOOM_LEVEL}
                 nodesDraggable={false}
                 nodesConnectable={false}
                 onNodeClick={onNodeClick}

@@ -1,4 +1,4 @@
-import { Edge, Node, MarkerType } from 'react-flow-renderer';
+import { Edge, Node, MarkerType } from 'reactflow';
 
 import { LayoutedTaskGraphT, PositionedTaskT } from '@/types/CPWorkflowTypes';
 import { TaskStatus } from '@/types/TasksTypes';
