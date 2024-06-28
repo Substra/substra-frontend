@@ -48,7 +48,6 @@ const TabsNavItem = ({
         <Link href={href}>
             <Text
                 data-cy={`${label}-tab`}
-                as="a"
                 fontSize="sm"
                 lineHeight="5"
                 fontWeight="medium"
