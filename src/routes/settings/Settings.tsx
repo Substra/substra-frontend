@@ -29,9 +29,8 @@ const Settings = (): JSX.Element => {
     const { isClarityAccepted, acceptClarity, rejectClarity } =
         useCookieSettings();
 
-    const [clarityChecked, setClarityChecked] = useState<boolean>(
-        !!isClarityAccepted
-    );
+    const [clarityChecked, setClarityChecked] =
+        useState<boolean>(!!isClarityAccepted);
 
     const [saving, setSaving] = useState<boolean>(false);
 

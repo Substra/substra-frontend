@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { AxiosError } from 'axios';
-import { useLocation } from 'wouter';
+import { useLocation, useParams } from 'wouter';
 
 import {
     Button,
@@ -18,7 +18,6 @@ import {
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 import * as UsersApi from '@/api/UsersApi';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { getUrlSearchParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
 import NotFound from '@/routes/notfound/NotFound';
@@ -44,7 +43,7 @@ const ResetForm = (): JSX.Element => {
     const [isDirty, setIsDirty] = useState(false);
     const [confirmIsDirty, setConfirmIsDirty] = useState(false);
 
-    const username = useKeyFromPath(PATHS.RESET_PASSWORD);
+    const { username } = useParams();
     const urlSearchParams = getUrlSearchParams();
     const resetToken = urlSearchParams.get('token');
 

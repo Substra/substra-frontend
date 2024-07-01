@@ -1,4 +1,4 @@
-import { Link, useRoute } from 'wouter';
+import { Link, useParams, useRoute } from 'wouter';
 
 import { HStack, Text, Tooltip } from '@chakra-ui/react';
 
@@ -48,7 +48,6 @@ const TabsNavItem = ({
         <Link href={href}>
             <Text
                 data-cy={`${label}-tab`}
-                as="a"
                 fontSize="sm"
                 lineHeight="5"
                 fontWeight="medium"
@@ -65,11 +64,11 @@ const TabsNavItem = ({
 };
 
 const TabsNav = (): JSX.Element | null => {
-    const [isChart, chartParams] = useRoute(PATHS.COMPUTE_PLAN_CHART);
-    const [isTasks, tasksParams] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
-    const [isWorkflow, workflowParams] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
-    const computePlanKey =
-        chartParams?.key || tasksParams?.key || workflowParams?.key || '';
+    const [isChart] = useRoute(PATHS.COMPUTE_PLAN_CHART);
+    const [isTasks] = useRoute(PATHS.COMPUTE_PLAN_TASKS);
+    const [isWorkflow] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
+    const { key } = useParams();
+    const computePlanKey = key || '';
     const { computePlan } = useComputePlanStore();
 
     const isChartTabDisabled =

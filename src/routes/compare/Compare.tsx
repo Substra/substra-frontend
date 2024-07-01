@@ -1,4 +1,4 @@
-import { useRoute } from 'wouter';
+import { useParams } from 'wouter';
 
 import { HStack, Flex, Box } from '@chakra-ui/react';
 
@@ -10,7 +10,6 @@ import usePerfBrowser, {
 import useSeriesStore from '@/features/series/useSeriesStore';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useEffectOnce from '@/hooks/useEffectOnce';
-import { PATHS } from '@/paths';
 
 import MetadataModal from '@/components/MetadataModal';
 import PerfDownloadButton from '@/components/PerfDownloadButton';
@@ -19,7 +18,7 @@ import CompareBreadcrumbs from './components/CompareBreadcrumbs';
 import useCompareStore from './useCompareStore';
 
 const Compare = (): JSX.Element => {
-    const [, params] = useRoute(PATHS.COMPARE);
+    const params = useParams();
     const keys = decodeURIComponent(params?.keys || '').split(',');
     useDocumentTitleEffect(
         (setDocumentTitle) =>

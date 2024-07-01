@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useRoute } from 'wouter';
+import { useParams } from 'wouter';
 
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 
@@ -8,7 +8,6 @@ import {
     useAssetListDocumentTitleEffect,
     useDocumentTitleEffect,
 } from '@/hooks/useDocumentTitleEffect';
-import { PATHS } from '@/paths';
 import Actions from '@/routes/computePlanDetails/components/Actions';
 import TabsNav from '@/routes/computePlanDetails/components/TabsNav';
 import TasksBreadcrumbs from '@/routes/computePlanDetails/components/TasksBreadCrumbs';
@@ -20,8 +19,7 @@ import UnavailableWorkflow from './components/UnavailableWorkflow';
 import useWorkflowStore from './useWorkflowStore';
 
 const ComputePlanWorkflow = (): JSX.Element => {
-    const [, params] = useRoute(PATHS.COMPUTE_PLAN_WORKFLOW);
-    const key = params?.key;
+    const { key } = useParams();
 
     const {
         graph: { tasks: graphTasks },
@@ -37,7 +35,7 @@ const ComputePlanWorkflow = (): JSX.Element => {
         []
     );
 
-    useAssetListDocumentTitleEffect(`Compute plan ${key}`, params?.key || null);
+    useAssetListDocumentTitleEffect(`Compute plan ${key}`, key || null);
 
     useEffect(() => {
         if (key && key !== computePlan?.key) {

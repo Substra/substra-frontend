@@ -13,7 +13,7 @@
             "jest",
             "@types/react"
         ],
-        "typeRoots": ["node_modules/@types"],
+        "typeRoots": ["node_modules/@types", "node_modules"],
         "allowJs": false,
         "skipLibCheck": true,
         "esModuleInterop": false,
@@ -25,8 +25,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx",
-        "jsxImportSource": "@emotion/react"
+        "jsx": "react-jsx"
     },
     "include": ["./src"],
     "exclude": ["node_modules", "**/*.test.tsx?"]

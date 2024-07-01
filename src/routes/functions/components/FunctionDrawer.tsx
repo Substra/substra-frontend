@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { useParams } from 'wouter';
+
 import {
     Drawer,
     DrawerContent,
@@ -12,7 +14,6 @@ import {
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useHasPermission from '@/hooks/useHasPermission';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import { PATHS } from '@/paths';
 import DescriptionDrawerSection from '@/routes/functions/components/DescriptionDrawerSection';
@@ -34,7 +35,7 @@ import InputsOutputsDrawerSection from './InputsOutputsDrawerSection';
 const FunctionDrawer = (): JSX.Element => {
     const setLocationPreserveParams = useSetLocationPreserveParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const key = useKeyFromPath(PATHS.FUNCTION);
+    const { key } = useParams();
 
     const {
         function: func,

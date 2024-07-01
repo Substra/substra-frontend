@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { useParams } from 'wouter';
+
 import {
     VStack,
     Thead,
@@ -30,7 +32,6 @@ import {
 } from '@/features/tableFilters/useTableFilters';
 import { useAssetListDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useHasPermission from '@/hooks/useHasPermission';
-import useKeyFromPath from '@/hooks/useKeyFromPath';
 import { useSetLocationPreserveParams } from '@/hooks/useLocationWithParams';
 import {
     useCanProcess,
@@ -97,7 +98,7 @@ const Functions = (): JSX.Element => {
         canProcess,
     ]);
 
-    const key = useKeyFromPath(PATHS.FUNCTION);
+    const { key } = useParams();
     const hasDownloadPermission = useHasPermission();
 
     const context = useTableFiltersContext('function');

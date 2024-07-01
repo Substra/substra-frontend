@@ -23,7 +23,7 @@ export default defineConfig({
         DEFAULT_PAGE_SIZE: '30',
         'process.env': {},
     },
-    plugins: [react(), svgrComponent()],
+    plugins: [react({ jsxImportSource: '@emotion/react' }), svgrComponent()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),

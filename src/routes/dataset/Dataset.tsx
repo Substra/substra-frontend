@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 
-import { useRoute } from 'wouter';
+import { useParams } from 'wouter';
 
 import { Box, Flex, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
@@ -8,7 +8,6 @@ import CopyIconButton from '@/features/copy/CopyIconButton';
 import useUpdateAssetName from '@/features/updateAsset/useUpdateAssetName';
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useHasPermission from '@/hooks/useHasPermission';
-import { PATHS } from '@/paths';
 import MoreMenu from '@/routes/dataset/components/MoreMenu';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -25,8 +24,7 @@ const MarkdownSection = React.lazy(
 );
 
 const Dataset = (): JSX.Element => {
-    const [, params] = useRoute(PATHS.DATASET);
-    const key = params?.key;
+    const { key } = useParams();
 
     const {
         dataset,

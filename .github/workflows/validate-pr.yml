@@ -20,10 +20,8 @@ jobs:
               if: always()
             - name: Typescript
               run: npx tsc
-            - name: Deadcode
-              run: npm run find-deadcode
-            - name: Unused dependencies
-              run: npm run find-unused-deps
+            - name: Knip
+              run: npm run knip
             - name: Unit tests
               run: npm run test:unit
             - name: Helm

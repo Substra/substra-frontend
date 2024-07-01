@@ -153,7 +153,7 @@ const CustomColumnsModal = ({
     const allColumns: ColumnT[] = useMemo(
         () => [
             ...GENERAL_COLUMNS,
-            ...metadata.map((name) => ({ name, type: 'metadata' } as ColumnT)),
+            ...metadata.map((name) => ({ name, type: 'metadata' }) as ColumnT),
         ],
         [metadata]
     );

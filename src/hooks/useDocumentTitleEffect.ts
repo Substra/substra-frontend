@@ -16,7 +16,7 @@ export const useDocumentTitleEffect = (
 
 export const useAssetListDocumentTitleEffect = (
     title: string,
-    key: string | null
+    key: string | null | undefined
 ): void => {
     useDocumentTitleEffect(
         (setDocumentTitle) => {
