@@ -4,7 +4,7 @@ import { DatasetStubT } from './DatasetTypes';
 import { FunctionT, AssetKindT } from './FunctionsTypes';
 import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
-import { ExecutionRundownT } from './ProfilingTypes';
+import { ExecutionRundownT, TaskStep } from './ProfilingTypes';
 
 export enum TaskStatus {
     waitingExecutorSlot = 'STATUS_WAITING_FOR_EXECUTOR_SLOT',
@@ -122,4 +122,4 @@ export type TaskT = {
 export type TaskProfilingT = {
     compute_task_key: string;
     task_duration: number; // in microseconds
-} & ExecutionRundownT;
+} & ExecutionRundownT<TaskStep>;

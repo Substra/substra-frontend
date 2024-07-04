@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { ExecutionRundownT, StepT } from '@/types/ProfilingTypes';
+import { TaskExecutionRundownT } from '@/types/ProfilingTypes';
 
 import ProfilingDurationBar from '@/components/ProfilingDurationBar';
 
-import { taskOrder } from '../TasksUtils';
+import { taskStepsInfo } from '../TasksUtils';
 import useTaskStore from '../useTaskStore';
 
 // Returns sum duration of all step currently done in seconds
 // Returns null if no step is done
 const getTaskDuration = (
-    taskProfiling: ExecutionRundownT | null
+    taskProfiling: TaskExecutionRundownT | null
 ): number | null => {
     if (!taskProfiling || taskProfiling.execution_rundown.length === 0) {
         return null;
@@ -30,36 +30,23 @@ const TaskDurationBar = ({
     const { taskProfiling, fetchingTaskProfiling, fetchTaskProfiling } =
         useTaskStore();
 
-    const taskDuration = getTaskDuration(taskProfiling);
-
     useEffect(() => {
         if (taskKey) {
             fetchTaskProfiling(taskKey);
         }
     }, [fetchTaskProfiling, taskKey]);
-
-    const [sortedExecutionRundown, setSortedExecutionRundown] = useState<
-        StepT[]
-    >([]);
+    const [taskDuration, setTaskDuration] = useState<number | null>(null);
 
     useEffect(() => {
-        if (taskProfiling?.execution_rundown) {
-            setSortedExecutionRundown(
-                taskProfiling.execution_rundown.sort(
-                    (a, b) =>
-                        // In case the step is not ordered, a will be before b
-                        (taskOrder.get(a.step) ?? 4) -
-                        (taskOrder.get(b.step) ?? 5)
-                )
-            );
-        }
-    }, [taskProfiling?.execution_rundown]);
+        setTaskDuration(getTaskDuration(taskProfiling));
+    }, [taskProfiling]);
 
     return (
         <ProfilingDurationBar
-            execution_rundown={sortedExecutionRundown}
+            execution_rundown={taskProfiling?.execution_rundown || []}
             duration={taskDuration}
             loading={fetchingTaskProfiling}
+            stepsInfo={taskStepsInfo}
         />
     );
 };

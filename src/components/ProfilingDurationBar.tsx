@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import {
     Box,
     HStack,
@@ -17,21 +19,25 @@ import {
 } from 'react-icons/ri';
 
 import { formatCompactDuration } from '@/libs/utils';
-import { getStepInfo, taskOrder } from '@/routes/tasks/TasksUtils';
-import { ExecutionRundownT, TaskStep } from '@/types/ProfilingTypes';
+import {
+    AllStepsT,
+    ExecutionRundownT,
+    StepInfoT,
+    StepT,
+} from '@/types/ProfilingTypes';
 
 import { DrawerSectionHeading } from '@/components/DrawerSection';
 
 type DetailsItemProps = {
-    step: TaskStep;
-    duration: number | null;
+    duration: number | undefined;
+    stepInfo: StepInfoT;
 };
 
 const ProfilingDetailsItem = ({
-    step,
     duration,
+    stepInfo,
 }: DetailsItemProps): JSX.Element => {
-    const { color, title, description } = getStepInfo(step);
+    const { color, title, description } = stepInfo;
     return (
         <HStack width="100%" justify="space-between">
             <HStack spacing="1">
@@ -61,18 +67,21 @@ const ProfilingDetailsItem = ({
     );
 };
 
-const ProfilingDetails = ({
+const ProfilingDetails = <TaskType extends AllStepsT>({
     execution_rundown,
-}: ExecutionRundownT): JSX.Element => {
+    stepsInfo,
+}: ExecutionRundownT<TaskType> & {
+    stepsInfo: Record<TaskType, StepInfoT>;
+}): JSX.Element => {
     const items = [];
-    for (const taskStep of taskOrder.keys()) {
+    for (const step in stepsInfo) {
         const duration = execution_rundown.filter(
-            (execStep) => execStep.step === taskStep
+            (execStep) => execStep.step === step
         )[0]?.duration;
         items.push(
             <ProfilingDetailsItem
-                key={taskStep}
-                step={taskStep}
+                key={step}
+                stepInfo={stepsInfo[step]}
                 duration={duration}
             />
         );
@@ -122,17 +131,38 @@ const DurationItem = ({
     );
 };
 
-const ProfilingDurationBar = ({
+const ProfilingDurationBar = <TaskType extends AllStepsT>({
     execution_rundown,
     duration,
+    stepsInfo,
     loading = false,
-}: ExecutionRundownT & {
+}: ExecutionRundownT<TaskType> & {
     duration: number | null;
+    stepsInfo: Record<TaskType, StepInfoT>;
     loading?: boolean;
 }): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: false,
     });
+
+    const [sortedExecutionRundown, setSortedExecutionRundown] = useState<
+        StepT<TaskType>[]
+    >([]);
+
+    useEffect(() => {
+        const newRundown = [];
+
+        for (const step in stepsInfo) {
+            const newStep = execution_rundown.find(
+                (exec) => exec.step === step
+            );
+            if (newStep) {
+                newRundown.push(newStep);
+            }
+        }
+
+        setSortedExecutionRundown(newRundown);
+    }, [execution_rundown, stepsInfo]);
 
     if (loading) {
         return (
@@ -170,9 +200,7 @@ const ProfilingDurationBar = ({
                     </HStack>
                     <HStack spacing="2" alignItems="center">
                         <Heading size="xxs">
-                            {duration
-                                ? formatCompactDuration(duration / 1000000)
-                                : '--'}
+                            {duration ? formatCompactDuration(duration) : '--'}
                         </Heading>
                         <Icon
                             as={RiArrowRightSLine}
@@ -184,7 +212,7 @@ const ProfilingDurationBar = ({
                         />
                     </HStack>
                 </HStack>
-                {execution_rundown.length > 0 ? (
+                {sortedExecutionRundown.length > 0 ? (
                     <HStack
                         spacing="2px"
                         width="100%"
@@ -194,8 +222,8 @@ const ProfilingDurationBar = ({
                         backgroundColor="gray.100"
                         borderRadius="20px"
                     >
-                        {execution_rundown.map((exec) => {
-                            const { color, title } = getStepInfo(exec.step);
+                        {sortedExecutionRundown.map((exec) => {
+                            const { color, title } = stepsInfo[exec.step];
                             return (
                                 <DurationItem
                                     key={exec.step}
@@ -220,7 +248,10 @@ const ProfilingDurationBar = ({
             </VStack>
             <Collapse in={isOpen} animateOpacity>
                 <Box paddingRight="4" marginTop="2.5">
-                    <ProfilingDetails execution_rundown={execution_rundown} />
+                    <ProfilingDetails
+                        stepsInfo={stepsInfo}
+                        execution_rundown={sortedExecutionRundown}
+                    />
                 </Box>
             </Collapse>
         </Box>

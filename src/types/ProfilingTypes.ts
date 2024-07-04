@@ -5,8 +5,10 @@ export enum TaskStep {
     outputsSaving = 'save_outputs',
 }
 
-export type StepT = {
-    step: TaskStep;
+export type AllStepsT = TaskStep;
+
+export type StepT<StepType extends TaskStep = AllStepsT> = {
+    step: StepType;
     duration: number; // in microseconds
 };
 
@@ -16,6 +18,8 @@ export type StepInfoT = {
     description: string;
 };
 
-export type ExecutionRundownT = {
-    execution_rundown: StepT[];
+export type ExecutionRundownT<StepType extends TaskStep = AllStepsT> = {
+    execution_rundown: StepT<StepType>[];
 };
+
+export type TaskExecutionRundownT = ExecutionRundownT<TaskStep>;
