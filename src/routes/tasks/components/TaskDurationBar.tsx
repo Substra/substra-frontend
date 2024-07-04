@@ -20,7 +20,7 @@ import {
 
 import { formatCompactDuration } from '@/libs/utils';
 import { getStepInfo, taskOrder } from '@/routes/tasks/TasksUtils';
-import { StepT, TaskProfilingT, TaskStep } from '@/types/TasksTypes';
+import { ExecutionRundownT, StepT, TaskStep } from '@/types/ProfilingTypes';
 
 import { DrawerSectionHeading } from '@/components/DrawerSection';
 
@@ -62,12 +62,9 @@ const DetailsItem = ({ step, duration }: DetailsItemProps): JSX.Element => {
     );
 };
 
-type TaskDurationDetailsProps = {
-    execution_rundown: StepT[];
-};
 const TaskDurationDetails = ({
     execution_rundown,
-}: TaskDurationDetailsProps): JSX.Element => {
+}: ExecutionRundownT): JSX.Element => {
     const items = [];
     for (const taskStep of taskOrder.keys()) {
         const duration = execution_rundown.filter(
@@ -125,7 +122,7 @@ const DurationItem = ({
 // Returns sum duration of all step currently done in seconds
 // Returns null if no step is done
 const getTaskDuration = (
-    taskProfiling: TaskProfilingT | null
+    taskProfiling: ExecutionRundownT | null
 ): number | null => {
     if (!taskProfiling || taskProfiling.execution_rundown.length === 0) {
         return null;

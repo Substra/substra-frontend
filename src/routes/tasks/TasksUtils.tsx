@@ -7,7 +7,7 @@ import {
 } from 'react-icons/ri';
 
 import { AssetKindT } from '@/types/FunctionsTypes';
-import { TaskStep, StepInfoT } from '@/types/TasksTypes';
+import { TaskStep, StepInfoT } from '@/types/ProfilingTypes';
 
 import IconTag from '@/components/IconTag';
 

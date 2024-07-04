@@ -4,6 +4,7 @@ import { DatasetStubT } from './DatasetTypes';
 import { FunctionT, AssetKindT } from './FunctionsTypes';
 import { ModelT } from './ModelsTypes';
 import { PerformanceAssetT } from './PerformancesTypes';
+import { ExecutionRundownT } from './ProfilingTypes';
 
 export enum TaskStatus {
     waitingExecutorSlot = 'STATUS_WAITING_FOR_EXECUTOR_SLOT',
@@ -118,25 +119,7 @@ export type TaskT = {
     outputs: { [identifier: string]: TaskOutputT };
 };
 
-export enum TaskStep {
-    inputsPreparation = 'prepare_inputs',
-    functionDownloading = 'download_function',
-    taskExecution = 'task_execution',
-    outputsSaving = 'save_outputs',
-}
-
-export type StepInfoT = {
-    title: string;
-    color: string;
-    description: string;
-};
-
-export type StepT = {
-    step: TaskStep;
-    duration: number; // in microseconds
-};
 export type TaskProfilingT = {
     compute_task_key: string;
     task_duration: number; // in microseconds
-    execution_rundown: StepT[];
-};
+} & ExecutionRundownT;
