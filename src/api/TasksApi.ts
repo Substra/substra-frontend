@@ -3,7 +3,7 @@ import { AxiosPromise, AxiosRequestConfig } from 'axios';
 import API, { getApiOptions } from '@/api/request';
 import { API_PATHS, compilePath } from '@/paths';
 import { APIListArgsT, PaginatedApiResponseT } from '@/types/CommonTypes';
-import { TaskT, TaskIOT, TaskProfilingT } from '@/types/TasksTypes';
+import { TaskT, TaskIOT } from '@/types/TasksTypes';
 
 export const listTasks = (
     apiListArgs: APIListArgsT,
@@ -45,12 +45,3 @@ export const retrieveLogs = (
     config: AxiosRequestConfig
 ): AxiosPromise<string> =>
     API.authenticatedGet(compilePath(API_PATHS.LOGS, { key }), config);
-
-export const retrieveTaskProfiling = (
-    key: string,
-    config: AxiosRequestConfig
-): AxiosPromise<TaskProfilingT> =>
-    API.authenticatedGet(
-        compilePath(API_PATHS.TASK_PROFILING, { key }),
-        config
-    );

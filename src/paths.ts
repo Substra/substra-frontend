@@ -31,6 +31,7 @@ export const API_PATHS = {
     DATASET: '/data_manager/:key/',
     FUNCTIONS: '/function/',
     FUNCTION: '/function/:key/',
+    FUNCTION_PROFILING: '/function/:key/profiling',
     INFO: '/info/',
     LOGIN: '/me/login/?format=json',
     LOGOUT: '/me/logout/',

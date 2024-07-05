@@ -30,6 +30,7 @@ import {
 import MetadataDrawerSection from '@/components/MetadataDrawerSection';
 
 import useFunctionStore from '../useFunctionStore';
+import FunctionDurationBar from './FunctionDurationBar';
 import InputsOutputsDrawerSection from './InputsOutputsDrawerSection';
 
 const FunctionDrawer = (): JSX.Element => {
@@ -139,6 +140,7 @@ const FunctionDrawer = (): JSX.Element => {
                     paddingX="5"
                     paddingY="8"
                 >
+                    <FunctionDurationBar functionKey={key} />
                     <DrawerSection title="General">
                         <DrawerSectionKeyEntry
                             value={func?.key}
