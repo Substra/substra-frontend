@@ -7,6 +7,9 @@ import ProfilingDurationBar from '@/components/ProfilingDurationBar';
 import { taskStepsInfo } from '../TasksUtils';
 import useTaskStore from '../useTaskStore';
 
+const PROFILING_BAR_TOOLTIP =
+    "This is an experimental feature. The sum of task's steps durations might not be equal to the task duration.";
+
 // Returns sum duration of all step currently done in seconds
 // Returns null if no step is done
 const getTaskDuration = (
@@ -47,6 +50,7 @@ const TaskDurationBar = ({
             duration={taskDuration}
             loading={fetchingTaskProfiling}
             stepsInfo={taskStepsInfo}
+            tooltipLabel={PROFILING_BAR_TOOLTIP}
         />
     );
 };

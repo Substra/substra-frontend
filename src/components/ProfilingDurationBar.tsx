@@ -135,12 +135,14 @@ type ProfilingDurationBarProps<T extends AllStepsT> = {
     duration: number | null;
     stepsInfo: Record<T, StepInfoT>;
     loading?: boolean;
+    tooltipLabel?: string;
 } & ExecutionRundownT<T>;
 
 const ProfilingDurationBar = <T extends AllStepsT>({
     execution_rundown,
     duration,
     stepsInfo,
+    tooltipLabel,
     loading = false,
 }: ProfilingDurationBarProps<T>): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
@@ -188,17 +190,26 @@ const ProfilingDurationBar = <T extends AllStepsT>({
                 >
                     <HStack spacing="1">
                         <DrawerSectionHeading title="Duration" />
-                        <Tooltip
-                            label="This is an experimental feature. The sum of task's steps durations might not be equal to the task duration."
-                            fontSize="xs"
-                            hasArrow={true}
-                            placement="top"
-                        >
-                            {/* Have to use a span here to fix buggy behavior between tooltip & icon in Chakra */}
-                            <Box as="span" display="flex" alignItems="center">
-                                <Icon as={RiErrorWarningLine} boxSize="14px" />
-                            </Box>
-                        </Tooltip>
+                        {!!tooltipLabel && (
+                            <Tooltip
+                                label={tooltipLabel}
+                                fontSize="xs"
+                                hasArrow={true}
+                                placement="top"
+                            >
+                                {/* Have to use a span here to fix buggy behavior between tooltip & icon in Chakra */}
+                                <Box
+                                    as="span"
+                                    display="flex"
+                                    alignItems="center"
+                                >
+                                    <Icon
+                                        as={RiErrorWarningLine}
+                                        boxSize="14px"
+                                    />
+                                </Box>
+                            </Tooltip>
+                        )}
                     </HStack>
                     <HStack spacing="2" alignItems="center">
                         <Heading size="xxs">
