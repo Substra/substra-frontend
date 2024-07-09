@@ -39,7 +39,7 @@
         "remark-gfm": "4.0.0",
         "universal-cookie": "7.1.4",
         "uuid": "10.0.0",
-        "wouter": "3.3.0",
+        "wouter": "3.3.1",
         "zustand": "4.5.4"
     },
     "devDependencies": {
