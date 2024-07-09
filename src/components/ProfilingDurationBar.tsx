@@ -180,7 +180,7 @@ const ProfilingDurationBar = <T extends AllStepsT>({
     }
 
     return (
-        <Box fontSize="xs" paddingY="4" width="100%">
+        <Box fontSize="xs" paddingBottom="4" width="100%">
             <VStack spacing="1" alignItems="start">
                 <HStack
                     spacing="2"
