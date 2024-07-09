@@ -131,22 +131,24 @@ const DurationItem = ({
     );
 };
 
-const ProfilingDurationBar = <TaskType extends AllStepsT>({
+type ProfilingDurationBarProps<T extends AllStepsT> = {
+    duration: number | null;
+    stepsInfo: Record<T, StepInfoT>;
+    loading?: boolean;
+} & ExecutionRundownT<T>;
+
+const ProfilingDurationBar = <T extends AllStepsT>({
     execution_rundown,
     duration,
     stepsInfo,
     loading = false,
-}: ExecutionRundownT<TaskType> & {
-    duration: number | null;
-    stepsInfo: Record<TaskType, StepInfoT>;
-    loading?: boolean;
-}): JSX.Element => {
+}: ProfilingDurationBarProps<T>): JSX.Element => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: false,
     });
 
     const [sortedExecutionRundown, setSortedExecutionRundown] = useState<
-        StepT<TaskType>[]
+        StepT<T>[]
     >([]);
 
     useEffect(() => {
