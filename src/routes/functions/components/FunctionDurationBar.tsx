@@ -5,7 +5,7 @@ import ProfilingDurationBar from '@/components/ProfilingDurationBar';
 import { functionStepsInfo } from '../FunctionsUtils';
 import useFunctionStore from '../useFunctionStore';
 
-const TaskDurationBar = ({
+const FunctionDurationBar = ({
     functionKey,
 }: {
     functionKey: string | null | undefined;
@@ -33,4 +33,4 @@ const TaskDurationBar = ({
     );
 };
 
-export default TaskDurationBar;
+export default FunctionDurationBar;
