@@ -135,6 +135,7 @@ type ProfilingDurationBarProps<T extends AllStepsT> = {
     duration: number | null;
     stepsInfo: Record<T, StepInfoT>;
     loading?: boolean;
+    title: string;
     tooltipLabel?: string;
 } & ExecutionRundownT<T>;
 
@@ -142,6 +143,7 @@ const ProfilingDurationBar = <T extends AllStepsT>({
     execution_rundown,
     duration,
     stepsInfo,
+    title,
     tooltipLabel,
     loading = false,
 }: ProfilingDurationBarProps<T>): JSX.Element => {
@@ -171,7 +173,7 @@ const ProfilingDurationBar = <T extends AllStepsT>({
     if (loading) {
         return (
             <VStack spacing="1" width="100%" alignItems="flex-start">
-                <DrawerSectionHeading title="Duration" />
+                <DrawerSectionHeading title={title} />
                 <Skeleton height="4" width="100%" />
             </VStack>
         );
@@ -189,7 +191,7 @@ const ProfilingDurationBar = <T extends AllStepsT>({
                     onClick={onToggle}
                 >
                     <HStack spacing="1">
-                        <DrawerSectionHeading title="Duration" />
+                        <DrawerSectionHeading title={title} />
                         {!!tooltipLabel && (
                             <Tooltip
                                 label={tooltipLabel}

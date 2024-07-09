@@ -27,6 +27,7 @@ const TaskDurationBar = ({
             execution_rundown={functionProfiling?.execution_rundown || []}
             duration={functionProfiling?.duration || null}
             loading={fetchingFunctionProfiling}
+            title="Build duration"
             stepsInfo={functionStepsInfo}
         />
     );

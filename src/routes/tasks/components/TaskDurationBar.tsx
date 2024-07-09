@@ -50,6 +50,7 @@ const TaskDurationBar = ({
             duration={taskDuration}
             loading={fetchingTaskProfiling}
             stepsInfo={taskStepsInfo}
+            title="Execution duration"
             tooltipLabel={PROFILING_BAR_TOOLTIP}
         />
     );
