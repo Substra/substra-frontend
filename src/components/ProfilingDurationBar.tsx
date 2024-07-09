@@ -110,9 +110,9 @@ const DurationItem = ({
         return null;
     }
 
+    const percentage = Math.round((duration / totalDuration) * 100);
     // format duration in seconds
     const stepDuration = duration / 1000000;
-    const percentage = Math.round((stepDuration / totalDuration) * 100);
 
     return (
         <Tooltip
@@ -200,7 +200,9 @@ const ProfilingDurationBar = <TaskType extends AllStepsT>({
                     </HStack>
                     <HStack spacing="2" alignItems="center">
                         <Heading size="xxs">
-                            {duration ? formatCompactDuration(duration) : '--'}
+                            {duration
+                                ? formatCompactDuration(duration / 1000000)
+                                : '--'}
                         </Heading>
                         <Icon
                             as={RiArrowRightSLine}

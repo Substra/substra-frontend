@@ -17,7 +17,7 @@ const getTaskDuration = (
     }
 
     return taskProfiling.execution_rundown.reduce(
-        (taskDuration, step) => taskDuration + step.duration / 1000000,
+        (taskDuration, step) => taskDuration + step.duration,
         0
     );
 };
