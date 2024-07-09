@@ -15,7 +15,7 @@ export const functionStepsInfo: Record<FunctionStep, StepInfoT> = {
     [FunctionStep.imageBuilding]: {
         title: 'Building image',
         color: 'primary.500',
-        description: 'Time needed to build the Docker image.',
+        description: 'Build the Docker image.',
     },
     [FunctionStep.functionSaving]: {
         title: 'Saving function',
