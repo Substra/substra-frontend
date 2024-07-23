@@ -1,6 +1,8 @@
 import { FileT, MetadataT, PermissionsT } from '@/types/CommonTypes';
 import { ModelT } from '@/types/ModelsTypes';
 
+import { FunctionExecutionRundownT } from './ProfilingTypes';
+
 export enum AssetKindT {
     dataSample = 'ASSET_DATA_SAMPLE',
     model = 'ASSET_MODEL',
@@ -32,3 +34,8 @@ export type FunctionT = {
     inputs: { [name: string]: FunctionInputT };
     outputs: { [name: string]: FunctionOutputT };
 };
+
+export type FunctionProfilingT = {
+    function_key: string;
+    duration: number; // in microseconds
+} & FunctionExecutionRundownT;

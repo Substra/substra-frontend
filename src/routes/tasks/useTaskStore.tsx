@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { create } from 'zustand';
 
-import {
-    retrieveLogs,
-    retrieveTask,
-    retrieveTaskProfiling,
-} from '@/api/TasksApi';
+import { retrieveTaskProfiling } from '@/api/ProfilingApi';
+import { retrieveLogs, retrieveTask } from '@/api/TasksApi';
 import { TaskProfilingT, TaskT } from '@/types/TasksTypes';
 
 type TaskStateT = {

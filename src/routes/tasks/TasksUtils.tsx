@@ -7,51 +7,37 @@ import {
 } from 'react-icons/ri';
 
 import { AssetKindT } from '@/types/FunctionsTypes';
-import { TaskStep, StepInfoT } from '@/types/TasksTypes';
+import { TaskStep, StepInfoT } from '@/types/ProfilingTypes';
 
 import IconTag from '@/components/IconTag';
 
 import { getAssetKindLabel } from '../functions/FunctionsUtils';
 
-export const taskOrder = new Map<TaskStep, number>([
-    [TaskStep.functionDownloading, 0],
-    [TaskStep.inputsPreparation, 1],
-    [TaskStep.taskExecution, 2],
-    [TaskStep.outputsSaving, 3],
-]);
-
-export const getStepInfo = (step: TaskStep): StepInfoT => {
-    switch (step) {
-        case TaskStep.inputsPreparation:
-            return {
-                title: 'Inputs preparation',
-                color: 'orange.500',
-                description:
-                    'Get the assets (dataset, models) to the directory that will be shared with the task container.',
-            };
-        case TaskStep.functionDownloading:
-            return {
-                title: 'Downloading function',
-                color: 'primary.500',
-                description:
-                    'If the function image has been built on another organisation, the organisation executing the task has to download the image from this other organisation.',
-            };
-        case TaskStep.taskExecution:
-            return {
-                title: 'Task execution',
-                color: 'green.500',
-                description:
-                    'Create a compute Pod for the Algo if it does not already exist. Execute the code.',
-            };
-        case TaskStep.outputsSaving:
-            return {
-                title: 'Outputs saving',
-                color: 'pink.500',
-                description: 'Save performances and models.',
-            };
-        default:
-            throw 'Unknown Task Step';
-    }
+// Order is used for ordering tasks
+export const taskStepsInfo: Record<TaskStep, StepInfoT> = {
+    [TaskStep.functionDownloading]: {
+        title: 'Downloading function',
+        color: 'primary.500',
+        description:
+            'If the function image has been built on another organisation, the organisation executing the task has to download the image from this other organisation.',
+    },
+    [TaskStep.inputsPreparation]: {
+        title: 'Inputs preparation',
+        color: 'orange.500',
+        description:
+            'Get the assets (dataset, models) to the directory that will be shared with the task container.',
+    },
+    [TaskStep.taskExecution]: {
+        title: 'Task execution',
+        color: 'green.500',
+        description:
+            'Create a compute Pod for the Algo if it does not already exist. Execute the code.',
+    },
+    [TaskStep.outputsSaving]: {
+        title: 'Outputs saving',
+        color: 'pink.500',
+        description: 'Save performances and models.',
+    },
 };
 
 export const TaskIOTooltip = (props: TooltipProps) => (

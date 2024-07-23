@@ -16,6 +16,7 @@ import {
 import { useDocumentTitleEffect } from '@/hooks/useDocumentTitleEffect';
 import useHasPermission from '@/hooks/useHasPermission';
 import { compilePath, PATHS } from '@/paths';
+import FunctionDurationBar from '@/routes/functions/components/FunctionDurationBar';
 import TaskOutputsDrawerSection from '@/routes/tasks/components/TaskOutputsDrawerSection';
 
 import DownloadIconButton from '@/components/DownloadIconButton';
@@ -100,6 +101,7 @@ const TaskDrawer = ({
                     paddingY="8"
                 >
                     {task && <ErrorAlert task={task} />}
+                    <FunctionDurationBar functionKey={task?.function.key} />
                     <TaskDurationBar taskKey={taskKey} />
                     <DrawerSection title="General">
                         <DrawerSectionEntry title="Status">
