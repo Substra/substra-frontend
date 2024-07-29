@@ -64,7 +64,7 @@
         "knip": "^5.23.3",
         "prettier": "3.3.3",
         "ts-jest": "29.2.3",
-        "typescript": "^5.5.3",
+        "typescript": "^5.5.4",
         "vite": "5.3.3",
         "vite-plugin-svgr-component": "1.0.1"
     },
