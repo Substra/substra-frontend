@@ -8,7 +8,7 @@ import {
 export const parseToken = (object: RawBearerTokenT): BearerTokenT => {
     return {
         created_at: new Date(object.created_at),
-        expires_at: object.expires_at ? new Date(object.expires_at) : null,
+        expires_at: new Date(object.expires_at),
         note: object.note,
         id: object.id,
     };
@@ -18,7 +18,7 @@ export const parseNewToken = (object: RawNewBearerTokenT): NewBearerTokenT => {
     return {
         token: object.token,
         created_at: new Date(object.created_at),
-        expires_at: object.expires_at ? new Date(object.expires_at) : null,
+        expires_at: new Date(object.expires_at),
         note: object.note,
         id: object.id,
     };

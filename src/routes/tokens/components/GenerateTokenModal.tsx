@@ -38,7 +38,7 @@ const GenerateTokenModal = ({
 
     const [tokenName, setTokenName] = useState('');
     const [durationSelect, setDurationSelect] = useState('');
-    const [expirationDate, setExpirationDate] = useState<string | null>('');
+    const [expirationDate, setExpirationDate] = useState<string>('');
 
     const incorrectExpiration =
         expirationDate === '' ||
@@ -60,9 +60,6 @@ const GenerateTokenModal = ({
                 break;
             case '60days':
                 setExpirationDate(increaseDate(new Date(), 60).toISOString());
-                break;
-            case 'never':
-                setExpirationDate(null);
                 break;
             case 'custom':
             default:
@@ -136,7 +133,6 @@ const GenerateTokenModal = ({
                             </option>
                             <option value="30days">30 days</option>
                             <option value="60days">60 days</option>
-                            <option value="never">Never</option>
                             <option value="custom">Custom</option>
                         </Select>
                         {durationSelect === 'custom' && (
