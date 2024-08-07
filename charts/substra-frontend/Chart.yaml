@@ -3,13 +3,13 @@ name: substra-frontend
 description: Frontend for Substra
 icon: https://avatars.githubusercontent.com/u/84009910?s=400
 keywords:
-  - substra
+- substra
 sources:
-  - https://github.com/Substra/substra-frontend
+- https://github.com/Substra/substra-frontend
 type: application
 maintainers:
-  - name: Substra Team
-    email: support@substra.org
-version: 1.2.1
-appVersion: 0.51.0 # should be same as in package.json
+- name: Substra Team
+  email: support@substra.org
+version: 1.1.10fake
+appVersion: 0.51.10fake-rc1
 kubeVersion: '>= 1.19.0-0'
