@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+# ## [0.51.0fake](https://github.com/Substra/substra-frontend/releases/tag/0.51.0fake) - 2024-08-07
+
+### Fixed
+
+- Task profiling steps are now ordered chronologically ([#1528](https://github.com/Substra/substra-frontend/pull/1528))
+
+
 ## [0.51.0](https://github.com/Substra/substra-frontend/releases/tag/0.51.0) - 2024-06-11
 
 
