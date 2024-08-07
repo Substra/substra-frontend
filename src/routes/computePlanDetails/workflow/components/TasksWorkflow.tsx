@@ -100,6 +100,7 @@ const TasksWorkflow = (): JSX.Element => {
             const failedOrDoingNodes = nodes.filter(
                 (node) =>
                     node.data.status === TaskStatus.executing ||
+                    node.data.status === TaskStatus.building ||
                     node.data.status === TaskStatus.failed
             );
             if (failedOrDoingNodes.length) {
