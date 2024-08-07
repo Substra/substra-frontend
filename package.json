@@ -6,7 +6,7 @@
     },
     "license": "Apache-2.0",
     "private": "true",
-    "version": "0.51.0fake",
+    "version": "0.51.0fake-rc1",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
