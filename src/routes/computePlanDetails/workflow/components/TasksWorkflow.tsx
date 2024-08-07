@@ -24,6 +24,7 @@ import makeReactFlowGraph, {
 } from '@/routes/computePlanDetails/workflow/CPWorkflowUtils';
 import TaskDrawer from '@/routes/tasks/components/TaskDrawer';
 import { PositionedTaskT } from '@/types/CPWorkflowTypes';
+import { TaskStatus } from '@/types/TasksTypes';
 
 import useWorkflowStore from '../useWorkflowStore';
 import WorkflowControls from './WorkflowControls';
@@ -98,8 +99,9 @@ const TasksWorkflow = (): JSX.Element => {
             let bBox;
             const failedOrDoingNodes = nodes.filter(
                 (node) =>
-                    node.data.status === 'STATUS_EXECUTING' ||
-                    node.data.status === 'STATUS_FAILED'
+                    node.data.status === TaskStatus.executing ||
+                    node.data.status === TaskStatus.building ||
+                    node.data.status === TaskStatus.failed
             );
             if (failedOrDoingNodes.length) {
                 bBox = computeBoundingBox(failedOrDoingNodes);
