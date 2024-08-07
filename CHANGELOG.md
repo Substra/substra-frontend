@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+# ## [0.51.10fake](https://github.com/Substra/substra-frontend/releases/tag/0.51.10fake) - 2024-08-07
+
+### Added
+
+- Function duration (working for all backends, not only the owner) in function drawer ([#364](https://github.com/Substra/substra-frontend/pull/364))
+
+### Fixed
+
+- Task profiling steps are now ordered chronologically ([#347](https://github.com/Substra/substra-frontend/pull/347))
+- `resetZoom` includes `STATUS_BUILDING` to replicate previous status DOING which has been split in 2. ([#386](https://github.com/Substra/substra-frontend/pull/386))
+
+
 ## [0.51.0](https://github.com/Substra/substra-frontend/releases/tag/0.51.0) - 2024-06-11
 
 
