@@ -5,6 +5,11 @@
 
 
 
+
+## [1.1.2fake] - 2024-08-07
+
+Bump app version to 0.51.0fake
+
 ## [1.1.2fake] - 2024-08-07
 
 Bump app version to 0.51.0fake-rc1
