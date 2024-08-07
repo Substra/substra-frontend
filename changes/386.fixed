@@ -1,0 +1,1 @@
+`resetZoom` includes `STATUS_BUILDING` to replicate previous status DOING which has been split in 2.
