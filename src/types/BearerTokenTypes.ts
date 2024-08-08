@@ -1,6 +1,6 @@
 export type BearerTokenT = {
     created_at: Date;
-    expires_at: Date | null;
+    expires_at: Date;
     note: string;
     id: string;
 };
@@ -9,7 +9,7 @@ export type NewBearerTokenT = BearerTokenT & { token: string };
 // API response
 export type RawBearerTokenT = {
     created_at: string;
-    expires_at: string | null;
+    expires_at: string;
     note: string;
     id: string;
 };
