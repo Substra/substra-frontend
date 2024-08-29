@@ -4,11 +4,26 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: docker
     directory: docker
     schedule:
       interval: weekly
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: npm
     directory: '/'
     schedule:
       interval: weekly
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
