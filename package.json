@@ -19,10 +19,10 @@
         "knip": "knip"
     },
     "dependencies": {
-        "@chakra-ui/react": "2.6.1",
+        "@chakra-ui/react": "2.8.2",
         "@emotion/react": "11.13.3",
         "@emotion/styled": "11.13.0",
-        "axios": "^1.7.5",
+        "axios": "^1.7.7",
         "chart.js": "4.4.4",
         "chartjs-plugin-zoom": "2.0.1",
         "downshift": "9.0.8",
