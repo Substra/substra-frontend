@@ -1,6 +1,11 @@
 # Changelog
 
 <!-- towncrier release notes start -->
+
+## [1.2.2] - 2024-09-12
+
+Bump app version to 0.52.0
+
 ## [1.2.1] - 2024-06-24
 
 ### Added
