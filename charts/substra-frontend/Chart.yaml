@@ -11,5 +11,5 @@ maintainers:
 - name: Substra Team
   email: support@substra.org
 version: 1.2.2
-appVersion: 0.52.0-rc1
+appVersion: 0.52.0
 kubeVersion: '>= 1.19.0-0'
