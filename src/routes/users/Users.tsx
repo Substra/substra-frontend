@@ -18,7 +18,6 @@ import {
     AlertIcon,
     AlertTitle,
     StackDivider,
-    StackItem,
 } from '@chakra-ui/react';
 import { RiAddLine, RiInformationLine } from 'react-icons/ri';
 
@@ -122,7 +121,7 @@ const Users = (): JSX.Element => {
             )}
             {!fetchingUsersAwaitingApproval &&
                 usersAwaitingApproval.length > 0 && (
-                    <StackItem width="100%" alignItems="flex-start">
+                    <Box width="100%" alignItems="flex-start">
                         <HStack marginBottom="2">
                             <Heading
                                 textTransform="uppercase"
@@ -165,7 +164,7 @@ const Users = (): JSX.Element => {
                                 />
                             ))}
                         </VStack>
-                    </StackItem>
+                    </Box>
                 )}
             <UserDrawer fetchUsersList={fetchUsersList} />
             <TableTitle title="Users" />
