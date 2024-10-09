@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useMemo } from 'react';
 
-import { motion, useMotionValue } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import {
     Button,
@@ -24,8 +24,6 @@ import {
     Tag,
     TagCloseButton,
     TagLabel,
-    ModalContentProps,
-    ModalHeaderProps,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
@@ -41,9 +39,6 @@ type MetadataModalProps = {
     // the computePlans props is to be used only when there's no PerfBrowserContext available
     computePlans?: ComputePlanT[];
 };
-
-const MotionModalContent = motion<ModalContentProps>(ModalContent);
-const MotionModalHeader = motion<ModalHeaderProps>(ModalHeader);
 
 const MetadataModal = ({
     computePlans: propsComputePlans,
@@ -134,8 +129,6 @@ const MetadataModal = ({
     };
 
     const [grabbing, setGrabbing] = useState(false);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
 
     return (
         <>
@@ -154,8 +147,10 @@ const MetadataModal = ({
                 motionPreset={'none'}
                 onEsc={() => setInputIsFocused(false)}
             >
-                <MotionModalContent
-                    style={{ x, y }}
+                <ModalContent
+                    as={motion.div}
+                    drag={true}
+                    dragMomentum={false}
                     pointerEvents="auto"
                     containerProps={{ pointerEvents: 'none' }}
                     overflow="hidden"
@@ -169,11 +164,8 @@ const MetadataModal = ({
                     }}
                 >
                     <ModalCloseButton />
-                    <MotionModalHeader
-                        onPan={(e, info) => {
-                            x.set(x.get() + info.delta.x);
-                            y.set(y.get() + info.delta.y);
-                        }}
+                    <ModalHeader
+                        as={motion.header}
                         onMouseDown={() => setGrabbing(true)}
                         onMouseUp={() => setGrabbing(false)}
                         cursor={grabbing ? 'grabbing' : 'grab'}
@@ -317,7 +309,7 @@ const MetadataModal = ({
                                 ))}
                             </Wrap>
                         )}
-                    </MotionModalHeader>
+                    </ModalHeader>
                     <ModalBody padding="0">
                         <Table whiteSpace="nowrap" width="auto" maxWidth="100%">
                             <Thead>
@@ -359,7 +351,7 @@ const MetadataModal = ({
                             </Tbody>
                         </Table>
                     </ModalBody>
-                </MotionModalContent>
+                </ModalContent>
             </Modal>
         </>
     );
