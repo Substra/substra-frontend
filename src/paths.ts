@@ -45,7 +45,7 @@ export const API_PATHS = {
     TASK: '/task/:key/',
     TASK_INPUTS: '/task/:key/input_assets/',
     TASK_OUTPUTS: '/task/:key/output_assets/',
-    TASK_PROFILING: '/task_profiling/:key/',
+    TASK_PROFILING: '/task/:key/profiling',
     USERS: '/users/',
     USERS_AWAITING_APPROVAL: '/users-awaiting-approval/',
     USER: '/users/:key/',
