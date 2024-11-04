@@ -19,15 +19,15 @@
         "knip": "knip"
     },
     "dependencies": {
-        "@chakra-ui/react": "2.6.1",
+        "@chakra-ui/react": "3.0.2",
         "@emotion/react": "11.13.3",
         "@emotion/styled": "11.13.0",
-        "axios": "^1.7.5",
-        "chart.js": "4.4.4",
+        "axios": "^1.7.7",
+        "chart.js": "4.4.6",
         "chartjs-plugin-zoom": "2.0.1",
         "downshift": "9.0.8",
-        "framer-motion": "11.3.31",
-        "github-markdown-css": "5.6.1",
+        "framer-motion": "11.11.11",
+        "github-markdown-css": "5.7.0",
         "html-to-image": "1.11.11",
         "react": "18.3.1",
         "react-chartjs-2": "5.2.0",
@@ -35,12 +35,12 @@
         "reactflow": "11.11.4",
         "react-icons": "5.3.0",
         "react-markdown": "9.0.1",
-        "react-syntax-highlighter": "15.5.0",
+        "react-syntax-highlighter": "15.6.1",
         "remark-gfm": "4.0.0",
-        "universal-cookie": "7.2.0",
-        "uuid": "10.0.0",
+        "universal-cookie": "7.2.2",
+        "uuid": "11.0.2",
         "wouter": "3.3.5",
-        "zustand": "4.5.5"
+        "zustand": "5.0.1"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "6.5.0",
